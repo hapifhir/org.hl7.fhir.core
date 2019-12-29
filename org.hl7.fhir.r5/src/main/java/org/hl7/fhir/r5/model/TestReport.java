@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,367 +67,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A summary of information based on the results of executing a TestScript.
  */
 @ResourceDef(name="TestReport", profile="http://hl7.org/fhir/StructureDefinition/TestReport")
 public class TestReport extends DomainResource {
-
-    public enum TestReportStatus {
-        /**
-         * All test operations have completed.
-         */
-        COMPLETED, 
-        /**
-         * A test operations is currently executing.
-         */
-        INPROGRESS, 
-        /**
-         * A test operation is waiting for an external client request.
-         */
-        WAITING, 
-        /**
-         * The test script execution was manually stopped.
-         */
-        STOPPED, 
-        /**
-         * This test report was entered or created in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TestReportStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("waiting".equals(codeString))
-          return WAITING;
-        if ("stopped".equals(codeString))
-          return STOPPED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TestReportStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case COMPLETED: return "completed";
-            case INPROGRESS: return "in-progress";
-            case WAITING: return "waiting";
-            case STOPPED: return "stopped";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case COMPLETED: return "http://hl7.org/fhir/report-status-codes";
-            case INPROGRESS: return "http://hl7.org/fhir/report-status-codes";
-            case WAITING: return "http://hl7.org/fhir/report-status-codes";
-            case STOPPED: return "http://hl7.org/fhir/report-status-codes";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/report-status-codes";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case COMPLETED: return "All test operations have completed.";
-            case INPROGRESS: return "A test operations is currently executing.";
-            case WAITING: return "A test operation is waiting for an external client request.";
-            case STOPPED: return "The test script execution was manually stopped.";
-            case ENTEREDINERROR: return "This test report was entered or created in error.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case COMPLETED: return "Completed";
-            case INPROGRESS: return "In Progress";
-            case WAITING: return "Waiting";
-            case STOPPED: return "Stopped";
-            case ENTEREDINERROR: return "Entered In Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TestReportStatusEnumFactory implements EnumFactory<TestReportStatus> {
-    public TestReportStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("completed".equals(codeString))
-          return TestReportStatus.COMPLETED;
-        if ("in-progress".equals(codeString))
-          return TestReportStatus.INPROGRESS;
-        if ("waiting".equals(codeString))
-          return TestReportStatus.WAITING;
-        if ("stopped".equals(codeString))
-          return TestReportStatus.STOPPED;
-        if ("entered-in-error".equals(codeString))
-          return TestReportStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown TestReportStatus code '"+codeString+"'");
-        }
-        public Enumeration<TestReportStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TestReportStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("completed".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.COMPLETED);
-        if ("in-progress".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.INPROGRESS);
-        if ("waiting".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.WAITING);
-        if ("stopped".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.STOPPED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown TestReportStatus code '"+codeString+"'");
-        }
-    public String toCode(TestReportStatus code) {
-      if (code == TestReportStatus.COMPLETED)
-        return "completed";
-      if (code == TestReportStatus.INPROGRESS)
-        return "in-progress";
-      if (code == TestReportStatus.WAITING)
-        return "waiting";
-      if (code == TestReportStatus.STOPPED)
-        return "stopped";
-      if (code == TestReportStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    public String toSystem(TestReportStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum TestReportResult {
-        /**
-         * All test operations successfully passed all asserts.
-         */
-        PASS, 
-        /**
-         * One or more test operations failed one or more asserts.
-         */
-        FAIL, 
-        /**
-         * One or more test operations is pending execution completion.
-         */
-        PENDING, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TestReportResult fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("pass".equals(codeString))
-          return PASS;
-        if ("fail".equals(codeString))
-          return FAIL;
-        if ("pending".equals(codeString))
-          return PENDING;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TestReportResult code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PASS: return "pass";
-            case FAIL: return "fail";
-            case PENDING: return "pending";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PASS: return "http://hl7.org/fhir/report-result-codes";
-            case FAIL: return "http://hl7.org/fhir/report-result-codes";
-            case PENDING: return "http://hl7.org/fhir/report-result-codes";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PASS: return "All test operations successfully passed all asserts.";
-            case FAIL: return "One or more test operations failed one or more asserts.";
-            case PENDING: return "One or more test operations is pending execution completion.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PASS: return "Pass";
-            case FAIL: return "Fail";
-            case PENDING: return "Pending";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TestReportResultEnumFactory implements EnumFactory<TestReportResult> {
-    public TestReportResult fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("pass".equals(codeString))
-          return TestReportResult.PASS;
-        if ("fail".equals(codeString))
-          return TestReportResult.FAIL;
-        if ("pending".equals(codeString))
-          return TestReportResult.PENDING;
-        throw new IllegalArgumentException("Unknown TestReportResult code '"+codeString+"'");
-        }
-        public Enumeration<TestReportResult> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TestReportResult>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("pass".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.PASS);
-        if ("fail".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.FAIL);
-        if ("pending".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.PENDING);
-        throw new FHIRException("Unknown TestReportResult code '"+codeString+"'");
-        }
-    public String toCode(TestReportResult code) {
-      if (code == TestReportResult.PASS)
-        return "pass";
-      if (code == TestReportResult.FAIL)
-        return "fail";
-      if (code == TestReportResult.PENDING)
-        return "pending";
-      return "?";
-      }
-    public String toSystem(TestReportResult code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum TestReportParticipantType {
-        /**
-         * The test execution engine.
-         */
-        TESTENGINE, 
-        /**
-         * A FHIR Client.
-         */
-        CLIENT, 
-        /**
-         * A FHIR Server.
-         */
-        SERVER, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TestReportParticipantType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("test-engine".equals(codeString))
-          return TESTENGINE;
-        if ("client".equals(codeString))
-          return CLIENT;
-        if ("server".equals(codeString))
-          return SERVER;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TestReportParticipantType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TESTENGINE: return "test-engine";
-            case CLIENT: return "client";
-            case SERVER: return "server";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TESTENGINE: return "http://hl7.org/fhir/report-participant-type";
-            case CLIENT: return "http://hl7.org/fhir/report-participant-type";
-            case SERVER: return "http://hl7.org/fhir/report-participant-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TESTENGINE: return "The test execution engine.";
-            case CLIENT: return "A FHIR Client.";
-            case SERVER: return "A FHIR Server.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TESTENGINE: return "Test Engine";
-            case CLIENT: return "Client";
-            case SERVER: return "Server";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TestReportParticipantTypeEnumFactory implements EnumFactory<TestReportParticipantType> {
-    public TestReportParticipantType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("test-engine".equals(codeString))
-          return TestReportParticipantType.TESTENGINE;
-        if ("client".equals(codeString))
-          return TestReportParticipantType.CLIENT;
-        if ("server".equals(codeString))
-          return TestReportParticipantType.SERVER;
-        throw new IllegalArgumentException("Unknown TestReportParticipantType code '"+codeString+"'");
-        }
-        public Enumeration<TestReportParticipantType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TestReportParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("test-engine".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.TESTENGINE);
-        if ("client".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.CLIENT);
-        if ("server".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.SERVER);
-        throw new FHIRException("Unknown TestReportParticipantType code '"+codeString+"'");
-        }
-    public String toCode(TestReportParticipantType code) {
-      if (code == TestReportParticipantType.TESTENGINE)
-        return "test-engine";
-      if (code == TestReportParticipantType.CLIENT)
-        return "client";
-      if (code == TestReportParticipantType.SERVER)
-        return "server";
-      return "?";
-      }
-    public String toSystem(TestReportParticipantType code) {
-      return code.getSystem();
-      }
-    }
 
     public enum TestReportActionResult {
         /**
@@ -568,6 +214,362 @@ public class TestReport extends DomainResource {
       }
     }
 
+    public enum TestReportParticipantType {
+        /**
+         * The test execution engine.
+         */
+        TESTENGINE, 
+        /**
+         * A FHIR Client.
+         */
+        CLIENT, 
+        /**
+         * A FHIR Server.
+         */
+        SERVER, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static TestReportParticipantType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("test-engine".equals(codeString))
+          return TESTENGINE;
+        if ("client".equals(codeString))
+          return CLIENT;
+        if ("server".equals(codeString))
+          return SERVER;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown TestReportParticipantType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TESTENGINE: return "test-engine";
+            case CLIENT: return "client";
+            case SERVER: return "server";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case TESTENGINE: return "http://hl7.org/fhir/report-participant-type";
+            case CLIENT: return "http://hl7.org/fhir/report-participant-type";
+            case SERVER: return "http://hl7.org/fhir/report-participant-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TESTENGINE: return "The test execution engine.";
+            case CLIENT: return "A FHIR Client.";
+            case SERVER: return "A FHIR Server.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TESTENGINE: return "Test Engine";
+            case CLIENT: return "Client";
+            case SERVER: return "Server";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class TestReportParticipantTypeEnumFactory implements EnumFactory<TestReportParticipantType> {
+    public TestReportParticipantType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("test-engine".equals(codeString))
+          return TestReportParticipantType.TESTENGINE;
+        if ("client".equals(codeString))
+          return TestReportParticipantType.CLIENT;
+        if ("server".equals(codeString))
+          return TestReportParticipantType.SERVER;
+        throw new IllegalArgumentException("Unknown TestReportParticipantType code '"+codeString+"'");
+        }
+        public Enumeration<TestReportParticipantType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<TestReportParticipantType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("test-engine".equals(codeString))
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.TESTENGINE);
+        if ("client".equals(codeString))
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.CLIENT);
+        if ("server".equals(codeString))
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.SERVER);
+        throw new FHIRException("Unknown TestReportParticipantType code '"+codeString+"'");
+        }
+    public String toCode(TestReportParticipantType code) {
+      if (code == TestReportParticipantType.TESTENGINE)
+        return "test-engine";
+      if (code == TestReportParticipantType.CLIENT)
+        return "client";
+      if (code == TestReportParticipantType.SERVER)
+        return "server";
+      return "?";
+      }
+    public String toSystem(TestReportParticipantType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum TestReportResult {
+        /**
+         * All test operations successfully passed all asserts.
+         */
+        PASS, 
+        /**
+         * One or more test operations failed one or more asserts.
+         */
+        FAIL, 
+        /**
+         * One or more test operations is pending execution completion.
+         */
+        PENDING, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static TestReportResult fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("pass".equals(codeString))
+          return PASS;
+        if ("fail".equals(codeString))
+          return FAIL;
+        if ("pending".equals(codeString))
+          return PENDING;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown TestReportResult code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PASS: return "pass";
+            case FAIL: return "fail";
+            case PENDING: return "pending";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case PASS: return "http://hl7.org/fhir/report-result-codes";
+            case FAIL: return "http://hl7.org/fhir/report-result-codes";
+            case PENDING: return "http://hl7.org/fhir/report-result-codes";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PASS: return "All test operations successfully passed all asserts.";
+            case FAIL: return "One or more test operations failed one or more asserts.";
+            case PENDING: return "One or more test operations is pending execution completion.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PASS: return "Pass";
+            case FAIL: return "Fail";
+            case PENDING: return "Pending";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class TestReportResultEnumFactory implements EnumFactory<TestReportResult> {
+    public TestReportResult fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("pass".equals(codeString))
+          return TestReportResult.PASS;
+        if ("fail".equals(codeString))
+          return TestReportResult.FAIL;
+        if ("pending".equals(codeString))
+          return TestReportResult.PENDING;
+        throw new IllegalArgumentException("Unknown TestReportResult code '"+codeString+"'");
+        }
+        public Enumeration<TestReportResult> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<TestReportResult>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("pass".equals(codeString))
+          return new Enumeration<TestReportResult>(this, TestReportResult.PASS);
+        if ("fail".equals(codeString))
+          return new Enumeration<TestReportResult>(this, TestReportResult.FAIL);
+        if ("pending".equals(codeString))
+          return new Enumeration<TestReportResult>(this, TestReportResult.PENDING);
+        throw new FHIRException("Unknown TestReportResult code '"+codeString+"'");
+        }
+    public String toCode(TestReportResult code) {
+      if (code == TestReportResult.PASS)
+        return "pass";
+      if (code == TestReportResult.FAIL)
+        return "fail";
+      if (code == TestReportResult.PENDING)
+        return "pending";
+      return "?";
+      }
+    public String toSystem(TestReportResult code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum TestReportStatus {
+        /**
+         * All test operations have completed.
+         */
+        COMPLETED, 
+        /**
+         * A test operations is currently executing.
+         */
+        INPROGRESS, 
+        /**
+         * A test operation is waiting for an external client request.
+         */
+        WAITING, 
+        /**
+         * The test script execution was manually stopped.
+         */
+        STOPPED, 
+        /**
+         * This test report was entered or created in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static TestReportStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("waiting".equals(codeString))
+          return WAITING;
+        if ("stopped".equals(codeString))
+          return STOPPED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown TestReportStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case COMPLETED: return "completed";
+            case INPROGRESS: return "in-progress";
+            case WAITING: return "waiting";
+            case STOPPED: return "stopped";
+            case ENTEREDINERROR: return "entered-in-error";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case COMPLETED: return "http://hl7.org/fhir/report-status-codes";
+            case INPROGRESS: return "http://hl7.org/fhir/report-status-codes";
+            case WAITING: return "http://hl7.org/fhir/report-status-codes";
+            case STOPPED: return "http://hl7.org/fhir/report-status-codes";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/report-status-codes";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case COMPLETED: return "All test operations have completed.";
+            case INPROGRESS: return "A test operations is currently executing.";
+            case WAITING: return "A test operation is waiting for an external client request.";
+            case STOPPED: return "The test script execution was manually stopped.";
+            case ENTEREDINERROR: return "This test report was entered or created in error.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case COMPLETED: return "Completed";
+            case INPROGRESS: return "In Progress";
+            case WAITING: return "Waiting";
+            case STOPPED: return "Stopped";
+            case ENTEREDINERROR: return "Entered In Error";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class TestReportStatusEnumFactory implements EnumFactory<TestReportStatus> {
+    public TestReportStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("completed".equals(codeString))
+          return TestReportStatus.COMPLETED;
+        if ("in-progress".equals(codeString))
+          return TestReportStatus.INPROGRESS;
+        if ("waiting".equals(codeString))
+          return TestReportStatus.WAITING;
+        if ("stopped".equals(codeString))
+          return TestReportStatus.STOPPED;
+        if ("entered-in-error".equals(codeString))
+          return TestReportStatus.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown TestReportStatus code '"+codeString+"'");
+        }
+        public Enumeration<TestReportStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<TestReportStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("completed".equals(codeString))
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.COMPLETED);
+        if ("in-progress".equals(codeString))
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.INPROGRESS);
+        if ("waiting".equals(codeString))
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.WAITING);
+        if ("stopped".equals(codeString))
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.STOPPED);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.ENTEREDINERROR);
+        throw new FHIRException("Unknown TestReportStatus code '"+codeString+"'");
+        }
+    public String toCode(TestReportStatus code) {
+      if (code == TestReportStatus.COMPLETED)
+        return "completed";
+      if (code == TestReportStatus.INPROGRESS)
+        return "in-progress";
+      if (code == TestReportStatus.WAITING)
+        return "waiting";
+      if (code == TestReportStatus.STOPPED)
+        return "stopped";
+      if (code == TestReportStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      return "?";
+      }
+    public String toSystem(TestReportStatus code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class TestReportParticipantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -604,10 +606,10 @@ public class TestReport extends DomainResource {
     /**
      * Constructor
      */
-      public TestReportParticipantComponent(Enumeration<TestReportParticipantType> type, UriType uri) {
+      public TestReportParticipantComponent(TestReportParticipantType type, String uri) {
         super();
-        this.type = type;
-        this.uri = uri;
+        this.setType(type);
+        this.setUri(uri);
       }
 
         /**
@@ -835,13 +837,13 @@ public class TestReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.type");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.participant.type");
         }
         else if (name.equals("uri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.uri");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.participant.uri");
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.display");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.participant.display");
         }
         else
           return super.addChild(name);
@@ -911,6 +913,14 @@ public class TestReport extends DomainResource {
         super();
       }
 
+    /**
+     * Constructor
+     */
+      public TestReportSetupComponent(SetupActionComponent action) {
+        super();
+        this.addAction(action);
+      }
+
         /**
          * @return {@link #action} (Action would contain either an operation or an assertion.)
          */
@@ -955,7 +965,7 @@ public class TestReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public SetupActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -1317,9 +1327,9 @@ public class TestReport extends DomainResource {
     /**
      * Constructor
      */
-      public SetupActionOperationComponent(Enumeration<TestReportActionResult> result) {
+      public SetupActionOperationComponent(TestReportActionResult result) {
         super();
-        this.result = result;
+        this.setResult(result);
       }
 
         /**
@@ -1551,13 +1561,13 @@ public class TestReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("result")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.result");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.operation.result");
         }
         else if (name.equals("message")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.message");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.operation.message");
         }
         else if (name.equals("detail")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.detail");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.operation.detail");
         }
         else
           return super.addChild(name);
@@ -1646,9 +1656,9 @@ public class TestReport extends DomainResource {
     /**
      * Constructor
      */
-      public SetupActionAssertComponent(Enumeration<TestReportActionResult> result) {
+      public SetupActionAssertComponent(TestReportActionResult result) {
         super();
-        this.result = result;
+        this.setResult(result);
       }
 
         /**
@@ -1880,13 +1890,13 @@ public class TestReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("result")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.result");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.assert.result");
         }
         else if (name.equals("message")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.message");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.assert.message");
         }
         else if (name.equals("detail")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.detail");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.setup.action.assert.detail");
         }
         else
           return super.addChild(name);
@@ -1969,6 +1979,14 @@ public class TestReport extends DomainResource {
      */
       public TestReportTestComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public TestReportTestComponent(TestActionComponent action) {
+        super();
+        this.addAction(action);
       }
 
         /**
@@ -2113,7 +2131,7 @@ public class TestReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public TestActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -2206,10 +2224,10 @@ public class TestReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.test.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type TestReport.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.test.description");
         }
         else if (name.equals("action")) {
           return addAction();
@@ -2487,6 +2505,14 @@ public class TestReport extends DomainResource {
         super();
       }
 
+    /**
+     * Constructor
+     */
+      public TestReportTeardownComponent(TeardownActionComponent action) {
+        super();
+        this.addAction(action);
+      }
+
         /**
          * @return {@link #action} (The teardown action will only contain an operation.)
          */
@@ -2531,7 +2557,7 @@ public class TestReport extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public TeardownActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -2679,7 +2705,7 @@ public class TestReport extends DomainResource {
      */
       public TeardownActionComponent(SetupActionOperationComponent operation) {
         super();
-        this.operation = operation;
+        this.setOperation(operation);
       }
 
         /**
@@ -2917,11 +2943,11 @@ public class TestReport extends DomainResource {
   /**
    * Constructor
    */
-    public TestReport(Enumeration<TestReportStatus> status, Reference testScript, Enumeration<TestReportResult> result) {
+    public TestReport(TestReportStatus status, Reference testScript, TestReportResult result) {
       super();
-      this.status = status;
-      this.testScript = testScript;
-      this.result = result;
+      this.setStatus(status);
+      this.setTestScript(testScript);
+      this.setResult(result);
     }
 
     /**
@@ -3320,7 +3346,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
      */
     public TestReportParticipantComponent getParticipantFirstRep() { 
       if (getParticipant().isEmpty()) {
@@ -3397,7 +3423,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #test}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #test}, creating it if it does not already exist {3}
      */
     public TestReportTestComponent getTestFirstRep() { 
       if (getTest().isEmpty()) {
@@ -3728,26 +3754,6 @@ public class TestReport extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
-  public static final String SP_RESULT = "result";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
-
- /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>An external identifier for the test report</b><br>
@@ -3766,6 +3772,66 @@ public class TestReport extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>issued</b>
+   * <p>
+   * Description: <b>The test report generation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestReport.issued</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="issued", path="TestReport.issued", description="The test report generation date", type="date" )
+  public static final String SP_ISSUED = "issued";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
+   * <p>
+   * Description: <b>The test report generation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestReport.issued</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
+
+ /**
+   * Search parameter: <b>participant</b>
+   * <p>
+   * Description: <b>The reference to a participant in the test execution</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestReport.participant.uri</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant", path="TestReport.participant.uri", description="The reference to a participant in the test execution", type="uri" )
+  public static final String SP_PARTICIPANT = "participant";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
+   * <p>
+   * Description: <b>The reference to a participant in the test execution</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestReport.participant.uri</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PARTICIPANT);
+
+ /**
+   * Search parameter: <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
+  public static final String SP_RESULT = "result";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
 
  /**
    * Search parameter: <b>tester</b>
@@ -3812,46 +3878,6 @@ public class TestReport extends DomainResource {
    * the path value of "<b>TestReport:testscript</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_TESTSCRIPT = new ca.uhn.fhir.model.api.Include("TestReport:testscript").toLocked();
-
- /**
-   * Search parameter: <b>issued</b>
-   * <p>
-   * Description: <b>The test report generation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestReport.issued</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="issued", path="TestReport.issued", description="The test report generation date", type="date" )
-  public static final String SP_ISSUED = "issued";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
-   * <p>
-   * Description: <b>The test report generation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestReport.issued</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
-
- /**
-   * Search parameter: <b>participant</b>
-   * <p>
-   * Description: <b>The reference to a participant in the test execution</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestReport.participant.uri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="participant", path="TestReport.participant.uri", description="The reference to a participant in the test execution", type="uri" )
-  public static final String SP_PARTICIPANT = "participant";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
-   * <p>
-   * Description: <b>The reference to a participant in the test execution</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestReport.participant.uri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PARTICIPANT);
 
 
 }

@@ -188,23 +188,23 @@ public class Procedure extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Procedure.ProcedureStatus convertProcedureStatus(org.hl7.fhir.r4.model.Procedure.ProcedureStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.EventStatus convertProcedureStatus(org.hl7.fhir.r4.model.Procedure.ProcedureStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PREPARATION: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.PREPARATION;
-    case INPROGRESS: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.INPROGRESS;
-    case NOTDONE: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.NOTDONE;
-    case ONHOLD: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.ONHOLD;
-    case STOPPED: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.STOPPED;
-    case COMPLETED: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.Procedure.ProcedureStatus.NULL;
+    case PREPARATION: return org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION;
+    case INPROGRESS: return org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS;
+    case NOTDONE: return org.hl7.fhir.r5.model.Enumerations.EventStatus.NOTDONE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.EventStatus.ONHOLD;
+    case STOPPED: return org.hl7.fhir.r5.model.Enumerations.EventStatus.STOPPED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.EventStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Procedure.ProcedureStatus convertProcedureStatus(org.hl7.fhir.r5.model.Procedure.ProcedureStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Procedure.ProcedureStatus convertProcedureStatus(org.hl7.fhir.r5.model.Enumerations.EventStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

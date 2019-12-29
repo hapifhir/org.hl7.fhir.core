@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.
  */
@@ -257,7 +259,7 @@ public class Provenance extends DomainResource {
      */
       public ProvenanceAgentComponent(Reference who) {
         super();
-        this.who = who;
+        this.setWho(who);
       }
 
         /**
@@ -328,7 +330,7 @@ public class Provenance extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #role}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #role}, creating it if it does not already exist {3}
          */
         public CodeableConcept getRoleFirstRep() { 
           if (getRole().isEmpty()) {
@@ -584,10 +586,10 @@ public class Provenance extends DomainResource {
     /**
      * Constructor
      */
-      public ProvenanceEntityComponent(Enumeration<ProvenanceEntityRole> role, Reference what) {
+      public ProvenanceEntityComponent(ProvenanceEntityRole role, Reference what) {
         super();
-        this.role = role;
-        this.what = what;
+        this.setRole(role);
+        this.setWhat(what);
       }
 
         /**
@@ -703,7 +705,7 @@ public class Provenance extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #agent}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #agent}, creating it if it does not already exist {3}
          */
         public ProvenanceAgentComponent getAgentFirstRep() { 
           if (getAgent().isEmpty()) {
@@ -798,7 +800,7 @@ public class Provenance extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("role")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Provenance.role");
+          throw new FHIRException("Cannot call addChild on a primitive type Provenance.entity.role");
         }
         else if (name.equals("what")) {
           this.what = new Reference();
@@ -932,7 +934,7 @@ public class Provenance extends DomainResource {
     @Description(shortDefinition="Signature on target", formalDefinition="A digital signature on the target Reference(s). The signer should match a Provenance.agent. The purpose of the signature is indicated." )
     protected List<Signature> signature;
 
-    private static final long serialVersionUID = -236021005L;
+    private static final long serialVersionUID = -859992471L;
 
   /**
    * Constructor
@@ -944,9 +946,11 @@ public class Provenance extends DomainResource {
   /**
    * Constructor
    */
-    public Provenance(InstantType recorded) {
+    public Provenance(Reference target, Date recorded, ProvenanceAgentComponent agent) {
       super();
-      this.recorded = recorded;
+      this.addTarget(target);
+      this.setRecorded(recorded);
+      this.addAgent(agent);
     }
 
     /**
@@ -993,7 +997,7 @@ public class Provenance extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist {3}
      */
     public Reference getTargetFirstRep() { 
       if (getTarget().isEmpty()) {
@@ -1227,7 +1231,7 @@ public class Provenance extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonFirstRep() { 
       if (getReason().isEmpty()) {
@@ -1304,7 +1308,7 @@ public class Provenance extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #agent}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #agent}, creating it if it does not already exist {3}
      */
     public ProvenanceAgentComponent getAgentFirstRep() { 
       if (getAgent().isEmpty()) {
@@ -1357,7 +1361,7 @@ public class Provenance extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #entity}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #entity}, creating it if it does not already exist {3}
      */
     public ProvenanceEntityComponent getEntityFirstRep() { 
       if (getEntity().isEmpty()) {
@@ -1410,7 +1414,7 @@ public class Provenance extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #signature}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #signature}, creating it if it does not already exist {3}
      */
     public Signature getSignatureFirstRep() { 
       if (getSignature().isEmpty()) {
@@ -1439,8 +1443,8 @@ public class Provenance extends DomainResource {
         case -880905839: /*target*/  return new Property("target", "Reference(Any)", "The Reference(s) that were generated or updated by  the activity described in this resource. A provenance can point to more than one target if multiple resources were created/updated by the same activity.", 0, java.lang.Integer.MAX_VALUE, target);
         case 784181563: /*occurred[x]*/  return new Property("occurred[x]", "Period|dateTime", "The period during which the activity occurred.", 0, 1, occurred);
         case 792816933: /*occurred*/  return new Property("occurred[x]", "Period|dateTime", "The period during which the activity occurred.", 0, 1, occurred);
-        case 894082886: /*occurredPeriod*/  return new Property("occurred[x]", "Period|dateTime", "The period during which the activity occurred.", 0, 1, occurred);
-        case 1579027424: /*occurredDateTime*/  return new Property("occurred[x]", "Period|dateTime", "The period during which the activity occurred.", 0, 1, occurred);
+        case 894082886: /*occurredPeriod*/  return new Property("occurred[x]", "Period", "The period during which the activity occurred.", 0, 1, occurred);
+        case 1579027424: /*occurredDateTime*/  return new Property("occurred[x]", "dateTime", "The period during which the activity occurred.", 0, 1, occurred);
         case -799233872: /*recorded*/  return new Property("recorded", "instant", "The instant of time at which the activity was recorded.", 0, 1, recorded);
         case -982670030: /*policy*/  return new Property("policy", "uri", "Policy or plan the activity was defined by. Typically, a single activity may have multiple applicable policy documents, such as patient consent, guarantor funding, etc.", 0, java.lang.Integer.MAX_VALUE, policy);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Where the activity occurred, if relevant.", 0, 1, location);
@@ -1458,7 +1462,7 @@ public class Provenance extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -880905839: /*target*/ return this.target == null ? new Base[0] : this.target.toArray(new Base[this.target.size()]); // Reference
-        case 792816933: /*occurred*/ return this.occurred == null ? new Base[0] : new Base[] {this.occurred}; // Type
+        case 792816933: /*occurred*/ return this.occurred == null ? new Base[0] : new Base[] {this.occurred}; // DataType
         case -799233872: /*recorded*/ return this.recorded == null ? new Base[0] : new Base[] {this.recorded}; // InstantType
         case -982670030: /*policy*/ return this.policy == null ? new Base[0] : this.policy.toArray(new Base[this.policy.size()]); // UriType
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
@@ -1479,7 +1483,7 @@ public class Provenance extends DomainResource {
           this.getTarget().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 792816933: // occurred
-          this.occurred = TypeConvertor.castToType(value); // Type
+          this.occurred = TypeConvertor.castToType(value); // DataType
           return value;
         case -799233872: // recorded
           this.recorded = TypeConvertor.castToInstant(value); // InstantType
@@ -1515,7 +1519,7 @@ public class Provenance extends DomainResource {
         if (name.equals("target")) {
           this.getTarget().add(TypeConvertor.castToReference(value));
         } else if (name.equals("occurred[x]")) {
-          this.occurred = TypeConvertor.castToType(value); // Type
+          this.occurred = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("recorded")) {
           this.recorded = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("policy")) {
@@ -1704,6 +1708,46 @@ public class Provenance extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>activity</b>
+   * <p>
+   * Description: <b>Activity that occurred</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.activity</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="activity", path="Provenance.activity", description="Activity that occurred", type="token" )
+  public static final String SP_ACTIVITY = "activity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>activity</b>
+   * <p>
+   * Description: <b>Activity that occurred</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.activity</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVITY);
+
+ /**
+   * Search parameter: <b>agent-role</b>
+   * <p>
+   * Description: <b>What the agents role was</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent-role", path="Provenance.agent.role", description="What the agents role was", type="token" )
+  public static final String SP_AGENT_ROLE = "agent-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent-role</b>
+   * <p>
+   * Description: <b>What the agents role was</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_ROLE);
+
+ /**
    * Search parameter: <b>agent-type</b>
    * <p>
    * Description: <b>How the agent participated</b><br>
@@ -1731,7 +1775,7 @@ public class Provenance extends DomainResource {
    * Path: <b>Provenance.agent.who</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="agent", path="Provenance.agent.who", description="Who participated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="agent", path="Provenance.agent.who", description="Who participated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_AGENT = "agent";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>agent</b>
@@ -1750,50 +1794,30 @@ public class Provenance extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_AGENT = new ca.uhn.fhir.model.api.Include("Provenance:agent").toLocked();
 
  /**
-   * Search parameter: <b>signature-type</b>
+   * Search parameter: <b>entity</b>
    * <p>
-   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Provenance.signature.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="signature-type", path="Provenance.signature.type", description="Indication of the reason the entity signed the object(s)", type="token" )
-  public static final String SP_SIGNATURE_TYPE = "signature-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>signature-type</b>
-   * <p>
-   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Provenance.signature.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SIGNATURE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SIGNATURE_TYPE);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Description: <b>Identity of entity</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Provenance.target</b><br>
+   * Path: <b>Provenance.entity.what</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Provenance.target.where(resolve() is Patient)", description="Target Reference(s) (usually version specific)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
+  @SearchParamDefinition(name="entity", path="Provenance.entity.what", description="Identity of entity", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_ENTITY = "entity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
    * <p>
-   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Description: <b>Identity of entity</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Provenance.target</b><br>
+   * Path: <b>Provenance.entity.what</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Provenance:patient</b>".
+   * the path value of "<b>Provenance:entity</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Provenance:patient").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("Provenance:entity").toLocked();
 
  /**
    * Search parameter: <b>location</b>
@@ -1822,6 +1846,32 @@ public class Provenance extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Provenance:location").toLocked();
 
  /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Provenance.target.where(resolve() is Patient)", description="Target Reference(s) (usually version specific)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Provenance:patient").toLocked();
+
+ /**
    * Search parameter: <b>recorded</b>
    * <p>
    * Description: <b>When the activity was recorded / updated</b><br>
@@ -1842,70 +1892,24 @@ public class Provenance extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam RECORDED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_RECORDED);
 
  /**
-   * Search parameter: <b>agent-role</b>
+   * Search parameter: <b>signature-type</b>
    * <p>
-   * Description: <b>What the agents role was</b><br>
+   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Provenance.agent.role</b><br>
+   * Path: <b>Provenance.signature.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="agent-role", path="Provenance.agent.role", description="What the agents role was", type="token" )
-  public static final String SP_AGENT_ROLE = "agent-role";
+  @SearchParamDefinition(name="signature-type", path="Provenance.signature.type", description="Indication of the reason the entity signed the object(s)", type="token" )
+  public static final String SP_SIGNATURE_TYPE = "signature-type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>agent-role</b>
+   * <b>Fluent Client</b> search parameter constant for <b>signature-type</b>
    * <p>
-   * Description: <b>What the agents role was</b><br>
+   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Provenance.agent.role</b><br>
+   * Path: <b>Provenance.signature.type</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_ROLE);
-
- /**
-   * Search parameter: <b>when</b>
-   * <p>
-   * Description: <b>When the activity occurred</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Provenance.occurredDateTime</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="when", path="(Provenance.occurred as dateTime)", description="When the activity occurred", type="date" )
-  public static final String SP_WHEN = "when";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>when</b>
-   * <p>
-   * Description: <b>When the activity occurred</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Provenance.occurredDateTime</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam WHEN = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_WHEN);
-
- /**
-   * Search parameter: <b>entity</b>
-   * <p>
-   * Description: <b>Identity of entity</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Provenance.entity.what</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="entity", path="Provenance.entity.what", description="Identity of entity", type="reference" )
-  public static final String SP_ENTITY = "entity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
-   * <p>
-   * Description: <b>Identity of entity</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Provenance.entity.what</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Provenance:entity</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("Provenance:entity").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SIGNATURE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SIGNATURE_TYPE);
 
  /**
    * Search parameter: <b>target</b>
@@ -1915,7 +1919,7 @@ public class Provenance extends DomainResource {
    * Path: <b>Provenance.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target", path="Provenance.target", description="Target Reference(s) (usually version specific)", type="reference" )
+  @SearchParamDefinition(name="target", path="Provenance.target", description="Target Reference(s) (usually version specific)", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_TARGET = "target";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>target</b>
@@ -1932,6 +1936,26 @@ public class Provenance extends DomainResource {
    * the path value of "<b>Provenance:target</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET = new ca.uhn.fhir.model.api.Include("Provenance:target").toLocked();
+
+ /**
+   * Search parameter: <b>when</b>
+   * <p>
+   * Description: <b>When the activity occurred</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Provenance.occurred as dateTime)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="when", path="(Provenance.occurred as dateTime)", description="When the activity occurred", type="date" )
+  public static final String SP_WHEN = "when";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>when</b>
+   * <p>
+   * Description: <b>When the activity occurred</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Provenance.occurred as dateTime)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam WHEN = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_WHEN);
 
 
 }

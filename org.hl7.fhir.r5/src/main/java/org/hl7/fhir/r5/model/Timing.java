@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,395 +25,52 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
+ * Base StructureDefinition for Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
  */
 @DatatypeDef(name="Timing")
 public class Timing extends BackboneType implements ICompositeType {
-
-    public enum UnitsOfTime {
-        /**
-         * null
-         */
-        S, 
-        /**
-         * null
-         */
-        MIN, 
-        /**
-         * null
-         */
-        H, 
-        /**
-         * null
-         */
-        D, 
-        /**
-         * null
-         */
-        WK, 
-        /**
-         * null
-         */
-        MO, 
-        /**
-         * null
-         */
-        A, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static UnitsOfTime fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("s".equals(codeString))
-          return S;
-        if ("min".equals(codeString))
-          return MIN;
-        if ("h".equals(codeString))
-          return H;
-        if ("d".equals(codeString))
-          return D;
-        if ("wk".equals(codeString))
-          return WK;
-        if ("mo".equals(codeString))
-          return MO;
-        if ("a".equals(codeString))
-          return A;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case S: return "s";
-            case MIN: return "min";
-            case H: return "h";
-            case D: return "d";
-            case WK: return "wk";
-            case MO: return "mo";
-            case A: return "a";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case S: return "http://unitsofmeasure.org";
-            case MIN: return "http://unitsofmeasure.org";
-            case H: return "http://unitsofmeasure.org";
-            case D: return "http://unitsofmeasure.org";
-            case WK: return "http://unitsofmeasure.org";
-            case MO: return "http://unitsofmeasure.org";
-            case A: return "http://unitsofmeasure.org";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case S: return "";
-            case MIN: return "";
-            case H: return "";
-            case D: return "";
-            case WK: return "";
-            case MO: return "";
-            case A: return "";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case S: return "second";
-            case MIN: return "minute";
-            case H: return "hour";
-            case D: return "day";
-            case WK: return "week";
-            case MO: return "month";
-            case A: return "year";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class UnitsOfTimeEnumFactory implements EnumFactory<UnitsOfTime> {
-    public UnitsOfTime fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("s".equals(codeString))
-          return UnitsOfTime.S;
-        if ("min".equals(codeString))
-          return UnitsOfTime.MIN;
-        if ("h".equals(codeString))
-          return UnitsOfTime.H;
-        if ("d".equals(codeString))
-          return UnitsOfTime.D;
-        if ("wk".equals(codeString))
-          return UnitsOfTime.WK;
-        if ("mo".equals(codeString))
-          return UnitsOfTime.MO;
-        if ("a".equals(codeString))
-          return UnitsOfTime.A;
-        throw new IllegalArgumentException("Unknown UnitsOfTime code '"+codeString+"'");
-        }
-        public Enumeration<UnitsOfTime> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<UnitsOfTime>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("s".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.S);
-        if ("min".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MIN);
-        if ("h".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.H);
-        if ("d".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.D);
-        if ("wk".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.WK);
-        if ("mo".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MO);
-        if ("a".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.A);
-        throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
-        }
-    public String toCode(UnitsOfTime code) {
-      if (code == UnitsOfTime.S)
-        return "s";
-      if (code == UnitsOfTime.MIN)
-        return "min";
-      if (code == UnitsOfTime.H)
-        return "h";
-      if (code == UnitsOfTime.D)
-        return "d";
-      if (code == UnitsOfTime.WK)
-        return "wk";
-      if (code == UnitsOfTime.MO)
-        return "mo";
-      if (code == UnitsOfTime.A)
-        return "a";
-      return "?";
-      }
-    public String toSystem(UnitsOfTime code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DaysOfWeek {
-        /**
-         * Monday.
-         */
-        MON, 
-        /**
-         * Tuesday.
-         */
-        TUE, 
-        /**
-         * Wednesday.
-         */
-        WED, 
-        /**
-         * Thursday.
-         */
-        THU, 
-        /**
-         * Friday.
-         */
-        FRI, 
-        /**
-         * Saturday.
-         */
-        SAT, 
-        /**
-         * Sunday.
-         */
-        SUN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return MON;
-        if ("tue".equals(codeString))
-          return TUE;
-        if ("wed".equals(codeString))
-          return WED;
-        if ("thu".equals(codeString))
-          return THU;
-        if ("fri".equals(codeString))
-          return FRI;
-        if ("sat".equals(codeString))
-          return SAT;
-        if ("sun".equals(codeString))
-          return SUN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MON: return "mon";
-            case TUE: return "tue";
-            case WED: return "wed";
-            case THU: return "thu";
-            case FRI: return "fri";
-            case SAT: return "sat";
-            case SUN: return "sun";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MON: return "http://hl7.org/fhir/days-of-week";
-            case TUE: return "http://hl7.org/fhir/days-of-week";
-            case WED: return "http://hl7.org/fhir/days-of-week";
-            case THU: return "http://hl7.org/fhir/days-of-week";
-            case FRI: return "http://hl7.org/fhir/days-of-week";
-            case SAT: return "http://hl7.org/fhir/days-of-week";
-            case SUN: return "http://hl7.org/fhir/days-of-week";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MON: return "Monday.";
-            case TUE: return "Tuesday.";
-            case WED: return "Wednesday.";
-            case THU: return "Thursday.";
-            case FRI: return "Friday.";
-            case SAT: return "Saturday.";
-            case SUN: return "Sunday.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
-    public DaysOfWeek fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return DaysOfWeek.MON;
-        if ("tue".equals(codeString))
-          return DaysOfWeek.TUE;
-        if ("wed".equals(codeString))
-          return DaysOfWeek.WED;
-        if ("thu".equals(codeString))
-          return DaysOfWeek.THU;
-        if ("fri".equals(codeString))
-          return DaysOfWeek.FRI;
-        if ("sat".equals(codeString))
-          return DaysOfWeek.SAT;
-        if ("sun".equals(codeString))
-          return DaysOfWeek.SUN;
-        throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
-        if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
-        if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
-        if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
-        if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
-        if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
-        if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
-        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-    public String toCode(DaysOfWeek code) {
-      if (code == DaysOfWeek.MON)
-        return "mon";
-      if (code == DaysOfWeek.TUE)
-        return "tue";
-      if (code == DaysOfWeek.WED)
-        return "wed";
-      if (code == DaysOfWeek.THU)
-        return "thu";
-      if (code == DaysOfWeek.FRI)
-        return "fri";
-      if (code == DaysOfWeek.SAT)
-        return "sat";
-      if (code == DaysOfWeek.SUN)
-        return "sun";
-      return "?";
-      }
-    public String toSystem(DaysOfWeek code) {
-      return code.getSystem();
-      }
-    }
 
     public enum EventTiming {
         /**
@@ -464,59 +122,59 @@ public class Timing extends BackboneType implements ICompositeType {
          */
         PHS, 
         /**
-         * null
+         * Description: Prior to beginning a regular period of extended sleep (this would exclude naps).  Note that this might occur at different times of day depending on a person's regular sleep schedule.
          */
         HS, 
         /**
-         * null
+         * Description: Upon waking up from a regular period of sleep, in order to start regular activities (this would exclude waking up from a nap or temporarily waking up during a period of sleep)\r\n\n                        \n                           Usage Notes: e.g.\r\n\n                        Take pulse rate on waking in management of thyrotoxicosis.\r\n\n                        Take BP on waking in management of hypertension\r\n\n                        Take basal body temperature on waking in establishing date of ovulation
          */
         WAKE, 
         /**
-         * null
+         * Description: meal (from lat. ante cibus)
          */
         C, 
         /**
-         * null
+         * Description: breakfast (from lat. cibus matutinus)
          */
         CM, 
         /**
-         * null
+         * Description: lunch (from lat. cibus diurnus)
          */
         CD, 
         /**
-         * null
+         * Description: dinner (from lat. cibus vespertinus)
          */
         CV, 
         /**
-         * null
+         * before meal (from lat. ante cibus)
          */
         AC, 
         /**
-         * null
+         * before breakfast (from lat. ante cibus matutinus)
          */
         ACM, 
         /**
-         * null
+         * before lunch (from lat. ante cibus diurnus)
          */
         ACD, 
         /**
-         * null
+         * before dinner (from lat. ante cibus vespertinus)
          */
         ACV, 
         /**
-         * null
+         * after meal (from lat. post cibus)
          */
         PC, 
         /**
-         * null
+         * after breakfast (from lat. post cibus matutinus)
          */
         PCM, 
         /**
-         * null
+         * after lunch (from lat. post cibus diurnus)
          */
         PCD, 
         /**
-         * null
+         * after dinner (from lat. post cibus vespertinus)
          */
         PCV, 
         /**
@@ -659,20 +317,20 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "Event occurs during the late evening. The exact time is unspecified and established by institution convention or patient interpretation.";
             case NIGHT: return "Event occurs during the night. The exact time is unspecified and established by institution convention or patient interpretation.";
             case PHS: return "Event occurs [offset] after subject goes to sleep. The exact time is unspecified and established by institution convention or patient interpretation.";
-            case HS: return "";
-            case WAKE: return "";
-            case C: return "";
-            case CM: return "";
-            case CD: return "";
-            case CV: return "";
-            case AC: return "";
-            case ACM: return "";
-            case ACD: return "";
-            case ACV: return "";
-            case PC: return "";
-            case PCM: return "";
-            case PCD: return "";
-            case PCV: return "";
+            case HS: return "Description: Prior to beginning a regular period of extended sleep (this would exclude naps).  Note that this might occur at different times of day depending on a person's regular sleep schedule.";
+            case WAKE: return "Description: Upon waking up from a regular period of sleep, in order to start regular activities (this would exclude waking up from a nap or temporarily waking up during a period of sleep)\r\n\n                        \n                           Usage Notes: e.g.\r\n\n                        Take pulse rate on waking in management of thyrotoxicosis.\r\n\n                        Take BP on waking in management of hypertension\r\n\n                        Take basal body temperature on waking in establishing date of ovulation";
+            case C: return "Description: meal (from lat. ante cibus)";
+            case CM: return "Description: breakfast (from lat. cibus matutinus)";
+            case CD: return "Description: lunch (from lat. cibus diurnus)";
+            case CV: return "Description: dinner (from lat. cibus vespertinus)";
+            case AC: return "before meal (from lat. ante cibus)";
+            case ACM: return "before breakfast (from lat. ante cibus matutinus)";
+            case ACD: return "before lunch (from lat. ante cibus diurnus)";
+            case ACV: return "before dinner (from lat. ante cibus vespertinus)";
+            case PC: return "after meal (from lat. post cibus)";
+            case PCM: return "after breakfast (from lat. post cibus matutinus)";
+            case PCD: return "after lunch (from lat. post cibus diurnus)";
+            case PCV: return "after dinner (from lat. post cibus vespertinus)";
             default: return "?";
           }
         }
@@ -886,6 +544,178 @@ public class Timing extends BackboneType implements ICompositeType {
       return "?";
       }
     public String toSystem(EventTiming code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum UnitsOfTime {
+        /**
+         * 
+         */
+        S, 
+        /**
+         * 
+         */
+        MIN, 
+        /**
+         * 
+         */
+        H, 
+        /**
+         * 
+         */
+        D, 
+        /**
+         * 
+         */
+        WK, 
+        /**
+         * 
+         */
+        MO, 
+        /**
+         * 
+         */
+        A, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static UnitsOfTime fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("s".equals(codeString))
+          return S;
+        if ("min".equals(codeString))
+          return MIN;
+        if ("h".equals(codeString))
+          return H;
+        if ("d".equals(codeString))
+          return D;
+        if ("wk".equals(codeString))
+          return WK;
+        if ("mo".equals(codeString))
+          return MO;
+        if ("a".equals(codeString))
+          return A;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case S: return "s";
+            case MIN: return "min";
+            case H: return "h";
+            case D: return "d";
+            case WK: return "wk";
+            case MO: return "mo";
+            case A: return "a";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case S: return "http://unitsofmeasure.org";
+            case MIN: return "http://unitsofmeasure.org";
+            case H: return "http://unitsofmeasure.org";
+            case D: return "http://unitsofmeasure.org";
+            case WK: return "http://unitsofmeasure.org";
+            case MO: return "http://unitsofmeasure.org";
+            case A: return "http://unitsofmeasure.org";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case S: return "";
+            case MIN: return "";
+            case H: return "";
+            case D: return "";
+            case WK: return "";
+            case MO: return "";
+            case A: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case S: return "second";
+            case MIN: return "minute";
+            case H: return "hour";
+            case D: return "day";
+            case WK: return "week";
+            case MO: return "month";
+            case A: return "year";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class UnitsOfTimeEnumFactory implements EnumFactory<UnitsOfTime> {
+    public UnitsOfTime fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("s".equals(codeString))
+          return UnitsOfTime.S;
+        if ("min".equals(codeString))
+          return UnitsOfTime.MIN;
+        if ("h".equals(codeString))
+          return UnitsOfTime.H;
+        if ("d".equals(codeString))
+          return UnitsOfTime.D;
+        if ("wk".equals(codeString))
+          return UnitsOfTime.WK;
+        if ("mo".equals(codeString))
+          return UnitsOfTime.MO;
+        if ("a".equals(codeString))
+          return UnitsOfTime.A;
+        throw new IllegalArgumentException("Unknown UnitsOfTime code '"+codeString+"'");
+        }
+        public Enumeration<UnitsOfTime> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<UnitsOfTime>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("s".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.S);
+        if ("min".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MIN);
+        if ("h".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.H);
+        if ("d".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.D);
+        if ("wk".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.WK);
+        if ("mo".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MO);
+        if ("a".equals(codeString))
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.A);
+        throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
+        }
+    public String toCode(UnitsOfTime code) {
+      if (code == UnitsOfTime.S)
+        return "s";
+      if (code == UnitsOfTime.MIN)
+        return "min";
+      if (code == UnitsOfTime.H)
+        return "h";
+      if (code == UnitsOfTime.D)
+        return "d";
+      if (code == UnitsOfTime.WK)
+        return "wk";
+      if (code == UnitsOfTime.MO)
+        return "mo";
+      if (code == UnitsOfTime.A)
+        return "a";
+      return "?";
+      }
+    public String toSystem(UnitsOfTime code) {
       return code.getSystem();
       }
     }
@@ -1874,9 +1704,9 @@ public class Timing extends BackboneType implements ICompositeType {
           switch (_hash) {
           case -1149635157: /*bounds[x]*/  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
           case -1383205195: /*bounds*/  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
-          case -189193367: /*boundsDuration*/  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
-          case -1001768056: /*boundsRange*/  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
-          case -1043481386: /*boundsPeriod*/  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
+          case -189193367: /*boundsDuration*/  return new Property("bounds[x]", "Duration", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
+          case -1001768056: /*boundsRange*/  return new Property("bounds[x]", "Range", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
+          case -1043481386: /*boundsPeriod*/  return new Property("bounds[x]", "Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
           case 94851343: /*count*/  return new Property("count", "positiveInt", "A total count of the desired number of repetitions across the duration of the entire timing specification. If countMax is present, this element indicates the lower bound of the allowed range of count values.", 0, 1, count);
           case -372044331: /*countMax*/  return new Property("countMax", "positiveInt", "If present, indicates that the count is a range - so to perform the action between [count] and [countMax] times.", 0, 1, countMax);
           case -1992012396: /*duration*/  return new Property("duration", "decimal", "How long this thing happens for when it happens. If durationMax is present, this element indicates the lower bound of the allowed range of the duration.", 0, 1, duration);
@@ -2079,46 +1909,46 @@ public class Timing extends BackboneType implements ICompositeType {
           return this.bounds;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.count");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.count");
         }
         else if (name.equals("countMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.countMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.countMax");
         }
         else if (name.equals("duration")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.duration");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.duration");
         }
         else if (name.equals("durationMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.durationMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.durationMax");
         }
         else if (name.equals("durationUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.durationUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.durationUnit");
         }
         else if (name.equals("frequency")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.frequency");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.frequency");
         }
         else if (name.equals("frequencyMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.frequencyMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.frequencyMax");
         }
         else if (name.equals("period")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.period");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.period");
         }
         else if (name.equals("periodMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.periodMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.periodMax");
         }
         else if (name.equals("periodUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.periodUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.periodUnit");
         }
         else if (name.equals("dayOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.dayOfWeek");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.dayOfWeek");
         }
         else if (name.equals("timeOfDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.timeOfDay");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.timeOfDay");
         }
         else if (name.equals("when")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.when");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.when");
         }
         else if (name.equals("offset")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.offset");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.offset");
         }
         else
           return super.addChild(name);

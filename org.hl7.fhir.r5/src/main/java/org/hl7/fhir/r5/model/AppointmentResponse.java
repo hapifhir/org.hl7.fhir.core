@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,135 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.
  */
 @ResourceDef(name="AppointmentResponse", profile="http://hl7.org/fhir/StructureDefinition/AppointmentResponse")
 public class AppointmentResponse extends DomainResource {
-
-    public enum ParticipantStatus {
-        /**
-         * The participant has accepted the appointment.
-         */
-        ACCEPTED, 
-        /**
-         * The participant has declined the appointment and will not participate in the appointment.
-         */
-        DECLINED, 
-        /**
-         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.
-         */
-        TENTATIVE, 
-        /**
-         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.
-         */
-        NEEDSACTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ParticipantStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accepted".equals(codeString))
-          return ACCEPTED;
-        if ("declined".equals(codeString))
-          return DECLINED;
-        if ("tentative".equals(codeString))
-          return TENTATIVE;
-        if ("needs-action".equals(codeString))
-          return NEEDSACTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ParticipantStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACCEPTED: return "accepted";
-            case DECLINED: return "declined";
-            case TENTATIVE: return "tentative";
-            case NEEDSACTION: return "needs-action";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACCEPTED: return "http://hl7.org/fhir/participationstatus";
-            case DECLINED: return "http://hl7.org/fhir/participationstatus";
-            case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
-            case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACCEPTED: return "The participant has accepted the appointment.";
-            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
-            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
-            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACCEPTED: return "Accepted";
-            case DECLINED: return "Declined";
-            case TENTATIVE: return "Tentative";
-            case NEEDSACTION: return "Needs Action";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ParticipantStatusEnumFactory implements EnumFactory<ParticipantStatus> {
-    public ParticipantStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accepted".equals(codeString))
-          return ParticipantStatus.ACCEPTED;
-        if ("declined".equals(codeString))
-          return ParticipantStatus.DECLINED;
-        if ("tentative".equals(codeString))
-          return ParticipantStatus.TENTATIVE;
-        if ("needs-action".equals(codeString))
-          return ParticipantStatus.NEEDSACTION;
-        throw new IllegalArgumentException("Unknown ParticipantStatus code '"+codeString+"'");
-        }
-        public Enumeration<ParticipantStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ParticipantStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("accepted".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.ACCEPTED);
-        if ("declined".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.DECLINED);
-        if ("tentative".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.TENTATIVE);
-        if ("needs-action".equals(codeString))
-          return new Enumeration<ParticipantStatus>(this, ParticipantStatus.NEEDSACTION);
-        throw new FHIRException("Unknown ParticipantStatus code '"+codeString+"'");
-        }
-    public String toCode(ParticipantStatus code) {
-      if (code == ParticipantStatus.ACCEPTED)
-        return "accepted";
-      if (code == ParticipantStatus.DECLINED)
-        return "declined";
-      if (code == ParticipantStatus.TENTATIVE)
-        return "tentative";
-      if (code == ParticipantStatus.NEEDSACTION)
-        return "needs-action";
-      return "?";
-      }
-    public String toSystem(ParticipantStatus code) {
-      return code.getSystem();
-      }
-    }
 
     /**
      * This records identifiers associated with this appointment response concern that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate.
@@ -244,7 +122,7 @@ public class AppointmentResponse extends DomainResource {
     @Child(name = "participantStatus", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="accepted | declined | tentative | needs-action", formalDefinition="Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participationstatus")
-    protected Enumeration<ParticipantStatus> participantStatus;
+    protected Enumeration<ParticipationStatus> participantStatus;
 
     /**
      * Additional comments about the appointment.
@@ -253,7 +131,7 @@ public class AppointmentResponse extends DomainResource {
     @Description(shortDefinition="Additional comments", formalDefinition="Additional comments about the appointment." )
     protected StringType comment;
 
-    private static final long serialVersionUID = -206747026L;
+    private static final long serialVersionUID = -1779591264L;
 
   /**
    * Constructor
@@ -265,10 +143,10 @@ public class AppointmentResponse extends DomainResource {
   /**
    * Constructor
    */
-    public AppointmentResponse(Reference appointment, Enumeration<ParticipantStatus> participantStatus) {
+    public AppointmentResponse(Reference appointment, ParticipationStatus participantStatus) {
       super();
-      this.appointment = appointment;
-      this.participantStatus = participantStatus;
+      this.setAppointment(appointment);
+      this.setParticipantStatus(participantStatus);
     }
 
     /**
@@ -315,7 +193,7 @@ public class AppointmentResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -490,7 +368,7 @@ public class AppointmentResponse extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #participantType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participantType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getParticipantTypeFirstRep() { 
       if (getParticipantType().isEmpty()) {
@@ -526,12 +404,12 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @return {@link #participantStatus} (Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.). This is the underlying object with id, value and extensions. The accessor "getParticipantStatus" gives direct access to the value
      */
-    public Enumeration<ParticipantStatus> getParticipantStatusElement() { 
+    public Enumeration<ParticipationStatus> getParticipantStatusElement() { 
       if (this.participantStatus == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create AppointmentResponse.participantStatus");
         else if (Configuration.doAutoCreate())
-          this.participantStatus = new Enumeration<ParticipantStatus>(new ParticipantStatusEnumFactory()); // bb
+          this.participantStatus = new Enumeration<ParticipationStatus>(new ParticipationStatusEnumFactory()); // bb
       return this.participantStatus;
     }
 
@@ -546,7 +424,7 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @param value {@link #participantStatus} (Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.). This is the underlying object with id, value and extensions. The accessor "getParticipantStatus" gives direct access to the value
      */
-    public AppointmentResponse setParticipantStatusElement(Enumeration<ParticipantStatus> value) { 
+    public AppointmentResponse setParticipantStatusElement(Enumeration<ParticipationStatus> value) { 
       this.participantStatus = value;
       return this;
     }
@@ -554,16 +432,16 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @return Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.
      */
-    public ParticipantStatus getParticipantStatus() { 
+    public ParticipationStatus getParticipantStatus() { 
       return this.participantStatus == null ? null : this.participantStatus.getValue();
     }
 
     /**
      * @param value Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.
      */
-    public AppointmentResponse setParticipantStatus(ParticipantStatus value) { 
+    public AppointmentResponse setParticipantStatus(ParticipationStatus value) { 
         if (this.participantStatus == null)
-          this.participantStatus = new Enumeration<ParticipantStatus>(new ParticipantStatusEnumFactory());
+          this.participantStatus = new Enumeration<ParticipationStatus>(new ParticipationStatusEnumFactory());
         this.participantStatus.setValue(value);
       return this;
     }
@@ -654,7 +532,7 @@ public class AppointmentResponse extends DomainResource {
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
         case 841294093: /*participantType*/ return this.participantType == null ? new Base[0] : this.participantType.toArray(new Base[this.participantType.size()]); // CodeableConcept
         case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
-        case 996096261: /*participantStatus*/ return this.participantStatus == null ? new Base[0] : new Base[] {this.participantStatus}; // Enumeration<ParticipantStatus>
+        case 996096261: /*participantStatus*/ return this.participantStatus == null ? new Base[0] : new Base[] {this.participantStatus}; // Enumeration<ParticipationStatus>
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -683,8 +561,8 @@ public class AppointmentResponse extends DomainResource {
           this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         case 996096261: // participantStatus
-          value = new ParticipantStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.participantStatus = (Enumeration) value; // Enumeration<ParticipantStatus>
+          value = new ParticipationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.participantStatus = (Enumeration) value; // Enumeration<ParticipationStatus>
           return value;
         case 950398559: // comment
           this.comment = TypeConvertor.castToString(value); // StringType
@@ -709,8 +587,8 @@ public class AppointmentResponse extends DomainResource {
         } else if (name.equals("actor")) {
           this.actor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participantStatus")) {
-          value = new ParticipantStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.participantStatus = (Enumeration) value; // Enumeration<ParticipantStatus>
+          value = new ParticipationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.participantStatus = (Enumeration) value; // Enumeration<ParticipationStatus>
         } else if (name.equals("comment")) {
           this.comment = TypeConvertor.castToString(value); // StringType
         } else
@@ -859,7 +737,7 @@ public class AppointmentResponse extends DomainResource {
    * Path: <b>AppointmentResponse.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="actor", path="AppointmentResponse.actor", description="The Person, Location/HealthcareService or Device that this appointment response replies for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="actor", path="AppointmentResponse.actor", description="The Person, Location/HealthcareService or Device that this appointment response replies for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_ACTOR = "actor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>actor</b>
@@ -876,98 +754,6 @@ public class AppointmentResponse extends DomainResource {
    * the path value of "<b>AppointmentResponse:actor</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ACTOR = new ca.uhn.fhir.model.api.Include("AppointmentResponse:actor").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier in this appointment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="AppointmentResponse.identifier", description="An Identifier in this appointment response", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier in this appointment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>practitioner</b>
-   * <p>
-   * Description: <b>This Response is for this Practitioner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="practitioner", path="AppointmentResponse.actor.where(resolve() is Practitioner)", description="This Response is for this Practitioner", type="reference", target={Practitioner.class } )
-  public static final String SP_PRACTITIONER = "practitioner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
-   * <p>
-   * Description: <b>This Response is for this Practitioner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:practitioner</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("AppointmentResponse:practitioner").toLocked();
-
- /**
-   * Search parameter: <b>part-status</b>
-   * <p>
-   * Description: <b>The participants acceptance status for this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.participantStatus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="part-status", path="AppointmentResponse.participantStatus", description="The participants acceptance status for this appointment", type="token" )
-  public static final String SP_PART_STATUS = "part-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>part-status</b>
-   * <p>
-   * Description: <b>The participants acceptance status for this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.participantStatus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PART_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PART_STATUS);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>This Response is for this Patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="AppointmentResponse.actor.where(resolve() is Patient)", description="This Response is for this Patient", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>This Response is for this Patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("AppointmentResponse:patient").toLocked();
 
  /**
    * Search parameter: <b>appointment</b>
@@ -996,11 +782,31 @@ public class AppointmentResponse extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_APPOINTMENT = new ca.uhn.fhir.model.api.Include("AppointmentResponse:appointment").toLocked();
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An Identifier in this appointment response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AppointmentResponse.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="AppointmentResponse.identifier", description="An Identifier in this appointment response", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An Identifier in this appointment response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AppointmentResponse.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
    * Search parameter: <b>location</b>
    * <p>
    * Description: <b>This Response is for this Location</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Location)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="location", path="AppointmentResponse.actor.where(resolve() is Location)", description="This Response is for this Location", type="reference", target={Location.class } )
@@ -1010,7 +816,7 @@ public class AppointmentResponse extends DomainResource {
    * <p>
    * Description: <b>This Response is for this Location</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Location)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
@@ -1020,6 +826,78 @@ public class AppointmentResponse extends DomainResource {
    * the path value of "<b>AppointmentResponse:location</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("AppointmentResponse:location").toLocked();
+
+ /**
+   * Search parameter: <b>part-status</b>
+   * <p>
+   * Description: <b>The participants acceptance status for this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AppointmentResponse.participantStatus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="part-status", path="AppointmentResponse.participantStatus", description="The participants acceptance status for this appointment", type="token" )
+  public static final String SP_PART_STATUS = "part-status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>part-status</b>
+   * <p>
+   * Description: <b>The participants acceptance status for this appointment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AppointmentResponse.participantStatus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PART_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PART_STATUS);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>This Response is for this Patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AppointmentResponse.actor.where(resolve() is Patient)", description="This Response is for this Patient", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>This Response is for this Patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AppointmentResponse:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("AppointmentResponse:patient").toLocked();
+
+ /**
+   * Search parameter: <b>practitioner</b>
+   * <p>
+   * Description: <b>This Response is for this Practitioner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Practitioner)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="practitioner", path="AppointmentResponse.actor.where(resolve() is Practitioner)", description="This Response is for this Practitioner", type="reference", target={Practitioner.class } )
+  public static final String SP_PRACTITIONER = "practitioner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
+   * <p>
+   * Description: <b>This Response is for this Practitioner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AppointmentResponse.actor.where(resolve() is Practitioner)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AppointmentResponse:practitioner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("AppointmentResponse:practitioner").toLocked();
 
 
 }

@@ -132,20 +132,20 @@ public class CompartmentDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType convertCompartmentType(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CompartmentType convertCompartmentType(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PATIENT: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.PATIENT;
-    case ENCOUNTER: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.ENCOUNTER;
-    case RELATEDPERSON: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.RELATEDPERSON;
-    case PRACTITIONER: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.PRACTITIONER;
-    case DEVICE: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.DEVICE;
-    default: return org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType.NULL;
+    case PATIENT: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT;
+    case ENCOUNTER: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER;
+    case RELATEDPERSON: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON;
+    case PRACTITIONER: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER;
+    case DEVICE: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE;
+    default: return org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType convertCompartmentType(org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType convertCompartmentType(org.hl7.fhir.r5.model.Enumerations.CompartmentType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -164,7 +164,7 @@ public class CompartmentDefinition extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     copyElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertCode(src.getCodeElement()));
+      tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
     for (org.hl7.fhir.r4.model.StringType t : src.getParam())
       tgt.getParam().add(convertString(t));
     if (src.hasDocumentation())
@@ -178,7 +178,7 @@ public class CompartmentDefinition extends VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     copyElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertCode(src.getCodeElement()));
+      tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getParam())
       tgt.getParam().add(convertString(t));
     if (src.hasDocumentation())

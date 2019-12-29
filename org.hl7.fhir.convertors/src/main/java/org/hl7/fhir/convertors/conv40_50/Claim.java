@@ -184,19 +184,19 @@ public class Claim extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Claim.ClaimStatus convertClaimStatus(org.hl7.fhir.r4.model.Claim.ClaimStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertClaimStatus(org.hl7.fhir.r4.model.Claim.ClaimStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Claim.ClaimStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Claim.ClaimStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Claim.ClaimStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Claim.ClaimStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Claim.ClaimStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Claim.ClaimStatus convertClaimStatus(org.hl7.fhir.r5.model.Claim.ClaimStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Claim.ClaimStatus convertClaimStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -208,18 +208,18 @@ public class Claim extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Claim.Use convertUse(org.hl7.fhir.r4.model.Claim.Use src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.Use convertUse(org.hl7.fhir.r4.model.Claim.Use src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case CLAIM: return org.hl7.fhir.r5.model.Claim.Use.CLAIM;
-    case PREAUTHORIZATION: return org.hl7.fhir.r5.model.Claim.Use.PREAUTHORIZATION;
-    case PREDETERMINATION: return org.hl7.fhir.r5.model.Claim.Use.PREDETERMINATION;
-    default: return org.hl7.fhir.r5.model.Claim.Use.NULL;
+    case CLAIM: return org.hl7.fhir.r5.model.Enumerations.Use.CLAIM;
+    case PREAUTHORIZATION: return org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION;
+    case PREDETERMINATION: return org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION;
+    default: return org.hl7.fhir.r5.model.Enumerations.Use.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Claim.Use convertUse(org.hl7.fhir.r5.model.Claim.Use src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Claim.Use convertUse(org.hl7.fhir.r5.model.Enumerations.Use src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

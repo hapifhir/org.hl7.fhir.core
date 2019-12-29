@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,119 +67,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Raw data describing a biological sequence.
  */
 @ResourceDef(name="MolecularSequence", profile="http://hl7.org/fhir/StructureDefinition/MolecularSequence")
 public class MolecularSequence extends DomainResource {
-
-    public enum SequenceType {
-        /**
-         * Amino acid sequence.
-         */
-        AA, 
-        /**
-         * DNA Sequence.
-         */
-        DNA, 
-        /**
-         * RNA Sequence.
-         */
-        RNA, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static SequenceType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("aa".equals(codeString))
-          return AA;
-        if ("dna".equals(codeString))
-          return DNA;
-        if ("rna".equals(codeString))
-          return RNA;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AA: return "aa";
-            case DNA: return "dna";
-            case RNA: return "rna";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case AA: return "http://hl7.org/fhir/sequence-type";
-            case DNA: return "http://hl7.org/fhir/sequence-type";
-            case RNA: return "http://hl7.org/fhir/sequence-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AA: return "Amino acid sequence.";
-            case DNA: return "DNA Sequence.";
-            case RNA: return "RNA Sequence.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AA: return "AA Sequence";
-            case DNA: return "DNA Sequence";
-            case RNA: return "RNA Sequence";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class SequenceTypeEnumFactory implements EnumFactory<SequenceType> {
-    public SequenceType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("aa".equals(codeString))
-          return SequenceType.AA;
-        if ("dna".equals(codeString))
-          return SequenceType.DNA;
-        if ("rna".equals(codeString))
-          return SequenceType.RNA;
-        throw new IllegalArgumentException("Unknown SequenceType code '"+codeString+"'");
-        }
-        public Enumeration<SequenceType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<SequenceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("aa".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.AA);
-        if ("dna".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.DNA);
-        if ("rna".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.RNA);
-        throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
-        }
-    public String toCode(SequenceType code) {
-      if (code == SequenceType.AA)
-        return "aa";
-      if (code == SequenceType.DNA)
-        return "dna";
-      if (code == SequenceType.RNA)
-        return "rna";
-      return "?";
-      }
-    public String toSystem(SequenceType code) {
-      return code.getSystem();
-      }
-    }
 
     public enum OrientationType {
         /**
@@ -268,98 +162,6 @@ public class MolecularSequence extends DomainResource {
       return "?";
       }
     public String toSystem(OrientationType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum StrandType {
-        /**
-         * Watson strand of reference sequence.
-         */
-        WATSON, 
-        /**
-         * Crick strand of reference sequence.
-         */
-        CRICK, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StrandType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("watson".equals(codeString))
-          return WATSON;
-        if ("crick".equals(codeString))
-          return CRICK;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown StrandType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case WATSON: return "watson";
-            case CRICK: return "crick";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case WATSON: return "http://hl7.org/fhir/strand-type";
-            case CRICK: return "http://hl7.org/fhir/strand-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case WATSON: return "Watson strand of reference sequence.";
-            case CRICK: return "Crick strand of reference sequence.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case WATSON: return "Watson strand of referenceSeq";
-            case CRICK: return "Crick strand of referenceSeq";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class StrandTypeEnumFactory implements EnumFactory<StrandType> {
-    public StrandType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("watson".equals(codeString))
-          return StrandType.WATSON;
-        if ("crick".equals(codeString))
-          return StrandType.CRICK;
-        throw new IllegalArgumentException("Unknown StrandType code '"+codeString+"'");
-        }
-        public Enumeration<StrandType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StrandType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("watson".equals(codeString))
-          return new Enumeration<StrandType>(this, StrandType.WATSON);
-        if ("crick".equals(codeString))
-          return new Enumeration<StrandType>(this, StrandType.CRICK);
-        throw new FHIRException("Unknown StrandType code '"+codeString+"'");
-        }
-    public String toCode(StrandType code) {
-      if (code == StrandType.WATSON)
-        return "watson";
-      if (code == StrandType.CRICK)
-        return "crick";
-      return "?";
-      }
-    public String toSystem(StrandType code) {
       return code.getSystem();
       }
     }
@@ -608,6 +410,206 @@ public class MolecularSequence extends DomainResource {
       return "?";
       }
     public String toSystem(RepositoryType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum SequenceType {
+        /**
+         * Amino acid sequence.
+         */
+        AA, 
+        /**
+         * DNA Sequence.
+         */
+        DNA, 
+        /**
+         * RNA Sequence.
+         */
+        RNA, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static SequenceType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("aa".equals(codeString))
+          return AA;
+        if ("dna".equals(codeString))
+          return DNA;
+        if ("rna".equals(codeString))
+          return RNA;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AA: return "aa";
+            case DNA: return "dna";
+            case RNA: return "rna";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case AA: return "http://hl7.org/fhir/sequence-type";
+            case DNA: return "http://hl7.org/fhir/sequence-type";
+            case RNA: return "http://hl7.org/fhir/sequence-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AA: return "Amino acid sequence.";
+            case DNA: return "DNA Sequence.";
+            case RNA: return "RNA Sequence.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AA: return "AA Sequence";
+            case DNA: return "DNA Sequence";
+            case RNA: return "RNA Sequence";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SequenceTypeEnumFactory implements EnumFactory<SequenceType> {
+    public SequenceType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("aa".equals(codeString))
+          return SequenceType.AA;
+        if ("dna".equals(codeString))
+          return SequenceType.DNA;
+        if ("rna".equals(codeString))
+          return SequenceType.RNA;
+        throw new IllegalArgumentException("Unknown SequenceType code '"+codeString+"'");
+        }
+        public Enumeration<SequenceType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<SequenceType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("aa".equals(codeString))
+          return new Enumeration<SequenceType>(this, SequenceType.AA);
+        if ("dna".equals(codeString))
+          return new Enumeration<SequenceType>(this, SequenceType.DNA);
+        if ("rna".equals(codeString))
+          return new Enumeration<SequenceType>(this, SequenceType.RNA);
+        throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
+        }
+    public String toCode(SequenceType code) {
+      if (code == SequenceType.AA)
+        return "aa";
+      if (code == SequenceType.DNA)
+        return "dna";
+      if (code == SequenceType.RNA)
+        return "rna";
+      return "?";
+      }
+    public String toSystem(SequenceType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum StrandType {
+        /**
+         * Watson strand of reference sequence.
+         */
+        WATSON, 
+        /**
+         * Crick strand of reference sequence.
+         */
+        CRICK, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static StrandType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("watson".equals(codeString))
+          return WATSON;
+        if ("crick".equals(codeString))
+          return CRICK;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown StrandType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case WATSON: return "watson";
+            case CRICK: return "crick";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case WATSON: return "http://hl7.org/fhir/strand-type";
+            case CRICK: return "http://hl7.org/fhir/strand-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case WATSON: return "Watson strand of reference sequence.";
+            case CRICK: return "Crick strand of reference sequence.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case WATSON: return "Watson strand of referenceSeq";
+            case CRICK: return "Crick strand of referenceSeq";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class StrandTypeEnumFactory implements EnumFactory<StrandType> {
+    public StrandType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("watson".equals(codeString))
+          return StrandType.WATSON;
+        if ("crick".equals(codeString))
+          return StrandType.CRICK;
+        throw new IllegalArgumentException("Unknown StrandType code '"+codeString+"'");
+        }
+        public Enumeration<StrandType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<StrandType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("watson".equals(codeString))
+          return new Enumeration<StrandType>(this, StrandType.WATSON);
+        if ("crick".equals(codeString))
+          return new Enumeration<StrandType>(this, StrandType.CRICK);
+        throw new FHIRException("Unknown StrandType code '"+codeString+"'");
+        }
+    public String toCode(StrandType code) {
+      if (code == StrandType.WATSON)
+        return "watson";
+      if (code == StrandType.CRICK)
+        return "crick";
+      return "?";
+      }
+    public String toSystem(StrandType code) {
       return code.getSystem();
       }
     }
@@ -1200,10 +1202,10 @@ public class MolecularSequence extends DomainResource {
           return this.chromosome;
         }
         else if (name.equals("genomeBuild")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.genomeBuild");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.genomeBuild");
         }
         else if (name.equals("orientation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.orientation");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.orientation");
         }
         else if (name.equals("referenceSeqId")) {
           this.referenceSeqId = new CodeableConcept();
@@ -1214,16 +1216,16 @@ public class MolecularSequence extends DomainResource {
           return this.referenceSeqPointer;
         }
         else if (name.equals("referenceSeqString")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeqString");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.referenceSeqString");
         }
         else if (name.equals("strand")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.strand");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.strand");
         }
         else if (name.equals("windowStart")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.windowStart");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.windowStart");
         }
         else if (name.equals("windowEnd")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.windowEnd");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceSeq.windowEnd");
         }
         else
           return super.addChild(name);
@@ -1715,19 +1717,19 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.start");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variant.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.end");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variant.end");
         }
         else if (name.equals("observedAllele")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.observedAllele");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variant.observedAllele");
         }
         else if (name.equals("referenceAllele")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.referenceAllele");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variant.referenceAllele");
         }
         else if (name.equals("cigar")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.cigar");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variant.cigar");
         }
         else if (name.equals("variantPointer")) {
           this.variantPointer = new Reference();
@@ -1910,9 +1912,9 @@ public class MolecularSequence extends DomainResource {
     /**
      * Constructor
      */
-      public MolecularSequenceQualityComponent(Enumeration<QualityType> type) {
+      public MolecularSequenceQualityComponent(QualityType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -2888,17 +2890,17 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.type");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.type");
         }
         else if (name.equals("standardSequence")) {
           this.standardSequence = new CodeableConcept();
           return this.standardSequence;
         }
         else if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.start");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.end");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.end");
         }
         else if (name.equals("score")) {
           this.score = new Quantity();
@@ -2909,28 +2911,28 @@ public class MolecularSequence extends DomainResource {
           return this.method;
         }
         else if (name.equals("truthTP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.truthTP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.truthTP");
         }
         else if (name.equals("queryTP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.queryTP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.queryTP");
         }
         else if (name.equals("truthFN")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.truthFN");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.truthFN");
         }
         else if (name.equals("queryFP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.queryFP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.queryFP");
         }
         else if (name.equals("gtFP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.gtFP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.gtFP");
         }
         else if (name.equals("precision")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.precision");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.precision");
         }
         else if (name.equals("recall")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.recall");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.recall");
         }
         else if (name.equals("fScore")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.fScore");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.fScore");
         }
         else if (name.equals("roc")) {
           this.roc = new MolecularSequenceQualityRocComponent();
@@ -3617,25 +3619,25 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("score")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.score");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.score");
         }
         else if (name.equals("numTP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.numTP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.numTP");
         }
         else if (name.equals("numFP")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.numFP");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.numFP");
         }
         else if (name.equals("numFN")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.numFN");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.numFN");
         }
         else if (name.equals("precision")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.precision");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.precision");
         }
         else if (name.equals("sensitivity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.sensitivity");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.sensitivity");
         }
         else if (name.equals("fMeasure")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.fMeasure");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.quality.roc.fMeasure");
         }
         else
           return super.addChild(name);
@@ -3779,9 +3781,9 @@ public class MolecularSequence extends DomainResource {
     /**
      * Constructor
      */
-      public MolecularSequenceRepositoryComponent(Enumeration<RepositoryType> type) {
+      public MolecularSequenceRepositoryComponent(RepositoryType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -4190,22 +4192,22 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.type");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.type");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.url");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.url");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.name");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.name");
         }
         else if (name.equals("datasetId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.datasetId");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.datasetId");
         }
         else if (name.equals("variantsetId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.variantsetId");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.variantsetId");
         }
         else if (name.equals("readsetId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.readsetId");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.repository.readsetId");
         }
         else
           return super.addChild(name);
@@ -4270,6 +4272,7 @@ public class MolecularSequence extends DomainResource {
          */
         @Child(name = "variantType", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Structural variant change type", formalDefinition="Information about chromosome structure variation DNA change type." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://loinc.org/vs/LL379-9")
         protected CodeableConcept variantType;
 
         /**
@@ -4579,10 +4582,10 @@ public class MolecularSequence extends DomainResource {
           return this.variantType;
         }
         else if (name.equals("exact")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.exact");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.exact");
         }
         else if (name.equals("length")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.length");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.length");
         }
         else if (name.equals("outer")) {
           this.outer = new MolecularSequenceStructureVariantOuterComponent();
@@ -4833,10 +4836,10 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.start");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.outer.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.end");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.outer.end");
         }
         else
           return super.addChild(name);
@@ -5074,10 +5077,10 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.start");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.inner.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.end");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.structureVariant.inner.end");
         }
         else
           return super.addChild(name);
@@ -5251,9 +5254,9 @@ public class MolecularSequence extends DomainResource {
   /**
    * Constructor
    */
-    public MolecularSequence(IntegerType coordinateSystem) {
+    public MolecularSequence(int coordinateSystem) {
       super();
-      this.coordinateSystem = coordinateSystem;
+      this.setCoordinateSystem(coordinateSystem);
     }
 
     /**
@@ -5300,7 +5303,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -5591,7 +5594,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #variant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #variant}, creating it if it does not already exist {3}
      */
     public MolecularSequenceVariantComponent getVariantFirstRep() { 
       if (getVariant().isEmpty()) {
@@ -5693,7 +5696,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #quality}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #quality}, creating it if it does not already exist {3}
      */
     public MolecularSequenceQualityComponent getQualityFirstRep() { 
       if (getQuality().isEmpty()) {
@@ -5791,7 +5794,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #repository}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #repository}, creating it if it does not already exist {3}
      */
     public MolecularSequenceRepositoryComponent getRepositoryFirstRep() { 
       if (getRepository().isEmpty()) {
@@ -5844,7 +5847,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #pointer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #pointer}, creating it if it does not already exist {3}
      */
     public Reference getPointerFirstRep() { 
       if (getPointer().isEmpty()) {
@@ -5897,7 +5900,7 @@ public class MolecularSequence extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #structureVariant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #structureVariant}, creating it if it does not already exist {3}
      */
     public MolecularSequenceStructureVariantComponent getStructureVariantFirstRep() { 
       if (getStructureVariant().isEmpty()) {
@@ -6278,44 +6281,44 @@ public class MolecularSequence extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>chromosome-variant-coordinate</b>
    * <p>
-   * Description: <b>The unique identity for a particular sequence</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MolecularSequence.identifier</b><br>
+   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="MolecularSequence.identifier", description="The unique identity for a particular sequence", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="chromosome-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "variant-start"} )
+  public static final String SP_CHROMOSOME_VARIANT_COORDINATE = "chromosome-variant-coordinate";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>chromosome-variant-coordinate</b>
    * <p>
-   * Description: <b>The unique identity for a particular sequence</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MolecularSequence.identifier</b><br>
+   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_VARIANT_COORDINATE);
 
  /**
-   * Search parameter: <b>referenceseqid-variant-coordinate</b>
+   * Search parameter: <b>chromosome-window-coordinate</b>
    * <p>
-   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="referenceseqid-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "variant-start"} )
-  public static final String SP_REFERENCESEQID_VARIANT_COORDINATE = "referenceseqid-variant-coordinate";
+  @SearchParamDefinition(name="chromosome-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "window-start"} )
+  public static final String SP_CHROMOSOME_WINDOW_COORDINATE = "chromosome-window-coordinate";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-variant-coordinate</b>
+   * <b>Fluent Client</b> search parameter constant for <b>chromosome-window-coordinate</b>
    * <p>
-   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_VARIANT_COORDINATE);
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_WINDOW_COORDINATE);
 
  /**
    * Search parameter: <b>chromosome</b>
@@ -6338,104 +6341,24 @@ public class MolecularSequence extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHROMOSOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHROMOSOME);
 
  /**
-   * Search parameter: <b>window-end</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.referenceSeq.windowEnd</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="window-end", path="MolecularSequence.referenceSeq.windowEnd", description="End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.", type="number" )
-  public static final String SP_WINDOW_END = "window-end";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>window-end</b>
-   * <p>
-   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.referenceSeq.windowEnd</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam WINDOW_END = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_WINDOW_END);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Description: <b>The unique identity for a particular sequence</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MolecularSequence.type</b><br>
+   * Path: <b>MolecularSequence.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="MolecularSequence.type", description="Amino Acid Sequence/ DNA Sequence / RNA Sequence", type="token" )
-  public static final String SP_TYPE = "type";
+  @SearchParamDefinition(name="identifier", path="MolecularSequence.identifier", description="The unique identity for a particular sequence", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Description: <b>The unique identity for a particular sequence</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MolecularSequence.type</b><br>
+   * Path: <b>MolecularSequence.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
-   * Search parameter: <b>window-start</b>
-   * <p>
-   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.referenceSeq.windowStart</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="window-start", path="MolecularSequence.referenceSeq.windowStart", description="Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.", type="number" )
-  public static final String SP_WINDOW_START = "window-start";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>window-start</b>
-   * <p>
-   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.referenceSeq.windowStart</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam WINDOW_START = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_WINDOW_START);
-
- /**
-   * Search parameter: <b>variant-end</b>
-   * <p>
-   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.variant.end</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="variant-end", path="MolecularSequence.variant.end", description="End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.", type="number" )
-  public static final String SP_VARIANT_END = "variant-end";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>variant-end</b>
-   * <p>
-   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.variant.end</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam VARIANT_END = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_VARIANT_END);
-
- /**
-   * Search parameter: <b>chromosome-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="chromosome-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "variant-start"} )
-  public static final String SP_CHROMOSOME_VARIANT_COORDINATE = "chromosome-variant-coordinate";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>chromosome-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_VARIANT_COORDINATE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>patient</b>
@@ -6445,7 +6368,7 @@ public class MolecularSequence extends DomainResource {
    * Path: <b>MolecularSequence.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="MolecularSequence.patient", description="The subject that the observation is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="MolecularSequence.patient", description="The subject that the observation is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -6464,51 +6387,31 @@ public class MolecularSequence extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MolecularSequence:patient").toLocked();
 
  /**
-   * Search parameter: <b>variant-start</b>
+   * Search parameter: <b>referenceseqid-variant-coordinate</b>
    * <p>
-   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.variant.start</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="variant-start", path="MolecularSequence.variant.start", description="Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.", type="number" )
-  public static final String SP_VARIANT_START = "variant-start";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>variant-start</b>
-   * <p>
-   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>MolecularSequence.variant.start</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam VARIANT_START = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_VARIANT_START);
-
- /**
-   * Search parameter: <b>chromosome-window-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="chromosome-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "window-start"} )
-  public static final String SP_CHROMOSOME_WINDOW_COORDINATE = "chromosome-window-coordinate";
+  @SearchParamDefinition(name="referenceseqid-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "variant-start"} )
+  public static final String SP_REFERENCESEQID_VARIANT_COORDINATE = "referenceseqid-variant-coordinate";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>chromosome-window-coordinate</b>
+   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-variant-coordinate</b>
    * <p>
-   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_WINDOW_COORDINATE);
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_VARIANT_COORDINATE);
 
  /**
    * Search parameter: <b>referenceseqid-window-coordinate</b>
    * <p>
    * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
    * </p>
    */
   @SearchParamDefinition(name="referenceseqid-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "window-start"} )
@@ -6518,7 +6421,7 @@ public class MolecularSequence extends DomainResource {
    * <p>
    * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_WINDOW_COORDINATE);
@@ -6542,6 +6445,106 @@ public class MolecularSequence extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REFERENCESEQID = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REFERENCESEQID);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="MolecularSequence.type", description="Amino Acid Sequence/ DNA Sequence / RNA Sequence", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>variant-end</b>
+   * <p>
+   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.variant.end</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="variant-end", path="MolecularSequence.variant.end", description="End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.", type="number" )
+  public static final String SP_VARIANT_END = "variant-end";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>variant-end</b>
+   * <p>
+   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the variant.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.variant.end</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam VARIANT_END = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_VARIANT_END);
+
+ /**
+   * Search parameter: <b>variant-start</b>
+   * <p>
+   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.variant.start</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="variant-start", path="MolecularSequence.variant.start", description="Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.", type="number" )
+  public static final String SP_VARIANT_START = "variant-start";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>variant-start</b>
+   * <p>
+   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the variant.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.variant.start</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam VARIANT_START = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_VARIANT_START);
+
+ /**
+   * Search parameter: <b>window-end</b>
+   * <p>
+   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.referenceSeq.windowEnd</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="window-end", path="MolecularSequence.referenceSeq.windowEnd", description="End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.", type="number" )
+  public static final String SP_WINDOW_END = "window-end";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>window-end</b>
+   * <p>
+   * Description: <b>End position (0-based exclusive, which menas the acid at this position will not be included, 1-based inclusive, which means the acid at this position will be included) of the reference sequence.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.referenceSeq.windowEnd</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam WINDOW_END = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_WINDOW_END);
+
+ /**
+   * Search parameter: <b>window-start</b>
+   * <p>
+   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.referenceSeq.windowStart</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="window-start", path="MolecularSequence.referenceSeq.windowStart", description="Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.", type="number" )
+  public static final String SP_WINDOW_START = "window-start";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>window-start</b>
+   * <p>
+   * Description: <b>Start position (0-based inclusive, 1-based inclusive, that means the nucleic acid or amino acid at this position will be included) of the reference sequence.</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>MolecularSequence.referenceSeq.windowStart</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam WINDOW_START = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_WINDOW_START);
 
 
 }

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,183 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A specific set of Roles/Locations/specialties/services that a practitioner may perform at an organization for a period of time.
  */
 @ResourceDef(name="PractitionerRole", profile="http://hl7.org/fhir/StructureDefinition/PractitionerRole")
 public class PractitionerRole extends DomainResource {
-
-    public enum DaysOfWeek {
-        /**
-         * Monday.
-         */
-        MON, 
-        /**
-         * Tuesday.
-         */
-        TUE, 
-        /**
-         * Wednesday.
-         */
-        WED, 
-        /**
-         * Thursday.
-         */
-        THU, 
-        /**
-         * Friday.
-         */
-        FRI, 
-        /**
-         * Saturday.
-         */
-        SAT, 
-        /**
-         * Sunday.
-         */
-        SUN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return MON;
-        if ("tue".equals(codeString))
-          return TUE;
-        if ("wed".equals(codeString))
-          return WED;
-        if ("thu".equals(codeString))
-          return THU;
-        if ("fri".equals(codeString))
-          return FRI;
-        if ("sat".equals(codeString))
-          return SAT;
-        if ("sun".equals(codeString))
-          return SUN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MON: return "mon";
-            case TUE: return "tue";
-            case WED: return "wed";
-            case THU: return "thu";
-            case FRI: return "fri";
-            case SAT: return "sat";
-            case SUN: return "sun";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MON: return "http://hl7.org/fhir/days-of-week";
-            case TUE: return "http://hl7.org/fhir/days-of-week";
-            case WED: return "http://hl7.org/fhir/days-of-week";
-            case THU: return "http://hl7.org/fhir/days-of-week";
-            case FRI: return "http://hl7.org/fhir/days-of-week";
-            case SAT: return "http://hl7.org/fhir/days-of-week";
-            case SUN: return "http://hl7.org/fhir/days-of-week";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MON: return "Monday.";
-            case TUE: return "Tuesday.";
-            case WED: return "Wednesday.";
-            case THU: return "Thursday.";
-            case FRI: return "Friday.";
-            case SAT: return "Saturday.";
-            case SUN: return "Sunday.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
-    public DaysOfWeek fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return DaysOfWeek.MON;
-        if ("tue".equals(codeString))
-          return DaysOfWeek.TUE;
-        if ("wed".equals(codeString))
-          return DaysOfWeek.WED;
-        if ("thu".equals(codeString))
-          return DaysOfWeek.THU;
-        if ("fri".equals(codeString))
-          return DaysOfWeek.FRI;
-        if ("sat".equals(codeString))
-          return DaysOfWeek.SAT;
-        if ("sun".equals(codeString))
-          return DaysOfWeek.SUN;
-        throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
-        if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
-        if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
-        if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
-        if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
-        if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
-        if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
-        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-    public String toCode(DaysOfWeek code) {
-      if (code == DaysOfWeek.MON)
-        return "mon";
-      if (code == DaysOfWeek.TUE)
-        return "tue";
-      if (code == DaysOfWeek.WED)
-        return "wed";
-      if (code == DaysOfWeek.THU)
-        return "thu";
-      if (code == DaysOfWeek.FRI)
-        return "fri";
-      if (code == DaysOfWeek.SAT)
-        return "sat";
-      if (code == DaysOfWeek.SUN)
-        return "sun";
-      return "?";
-      }
-    public String toSystem(DaysOfWeek code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class PractitionerRoleAvailableTimeComponent extends BackboneElement implements IBaseBackboneElement {
@@ -583,16 +413,16 @@ public class PractitionerRole extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.daysOfWeek");
+          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.daysOfWeek");
         }
         else if (name.equals("allDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.allDay");
+          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.allDay");
         }
         else if (name.equals("availableStartTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableStartTime");
+          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.availableStartTime");
         }
         else if (name.equals("availableEndTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableEndTime");
+          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.availableTime.availableEndTime");
         }
         else
           return super.addChild(name);
@@ -678,9 +508,9 @@ public class PractitionerRole extends DomainResource {
     /**
      * Constructor
      */
-      public PractitionerRoleNotAvailableComponent(StringType description) {
+      public PractitionerRoleNotAvailableComponent(String description) {
         super();
-        this.description = description;
+        this.setDescription(description);
       }
 
         /**
@@ -826,7 +656,7 @@ public class PractitionerRole extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.description");
+          throw new FHIRException("Cannot call addChild on a primitive type PractitionerRole.notAvailable.description");
         }
         else if (name.equals("during")) {
           this.during = new Period();
@@ -1032,7 +862,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1202,7 +1032,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCodeFirstRep() { 
       if (getCode().isEmpty()) {
@@ -1255,7 +1085,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSpecialtyFirstRep() { 
       if (getSpecialty().isEmpty()) {
@@ -1308,7 +1138,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist {3}
      */
     public Reference getLocationFirstRep() { 
       if (getLocation().isEmpty()) {
@@ -1361,7 +1191,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #healthcareService}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #healthcareService}, creating it if it does not already exist {3}
      */
     public Reference getHealthcareServiceFirstRep() { 
       if (getHealthcareService().isEmpty()) {
@@ -1414,7 +1244,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
      */
     public ContactPoint getTelecomFirstRep() { 
       if (getTelecom().isEmpty()) {
@@ -1467,7 +1297,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #availableTime}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #availableTime}, creating it if it does not already exist {3}
      */
     public PractitionerRoleAvailableTimeComponent getAvailableTimeFirstRep() { 
       if (getAvailableTime().isEmpty()) {
@@ -1520,7 +1350,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #notAvailable}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #notAvailable}, creating it if it does not already exist {3}
      */
     public PractitionerRoleNotAvailableComponent getNotAvailableFirstRep() { 
       if (getNotAvailable().isEmpty()) {
@@ -1622,7 +1452,7 @@ public class PractitionerRole extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
      */
     public Reference getEndpointFirstRep() { 
       if (getEndpoint().isEmpty()) {
@@ -1981,112 +1811,6 @@ public class PractitionerRole extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The period during which the practitioner is authorized to perform in these role(s)</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PractitionerRole.period</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="PractitionerRole.period", description="The period during which the practitioner is authorized to perform in these role(s)", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The period during which the practitioner is authorized to perform in these role(s)</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>PractitionerRole.period</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="PractitionerRole.identifier", description="A practitioner's Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>specialty</b>
-   * <p>
-   * Description: <b>The practitioner has this specialty at an organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.specialty</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="specialty", path="PractitionerRole.specialty", description="The practitioner has this specialty at an organization", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
-   * <p>
-   * Description: <b>The practitioner has this specialty at an organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.specialty</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
-
- /**
-   * Search parameter: <b>role</b>
-   * <p>
-   * Description: <b>The practitioner can perform this role at for the organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="role", path="PractitionerRole.code", description="The practitioner can perform this role at for the organization", type="token" )
-  public static final String SP_ROLE = "role";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>role</b>
-   * <p>
-   * Description: <b>The practitioner can perform this role at for the organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROLE);
-
- /**
-   * Search parameter: <b>practitioner</b>
-   * <p>
-   * Description: <b>Practitioner that is able to provide the defined services for the organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.practitioner</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="practitioner", path="PractitionerRole.practitioner", description="Practitioner that is able to provide the defined services for the organization", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class } )
-  public static final String SP_PRACTITIONER = "practitioner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
-   * <p>
-   * Description: <b>Practitioner that is able to provide the defined services for the organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.practitioner</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PractitionerRole:practitioner</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("PractitionerRole:practitioner").toLocked();
-
- /**
    * Search parameter: <b>active</b>
    * <p>
    * Description: <b>Whether this practitioner role record is in active use</b><br>
@@ -2105,6 +1829,26 @@ public class PractitionerRole extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The period during which the practitioner is authorized to perform in these role(s)</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PractitionerRole.period</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="PractitionerRole.period", description="The period during which the practitioner is authorized to perform in these role(s)", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The period during which the practitioner is authorized to perform in these role(s)</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PractitionerRole.period</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
    * Search parameter: <b>endpoint</b>
@@ -2133,96 +1877,24 @@ public class PractitionerRole extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("PractitionerRole:endpoint").toLocked();
 
  /**
-   * Search parameter: <b>phone</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>A value in a phone contact</b><br>
+   * Description: <b>A practitioner's Identifier</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom(system=phone)</b><br>
+   * Path: <b>PractitionerRole.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="phone", path="PractitionerRole.telecom.where(system='phone')", description="A value in a phone contact", type="token" )
-  public static final String SP_PHONE = "phone";
+  @SearchParamDefinition(name="identifier", path="PractitionerRole.identifier", description="A practitioner's Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>A value in a phone contact</b><br>
+   * Description: <b>A practitioner's Identifier</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom(system=phone)</b><br>
+   * Path: <b>PractitionerRole.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
-
- /**
-   * Search parameter: <b>service</b>
-   * <p>
-   * Description: <b>The list of healthcare services that this worker provides for this role's Organization/Location(s)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.healthcareService</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service", path="PractitionerRole.healthcareService", description="The list of healthcare services that this worker provides for this role's Organization/Location(s)", type="reference", target={HealthcareService.class } )
-  public static final String SP_SERVICE = "service";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service</b>
-   * <p>
-   * Description: <b>The list of healthcare services that this worker provides for this role's Organization/Location(s)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.healthcareService</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PractitionerRole:service</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SERVICE = new ca.uhn.fhir.model.api.Include("PractitionerRole:service").toLocked();
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>The identity of the organization the practitioner represents / acts on behalf of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.organization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="organization", path="PractitionerRole.organization", description="The identity of the organization the practitioner represents / acts on behalf of", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
-   * <p>
-   * Description: <b>The identity of the organization the practitioner represents / acts on behalf of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>PractitionerRole.organization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>PractitionerRole:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("PractitionerRole:organization").toLocked();
-
- /**
-   * Search parameter: <b>telecom</b>
-   * <p>
-   * Description: <b>The value in any kind of contact</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="telecom", path="PractitionerRole.telecom", description="The value in any kind of contact", type="token" )
-  public static final String SP_TELECOM = "telecom";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
-   * <p>
-   * Description: <b>The value in any kind of contact</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>location</b>
@@ -2251,24 +1923,224 @@ public class PractitionerRole extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("PractitionerRole:location").toLocked();
 
  /**
-   * Search parameter: <b>email</b>
+   * Search parameter: <b>organization</b>
    * <p>
-   * Description: <b>A value in an email contact</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom(system=email)</b><br>
+   * Description: <b>The identity of the organization the practitioner represents / acts on behalf of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.organization</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="email", path="PractitionerRole.telecom.where(system='email')", description="A value in an email contact", type="token" )
+  @SearchParamDefinition(name="organization", path="PractitionerRole.organization", description="The identity of the organization the practitioner represents / acts on behalf of", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>The identity of the organization the practitioner represents / acts on behalf of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.organization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PractitionerRole:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("PractitionerRole:organization").toLocked();
+
+ /**
+   * Search parameter: <b>practitioner</b>
+   * <p>
+   * Description: <b>Practitioner that is able to provide the defined services for the organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.practitioner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="practitioner", path="PractitionerRole.practitioner", description="Practitioner that is able to provide the defined services for the organization", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class } )
+  public static final String SP_PRACTITIONER = "practitioner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
+   * <p>
+   * Description: <b>Practitioner that is able to provide the defined services for the organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.practitioner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PractitionerRole:practitioner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("PractitionerRole:practitioner").toLocked();
+
+ /**
+   * Search parameter: <b>role</b>
+   * <p>
+   * Description: <b>The practitioner can perform this role at for the organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="role", path="PractitionerRole.code", description="The practitioner can perform this role at for the organization", type="token" )
+  public static final String SP_ROLE = "role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>role</b>
+   * <p>
+   * Description: <b>The practitioner can perform this role at for the organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROLE);
+
+ /**
+   * Search parameter: <b>service</b>
+   * <p>
+   * Description: <b>The list of healthcare services that this worker provides for this role's Organization/Location(s)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.healthcareService</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="service", path="PractitionerRole.healthcareService", description="The list of healthcare services that this worker provides for this role's Organization/Location(s)", type="reference", target={HealthcareService.class } )
+  public static final String SP_SERVICE = "service";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>service</b>
+   * <p>
+   * Description: <b>The list of healthcare services that this worker provides for this role's Organization/Location(s)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PractitionerRole.healthcareService</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PractitionerRole:service</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SERVICE = new ca.uhn.fhir.model.api.Include("PractitionerRole:service").toLocked();
+
+ /**
+   * Search parameter: <b>specialty</b>
+   * <p>
+   * Description: <b>The practitioner has this specialty at an organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.specialty</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specialty", path="PractitionerRole.specialty", description="The practitioner has this specialty at an organization", type="token" )
+  public static final String SP_SPECIALTY = "specialty";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
+   * <p>
+   * Description: <b>The practitioner has this specialty at an organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PractitionerRole.specialty</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
+
+ /**
+   * Search parameter: <b>email</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in an email contact
+* [Person](person.html): A value in an email contact
+* [Practitioner](practitioner.html): A value in an email contact
+* [PractitionerRole](practitionerrole.html): A value in an email contact
+* [RelatedPerson](relatedperson.html): A value in an email contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
   public static final String SP_EMAIL = "email";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>email</b>
    * <p>
-   * Description: <b>A value in an email contact</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in an email contact
+* [Person](person.html): A value in an email contact
+* [Practitioner](practitioner.html): A value in an email contact
+* [PractitionerRole](practitionerrole.html): A value in an email contact
+* [RelatedPerson](relatedperson.html): A value in an email contact
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>PractitionerRole.telecom(system=email)</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
+
+ /**
+   * Search parameter: <b>phone</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in a phone contact
+* [Person](person.html): A value in a phone contact
+* [Practitioner](practitioner.html): A value in a phone contact
+* [PractitionerRole](practitionerrole.html): A value in a phone contact
+* [RelatedPerson](relatedperson.html): A value in a phone contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
+  public static final String SP_PHONE = "phone";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in a phone contact
+* [Person](person.html): A value in a phone contact
+* [Practitioner](practitioner.html): A value in a phone contact
+* [PractitionerRole](practitionerrole.html): A value in a phone contact
+* [RelatedPerson](relatedperson.html): A value in a phone contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
+
+ /**
+   * Search parameter: <b>telecom</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): The value in any kind of telecom details of the patient
+* [Person](person.html): The value in any kind of contact
+* [Practitioner](practitioner.html): The value in any kind of contact
+* [PractitionerRole](practitionerrole.html): The value in any kind of contact
+* [RelatedPerson](relatedperson.html): The value in any kind of contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
+  public static final String SP_TELECOM = "telecom";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): The value in any kind of telecom details of the patient
+* [Person](person.html): The value in any kind of contact
+* [Practitioner](practitioner.html): The value in any kind of contact
+* [PractitionerRole](practitionerrole.html): The value in any kind of contact
+* [RelatedPerson](relatedperson.html): The value in any kind of contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
 
 
 }

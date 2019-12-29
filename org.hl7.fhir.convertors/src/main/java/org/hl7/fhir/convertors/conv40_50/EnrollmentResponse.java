@@ -108,19 +108,19 @@ public class EnrollmentResponse extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus convertEnrollmentResponseStatus(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEnrollmentResponseStatus(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus convertEnrollmentResponseStatus(org.hl7.fhir.r5.model.EnrollmentResponse.EnrollmentResponseStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus convertEnrollmentResponseStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -132,19 +132,19 @@ public class EnrollmentResponse extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case QUEUED: return org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome.QUEUED;
-    case COMPLETE: return org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome.COMPLETE;
-    case ERROR: return org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome.ERROR;
-    case PARTIAL: return org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome.PARTIAL;
-    default: return org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome.NULL;
+    case QUEUED: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED;
+    case COMPLETE: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE;
+    case ERROR: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR;
+    case PARTIAL: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL;
+    default: return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.RemittanceOutcome src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

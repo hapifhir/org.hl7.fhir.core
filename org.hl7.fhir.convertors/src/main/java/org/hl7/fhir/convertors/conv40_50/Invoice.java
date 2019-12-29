@@ -250,21 +250,21 @@ public class Invoice extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case BASE: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.BASE;
-    case SURCHARGE: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.SURCHARGE;
-    case DEDUCTION: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.DEDUCTION;
-    case DISCOUNT: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.DISCOUNT;
-    case TAX: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.TAX;
-    case INFORMATIONAL: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.INFORMATIONAL;
-    default: return org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType.NULL;
+    case BASE: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.BASE;
+    case SURCHARGE: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.SURCHARGE;
+    case DEDUCTION: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DEDUCTION;
+    case DISCOUNT: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DISCOUNT;
+    case TAX: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.TAX;
+    case INFORMATIONAL: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL;
+    default: return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r5.model.Invoice.InvoicePriceComponentType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

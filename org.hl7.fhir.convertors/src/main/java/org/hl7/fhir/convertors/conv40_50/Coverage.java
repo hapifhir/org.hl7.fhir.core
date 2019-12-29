@@ -144,19 +144,19 @@ public class Coverage extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r4.model.Coverage.CoverageStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertCoverageStatus(org.hl7.fhir.r4.model.Coverage.CoverageStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Coverage.CoverageStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Coverage.CoverageStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Coverage.CoverageStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Coverage.CoverageStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Coverage.CoverageStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r5.model.Coverage.CoverageStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

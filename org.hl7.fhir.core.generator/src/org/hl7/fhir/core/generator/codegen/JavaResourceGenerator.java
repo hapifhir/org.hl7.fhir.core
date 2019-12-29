@@ -53,6 +53,8 @@ import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResource
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
@@ -439,7 +441,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
     Set<String> targets = new TreeSet<>();
     for (CodeType c : sp.getTarget()) {
-      targets.add(c.toString());
+      targets.add(c.asStringValue());
     }
     if (targets != null && !targets.isEmpty() && !targets.contains("Any")) {
       write(", target={");
@@ -995,7 +997,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     if (types.size() == 1 && types.get(0).getName().equals("*")) {
       List<TypeRefComponent> t = new ArrayList<TypeRefComponent>();
       for (String s : TypesUtilities.wildcardTypes()) {
-        t.add(new TypeRefComponent(new UriType(s)));
+        t.add(new TypeRefComponent(s));
       }
       return t;
     }

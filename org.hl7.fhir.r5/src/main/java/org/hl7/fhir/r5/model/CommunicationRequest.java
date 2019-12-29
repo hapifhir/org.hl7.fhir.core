@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,307 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.
  */
 @ResourceDef(name="CommunicationRequest", profile="http://hl7.org/fhir/StructureDefinition/CommunicationRequest")
 public class CommunicationRequest extends DomainResource {
-
-    public enum CommunicationRequestStatus {
-        /**
-         * The request has been created but is not yet complete or ready for action.
-         */
-        DRAFT, 
-        /**
-         * The request is in force and ready to be acted upon.
-         */
-        ACTIVE, 
-        /**
-         * The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.
-         */
-        ONHOLD, 
-        /**
-         * The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.
-         */
-        REVOKED, 
-        /**
-         * The activity described by the request has been fully performed.  No further activity will occur.
-         */
-        COMPLETED, 
-        /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
-         */
-        ENTEREDINERROR, 
-        /**
-         * The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CommunicationRequestStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("revoked".equals(codeString))
-          return REVOKED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CommunicationRequestStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case ONHOLD: return "on-hold";
-            case REVOKED: return "revoked";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DRAFT: return "http://hl7.org/fhir/request-status";
-            case ACTIVE: return "http://hl7.org/fhir/request-status";
-            case ONHOLD: return "http://hl7.org/fhir/request-status";
-            case REVOKED: return "http://hl7.org/fhir/request-status";
-            case COMPLETED: return "http://hl7.org/fhir/request-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
-            case UNKNOWN: return "http://hl7.org/fhir/request-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "The request has been created but is not yet complete or ready for action.";
-            case ACTIVE: return "The request is in force and ready to be acted upon.";
-            case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
-            case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
-            case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case ONHOLD: return "On Hold";
-            case REVOKED: return "Revoked";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CommunicationRequestStatusEnumFactory implements EnumFactory<CommunicationRequestStatus> {
-    public CommunicationRequestStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return CommunicationRequestStatus.DRAFT;
-        if ("active".equals(codeString))
-          return CommunicationRequestStatus.ACTIVE;
-        if ("on-hold".equals(codeString))
-          return CommunicationRequestStatus.ONHOLD;
-        if ("revoked".equals(codeString))
-          return CommunicationRequestStatus.REVOKED;
-        if ("completed".equals(codeString))
-          return CommunicationRequestStatus.COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return CommunicationRequestStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return CommunicationRequestStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown CommunicationRequestStatus code '"+codeString+"'");
-        }
-        public Enumeration<CommunicationRequestStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CommunicationRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("draft".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.DRAFT);
-        if ("active".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ACTIVE);
-        if ("on-hold".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ONHOLD);
-        if ("revoked".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.REVOKED);
-        if ("completed".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.COMPLETED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<CommunicationRequestStatus>(this, CommunicationRequestStatus.UNKNOWN);
-        throw new FHIRException("Unknown CommunicationRequestStatus code '"+codeString+"'");
-        }
-    public String toCode(CommunicationRequestStatus code) {
-      if (code == CommunicationRequestStatus.DRAFT)
-        return "draft";
-      if (code == CommunicationRequestStatus.ACTIVE)
-        return "active";
-      if (code == CommunicationRequestStatus.ONHOLD)
-        return "on-hold";
-      if (code == CommunicationRequestStatus.REVOKED)
-        return "revoked";
-      if (code == CommunicationRequestStatus.COMPLETED)
-        return "completed";
-      if (code == CommunicationRequestStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == CommunicationRequestStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(CommunicationRequestStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum CommunicationPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CommunicationPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CommunicationPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CommunicationPriorityEnumFactory implements EnumFactory<CommunicationPriority> {
-    public CommunicationPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return CommunicationPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return CommunicationPriority.URGENT;
-        if ("asap".equals(codeString))
-          return CommunicationPriority.ASAP;
-        if ("stat".equals(codeString))
-          return CommunicationPriority.STAT;
-        throw new IllegalArgumentException("Unknown CommunicationPriority code '"+codeString+"'");
-        }
-        public Enumeration<CommunicationPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CommunicationPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<CommunicationPriority>(this, CommunicationPriority.STAT);
-        throw new FHIRException("Unknown CommunicationPriority code '"+codeString+"'");
-        }
-    public String toCode(CommunicationPriority code) {
-      if (code == CommunicationPriority.ROUTINE)
-        return "routine";
-      if (code == CommunicationPriority.URGENT)
-        return "urgent";
-      if (code == CommunicationPriority.ASAP)
-        return "asap";
-      if (code == CommunicationPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(CommunicationPriority code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class CommunicationRequestPayloadComponent extends BackboneElement implements IBaseBackboneElement {
@@ -376,7 +82,7 @@ public class CommunicationRequest extends DomainResource {
         @Description(shortDefinition="Message part content", formalDefinition="The communicated content (or for multi-part communications, one portion of the communication)." )
         protected DataType content;
 
-        private static final long serialVersionUID = -1763459053L;
+        private static final long serialVersionUID = -1954179063L;
 
     /**
      * Constructor
@@ -390,7 +96,7 @@ public class CommunicationRequest extends DomainResource {
      */
       public CommunicationRequestPayloadComponent(DataType content) {
         super();
-        this.content = content;
+        this.setContent(content);
       }
 
         /**
@@ -469,9 +175,9 @@ public class CommunicationRequest extends DomainResource {
           switch (_hash) {
           case 264548711: /*content[x]*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
           case 951530617: /*content*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case 1193747154: /*contentReference*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
-          case 1554698728: /*contentCodeableConcept*/  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 1193747154: /*contentReference*/  return new Property("content[x]", "Reference(Any)", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
+          case 1554698728: /*contentCodeableConcept*/  return new Property("content[x]", "CodeableConcept", "The communicated content (or for multi-part communications, one portion of the communication).", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -480,7 +186,7 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // Type
+        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -490,7 +196,7 @@ public class CommunicationRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -500,7 +206,7 @@ public class CommunicationRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -619,7 +325,7 @@ public class CommunicationRequest extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The status of the proposal or order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
-    protected Enumeration<CommunicationRequestStatus> status;
+    protected Enumeration<RequestStatus> status;
 
     /**
      * Captures the reason for the current state of the CommunicationRequest.
@@ -643,7 +349,7 @@ public class CommunicationRequest extends DomainResource {
     @Child(name = "priority", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-    protected Enumeration<CommunicationPriority> priority;
+    protected Enumeration<RequestPriority> priority;
 
     /**
      * If true indicates that the CommunicationRequest is asking for the specified action to *not* occur.
@@ -745,7 +451,7 @@ public class CommunicationRequest extends DomainResource {
     @Description(shortDefinition="Comments made about communication request", formalDefinition="Comments made about the request by the requester, sender, recipient, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1016575154L;
+    private static final long serialVersionUID = -914137345L;
 
   /**
    * Constructor
@@ -757,9 +463,9 @@ public class CommunicationRequest extends DomainResource {
   /**
    * Constructor
    */
-    public CommunicationRequest(Enumeration<CommunicationRequestStatus> status) {
+    public CommunicationRequest(RequestStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -806,7 +512,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -859,7 +565,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -912,7 +618,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #replaces}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #replaces}, creating it if it does not already exist {3}
      */
     public Reference getReplacesFirstRep() { 
       if (getReplaces().isEmpty()) {
@@ -948,12 +654,12 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @return {@link #status} (The status of the proposal or order.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<CommunicationRequestStatus> getStatusElement() { 
+    public Enumeration<RequestStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CommunicationRequest.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<CommunicationRequestStatus>(new CommunicationRequestStatusEnumFactory()); // bb
+          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -968,7 +674,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @param value {@link #status} (The status of the proposal or order.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CommunicationRequest setStatusElement(Enumeration<CommunicationRequestStatus> value) { 
+    public CommunicationRequest setStatusElement(Enumeration<RequestStatus> value) { 
       this.status = value;
       return this;
     }
@@ -976,16 +682,16 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @return The status of the proposal or order.
      */
-    public CommunicationRequestStatus getStatus() { 
+    public RequestStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the proposal or order.
      */
-    public CommunicationRequest setStatus(CommunicationRequestStatus value) { 
+    public CommunicationRequest setStatus(RequestStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<CommunicationRequestStatus>(new CommunicationRequestStatusEnumFactory());
+          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1058,7 +764,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -1070,12 +776,12 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @return {@link #priority} (Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public Enumeration<CommunicationPriority> getPriorityElement() { 
+    public Enumeration<RequestPriority> getPriorityElement() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CommunicationRequest.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new Enumeration<CommunicationPriority>(new CommunicationPriorityEnumFactory()); // bb
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
       return this.priority;
     }
 
@@ -1090,7 +796,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @param value {@link #priority} (Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public CommunicationRequest setPriorityElement(Enumeration<CommunicationPriority> value) { 
+    public CommunicationRequest setPriorityElement(Enumeration<RequestPriority> value) { 
       this.priority = value;
       return this;
     }
@@ -1098,19 +804,19 @@ public class CommunicationRequest extends DomainResource {
     /**
      * @return Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.
      */
-    public CommunicationPriority getPriority() { 
+    public RequestPriority getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
      * @param value Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.
      */
-    public CommunicationRequest setPriority(CommunicationPriority value) { 
+    public CommunicationRequest setPriority(RequestPriority value) { 
       if (value == null)
         this.priority = null;
       else {
         if (this.priority == null)
-          this.priority = new Enumeration<CommunicationPriority>(new CommunicationPriorityEnumFactory());
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
         this.priority.setValue(value);
       }
       return this;
@@ -1205,7 +911,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #medium}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #medium}, creating it if it does not already exist {3}
      */
     public CodeableConcept getMediumFirstRep() { 
       if (getMedium().isEmpty()) {
@@ -1282,7 +988,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #about}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #about}, creating it if it does not already exist {3}
      */
     public Reference getAboutFirstRep() { 
       if (getAbout().isEmpty()) {
@@ -1359,7 +1065,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #payload}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #payload}, creating it if it does not already exist {3}
      */
     public CommunicationRequestPayloadComponent getPayloadFirstRep() { 
       if (getPayload().isEmpty()) {
@@ -1536,7 +1242,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #recipient}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #recipient}, creating it if it does not already exist {3}
      */
     public Reference getRecipientFirstRep() { 
       if (getRecipient().isEmpty()) {
@@ -1589,7 +1295,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #informationProvider}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #informationProvider}, creating it if it does not already exist {3}
      */
     public Reference getInformationProviderFirstRep() { 
       if (getInformationProvider().isEmpty()) {
@@ -1642,7 +1348,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -1695,7 +1401,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -1748,7 +1454,7 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -1802,8 +1508,8 @@ public class CommunicationRequest extends DomainResource {
         case -786701938: /*payload*/  return new Property("payload", "", "Text, attachment(s), or resource(s) to be communicated to the recipient.", 0, java.lang.Integer.MAX_VALUE, payload);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
         case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
-        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
-        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period", "The time when this communication is to occur.", 0, 1, occurrence);
+        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "The time when this communication is to occur.", 0, 1, occurrence);
+        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "Period", "The time when this communication is to occur.", 0, 1, occurrence);
         case -1500852503: /*authoredOn*/  return new Property("authoredOn", "dateTime", "For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.", 0, 1, authoredOn);
         case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who asks for the information to be shared.", 0, 1, requester);
         case 820081177: /*recipient*/  return new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient);
@@ -1823,17 +1529,17 @@ public class CommunicationRequest extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -430332865: /*replaces*/ return this.replaces == null ? new Base[0] : this.replaces.toArray(new Base[this.replaces.size()]); // Reference
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<CommunicationRequestStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<CommunicationPriority>
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
         case -1788508167: /*doNotPerform*/ return this.doNotPerform == null ? new Base[0] : new Base[] {this.doNotPerform}; // BooleanType
         case -1078030475: /*medium*/ return this.medium == null ? new Base[0] : this.medium.toArray(new Base[this.medium.size()]); // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 92611469: /*about*/ return this.about == null ? new Base[0] : this.about.toArray(new Base[this.about.size()]); // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -786701938: /*payload*/ return this.payload == null ? new Base[0] : this.payload.toArray(new Base[this.payload.size()]); // CommunicationRequestPayloadComponent
-        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // Type
+        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case -1500852503: /*authoredOn*/ return this.authoredOn == null ? new Base[0] : new Base[] {this.authoredOn}; // DateTimeType
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case 820081177: /*recipient*/ return this.recipient == null ? new Base[0] : this.recipient.toArray(new Base[this.recipient.size()]); // Reference
@@ -1862,8 +1568,8 @@ public class CommunicationRequest extends DomainResource {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new CommunicationRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<CommunicationRequestStatus>
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
           return value;
         case 2051346646: // statusReason
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1872,8 +1578,8 @@ public class CommunicationRequest extends DomainResource {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1165461084: // priority
-          value = new CommunicationPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<CommunicationPriority>
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case -1788508167: // doNotPerform
           this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
@@ -1894,7 +1600,7 @@ public class CommunicationRequest extends DomainResource {
           this.getPayload().add((CommunicationRequestPayloadComponent) value); // CommunicationRequestPayloadComponent
           return value;
         case 1687874001: // occurrence
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
           return value;
         case -1500852503: // authoredOn
           this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -1933,15 +1639,15 @@ public class CommunicationRequest extends DomainResource {
         } else if (name.equals("groupIdentifier")) {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new CommunicationRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<CommunicationRequestStatus>
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
         } else if (name.equals("statusReason")) {
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("priority")) {
-          value = new CommunicationPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<CommunicationPriority>
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("doNotPerform")) {
           this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("medium")) {
@@ -1955,7 +1661,7 @@ public class CommunicationRequest extends DomainResource {
         } else if (name.equals("payload")) {
           this.getPayload().add((CommunicationRequestPayloadComponent) value);
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("authoredOn")) {
           this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
@@ -2249,32 +1955,6 @@ public class CommunicationRequest extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>requester</b>
-   * <p>
-   * Description: <b>Who asks for the information to be shared</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.requester</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="requester", path="CommunicationRequest.requester", description="Who asks for the information to be shared", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_REQUESTER = "requester";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
-   * <p>
-   * Description: <b>Who asks for the information to be shared</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.requester</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:requester</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:requester").toLocked();
-
- /**
    * Search parameter: <b>authored</b>
    * <p>
    * Description: <b>When request transitioned to being actionable</b><br>
@@ -2293,6 +1973,98 @@ public class CommunicationRequest extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Fulfills plan or proposal</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="CommunicationRequest.basedOn", description="Fulfills plan or proposal", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Fulfills plan or proposal</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("CommunicationRequest:based-on").toLocked();
+
+ /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Message category</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="CommunicationRequest.category", description="Message category", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Message category</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="CommunicationRequest.encounter", description="The Encounter during which this CommunicationRequest was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>group-identifier</b>
+   * <p>
+   * Description: <b>Composite request this is part of</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.groupIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="group-identifier", path="CommunicationRequest.groupIdentifier", description="Composite request this is part of", type="token" )
+  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
+   * <p>
+   * Description: <b>Composite request this is part of</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.groupIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -2315,30 +2087,142 @@ public class CommunicationRequest extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>information-provider</b>
    * <p>
-   * Description: <b>Focus of message</b><br>
+   * Description: <b>Who should share the information</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.subject</b><br>
+   * Path: <b>CommunicationRequest.informationProvider</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="CommunicationRequest.subject", description="Focus of message", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="information-provider", path="CommunicationRequest.informationProvider", description="Who should share the information", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Endpoint.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_INFORMATION_PROVIDER = "information-provider";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>information-provider</b>
    * <p>
-   * Description: <b>Focus of message</b><br>
+   * Description: <b>Who should share the information</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.subject</b><br>
+   * Path: <b>CommunicationRequest.informationProvider</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INFORMATION_PROVIDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INFORMATION_PROVIDER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:subject</b>".
+   * the path value of "<b>CommunicationRequest:information-provider</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:subject").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INFORMATION_PROVIDER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:information-provider").toLocked();
+
+ /**
+   * Search parameter: <b>medium</b>
+   * <p>
+   * Description: <b>A channel of communication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.medium</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="medium", path="CommunicationRequest.medium", description="A channel of communication", type="token" )
+  public static final String SP_MEDIUM = "medium";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>medium</b>
+   * <p>
+   * Description: <b>A channel of communication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.medium</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MEDIUM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MEDIUM);
+
+ /**
+   * Search parameter: <b>occurrence</b>
+   * <p>
+   * Description: <b>When scheduled</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CommunicationRequest.occurrence.as(dateTime) | CommunicationRequest.occurrence.as(Period)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="occurrence", path="CommunicationRequest.occurrence.as(dateTime) | CommunicationRequest.occurrence.as(Period)", description="When scheduled", type="date" )
+  public static final String SP_OCCURRENCE = "occurrence";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
+   * <p>
+   * Description: <b>When scheduled</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CommunicationRequest.occurrence.as(dateTime) | CommunicationRequest.occurrence.as(Period)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Focus of message</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="CommunicationRequest.subject.where(resolve() is Patient)", description="Focus of message", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Focus of message</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:patient").toLocked();
+
+ /**
+   * Search parameter: <b>priority</b>
+   * <p>
+   * Description: <b>routine | urgent | asap | stat</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.priority</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="routine | urgent | asap | stat", type="token" )
+  public static final String SP_PRIORITY = "priority";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
+   * <p>
+   * Description: <b>routine | urgent | asap | stat</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CommunicationRequest.priority</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
+
+ /**
+   * Search parameter: <b>recipient</b>
+   * <p>
+   * Description: <b>Who to share the information with</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.recipient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recipient", path="CommunicationRequest.recipient", description="Who to share the information with", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson"), @ca.uhn.fhir.model.api.annotation.Compartment(name="EXAMPLE") }, target={CareTeam.class, Device.class, Endpoint.class, Group.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_RECIPIENT = "recipient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
+   * <p>
+   * Description: <b>Who to share the information with</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.recipient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RECIPIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RECIPIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:recipient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:recipient").toLocked();
 
  /**
    * Search parameter: <b>replaces</b>
@@ -2367,234 +2251,30 @@ public class CommunicationRequest extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_REPLACES = new ca.uhn.fhir.model.api.Include("CommunicationRequest:replaces").toLocked();
 
  /**
-   * Search parameter: <b>medium</b>
+   * Search parameter: <b>requester</b>
    * <p>
-   * Description: <b>A channel of communication</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.medium</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="medium", path="CommunicationRequest.medium", description="A channel of communication", type="token" )
-  public static final String SP_MEDIUM = "medium";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>medium</b>
-   * <p>
-   * Description: <b>A channel of communication</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.medium</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MEDIUM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MEDIUM);
-
- /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
+   * Description: <b>Who asks for the information to be shared</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.encounter</b><br>
+   * Path: <b>CommunicationRequest.requester</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="CommunicationRequest.encounter", description="The Encounter during which this CommunicationRequest was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="requester", path="CommunicationRequest.requester", description="Who asks for the information to be shared", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_REQUESTER = "requester";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
    * <p>
-   * Description: <b>The Encounter during which this CommunicationRequest was created</b><br>
+   * Description: <b>Who asks for the information to be shared</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.encounter</b><br>
+   * Path: <b>CommunicationRequest.requester</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:encounter</b>".
+   * the path value of "<b>CommunicationRequest:requester</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:encounter").toLocked();
-
- /**
-   * Search parameter: <b>occurrence</b>
-   * <p>
-   * Description: <b>When scheduled</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CommunicationRequest.occurrence[x]</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="occurrence", path="CommunicationRequest.occurrence.as(dateTime) | CommunicationRequest.occurrence.as(Period)", description="When scheduled", type="date" )
-  public static final String SP_OCCURRENCE = "occurrence";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
-   * <p>
-   * Description: <b>When scheduled</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CommunicationRequest.occurrence[x]</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
-
- /**
-   * Search parameter: <b>priority</b>
-   * <p>
-   * Description: <b>routine | urgent | asap | stat</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.priority</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="routine | urgent | asap | stat", type="token" )
-  public static final String SP_PRIORITY = "priority";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
-   * <p>
-   * Description: <b>routine | urgent | asap | stat</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.priority</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
-
- /**
-   * Search parameter: <b>group-identifier</b>
-   * <p>
-   * Description: <b>Composite request this is part of</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.groupIdentifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="group-identifier", path="CommunicationRequest.groupIdentifier", description="Composite request this is part of", type="token" )
-  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
-   * <p>
-   * Description: <b>Composite request this is part of</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.groupIdentifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>based-on</b>
-   * <p>
-   * Description: <b>Fulfills plan or proposal</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.basedOn</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="based-on", path="CommunicationRequest.basedOn", description="Fulfills plan or proposal", type="reference" )
-  public static final String SP_BASED_ON = "based-on";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
-   * <p>
-   * Description: <b>Fulfills plan or proposal</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.basedOn</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:based-on</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("CommunicationRequest:based-on").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Focus of message</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="CommunicationRequest.subject.where(resolve() is Patient)", description="Focus of message", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Focus of message</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:patient").toLocked();
-
- /**
-   * Search parameter: <b>recipient</b>
-   * <p>
-   * Description: <b>Who to share the information with</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.recipient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="recipient", path="CommunicationRequest.recipient", description="Who to share the information with", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={CareTeam.class, Device.class, Endpoint.class, Group.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_RECIPIENT = "recipient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
-   * <p>
-   * Description: <b>Who to share the information with</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.recipient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RECIPIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RECIPIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:recipient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:recipient").toLocked();
-
- /**
-   * Search parameter: <b>information-provider</b>
-   * <p>
-   * Description: <b>Who should share the information</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.informationProvider</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="information-provider", path="CommunicationRequest.informationProvider", description="Who should share the information", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Endpoint.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_INFORMATION_PROVIDER = "information-provider";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>information-provider</b>
-   * <p>
-   * Description: <b>Who should share the information</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CommunicationRequest.informationProvider</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INFORMATION_PROVIDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INFORMATION_PROVIDER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CommunicationRequest:information-provider</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INFORMATION_PROVIDER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:information-provider").toLocked();
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Message category</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="CommunicationRequest.category", description="Message category", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>Message category</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CommunicationRequest.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("CommunicationRequest:requester").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -2615,6 +2295,32 @@ public class CommunicationRequest extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Focus of message</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="CommunicationRequest.subject", description="Focus of message", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Focus of message</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CommunicationRequest.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CommunicationRequest:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("CommunicationRequest:subject").toLocked();
 
 
 }

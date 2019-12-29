@@ -28,6 +28,10 @@ package org.hl7.fhir.convertors;
  */
 import org.hl7.fhir.convertors.conv40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnumEnumFactory;
 
 
 /*
@@ -886,7 +890,7 @@ public class VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.DataRequirement tgt = new org.hl7.fhir.r5.model.DataRequirement();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(convertCanonical(t));
     if (src.hasSubject())
@@ -910,7 +914,7 @@ public class VersionConvertor_40_50 {
     org.hl7.fhir.r4.model.DataRequirement tgt = new org.hl7.fhir.r4.model.DataRequirement();
     copyElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setType(src.getType().toCode());
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(convertCanonical(t));
     if (src.hasSubject())
@@ -1452,7 +1456,7 @@ public class VersionConvertor_40_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     return tgt;
@@ -1474,23 +1478,23 @@ public class VersionConvertor_40_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setType(src.getType().toCode());
     if (src.hasProfile())
       tgt.setProfileElement(convertCanonical(src.getProfileElement()));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ParameterDefinition.ParameterUse convertParameterUse(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.OperationParameterUse convertParameterUse(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case IN: return org.hl7.fhir.r5.model.ParameterDefinition.ParameterUse.IN;
-    case OUT: return org.hl7.fhir.r5.model.ParameterDefinition.ParameterUse.OUT;
-    default: return org.hl7.fhir.r5.model.ParameterDefinition.ParameterUse.NULL;
+    case IN: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN;
+    case OUT: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.OUT;
+    default: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL;
     }
   }
 
-  public static org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse convertParameterUse(org.hl7.fhir.r5.model.ParameterDefinition.ParameterUse src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse convertParameterUse(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -1716,19 +1720,19 @@ public class VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Quantity.QuantityComparator convertQuantityComparator(org.hl7.fhir.r4.model.Quantity.QuantityComparator src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.QuantityComparator convertQuantityComparator(org.hl7.fhir.r4.model.Quantity.QuantityComparator src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case LESS_THAN: return org.hl7.fhir.r5.model.Quantity.QuantityComparator.LESS_THAN;
-    case LESS_OR_EQUAL: return org.hl7.fhir.r5.model.Quantity.QuantityComparator.LESS_OR_EQUAL;
-    case GREATER_OR_EQUAL: return org.hl7.fhir.r5.model.Quantity.QuantityComparator.GREATER_OR_EQUAL;
-    case GREATER_THAN: return org.hl7.fhir.r5.model.Quantity.QuantityComparator.GREATER_THAN;
-    default: return org.hl7.fhir.r5.model.Quantity.QuantityComparator.NULL;
+    case LESS_THAN: return org.hl7.fhir.r5.model.Enumerations.QuantityComparator.LESS_THAN;
+    case LESS_OR_EQUAL: return org.hl7.fhir.r5.model.Enumerations.QuantityComparator.LESS_OR_EQUAL;
+    case GREATER_OR_EQUAL: return org.hl7.fhir.r5.model.Enumerations.QuantityComparator.GREATER_OR_EQUAL;
+    case GREATER_THAN: return org.hl7.fhir.r5.model.Enumerations.QuantityComparator.GREATER_THAN;
+    default: return org.hl7.fhir.r5.model.Enumerations.QuantityComparator.NULL;
     }
   }
 
-  public static org.hl7.fhir.r4.model.Quantity.QuantityComparator convertQuantityComparator(org.hl7.fhir.r5.model.Quantity.QuantityComparator src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Quantity.QuantityComparator convertQuantityComparator(org.hl7.fhir.r5.model.Enumerations.QuantityComparator src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -2133,7 +2137,7 @@ public class VersionConvertor_40_50 {
       tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit())
       tgt.setPeriodUnit(convertUnitsOfTime(src.getPeriodUnit()));
-    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.DaysOfWeek> t : src.getDayOfWeek())
+    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> t : src.getDayOfWeek())
       copyElement(t, tgt.addDayOfWeekElement().setValue(convertDayOfWeek(t.getValue())));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay())
       tgt.getTimeOfDay().add(convertTime(t));
@@ -2174,22 +2178,22 @@ public class VersionConvertor_40_50 {
     }
   }
 
-  public static org.hl7.fhir.r5.model.Timing.DaysOfWeek convertDayOfWeek(org.hl7.fhir.r4.model.Timing.DayOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.DaysOfWeek convertDayOfWeek(org.hl7.fhir.r4.model.Timing.DayOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MON: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.MON;
-    case TUE: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.TUE;
-    case WED: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.WED;
-    case THU: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.THU;
-    case FRI: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.FRI;
-    case SAT: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SAT;
-    case SUN: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.SUN;
-    default: return org.hl7.fhir.r5.model.Timing.DaysOfWeek.NULL;
+    case MON: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON;
+    case TUE: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE;
+    case WED: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED;
+    case THU: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU;
+    case FRI: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI;
+    case SAT: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT;
+    case SUN: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN;
+    default: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL;
     }
   }
 
-  public static org.hl7.fhir.r4.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Timing.DaysOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Timing.DayOfWeek convertDayOfWeek(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -3797,5 +3801,12 @@ public class VersionConvertor_40_50 {
     throw new Error("Unknown resource "+src.fhirType());
   }
 
+  protected static org.hl7.fhir.r5.model.CodeType convertResourceEnum(org.hl7.fhir.r4.model.CodeType src) {
+    return convertCode(src);
+  }
 
+
+  protected static org.hl7.fhir.r4.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.CodeType src) {
+    return convertCode(src);
+  }
 }

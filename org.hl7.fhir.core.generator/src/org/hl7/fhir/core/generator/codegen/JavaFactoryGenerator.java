@@ -45,8 +45,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 
-import jdk.nashorn.internal.runtime.Specialization;
-
 
 
 public class JavaFactoryGenerator extends JavaBaseGenerator {

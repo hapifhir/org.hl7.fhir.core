@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseBundle;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +67,8 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 /**
  * A container for a collection of resources.
  */
@@ -276,114 +279,6 @@ public class Bundle extends Resource implements IBaseBundle {
       }
     }
 
-    public enum SearchEntryMode {
-        /**
-         * This resource matched the search specification.
-         */
-        MATCH, 
-        /**
-         * This resource is returned because it is referred to from another resource in the search set.
-         */
-        INCLUDE, 
-        /**
-         * An OperationOutcome that provides additional information about the processing of a search.
-         */
-        OUTCOME, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static SearchEntryMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("match".equals(codeString))
-          return MATCH;
-        if ("include".equals(codeString))
-          return INCLUDE;
-        if ("outcome".equals(codeString))
-          return OUTCOME;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MATCH: return "match";
-            case INCLUDE: return "include";
-            case OUTCOME: return "outcome";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MATCH: return "http://hl7.org/fhir/search-entry-mode";
-            case INCLUDE: return "http://hl7.org/fhir/search-entry-mode";
-            case OUTCOME: return "http://hl7.org/fhir/search-entry-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MATCH: return "This resource matched the search specification.";
-            case INCLUDE: return "This resource is returned because it is referred to from another resource in the search set.";
-            case OUTCOME: return "An OperationOutcome that provides additional information about the processing of a search.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MATCH: return "Match";
-            case INCLUDE: return "Include";
-            case OUTCOME: return "Outcome";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class SearchEntryModeEnumFactory implements EnumFactory<SearchEntryMode> {
-    public SearchEntryMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("match".equals(codeString))
-          return SearchEntryMode.MATCH;
-        if ("include".equals(codeString))
-          return SearchEntryMode.INCLUDE;
-        if ("outcome".equals(codeString))
-          return SearchEntryMode.OUTCOME;
-        throw new IllegalArgumentException("Unknown SearchEntryMode code '"+codeString+"'");
-        }
-        public Enumeration<SearchEntryMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<SearchEntryMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("match".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH);
-        if ("include".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE);
-        if ("outcome".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME);
-        throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
-        }
-    public String toCode(SearchEntryMode code) {
-      if (code == SearchEntryMode.MATCH)
-        return "match";
-      if (code == SearchEntryMode.INCLUDE)
-        return "include";
-      if (code == SearchEntryMode.OUTCOME)
-        return "outcome";
-      return "?";
-      }
-    public String toSystem(SearchEntryMode code) {
-      return code.getSystem();
-      }
-    }
-
     public enum HTTPVerb {
         /**
          * HTTP GET Command.
@@ -540,6 +435,114 @@ public class Bundle extends Resource implements IBaseBundle {
       }
     }
 
+    public enum SearchEntryMode {
+        /**
+         * This resource matched the search specification.
+         */
+        MATCH, 
+        /**
+         * This resource is returned because it is referred to from another resource in the search set.
+         */
+        INCLUDE, 
+        /**
+         * An OperationOutcome that provides additional information about the processing of a search.
+         */
+        OUTCOME, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static SearchEntryMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("match".equals(codeString))
+          return MATCH;
+        if ("include".equals(codeString))
+          return INCLUDE;
+        if ("outcome".equals(codeString))
+          return OUTCOME;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MATCH: return "match";
+            case INCLUDE: return "include";
+            case OUTCOME: return "outcome";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case MATCH: return "http://hl7.org/fhir/search-entry-mode";
+            case INCLUDE: return "http://hl7.org/fhir/search-entry-mode";
+            case OUTCOME: return "http://hl7.org/fhir/search-entry-mode";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MATCH: return "This resource matched the search specification.";
+            case INCLUDE: return "This resource is returned because it is referred to from another resource in the search set.";
+            case OUTCOME: return "An OperationOutcome that provides additional information about the processing of a search.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MATCH: return "Match";
+            case INCLUDE: return "Include";
+            case OUTCOME: return "Outcome";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SearchEntryModeEnumFactory implements EnumFactory<SearchEntryMode> {
+    public SearchEntryMode fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("match".equals(codeString))
+          return SearchEntryMode.MATCH;
+        if ("include".equals(codeString))
+          return SearchEntryMode.INCLUDE;
+        if ("outcome".equals(codeString))
+          return SearchEntryMode.OUTCOME;
+        throw new IllegalArgumentException("Unknown SearchEntryMode code '"+codeString+"'");
+        }
+        public Enumeration<SearchEntryMode> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<SearchEntryMode>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("match".equals(codeString))
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH);
+        if ("include".equals(codeString))
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE);
+        if ("outcome".equals(codeString))
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME);
+        throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
+        }
+    public String toCode(SearchEntryMode code) {
+      if (code == SearchEntryMode.MATCH)
+        return "match";
+      if (code == SearchEntryMode.INCLUDE)
+        return "include";
+      if (code == SearchEntryMode.OUTCOME)
+        return "outcome";
+      return "?";
+      }
+    public String toSystem(SearchEntryMode code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class BundleLinkComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -568,10 +571,10 @@ public class Bundle extends Resource implements IBaseBundle {
     /**
      * Constructor
      */
-      public BundleLinkComponent(StringType relation, UriType url) {
+      public BundleLinkComponent(String relation, String url) {
         super();
-        this.relation = relation;
-        this.url = url;
+        this.setRelation(relation);
+        this.setUrl(url);
       }
 
         /**
@@ -738,10 +741,10 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("relation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.relation");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.link.relation");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.link.url");
         }
         else
           return super.addChild(name);
@@ -889,7 +892,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #link}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #link}, creating it if it does not already exist {3}
          */
         public BundleLinkComponent getLinkFirstRep() { 
           if (getLink().isEmpty()) {
@@ -1046,53 +1049,6 @@ public class Bundle extends Resource implements IBaseBundle {
           return this;
         }
 
- /**
-   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. 
-   * If no link is found which matches the given relation, returns <code>null</code>. If more than one
-   * link is found which matches the given relation, returns the first matching BundleLinkComponent.
-   * 
-   * @param theRelation
-   *            The relation, such as "next", or "self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.
-   * @return Returns a matching BundleLinkComponent, or <code>null</code>
-   * @see IBaseBundle#LINK_NEXT
-   * @see IBaseBundle#LINK_PREV
-   * @see IBaseBundle#LINK_SELF
-   */
-  public BundleLinkComponent getLink(String theRelation) {
-    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty");
-    for (BundleLinkComponent next : getLink()) {
-      if (theRelation.equals(next.getRelation())) {
-        return next;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. 
-   * If no link is found which matches the given relation, creates a new BundleLinkComponent with the
-   * given relation and adds it to this Bundle. If more than one
-   * link is found which matches the given relation, returns the first matching BundleLinkComponent.
-   * 
-   * @param theRelation
-   *            The relation, such as "next", or "self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.
-   * @return Returns a matching BundleLinkComponent, or <code>null</code>
-   * @see IBaseBundle#LINK_NEXT
-   * @see IBaseBundle#LINK_PREV
-   * @see IBaseBundle#LINK_SELF
-   */
-  public BundleLinkComponent getLinkOrCreate(String theRelation) {
-    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty");
-    for (BundleLinkComponent next : getLink()) {
-      if (theRelation.equals(next.getRelation())) {
-        return next;
-      }
-    }
-    BundleLinkComponent retVal = new BundleLinkComponent();
-    retVal.setRelation(theRelation);
-    getLink().add(retVal);
-    return retVal;
-  }
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("link", "@Bundle.link", "A series of links that provide context to this entry.", 0, java.lang.Integer.MAX_VALUE, link));
@@ -1210,10 +1166,10 @@ public class Bundle extends Resource implements IBaseBundle {
           return addLink();
         }
         else if (name.equals("fullUrl")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.fullUrl");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.fullUrl");
         }
         else if (name.equals("resource")) {
-          throw new FHIRException("Cannot call addChild on an abstract type Bundle.resource");
+          throw new FHIRException("Cannot call addChild on an abstract type Bundle.entry.resource");
         }
         else if (name.equals("search")) {
           this.search = new BundleEntrySearchComponent();
@@ -1283,6 +1239,57 @@ public class Bundle extends Resource implements IBaseBundle {
 
   }
 
+// added from java-adornments.txt:
+  /** 
+   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
+   * If no link is found which matches the given relation, returns <code>null</code>. If more than one 
+   * link is found which matches the given relation, returns the first matching BundleLinkComponent. 
+   *  
+   * @param theRelation 
+   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}. 
+   * @return Returns a matching BundleLinkComponent, or <code>null</code> 
+   * @see IBaseBundle#LINK_NEXT 
+   * @see IBaseBundle#LINK_PREV 
+   * @see IBaseBundle#LINK_SELF 
+   */ 
+  public BundleLinkComponent getLink(String theRelation) { 
+    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
+    for (BundleLinkComponent next : getLink()) { 
+      if (theRelation.equals(next.getRelation())) { 
+        return next; 
+      } 
+    } 
+    return null; 
+  } 
+  
+  /** 
+   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
+   * If no link is found which matches the given relation, creates a new BundleLinkComponent with the 
+   * given relation and adds it to this Bundle. If more than one 
+   * link is found which matches the given relation, returns the first matching BundleLinkComponent. 
+   *  
+   * @param theRelation 
+   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}. 
+   * @return Returns a matching BundleLinkComponent, or <code>null</code> 
+   * @see IBaseBundle#LINK_NEXT 
+   * @see IBaseBundle#LINK_PREV 
+   * @see IBaseBundle#LINK_SELF 
+   */ 
+  public BundleLinkComponent getLinkOrCreate(String theRelation) { 
+    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
+    for (BundleLinkComponent next : getLink()) { 
+      if (theRelation.equals(next.getRelation())) { 
+        return next; 
+      } 
+    } 
+    BundleLinkComponent retVal = new BundleLinkComponent(); 
+    retVal.setRelation(theRelation); 
+    getLink().add(retVal); 
+    return retVal; 
+  } 
+
+
+// end addition
   }
 
     @Block()
@@ -1503,10 +1510,10 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.search.mode");
         }
         else if (name.equals("score")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.score");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.search.score");
         }
         else
           return super.addChild(name);
@@ -1612,10 +1619,10 @@ public class Bundle extends Resource implements IBaseBundle {
     /**
      * Constructor
      */
-      public BundleEntryRequestComponent(Enumeration<HTTPVerb> method, UriType url) {
+      public BundleEntryRequestComponent(HTTPVerb method, String url) {
         super();
-        this.method = method;
-        this.url = url;
+        this.setMethod(method);
+        this.setUrl(url);
       }
 
         /**
@@ -2020,22 +2027,22 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("method")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.method");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.method");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.url");
         }
         else if (name.equals("ifNoneMatch")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.ifNoneMatch");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.ifNoneMatch");
         }
         else if (name.equals("ifModifiedSince")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.ifModifiedSince");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.ifModifiedSince");
         }
         else if (name.equals("ifMatch")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.ifMatch");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.ifMatch");
         }
         else if (name.equals("ifNoneExist")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.ifNoneExist");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.request.ifNoneExist");
         }
         else
           return super.addChild(name);
@@ -2142,9 +2149,9 @@ public class Bundle extends Resource implements IBaseBundle {
     /**
      * Constructor
      */
-      public BundleEntryResponseComponent(StringType status) {
+      public BundleEntryResponseComponent(String status) {
         super();
-        this.status = status;
+        this.setStatus(status);
       }
 
         /**
@@ -2462,19 +2469,19 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.response.status");
         }
         else if (name.equals("location")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.location");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.response.location");
         }
         else if (name.equals("etag")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.etag");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.response.etag");
         }
         else if (name.equals("lastModified")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Bundle.lastModified");
+          throw new FHIRException("Cannot call addChild on a primitive type Bundle.entry.response.lastModified");
         }
         else if (name.equals("outcome")) {
-          throw new FHIRException("Cannot call addChild on an abstract type Bundle.outcome");
+          throw new FHIRException("Cannot call addChild on an abstract type Bundle.entry.response.outcome");
         }
         else
           return super.addChild(name);
@@ -2591,9 +2598,9 @@ public class Bundle extends Resource implements IBaseBundle {
   /**
    * Constructor
    */
-    public Bundle(Enumeration<BundleType> type) {
+    public Bundle(BundleType type) {
       super();
-      this.type = type;
+      this.setType(type);
     }
 
     /**
@@ -2803,7 +2810,7 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #link}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #link}, creating it if it does not already exist {3}
      */
     public BundleLinkComponent getLinkFirstRep() { 
       if (getLink().isEmpty()) {
@@ -2856,7 +2863,7 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #entry}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #entry}, creating it if it does not already exist {3}
      */
     public BundleEntryComponent getEntryFirstRep() { 
       if (getEntry().isEmpty()) {
@@ -2889,53 +2896,6 @@ public class Bundle extends Resource implements IBaseBundle {
       return this;
     }
 
- /**
-   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. 
-   * If no link is found which matches the given relation, returns <code>null</code>. If more than one
-   * link is found which matches the given relation, returns the first matching BundleLinkComponent.
-   * 
-   * @param theRelation
-   *            The relation, such as "next", or "self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.
-   * @return Returns a matching BundleLinkComponent, or <code>null</code>
-   * @see IBaseBundle#LINK_NEXT
-   * @see IBaseBundle#LINK_PREV
-   * @see IBaseBundle#LINK_SELF
-   */
-  public BundleLinkComponent getLink(String theRelation) {
-    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty");
-    for (BundleLinkComponent next : getLink()) {
-      if (theRelation.equals(next.getRelation())) {
-        return next;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}. 
-   * If no link is found which matches the given relation, creates a new BundleLinkComponent with the
-   * given relation and adds it to this Bundle. If more than one
-   * link is found which matches the given relation, returns the first matching BundleLinkComponent.
-   * 
-   * @param theRelation
-   *            The relation, such as "next", or "self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}.
-   * @return Returns a matching BundleLinkComponent, or <code>null</code>
-   * @see IBaseBundle#LINK_NEXT
-   * @see IBaseBundle#LINK_PREV
-   * @see IBaseBundle#LINK_SELF
-   */
-  public BundleLinkComponent getLinkOrCreate(String theRelation) {
-    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty");
-    for (BundleLinkComponent next : getLink()) {
-      if (theRelation.equals(next.getRelation())) {
-        return next;
-      }
-    }
-    BundleLinkComponent retVal = new BundleLinkComponent();
-    retVal.setRelation(theRelation);
-    getLink().add(retVal);
-    return retVal;
-  }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A persistent identifier for the bundle that won't change as a bundle is copied from server to server.", 0, 1, identifier));
@@ -3156,6 +3116,32 @@ public class Bundle extends Resource implements IBaseBundle {
    }
 
  /**
+   * Search parameter: <b>composition</b>
+   * <p>
+   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference", target={Composition.class } )
+  public static final String SP_COMPOSITION = "composition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>composition</b>
+   * <p>
+   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSITION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Bundle:composition</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSITION = new ca.uhn.fhir.model.api.Include("Bundle:composition").toLocked();
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Persistent identifier for the bundle</b><br>
@@ -3176,57 +3162,11 @@ public class Bundle extends Resource implements IBaseBundle {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>composition</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry(0).resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference", target={Composition.class } )
-  public static final String SP_COMPOSITION = "composition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>composition</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry(0).resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSITION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Bundle:composition</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSITION = new ca.uhn.fhir.model.api.Include("Bundle:composition").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Bundle.type", description="document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
    * Search parameter: <b>message</b>
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry(0).resource</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
    * </p>
    */
   @SearchParamDefinition(name="message", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference", target={MessageHeader.class } )
@@ -3236,7 +3176,7 @@ public class Bundle extends Resource implements IBaseBundle {
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry(0).resource</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MESSAGE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MESSAGE);
@@ -3267,6 +3207,77 @@ public class Bundle extends Resource implements IBaseBundle {
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam TIMESTAMP = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_TIMESTAMP);
 
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Bundle.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Bundle.type", description="document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Bundle.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+// Manual code (from Configuration.txt)t:
+  /** 
+   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
+   * If no link is found which matches the given relation, returns <code>null</code>. If more than one 
+   * link is found which matches the given relation, returns the first matching BundleLinkComponent. 
+   *  
+   * @param theRelation 
+   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}. 
+   * @return Returns a matching BundleLinkComponent, or <code>null</code> 
+   * @see IBaseBundle#LINK_NEXT 
+   * @see IBaseBundle#LINK_PREV 
+   * @see IBaseBundle#LINK_SELF 
+   */ 
+  public BundleLinkComponent getLink(String theRelation) { 
+    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
+    for (BundleLinkComponent next : getLink()) { 
+      if (theRelation.equals(next.getRelation())) { 
+        return next; 
+      } 
+    } 
+    return null; 
+  } 
+
+  /** 
+   * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
+   * If no link is found which matches the given relation, creates a new BundleLinkComponent with the 
+   * given relation and adds it to this Bundle. If more than one 
+   * link is found which matches the given relation, returns the first matching BundleLinkComponent. 
+   *  
+   * @param theRelation 
+   *            The relation, such as \"next\", or \"self. See the constants such as {@link IBaseBundle#LINK_SELF} and {@link IBaseBundle#LINK_NEXT}. 
+   * @return Returns a matching BundleLinkComponent, or <code>null</code> 
+   * @see IBaseBundle#LINK_NEXT 
+   * @see IBaseBundle#LINK_PREV 
+   * @see IBaseBundle#LINK_SELF 
+   */ 
+  public BundleLinkComponent getLinkOrCreate(String theRelation) { 
+    org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
+    for (BundleLinkComponent next : getLink()) { 
+      if (theRelation.equals(next.getRelation())) { 
+        return next; 
+      } 
+    } 
+    BundleLinkComponent retVal = new BundleLinkComponent(); 
+    retVal.setRelation(theRelation); 
+    getLink().add(retVal); 
+    return retVal; 
+  } 
+
+
+// end addition
 
 }
 

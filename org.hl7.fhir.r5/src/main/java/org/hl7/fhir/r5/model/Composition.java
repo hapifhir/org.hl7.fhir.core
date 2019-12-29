@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,291 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).
  */
 @ResourceDef(name="Composition", profile="http://hl7.org/fhir/StructureDefinition/Composition")
 public class Composition extends DomainResource {
-
-    public enum CompositionStatus {
-        /**
-         * This is a preliminary composition or document (also known as initial or interim). The content may be incomplete or unverified.
-         */
-        PRELIMINARY, 
-        /**
-         * This version of the composition is complete and verified by an appropriate person and no further work is planned. Any subsequent updates would be on a new version of the composition.
-         */
-        FINAL, 
-        /**
-         * The composition content or the referenced resources have been modified (edited or added to) subsequent to being released as "final" and the composition is complete and verified by an authorized person.
-         */
-        AMENDED, 
-        /**
-         * The composition or document was originally created/issued in error, and this is an amendment that marks that the entire series should not be considered as valid.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CompositionStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("preliminary".equals(codeString))
-          return PRELIMINARY;
-        if ("final".equals(codeString))
-          return FINAL;
-        if ("amended".equals(codeString))
-          return AMENDED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRELIMINARY: return "preliminary";
-            case FINAL: return "final";
-            case AMENDED: return "amended";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PRELIMINARY: return "http://hl7.org/fhir/composition-status";
-            case FINAL: return "http://hl7.org/fhir/composition-status";
-            case AMENDED: return "http://hl7.org/fhir/composition-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/composition-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRELIMINARY: return "This is a preliminary composition or document (also known as initial or interim). The content may be incomplete or unverified.";
-            case FINAL: return "This version of the composition is complete and verified by an appropriate person and no further work is planned. Any subsequent updates would be on a new version of the composition.";
-            case AMENDED: return "The composition content or the referenced resources have been modified (edited or added to) subsequent to being released as \"final\" and the composition is complete and verified by an authorized person.";
-            case ENTEREDINERROR: return "The composition or document was originally created/issued in error, and this is an amendment that marks that the entire series should not be considered as valid.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRELIMINARY: return "Preliminary";
-            case FINAL: return "Final";
-            case AMENDED: return "Amended";
-            case ENTEREDINERROR: return "Entered in Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CompositionStatusEnumFactory implements EnumFactory<CompositionStatus> {
-    public CompositionStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("preliminary".equals(codeString))
-          return CompositionStatus.PRELIMINARY;
-        if ("final".equals(codeString))
-          return CompositionStatus.FINAL;
-        if ("amended".equals(codeString))
-          return CompositionStatus.AMENDED;
-        if ("entered-in-error".equals(codeString))
-          return CompositionStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown CompositionStatus code '"+codeString+"'");
-        }
-        public Enumeration<CompositionStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CompositionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("preliminary".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.PRELIMINARY);
-        if ("final".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.FINAL);
-        if ("amended".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.AMENDED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
-        }
-    public String toCode(CompositionStatus code) {
-      if (code == CompositionStatus.PRELIMINARY)
-        return "preliminary";
-      if (code == CompositionStatus.FINAL)
-        return "final";
-      if (code == CompositionStatus.AMENDED)
-        return "amended";
-      if (code == CompositionStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    public String toSystem(CompositionStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DocumentConfidentiality {
-        /**
-         * null
-         */
-        U, 
-        /**
-         * null
-         */
-        L, 
-        /**
-         * null
-         */
-        M, 
-        /**
-         * null
-         */
-        N, 
-        /**
-         * null
-         */
-        R, 
-        /**
-         * null
-         */
-        V, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DocumentConfidentiality fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("U".equals(codeString))
-          return U;
-        if ("L".equals(codeString))
-          return L;
-        if ("M".equals(codeString))
-          return M;
-        if ("N".equals(codeString))
-          return N;
-        if ("R".equals(codeString))
-          return R;
-        if ("V".equals(codeString))
-          return V;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DocumentConfidentiality code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case U: return "U";
-            case L: return "L";
-            case M: return "M";
-            case N: return "N";
-            case R: return "R";
-            case V: return "V";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case U: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            case L: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            case M: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            case N: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            case R: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            case V: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case U: return "";
-            case L: return "";
-            case M: return "";
-            case N: return "";
-            case R: return "";
-            case V: return "";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case U: return "U";
-            case L: return "L";
-            case M: return "M";
-            case N: return "N";
-            case R: return "R";
-            case V: return "V";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DocumentConfidentialityEnumFactory implements EnumFactory<DocumentConfidentiality> {
-    public DocumentConfidentiality fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("U".equals(codeString))
-          return DocumentConfidentiality.U;
-        if ("L".equals(codeString))
-          return DocumentConfidentiality.L;
-        if ("M".equals(codeString))
-          return DocumentConfidentiality.M;
-        if ("N".equals(codeString))
-          return DocumentConfidentiality.N;
-        if ("R".equals(codeString))
-          return DocumentConfidentiality.R;
-        if ("V".equals(codeString))
-          return DocumentConfidentiality.V;
-        throw new IllegalArgumentException("Unknown DocumentConfidentiality code '"+codeString+"'");
-        }
-        public Enumeration<DocumentConfidentiality> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DocumentConfidentiality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("U".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.U);
-        if ("L".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.L);
-        if ("M".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.M);
-        if ("N".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.N);
-        if ("R".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.R);
-        if ("V".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.V);
-        throw new FHIRException("Unknown DocumentConfidentiality code '"+codeString+"'");
-        }
-    public String toCode(DocumentConfidentiality code) {
-      if (code == DocumentConfidentiality.U)
-        return "U";
-      if (code == DocumentConfidentiality.L)
-        return "L";
-      if (code == DocumentConfidentiality.M)
-        return "M";
-      if (code == DocumentConfidentiality.N)
-        return "N";
-      if (code == DocumentConfidentiality.R)
-        return "R";
-      if (code == DocumentConfidentiality.V)
-        return "V";
-      return "?";
-      }
-    public String toSystem(DocumentConfidentiality code) {
-      return code.getSystem();
-      }
-    }
 
     public enum CompositionAttestationMode {
         /**
@@ -475,234 +197,158 @@ public class Composition extends DomainResource {
       }
     }
 
-    public enum DocumentRelationshipType {
+    public enum V3ConfidentialityClassification {
         /**
-         * This document logically replaces or supersedes the target document.
+         * Privacy metadata indicating that no level of protection is required to safeguard personal and healthcare information that has been disclosed by an authorized individual without restrictions on its use.\r\n\n                        \n                           Examples: Includes publicly available information e.g., business name, phone, email and physical address.\r\n\n                        \n                           Usage Note: The authorization to collect, access, use, and disclose this information may be stipulated in a contract of adhesion by a data user (e.g., via terms of service or data user privacy policies) in exchange for the data subject's use of a service.\r\n\n                        This metadata indicates that the receiver has no obligation to consider privacy policies other than its own when making access control decisions.\r\n\n                        This metadata indicates that the receiver has no obligation to consider privacy policies other than its own when making access control decisions.\r\n\n                        Confidentiality code total order hierarchy: Unrestricted (U) is less protective than V, R, N, M, and L, and is the lowest protection levels.
          */
-        REPLACES, 
+        U, 
         /**
-         * This document was generated by transforming the target document (e.g. format or language conversion).
+         * Privacy metadata indicating that a low level of protection is required to safeguard personal and healthcare information, which has been altered in such a way as to minimize the need for confidentiality protections with some residual risks associated with re-linking. The risk of harm to an individual's reputation and sense of privacy if disclosed without authorization is considered negligible, and mitigations are in place to address reidentification risk.\r\n\n                        \n                           Usage Note: \n                        \r\nThe level of protection afforded anonymized and pseudonymized, and non-personally identifiable information (e.g., a limited data set) is dictated by privacy policies and data use agreements intended to engender trust that health information can be used and disclosed with little or no risk of re-identification.\n                           Example: Personal and healthcare information, which excludes 16 designated categories of direct identifiers in a HIPAA Limited Data Set. This information may be disclosed by HIPAA Covered Entities without patient authorization for a research, public health, and operations purposes if conditions are met, which includes obtaining a signed data use agreement from the recipient. See 45 CFR Section 164.514.\r\n\n                        This metadata indicates that the receiver may have an obligation to comply with a data use agreement with the discloser. The discloser may have obligations to comply with policies dictating the methods for de-identification.\r\n\n                        Confidentiality code total order hierarchy: Low (L) is less protective than V, R, N, and M, and subsumes U.
          */
-        TRANSFORMS, 
+        L, 
         /**
-         * This document is a signature of the target document.
+         * Privacy metadata indicating the level of protection required to safeguard personal and healthcare information, which if disclosed without authorization, would present a moderate risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded moderately confidential information is dictated by privacy policies intended to engender trust in a service provider. May include publicly available information in jurisdictions that restrict uses of that information without the consent of the data subject.\r\n\n                        Privacy policies mandating moderate levels of protection, which preempt less protective privacy policies. \"Moderate\" confidentiality policies differ from and would be preempted by the prevailing privacy policies mandating the normative level of protection for information used in the delivery and management of healthcare.\r\n\n                        Confidentiality code total order hierarchy: Moderate (M) is less protective than V, R, and N, and subsumes all other protection levels (i.e., L and U).\r\n\n                        \n                           Examples: Includes personal and health information that an individual authorizes to be collected, accessed, used or disclosed to a bank for a health credit card or savings account; to health oversight authorities; to a hospital patient directory; to worker compensation, disability, property and casualty or life insurers; and to personal health record systems, consumer-controlled devices, social media accounts and online Apps; or for marketing purposes
          */
-        SIGNS, 
+        M, 
         /**
-         * This document adds additional information to the target document.
+         * Privacy metadata indicating the level of protection required to safeguard personal and healthcare information, which if disclosed without authorization, would present a considerable risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded normatively confidential information is dictated by the prevailing normative privacy policies, which are intended to engender patient trust in their healthcare providers.\r\n\n                        Privacy policies mandating normative levels of protection, which preempt less protective privacy policies when the information is used in the delivery and management of healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment).\r\n\n                        Confidentiality code total order hierarchy: Normal (N) is less protective than V and R, and subsumes all other protection levels (i.e., M, L, and U).\r\n\n                        \n                           Map:Partial Map to ISO 13606-4 Sensitivity Level (3) Clinical Care when purpose of use is treatment: Default for normal clinical care access (i.e., most clinical staff directly caring for the patient should be able to access nearly all of the EHR). Maps to normal confidentiality for treatment information but not to ancillary care, payment and operations. \r\n\n                        \n                           Examples: \n                        \r\nn the US, this includes what HIPAA identifies as protected health information (PHI) under 45 CFR Section 160.103.
          */
-        APPENDS, 
+        N, 
+        /**
+         * Privacy metadata indicating the level of protection required to safeguard potentially stigmatizing information, which if disclosed without authorization, would present a high risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded restricted confidential information is dictated by specially protective organizational or jurisdictional privacy policies, including at an authorized individualâ€™s request, intended to engender patient trust in providers of sensitive services.\r\n\n                        Privacy policies mandating additional levels of protection by restricting information access preempt less protective privacy policies when the information is used in the delivery and management of healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment).\r\n\n                        Confidentiality code total order hierarchy: Restricted (R) is less protective than V, and subsumes all other protection levels (i.e., N, M, L, and U).\r\n\n                        \n                           Examples: \n                        \r\nIncludes information that is additionally protected such as sensitive conditions mental health, HIV, substance abuse, domestic violence, child abuse, genetic disease, and reproductive health; or sensitive demographic information such as a patientâ€™s standing as an employee or a celebrity. May be used to indicate proprietary or classified information that is not related to an individual (e.g., secret ingredients in a therapeutic substance; or the name of a manufacturer).
+         */
+        R, 
+        /**
+         * Privacy metadata indicating the level of protection required under atypical cicumstances to safeguard potentially damaging or harmful information, which if disclosed without authorization, would (1) present an extremely high risk of harm to an individual's reputation, sense of privacy, and possibly safety; or (2) impact an individual's or organization's legal matters.\r\n\n                        \n                           Usage Note: The level of protection afforded very restricted confidential information is dictated by specially protective privacy or legal policies intended to ensure that under atypical circumstances additional protections limit access to only those with a high 'need to know' and the information is kept in highest confidence..\r\n\n                        Privacy and legal policies mandating the highest level of protection by stringently restricting information access, preempt less protective privacy policies when the information is used in the delivery and management of healthcare including legal proceedings related to healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment but only under limited circumstances).\r\n\n                        Confidentiality code total order hierarchy: Very Restricted (V) is the highest protection level and subsumes all other protection levels s (i.e., R, N, M, L, and UI).\r\n\n                        \n                           Examples: \n                        \r\nIncludes information about a victim of abuse, patient requested information sensitivity, and taboo subjects relating to health status that must be discussed with the patient by an attending provider before sharing with the patient. May also include information held under a legal hold or attorney-client privilege.
+         */
+        V, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DocumentRelationshipType fromCode(String codeString) throws FHIRException {
+        public static V3ConfidentialityClassification fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("replaces".equals(codeString))
-          return REPLACES;
-        if ("transforms".equals(codeString))
-          return TRANSFORMS;
-        if ("signs".equals(codeString))
-          return SIGNS;
-        if ("appends".equals(codeString))
-          return APPENDS;
+        if ("U".equals(codeString))
+          return U;
+        if ("L".equals(codeString))
+          return L;
+        if ("M".equals(codeString))
+          return M;
+        if ("N".equals(codeString))
+          return N;
+        if ("R".equals(codeString))
+          return R;
+        if ("V".equals(codeString))
+          return V;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
+          throw new FHIRException("Unknown V3ConfidentialityClassification code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case REPLACES: return "replaces";
-            case TRANSFORMS: return "transforms";
-            case SIGNS: return "signs";
-            case APPENDS: return "appends";
+            case U: return "U";
+            case L: return "L";
+            case M: return "M";
+            case N: return "N";
+            case R: return "R";
+            case V: return "V";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case REPLACES: return "http://hl7.org/fhir/document-relationship-type";
-            case TRANSFORMS: return "http://hl7.org/fhir/document-relationship-type";
-            case SIGNS: return "http://hl7.org/fhir/document-relationship-type";
-            case APPENDS: return "http://hl7.org/fhir/document-relationship-type";
+            case U: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            case L: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            case M: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            case N: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            case R: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
+            case V: return "http://terminology.hl7.org/CodeSystem/v3-Confidentiality";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case REPLACES: return "This document logically replaces or supersedes the target document.";
-            case TRANSFORMS: return "This document was generated by transforming the target document (e.g. format or language conversion).";
-            case SIGNS: return "This document is a signature of the target document.";
-            case APPENDS: return "This document adds additional information to the target document.";
+            case U: return "Privacy metadata indicating that no level of protection is required to safeguard personal and healthcare information that has been disclosed by an authorized individual without restrictions on its use.\r\n\n                        \n                           Examples: Includes publicly available information e.g., business name, phone, email and physical address.\r\n\n                        \n                           Usage Note: The authorization to collect, access, use, and disclose this information may be stipulated in a contract of adhesion by a data user (e.g., via terms of service or data user privacy policies) in exchange for the data subject's use of a service.\r\n\n                        This metadata indicates that the receiver has no obligation to consider privacy policies other than its own when making access control decisions.\r\n\n                        This metadata indicates that the receiver has no obligation to consider privacy policies other than its own when making access control decisions.\r\n\n                        Confidentiality code total order hierarchy: Unrestricted (U) is less protective than V, R, N, M, and L, and is the lowest protection levels.";
+            case L: return "Privacy metadata indicating that a low level of protection is required to safeguard personal and healthcare information, which has been altered in such a way as to minimize the need for confidentiality protections with some residual risks associated with re-linking. The risk of harm to an individual's reputation and sense of privacy if disclosed without authorization is considered negligible, and mitigations are in place to address reidentification risk.\r\n\n                        \n                           Usage Note: \n                        \r\nThe level of protection afforded anonymized and pseudonymized, and non-personally identifiable information (e.g., a limited data set) is dictated by privacy policies and data use agreements intended to engender trust that health information can be used and disclosed with little or no risk of re-identification.\n                           Example: Personal and healthcare information, which excludes 16 designated categories of direct identifiers in a HIPAA Limited Data Set. This information may be disclosed by HIPAA Covered Entities without patient authorization for a research, public health, and operations purposes if conditions are met, which includes obtaining a signed data use agreement from the recipient. See 45 CFR Section 164.514.\r\n\n                        This metadata indicates that the receiver may have an obligation to comply with a data use agreement with the discloser. The discloser may have obligations to comply with policies dictating the methods for de-identification.\r\n\n                        Confidentiality code total order hierarchy: Low (L) is less protective than V, R, N, and M, and subsumes U.";
+            case M: return "Privacy metadata indicating the level of protection required to safeguard personal and healthcare information, which if disclosed without authorization, would present a moderate risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded moderately confidential information is dictated by privacy policies intended to engender trust in a service provider. May include publicly available information in jurisdictions that restrict uses of that information without the consent of the data subject.\r\n\n                        Privacy policies mandating moderate levels of protection, which preempt less protective privacy policies. \"Moderate\" confidentiality policies differ from and would be preempted by the prevailing privacy policies mandating the normative level of protection for information used in the delivery and management of healthcare.\r\n\n                        Confidentiality code total order hierarchy: Moderate (M) is less protective than V, R, and N, and subsumes all other protection levels (i.e., L and U).\r\n\n                        \n                           Examples: Includes personal and health information that an individual authorizes to be collected, accessed, used or disclosed to a bank for a health credit card or savings account; to health oversight authorities; to a hospital patient directory; to worker compensation, disability, property and casualty or life insurers; and to personal health record systems, consumer-controlled devices, social media accounts and online Apps; or for marketing purposes";
+            case N: return "Privacy metadata indicating the level of protection required to safeguard personal and healthcare information, which if disclosed without authorization, would present a considerable risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded normatively confidential information is dictated by the prevailing normative privacy policies, which are intended to engender patient trust in their healthcare providers.\r\n\n                        Privacy policies mandating normative levels of protection, which preempt less protective privacy policies when the information is used in the delivery and management of healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment).\r\n\n                        Confidentiality code total order hierarchy: Normal (N) is less protective than V and R, and subsumes all other protection levels (i.e., M, L, and U).\r\n\n                        \n                           Map:Partial Map to ISO 13606-4 Sensitivity Level (3) Clinical Care when purpose of use is treatment: Default for normal clinical care access (i.e., most clinical staff directly caring for the patient should be able to access nearly all of the EHR). Maps to normal confidentiality for treatment information but not to ancillary care, payment and operations. \r\n\n                        \n                           Examples: \n                        \r\nn the US, this includes what HIPAA identifies as protected health information (PHI) under 45 CFR Section 160.103.";
+            case R: return "Privacy metadata indicating the level of protection required to safeguard potentially stigmatizing information, which if disclosed without authorization, would present a high risk of harm to an individual's reputation and sense of privacy.\r\n\n                        \n                           Usage Note: The level of protection afforded restricted confidential information is dictated by specially protective organizational or jurisdictional privacy policies, including at an authorized individualâ€™s request, intended to engender patient trust in providers of sensitive services.\r\n\n                        Privacy policies mandating additional levels of protection by restricting information access preempt less protective privacy policies when the information is used in the delivery and management of healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment).\r\n\n                        Confidentiality code total order hierarchy: Restricted (R) is less protective than V, and subsumes all other protection levels (i.e., N, M, L, and U).\r\n\n                        \n                           Examples: \n                        \r\nIncludes information that is additionally protected such as sensitive conditions mental health, HIV, substance abuse, domestic violence, child abuse, genetic disease, and reproductive health; or sensitive demographic information such as a patientâ€™s standing as an employee or a celebrity. May be used to indicate proprietary or classified information that is not related to an individual (e.g., secret ingredients in a therapeutic substance; or the name of a manufacturer).";
+            case V: return "Privacy metadata indicating the level of protection required under atypical cicumstances to safeguard potentially damaging or harmful information, which if disclosed without authorization, would (1) present an extremely high risk of harm to an individual's reputation, sense of privacy, and possibly safety; or (2) impact an individual's or organization's legal matters.\r\n\n                        \n                           Usage Note: The level of protection afforded very restricted confidential information is dictated by specially protective privacy or legal policies intended to ensure that under atypical circumstances additional protections limit access to only those with a high 'need to know' and the information is kept in highest confidence..\r\n\n                        Privacy and legal policies mandating the highest level of protection by stringently restricting information access, preempt less protective privacy policies when the information is used in the delivery and management of healthcare including legal proceedings related to healthcare. May be pre-empted by jurisdictional law (e.g., for public health reporting or emergency treatment but only under limited circumstances).\r\n\n                        Confidentiality code total order hierarchy: Very Restricted (V) is the highest protection level and subsumes all other protection levels s (i.e., R, N, M, L, and UI).\r\n\n                        \n                           Examples: \n                        \r\nIncludes information about a victim of abuse, patient requested information sensitivity, and taboo subjects relating to health status that must be discussed with the patient by an attending provider before sharing with the patient. May also include information held under a legal hold or attorney-client privilege.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case REPLACES: return "Replaces";
-            case TRANSFORMS: return "Transforms";
-            case SIGNS: return "Signs";
-            case APPENDS: return "Appends";
+            case U: return "unrestricted";
+            case L: return "low";
+            case M: return "moderate";
+            case N: return "normal";
+            case R: return "restricted";
+            case V: return "very restricted";
             default: return "?";
           }
         }
     }
 
-  public static class DocumentRelationshipTypeEnumFactory implements EnumFactory<DocumentRelationshipType> {
-    public DocumentRelationshipType fromCode(String codeString) throws IllegalArgumentException {
+  public static class V3ConfidentialityClassificationEnumFactory implements EnumFactory<V3ConfidentialityClassification> {
+    public V3ConfidentialityClassification fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("replaces".equals(codeString))
-          return DocumentRelationshipType.REPLACES;
-        if ("transforms".equals(codeString))
-          return DocumentRelationshipType.TRANSFORMS;
-        if ("signs".equals(codeString))
-          return DocumentRelationshipType.SIGNS;
-        if ("appends".equals(codeString))
-          return DocumentRelationshipType.APPENDS;
-        throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
+        if ("U".equals(codeString))
+          return V3ConfidentialityClassification.U;
+        if ("L".equals(codeString))
+          return V3ConfidentialityClassification.L;
+        if ("M".equals(codeString))
+          return V3ConfidentialityClassification.M;
+        if ("N".equals(codeString))
+          return V3ConfidentialityClassification.N;
+        if ("R".equals(codeString))
+          return V3ConfidentialityClassification.R;
+        if ("V".equals(codeString))
+          return V3ConfidentialityClassification.V;
+        throw new IllegalArgumentException("Unknown V3ConfidentialityClassification code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<V3ConfidentialityClassification> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentRelationshipType>(this);
+            return new Enumeration<V3ConfidentialityClassification>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("replaces".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES);
-        if ("transforms".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS);
-        if ("signs".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS);
-        if ("appends".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS);
-        throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
+        if ("U".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.U);
+        if ("L".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.L);
+        if ("M".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.M);
+        if ("N".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.N);
+        if ("R".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.R);
+        if ("V".equals(codeString))
+          return new Enumeration<V3ConfidentialityClassification>(this, V3ConfidentialityClassification.V);
+        throw new FHIRException("Unknown V3ConfidentialityClassification code '"+codeString+"'");
         }
-    public String toCode(DocumentRelationshipType code) {
-      if (code == DocumentRelationshipType.REPLACES)
-        return "replaces";
-      if (code == DocumentRelationshipType.TRANSFORMS)
-        return "transforms";
-      if (code == DocumentRelationshipType.SIGNS)
-        return "signs";
-      if (code == DocumentRelationshipType.APPENDS)
-        return "appends";
+    public String toCode(V3ConfidentialityClassification code) {
+      if (code == V3ConfidentialityClassification.U)
+        return "U";
+      if (code == V3ConfidentialityClassification.L)
+        return "L";
+      if (code == V3ConfidentialityClassification.M)
+        return "M";
+      if (code == V3ConfidentialityClassification.N)
+        return "N";
+      if (code == V3ConfidentialityClassification.R)
+        return "R";
+      if (code == V3ConfidentialityClassification.V)
+        return "V";
       return "?";
       }
-    public String toSystem(DocumentRelationshipType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum SectionMode {
-        /**
-         * This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.
-         */
-        WORKING, 
-        /**
-         * This list was prepared as a snapshot. It should not be assumed to be current.
-         */
-        SNAPSHOT, 
-        /**
-         * A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.
-         */
-        CHANGES, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static SectionMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("working".equals(codeString))
-          return WORKING;
-        if ("snapshot".equals(codeString))
-          return SNAPSHOT;
-        if ("changes".equals(codeString))
-          return CHANGES;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown SectionMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case WORKING: return "working";
-            case SNAPSHOT: return "snapshot";
-            case CHANGES: return "changes";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case WORKING: return "http://hl7.org/fhir/list-mode";
-            case SNAPSHOT: return "http://hl7.org/fhir/list-mode";
-            case CHANGES: return "http://hl7.org/fhir/list-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case WORKING: return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
-            case SNAPSHOT: return "This list was prepared as a snapshot. It should not be assumed to be current.";
-            case CHANGES: return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case WORKING: return "Working List";
-            case SNAPSHOT: return "Snapshot List";
-            case CHANGES: return "Change List";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class SectionModeEnumFactory implements EnumFactory<SectionMode> {
-    public SectionMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("working".equals(codeString))
-          return SectionMode.WORKING;
-        if ("snapshot".equals(codeString))
-          return SectionMode.SNAPSHOT;
-        if ("changes".equals(codeString))
-          return SectionMode.CHANGES;
-        throw new IllegalArgumentException("Unknown SectionMode code '"+codeString+"'");
-        }
-        public Enumeration<SectionMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<SectionMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("working".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.WORKING);
-        if ("snapshot".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.SNAPSHOT);
-        if ("changes".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.CHANGES);
-        throw new FHIRException("Unknown SectionMode code '"+codeString+"'");
-        }
-    public String toCode(SectionMode code) {
-      if (code == SectionMode.WORKING)
-        return "working";
-      if (code == SectionMode.SNAPSHOT)
-        return "snapshot";
-      if (code == SectionMode.CHANGES)
-        return "changes";
-      return "?";
-      }
-    public String toSystem(SectionMode code) {
+    public String toSystem(V3ConfidentialityClassification code) {
       return code.getSystem();
       }
     }
@@ -743,9 +389,9 @@ public class Composition extends DomainResource {
     /**
      * Constructor
      */
-      public CompositionAttesterComponent(Enumeration<CompositionAttestationMode> mode) {
+      public CompositionAttesterComponent(CompositionAttestationMode mode) {
         super();
-        this.mode = mode;
+        this.setMode(mode);
       }
 
         /**
@@ -952,10 +598,10 @@ public class Composition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type Composition.attester.mode");
         }
         else if (name.equals("time")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.time");
+          throw new FHIRException("Cannot call addChild on a primitive type Composition.attester.time");
         }
         else if (name.equals("party")) {
           this.party = new Reference();
@@ -1027,7 +673,7 @@ public class Composition extends DomainResource {
         @Description(shortDefinition="Target of the relationship", formalDefinition="The target composition/document of this relationship." )
         protected DataType target;
 
-        private static final long serialVersionUID = 1536930280L;
+        private static final long serialVersionUID = -897077070L;
 
     /**
      * Constructor
@@ -1039,10 +685,10 @@ public class Composition extends DomainResource {
     /**
      * Constructor
      */
-      public CompositionRelatesToComponent(Enumeration<DocumentRelationshipType> code, DataType target) {
+      public CompositionRelatesToComponent(DocumentRelationshipType code, DataType target) {
         super();
-        this.code = code;
-        this.target = target;
+        this.setCode(code);
+        this.setTarget(target);
       }
 
         /**
@@ -1153,8 +799,8 @@ public class Composition extends DomainResource {
           case 3059181: /*code*/  return new Property("code", "code", "The type of relationship that this composition has with anther composition or document.", 0, 1, code);
           case -815579825: /*target[x]*/  return new Property("target[x]", "Identifier|Reference(Composition)", "The target composition/document of this relationship.", 0, 1, target);
           case -880905839: /*target*/  return new Property("target[x]", "Identifier|Reference(Composition)", "The target composition/document of this relationship.", 0, 1, target);
-          case 1690892570: /*targetIdentifier*/  return new Property("target[x]", "Identifier|Reference(Composition)", "The target composition/document of this relationship.", 0, 1, target);
-          case 1259806906: /*targetReference*/  return new Property("target[x]", "Identifier|Reference(Composition)", "The target composition/document of this relationship.", 0, 1, target);
+          case 1690892570: /*targetIdentifier*/  return new Property("target[x]", "Identifier", "The target composition/document of this relationship.", 0, 1, target);
+          case 1259806906: /*targetReference*/  return new Property("target[x]", "Reference(Composition)", "The target composition/document of this relationship.", 0, 1, target);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1164,7 +810,7 @@ public class Composition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<DocumentRelationshipType>
-        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // Type
+        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1178,7 +824,7 @@ public class Composition extends DomainResource {
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
           return value;
         case -880905839: // target
-          this.target = TypeConvertor.castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1191,7 +837,7 @@ public class Composition extends DomainResource {
           value = new DocumentRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<DocumentRelationshipType>
         } else if (name.equals("target[x]")) {
-          this.target = TypeConvertor.castToType(value); // Type
+          this.target = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1221,7 +867,7 @@ public class Composition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.code");
+          throw new FHIRException("Cannot call addChild on a primitive type Composition.relatesTo.code");
         }
         else if (name.equals("targetIdentifier")) {
           this.target = new Identifier();
@@ -1355,7 +1001,7 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -1432,7 +1078,7 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist {3}
          */
         public Reference getDetailFirstRep() { 
           if (getDetail().isEmpty()) {
@@ -1635,7 +1281,7 @@ public class Composition extends DomainResource {
         @Child(name = "mode", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="working | snapshot | changes", formalDefinition="How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/list-mode")
-        protected Enumeration<SectionMode> mode;
+        protected Enumeration<ListMode> mode;
 
         /**
          * Specifies the order applied to the items in the section entries.
@@ -1667,7 +1313,7 @@ public class Composition extends DomainResource {
         @Description(shortDefinition="Nested Section", formalDefinition="A nested sub-section within this section." )
         protected List<SectionComponent> section;
 
-        private static final long serialVersionUID = -847581996L;
+        private static final long serialVersionUID = 911563193L;
 
     /**
      * Constructor
@@ -1793,7 +1439,7 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
          */
         public Reference getAuthorFirstRep() { 
           if (getAuthor().isEmpty()) {
@@ -1853,12 +1499,12 @@ public class Composition extends DomainResource {
         /**
          * @return {@link #mode} (How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
          */
-        public Enumeration<SectionMode> getModeElement() { 
+        public Enumeration<ListMode> getModeElement() { 
           if (this.mode == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SectionComponent.mode");
             else if (Configuration.doAutoCreate())
-              this.mode = new Enumeration<SectionMode>(new SectionModeEnumFactory()); // bb
+              this.mode = new Enumeration<ListMode>(new ListModeEnumFactory()); // bb
           return this.mode;
         }
 
@@ -1873,7 +1519,7 @@ public class Composition extends DomainResource {
         /**
          * @param value {@link #mode} (How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
          */
-        public SectionComponent setModeElement(Enumeration<SectionMode> value) { 
+        public SectionComponent setModeElement(Enumeration<ListMode> value) { 
           this.mode = value;
           return this;
         }
@@ -1881,19 +1527,19 @@ public class Composition extends DomainResource {
         /**
          * @return How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.
          */
-        public SectionMode getMode() { 
+        public ListMode getMode() { 
           return this.mode == null ? null : this.mode.getValue();
         }
 
         /**
          * @param value How the entry list was prepared - whether it is a working list that is suitable for being maintained on an ongoing basis, or if it represents a snapshot of a list of items from another source, or whether it is a prepared list where items may be marked as added, modified or deleted.
          */
-        public SectionComponent setMode(SectionMode value) { 
+        public SectionComponent setMode(ListMode value) { 
           if (value == null)
             this.mode = null;
           else {
             if (this.mode == null)
-              this.mode = new Enumeration<SectionMode>(new SectionModeEnumFactory());
+              this.mode = new Enumeration<ListMode>(new ListModeEnumFactory());
             this.mode.setValue(value);
           }
           return this;
@@ -1967,7 +1613,7 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #entry}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #entry}, creating it if it does not already exist {3}
          */
         public Reference getEntryFirstRep() { 
           if (getEntry().isEmpty()) {
@@ -2044,7 +1690,7 @@ public class Composition extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #section}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #section}, creating it if it does not already exist {3}
          */
         public SectionComponent getSectionFirstRep() { 
           if (getSection().isEmpty()) {
@@ -2093,7 +1739,7 @@ public class Composition extends DomainResource {
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // Reference
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : new Base[] {this.focus}; // Reference
         case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // Narrative
-        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<SectionMode>
+        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<ListMode>
         case -391079516: /*orderedBy*/ return this.orderedBy == null ? new Base[0] : new Base[] {this.orderedBy}; // CodeableConcept
         case 96667762: /*entry*/ return this.entry == null ? new Base[0] : this.entry.toArray(new Base[this.entry.size()]); // Reference
         case 1140135409: /*emptyReason*/ return this.emptyReason == null ? new Base[0] : new Base[] {this.emptyReason}; // CodeableConcept
@@ -2122,8 +1768,8 @@ public class Composition extends DomainResource {
           this.text = TypeConvertor.castToNarrative(value); // Narrative
           return value;
         case 3357091: // mode
-          value = new SectionModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<SectionMode>
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<ListMode>
           return value;
         case -391079516: // orderedBy
           this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2155,8 +1801,8 @@ public class Composition extends DomainResource {
         } else if (name.equals("text")) {
           this.text = TypeConvertor.castToNarrative(value); // Narrative
         } else if (name.equals("mode")) {
-          value = new SectionModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<SectionMode>
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<ListMode>
         } else if (name.equals("orderedBy")) {
           this.orderedBy = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("entry")) {
@@ -2209,7 +1855,7 @@ public class Composition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type Composition.section.title");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2227,7 +1873,7 @@ public class Composition extends DomainResource {
           return this.text;
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Composition.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type Composition.section.mode");
         }
         else if (name.equals("orderedBy")) {
           this.orderedBy = new CodeableConcept();
@@ -2386,7 +2032,7 @@ public class Composition extends DomainResource {
     @Child(name = "confidentiality", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="As defined by affinity domain", formalDefinition="The code specifying the level of confidentiality of the Composition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ConfidentialityClassification")
-    protected Enumeration<DocumentConfidentiality> confidentiality;
+    protected Enumeration<V3ConfidentialityClassification> confidentiality;
 
     /**
      * A participant who has attested to the accuracy of the composition/document.
@@ -2423,7 +2069,7 @@ public class Composition extends DomainResource {
     @Description(shortDefinition="Composition is broken into sections", formalDefinition="The root of the sections that make up the composition." )
     protected List<SectionComponent> section;
 
-    private static final long serialVersionUID = -860310749L;
+    private static final long serialVersionUID = 432957183L;
 
   /**
    * Constructor
@@ -2435,12 +2081,13 @@ public class Composition extends DomainResource {
   /**
    * Constructor
    */
-    public Composition(Enumeration<CompositionStatus> status, CodeableConcept type, DateTimeType date, StringType title) {
+    public Composition(CompositionStatus status, CodeableConcept type, Date date, Reference author, String title) {
       super();
-      this.status = status;
-      this.type = type;
-      this.date = date;
-      this.title = title;
+      this.setStatus(status);
+      this.setType(type);
+      this.setDate(date);
+      this.addAuthor(author);
+      this.setTitle(title);
     }
 
     /**
@@ -2580,7 +2227,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -2726,7 +2373,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
      */
     public Reference getAuthorFirstRep() { 
       if (getAuthor().isEmpty()) {
@@ -2783,12 +2430,12 @@ public class Composition extends DomainResource {
     /**
      * @return {@link #confidentiality} (The code specifying the level of confidentiality of the Composition.). This is the underlying object with id, value and extensions. The accessor "getConfidentiality" gives direct access to the value
      */
-    public Enumeration<DocumentConfidentiality> getConfidentialityElement() { 
+    public Enumeration<V3ConfidentialityClassification> getConfidentialityElement() { 
       if (this.confidentiality == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Composition.confidentiality");
         else if (Configuration.doAutoCreate())
-          this.confidentiality = new Enumeration<DocumentConfidentiality>(new DocumentConfidentialityEnumFactory()); // bb
+          this.confidentiality = new Enumeration<V3ConfidentialityClassification>(new V3ConfidentialityClassificationEnumFactory()); // bb
       return this.confidentiality;
     }
 
@@ -2803,7 +2450,7 @@ public class Composition extends DomainResource {
     /**
      * @param value {@link #confidentiality} (The code specifying the level of confidentiality of the Composition.). This is the underlying object with id, value and extensions. The accessor "getConfidentiality" gives direct access to the value
      */
-    public Composition setConfidentialityElement(Enumeration<DocumentConfidentiality> value) { 
+    public Composition setConfidentialityElement(Enumeration<V3ConfidentialityClassification> value) { 
       this.confidentiality = value;
       return this;
     }
@@ -2811,19 +2458,19 @@ public class Composition extends DomainResource {
     /**
      * @return The code specifying the level of confidentiality of the Composition.
      */
-    public DocumentConfidentiality getConfidentiality() { 
+    public V3ConfidentialityClassification getConfidentiality() { 
       return this.confidentiality == null ? null : this.confidentiality.getValue();
     }
 
     /**
      * @param value The code specifying the level of confidentiality of the Composition.
      */
-    public Composition setConfidentiality(DocumentConfidentiality value) { 
+    public Composition setConfidentiality(V3ConfidentialityClassification value) { 
       if (value == null)
         this.confidentiality = null;
       else {
         if (this.confidentiality == null)
-          this.confidentiality = new Enumeration<DocumentConfidentiality>(new DocumentConfidentialityEnumFactory());
+          this.confidentiality = new Enumeration<V3ConfidentialityClassification>(new V3ConfidentialityClassificationEnumFactory());
         this.confidentiality.setValue(value);
       }
       return this;
@@ -2873,7 +2520,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #attester}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #attester}, creating it if it does not already exist {3}
      */
     public CompositionAttesterComponent getAttesterFirstRep() { 
       if (getAttester().isEmpty()) {
@@ -2950,7 +2597,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatesTo}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatesTo}, creating it if it does not already exist {3}
      */
     public CompositionRelatesToComponent getRelatesToFirstRep() { 
       if (getRelatesTo().isEmpty()) {
@@ -3003,7 +2650,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #event}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #event}, creating it if it does not already exist {3}
      */
     public CompositionEventComponent getEventFirstRep() { 
       if (getEvent().isEmpty()) {
@@ -3056,7 +2703,7 @@ public class Composition extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #section}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #section}, creating it if it does not already exist {3}
      */
     public SectionComponent getSectionFirstRep() { 
       if (getSection().isEmpty()) {
@@ -3119,7 +2766,7 @@ public class Composition extends DomainResource {
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // Reference
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
-        case -1923018202: /*confidentiality*/ return this.confidentiality == null ? new Base[0] : new Base[] {this.confidentiality}; // Enumeration<DocumentConfidentiality>
+        case -1923018202: /*confidentiality*/ return this.confidentiality == null ? new Base[0] : new Base[] {this.confidentiality}; // Enumeration<V3ConfidentialityClassification>
         case 542920370: /*attester*/ return this.attester == null ? new Base[0] : this.attester.toArray(new Base[this.attester.size()]); // CompositionAttesterComponent
         case 1611297262: /*custodian*/ return this.custodian == null ? new Base[0] : new Base[] {this.custodian}; // Reference
         case -7765931: /*relatesTo*/ return this.relatesTo == null ? new Base[0] : this.relatesTo.toArray(new Base[this.relatesTo.size()]); // CompositionRelatesToComponent
@@ -3162,8 +2809,8 @@ public class Composition extends DomainResource {
           this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -1923018202: // confidentiality
-          value = new DocumentConfidentialityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.confidentiality = (Enumeration) value; // Enumeration<DocumentConfidentiality>
+          value = new V3ConfidentialityClassificationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.confidentiality = (Enumeration) value; // Enumeration<V3ConfidentialityClassification>
           return value;
         case 542920370: // attester
           this.getAttester().add((CompositionAttesterComponent) value); // CompositionAttesterComponent
@@ -3207,8 +2854,8 @@ public class Composition extends DomainResource {
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("confidentiality")) {
-          value = new DocumentConfidentialityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.confidentiality = (Enumeration) value; // Enumeration<DocumentConfidentiality>
+          value = new V3ConfidentialityClassificationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.confidentiality = (Enumeration) value; // Enumeration<V3ConfidentialityClassification>
         } else if (name.equals("attester")) {
           this.getAttester().add((CompositionAttesterComponent) value);
         } else if (name.equals("custodian")) {
@@ -3422,44 +3069,142 @@ public class Composition extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
+   * Search parameter: <b>attester</b>
    * <p>
-   * Description: <b>Composition editing time</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Composition.date</b><br>
+   * Description: <b>Who attested the composition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.attester.party</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="Composition.date", description="Composition editing time", type="date" )
-  public static final String SP_DATE = "date";
+  @SearchParamDefinition(name="attester", path="Composition.attester.party", description="Who attested the composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_ATTESTER = "attester";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <b>Fluent Client</b> search parameter constant for <b>attester</b>
    * <p>
-   * Description: <b>Composition editing time</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Composition.date</b><br>
+   * Description: <b>Who attested the composition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.attester.party</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ATTESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ATTESTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Composition:attester</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ATTESTER = new ca.uhn.fhir.model.api.Include("Composition:attester").toLocked();
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>author</b>
    * <p>
-   * Description: <b>Version-independent identifier for the Composition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.identifier</b><br>
+   * Description: <b>Who and/or what authored the composition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.author</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="Composition.identifier", description="Version-independent identifier for the Composition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="author", path="Composition.author", description="Who and/or what authored the composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_AUTHOR = "author";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
    * <p>
-   * Description: <b>Version-independent identifier for the Composition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.identifier</b><br>
+   * Description: <b>Who and/or what authored the composition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.author</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Composition:author</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("Composition:author").toLocked();
+
+ /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Categorization of Composition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="Composition.category", description="Categorization of Composition", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Categorization of Composition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>confidentiality</b>
+   * <p>
+   * Description: <b>As defined by affinity domain</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.confidentiality</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="confidentiality", path="Composition.confidentiality", description="As defined by affinity domain", type="token" )
+  public static final String SP_CONFIDENTIALITY = "confidentiality";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>confidentiality</b>
+   * <p>
+   * Description: <b>As defined by affinity domain</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.confidentiality</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONFIDENTIALITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONFIDENTIALITY);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>Code(s) that apply to the event being documented</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.event.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="Composition.event.code", description="Code(s) that apply to the event being documented", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>Code(s) that apply to the event being documented</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.event.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>entry</b>
+   * <p>
+   * Description: <b>A reference to data that supports this section</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.section.entry</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="entry", path="Composition.section.entry", description="A reference to data that supports this section", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_ENTRY = "entry";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>entry</b>
+   * <p>
+   * Description: <b>A reference to data that supports this section</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.section.entry</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTRY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTRY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Composition:entry</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTRY = new ca.uhn.fhir.model.api.Include("Composition:entry").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -3486,7 +3231,7 @@ public class Composition extends DomainResource {
    * <p>
    * Description: <b>Target of the relationship</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Composition.relatesTo.targetIdentifier</b><br>
+   * Path: <b>(Composition.relatesTo.target as Identifier)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="related-id", path="(Composition.relatesTo.target as Identifier)", description="Target of the relationship", type="token" )
@@ -3496,82 +3241,36 @@ public class Composition extends DomainResource {
    * <p>
    * Description: <b>Target of the relationship</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Composition.relatesTo.targetIdentifier</b><br>
+   * Path: <b>(Composition.relatesTo.target as Identifier)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam RELATED_ID = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RELATED_ID);
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>related-ref</b>
    * <p>
-   * Description: <b>Who and/or what the composition is about</b><br>
+   * Description: <b>Target of the relationship</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Composition.subject</b><br>
+   * Path: <b>(Composition.relatesTo.target as Reference)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Composition.subject", description="Who and/or what the composition is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="related-ref", path="(Composition.relatesTo.target as Reference)", description="Target of the relationship", type="reference", target={Composition.class } )
+  public static final String SP_RELATED_REF = "related-ref";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>related-ref</b>
    * <p>
-   * Description: <b>Who and/or what the composition is about</b><br>
+   * Description: <b>Target of the relationship</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Composition.subject</b><br>
+   * Path: <b>(Composition.relatesTo.target as Reference)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED_REF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED_REF);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:subject</b>".
+   * the path value of "<b>Composition:related-ref</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Composition:subject").toLocked();
-
- /**
-   * Search parameter: <b>author</b>
-   * <p>
-   * Description: <b>Who and/or what authored the composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.author</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="author", path="Composition.author", description="Who and/or what authored the composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_AUTHOR = "author";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>author</b>
-   * <p>
-   * Description: <b>Who and/or what authored the composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.author</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:author</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("Composition:author").toLocked();
-
- /**
-   * Search parameter: <b>confidentiality</b>
-   * <p>
-   * Description: <b>As defined by affinity domain</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.confidentiality</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="confidentiality", path="Composition.confidentiality", description="As defined by affinity domain", type="token" )
-  public static final String SP_CONFIDENTIALITY = "confidentiality";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>confidentiality</b>
-   * <p>
-   * Description: <b>As defined by affinity domain</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.confidentiality</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONFIDENTIALITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONFIDENTIALITY);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED_REF = new ca.uhn.fhir.model.api.Include("Composition:related-ref").toLocked();
 
  /**
    * Search parameter: <b>section</b>
@@ -3594,50 +3293,50 @@ public class Composition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam SECTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SECTION);
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>Context of the Composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.encounter</b><br>
+   * Description: <b>preliminary | final | amended | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="Composition.encounter", description="Context of the Composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="status", path="Composition.status", description="preliminary | final | amended | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>Context of the Composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.encounter</b><br>
+   * Description: <b>preliminary | final | amended | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Composition.status</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Who and/or what the composition is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Composition.subject", description="Who and/or what the composition is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Who and/or what the composition is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:encounter</b>".
+   * the path value of "<b>Composition:subject</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Composition:encounter").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>Kind of composition (LOINC if possible)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Composition.type", description="Kind of composition (LOINC if possible)", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>Kind of composition (LOINC if possible)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Composition:subject").toLocked();
 
  /**
    * Search parameter: <b>title</b>
@@ -3660,99 +3359,285 @@ public class Composition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
  /**
-   * Search parameter: <b>attester</b>
+   * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>Who attested the composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.attester.party</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [List](list.html): When the list was prepared
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="attester", path="Composition.attester.party", description="Who attested the composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ATTESTER = "attester";
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  public static final String SP_DATE = "date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>attester</b>
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>Who attested the composition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.attester.party</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [List](list.html): When the list was prepared
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ATTESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ATTESTER);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter", description="Multiple Resources: \r\n\r\n* [Composition](composition.html): Context of the Composition\r\n* [DeviceRequest](devicerequest.html): Encounter during which request was created\r\n* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made\r\n* [DocumentReference](documentreference.html): Context of the document  content\r\n* [Flag](flag.html): Alert relevant during encounter\r\n* [List](list.html): Context in which list created\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier\r\n* [Observation](observation.html): Encounter related to the observation\r\n* [Procedure](procedure.html): The Encounter during which this Procedure was created\r\n* [RiskAssessment](riskassessment.html): Where was assessment performed?\r\n* [ServiceRequest](servicerequest.html): An encounter in which this request is made\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:attester</b>".
+   * the path value of "<b>Composition:encounter</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ATTESTER = new ca.uhn.fhir.model.api.Include("Composition:attester").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Composition:encounter").toLocked();
 
  /**
-   * Search parameter: <b>entry</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>A reference to data that supports this section</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.section.entry</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="entry", path="Composition.section.entry", description="A reference to data that supports this section", type="reference" )
-  public static final String SP_ENTRY = "entry";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>entry</b>
-   * <p>
-   * Description: <b>A reference to data that supports this section</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.section.entry</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTRY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTRY);
+   * Description: <b>Multiple Resources: 
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:entry</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTRY = new ca.uhn.fhir.model.api.Include("Composition:entry").toLocked();
-
- /**
-   * Search parameter: <b>related-ref</b>
-   * <p>
-   * Description: <b>Target of the relationship</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.relatesTo.targetReference</b><br>
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="related-ref", path="(Composition.relatesTo.target as Reference)", description="Target of the relationship", type="reference", target={Composition.class } )
-  public static final String SP_RELATED_REF = "related-ref";
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Master Version Specific Identifier\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>related-ref</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Target of the relationship</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.relatesTo.targetReference</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED_REF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED_REF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Composition:related-ref</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED_REF = new ca.uhn.fhir.model.api.Include("Composition:related-ref").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>Who and/or what the composition is about</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Composition.subject</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Composition.subject.where(resolve() is Patient)", description="Who and/or what the composition is about", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>Who and/or what the composition is about</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Composition.subject</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -3764,64 +3649,40 @@ public class Composition extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Composition:patient").toLocked();
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>type</b>
    * <p>
-   * Description: <b>Code(s) that apply to the event being documented</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.event.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="Composition.event.code", description="Code(s) that apply to the event being documented", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Code(s) that apply to the event being documented</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.event.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+   * Description: <b>Multiple Resources: 
 
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Categorization of Composition</b><br>
+* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)
+* [Composition](composition.html): Kind of composition (LOINC if possible)
+* [DocumentManifest](documentmanifest.html): Kind of document set
+* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)
+* [Encounter](encounter.html): Specific type of encounter
+* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Composition.category</b><br>
+   * Path: <b>AllergyIntolerance.type | Composition.type | DocumentManifest.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="category", path="Composition.category", description="Categorization of Composition", type="token" )
-  public static final String SP_CATEGORY = "category";
+  @SearchParamDefinition(name="type", path="AllergyIntolerance.type | Composition.type | DocumentManifest.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)\r\n* [Composition](composition.html): Kind of composition (LOINC if possible)\r\n* [DocumentManifest](documentmanifest.html): Kind of document set\r\n* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)\r\n* [Encounter](encounter.html): Specific type of encounter\r\n* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management\r\n", type="token" )
+  public static final String SP_TYPE = "type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>Categorization of Composition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+   * Description: <b>Multiple Resources: 
 
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>preliminary | final | amended | entered-in-error</b><br>
+* [AllergyIntolerance](allergyintolerance.html): allergy | intolerance - Underlying mechanism (if known)
+* [Composition](composition.html): Kind of composition (LOINC if possible)
+* [DocumentManifest](documentmanifest.html): Kind of document set
+* [DocumentReference](documentreference.html): Kind of document (LOINC if possible)
+* [Encounter](encounter.html): Specific type of encounter
+* [EpisodeOfCare](episodeofcare.html): Type/class  - e.g. specialist referral, disease management
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Composition.status</b><br>
+   * Path: <b>AllergyIntolerance.type | Composition.type | DocumentManifest.type | DocumentReference.type | Encounter.type | EpisodeOfCare.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Composition.status", description="preliminary | final | amended | entered-in-error", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>preliminary | final | amended | entered-in-error</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Composition.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

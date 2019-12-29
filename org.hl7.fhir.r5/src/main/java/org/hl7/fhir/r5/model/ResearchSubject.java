@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A physical entity which is the primary unit of operational and/or administrative interest in a study.
  */
@@ -85,8 +87,7 @@ public class ResearchSubject extends DomainResource {
          */
         FOLLOWUP, 
         /**
-         * A person who did not meet one or more criteria required for participation in a study is considered to have failed screening or
-is ineligible for the study.
+         * A person who did not meet one or more criteria required for participation in a study is considered to have failed screening or\nis ineligible for the study.
          */
         INELIGIBLE, 
         /**
@@ -94,8 +95,7 @@ is ineligible for the study.
          */
         NOTREGISTERED, 
         /**
-         * A person that has ended their participation on a study either because their treatment/observation is complete or through not
-responding, withdrawal, non-compliance and/or adverse event.
+         * A person that has ended their participation on a study either because their treatment/observation is complete or through not\nresponding, withdrawal, non-compliance and/or adverse event.
          */
         OFFSTUDY, 
         /**
@@ -107,7 +107,7 @@ responding, withdrawal, non-compliance and/or adverse event.
          */
         ONSTUDYINTERVENTION, 
         /**
-         * The subject is being evaluated via tests and assessments according to the study calendar, but is not receiving any intervention. Note that this state is study-dependent and might not exist in all studies.  A synonym for this is "short-term follow-up".
+         * The subject is being evaluated via tests and assessments according to the study calendar, but is not receiving any intervention. Note that this state is study-dependent and might not exist in all studies.  A synonym for this is \"short-term follow-up\".
          */
         ONSTUDYOBSERVATION, 
         /**
@@ -341,6 +341,379 @@ responding, withdrawal, non-compliance and/or adverse event.
       }
     }
 
+    @Block()
+    public static class ResearchSubjectProgressComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Identifies the aspect of the subject's journey that the state refers to.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Kind of state that is being described", formalDefinition="Identifies the aspect of the subject's journey that the state refers to." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-state-type")
+        protected CodeableConcept type;
+
+        /**
+         * The current state of the subject.
+         */
+        @Child(name = "state", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", formalDefinition="The current state of the subject." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-state")
+        protected CodeableConcept state;
+
+        /**
+         * The milestones the subject has passed through.
+         */
+        @Child(name = "milestone", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="SignedUp | Screened | Randomized", formalDefinition="The milestones the subject has passed through." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-milestone")
+        protected CodeableConcept milestone;
+
+        /**
+         * The reason for the state change.  If coded it should follow the formal subject state model.
+         */
+        @Child(name = "reason", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="State change reason", formalDefinition="The reason for the state change.  If coded it should follow the formal subject state model." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/state-change-reason")
+        protected CodeableConcept reason;
+
+        /**
+         * The date when the change in status occurred.
+         */
+        @Child(name = "startDate", type = {DateTimeType.class}, order=5, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="State change date", formalDefinition="The date when the change in status occurred." )
+        protected DateTimeType startDate;
+
+        private static final long serialVersionUID = -29864900L;
+
+    /**
+     * Constructor
+     */
+      public ResearchSubjectProgressComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ResearchSubjectProgressComponent(Date startDate) {
+        super();
+        this.setStartDate(startDate);
+      }
+
+        /**
+         * @return {@link #type} (Identifies the aspect of the subject's journey that the state refers to.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Identifies the aspect of the subject's journey that the state refers to.)
+         */
+        public ResearchSubjectProgressComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #state} (The current state of the subject.)
+         */
+        public CodeableConcept getState() { 
+          if (this.state == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.state");
+            else if (Configuration.doAutoCreate())
+              this.state = new CodeableConcept(); // cc
+          return this.state;
+        }
+
+        public boolean hasState() { 
+          return this.state != null && !this.state.isEmpty();
+        }
+
+        /**
+         * @param value {@link #state} (The current state of the subject.)
+         */
+        public ResearchSubjectProgressComponent setState(CodeableConcept value) { 
+          this.state = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #milestone} (The milestones the subject has passed through.)
+         */
+        public CodeableConcept getMilestone() { 
+          if (this.milestone == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.milestone");
+            else if (Configuration.doAutoCreate())
+              this.milestone = new CodeableConcept(); // cc
+          return this.milestone;
+        }
+
+        public boolean hasMilestone() { 
+          return this.milestone != null && !this.milestone.isEmpty();
+        }
+
+        /**
+         * @param value {@link #milestone} (The milestones the subject has passed through.)
+         */
+        public ResearchSubjectProgressComponent setMilestone(CodeableConcept value) { 
+          this.milestone = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #reason} (The reason for the state change.  If coded it should follow the formal subject state model.)
+         */
+        public CodeableConcept getReason() { 
+          if (this.reason == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.reason");
+            else if (Configuration.doAutoCreate())
+              this.reason = new CodeableConcept(); // cc
+          return this.reason;
+        }
+
+        public boolean hasReason() { 
+          return this.reason != null && !this.reason.isEmpty();
+        }
+
+        /**
+         * @param value {@link #reason} (The reason for the state change.  If coded it should follow the formal subject state model.)
+         */
+        public ResearchSubjectProgressComponent setReason(CodeableConcept value) { 
+          this.reason = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #startDate} (The date when the change in status occurred.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public DateTimeType getStartDateElement() { 
+          if (this.startDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.startDate");
+            else if (Configuration.doAutoCreate())
+              this.startDate = new DateTimeType(); // bb
+          return this.startDate;
+        }
+
+        public boolean hasStartDateElement() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        public boolean hasStartDate() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #startDate} (The date when the change in status occurred.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public ResearchSubjectProgressComponent setStartDateElement(DateTimeType value) { 
+          this.startDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date when the change in status occurred.
+         */
+        public Date getStartDate() { 
+          return this.startDate == null ? null : this.startDate.getValue();
+        }
+
+        /**
+         * @param value The date when the change in status occurred.
+         */
+        public ResearchSubjectProgressComponent setStartDate(Date value) { 
+            if (this.startDate == null)
+              this.startDate = new DateTimeType();
+            this.startDate.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "Identifies the aspect of the subject's journey that the state refers to.", 0, 1, type));
+          children.add(new Property("state", "CodeableConcept", "The current state of the subject.", 0, 1, state));
+          children.add(new Property("milestone", "CodeableConcept", "The milestones the subject has passed through.", 0, 1, milestone));
+          children.add(new Property("reason", "CodeableConcept", "The reason for the state change.  If coded it should follow the formal subject state model.", 0, 1, reason));
+          children.add(new Property("startDate", "dateTime", "The date when the change in status occurred.", 0, 1, startDate));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Identifies the aspect of the subject's journey that the state refers to.", 0, 1, type);
+          case 109757585: /*state*/  return new Property("state", "CodeableConcept", "The current state of the subject.", 0, 1, state);
+          case -1065084560: /*milestone*/  return new Property("milestone", "CodeableConcept", "The milestones the subject has passed through.", 0, 1, milestone);
+          case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "The reason for the state change.  If coded it should follow the formal subject state model.", 0, 1, reason);
+          case -2129778896: /*startDate*/  return new Property("startDate", "dateTime", "The date when the change in status occurred.", 0, 1, startDate);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 109757585: /*state*/ return this.state == null ? new Base[0] : new Base[] {this.state}; // CodeableConcept
+        case -1065084560: /*milestone*/ return this.milestone == null ? new Base[0] : new Base[] {this.milestone}; // CodeableConcept
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : new Base[] {this.reason}; // CodeableConcept
+        case -2129778896: /*startDate*/ return this.startDate == null ? new Base[0] : new Base[] {this.startDate}; // DateTimeType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 109757585: // state
+          this.state = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1065084560: // milestone
+          this.milestone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -934964668: // reason
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -2129778896: // startDate
+          this.startDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("state")) {
+          this.state = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("milestone")) {
+          this.milestone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("reason")) {
+          this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("startDate")) {
+          this.startDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case 109757585:  return getState();
+        case -1065084560:  return getMilestone();
+        case -934964668:  return getReason();
+        case -2129778896:  return getStartDateElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 109757585: /*state*/ return new String[] {"CodeableConcept"};
+        case -1065084560: /*milestone*/ return new String[] {"CodeableConcept"};
+        case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
+        case -2129778896: /*startDate*/ return new String[] {"dateTime"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("state")) {
+          this.state = new CodeableConcept();
+          return this.state;
+        }
+        else if (name.equals("milestone")) {
+          this.milestone = new CodeableConcept();
+          return this.milestone;
+        }
+        else if (name.equals("reason")) {
+          this.reason = new CodeableConcept();
+          return this.reason;
+        }
+        else if (name.equals("startDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.progress.startDate");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ResearchSubjectProgressComponent copy() {
+        ResearchSubjectProgressComponent dst = new ResearchSubjectProgressComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchSubjectProgressComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.state = state == null ? null : state.copy();
+        dst.milestone = milestone == null ? null : milestone.copy();
+        dst.reason = reason == null ? null : reason.copy();
+        dst.startDate = startDate == null ? null : startDate.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ResearchSubjectProgressComponent))
+          return false;
+        ResearchSubjectProgressComponent o = (ResearchSubjectProgressComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(state, o.state, true) && compareDeep(milestone, o.milestone, true)
+           && compareDeep(reason, o.reason, true) && compareDeep(startDate, o.startDate, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ResearchSubjectProgressComponent))
+          return false;
+        ResearchSubjectProgressComponent o = (ResearchSubjectProgressComponent) other_;
+        return compareValues(startDate, o.startDate, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, state, milestone, reason
+          , startDate);
+      }
+
+  public String fhirType() {
+    return "ResearchSubject.progress";
+
+  }
+
+  }
+
     /**
      * Identifiers assigned to this research subject for a study.
      */
@@ -357,48 +730,55 @@ responding, withdrawal, non-compliance and/or adverse event.
     protected Enumeration<ResearchSubjectStatus> status;
 
     /**
+     * The current state (status) of the subject and resons for status change where appropriate.
+     */
+    @Child(name = "progress", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Subject status", formalDefinition="The current state (status) of the subject and resons for status change where appropriate." )
+    protected List<ResearchSubjectProgressComponent> progress;
+
+    /**
      * The dates the subject began and ended their participation in the study.
      */
-    @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "period", type = {Period.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Start and end of participation", formalDefinition="The dates the subject began and ended their participation in the study." )
     protected Period period;
 
     /**
      * Reference to the study the subject is participating in.
      */
-    @Child(name = "study", type = {ResearchStudy.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "study", type = {ResearchStudy.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Study subject is part of", formalDefinition="Reference to the study the subject is participating in." )
     protected Reference study;
 
     /**
      * The record of the person or animal who is involved in the study.
      */
-    @Child(name = "individual", type = {Patient.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "individual", type = {Patient.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who is part of study", formalDefinition="The record of the person or animal who is involved in the study." )
     protected Reference individual;
 
     /**
      * The name of the arm in the study the subject is expected to follow as part of this study.
      */
-    @Child(name = "assignedArm", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "assignedArm", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What path should be followed", formalDefinition="The name of the arm in the study the subject is expected to follow as part of this study." )
     protected StringType assignedArm;
 
     /**
      * The name of the arm in the study the subject actually followed as part of this study.
      */
-    @Child(name = "actualArm", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "actualArm", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What path was followed", formalDefinition="The name of the arm in the study the subject actually followed as part of this study." )
     protected StringType actualArm;
 
     /**
      * A record of the patient's informed agreement to participate in the study.
      */
-    @Child(name = "consent", type = {Consent.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "consent", type = {Consent.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Agreement to participate in study", formalDefinition="A record of the patient's informed agreement to participate in the study." )
     protected Reference consent;
 
-    private static final long serialVersionUID = 2129823357L;
+    private static final long serialVersionUID = 2110072351L;
 
   /**
    * Constructor
@@ -410,11 +790,11 @@ responding, withdrawal, non-compliance and/or adverse event.
   /**
    * Constructor
    */
-    public ResearchSubject(Enumeration<ResearchSubjectStatus> status, Reference study, Reference individual) {
+    public ResearchSubject(ResearchSubjectStatus status, Reference study, Reference individual) {
       super();
-      this.status = status;
-      this.study = study;
-      this.individual = individual;
+      this.setStatus(status);
+      this.setStudy(study);
+      this.setIndividual(individual);
     }
 
     /**
@@ -461,7 +841,7 @@ responding, withdrawal, non-compliance and/or adverse event.
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -513,6 +893,59 @@ responding, withdrawal, non-compliance and/or adverse event.
           this.status = new Enumeration<ResearchSubjectStatus>(new ResearchSubjectStatusEnumFactory());
         this.status.setValue(value);
       return this;
+    }
+
+    /**
+     * @return {@link #progress} (The current state (status) of the subject and resons for status change where appropriate.)
+     */
+    public List<ResearchSubjectProgressComponent> getProgress() { 
+      if (this.progress == null)
+        this.progress = new ArrayList<ResearchSubjectProgressComponent>();
+      return this.progress;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ResearchSubject setProgress(List<ResearchSubjectProgressComponent> theProgress) { 
+      this.progress = theProgress;
+      return this;
+    }
+
+    public boolean hasProgress() { 
+      if (this.progress == null)
+        return false;
+      for (ResearchSubjectProgressComponent item : this.progress)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ResearchSubjectProgressComponent addProgress() { //3
+      ResearchSubjectProgressComponent t = new ResearchSubjectProgressComponent();
+      if (this.progress == null)
+        this.progress = new ArrayList<ResearchSubjectProgressComponent>();
+      this.progress.add(t);
+      return t;
+    }
+
+    public ResearchSubject addProgress(ResearchSubjectProgressComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.progress == null)
+        this.progress = new ArrayList<ResearchSubjectProgressComponent>();
+      this.progress.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #progress}, creating it if it does not already exist {3}
+     */
+    public ResearchSubjectProgressComponent getProgressFirstRep() { 
+      if (getProgress().isEmpty()) {
+        addProgress();
+      }
+      return getProgress().get(0);
     }
 
     /**
@@ -713,6 +1146,7 @@ responding, withdrawal, non-compliance and/or adverse event.
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers assigned to this research subject for a study.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "The current state of the subject.", 0, 1, status));
+        children.add(new Property("progress", "", "The current state (status) of the subject and resons for status change where appropriate.", 0, java.lang.Integer.MAX_VALUE, progress));
         children.add(new Property("period", "Period", "The dates the subject began and ended their participation in the study.", 0, 1, period));
         children.add(new Property("study", "Reference(ResearchStudy)", "Reference to the study the subject is participating in.", 0, 1, study));
         children.add(new Property("individual", "Reference(Patient)", "The record of the person or animal who is involved in the study.", 0, 1, individual));
@@ -726,6 +1160,7 @@ responding, withdrawal, non-compliance and/or adverse event.
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers assigned to this research subject for a study.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the subject.", 0, 1, status);
+        case -1001078227: /*progress*/  return new Property("progress", "", "The current state (status) of the subject and resons for status change where appropriate.", 0, java.lang.Integer.MAX_VALUE, progress);
         case -991726143: /*period*/  return new Property("period", "Period", "The dates the subject began and ended their participation in the study.", 0, 1, period);
         case 109776329: /*study*/  return new Property("study", "Reference(ResearchStudy)", "Reference to the study the subject is participating in.", 0, 1, study);
         case -46292327: /*individual*/  return new Property("individual", "Reference(Patient)", "The record of the person or animal who is involved in the study.", 0, 1, individual);
@@ -742,6 +1177,7 @@ responding, withdrawal, non-compliance and/or adverse event.
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ResearchSubjectStatus>
+        case -1001078227: /*progress*/ return this.progress == null ? new Base[0] : this.progress.toArray(new Base[this.progress.size()]); // ResearchSubjectProgressComponent
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 109776329: /*study*/ return this.study == null ? new Base[0] : new Base[] {this.study}; // Reference
         case -46292327: /*individual*/ return this.individual == null ? new Base[0] : new Base[] {this.individual}; // Reference
@@ -762,6 +1198,9 @@ responding, withdrawal, non-compliance and/or adverse event.
         case -892481550: // status
           value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
+          return value;
+        case -1001078227: // progress
+          this.getProgress().add((ResearchSubjectProgressComponent) value); // ResearchSubjectProgressComponent
           return value;
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
@@ -793,6 +1232,8 @@ responding, withdrawal, non-compliance and/or adverse event.
         } else if (name.equals("status")) {
           value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
+        } else if (name.equals("progress")) {
+          this.getProgress().add((ResearchSubjectProgressComponent) value);
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("study")) {
@@ -815,6 +1256,7 @@ responding, withdrawal, non-compliance and/or adverse event.
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
+        case -1001078227:  return addProgress(); 
         case -991726143:  return getPeriod();
         case 109776329:  return getStudy();
         case -46292327:  return getIndividual();
@@ -831,6 +1273,7 @@ responding, withdrawal, non-compliance and/or adverse event.
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
+        case -1001078227: /*progress*/ return new String[] {};
         case -991726143: /*period*/ return new String[] {"Period"};
         case 109776329: /*study*/ return new String[] {"Reference"};
         case -46292327: /*individual*/ return new String[] {"Reference"};
@@ -849,6 +1292,9 @@ responding, withdrawal, non-compliance and/or adverse event.
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.status");
+        }
+        else if (name.equals("progress")) {
+          return addProgress();
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -895,6 +1341,11 @@ responding, withdrawal, non-compliance and/or adverse event.
             dst.identifier.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
+        if (progress != null) {
+          dst.progress = new ArrayList<ResearchSubjectProgressComponent>();
+          for (ResearchSubjectProgressComponent i : progress)
+            dst.progress.add(i.copy());
+        };
         dst.period = period == null ? null : period.copy();
         dst.study = study == null ? null : study.copy();
         dst.individual = individual == null ? null : individual.copy();
@@ -914,9 +1365,10 @@ responding, withdrawal, non-compliance and/or adverse event.
         if (!(other_ instanceof ResearchSubject))
           return false;
         ResearchSubject o = (ResearchSubject) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(period, o.period, true)
-           && compareDeep(study, o.study, true) && compareDeep(individual, o.individual, true) && compareDeep(assignedArm, o.assignedArm, true)
-           && compareDeep(actualArm, o.actualArm, true) && compareDeep(consent, o.consent, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(progress, o.progress, true)
+           && compareDeep(period, o.period, true) && compareDeep(study, o.study, true) && compareDeep(individual, o.individual, true)
+           && compareDeep(assignedArm, o.assignedArm, true) && compareDeep(actualArm, o.actualArm, true) && compareDeep(consent, o.consent, true)
+          ;
       }
 
       @Override
@@ -931,8 +1383,8 @@ responding, withdrawal, non-compliance and/or adverse event.
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, period
-          , study, individual, assignedArm, actualArm, consent);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, progress
+          , period, study, individual, assignedArm, actualArm, consent);
       }
 
   @Override
@@ -981,32 +1433,6 @@ responding, withdrawal, non-compliance and/or adverse event.
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>study</b>
-   * <p>
-   * Description: <b>Study subject is part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.study</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="study", path="ResearchSubject.study", description="Study subject is part of", type="reference", target={ResearchStudy.class } )
-  public static final String SP_STUDY = "study";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>study</b>
-   * <p>
-   * Description: <b>Study subject is part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.study</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam STUDY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_STUDY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchSubject:study</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_STUDY = new ca.uhn.fhir.model.api.Include("ResearchSubject:study").toLocked();
-
- /**
    * Search parameter: <b>individual</b>
    * <p>
    * Description: <b>Who is part of study</b><br>
@@ -1014,7 +1440,7 @@ responding, withdrawal, non-compliance and/or adverse event.
    * Path: <b>ResearchSubject.individual</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="individual", path="ResearchSubject.individual", description="Who is part of study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="individual", path="ResearchSubject.individual", description="Who is part of study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_INDIVIDUAL = "individual";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>individual</b>
@@ -1059,6 +1485,26 @@ responding, withdrawal, non-compliance and/or adverse event.
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ResearchSubject:patient").toLocked();
 
  /**
+   * Search parameter: <b>state</b>
+   * <p>
+   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchSubject.progress.state</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="state", path="ResearchSubject.progress.state", description="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", type="token" )
+  public static final String SP_STATE = "state";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>state</b>
+   * <p>
+   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchSubject.progress.state</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATE);
+
+ /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
@@ -1077,6 +1523,32 @@ responding, withdrawal, non-compliance and/or adverse event.
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>study</b>
+   * <p>
+   * Description: <b>Study subject is part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchSubject.study</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="study", path="ResearchSubject.study", description="Study subject is part of", type="reference", target={ResearchStudy.class } )
+  public static final String SP_STUDY = "study";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>study</b>
+   * <p>
+   * Description: <b>Study subject is part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchSubject.study</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam STUDY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_STUDY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchSubject:study</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_STUDY = new ca.uhn.fhir.model.api.Include("ResearchSubject:study").toLocked();
 
 
 }

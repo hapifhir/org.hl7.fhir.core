@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,511 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker.
  */
 @ResourceDef(name="DeviceRequest", profile="http://hl7.org/fhir/StructureDefinition/DeviceRequest")
 public class DeviceRequest extends DomainResource {
-
-    public enum DeviceRequestStatus {
-        /**
-         * The request has been created but is not yet complete or ready for action.
-         */
-        DRAFT, 
-        /**
-         * The request is in force and ready to be acted upon.
-         */
-        ACTIVE, 
-        /**
-         * The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.
-         */
-        ONHOLD, 
-        /**
-         * The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.
-         */
-        REVOKED, 
-        /**
-         * The activity described by the request has been fully performed.  No further activity will occur.
-         */
-        COMPLETED, 
-        /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
-         */
-        ENTEREDINERROR, 
-        /**
-         * The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceRequestStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("revoked".equals(codeString))
-          return REVOKED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceRequestStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case ONHOLD: return "on-hold";
-            case REVOKED: return "revoked";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DRAFT: return "http://hl7.org/fhir/request-status";
-            case ACTIVE: return "http://hl7.org/fhir/request-status";
-            case ONHOLD: return "http://hl7.org/fhir/request-status";
-            case REVOKED: return "http://hl7.org/fhir/request-status";
-            case COMPLETED: return "http://hl7.org/fhir/request-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
-            case UNKNOWN: return "http://hl7.org/fhir/request-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "The request has been created but is not yet complete or ready for action.";
-            case ACTIVE: return "The request is in force and ready to be acted upon.";
-            case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
-            case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
-            case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case ONHOLD: return "On Hold";
-            case REVOKED: return "Revoked";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceRequestStatusEnumFactory implements EnumFactory<DeviceRequestStatus> {
-    public DeviceRequestStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DeviceRequestStatus.DRAFT;
-        if ("active".equals(codeString))
-          return DeviceRequestStatus.ACTIVE;
-        if ("on-hold".equals(codeString))
-          return DeviceRequestStatus.ONHOLD;
-        if ("revoked".equals(codeString))
-          return DeviceRequestStatus.REVOKED;
-        if ("completed".equals(codeString))
-          return DeviceRequestStatus.COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return DeviceRequestStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return DeviceRequestStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown DeviceRequestStatus code '"+codeString+"'");
-        }
-        public Enumeration<DeviceRequestStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("draft".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.DRAFT);
-        if ("active".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ACTIVE);
-        if ("on-hold".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ONHOLD);
-        if ("revoked".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.REVOKED);
-        if ("completed".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.COMPLETED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.UNKNOWN);
-        throw new FHIRException("Unknown DeviceRequestStatus code '"+codeString+"'");
-        }
-    public String toCode(DeviceRequestStatus code) {
-      if (code == DeviceRequestStatus.DRAFT)
-        return "draft";
-      if (code == DeviceRequestStatus.ACTIVE)
-        return "active";
-      if (code == DeviceRequestStatus.ONHOLD)
-        return "on-hold";
-      if (code == DeviceRequestStatus.REVOKED)
-        return "revoked";
-      if (code == DeviceRequestStatus.COMPLETED)
-        return "completed";
-      if (code == DeviceRequestStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == DeviceRequestStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(DeviceRequestStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestIntent {
-        /**
-         * The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.
-         */
-        PROPOSAL, 
-        /**
-         * The request represents an intention to ensure something occurs without providing an authorization for others to act.
-         */
-        PLAN, 
-        /**
-         * The request represents a legally binding instruction authored by a Patient or RelatedPerson.
-         */
-        DIRECTIVE, 
-        /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
-         */
-        ORDER, 
-        /**
-         * The request represents an original authorization for action.
-         */
-        ORIGINALORDER, 
-        /**
-         * The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.
-         */
-        REFLEXORDER, 
-        /**
-         * The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.
-         */
-        FILLERORDER, 
-        /**
-         * An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.
-         */
-        INSTANCEORDER, 
-        /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
-         */
-        OPTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestIntent fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return PROPOSAL;
-        if ("plan".equals(codeString))
-          return PLAN;
-        if ("directive".equals(codeString))
-          return DIRECTIVE;
-        if ("order".equals(codeString))
-          return ORDER;
-        if ("original-order".equals(codeString))
-          return ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return INSTANCEORDER;
-        if ("option".equals(codeString))
-          return OPTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROPOSAL: return "proposal";
-            case PLAN: return "plan";
-            case DIRECTIVE: return "directive";
-            case ORDER: return "order";
-            case ORIGINALORDER: return "original-order";
-            case REFLEXORDER: return "reflex-order";
-            case FILLERORDER: return "filler-order";
-            case INSTANCEORDER: return "instance-order";
-            case OPTION: return "option";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PROPOSAL: return "http://hl7.org/fhir/request-intent";
-            case PLAN: return "http://hl7.org/fhir/request-intent";
-            case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
-            case ORDER: return "http://hl7.org/fhir/request-intent";
-            case ORIGINALORDER: return "http://hl7.org/fhir/request-intent";
-            case REFLEXORDER: return "http://hl7.org/fhir/request-intent";
-            case FILLERORDER: return "http://hl7.org/fhir/request-intent";
-            case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
-            case OPTION: return "http://hl7.org/fhir/request-intent";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
-            case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
-            case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
-            case ORIGINALORDER: return "The request represents an original authorization for action.";
-            case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
-            case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
-            case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROPOSAL: return "Proposal";
-            case PLAN: return "Plan";
-            case DIRECTIVE: return "Directive";
-            case ORDER: return "Order";
-            case ORIGINALORDER: return "Original Order";
-            case REFLEXORDER: return "Reflex Order";
-            case FILLERORDER: return "Filler Order";
-            case INSTANCEORDER: return "Instance Order";
-            case OPTION: return "Option";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
-    public RequestIntent fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposal".equals(codeString))
-          return RequestIntent.PROPOSAL;
-        if ("plan".equals(codeString))
-          return RequestIntent.PLAN;
-        if ("directive".equals(codeString))
-          return RequestIntent.DIRECTIVE;
-        if ("order".equals(codeString))
-          return RequestIntent.ORDER;
-        if ("original-order".equals(codeString))
-          return RequestIntent.ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return RequestIntent.REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return RequestIntent.FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return RequestIntent.INSTANCEORDER;
-        if ("option".equals(codeString))
-          return RequestIntent.OPTION;
-        throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
-        }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
-        if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
-        if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
-        if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
-        if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
-        if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
-        if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
-        if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
-        if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
-        throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
-        }
-    public String toCode(RequestIntent code) {
-      if (code == RequestIntent.PROPOSAL)
-        return "proposal";
-      if (code == RequestIntent.PLAN)
-        return "plan";
-      if (code == RequestIntent.DIRECTIVE)
-        return "directive";
-      if (code == RequestIntent.ORDER)
-        return "order";
-      if (code == RequestIntent.ORIGINALORDER)
-        return "original-order";
-      if (code == RequestIntent.REFLEXORDER)
-        return "reflex-order";
-      if (code == RequestIntent.FILLERORDER)
-        return "filler-order";
-      if (code == RequestIntent.INSTANCEORDER)
-        return "instance-order";
-      if (code == RequestIntent.OPTION)
-        return "option";
-      return "?";
-      }
-    public String toSystem(RequestIntent code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RequestPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RequestPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
-    public RequestPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return RequestPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return RequestPriority.URGENT;
-        if ("asap".equals(codeString))
-          return RequestPriority.ASAP;
-        if ("stat".equals(codeString))
-          return RequestPriority.STAT;
-        throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
-        }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
-        throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
-        }
-    public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
-        return "routine";
-      if (code == RequestPriority.URGENT)
-        return "urgent";
-      if (code == RequestPriority.ASAP)
-        return "asap";
-      if (code == RequestPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(RequestPriority code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class DeviceRequestParameterComponent extends BackboneElement implements IBaseBackboneElement {
@@ -587,7 +89,7 @@ public class DeviceRequest extends DomainResource {
         @Description(shortDefinition="Value of detail", formalDefinition="The value of the device detail." )
         protected DataType value;
 
-        private static final long serialVersionUID = 884525025L;
+        private static final long serialVersionUID = -1950789033L;
 
     /**
      * Constructor
@@ -713,10 +215,10 @@ public class DeviceRequest extends DomainResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code or string that identifies the device detail being asserted.", 0, 1, code);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "CodeableConcept|Quantity|Range|boolean", "The value of the device detail.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the device detail.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the device detail.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the device detail.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the device detail.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -726,7 +228,7 @@ public class DeviceRequest extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -739,7 +241,7 @@ public class DeviceRequest extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -751,7 +253,7 @@ public class DeviceRequest extends DomainResource {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -895,7 +397,7 @@ public class DeviceRequest extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=6, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The status of the request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
-    protected Enumeration<DeviceRequestStatus> status;
+    protected Enumeration<RequestStatus> status;
 
     /**
      * Whether the request is a proposal, plan, an original order or a reflex order.
@@ -906,10 +408,10 @@ public class DeviceRequest extends DomainResource {
     protected Enumeration<RequestIntent> intent;
 
     /**
-     * Indicates how quickly the {{title}} should be addressed with respect to other requests.
+     * Indicates how quickly the device request should be addressed with respect to other requests.
      */
     @Child(name = "priority", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the {{title}} should be addressed with respect to other requests." )
+    @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the device request should be addressed with respect to other requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
     protected Enumeration<RequestPriority> priority;
 
@@ -1021,7 +523,7 @@ public class DeviceRequest extends DomainResource {
     @Description(shortDefinition="Request provenance", formalDefinition="Key events in the history of the request." )
     protected List<Reference> relevantHistory;
 
-    private static final long serialVersionUID = 1631944102L;
+    private static final long serialVersionUID = 1859846276L;
 
   /**
    * Constructor
@@ -1033,11 +535,11 @@ public class DeviceRequest extends DomainResource {
   /**
    * Constructor
    */
-    public DeviceRequest(Enumeration<RequestIntent> intent, DataType code, Reference subject) {
+    public DeviceRequest(RequestIntent intent, DataType code, Reference subject) {
       super();
-      this.intent = intent;
-      this.code = code;
-      this.subject = subject;
+      this.setIntent(intent);
+      this.setCode(code);
+      this.setSubject(subject);
     }
 
     /**
@@ -1084,7 +586,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1149,7 +651,7 @@ public class DeviceRequest extends DomainResource {
       if (this.instantiatesCanonical == null)
         return false;
       for (CanonicalType v : this.instantiatesCanonical)
-        if (v.getValue().equals(value)) // canonical(ActivityDefinition|PlanDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -1259,7 +761,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -1312,7 +814,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #priorRequest}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #priorRequest}, creating it if it does not already exist {3}
      */
     public Reference getPriorRequestFirstRep() { 
       if (getPriorRequest().isEmpty()) {
@@ -1348,12 +850,12 @@ public class DeviceRequest extends DomainResource {
     /**
      * @return {@link #status} (The status of the request.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<DeviceRequestStatus> getStatusElement() { 
+    public Enumeration<RequestStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DeviceRequest.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<DeviceRequestStatus>(new DeviceRequestStatusEnumFactory()); // bb
+          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -1368,7 +870,7 @@ public class DeviceRequest extends DomainResource {
     /**
      * @param value {@link #status} (The status of the request.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public DeviceRequest setStatusElement(Enumeration<DeviceRequestStatus> value) { 
+    public DeviceRequest setStatusElement(Enumeration<RequestStatus> value) { 
       this.status = value;
       return this;
     }
@@ -1376,19 +878,19 @@ public class DeviceRequest extends DomainResource {
     /**
      * @return The status of the request.
      */
-    public DeviceRequestStatus getStatus() { 
+    public RequestStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the request.
      */
-    public DeviceRequest setStatus(DeviceRequestStatus value) { 
+    public DeviceRequest setStatus(RequestStatus value) { 
       if (value == null)
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<DeviceRequestStatus>(new DeviceRequestStatusEnumFactory());
+          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -1440,7 +942,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #priority} (Indicates how quickly the {{title}} should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
+     * @return {@link #priority} (Indicates how quickly the device request should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
     public Enumeration<RequestPriority> getPriorityElement() { 
       if (this.priority == null)
@@ -1460,7 +962,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @param value {@link #priority} (Indicates how quickly the {{title}} should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
+     * @param value {@link #priority} (Indicates how quickly the device request should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
     public DeviceRequest setPriorityElement(Enumeration<RequestPriority> value) { 
       this.priority = value;
@@ -1468,14 +970,14 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return Indicates how quickly the {{title}} should be addressed with respect to other requests.
+     * @return Indicates how quickly the device request should be addressed with respect to other requests.
      */
     public RequestPriority getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
-     * @param value Indicates how quickly the {{title}} should be addressed with respect to other requests.
+     * @param value Indicates how quickly the device request should be addressed with respect to other requests.
      */
     public DeviceRequest setPriority(RequestPriority value) { 
       if (value == null)
@@ -1583,7 +1085,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
      */
     public DeviceRequestParameterComponent getParameterFirstRep() { 
       if (getParameter().isEmpty()) {
@@ -1871,7 +1373,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
@@ -1924,7 +1426,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
      */
     public Reference getReasonReferenceFirstRep() { 
       if (getReasonReference().isEmpty()) {
@@ -1977,7 +1479,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist {3}
      */
     public Reference getInsuranceFirstRep() { 
       if (getInsurance().isEmpty()) {
@@ -2030,7 +1532,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist {3}
      */
     public Reference getSupportingInfoFirstRep() { 
       if (getSupportingInfo().isEmpty()) {
@@ -2083,7 +1585,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -2136,7 +1638,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist {3}
      */
     public Reference getRelevantHistoryFirstRep() { 
       if (getRelevantHistory().isEmpty()) {
@@ -2155,7 +1657,7 @@ public class DeviceRequest extends DomainResource {
         children.add(new Property("groupIdentifier", "Identifier", "Composite request this is part of.", 0, 1, groupIdentifier));
         children.add(new Property("status", "code", "The status of the request.", 0, 1, status));
         children.add(new Property("intent", "code", "Whether the request is a proposal, plan, an original order or a reflex order.", 0, 1, intent));
-        children.add(new Property("priority", "code", "Indicates how quickly the {{title}} should be addressed with respect to other requests.", 0, 1, priority));
+        children.add(new Property("priority", "code", "Indicates how quickly the device request should be addressed with respect to other requests.", 0, 1, priority));
         children.add(new Property("code[x]", "Reference(Device)|CodeableConcept", "The details of the device to be used.", 0, 1, code));
         children.add(new Property("parameter", "", "Specific parameters for the ordered item.  For example, the prism value for lenses.", 0, java.lang.Integer.MAX_VALUE, parameter));
         children.add(new Property("subject", "Reference(Patient|Group|Location|Device)", "The patient who will use the device.", 0, 1, subject));
@@ -2184,19 +1686,19 @@ public class DeviceRequest extends DomainResource {
         case -445338488: /*groupIdentifier*/  return new Property("groupIdentifier", "Identifier", "Composite request this is part of.", 0, 1, groupIdentifier);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the request.", 0, 1, status);
         case -1183762788: /*intent*/  return new Property("intent", "code", "Whether the request is a proposal, plan, an original order or a reflex order.", 0, 1, intent);
-        case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly the {{title}} should be addressed with respect to other requests.", 0, 1, priority);
+        case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly the device request should be addressed with respect to other requests.", 0, 1, priority);
         case 941839219: /*code[x]*/  return new Property("code[x]", "Reference(Device)|CodeableConcept", "The details of the device to be used.", 0, 1, code);
         case 3059181: /*code*/  return new Property("code[x]", "Reference(Device)|CodeableConcept", "The details of the device to be used.", 0, 1, code);
-        case 1565461470: /*codeReference*/  return new Property("code[x]", "Reference(Device)|CodeableConcept", "The details of the device to be used.", 0, 1, code);
-        case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "Reference(Device)|CodeableConcept", "The details of the device to be used.", 0, 1, code);
+        case 1565461470: /*codeReference*/  return new Property("code[x]", "Reference(Device)", "The details of the device to be used.", 0, 1, code);
+        case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "CodeableConcept", "The details of the device to be used.", 0, 1, code);
         case 1954460585: /*parameter*/  return new Property("parameter", "", "Specific parameters for the ordered item.  For example, the prism value for lenses.", 0, java.lang.Integer.MAX_VALUE, parameter);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Location|Device)", "The patient who will use the device.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "An encounter that provides additional context in which this request is made.", 0, 1, encounter);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
         case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
-        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
-        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
-        case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
+        case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
+        case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "Period", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
+        case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "The timing schedule for the use of the device. The Schedule data type allows many different expressions, for example. \"Every 8 hours\"; \"Three times a day\"; \"1/2 an hour before breakfast for 10 days from 23-Dec 2011:\"; \"15 Oct 2013, 17 Oct 2013 and 1 Nov 2013\".", 0, 1, occurrence);
         case -1500852503: /*authoredOn*/  return new Property("authoredOn", "dateTime", "When the request transitioned to being actionable.", 0, 1, authoredOn);
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Practitioner|PractitionerRole|Organization)", "The individual who initiated the request and has responsibility for its activation.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "Desired type of performer for doing the diagnostic testing.", 0, 1, performerType);
@@ -2221,14 +1723,14 @@ public class DeviceRequest extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case 237568101: /*priorRequest*/ return this.priorRequest == null ? new Base[0] : this.priorRequest.toArray(new Base[this.priorRequest.size()]); // Reference
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<DeviceRequestStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Type
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // DataType
         case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // DeviceRequestParameterComponent
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
-        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // Type
+        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case -1500852503: /*authoredOn*/ return this.authoredOn == null ? new Base[0] : new Base[] {this.authoredOn}; // DateTimeType
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : new Base[] {this.performerType}; // CodeableConcept
@@ -2266,8 +1768,8 @@ public class DeviceRequest extends DomainResource {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new DeviceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<DeviceRequestStatus>
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
           return value;
         case -1183762788: // intent
           value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -2278,7 +1780,7 @@ public class DeviceRequest extends DomainResource {
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
           return value;
         case 1954460585: // parameter
           this.getParameter().add((DeviceRequestParameterComponent) value); // DeviceRequestParameterComponent
@@ -2290,7 +1792,7 @@ public class DeviceRequest extends DomainResource {
           this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
           return value;
         case -1500852503: // authoredOn
           this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -2342,8 +1844,8 @@ public class DeviceRequest extends DomainResource {
         } else if (name.equals("groupIdentifier")) {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new DeviceRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<DeviceRequestStatus>
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
         } else if (name.equals("intent")) {
           value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
@@ -2351,7 +1853,7 @@ public class DeviceRequest extends DomainResource {
           value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code[x]")) {
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("parameter")) {
           this.getParameter().add((DeviceRequestParameterComponent) value);
         } else if (name.equals("subject")) {
@@ -2359,7 +1861,7 @@ public class DeviceRequest extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("authoredOn")) {
           this.authoredOn = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
@@ -2666,9 +2168,9 @@ public class DeviceRequest extends DomainResource {
         if (!(other_ instanceof DeviceRequest))
           return false;
         DeviceRequest o = (DeviceRequest) other_;
-        return compareValues(instantiatesUri, o.instantiatesUri, true) && compareValues(status, o.status, true)
-           && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true) && compareValues(authoredOn, o.authoredOn, true)
-          ;
+        return compareValues(instantiatesCanonical, o.instantiatesCanonical, true) && compareValues(instantiatesUri, o.instantiatesUri, true)
+           && compareValues(status, o.status, true) && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true)
+           && compareValues(authoredOn, o.authoredOn, true);
       }
 
       public boolean isEmpty() {
@@ -2685,129 +2187,83 @@ public class DeviceRequest extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>requester</b>
+   * Search parameter: <b>authored-on</b>
    * <p>
-   * Description: <b>Who/what is requesting service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.requester</b><br>
+   * Description: <b>When the request transitioned to being actionable</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>DeviceRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="requester", path="DeviceRequest.requester", description="Who/what is requesting service", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, Organization.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_REQUESTER = "requester";
+  @SearchParamDefinition(name="authored-on", path="DeviceRequest.authoredOn", description="When the request transitioned to being actionable", type="date" )
+  public static final String SP_AUTHORED_ON = "authored-on";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
+   * <b>Fluent Client</b> search parameter constant for <b>authored-on</b>
    * <p>
-   * Description: <b>Who/what is requesting service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.requester</b><br>
+   * Description: <b>When the request transitioned to being actionable</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>DeviceRequest.authoredOn</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED_ON = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED_ON);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Plan/proposal/order fulfilled by this request</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="DeviceRequest.basedOn", description="Plan/proposal/order fulfilled by this request", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Plan/proposal/order fulfilled by this request</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:requester</b>".
+   * the path value of "<b>DeviceRequest:based-on</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("DeviceRequest:requester").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("DeviceRequest:based-on").toLocked();
 
  /**
-   * Search parameter: <b>insurance</b>
+   * Search parameter: <b>device</b>
    * <p>
-   * Description: <b>Associated insurance coverage</b><br>
+   * Description: <b>Reference to resource that is being requested/ordered</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.insurance</b><br>
+   * Path: <b>(DeviceRequest.code as Reference)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="insurance", path="DeviceRequest.insurance", description="Associated insurance coverage", type="reference", target={ClaimResponse.class, Coverage.class } )
-  public static final String SP_INSURANCE = "insurance";
+  @SearchParamDefinition(name="device", path="(DeviceRequest.code as Reference)", description="Reference to resource that is being requested/ordered", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device") }, target={Device.class } )
+  public static final String SP_DEVICE = "device";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>insurance</b>
+   * <b>Fluent Client</b> search parameter constant for <b>device</b>
    * <p>
-   * Description: <b>Associated insurance coverage</b><br>
+   * Description: <b>Reference to resource that is being requested/ordered</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.insurance</b><br>
+   * Path: <b>(DeviceRequest.code as Reference)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INSURANCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INSURANCE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:insurance</b>".
+   * the path value of "<b>DeviceRequest:device</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INSURANCE = new ca.uhn.fhir.model.api.Include("DeviceRequest:insurance").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier for request/order</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceRequest.identifier", description="Business identifier for request/order", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier for request/order</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Code for what is being requested/ordered</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.codeCodeableConcept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="(DeviceRequest.code as CodeableConcept)", description="Code for what is being requested/ordered", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Code for what is being requested/ordered</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.codeCodeableConcept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>performer</b>
-   * <p>
-   * Description: <b>Desired performer for service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.performer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer", path="DeviceRequest.performer", description="Desired performer for service", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PERFORMER = "performer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer</b>
-   * <p>
-   * Description: <b>Desired performer for service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.performer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:performer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMER = new ca.uhn.fhir.model.api.Include("DeviceRequest:performer").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("DeviceRequest:device").toLocked();
 
  /**
    * Search parameter: <b>event-date</b>
    * <p>
    * Description: <b>When service should occur</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>DeviceRequest.occurrenceDateTime, DeviceRequest.occurrencePeriod</b><br>
+   * Path: <b>(DeviceRequest.occurrence as dateTime) | (DeviceRequest.occurrence as Period)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="event-date", path="(DeviceRequest.occurrence as dateTime) | (DeviceRequest.occurrence as Period)", description="When service should occur", type="date" )
@@ -2817,36 +2273,30 @@ public class DeviceRequest extends DomainResource {
    * <p>
    * Description: <b>When service should occur</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>DeviceRequest.occurrenceDateTime, DeviceRequest.occurrencePeriod</b><br>
+   * Path: <b>(DeviceRequest.occurrence as dateTime) | (DeviceRequest.occurrence as Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EVENT_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EVENT_DATE);
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>group-identifier</b>
    * <p>
-   * Description: <b>Individual the service is ordered for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.subject</b><br>
+   * Description: <b>Composite request this is part of</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceRequest.groupIdentifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="DeviceRequest.subject", description="Individual the service is ordered for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Device.class, Group.class, Location.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="group-identifier", path="DeviceRequest.groupIdentifier", description="Composite request this is part of", type="token" )
+  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
    * <p>
-   * Description: <b>Individual the service is ordered for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.subject</b><br>
+   * Description: <b>Composite request this is part of</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceRequest.groupIdentifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DeviceRequest:subject").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
 
  /**
    * Search parameter: <b>instantiates-canonical</b>
@@ -2875,50 +2325,50 @@ public class DeviceRequest extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INSTANTIATES_CANONICAL = new ca.uhn.fhir.model.api.Include("DeviceRequest:instantiates-canonical").toLocked();
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>instantiates-uri</b>
    * <p>
-   * Description: <b>Encounter during which request was created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.encounter</b><br>
+   * Description: <b>Instantiates external protocol or definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>DeviceRequest.instantiatesUri</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="DeviceRequest.encounter", description="Encounter during which request was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="instantiates-uri", path="DeviceRequest.instantiatesUri", description="Instantiates external protocol or definition", type="uri" )
+  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
    * <p>
-   * Description: <b>Encounter during which request was created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.encounter</b><br>
+   * Description: <b>Instantiates external protocol or definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>DeviceRequest.instantiatesUri</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
+
+ /**
+   * Search parameter: <b>insurance</b>
+   * <p>
+   * Description: <b>Associated insurance coverage</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.insurance</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="insurance", path="DeviceRequest.insurance", description="Associated insurance coverage", type="reference", target={ClaimResponse.class, Coverage.class } )
+  public static final String SP_INSURANCE = "insurance";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>insurance</b>
+   * <p>
+   * Description: <b>Associated insurance coverage</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.insurance</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INSURANCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INSURANCE);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:encounter</b>".
+   * the path value of "<b>DeviceRequest:insurance</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("DeviceRequest:encounter").toLocked();
-
- /**
-   * Search parameter: <b>authored-on</b>
-   * <p>
-   * Description: <b>When the request transitioned to being actionable</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>DeviceRequest.authoredOn</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="authored-on", path="DeviceRequest.authoredOn", description="When the request transitioned to being actionable", type="date" )
-  public static final String SP_AUTHORED_ON = "authored-on";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>authored-on</b>
-   * <p>
-   * Description: <b>When the request transitioned to being actionable</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>DeviceRequest.authoredOn</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED_ON = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED_ON);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INSURANCE = new ca.uhn.fhir.model.api.Include("DeviceRequest:insurance").toLocked();
 
  /**
    * Search parameter: <b>intent</b>
@@ -2941,96 +2391,30 @@ public class DeviceRequest extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTENT);
 
  /**
-   * Search parameter: <b>group-identifier</b>
+   * Search parameter: <b>performer</b>
    * <p>
-   * Description: <b>Composite request this is part of</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.groupIdentifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="group-identifier", path="DeviceRequest.groupIdentifier", description="Composite request this is part of", type="token" )
-  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
-   * <p>
-   * Description: <b>Composite request this is part of</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceRequest.groupIdentifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>based-on</b>
-   * <p>
-   * Description: <b>Plan/proposal/order fulfilled by this request</b><br>
+   * Description: <b>Desired performer for service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.basedOn</b><br>
+   * Path: <b>DeviceRequest.performer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="based-on", path="DeviceRequest.basedOn", description="Plan/proposal/order fulfilled by this request", type="reference" )
-  public static final String SP_BASED_ON = "based-on";
+  @SearchParamDefinition(name="performer", path="DeviceRequest.performer", description="Desired performer for service", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_PERFORMER = "performer";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <b>Fluent Client</b> search parameter constant for <b>performer</b>
    * <p>
-   * Description: <b>Plan/proposal/order fulfilled by this request</b><br>
+   * Description: <b>Desired performer for service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.basedOn</b><br>
+   * Path: <b>DeviceRequest.performer</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:based-on</b>".
+   * the path value of "<b>DeviceRequest:performer</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("DeviceRequest:based-on").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Individual the service is ordered for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="DeviceRequest.subject.where(resolve() is Patient)", description="Individual the service is ordered for", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Individual the service is ordered for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("DeviceRequest:patient").toLocked();
-
- /**
-   * Search parameter: <b>instantiates-uri</b>
-   * <p>
-   * Description: <b>Instantiates external protocol or definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>DeviceRequest.instantiatesUri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="instantiates-uri", path="DeviceRequest.instantiatesUri", description="Instantiates external protocol or definition", type="uri" )
-  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
-   * <p>
-   * Description: <b>Instantiates external protocol or definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>DeviceRequest.instantiatesUri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMER = new ca.uhn.fhir.model.api.Include("DeviceRequest:performer").toLocked();
 
  /**
    * Search parameter: <b>prior-request</b>
@@ -3040,7 +2424,7 @@ public class DeviceRequest extends DomainResource {
    * Path: <b>DeviceRequest.priorRequest</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="prior-request", path="DeviceRequest.priorRequest", description="Request takes the place of referenced completed or terminated requests", type="reference" )
+  @SearchParamDefinition(name="prior-request", path="DeviceRequest.priorRequest", description="Request takes the place of referenced completed or terminated requests", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PRIOR_REQUEST = "prior-request";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>prior-request</b>
@@ -3059,30 +2443,30 @@ public class DeviceRequest extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PRIOR_REQUEST = new ca.uhn.fhir.model.api.Include("DeviceRequest:prior-request").toLocked();
 
  /**
-   * Search parameter: <b>device</b>
+   * Search parameter: <b>requester</b>
    * <p>
-   * Description: <b>Reference to resource that is being requested/ordered</b><br>
+   * Description: <b>Who/what is requesting service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.codeReference</b><br>
+   * Path: <b>DeviceRequest.requester</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="device", path="(DeviceRequest.code as Reference)", description="Reference to resource that is being requested/ordered", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device") }, target={Device.class } )
-  public static final String SP_DEVICE = "device";
+  @SearchParamDefinition(name="requester", path="DeviceRequest.requester", description="Who/what is requesting service", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_REQUESTER = "requester";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>device</b>
+   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
    * <p>
-   * Description: <b>Reference to resource that is being requested/ordered</b><br>
+   * Description: <b>Who/what is requesting service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DeviceRequest.codeReference</b><br>
+   * Path: <b>DeviceRequest.requester</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceRequest:device</b>".
+   * the path value of "<b>DeviceRequest:requester</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("DeviceRequest:device").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("DeviceRequest:requester").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -3103,6 +2487,316 @@ public class DeviceRequest extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Individual the service is ordered for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="DeviceRequest.subject", description="Individual the service is ordered for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Location.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Individual the service is ordered for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceRequest.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceRequest:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DeviceRequest:subject").toLocked();
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter", description="Multiple Resources: \r\n\r\n* [Composition](composition.html): Context of the Composition\r\n* [DeviceRequest](devicerequest.html): Encounter during which request was created\r\n* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made\r\n* [DocumentReference](documentreference.html): Context of the document  content\r\n* [Flag](flag.html): Alert relevant during encounter\r\n* [List](list.html): Context in which list created\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier\r\n* [Observation](observation.html): Encounter related to the observation\r\n* [Procedure](procedure.html): The Encounter during which this Procedure was created\r\n* [RiskAssessment](riskassessment.html): Where was assessment performed?\r\n* [ServiceRequest](servicerequest.html): An encounter in which this request is made\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceRequest:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("DeviceRequest:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Master Version Specific Identifier\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Group.class, Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceRequest:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("DeviceRequest:patient").toLocked();
 
 
 }

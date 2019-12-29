@@ -124,19 +124,19 @@ public class PaymentNotice extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus convertPaymentNoticeStatus(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertPaymentNoticeStatus(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus convertPaymentNoticeStatus(org.hl7.fhir.r5.model.PaymentNotice.PaymentNoticeStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus convertPaymentNoticeStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

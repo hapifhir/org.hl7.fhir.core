@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,48 +25,48 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
+ * Base StructureDefinition for DataRequirement Type: Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
  */
 @DatatypeDef(name="DataRequirement")
 public class DataRequirement extends DataType implements ICompositeType {
@@ -392,7 +393,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public Coding getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -495,13 +496,13 @@ public class DataRequirement extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.codeFilter.path");
         }
         else if (name.equals("searchParam")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.searchParam");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.codeFilter.searchParam");
         }
         else if (name.equals("valueSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.codeFilter.valueSet");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -546,7 +547,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         if (!(other_ instanceof DataRequirementCodeFilterComponent))
           return false;
         DataRequirementCodeFilterComponent o = (DataRequirementCodeFilterComponent) other_;
-        return compareValues(path, o.path, true) && compareValues(searchParam, o.searchParam, true);
+        return compareValues(path, o.path, true) && compareValues(searchParam, o.searchParam, true) && compareValues(valueSet, o.valueSet, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -771,9 +773,9 @@ public class DataRequirement extends DataType implements ICompositeType {
           case -553645115: /*searchParam*/  return new Property("searchParam", "string", "A date parameter that refers to a search parameter defined on the specified type of the DataRequirement, and which searches on elements of type date, dateTime, Period, Schedule, or Timing.", 0, 1, searchParam);
           case -1410166417: /*value[x]*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
-          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
-          case 1558135333: /*valueDuration*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
+          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "The value of the filter. If period is specified, the filter will return only those data items that fall within the bounds determined by the Period, inclusive of the period boundaries. If dateTime is specified, the filter will return only those data items that are equal to the specified dateTime. If a Duration is specified, the filter will return only those data items that fall within Duration before now.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -846,10 +848,10 @@ public class DataRequirement extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.dateFilter.path");
         }
         else if (name.equals("searchParam")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.searchParam");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.dateFilter.searchParam");
         }
         else if (name.equals("valueDateTime")) {
           this.value = new DateTimeType();
@@ -942,10 +944,10 @@ public class DataRequirement extends DataType implements ICompositeType {
     /**
      * Constructor
      */
-      public DataRequirementSortComponent(StringType path, Enumeration<SortDirection> direction) {
+      public DataRequirementSortComponent(String path, SortDirection direction) {
         super();
-        this.path = path;
-        this.direction = direction;
+        this.setPath(path);
+        this.setDirection(direction);
       }
 
         /**
@@ -1114,10 +1116,10 @@ public class DataRequirement extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.path");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.sort.path");
         }
         else if (name.equals("direction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.direction");
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.sort.direction");
         }
         else
           return super.addChild(name);
@@ -1172,7 +1174,7 @@ public class DataRequirement extends DataType implements ICompositeType {
     @Child(name = "type", type = {CodeType.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The type of the required data", formalDefinition="The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-    protected CodeType type;
+    protected Enumeration<FHIRAllTypes> type;
 
     /**
      * The profile of the required data, specified as the uri of the profile definition.
@@ -1226,7 +1228,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     @Description(shortDefinition="Order of the results", formalDefinition="Specifies the order of the results to be returned." )
     protected List<DataRequirementSortComponent> sort;
 
-    private static final long serialVersionUID = 565612272L;
+    private static final long serialVersionUID = -1379674933L;
 
   /**
    * Constructor
@@ -1238,20 +1240,20 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
   /**
    * Constructor
    */
-    public DataRequirement(CodeType type) {
+    public DataRequirement(FHIRAllTypes type) {
       super();
-      this.type = type;
+      this.setType(type);
     }
 
     /**
      * @return {@link #type} (The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public CodeType getTypeElement() { 
+    public Enumeration<FHIRAllTypes> getTypeElement() { 
       if (this.type == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DataRequirement.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeType(); // bb
+          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
       return this.type;
     }
 
@@ -1266,7 +1268,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @param value {@link #type} (The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public DataRequirement setTypeElement(CodeType value) { 
+    public DataRequirement setTypeElement(Enumeration<FHIRAllTypes> value) { 
       this.type = value;
       return this;
     }
@@ -1274,16 +1276,16 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @return The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.
      */
-    public String getType() { 
+    public FHIRAllTypes getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
      * @param value The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.
      */
-    public DataRequirement setType(String value) { 
+    public DataRequirement setType(FHIRAllTypes value) { 
         if (this.type == null)
-          this.type = new CodeType();
+          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
         this.type.setValue(value);
       return this;
     }
@@ -1344,7 +1346,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       if (this.profile == null)
         return false;
       for (CanonicalType v : this.profile)
-        if (v.getValue().equals(value)) // canonical(StructureDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -1513,7 +1515,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     }
 
     /**
-     * @return The first repetition of repeating field {@link #codeFilter}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #codeFilter}, creating it if it does not already exist {3}
      */
     public DataRequirementCodeFilterComponent getCodeFilterFirstRep() { 
       if (getCodeFilter().isEmpty()) {
@@ -1566,7 +1568,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     }
 
     /**
-     * @return The first repetition of repeating field {@link #dateFilter}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #dateFilter}, creating it if it does not already exist {3}
      */
     public DataRequirementDateFilterComponent getDateFilterFirstRep() { 
       if (getDateFilter().isEmpty()) {
@@ -1664,7 +1666,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     }
 
     /**
-     * @return The first repetition of repeating field {@link #sort}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #sort}, creating it if it does not already exist {3}
      */
     public DataRequirementSortComponent getSortFirstRep() { 
       if (getSort().isEmpty()) {
@@ -1692,8 +1694,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "The profile of the required data, specified as the uri of the profile definition.", 0, java.lang.Integer.MAX_VALUE, profile);
         case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
         case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
+        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed.", 0, 1, subject);
         case -1402857082: /*mustSupport*/  return new Property("mustSupport", "string", "Indicates that specific elements of the type are referenced by the knowledge module and must be supported by the consumer in order to obtain an effective evaluation. This does not mean that a value is required for this element, only that the consuming system must understand the element and be able to provide values for it if they are available. \n\nThe value of mustSupport SHALL be a FHIRPath resolveable on the type of the DataRequirement. The path SHALL consist only of identifiers, constant indexers, and .resolve() (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, java.lang.Integer.MAX_VALUE, mustSupport);
         case -1303674939: /*codeFilter*/  return new Property("codeFilter", "", "Code filters specify additional constraints on the data, specifying the value set of interest for a particular element of the data. Each code filter defines an additional constraint on the data, i.e. code filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, codeFilter);
         case 149531846: /*dateFilter*/  return new Property("dateFilter", "", "Date filters specify additional constraints on the data in terms of the applicable date range for specific elements. Each date filter specifies an additional constraint on the data, i.e. date filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, dateFilter);
@@ -1707,7 +1709,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // CanonicalType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case -1402857082: /*mustSupport*/ return this.mustSupport == null ? new Base[0] : this.mustSupport.toArray(new Base[this.mustSupport.size()]); // StringType
@@ -1724,7 +1726,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = TypeConvertor.castToCode(value); // CodeType
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
           return value;
         case -309425751: // profile
           this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
@@ -1755,7 +1758,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = TypeConvertor.castToCode(value); // CodeType
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
         } else if (name.equals("profile")) {
           this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("subject[x]")) {
@@ -1910,8 +1914,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         if (!(other_ instanceof DataRequirement))
           return false;
         DataRequirement o = (DataRequirement) other_;
-        return compareValues(type, o.type, true) && compareValues(mustSupport, o.mustSupport, true) && compareValues(limit, o.limit, true)
-          ;
+        return compareValues(type, o.type, true) && compareValues(profile, o.profile, true) && compareValues(mustSupport, o.mustSupport, true)
+           && compareValues(limit, o.limit, true);
       }
 
       public boolean isEmpty() {

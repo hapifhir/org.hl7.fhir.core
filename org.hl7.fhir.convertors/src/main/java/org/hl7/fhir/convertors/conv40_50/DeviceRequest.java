@@ -172,22 +172,22 @@ public class DeviceRequest extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus convertDeviceRequestStatus(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertDeviceRequestStatus(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case DRAFT: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.DRAFT;
-    case ACTIVE: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.ONHOLD;
-    case REVOKED: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.REVOKED;
-    case COMPLETED: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus.NULL;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+    case REVOKED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus convertDeviceRequestStatus(org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus convertDeviceRequestStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -202,24 +202,24 @@ public class DeviceRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.DeviceRequest.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.PLAN;
-    case DIRECTIVE: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.DIRECTIVE;
-    case ORDER: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.DeviceRequest.RequestIntent.NULL;
+    case PROPOSAL: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+    case PLAN: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+    case DIRECTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+    case ORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+    case ORIGINALORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+    case REFLEXORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+    case FILLERORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+    case INSTANCEORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+    case OPTION: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DeviceRequest.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.DeviceRequest.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DeviceRequest.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -236,19 +236,19 @@ public class DeviceRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.DeviceRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.DeviceRequest.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.DeviceRequest.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.DeviceRequest.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.DeviceRequest.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.DeviceRequest.RequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DeviceRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.DeviceRequest.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DeviceRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,183 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The details of a healthcare service available at a location.
  */
 @ResourceDef(name="HealthcareService", profile="http://hl7.org/fhir/StructureDefinition/HealthcareService")
 public class HealthcareService extends DomainResource {
-
-    public enum DaysOfWeek {
-        /**
-         * Monday.
-         */
-        MON, 
-        /**
-         * Tuesday.
-         */
-        TUE, 
-        /**
-         * Wednesday.
-         */
-        WED, 
-        /**
-         * Thursday.
-         */
-        THU, 
-        /**
-         * Friday.
-         */
-        FRI, 
-        /**
-         * Saturday.
-         */
-        SAT, 
-        /**
-         * Sunday.
-         */
-        SUN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DaysOfWeek fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return MON;
-        if ("tue".equals(codeString))
-          return TUE;
-        if ("wed".equals(codeString))
-          return WED;
-        if ("thu".equals(codeString))
-          return THU;
-        if ("fri".equals(codeString))
-          return FRI;
-        if ("sat".equals(codeString))
-          return SAT;
-        if ("sun".equals(codeString))
-          return SUN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MON: return "mon";
-            case TUE: return "tue";
-            case WED: return "wed";
-            case THU: return "thu";
-            case FRI: return "fri";
-            case SAT: return "sat";
-            case SUN: return "sun";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case MON: return "http://hl7.org/fhir/days-of-week";
-            case TUE: return "http://hl7.org/fhir/days-of-week";
-            case WED: return "http://hl7.org/fhir/days-of-week";
-            case THU: return "http://hl7.org/fhir/days-of-week";
-            case FRI: return "http://hl7.org/fhir/days-of-week";
-            case SAT: return "http://hl7.org/fhir/days-of-week";
-            case SUN: return "http://hl7.org/fhir/days-of-week";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MON: return "Monday.";
-            case TUE: return "Tuesday.";
-            case WED: return "Wednesday.";
-            case THU: return "Thursday.";
-            case FRI: return "Friday.";
-            case SAT: return "Saturday.";
-            case SUN: return "Sunday.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
-    public DaysOfWeek fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("mon".equals(codeString))
-          return DaysOfWeek.MON;
-        if ("tue".equals(codeString))
-          return DaysOfWeek.TUE;
-        if ("wed".equals(codeString))
-          return DaysOfWeek.WED;
-        if ("thu".equals(codeString))
-          return DaysOfWeek.THU;
-        if ("fri".equals(codeString))
-          return DaysOfWeek.FRI;
-        if ("sat".equals(codeString))
-          return DaysOfWeek.SAT;
-        if ("sun".equals(codeString))
-          return DaysOfWeek.SUN;
-        throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
-        if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
-        if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
-        if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
-        if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
-        if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
-        if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
-        throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
-        }
-    public String toCode(DaysOfWeek code) {
-      if (code == DaysOfWeek.MON)
-        return "mon";
-      if (code == DaysOfWeek.TUE)
-        return "tue";
-      if (code == DaysOfWeek.WED)
-        return "wed";
-      if (code == DaysOfWeek.THU)
-        return "thu";
-      if (code == DaysOfWeek.FRI)
-        return "fri";
-      if (code == DaysOfWeek.SAT)
-        return "sat";
-      if (code == DaysOfWeek.SUN)
-        return "sun";
-      return "?";
-      }
-    public String toSystem(DaysOfWeek code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class HealthcareServiceEligibilityComponent extends BackboneElement implements IBaseBackboneElement {
@@ -420,7 +249,7 @@ public class HealthcareService extends DomainResource {
           return this.code;
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.comment");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.eligibility.comment");
         }
         else
           return super.addChild(name);
@@ -809,16 +638,16 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.daysOfWeek");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.daysOfWeek");
         }
         else if (name.equals("allDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.allDay");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.allDay");
         }
         else if (name.equals("availableStartTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableStartTime");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.availableStartTime");
         }
         else if (name.equals("availableEndTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableEndTime");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.availableEndTime");
         }
         else
           return super.addChild(name);
@@ -904,9 +733,9 @@ public class HealthcareService extends DomainResource {
     /**
      * Constructor
      */
-      public HealthcareServiceNotAvailableComponent(StringType description) {
+      public HealthcareServiceNotAvailableComponent(String description) {
         super();
-        this.description = description;
+        this.setDescription(description);
       }
 
         /**
@@ -1052,7 +881,7 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.description");
+          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.notAvailable.description");
         }
         else if (name.equals("during")) {
           this.during = new Period();
@@ -1333,7 +1162,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1455,7 +1284,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -1508,7 +1337,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTypeFirstRep() { 
       if (getType().isEmpty()) {
@@ -1561,7 +1390,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialty}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSpecialtyFirstRep() { 
       if (getSpecialty().isEmpty()) {
@@ -1614,7 +1443,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist {3}
      */
     public Reference getLocationFirstRep() { 
       if (getLocation().isEmpty()) {
@@ -1838,7 +1667,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
      */
     public ContactPoint getTelecomFirstRep() { 
       if (getTelecom().isEmpty()) {
@@ -1891,7 +1720,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #coverageArea}, creating it if it does not already exist {3}
      */
     public Reference getCoverageAreaFirstRep() { 
       if (getCoverageArea().isEmpty()) {
@@ -1944,7 +1773,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #serviceProvisionCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #serviceProvisionCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getServiceProvisionCodeFirstRep() { 
       if (getServiceProvisionCode().isEmpty()) {
@@ -1997,7 +1826,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #eligibility}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #eligibility}, creating it if it does not already exist {3}
      */
     public HealthcareServiceEligibilityComponent getEligibilityFirstRep() { 
       if (getEligibility().isEmpty()) {
@@ -2050,7 +1879,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #program}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #program}, creating it if it does not already exist {3}
      */
     public CodeableConcept getProgramFirstRep() { 
       if (getProgram().isEmpty()) {
@@ -2103,7 +1932,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCharacteristicFirstRep() { 
       if (getCharacteristic().isEmpty()) {
@@ -2156,7 +1985,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #communication}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #communication}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCommunicationFirstRep() { 
       if (getCommunication().isEmpty()) {
@@ -2209,7 +2038,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #referralMethod}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #referralMethod}, creating it if it does not already exist {3}
      */
     public CodeableConcept getReferralMethodFirstRep() { 
       if (getReferralMethod().isEmpty()) {
@@ -2307,7 +2136,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #availableTime}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #availableTime}, creating it if it does not already exist {3}
      */
     public HealthcareServiceAvailableTimeComponent getAvailableTimeFirstRep() { 
       if (getAvailableTime().isEmpty()) {
@@ -2360,7 +2189,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #notAvailable}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #notAvailable}, creating it if it does not already exist {3}
      */
     public HealthcareServiceNotAvailableComponent getNotAvailableFirstRep() { 
       if (getNotAvailable().isEmpty()) {
@@ -2462,7 +2291,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
      */
     public Reference getEndpointFirstRep() { 
       if (getEndpoint().isEmpty()) {
@@ -2994,90 +2823,44 @@ public class HealthcareService extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>active</b>
    * <p>
-   * Description: <b>External identifiers for this item</b><br>
+   * Description: <b>The Healthcare Service is currently marked as active</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.identifier</b><br>
+   * Path: <b>HealthcareService.active</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="HealthcareService.identifier", description="External identifiers for this item", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="active", path="HealthcareService.active", description="The Healthcare Service is currently marked as active", type="token" )
+  public static final String SP_ACTIVE = "active";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>active</b>
    * <p>
-   * Description: <b>External identifiers for this item</b><br>
+   * Description: <b>The Healthcare Service is currently marked as active</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.identifier</b><br>
+   * Path: <b>HealthcareService.active</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
 
  /**
-   * Search parameter: <b>specialty</b>
+   * Search parameter: <b>characteristic</b>
    * <p>
-   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
+   * Description: <b>One of the HealthcareService's characteristics</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.specialty</b><br>
+   * Path: <b>HealthcareService.characteristic</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="specialty", path="HealthcareService.specialty", description="The specialty of the service provided by this healthcare service", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
+  @SearchParamDefinition(name="characteristic", path="HealthcareService.characteristic", description="One of the HealthcareService's characteristics", type="token" )
+  public static final String SP_CHARACTERISTIC = "characteristic";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
    * <p>
-   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
+   * Description: <b>One of the HealthcareService's characteristics</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.specialty</b><br>
+   * Path: <b>HealthcareService.characteristic</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
-
- /**
-   * Search parameter: <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.endpoint</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="endpoint", path="HealthcareService.endpoint", description="Technical endpoints providing access to electronic services operated for the healthcare service", type="reference", target={Endpoint.class } )
-  public static final String SP_ENDPOINT = "endpoint";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.endpoint</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:endpoint</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("HealthcareService:endpoint").toLocked();
-
- /**
-   * Search parameter: <b>service-category</b>
-   * <p>
-   * Description: <b>Service Category of the Healthcare Service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-category", path="HealthcareService.category", description="Service Category of the Healthcare Service", type="token" )
-  public static final String SP_SERVICE_CATEGORY = "service-category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
-   * <p>
-   * Description: <b>Service Category of the Healthcare Service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
 
  /**
    * Search parameter: <b>coverage-area</b>
@@ -3106,90 +2889,50 @@ public class HealthcareService extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_COVERAGE_AREA = new ca.uhn.fhir.model.api.Include("HealthcareService:coverage-area").toLocked();
 
  /**
-   * Search parameter: <b>service-type</b>
+   * Search parameter: <b>endpoint</b>
    * <p>
-   * Description: <b>The type of service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-type", path="HealthcareService.type", description="The type of service provided by this healthcare service", type="token" )
-  public static final String SP_SERVICE_TYPE = "service-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-type</b>
-   * <p>
-   * Description: <b>The type of service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_TYPE);
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>The organization that provides this Healthcare Service</b><br>
+   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.providedBy</b><br>
+   * Path: <b>HealthcareService.endpoint</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="organization", path="HealthcareService.providedBy", description="The organization that provides this Healthcare Service", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
+  @SearchParamDefinition(name="endpoint", path="HealthcareService.endpoint", description="Technical endpoints providing access to electronic services operated for the healthcare service", type="reference", target={Endpoint.class } )
+  public static final String SP_ENDPOINT = "endpoint";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
    * <p>
-   * Description: <b>The organization that provides this Healthcare Service</b><br>
+   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.providedBy</b><br>
+   * Path: <b>HealthcareService.endpoint</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:organization</b>".
+   * the path value of "<b>HealthcareService:endpoint</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("HealthcareService:organization").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("HealthcareService:endpoint").toLocked();
 
  /**
-   * Search parameter: <b>name</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>A portion of the Healthcare service name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>HealthcareService.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="HealthcareService.name", description="A portion of the Healthcare service name", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A portion of the Healthcare service name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>HealthcareService.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>active</b>
-   * <p>
-   * Description: <b>The Healthcare Service is currently marked as active</b><br>
+   * Description: <b>External identifiers for this item</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.active</b><br>
+   * Path: <b>HealthcareService.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="active", path="HealthcareService.active", description="The Healthcare Service is currently marked as active", type="token" )
-  public static final String SP_ACTIVE = "active";
+  @SearchParamDefinition(name="identifier", path="HealthcareService.identifier", description="External identifiers for this item", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>The Healthcare Service is currently marked as active</b><br>
+   * Description: <b>External identifiers for this item</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.active</b><br>
+   * Path: <b>HealthcareService.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>location</b>
@@ -3218,6 +2961,52 @@ public class HealthcareService extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("HealthcareService:location").toLocked();
 
  /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A portion of the Healthcare service name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>HealthcareService.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="HealthcareService.name", description="A portion of the Healthcare service name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A portion of the Healthcare service name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>HealthcareService.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>organization</b>
+   * <p>
+   * Description: <b>The organization that provides this Healthcare Service</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>HealthcareService.providedBy</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="organization", path="HealthcareService.providedBy", description="The organization that provides this Healthcare Service", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>The organization that provides this Healthcare Service</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>HealthcareService.providedBy</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>HealthcareService:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("HealthcareService:organization").toLocked();
+
+ /**
    * Search parameter: <b>program</b>
    * <p>
    * Description: <b>One of the Programs supported by this HealthcareService</b><br>
@@ -3238,24 +3027,64 @@ public class HealthcareService extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PROGRAM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PROGRAM);
 
  /**
-   * Search parameter: <b>characteristic</b>
+   * Search parameter: <b>service-category</b>
    * <p>
-   * Description: <b>One of the HealthcareService's characteristics</b><br>
+   * Description: <b>Service Category of the Healthcare Service</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.characteristic</b><br>
+   * Path: <b>HealthcareService.category</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="characteristic", path="HealthcareService.characteristic", description="One of the HealthcareService's characteristics", type="token" )
-  public static final String SP_CHARACTERISTIC = "characteristic";
+  @SearchParamDefinition(name="service-category", path="HealthcareService.category", description="Service Category of the Healthcare Service", type="token" )
+  public static final String SP_SERVICE_CATEGORY = "service-category";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
+   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
    * <p>
-   * Description: <b>One of the HealthcareService's characteristics</b><br>
+   * Description: <b>Service Category of the Healthcare Service</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.characteristic</b><br>
+   * Path: <b>HealthcareService.category</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
+
+ /**
+   * Search parameter: <b>service-type</b>
+   * <p>
+   * Description: <b>The type of service provided by this healthcare service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="service-type", path="HealthcareService.type", description="The type of service provided by this healthcare service", type="token" )
+  public static final String SP_SERVICE_TYPE = "service-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>service-type</b>
+   * <p>
+   * Description: <b>The type of service provided by this healthcare service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_TYPE);
+
+ /**
+   * Search parameter: <b>specialty</b>
+   * <p>
+   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.specialty</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specialty", path="HealthcareService.specialty", description="The specialty of the service provided by this healthcare service", type="token" )
+  public static final String SP_SPECIALTY = "specialty";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
+   * <p>
+   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>HealthcareService.specialty</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
 
 
 }

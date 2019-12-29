@@ -128,17 +128,17 @@ public class ImmunizationEvaluation extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatus convertImmunizationEvaluationStatus(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes convertImmunizationEvaluationStatus(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case COMPLETED: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.NULL;
+    case COMPLETED: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus convertImmunizationEvaluationStatus(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus convertImmunizationEvaluationStatus(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A patient's point-in-time set of recommendations (i.e. forecasting) according to a published schedule with optional supporting justification.
  */
@@ -162,7 +164,7 @@ public class ImmunizationRecommendation extends DomainResource {
         @Description(shortDefinition="Patient observations supporting recommendation", formalDefinition="Patient Information that supports the status and recommendation.  This includes patient observations, adverse reactions and allergy/intolerance information." )
         protected List<Reference> supportingPatientInformation;
 
-        private static final long serialVersionUID = 1060323518L;
+        private static final long serialVersionUID = -297345622L;
 
     /**
      * Constructor
@@ -176,7 +178,7 @@ public class ImmunizationRecommendation extends DomainResource {
      */
       public ImmunizationRecommendationRecommendationComponent(CodeableConcept forecastStatus) {
         super();
-        this.forecastStatus = forecastStatus;
+        this.setForecastStatus(forecastStatus);
       }
 
         /**
@@ -223,7 +225,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #vaccineCode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #vaccineCode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getVaccineCodeFirstRep() { 
           if (getVaccineCode().isEmpty()) {
@@ -276,7 +278,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #targetDisease}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #targetDisease}, creating it if it does not already exist {3}
          */
         public CodeableConcept getTargetDiseaseFirstRep() { 
           if (getTargetDisease().isEmpty()) {
@@ -329,7 +331,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #contraindicatedVaccineCode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #contraindicatedVaccineCode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getContraindicatedVaccineCodeFirstRep() { 
           if (getContraindicatedVaccineCode().isEmpty()) {
@@ -406,7 +408,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #forecastReason}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #forecastReason}, creating it if it does not already exist {3}
          */
         public CodeableConcept getForecastReasonFirstRep() { 
           if (getForecastReason().isEmpty()) {
@@ -459,7 +461,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #dateCriterion}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #dateCriterion}, creating it if it does not already exist {3}
          */
         public ImmunizationRecommendationRecommendationDateCriterionComponent getDateCriterionFirstRep() { 
           if (getDateCriterion().isEmpty()) {
@@ -712,7 +714,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #supportingImmunization}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #supportingImmunization}, creating it if it does not already exist {3}
          */
         public Reference getSupportingImmunizationFirstRep() { 
           if (getSupportingImmunization().isEmpty()) {
@@ -765,7 +767,7 @@ public class ImmunizationRecommendation extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #supportingPatientInformation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #supportingPatientInformation}, creating it if it does not already exist {3}
          */
         public Reference getSupportingPatientInformationFirstRep() { 
           if (getSupportingPatientInformation().isEmpty()) {
@@ -803,12 +805,12 @@ public class ImmunizationRecommendation extends DomainResource {
           case -905838985: /*series*/  return new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series);
           case -1632295686: /*doseNumber[x]*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
           case -887709242: /*doseNumber*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
-          case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
-          case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
+          case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
+          case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "string", "Nominal position of the recommended dose in a series (e.g. dose 2 is the next recommended dose).", 0, 1, doseNumber);
           case 1553560673: /*seriesDoses[x]*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
           case -1936727105: /*seriesDoses*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-          case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-          case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+          case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+          case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
           case 1171592021: /*supportingImmunization*/  return new Property("supportingImmunization", "Reference(Immunization|ImmunizationEvaluation)", "Immunization event history and/or evaluation that supports the status and recommendation.", 0, java.lang.Integer.MAX_VALUE, supportingImmunization);
           case -1234160646: /*supportingPatientInformation*/  return new Property("supportingPatientInformation", "Reference(Any)", "Patient Information that supports the status and recommendation.  This includes patient observations, adverse reactions and allergy/intolerance information.", 0, java.lang.Integer.MAX_VALUE, supportingPatientInformation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -827,8 +829,8 @@ public class ImmunizationRecommendation extends DomainResource {
         case 2087518867: /*dateCriterion*/ return this.dateCriterion == null ? new Base[0] : this.dateCriterion.toArray(new Base[this.dateCriterion.size()]); // ImmunizationRecommendationRecommendationDateCriterionComponent
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -905838985: /*series*/ return this.series == null ? new Base[0] : new Base[] {this.series}; // StringType
-        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // Type
-        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // Type
+        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // DataType
+        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // DataType
         case 1171592021: /*supportingImmunization*/ return this.supportingImmunization == null ? new Base[0] : this.supportingImmunization.toArray(new Base[this.supportingImmunization.size()]); // Reference
         case -1234160646: /*supportingPatientInformation*/ return this.supportingPatientInformation == null ? new Base[0] : this.supportingPatientInformation.toArray(new Base[this.supportingPatientInformation.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
@@ -864,10 +866,10 @@ public class ImmunizationRecommendation extends DomainResource {
           this.series = TypeConvertor.castToString(value); // StringType
           return value;
         case -887709242: // doseNumber
-          this.doseNumber = TypeConvertor.castToType(value); // Type
+          this.doseNumber = TypeConvertor.castToType(value); // DataType
           return value;
         case -1936727105: // seriesDoses
-          this.seriesDoses = TypeConvertor.castToType(value); // Type
+          this.seriesDoses = TypeConvertor.castToType(value); // DataType
           return value;
         case 1171592021: // supportingImmunization
           this.getSupportingImmunization().add(TypeConvertor.castToReference(value)); // Reference
@@ -899,9 +901,9 @@ public class ImmunizationRecommendation extends DomainResource {
         } else if (name.equals("series")) {
           this.series = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("doseNumber[x]")) {
-          this.doseNumber = TypeConvertor.castToType(value); // Type
+          this.doseNumber = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("seriesDoses[x]")) {
-          this.seriesDoses = TypeConvertor.castToType(value); // Type
+          this.seriesDoses = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("supportingImmunization")) {
           this.getSupportingImmunization().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingPatientInformation")) {
@@ -975,10 +977,10 @@ public class ImmunizationRecommendation extends DomainResource {
           return addDateCriterion();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.recommendation.description");
         }
         else if (name.equals("series")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.series");
+          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.recommendation.series");
         }
         else if (name.equals("doseNumberPositiveInt")) {
           this.doseNumber = new PositiveIntType();
@@ -1124,10 +1126,10 @@ public class ImmunizationRecommendation extends DomainResource {
     /**
      * Constructor
      */
-      public ImmunizationRecommendationRecommendationDateCriterionComponent(CodeableConcept code, DateTimeType value) {
+      public ImmunizationRecommendationRecommendationDateCriterionComponent(CodeableConcept code, Date value) {
         super();
-        this.code = code;
-        this.value = value;
+        this.setCode(code);
+        this.setValue(value);
       }
 
         /**
@@ -1277,7 +1279,7 @@ public class ImmunizationRecommendation extends DomainResource {
           return this.code;
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.value");
+          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationRecommendation.recommendation.dateCriterion.value");
         }
         else
           return super.addChild(name);
@@ -1373,10 +1375,11 @@ public class ImmunizationRecommendation extends DomainResource {
   /**
    * Constructor
    */
-    public ImmunizationRecommendation(Reference patient, DateTimeType date) {
+    public ImmunizationRecommendation(Reference patient, Date date, ImmunizationRecommendationRecommendationComponent recommendation) {
       super();
-      this.patient = patient;
-      this.date = date;
+      this.setPatient(patient);
+      this.setDate(date);
+      this.addRecommendation(recommendation);
     }
 
     /**
@@ -1423,7 +1426,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1569,7 +1572,7 @@ public class ImmunizationRecommendation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #recommendation}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #recommendation}, creating it if it does not already exist {3}
      */
     public ImmunizationRecommendationRecommendationComponent getRecommendationFirstRep() { 
       if (getRecommendation().isEmpty()) {
@@ -1807,24 +1810,30 @@ public class ImmunizationRecommendation extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>target-disease</b>
+   * Search parameter: <b>information</b>
    * <p>
-   * Description: <b>Disease to be immunized against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.targetDisease</b><br>
+   * Description: <b>Patient observations supporting recommendation</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.supportingPatientInformation</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target-disease", path="ImmunizationRecommendation.recommendation.targetDisease", description="Disease to be immunized against", type="token" )
-  public static final String SP_TARGET_DISEASE = "target-disease";
+  @SearchParamDefinition(name="information", path="ImmunizationRecommendation.recommendation.supportingPatientInformation", description="Patient observations supporting recommendation", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_INFORMATION = "information";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>target-disease</b>
+   * <b>Fluent Client</b> search parameter constant for <b>information</b>
    * <p>
-   * Description: <b>Disease to be immunized against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.targetDisease</b><br>
+   * Description: <b>Patient observations supporting recommendation</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.supportingPatientInformation</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_DISEASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_DISEASE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INFORMATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INFORMATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImmunizationRecommendation:information</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INFORMATION = new ca.uhn.fhir.model.api.Include("ImmunizationRecommendation:information").toLocked();
 
  /**
    * Search parameter: <b>patient</b>
@@ -1834,7 +1843,7 @@ public class ImmunizationRecommendation extends DomainResource {
    * Path: <b>ImmunizationRecommendation.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="ImmunizationRecommendation.patient", description="Who this profile is for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="ImmunizationRecommendation.patient", description="Who this profile is for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -1853,50 +1862,24 @@ public class ImmunizationRecommendation extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ImmunizationRecommendation:patient").toLocked();
 
  /**
-   * Search parameter: <b>vaccine-type</b>
+   * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>Vaccine  or vaccine group recommendation applies to</b><br>
+   * Description: <b>Vaccine recommendation status</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.vaccineCode</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.forecastStatus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="vaccine-type", path="ImmunizationRecommendation.recommendation.vaccineCode", description="Vaccine  or vaccine group recommendation applies to", type="token" )
-  public static final String SP_VACCINE_TYPE = "vaccine-type";
+  @SearchParamDefinition(name="status", path="ImmunizationRecommendation.recommendation.forecastStatus", description="Vaccine recommendation status", type="token" )
+  public static final String SP_STATUS = "status";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>vaccine-type</b>
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>Vaccine  or vaccine group recommendation applies to</b><br>
+   * Description: <b>Vaccine recommendation status</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.vaccineCode</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.forecastStatus</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VACCINE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VACCINE_TYPE);
-
- /**
-   * Search parameter: <b>information</b>
-   * <p>
-   * Description: <b>Patient observations supporting recommendation</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.supportingPatientInformation</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="information", path="ImmunizationRecommendation.recommendation.supportingPatientInformation", description="Patient observations supporting recommendation", type="reference" )
-  public static final String SP_INFORMATION = "information";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>information</b>
-   * <p>
-   * Description: <b>Patient observations supporting recommendation</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.supportingPatientInformation</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INFORMATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INFORMATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ImmunizationRecommendation:information</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INFORMATION = new ca.uhn.fhir.model.api.Include("ImmunizationRecommendation:information").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>support</b>
@@ -1925,24 +1908,44 @@ public class ImmunizationRecommendation extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORT = new ca.uhn.fhir.model.api.Include("ImmunizationRecommendation:support").toLocked();
 
  /**
-   * Search parameter: <b>status</b>
+   * Search parameter: <b>target-disease</b>
    * <p>
-   * Description: <b>Vaccine recommendation status</b><br>
+   * Description: <b>Disease to be immunized against</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.forecastStatus</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.targetDisease</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ImmunizationRecommendation.recommendation.forecastStatus", description="Vaccine recommendation status", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="target-disease", path="ImmunizationRecommendation.recommendation.targetDisease", description="Disease to be immunized against", type="token" )
+  public static final String SP_TARGET_DISEASE = "target-disease";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>target-disease</b>
    * <p>
-   * Description: <b>Vaccine recommendation status</b><br>
+   * Description: <b>Disease to be immunized against</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImmunizationRecommendation.recommendation.forecastStatus</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.targetDisease</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_DISEASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_DISEASE);
+
+ /**
+   * Search parameter: <b>vaccine-type</b>
+   * <p>
+   * Description: <b>Vaccine  or vaccine group recommendation applies to</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.vaccineCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="vaccine-type", path="ImmunizationRecommendation.recommendation.vaccineCode", description="Vaccine  or vaccine group recommendation applies to", type="token" )
+  public static final String SP_VACCINE_TYPE = "vaccine-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>vaccine-type</b>
+   * <p>
+   * Description: <b>Vaccine  or vaccine group recommendation applies to</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationRecommendation.recommendation.vaccineCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VACCINE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VACCINE_TYPE);
 
 
 }

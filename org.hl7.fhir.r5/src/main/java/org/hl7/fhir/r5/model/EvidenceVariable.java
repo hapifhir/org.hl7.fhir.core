@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,12 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The EvidenceVariable resource describes a "PICO" element that knowledge (evidence, assertion, recommendation) is about.
  */
 @ResourceDef(name="EvidenceVariable", profile="http://hl7.org/fhir/StructureDefinition/EvidenceVariable")
-@ChildOrder(names={"url", "identifier", "version", "name", "title", "shortTitle", "subtitle", "status", "date", "publisher", "contact", "description", "note", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "type", "actual", "characteristic"})
-public class EvidenceVariable extends CanonicalResource {
+public class EvidenceVariable extends MetadataResource {
 
     public enum EvidenceVariableType {
         /**
@@ -404,7 +404,7 @@ public class EvidenceVariable extends CanonicalResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/group-measure")
         protected Enumeration<GroupMeasure> groupMeasure;
 
-        private static final long serialVersionUID = 568690866L;
+        private static final long serialVersionUID = -1566117434L;
 
     /**
      * Constructor
@@ -418,7 +418,7 @@ public class EvidenceVariable extends CanonicalResource {
      */
       public EvidenceVariableCharacteristicComponent(DataType definition) {
         super();
-        this.definition = definition;
+        this.setDefinition(definition);
       }
 
         /**
@@ -908,22 +908,22 @@ public class EvidenceVariable extends CanonicalResource {
           case -1724546052: /*description*/  return new Property("description", "string", "A short, natural language description of the characteristic that could be used to communicate the criteria to an end-user.", 0, 1, description);
           case -1139422643: /*definition[x]*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -1014418093: /*definition*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case -820021448: /*definitionReference*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case -1446002226: /*definitionCodeableConcept*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case 1463703627: /*definitionExpression*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case -660350874: /*definitionDataRequirement*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
-          case -1130324968: /*definitionTriggerDefinition*/  return new Property("definition[x]", "Reference(Group)|canonical(ActivityDefinition)|CodeableConcept|Expression|DataRequirement|TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case -820021448: /*definitionReference*/  return new Property("definition[x]", "Reference(Group)", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "canonical(ActivityDefinition)", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case -1446002226: /*definitionCodeableConcept*/  return new Property("definition[x]", "CodeableConcept", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case 1463703627: /*definitionExpression*/  return new Property("definition[x]", "Expression", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case -660350874: /*definitionDataRequirement*/  return new Property("definition[x]", "DataRequirement", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
+          case -1130324968: /*definitionTriggerDefinition*/  return new Property("definition[x]", "TriggerDefinition", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Method used for describing characteristic.", 0, 1, method);
           case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "Device used for determining characteristic.", 0, 1, device);
           case -613382374: /*booleanSet*/  return new Property("booleanSet", "string", "Use booleanSet to define the members of the population, such as Age Ranges, Genders, Settings.", 0, java.lang.Integer.MAX_VALUE, booleanSet);
           case -1321148966: /*exclude*/  return new Property("exclude", "boolean", "When true, members with this characteristic are excluded from the element.", 0, 1, exclude);
           case 1777308748: /*participantEffective[x]*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
           case 1376306100: /*participantEffective*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
-          case -1721146513: /*participantEffectiveDateTime*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
-          case -883650923: /*participantEffectivePeriod*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
-          case -1210941080: /*participantEffectiveDuration*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
-          case -765589218: /*participantEffectiveTiming*/  return new Property("participantEffective[x]", "dateTime|Period|Duration|Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
+          case -1721146513: /*participantEffectiveDateTime*/  return new Property("participantEffective[x]", "dateTime", "Indicates what effective period the study covers.", 0, 1, participantEffective);
+          case -883650923: /*participantEffectivePeriod*/  return new Property("participantEffective[x]", "Period", "Indicates what effective period the study covers.", 0, 1, participantEffective);
+          case -1210941080: /*participantEffectiveDuration*/  return new Property("participantEffective[x]", "Duration", "Indicates what effective period the study covers.", 0, 1, participantEffective);
+          case -765589218: /*participantEffectiveTiming*/  return new Property("participantEffective[x]", "Timing", "Indicates what effective period the study covers.", 0, 1, participantEffective);
           case 2100140683: /*timeFromStart*/  return new Property("timeFromStart", "Duration", "Indicates duration from the participant's study entry.", 0, 1, timeFromStart);
           case 588892639: /*groupMeasure*/  return new Property("groupMeasure", "code", "Indicates how elements are aggregated within the study effective period.", 0, 1, groupMeasure);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -935,12 +935,12 @@ public class EvidenceVariable extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // Type
+        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // DataType
         case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
         case -613382374: /*booleanSet*/ return this.booleanSet == null ? new Base[0] : this.booleanSet.toArray(new Base[this.booleanSet.size()]); // StringType
         case -1321148966: /*exclude*/ return this.exclude == null ? new Base[0] : new Base[] {this.exclude}; // BooleanType
-        case 1376306100: /*participantEffective*/ return this.participantEffective == null ? new Base[0] : new Base[] {this.participantEffective}; // Type
+        case 1376306100: /*participantEffective*/ return this.participantEffective == null ? new Base[0] : new Base[] {this.participantEffective}; // DataType
         case 2100140683: /*timeFromStart*/ return this.timeFromStart == null ? new Base[0] : new Base[] {this.timeFromStart}; // Duration
         case 588892639: /*groupMeasure*/ return this.groupMeasure == null ? new Base[0] : new Base[] {this.groupMeasure}; // Enumeration<GroupMeasure>
         default: return super.getProperty(hash, name, checkValid);
@@ -955,7 +955,7 @@ public class EvidenceVariable extends CanonicalResource {
           this.description = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = TypeConvertor.castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // DataType
           return value;
         case -1077554975: // method
           this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -970,7 +970,7 @@ public class EvidenceVariable extends CanonicalResource {
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1376306100: // participantEffective
-          this.participantEffective = TypeConvertor.castToType(value); // Type
+          this.participantEffective = TypeConvertor.castToType(value); // DataType
           return value;
         case 2100140683: // timeFromStart
           this.timeFromStart = TypeConvertor.castToDuration(value); // Duration
@@ -989,7 +989,7 @@ public class EvidenceVariable extends CanonicalResource {
         if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition[x]")) {
-          this.definition = TypeConvertor.castToType(value); // Type
+          this.definition = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("method")) {
           this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("device")) {
@@ -999,7 +999,7 @@ public class EvidenceVariable extends CanonicalResource {
         } else if (name.equals("exclude")) {
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("participantEffective[x]")) {
-          this.participantEffective = TypeConvertor.castToType(value); // Type
+          this.participantEffective = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("timeFromStart")) {
           this.timeFromStart = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("groupMeasure")) {
@@ -1049,7 +1049,7 @@ public class EvidenceVariable extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.description");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.description");
         }
         else if (name.equals("definitionReference")) {
           this.definition = new Reference();
@@ -1084,10 +1084,10 @@ public class EvidenceVariable extends CanonicalResource {
           return this.device;
         }
         else if (name.equals("booleanSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.booleanSet");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.booleanSet");
         }
         else if (name.equals("exclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.exclude");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.exclude");
         }
         else if (name.equals("participantEffectiveDateTime")) {
           this.participantEffective = new DateTimeType();
@@ -1110,7 +1110,7 @@ public class EvidenceVariable extends CanonicalResource {
           return this.timeFromStart;
         }
         else if (name.equals("groupMeasure")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.groupMeasure");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.groupMeasure");
         }
         else
           return super.addChild(name);
@@ -1178,65 +1178,144 @@ public class EvidenceVariable extends CanonicalResource {
   }
 
     /**
+     * An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this evidence variable, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers." )
+    protected UriType url;
+
+    /**
      * A formal identifier that is used to identify this evidence variable when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional identifier for the evidence variable", formalDefinition="A formal identifier that is used to identify this evidence variable when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
+     * The identifier that is used to identify this version of the evidence variable when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the evidence variable author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts.
+     */
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the evidence variable", formalDefinition="The identifier that is used to identify this version of the evidence variable when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the evidence variable author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts." )
+    protected StringType version;
+
+    /**
+     * A natural language name identifying the evidence variable. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this evidence variable (computer friendly)", formalDefinition="A natural language name identifying the evidence variable. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
+     * A short, descriptive, user-friendly title for the evidence variable.
+     */
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this evidence variable (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the evidence variable." )
+    protected StringType title;
+
+    /**
      * The short title provides an alternate title for use in informal descriptive contexts where the full, formal title is not necessary.
      */
-    @Child(name = "shortTitle", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "shortTitle", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Title for use in informal contexts", formalDefinition="The short title provides an alternate title for use in informal descriptive contexts where the full, formal title is not necessary." )
     protected StringType shortTitle;
 
     /**
      * An explanatory or alternate title for the EvidenceVariable giving additional information about its content.
      */
-    @Child(name = "subtitle", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subtitle", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Subordinate title of the EvidenceVariable", formalDefinition="An explanatory or alternate title for the EvidenceVariable giving additional information about its content." )
     protected StringType subtitle;
 
     /**
+     * The status of this evidence variable. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this evidence variable. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * The date  (and optionally time) when the evidence variable was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence variable changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the evidence variable was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence variable changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the evidence variable.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence variable." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the evidence variable from a consumer's perspective.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Natural language description of the evidence variable", formalDefinition="A free text natural language description of the evidence variable from a consumer's perspective." )
+    protected MarkdownType description;
+
+    /**
      * A human-readable string to clarify or explain concepts about the resource.
      */
-    @Child(name = "note", type = {Annotation.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for footnotes or explanatory notes", formalDefinition="A human-readable string to clarify or explain concepts about the resource." )
     protected List<Annotation> note;
 
     /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the evidence variable is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for evidence variable (if applicable)", formalDefinition="A legal or geographic region in which the evidence variable is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the evidence variable was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the evidence variable was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the evidence variable content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the evidence variable is expected to be used", formalDefinition="The period during which the evidence variable content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching.
      */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "topic", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The category of the EvidenceVariable, such as Education, Treatment, Assessment, etc.", formalDefinition="Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
     protected List<CodeableConcept> topic;
@@ -1244,42 +1323,42 @@ public class EvidenceVariable extends CanonicalResource {
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individual or organization primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individual or organization primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individual or organization primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individual or organization responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individual or organization responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, or bibliographic references.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, or bibliographic references." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * The type of evidence element, a population, an exposure, or an outcome.
      */
-    @Child(name = "type", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeType.class}, order=25, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="dichotomous | continuous | descriptive", formalDefinition="The type of evidence element, a population, an exposure, or an outcome." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-type")
     protected Enumeration<EvidenceVariableType> type;
@@ -1287,18 +1366,18 @@ public class EvidenceVariable extends CanonicalResource {
     /**
      * True if the actual variable measured, false if a conceptual representation of the intended variable.
      */
-    @Child(name = "actual", type = {BooleanType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "actual", type = {BooleanType.class}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual or conceptual", formalDefinition="True if the actual variable measured, false if a conceptual representation of the intended variable." )
     protected BooleanType actual;
 
     /**
      * A characteristic that defines the members of the evidence element. Multiple characteristics are applied with "and" semantics.
      */
-    @Child(name = "characteristic", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "characteristic", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What defines the members of the evidence element", formalDefinition="A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics." )
     protected List<EvidenceVariableCharacteristicComponent> characteristic;
 
-    private static final long serialVersionUID = 433718448L;
+    private static final long serialVersionUID = -544472546L;
 
   /**
    * Constructor
@@ -1310,9 +1389,9 @@ public class EvidenceVariable extends CanonicalResource {
   /**
    * Constructor
    */
-    public EvidenceVariable(Enumeration<PublicationStatus> status) {
+    public EvidenceVariable(PublicationStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -1408,7 +1487,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1849,7 +1928,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -1951,7 +2030,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -2004,7 +2083,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -2057,7 +2136,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -2281,7 +2360,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
      */
     public CodeableConcept getTopicFirstRep() { 
       if (getTopic().isEmpty()) {
@@ -2334,7 +2413,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
      */
     public ContactDetail getAuthorFirstRep() { 
       if (getAuthor().isEmpty()) {
@@ -2387,7 +2466,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {3}
      */
     public ContactDetail getEditorFirstRep() { 
       if (getEditor().isEmpty()) {
@@ -2440,7 +2519,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {3}
      */
     public ContactDetail getReviewerFirstRep() { 
       if (getReviewer().isEmpty()) {
@@ -2493,7 +2572,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {3}
      */
     public ContactDetail getEndorserFirstRep() { 
       if (getEndorser().isEmpty()) {
@@ -2546,7 +2625,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
       if (getRelatedArtifact().isEmpty()) {
@@ -2693,7 +2772,7 @@ public class EvidenceVariable extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
      */
     public EvidenceVariableCharacteristicComponent getCharacteristicFirstRep() { 
       if (getCharacteristic().isEmpty()) {
@@ -2702,6 +2781,64 @@ public class EvidenceVariable extends CanonicalResource {
       return getCharacteristic().get(0);
     }
 
+    /**
+     * @return {@link #experimental} (A Boolean value to indicate that this evidence variable is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public BooleanType getExperimentalElement() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"experimental\"");
+    }
+
+    public boolean hasExperimentalElement() { 
+      return false;
+    }
+    public boolean hasExperimental() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #experimental} (A Boolean value to indicate that this evidence variable is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public EvidenceVariable setExperimentalElement(BooleanType value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"experimental\"");
+    }
+    public boolean getExperimental() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"experimental\"");
+    }
+    /**
+     * @param value A Boolean value to indicate that this evidence variable is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public EvidenceVariable setExperimental(boolean value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"experimental\"");
+    }
+    /**
+     * @return {@link #purpose} (Explanation of why this evidence variable is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public MarkdownType getPurposeElement() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"purpose\"");
+    }
+
+    public boolean hasPurposeElement() { 
+      return false;
+    }
+    public boolean hasPurpose() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #purpose} (Explanation of why this evidence variable is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public EvidenceVariable setPurposeElement(MarkdownType value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"purpose\"");
+    }
+    public String getPurpose() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"purpose\"");
+    }
+    /**
+     * @param value Explanation of why this evidence variable is needed and why it has been designed as it has.
+     */
+    public EvidenceVariable setPurpose(String value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"purpose\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers.", 0, 1, url));
@@ -3230,13 +3367,17 @@ public class EvidenceVariable extends CanonicalResource {
         if (!(other_ instanceof EvidenceVariable))
           return false;
         EvidenceVariable o = (EvidenceVariable) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(shortTitle, o.shortTitle, true)
-           && compareDeep(subtitle, o.subtitle, true) && compareDeep(note, o.note, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true)
-           && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
-           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(type, o.type, true) && compareDeep(actual, o.actual, true)
-           && compareDeep(characteristic, o.characteristic, true);
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(shortTitle, o.shortTitle, true)
+           && compareDeep(subtitle, o.subtitle, true) && compareDeep(status, o.status, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(note, o.note, true) && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
+           && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
+           && compareDeep(type, o.type, true) && compareDeep(actual, o.actual, true) && compareDeep(characteristic, o.characteristic, true)
+          ;
       }
 
       @Override
@@ -3246,15 +3387,20 @@ public class EvidenceVariable extends CanonicalResource {
         if (!(other_ instanceof EvidenceVariable))
           return false;
         EvidenceVariable o = (EvidenceVariable) other_;
-        return compareValues(shortTitle, o.shortTitle, true) && compareValues(subtitle, o.subtitle, true) && compareValues(copyright, o.copyright, true)
-           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
-           && compareValues(type, o.type, true) && compareValues(actual, o.actual, true);
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(shortTitle, o.shortTitle, true) && compareValues(subtitle, o.subtitle, true)
+           && compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
+           && compareValues(description, o.description, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(type, o.type, true) && compareValues(actual, o.actual, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, shortTitle, subtitle
-          , note, copyright, approvalDate, lastReviewDate, effectivePeriod, topic, author
-          , editor, reviewer, endorser, relatedArtifact, type, actual, characteristic);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , name, title, shortTitle, subtitle, status, date, publisher, contact, description
+          , note, useContext, jurisdiction, copyright, approvalDate, lastReviewDate, effectivePeriod
+          , topic, author, editor, reviewer, endorser, relatedArtifact, type, actual, characteristic
+          );
       }
 
   @Override
@@ -3263,77 +3409,77 @@ public class EvidenceVariable extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The evidence variable publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>EvidenceVariable.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="EvidenceVariable.date", description="The evidence variable publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The evidence variable publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>EvidenceVariable.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="EvidenceVariable.identifier", description="External identifier for the evidence variable", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>successor</b>
+   * Search parameter: <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_SUCCESSOR = "successor";
+  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_COMPOSED_OF = "composed-of";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EvidenceVariable:successor</b>".
+   * the path value of "<b>EvidenceVariable:composed-of</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("EvidenceVariable:successor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("EvidenceVariable:composed-of").toLocked();
+
+ /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the evidence variable</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the evidence variable", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the evidence variable</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence variable</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceVariable.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="EvidenceVariable.useContext", description="A use context type and quantity- or range-based value assigned to the evidence variable", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence variable</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceVariable.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
  /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the evidence variable</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>EvidenceVariable.useContext</b><br>
    * </p>
    */
   @SearchParamDefinition(name="context-type-value", path="EvidenceVariable.useContext", description="A use context type and value assigned to the evidence variable", type="composite", compositeOf={"context-type", "context"} )
@@ -3343,76 +3489,10 @@ public class EvidenceVariable extends CanonicalResource {
    * <p>
    * Description: <b>A use context type and value assigned to the evidence variable</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>EvidenceVariable.useContext</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="EvidenceVariable.jurisdiction", description="Intended jurisdiction for the evidence variable", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the evidence variable</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceVariable.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="EvidenceVariable.description", description="The description of the evidence variable", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the evidence variable</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceVariable.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_DERIVED_FROM = "derived-from";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
-   * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EvidenceVariable:derived-from</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("EvidenceVariable:derived-from").toLocked();
 
  /**
    * Search parameter: <b>context-type</b>
@@ -3435,136 +3515,116 @@ public class EvidenceVariable extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>predecessor</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Description: <b>A use context assigned to the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(EvidenceVariable.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_PREDECESSOR = "predecessor";
+  @SearchParamDefinition(name="context", path="(EvidenceVariable.useContext.value as CodeableConcept)", description="A use context assigned to the evidence variable", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(EvidenceVariable.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The evidence variable publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>EvidenceVariable.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="EvidenceVariable.date", description="The evidence variable publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The evidence variable publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>EvidenceVariable.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>depends-on</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='depends-on').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DEPENDS_ON = "depends-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='depends-on').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EvidenceVariable:predecessor</b>".
+   * the path value of "<b>EvidenceVariable:depends-on</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("EvidenceVariable:predecessor").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("EvidenceVariable:depends-on").toLocked();
 
  /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the evidence variable</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceVariable.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="EvidenceVariable.title", description="The human-friendly name of the evidence variable", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the evidence variable</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceVariable.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>composed-of</b>
+   * Search parameter: <b>derived-from</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_COMPOSED_OF = "composed-of";
+  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
    * <p>
    * Description: <b>What resource is being referenced</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSED_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSED_OF);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EvidenceVariable:composed-of</b>".
+   * the path value of "<b>EvidenceVariable:derived-from</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("EvidenceVariable:composed-of").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("EvidenceVariable:derived-from").toLocked();
 
  /**
-   * Search parameter: <b>version</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>The business version of the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.version</b><br>
+   * Description: <b>The description of the evidence variable</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceVariable.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="EvidenceVariable.version", description="The business version of the evidence variable", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="description", path="EvidenceVariable.description", description="The description of the evidence variable", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>The business version of the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.version</b><br>
+   * Description: <b>The description of the evidence variable</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceVariable.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the evidence variable</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>EvidenceVariable.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="EvidenceVariable.url", description="The uri that identifies the evidence variable", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the evidence variable</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>EvidenceVariable.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the evidence variable</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>EvidenceVariable.useContext.valueQuantity, EvidenceVariable.useContext.valueRange</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(EvidenceVariable.useContext.value as Quantity) | (EvidenceVariable.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the evidence variable", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the evidence variable</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>EvidenceVariable.useContext.valueQuantity, EvidenceVariable.useContext.valueRange</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>effective</b>
@@ -3587,30 +3647,44 @@ public class EvidenceVariable extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
 
  /**
-   * Search parameter: <b>depends-on</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Description: <b>External identifier for the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference" )
-  public static final String SP_DEPENDS_ON = "depends-on";
+  @SearchParamDefinition(name="identifier", path="EvidenceVariable.identifier", description="External identifier for the evidence variable", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>What resource is being referenced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EvidenceVariable.relatedArtifact.resource</b><br>
+   * Description: <b>External identifier for the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDS_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDS_ON);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EvidenceVariable:depends-on</b>".
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.jurisdiction</b><br>
+   * </p>
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDS_ON = new ca.uhn.fhir.model.api.Include("EvidenceVariable:depends-on").toLocked();
+  @SearchParamDefinition(name="jurisdiction", path="EvidenceVariable.jurisdiction", description="Intended jurisdiction for the evidence variable", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>name</b>
@@ -3633,24 +3707,30 @@ public class EvidenceVariable extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(EvidenceVariable.useContext.value as CodeableConcept)", description="A use context assigned to the evidence variable", type="token" )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PREDECESSOR = "predecessor";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
    * <p>
-   * Description: <b>A use context assigned to the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.useContext.valueCodeableConcept</b><br>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>EvidenceVariable:predecessor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("EvidenceVariable:predecessor").toLocked();
 
  /**
    * Search parameter: <b>publisher</b>
@@ -3673,6 +3753,72 @@ public class EvidenceVariable extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="EvidenceVariable.status", description="The current status of the evidence variable", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the evidence variable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceVariable.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUCCESSOR = "successor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>successor</b>
+   * <p>
+   * Description: <b>What resource is being referenced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EvidenceVariable.relatedArtifact.where(type='successor').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUCCESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUCCESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>EvidenceVariable:successor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUCCESSOR = new ca.uhn.fhir.model.api.Include("EvidenceVariable:successor").toLocked();
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the evidence variable</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceVariable.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="EvidenceVariable.title", description="The human-friendly name of the evidence variable", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the evidence variable</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceVariable.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
    * Search parameter: <b>topic</b>
    * <p>
    * Description: <b>Topics associated with the EvidenceVariable</b><br>
@@ -3693,44 +3839,44 @@ public class EvidenceVariable extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
+   * Search parameter: <b>url</b>
    * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence variable</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Description: <b>The uri that identifies the evidence variable</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>EvidenceVariable.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-type-quantity", path="EvidenceVariable.useContext", description="A use context type and quantity- or range-based value assigned to the evidence variable", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+  @SearchParamDefinition(name="url", path="EvidenceVariable.url", description="The uri that identifies the evidence variable", type="uri" )
+  public static final String SP_URL = "url";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
    * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence variable</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Description: <b>The uri that identifies the evidence variable</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>EvidenceVariable.url</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
  /**
-   * Search parameter: <b>status</b>
+   * Search parameter: <b>version</b>
    * <p>
-   * Description: <b>The current status of the evidence variable</b><br>
+   * Description: <b>The business version of the evidence variable</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.status</b><br>
+   * Path: <b>EvidenceVariable.version</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="EvidenceVariable.status", description="The current status of the evidence variable", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="version", path="EvidenceVariable.version", description="The business version of the evidence variable", type="token" )
+  public static final String SP_VERSION = "version";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
    * <p>
-   * Description: <b>The current status of the evidence variable</b><br>
+   * Description: <b>The business version of the evidence variable</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.status</b><br>
+   * Path: <b>EvidenceVariable.version</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

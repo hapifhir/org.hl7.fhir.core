@@ -172,7 +172,8 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r5.model.ValueSet.FilterOperator;
+import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -2699,7 +2700,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         tr.td().tx(f.getCode());
         tr.td().tx(f.getDescription());
         XhtmlNode td = tr.td();
-        for (Enumeration<org.hl7.fhir.r5.model.CodeSystem.FilterOperator> t : f.getOperator())
+        for (Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> t : f.getOperator())
           td.tx(t.asStringValue()+" ");
         tr.td().tx(f.getValue());
       }
@@ -4262,9 +4263,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().addText(path+p.getName());
       tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
       XhtmlNode td = tr.td();
-      StructureDefinition sd = context.fetchTypeDefinition(p.getType());
+      StructureDefinition sd = context.fetchTypeDefinition(p.getType().toCode());
       if (sd == null)
-        td.tx(p.hasType() ? p.getType() : "");
+        td.tx(p.hasType() ? p.getType().toCode() : "");
       else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
         boolean first = true;
         for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {
@@ -4272,12 +4273,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
           String s = ex.getValue().primitiveValue();
           StructureDefinition sdt = context.fetchTypeDefinition(s);
           if (sdt == null)
-            td.tx(p.hasType() ? p.getType() : "");
+            td.tx(p.hasType() ? p.getType().toCode() : "");
           else
             td.ah(sdt.getUserString("path")).tx(s);         
         }
       } else
-        td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType() : "");
+        td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType().toCode() : "");
       if (p.hasSearchType()) {
         td.br();
         td.tx("(");

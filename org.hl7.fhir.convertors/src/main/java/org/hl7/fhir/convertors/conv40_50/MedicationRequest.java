@@ -102,9 +102,9 @@ public class MedicationRequest extends VersionConvertor_40_50 {
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason().setConcept(convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason().setReference(convertReference(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
       tgt.getInstantiatesCanonical().add(convertCanonical(t));
     for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
@@ -175,10 +175,12 @@ public class MedicationRequest extends VersionConvertor_40_50 {
       tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
     if (src.hasRecorder())
       tgt.setRecorder(convertReference(src.getRecorder()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (org.hl7.fhir.r5.model.CodeableReference t : src.getReason()) {
+      if (t.hasConcept())
+        tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+      if (t.hasReference())
+        tgt.addReasonReference(convertReference(t.getReference()));
+    }
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
       tgt.getInstantiatesCanonical().add(convertCanonical(t));
     for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
@@ -208,23 +210,23 @@ public class MedicationRequest extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus convertMedicationRequestStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus convertMedicationRequestStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.ONHOLD;
-    case CANCELLED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.CANCELLED;
-    case COMPLETED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.ENTEREDINERROR;
-    case STOPPED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.STOPPED;
-    case DRAFT: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.DRAFT;
-    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ONHOLD;
+    case CANCELLED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.CANCELLED;
+    case COMPLETED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR;
+    case STOPPED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.STOPPED;
+    case DRAFT: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.DRAFT;
+    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus convertMedicationRequestStatus(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus convertMedicationRequestStatus(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -272,19 +274,19 @@ public class MedicationRequest extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority convertMedicationRequestPriority(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertMedicationRequestPriority(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority convertMedicationRequestPriority(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority convertMedicationRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

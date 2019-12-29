@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * An ingredient of a manufactured item or pharmaceutical product.
  */
@@ -101,7 +103,7 @@ public class Ingredient extends DomainResource {
         @Description(shortDefinition="Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product", formalDefinition="Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product." )
         protected List<IngredientSpecifiedSubstanceStrengthComponent> strength;
 
-        private static final long serialVersionUID = 762473586L;
+        private static final long serialVersionUID = -972862616L;
 
     /**
      * Constructor
@@ -115,8 +117,8 @@ public class Ingredient extends DomainResource {
      */
       public IngredientSpecifiedSubstanceComponent(DataType code, CodeableConcept group) {
         super();
-        this.code = code;
-        this.group = group;
+        this.setCode(code);
+        this.setGroup(group);
       }
 
         /**
@@ -262,7 +264,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #strength}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #strength}, creating it if it does not already exist {3}
          */
         public IngredientSpecifiedSubstanceStrengthComponent getStrengthFirstRep() { 
           if (getStrength().isEmpty()) {
@@ -284,8 +286,8 @@ public class Ingredient extends DomainResource {
           switch (_hash) {
           case 941839219: /*code[x]*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
           case 3059181: /*code*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
-          case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
-          case 1565461470: /*codeReference*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
+          case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "CodeableConcept", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
+          case 1565461470: /*codeReference*/  return new Property("code[x]", "Reference(SubstanceDefinition|Substance)", "Substance as a 'specified substance', implying extra substance related characteristics.", 0, 1, code);
           case 98629247: /*group*/  return new Property("group", "CodeableConcept", "The group of specified substance, e.g. group 1 to 4.", 0, 1, group);
           case -1923018202: /*confidentiality*/  return new Property("confidentiality", "CodeableConcept", "Confidentiality level of the specified substance as the ingredient.", 0, 1, confidentiality);
           case 1791316033: /*strength*/  return new Property("strength", "", "Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, strength);
@@ -297,7 +299,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Type
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // DataType
         case 98629247: /*group*/ return this.group == null ? new Base[0] : new Base[] {this.group}; // CodeableConcept
         case -1923018202: /*confidentiality*/ return this.confidentiality == null ? new Base[0] : new Base[] {this.confidentiality}; // CodeableConcept
         case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : this.strength.toArray(new Base[this.strength.size()]); // IngredientSpecifiedSubstanceStrengthComponent
@@ -310,7 +312,7 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
           return value;
         case 98629247: // group
           this.group = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -329,7 +331,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code[x]")) {
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("group")) {
           this.group = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("confidentiality")) {
@@ -447,7 +449,7 @@ public class Ingredient extends DomainResource {
         /**
          * The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.
          */
-        @Child(name = "presentation", type = {Ratio.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "presentation", type = {Ratio.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item", formalDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item." )
         protected Ratio presentation;
 
@@ -500,14 +502,6 @@ public class Ingredient extends DomainResource {
      */
       public IngredientSpecifiedSubstanceStrengthComponent() {
         super();
-      }
-
-    /**
-     * Constructor
-     */
-      public IngredientSpecifiedSubstanceStrengthComponent(Ratio presentation) {
-        super();
-        this.presentation = presentation;
       }
 
         /**
@@ -699,7 +693,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #country}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #country}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCountryFirstRep() { 
           if (getCountry().isEmpty()) {
@@ -752,7 +746,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #referenceStrength}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #referenceStrength}, creating it if it does not already exist {3}
          */
         public IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent getReferenceStrengthFirstRep() { 
           if (getReferenceStrength().isEmpty()) {
@@ -901,7 +895,7 @@ public class Ingredient extends DomainResource {
           return this.concentrationHighLimit;
         }
         else if (name.equals("measurementPoint")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.measurementPoint");
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.specifiedSubstance.strength.measurementPoint");
         }
         else if (name.equals("country")) {
           return addCountry();
@@ -1011,7 +1005,7 @@ public class Ingredient extends DomainResource {
         @Description(shortDefinition="The country or countries for which the strength range applies", formalDefinition="The country or countries for which the strength range applies." )
         protected List<CodeableConcept> country;
 
-        private static final long serialVersionUID = -1892265771L;
+        private static final long serialVersionUID = 1274073375L;
 
     /**
      * Constructor
@@ -1025,7 +1019,7 @@ public class Ingredient extends DomainResource {
      */
       public IngredientSpecifiedSubstanceStrengthReferenceStrengthComponent(Ratio strength) {
         super();
-        this.strength = strength;
+        this.setStrength(strength);
       }
 
         /**
@@ -1220,7 +1214,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #country}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #country}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCountryFirstRep() { 
           if (getCountry().isEmpty()) {
@@ -1243,8 +1237,8 @@ public class Ingredient extends DomainResource {
           switch (_hash) {
           case 2127194384: /*substance[x]*/  return new Property("substance[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Relevant reference substance.", 0, 1, substance);
           case 530040176: /*substance*/  return new Property("substance[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Relevant reference substance.", 0, 1, substance);
-          case -1974119407: /*substanceCodeableConcept*/  return new Property("substance[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Relevant reference substance.", 0, 1, substance);
-          case 516208571: /*substanceReference*/  return new Property("substance[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "Relevant reference substance.", 0, 1, substance);
+          case -1974119407: /*substanceCodeableConcept*/  return new Property("substance[x]", "CodeableConcept", "Relevant reference substance.", 0, 1, substance);
+          case 516208571: /*substanceReference*/  return new Property("substance[x]", "Reference(SubstanceDefinition|Substance)", "Relevant reference substance.", 0, 1, substance);
           case 1791316033: /*strength*/  return new Property("strength", "Ratio", "Strength expressed in terms of a reference substance.", 0, 1, strength);
           case 703544312: /*strengthHighLimit*/  return new Property("strengthHighLimit", "Ratio", "Strength expressed in terms of a reference substance, upper limit.", 0, 1, strengthHighLimit);
           case 235437876: /*measurementPoint*/  return new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance.", 0, 1, measurementPoint);
@@ -1257,7 +1251,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 530040176: /*substance*/ return this.substance == null ? new Base[0] : new Base[] {this.substance}; // Type
+        case 530040176: /*substance*/ return this.substance == null ? new Base[0] : new Base[] {this.substance}; // DataType
         case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // Ratio
         case 703544312: /*strengthHighLimit*/ return this.strengthHighLimit == null ? new Base[0] : new Base[] {this.strengthHighLimit}; // Ratio
         case 235437876: /*measurementPoint*/ return this.measurementPoint == null ? new Base[0] : new Base[] {this.measurementPoint}; // StringType
@@ -1271,7 +1265,7 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 530040176: // substance
-          this.substance = TypeConvertor.castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // DataType
           return value;
         case 1791316033: // strength
           this.strength = TypeConvertor.castToRatio(value); // Ratio
@@ -1293,7 +1287,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("substance[x]")) {
-          this.substance = TypeConvertor.castToType(value); // Type
+          this.substance = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("strength")) {
           this.strength = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("strengthHighLimit")) {
@@ -1353,7 +1347,7 @@ public class Ingredient extends DomainResource {
           return this.strengthHighLimit;
         }
         else if (name.equals("measurementPoint")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.measurementPoint");
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.specifiedSubstance.strength.referenceStrength.measurementPoint");
         }
         else if (name.equals("country")) {
           return addCountry();
@@ -1431,7 +1425,7 @@ public class Ingredient extends DomainResource {
         @Description(shortDefinition="Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product", formalDefinition="Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product." )
         protected List<IngredientSpecifiedSubstanceStrengthComponent> strength;
 
-        private static final long serialVersionUID = -2025953377L;
+        private static final long serialVersionUID = -43161323L;
 
     /**
      * Constructor
@@ -1445,7 +1439,7 @@ public class Ingredient extends DomainResource {
      */
       public IngredientSubstanceComponent(DataType code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -1543,7 +1537,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #strength}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #strength}, creating it if it does not already exist {3}
          */
         public IngredientSpecifiedSubstanceStrengthComponent getStrengthFirstRep() { 
           if (getStrength().isEmpty()) {
@@ -1563,8 +1557,8 @@ public class Ingredient extends DomainResource {
           switch (_hash) {
           case 941839219: /*code[x]*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "A code that represents the ingredient substance.", 0, 1, code);
           case 3059181: /*code*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "A code that represents the ingredient substance.", 0, 1, code);
-          case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "A code that represents the ingredient substance.", 0, 1, code);
-          case 1565461470: /*codeReference*/  return new Property("code[x]", "CodeableConcept|Reference(SubstanceDefinition|Substance)", "A code that represents the ingredient substance.", 0, 1, code);
+          case 4899316: /*codeCodeableConcept*/  return new Property("code[x]", "CodeableConcept", "A code that represents the ingredient substance.", 0, 1, code);
+          case 1565461470: /*codeReference*/  return new Property("code[x]", "Reference(SubstanceDefinition|Substance)", "A code that represents the ingredient substance.", 0, 1, code);
           case 1791316033: /*strength*/  return new Property("strength", "@Ingredient.specifiedSubstance.strength", "Quantity of the substance or specified substance present in the manufactured item or pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, strength);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1574,7 +1568,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Type
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // DataType
         case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : this.strength.toArray(new Base[this.strength.size()]); // IngredientSpecifiedSubstanceStrengthComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1585,7 +1579,7 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
           return value;
         case 1791316033: // strength
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value); // IngredientSpecifiedSubstanceStrengthComponent
@@ -1598,7 +1592,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code[x]")) {
-          this.code = TypeConvertor.castToType(value); // Type
+          this.code = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("strength")) {
           this.getStrength().add((IngredientSpecifiedSubstanceStrengthComponent) value);
         } else
@@ -1747,7 +1741,7 @@ public class Ingredient extends DomainResource {
    */
     public Ingredient(CodeableConcept role) {
       super();
-      this.role = role;
+      this.setRole(role);
     }
 
     /**
@@ -1887,7 +1881,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #manufacturer}, creating it if it does not already exist {3}
      */
     public Reference getManufacturerFirstRep() { 
       if (getManufacturer().isEmpty()) {
@@ -1940,7 +1934,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specifiedSubstance}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specifiedSubstance}, creating it if it does not already exist {3}
      */
     public IngredientSpecifiedSubstanceComponent getSpecifiedSubstanceFirstRep() { 
       if (getSpecifiedSubstance().isEmpty()) {
@@ -2195,6 +2189,46 @@ public class Ingredient extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>specified-substance</b>
+   * <p>
+   * Description: <b>Substance as a 'specified substance', implying extra substance related characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Ingredient.specifiedSubstance.code as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specified-substance", path="(Ingredient.specifiedSubstance.code as CodeableConcept)", description="Substance as a 'specified substance', implying extra substance related characteristics", type="token" )
+  public static final String SP_SPECIFIED_SUBSTANCE = "specified-substance";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specified-substance</b>
+   * <p>
+   * Description: <b>Substance as a 'specified substance', implying extra substance related characteristics</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Ingredient.specifiedSubstance.code as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIFIED_SUBSTANCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIFIED_SUBSTANCE);
+
+ /**
+   * Search parameter: <b>substance</b>
+   * <p>
+   * Description: <b>A code that represents the ingredient substance</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Ingredient.substance.code as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="substance", path="(Ingredient.substance.code as CodeableConcept)", description="A code that represents the ingredient substance", type="token" )
+  public static final String SP_SUBSTANCE = "substance";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>substance</b>
+   * <p>
+   * Description: <b>A code that represents the ingredient substance</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Ingredient.substance.code as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBSTANCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBSTANCE);
 
 
 }

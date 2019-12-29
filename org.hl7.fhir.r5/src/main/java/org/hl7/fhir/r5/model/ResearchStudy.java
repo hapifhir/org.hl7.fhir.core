@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.
  */
@@ -94,8 +95,7 @@ public class ResearchStudy extends DomainResource {
          */
         CLOSEDTOACCRUALANDINTERVENTION, 
         /**
-         * Study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have completed treatment
-or intervention but are still being followed according to the primary objective of the study.
+         * Study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have completed treatment\nor intervention but are still being followed according to the primary objective of the study.
          */
         COMPLETED, 
         /**
@@ -344,9 +344,9 @@ or intervention but are still being followed according to the primary objective 
     /**
      * Constructor
      */
-      public ResearchStudyArmComponent(StringType name) {
+      public ResearchStudyArmComponent(String name) {
         super();
-        this.name = name;
+        this.setName(name);
       }
 
         /**
@@ -551,14 +551,14 @@ or intervention but are still being followed according to the primary objective 
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.arm.name");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.arm.description");
         }
         else
           return super.addChild(name);
@@ -783,7 +783,7 @@ or intervention but are still being followed according to the primary objective 
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.objective.name");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1022,9 +1022,9 @@ or intervention but are still being followed according to the primary objective 
   /**
    * Constructor
    */
-    public ResearchStudy(Enumeration<ResearchStudyStatus> status) {
+    public ResearchStudy(ResearchStudyStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -1071,7 +1071,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1173,7 +1173,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #protocol}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #protocol}, creating it if it does not already exist {3}
      */
     public Reference getProtocolFirstRep() { 
       if (getProtocol().isEmpty()) {
@@ -1226,7 +1226,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist {3}
      */
     public Reference getPartOfFirstRep() { 
       if (getPartOf().isEmpty()) {
@@ -1372,7 +1372,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
     public CodeableConcept getCategoryFirstRep() { 
       if (getCategory().isEmpty()) {
@@ -1425,7 +1425,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #focus}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #focus}, creating it if it does not already exist {3}
      */
     public CodeableConcept getFocusFirstRep() { 
       if (getFocus().isEmpty()) {
@@ -1478,7 +1478,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #condition}, creating it if it does not already exist {3}
      */
     public CodeableConcept getConditionFirstRep() { 
       if (getCondition().isEmpty()) {
@@ -1531,7 +1531,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -1584,7 +1584,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
       if (getRelatedArtifact().isEmpty()) {
@@ -1637,7 +1637,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #keyword}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #keyword}, creating it if it does not already exist {3}
      */
     public CodeableConcept getKeywordFirstRep() { 
       if (getKeyword().isEmpty()) {
@@ -1690,7 +1690,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist {3}
      */
     public CodeableConcept getLocationFirstRep() { 
       if (getLocation().isEmpty()) {
@@ -1792,7 +1792,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #enrollment}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #enrollment}, creating it if it does not already exist {3}
      */
     public Reference getEnrollmentFirstRep() { 
       if (getEnrollment().isEmpty()) {
@@ -1917,7 +1917,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist {3}
      */
     public Reference getSiteFirstRep() { 
       if (getSite().isEmpty()) {
@@ -1994,7 +1994,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -2047,7 +2047,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #arm}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #arm}, creating it if it does not already exist {3}
      */
     public ResearchStudyArmComponent getArmFirstRep() { 
       if (getArm().isEmpty()) {
@@ -2100,7 +2100,7 @@ or intervention but are still being followed according to the primary objective 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #objective}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #objective}, creating it if it does not already exist {3}
      */
     public ResearchStudyObjectiveComponent getObjectiveFirstRep() { 
       if (getObjective().isEmpty()) {
@@ -2631,6 +2631,26 @@ or intervention but are still being followed according to the primary objective 
    }
 
  /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Classifications for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="ResearchStudy.category", description="Classifications for the study", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Classifications for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
    * Search parameter: <b>date</b>
    * <p>
    * Description: <b>When the study began and ended</b><br>
@@ -2651,6 +2671,26 @@ or intervention but are still being followed according to the primary objective 
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
+   * Search parameter: <b>focus</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="focus", path="ResearchStudy.focus", description="Drugs, devices, etc. under study", type="token" )
+  public static final String SP_FOCUS = "focus";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Business Identifier for study</b><br>
@@ -2669,6 +2709,46 @@ or intervention but are still being followed according to the primary objective 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>keyword</b>
+   * <p>
+   * Description: <b>Used to search for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.keyword</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="keyword", path="ResearchStudy.keyword", description="Used to search for the study", type="token" )
+  public static final String SP_KEYWORD = "keyword";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
+   * <p>
+   * Description: <b>Used to search for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.keyword</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_KEYWORD);
+
+ /**
+   * Search parameter: <b>location</b>
+   * <p>
+   * Description: <b>Geographic region(s) for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.location</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="location", path="ResearchStudy.location", description="Geographic region(s) for study", type="token" )
+  public static final String SP_LOCATION = "location";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <p>
+   * Description: <b>Geographic region(s) for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.location</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOCATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOCATION);
 
  /**
    * Search parameter: <b>partof</b>
@@ -2697,52 +2777,6 @@ or intervention but are still being followed according to the primary objective 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("ResearchStudy:partof").toLocked();
 
  /**
-   * Search parameter: <b>sponsor</b>
-   * <p>
-   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.sponsor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="sponsor", path="ResearchStudy.sponsor", description="Organization that initiates and is legally responsible for the study", type="reference", target={Organization.class } )
-  public static final String SP_SPONSOR = "sponsor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>sponsor</b>
-   * <p>
-   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.sponsor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SPONSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SPONSOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:sponsor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SPONSOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:sponsor").toLocked();
-
- /**
-   * Search parameter: <b>focus</b>
-   * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="focus", path="ResearchStudy.focus", description="Drugs, devices, etc. under study", type="token" )
-  public static final String SP_FOCUS = "focus";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
-   * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
-
- /**
    * Search parameter: <b>principalinvestigator</b>
    * <p>
    * Description: <b>Researcher who oversees multiple aspects of the study</b><br>
@@ -2750,7 +2784,7 @@ or intervention but are still being followed according to the primary objective 
    * Path: <b>ResearchStudy.principalInvestigator</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="principalinvestigator", path="ResearchStudy.principalInvestigator", description="Researcher who oversees multiple aspects of the study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="principalinvestigator", path="ResearchStudy.principalInvestigator", description="Researcher who oversees multiple aspects of the study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
   public static final String SP_PRINCIPALINVESTIGATOR = "principalinvestigator";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>principalinvestigator</b>
@@ -2767,26 +2801,6 @@ or intervention but are still being followed according to the primary objective 
    * the path value of "<b>ResearchStudy:principalinvestigator</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PRINCIPALINVESTIGATOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:principalinvestigator").toLocked();
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Name for this study</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ResearchStudy.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="Name for this study", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Name for this study</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ResearchStudy.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
  /**
    * Search parameter: <b>protocol</b>
@@ -2841,64 +2855,30 @@ or intervention but are still being followed according to the primary objective 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SITE = new ca.uhn.fhir.model.api.Include("ResearchStudy:site").toLocked();
 
  /**
-   * Search parameter: <b>location</b>
+   * Search parameter: <b>sponsor</b>
    * <p>
-   * Description: <b>Geographic region(s) for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.location</b><br>
+   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.sponsor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="location", path="ResearchStudy.location", description="Geographic region(s) for study", type="token" )
-  public static final String SP_LOCATION = "location";
+  @SearchParamDefinition(name="sponsor", path="ResearchStudy.sponsor", description="Organization that initiates and is legally responsible for the study", type="reference", target={Organization.class } )
+  public static final String SP_SPONSOR = "sponsor";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <b>Fluent Client</b> search parameter constant for <b>sponsor</b>
    * <p>
-   * Description: <b>Geographic region(s) for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.location</b><br>
+   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.sponsor</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOCATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOCATION);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SPONSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SPONSOR);
 
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Classifications for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.category</b><br>
-   * </p>
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:sponsor</b>".
    */
-  @SearchParamDefinition(name="category", path="ResearchStudy.category", description="Classifications for the study", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>Classifications for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
-
- /**
-   * Search parameter: <b>keyword</b>
-   * <p>
-   * Description: <b>Used to search for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.keyword</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="keyword", path="ResearchStudy.keyword", description="Used to search for the study", type="token" )
-  public static final String SP_KEYWORD = "keyword";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
-   * <p>
-   * Description: <b>Used to search for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.keyword</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_KEYWORD);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SPONSOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:sponsor").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -2919,6 +2899,26 @@ or intervention but are still being followed according to the primary objective 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="Name for this study", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
 
 }

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +66,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Describes validation requirements, source(s), status and dates for one or more elements.
  */
@@ -360,7 +362,7 @@ public class VerificationResult extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
          */
         public CodeableConcept getTypeFirstRep() { 
           if (getType().isEmpty()) {
@@ -413,7 +415,7 @@ public class VerificationResult extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #communicationMethod}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #communicationMethod}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCommunicationMethodFirstRep() { 
           if (getCommunicationMethod().isEmpty()) {
@@ -563,7 +565,7 @@ public class VerificationResult extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #pushTypeAvailable}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #pushTypeAvailable}, creating it if it does not already exist {3}
          */
         public CodeableConcept getPushTypeAvailableFirstRep() { 
           if (getPushTypeAvailable().isEmpty()) {
@@ -710,7 +712,7 @@ public class VerificationResult extends DomainResource {
           return this.validationStatus;
         }
         else if (name.equals("validationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.validationDate");
+          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.primarySource.validationDate");
         }
         else if (name.equals("canPushUpdates")) {
           this.canPushUpdates = new CodeableConcept();
@@ -1268,13 +1270,13 @@ public class VerificationResult extends DomainResource {
           return this.communicationMethod;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.date");
+          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.date");
         }
         else if (name.equals("sourceIdentityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.sourceIdentityCertificate");
+          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.sourceIdentityCertificate");
         }
         else if (name.equals("proxyIdentityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.proxyIdentityCertificate");
+          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.proxyIdentityCertificate");
         }
         else if (name.equals("proxySignature")) {
           this.proxySignature = new Signature();
@@ -1380,7 +1382,7 @@ public class VerificationResult extends DomainResource {
      */
       public VerificationResultValidatorComponent(Reference organization) {
         super();
-        this.organization = organization;
+        this.setOrganization(organization);
       }
 
         /**
@@ -1568,7 +1570,7 @@ public class VerificationResult extends DomainResource {
           return this.organization;
         }
         else if (name.equals("identityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.identityCertificate");
+          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.validator.identityCertificate");
         }
         else if (name.equals("attestationSignature")) {
           this.attestationSignature = new Signature();
@@ -1739,9 +1741,9 @@ public class VerificationResult extends DomainResource {
   /**
    * Constructor
    */
-    public VerificationResult(Enumeration<Status> status) {
+    public VerificationResult(Status status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -1788,7 +1790,7 @@ public class VerificationResult extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist {3}
      */
     public Reference getTargetFirstRep() { 
       if (getTarget().isEmpty()) {
@@ -2044,7 +2046,7 @@ public class VerificationResult extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #validationProcess}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #validationProcess}, creating it if it does not already exist {3}
      */
     public CodeableConcept getValidationProcessFirstRep() { 
       if (getValidationProcess().isEmpty()) {
@@ -2243,7 +2245,7 @@ public class VerificationResult extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #primarySource}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #primarySource}, creating it if it does not already exist {3}
      */
     public VerificationResultPrimarySourceComponent getPrimarySourceFirstRep() { 
       if (getPrimarySource().isEmpty()) {
@@ -2320,7 +2322,7 @@ public class VerificationResult extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #validator}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #validator}, creating it if it does not already exist {3}
      */
     public VerificationResultValidatorComponent getValidatorFirstRep() { 
       if (getValidator().isEmpty()) {
@@ -2675,7 +2677,7 @@ public class VerificationResult extends DomainResource {
    * Path: <b>VerificationResult.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target", path="VerificationResult.target", description="A resource that was validated", type="reference" )
+  @SearchParamDefinition(name="target", path="VerificationResult.target", description="A resource that was validated", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_TARGET = "target";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>target</b>

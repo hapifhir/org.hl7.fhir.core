@@ -21,18 +21,18 @@
     self.setMin(getMin());
     self.setMax(getMax());
   }
-  
-  
+ 
   
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : type) {
+    for (TypeRefComponent tr : getType()) {
       if (tr.hasCode())
-        b.append(tr.getCode());
+        b.append(tr.getWorkingCode());
     }
     return b.toString();
-   }
+  }
   
+
   public TypeRefComponent getType(String code) {
     for (TypeRefComponent tr : getType()) 
       if (tr.getCode().equals(code))
@@ -86,5 +86,22 @@
   public boolean isChoice() {
     return getPath().endsWith("[x]");
   }  
+
+  public String getName() {
+    return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
+  }
+
+  public boolean unbounded() {
+    return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
+  }
+
+  public boolean isMandatory() {
+    return getMin() > 0;
+  }
+
+  public boolean isInlineType() {
+    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+  }  
+
 
 

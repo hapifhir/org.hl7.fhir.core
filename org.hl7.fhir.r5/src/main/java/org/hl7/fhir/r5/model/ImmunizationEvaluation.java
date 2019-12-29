@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,26 +66,27 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Describes a comparison of an immunization event against published recommendations to determine if the administration is "valid" in relation to those  recommendations.
  */
 @ResourceDef(name="ImmunizationEvaluation", profile="http://hl7.org/fhir/StructureDefinition/ImmunizationEvaluation")
 public class ImmunizationEvaluation extends DomainResource {
 
-    public enum ImmunizationEvaluationStatus {
+    public enum ImmunizationEvaluationStatusCodes {
         /**
-         * null
+         * All actions that are implied by the administration have occurred.
          */
         COMPLETED, 
         /**
-         * null
+         * The administration was entered in error and therefore nullified.
          */
         ENTEREDINERROR, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static ImmunizationEvaluationStatus fromCode(String codeString) throws FHIRException {
+        public static ImmunizationEvaluationStatusCodes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("completed".equals(codeString))
@@ -94,7 +96,7 @@ public class ImmunizationEvaluation extends DomainResource {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown ImmunizationEvaluationStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown ImmunizationEvaluationStatusCodes code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -112,53 +114,53 @@ public class ImmunizationEvaluation extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case COMPLETED: return "";
-            case ENTEREDINERROR: return "";
+            case COMPLETED: return "All actions that are implied by the administration have occurred.";
+            case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
             default: return "?";
           }
         }
     }
 
-  public static class ImmunizationEvaluationStatusEnumFactory implements EnumFactory<ImmunizationEvaluationStatus> {
-    public ImmunizationEvaluationStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class ImmunizationEvaluationStatusCodesEnumFactory implements EnumFactory<ImmunizationEvaluationStatusCodes> {
+    public ImmunizationEvaluationStatusCodes fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("completed".equals(codeString))
-          return ImmunizationEvaluationStatus.COMPLETED;
+          return ImmunizationEvaluationStatusCodes.COMPLETED;
         if ("entered-in-error".equals(codeString))
-          return ImmunizationEvaluationStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown ImmunizationEvaluationStatus code '"+codeString+"'");
+          return ImmunizationEvaluationStatusCodes.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown ImmunizationEvaluationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<ImmunizationEvaluationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImmunizationEvaluationStatusCodes> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImmunizationEvaluationStatus>(this);
+            return new Enumeration<ImmunizationEvaluationStatusCodes>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("completed".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.COMPLETED);
+          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.COMPLETED);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown ImmunizationEvaluationStatus code '"+codeString+"'");
+          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.ENTEREDINERROR);
+        throw new FHIRException("Unknown ImmunizationEvaluationStatusCodes code '"+codeString+"'");
         }
-    public String toCode(ImmunizationEvaluationStatus code) {
-      if (code == ImmunizationEvaluationStatus.COMPLETED)
+    public String toCode(ImmunizationEvaluationStatusCodes code) {
+      if (code == ImmunizationEvaluationStatusCodes.COMPLETED)
         return "completed";
-      if (code == ImmunizationEvaluationStatus.ENTEREDINERROR)
+      if (code == ImmunizationEvaluationStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
       }
-    public String toSystem(ImmunizationEvaluationStatus code) {
+    public String toSystem(ImmunizationEvaluationStatusCodes code) {
       return code.getSystem();
       }
     }
@@ -176,7 +178,7 @@ public class ImmunizationEvaluation extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="completed | entered-in-error", formalDefinition="Indicates the current status of the evaluation of the vaccination administration event." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-evaluation-status")
-    protected Enumeration<ImmunizationEvaluationStatus> status;
+    protected Enumeration<ImmunizationEvaluationStatusCodes> status;
 
     /**
      * The individual for whom the evaluation is being done.
@@ -258,7 +260,7 @@ public class ImmunizationEvaluation extends DomainResource {
     @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity." )
     protected DataType seriesDoses;
 
-    private static final long serialVersionUID = 604368905L;
+    private static final long serialVersionUID = -1208122003L;
 
   /**
    * Constructor
@@ -270,13 +272,13 @@ public class ImmunizationEvaluation extends DomainResource {
   /**
    * Constructor
    */
-    public ImmunizationEvaluation(Enumeration<ImmunizationEvaluationStatus> status, Reference patient, CodeableConcept targetDisease, Reference immunizationEvent, CodeableConcept doseStatus) {
+    public ImmunizationEvaluation(ImmunizationEvaluationStatusCodes status, Reference patient, CodeableConcept targetDisease, Reference immunizationEvent, CodeableConcept doseStatus) {
       super();
-      this.status = status;
-      this.patient = patient;
-      this.targetDisease = targetDisease;
-      this.immunizationEvent = immunizationEvent;
-      this.doseStatus = doseStatus;
+      this.setStatus(status);
+      this.setPatient(patient);
+      this.setTargetDisease(targetDisease);
+      this.setImmunizationEvent(immunizationEvent);
+      this.setDoseStatus(doseStatus);
     }
 
     /**
@@ -323,7 +325,7 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -335,12 +337,12 @@ public class ImmunizationEvaluation extends DomainResource {
     /**
      * @return {@link #status} (Indicates the current status of the evaluation of the vaccination administration event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<ImmunizationEvaluationStatus> getStatusElement() { 
+    public Enumeration<ImmunizationEvaluationStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ImmunizationEvaluation.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ImmunizationEvaluationStatus>(new ImmunizationEvaluationStatusEnumFactory()); // bb
+          this.status = new Enumeration<ImmunizationEvaluationStatusCodes>(new ImmunizationEvaluationStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -355,7 +357,7 @@ public class ImmunizationEvaluation extends DomainResource {
     /**
      * @param value {@link #status} (Indicates the current status of the evaluation of the vaccination administration event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public ImmunizationEvaluation setStatusElement(Enumeration<ImmunizationEvaluationStatus> value) { 
+    public ImmunizationEvaluation setStatusElement(Enumeration<ImmunizationEvaluationStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -363,16 +365,16 @@ public class ImmunizationEvaluation extends DomainResource {
     /**
      * @return Indicates the current status of the evaluation of the vaccination administration event.
      */
-    public ImmunizationEvaluationStatus getStatus() { 
+    public ImmunizationEvaluationStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value Indicates the current status of the evaluation of the vaccination administration event.
      */
-    public ImmunizationEvaluation setStatus(ImmunizationEvaluationStatus value) { 
+    public ImmunizationEvaluation setStatus(ImmunizationEvaluationStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<ImmunizationEvaluationStatus>(new ImmunizationEvaluationStatusEnumFactory());
+          this.status = new Enumeration<ImmunizationEvaluationStatusCodes>(new ImmunizationEvaluationStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -590,7 +592,7 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #doseStatusReason}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #doseStatusReason}, creating it if it does not already exist {3}
      */
     public CodeableConcept getDoseStatusReasonFirstRep() { 
       if (getDoseStatusReason().isEmpty()) {
@@ -832,12 +834,12 @@ public class ImmunizationEvaluation extends DomainResource {
         case -905838985: /*series*/  return new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series);
         case -1632295686: /*doseNumber[x]*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
         case -887709242: /*doseNumber*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-        case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-        case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
+        case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt", "Nominal position in a series.", 0, 1, doseNumber);
+        case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "string", "Nominal position in a series.", 0, 1, doseNumber);
         case 1553560673: /*seriesDoses[x]*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
         case -1936727105: /*seriesDoses*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-        case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-        case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+        case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+        case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -847,7 +849,7 @@ public class ImmunizationEvaluation extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ImmunizationEvaluationStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ImmunizationEvaluationStatusCodes>
         case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1475610435: /*authority*/ return this.authority == null ? new Base[0] : new Base[] {this.authority}; // Reference
@@ -857,8 +859,8 @@ public class ImmunizationEvaluation extends DomainResource {
         case 662783379: /*doseStatusReason*/ return this.doseStatusReason == null ? new Base[0] : this.doseStatusReason.toArray(new Base[this.doseStatusReason.size()]); // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -905838985: /*series*/ return this.series == null ? new Base[0] : new Base[] {this.series}; // StringType
-        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // Type
-        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // Type
+        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // DataType
+        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -871,8 +873,8 @@ public class ImmunizationEvaluation extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ImmunizationEvaluationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ImmunizationEvaluationStatus>
+          value = new ImmunizationEvaluationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ImmunizationEvaluationStatusCodes>
           return value;
         case -791418107: // patient
           this.patient = TypeConvertor.castToReference(value); // Reference
@@ -902,10 +904,10 @@ public class ImmunizationEvaluation extends DomainResource {
           this.series = TypeConvertor.castToString(value); // StringType
           return value;
         case -887709242: // doseNumber
-          this.doseNumber = TypeConvertor.castToType(value); // Type
+          this.doseNumber = TypeConvertor.castToType(value); // DataType
           return value;
         case -1936727105: // seriesDoses
-          this.seriesDoses = TypeConvertor.castToType(value); // Type
+          this.seriesDoses = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -917,8 +919,8 @@ public class ImmunizationEvaluation extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ImmunizationEvaluationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ImmunizationEvaluationStatus>
+          value = new ImmunizationEvaluationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ImmunizationEvaluationStatusCodes>
         } else if (name.equals("patient")) {
           this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("date")) {
@@ -938,9 +940,9 @@ public class ImmunizationEvaluation extends DomainResource {
         } else if (name.equals("series")) {
           this.series = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("doseNumber[x]")) {
-          this.doseNumber = TypeConvertor.castToType(value); // Type
+          this.doseNumber = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("seriesDoses[x]")) {
-          this.seriesDoses = TypeConvertor.castToType(value); // Type
+          this.seriesDoses = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1148,72 +1150,6 @@ public class ImmunizationEvaluation extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>ID of the evaluation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ImmunizationEvaluation.identifier", description="ID of the evaluation", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>ID of the evaluation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>target-disease</b>
-   * <p>
-   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="target-disease", path="ImmunizationEvaluation.targetDisease", description="The vaccine preventable disease being evaluated against", type="token" )
-  public static final String SP_TARGET_DISEASE = "target-disease";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>target-disease</b>
-   * <p>
-   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_DISEASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_DISEASE);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The patient being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="ImmunizationEvaluation.patient", description="The patient being evaluated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The patient being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ImmunizationEvaluation:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ImmunizationEvaluation:patient").toLocked();
-
- /**
    * Search parameter: <b>dose-status</b>
    * <p>
    * Description: <b>The status of the dose relative to published recommendations</b><br>
@@ -1232,6 +1168,26 @@ public class ImmunizationEvaluation extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_STATUS);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>ID of the evaluation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationEvaluation.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ImmunizationEvaluation.identifier", description="ID of the evaluation", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>ID of the evaluation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationEvaluation.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>immunization-event</b>
@@ -1260,6 +1216,32 @@ public class ImmunizationEvaluation extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_IMMUNIZATION_EVENT = new ca.uhn.fhir.model.api.Include("ImmunizationEvaluation:immunization-event").toLocked();
 
  /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The patient being evaluated</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImmunizationEvaluation.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="ImmunizationEvaluation.patient", description="The patient being evaluated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The patient being evaluated</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImmunizationEvaluation.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImmunizationEvaluation:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ImmunizationEvaluation:patient").toLocked();
+
+ /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>Immunization evaluation status</b><br>
@@ -1278,6 +1260,26 @@ public class ImmunizationEvaluation extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>target-disease</b>
+   * <p>
+   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="target-disease", path="ImmunizationEvaluation.targetDisease", description="The vaccine preventable disease being evaluated against", type="token" )
+  public static final String SP_TARGET_DISEASE = "target-disease";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>target-disease</b>
+   * <p>
+   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_DISEASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_DISEASE);
 
 
 }

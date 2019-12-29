@@ -124,23 +124,23 @@ public class DetectedIssue extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus convertDetectedIssueStatus(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertDetectedIssueStatus(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case REGISTERED: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.REGISTERED;
-    case PRELIMINARY: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.AMENDED;
-    case CORRECTED: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.CORRECTED;
-    case CANCELLED: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.CANCELLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.NULL;
+    case REGISTERED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
+    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
+    case FINAL: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
+    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
+    case CORRECTED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
+    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus convertDetectedIssueStatus(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus convertDetectedIssueStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,13 +66,14 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
  */
 @ResourceDef(name="Medication", profile="http://hl7.org/fhir/StructureDefinition/Medication")
 public class Medication extends DomainResource {
 
-    public enum MedicationStatus {
+    public enum MedicationStatusCodes {
         /**
          * The medication is available for use.
          */
@@ -88,7 +90,7 @@ public class Medication extends DomainResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static MedicationStatus fromCode(String codeString) throws FHIRException {
+        public static MedicationStatusCodes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("active".equals(codeString))
@@ -100,7 +102,7 @@ public class Medication extends DomainResource {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown MedicationStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -136,45 +138,45 @@ public class Medication extends DomainResource {
         }
     }
 
-  public static class MedicationStatusEnumFactory implements EnumFactory<MedicationStatus> {
-    public MedicationStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class MedicationStatusCodesEnumFactory implements EnumFactory<MedicationStatusCodes> {
+    public MedicationStatusCodes fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("active".equals(codeString))
-          return MedicationStatus.ACTIVE;
+          return MedicationStatusCodes.ACTIVE;
         if ("inactive".equals(codeString))
-          return MedicationStatus.INACTIVE;
+          return MedicationStatusCodes.INACTIVE;
         if ("entered-in-error".equals(codeString))
-          return MedicationStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown MedicationStatus code '"+codeString+"'");
+          return MedicationStatusCodes.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<MedicationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationStatusCodes> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationStatus>(this);
+            return new Enumeration<MedicationStatusCodes>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.ACTIVE);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ACTIVE);
         if ("inactive".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.INACTIVE);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.INACTIVE);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown MedicationStatus code '"+codeString+"'");
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ENTEREDINERROR);
+        throw new FHIRException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
-    public String toCode(MedicationStatus code) {
-      if (code == MedicationStatus.ACTIVE)
+    public String toCode(MedicationStatusCodes code) {
+      if (code == MedicationStatusCodes.ACTIVE)
         return "active";
-      if (code == MedicationStatus.INACTIVE)
+      if (code == MedicationStatusCodes.INACTIVE)
         return "inactive";
-      if (code == MedicationStatus.ENTEREDINERROR)
+      if (code == MedicationStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
       }
-    public String toSystem(MedicationStatus code) {
+    public String toSystem(MedicationStatusCodes code) {
       return code.getSystem();
       }
     }
@@ -203,7 +205,7 @@ public class Medication extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-ingredientstrength")
         protected DataType strength;
 
-        private static final long serialVersionUID = 1452876170L;
+        private static final long serialVersionUID = 1297277898L;
 
     /**
      * Constructor
@@ -217,7 +219,7 @@ public class Medication extends DomainResource {
      */
       public MedicationIngredientComponent(DataType item) {
         super();
-        this.item = item;
+        this.setItem(item);
       }
 
         /**
@@ -379,13 +381,13 @@ public class Medication extends DomainResource {
           switch (_hash) {
           case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
           case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
-          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
-          case 1376364920: /*itemReference*/  return new Property("item[x]", "CodeableConcept|Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
+          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
+          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(Substance|Medication)", "The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication).", 0, 1, item);
           case -748916528: /*isActive*/  return new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive);
           case 127377567: /*strength[x]*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
           case 1791316033: /*strength*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
-          case 2141786186: /*strengthRatio*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
-          case -1455903456: /*strengthCodeableConcept*/  return new Property("strength[x]", "Ratio|CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case 2141786186: /*strengthRatio*/  return new Property("strength[x]", "Ratio", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
+          case -1455903456: /*strengthCodeableConcept*/  return new Property("strength[x]", "CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet.", 0, 1, strength);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -394,9 +396,9 @@ public class Medication extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // Type
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // DataType
         case -748916528: /*isActive*/ return this.isActive == null ? new Base[0] : new Base[] {this.isActive}; // BooleanType
-        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // Type
+        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -406,13 +408,13 @@ public class Medication extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3242771: // item
-          this.item = TypeConvertor.castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // DataType
           return value;
         case -748916528: // isActive
           this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 1791316033: // strength
-          this.strength = TypeConvertor.castToType(value); // Type
+          this.strength = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -422,11 +424,11 @@ public class Medication extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("item[x]")) {
-          this.item = TypeConvertor.castToType(value); // Type
+          this.item = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("isActive")) {
           this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("strength[x]")) {
-          this.strength = TypeConvertor.castToType(value); // Type
+          this.strength = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -467,7 +469,7 @@ public class Medication extends DomainResource {
           return this.item;
         }
         else if (name.equals("isActive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.isActive");
+          throw new FHIRException("Cannot call addChild on a primitive type Medication.ingredient.isActive");
         }
         else if (name.equals("strengthRatio")) {
           this.strength = new Ratio();
@@ -724,10 +726,10 @@ public class Medication extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("lotNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.lotNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type Medication.batch.lotNumber");
         }
         else if (name.equals("expirationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.expirationDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Medication.batch.expirationDate");
         }
         else
           return super.addChild(name);
@@ -800,7 +802,7 @@ public class Medication extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="A code to indicate if the medication is in active use." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-status")
-    protected Enumeration<MedicationStatus> status;
+    protected Enumeration<MedicationStatusCodes> status;
 
     /**
      * Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.
@@ -838,7 +840,7 @@ public class Medication extends DomainResource {
     @Description(shortDefinition="Details about packaged medications", formalDefinition="Information that only applies to packages (not products)." )
     protected MedicationBatchComponent batch;
 
-    private static final long serialVersionUID = -1266616065L;
+    private static final long serialVersionUID = 1712967281L;
 
   /**
    * Constructor
@@ -891,7 +893,7 @@ public class Medication extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -927,12 +929,12 @@ public class Medication extends DomainResource {
     /**
      * @return {@link #status} (A code to indicate if the medication is in active use.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<MedicationStatus> getStatusElement() { 
+    public Enumeration<MedicationStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Medication.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<MedicationStatus>(new MedicationStatusEnumFactory()); // bb
+          this.status = new Enumeration<MedicationStatusCodes>(new MedicationStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -947,7 +949,7 @@ public class Medication extends DomainResource {
     /**
      * @param value {@link #status} (A code to indicate if the medication is in active use.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Medication setStatusElement(Enumeration<MedicationStatus> value) { 
+    public Medication setStatusElement(Enumeration<MedicationStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -955,19 +957,19 @@ public class Medication extends DomainResource {
     /**
      * @return A code to indicate if the medication is in active use.
      */
-    public MedicationStatus getStatus() { 
+    public MedicationStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value A code to indicate if the medication is in active use.
      */
-    public Medication setStatus(MedicationStatus value) { 
+    public Medication setStatus(MedicationStatusCodes value) { 
       if (value == null)
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<MedicationStatus>(new MedicationStatusEnumFactory());
+          this.status = new Enumeration<MedicationStatusCodes>(new MedicationStatusCodesEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -1089,7 +1091,7 @@ public class Medication extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
     public MedicationIngredientComponent getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
@@ -1155,7 +1157,7 @@ public class Medication extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationStatusCodes>
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
         case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Ratio
@@ -1176,8 +1178,8 @@ public class Medication extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          value = new MedicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<MedicationStatus>
+          value = new MedicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationStatusCodes>
           return value;
         case -1969347631: // manufacturer
           this.manufacturer = TypeConvertor.castToReference(value); // Reference
@@ -1206,8 +1208,8 @@ public class Medication extends DomainResource {
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          value = new MedicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<MedicationStatus>
+          value = new MedicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationStatusCodes>
         } else if (name.equals("manufacturer")) {
           this.manufacturer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("doseForm")) {
@@ -1358,24 +1360,44 @@ public class Medication extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>ingredient-code</b>
+   * Search parameter: <b>expiration-date</b>
    * <p>
-   * Description: <b>Returns medications for this ingredient code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.ingredient.itemCodeableConcept</b><br>
+   * Description: <b>Returns medications in a batch with this expiration date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Medication.batch.expirationDate</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient-code", path="(Medication.ingredient.item as CodeableConcept)", description="Returns medications for this ingredient code", type="token" )
-  public static final String SP_INGREDIENT_CODE = "ingredient-code";
+  @SearchParamDefinition(name="expiration-date", path="Medication.batch.expirationDate", description="Returns medications in a batch with this expiration date", type="date" )
+  public static final String SP_EXPIRATION_DATE = "expiration-date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
+   * <b>Fluent Client</b> search parameter constant for <b>expiration-date</b>
    * <p>
-   * Description: <b>Returns medications for this ingredient code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.ingredient.itemCodeableConcept</b><br>
+   * Description: <b>Returns medications in a batch with this expiration date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Medication.batch.expirationDate</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRATION_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRATION_DATE);
+
+ /**
+   * Search parameter: <b>form</b>
+   * <p>
+   * Description: <b>Returns medications for a specific dose form</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="form", path="", description="Returns medications for a specific dose form", type="token" )
+  public static final String SP_FORM = "form";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>form</b>
+   * <p>
+   * Description: <b>Returns medications for a specific dose form</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORM);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -1398,31 +1420,31 @@ public class Medication extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>code</b>
+   * Search parameter: <b>ingredient-code</b>
    * <p>
-   * Description: <b>Returns medications for a specific code</b><br>
+   * Description: <b>Returns medications for this ingredient code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Medication.code</b><br>
+   * Path: <b>(Medication.ingredient.item as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="Medication.code", description="Returns medications for a specific code", type="token" )
-  public static final String SP_CODE = "code";
+  @SearchParamDefinition(name="ingredient-code", path="(Medication.ingredient.item as CodeableConcept)", description="Returns medications for this ingredient code", type="token" )
+  public static final String SP_INGREDIENT_CODE = "ingredient-code";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
    * <p>
-   * Description: <b>Returns medications for a specific code</b><br>
+   * Description: <b>Returns medications for this ingredient code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Medication.code</b><br>
+   * Path: <b>(Medication.ingredient.item as CodeableConcept)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
 
  /**
    * Search parameter: <b>ingredient</b>
    * <p>
    * Description: <b>Returns medications for this ingredient reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Medication.ingredient.itemReference</b><br>
+   * Path: <b>(Medication.ingredient.item as Reference)</b><br>
    * </p>
    */
   @SearchParamDefinition(name="ingredient", path="(Medication.ingredient.item as Reference)", description="Returns medications for this ingredient reference", type="reference", target={Medication.class, Substance.class } )
@@ -1432,7 +1454,7 @@ public class Medication extends DomainResource {
    * <p>
    * Description: <b>Returns medications for this ingredient reference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Medication.ingredient.itemReference</b><br>
+   * Path: <b>(Medication.ingredient.item as Reference)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
@@ -1442,26 +1464,6 @@ public class Medication extends DomainResource {
    * the path value of "<b>Medication:ingredient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("Medication:ingredient").toLocked();
-
- /**
-   * Search parameter: <b>form</b>
-   * <p>
-   * Description: <b>Returns medications for a specific dose form</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="form", path="", description="Returns medications for a specific dose form", type="token" )
-  public static final String SP_FORM = "form";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>form</b>
-   * <p>
-   * Description: <b>Returns medications for a specific dose form</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORM);
 
  /**
    * Search parameter: <b>lot-number</b>
@@ -1482,26 +1484,6 @@ public class Medication extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOT_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOT_NUMBER);
-
- /**
-   * Search parameter: <b>expiration-date</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this expiration date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Medication.batch.expirationDate</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="expiration-date", path="Medication.batch.expirationDate", description="Returns medications in a batch with this expiration date", type="date" )
-  public static final String SP_EXPIRATION_DATE = "expiration-date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>expiration-date</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this expiration date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Medication.batch.expirationDate</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRATION_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRATION_DATE);
 
  /**
    * Search parameter: <b>manufacturer</b>
@@ -1548,6 +1530,58 @@ public class Medication extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | (DeviceRequest.code as CodeableConcept) | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | (MedicationAdministration.medication as CodeableConcept) | (MedicationDispense.medication as CodeableConcept) | (MedicationRequest.medication as CodeableConcept) | (MedicationUsage.medication as CodeableConcept) | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
 
 }

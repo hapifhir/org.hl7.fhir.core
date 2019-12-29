@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,143 +25,51 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
- * The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
+ * Base StructureDefinition for ParameterDefinition Type: The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
  */
 @DatatypeDef(name="ParameterDefinition")
 public class ParameterDefinition extends DataType implements ICompositeType {
-
-    public enum ParameterUse {
-        /**
-         * This is an input parameter.
-         */
-        IN, 
-        /**
-         * This is an output parameter.
-         */
-        OUT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ParameterUse fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in".equals(codeString))
-          return IN;
-        if ("out".equals(codeString))
-          return OUT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ParameterUse code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case IN: return "in";
-            case OUT: return "out";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case IN: return "http://hl7.org/fhir/operation-parameter-use";
-            case OUT: return "http://hl7.org/fhir/operation-parameter-use";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case IN: return "This is an input parameter.";
-            case OUT: return "This is an output parameter.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case IN: return "In";
-            case OUT: return "Out";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ParameterUseEnumFactory implements EnumFactory<ParameterUse> {
-    public ParameterUse fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("in".equals(codeString))
-          return ParameterUse.IN;
-        if ("out".equals(codeString))
-          return ParameterUse.OUT;
-        throw new IllegalArgumentException("Unknown ParameterUse code '"+codeString+"'");
-        }
-        public Enumeration<ParameterUse> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("in".equals(codeString))
-          return new Enumeration<ParameterUse>(this, ParameterUse.IN);
-        if ("out".equals(codeString))
-          return new Enumeration<ParameterUse>(this, ParameterUse.OUT);
-        throw new FHIRException("Unknown ParameterUse code '"+codeString+"'");
-        }
-    public String toCode(ParameterUse code) {
-      if (code == ParameterUse.IN)
-        return "in";
-      if (code == ParameterUse.OUT)
-        return "out";
-      return "?";
-      }
-    public String toSystem(ParameterUse code) {
-      return code.getSystem();
-      }
-    }
 
     /**
      * The name of the parameter used to allow access to the value of the parameter in evaluation contexts.
@@ -175,7 +84,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     @Child(name = "use", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="in | out", formalDefinition="Whether the parameter is input or output for the module." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/operation-parameter-use")
-    protected Enumeration<ParameterUse> use;
+    protected Enumeration<OperationParameterUse> use;
 
     /**
      * The minimum number of times this parameter SHALL appear in the request or response.
@@ -204,7 +113,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     @Child(name = "type", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What type of value", formalDefinition="The type of the parameter." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-    protected CodeType type;
+    protected Enumeration<FHIRAllTypes> type;
 
     /**
      * If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.
@@ -213,7 +122,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     @Description(shortDefinition="What profile the value is expected to be", formalDefinition="If specified, this indicates a profile that the input data must conform to, or that the output data will conform to." )
     protected CanonicalType profile;
 
-    private static final long serialVersionUID = -1891730734L;
+    private static final long serialVersionUID = -1132749008L;
 
   /**
    * Constructor
@@ -225,10 +134,10 @@ public class ParameterDefinition extends DataType implements ICompositeType {
   /**
    * Constructor
    */
-    public ParameterDefinition(Enumeration<ParameterUse> use, CodeType type) {
+    public ParameterDefinition(OperationParameterUse use, FHIRAllTypes type) {
       super();
-      this.use = use;
-      this.type = type;
+      this.setUse(use);
+      this.setType(type);
     }
 
     /**
@@ -283,12 +192,12 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return {@link #use} (Whether the parameter is input or output for the module.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
-    public Enumeration<ParameterUse> getUseElement() { 
+    public Enumeration<OperationParameterUse> getUseElement() { 
       if (this.use == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ParameterDefinition.use");
         else if (Configuration.doAutoCreate())
-          this.use = new Enumeration<ParameterUse>(new ParameterUseEnumFactory()); // bb
+          this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory()); // bb
       return this.use;
     }
 
@@ -303,7 +212,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @param value {@link #use} (Whether the parameter is input or output for the module.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
-    public ParameterDefinition setUseElement(Enumeration<ParameterUse> value) { 
+    public ParameterDefinition setUseElement(Enumeration<OperationParameterUse> value) { 
       this.use = value;
       return this;
     }
@@ -311,16 +220,16 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return Whether the parameter is input or output for the module.
      */
-    public ParameterUse getUse() { 
+    public OperationParameterUse getUse() { 
       return this.use == null ? null : this.use.getValue();
     }
 
     /**
      * @param value Whether the parameter is input or output for the module.
      */
-    public ParameterDefinition setUse(ParameterUse value) { 
+    public ParameterDefinition setUse(OperationParameterUse value) { 
         if (this.use == null)
-          this.use = new Enumeration<ParameterUse>(new ParameterUseEnumFactory());
+          this.use = new Enumeration<OperationParameterUse>(new OperationParameterUseEnumFactory());
         this.use.setValue(value);
       return this;
     }
@@ -471,12 +380,12 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public CodeType getTypeElement() { 
+    public Enumeration<FHIRAllTypes> getTypeElement() { 
       if (this.type == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ParameterDefinition.type");
         else if (Configuration.doAutoCreate())
-          this.type = new CodeType(); // bb
+          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
       return this.type;
     }
 
@@ -491,7 +400,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @param value {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public ParameterDefinition setTypeElement(CodeType value) { 
+    public ParameterDefinition setTypeElement(Enumeration<FHIRAllTypes> value) { 
       this.type = value;
       return this;
     }
@@ -499,16 +408,16 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return The type of the parameter.
      */
-    public String getType() { 
+    public FHIRAllTypes getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
      * @param value The type of the parameter.
      */
-    public ParameterDefinition setType(String value) { 
+    public ParameterDefinition setType(FHIRAllTypes value) { 
         if (this.type == null)
-          this.type = new CodeType();
+          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
         this.type.setValue(value);
       return this;
     }
@@ -592,11 +501,11 @@ public class ParameterDefinition extends DataType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // CodeType
-        case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Enumeration<ParameterUse>
+        case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Enumeration<OperationParameterUse>
         case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
         case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : new Base[] {this.profile}; // CanonicalType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -610,8 +519,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
           this.name = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 116103: // use
-          value = new ParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<ParameterUse>
+          value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
           return value;
         case 108114: // min
           this.min = TypeConvertor.castToInteger(value); // IntegerType
@@ -623,7 +532,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
           this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          this.type = TypeConvertor.castToCode(value); // CodeType
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
           return value;
         case -309425751: // profile
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
@@ -638,8 +548,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         if (name.equals("name")) {
           this.name = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("use")) {
-          value = new ParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.use = (Enumeration) value; // Enumeration<ParameterUse>
+          value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
         } else if (name.equals("min")) {
           this.min = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("max")) {
@@ -647,7 +557,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToCode(value); // CodeType
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
         } else if (name.equals("profile")) {
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
@@ -759,7 +670,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         ParameterDefinition o = (ParameterDefinition) other_;
         return compareValues(name, o.name, true) && compareValues(use, o.use, true) && compareValues(min, o.min, true)
            && compareValues(max, o.max, true) && compareValues(documentation, o.documentation, true) && compareValues(type, o.type, true)
-          ;
+           && compareValues(profile, o.profile, true);
       }
 
       public boolean isEmpty() {

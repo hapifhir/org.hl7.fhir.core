@@ -216,21 +216,21 @@ public class DeviceDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType convertDeviceNameType(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.DeviceNameType convertDeviceNameType(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case UDILABELNAME: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.UDILABELNAME;
-    case USERFRIENDLYNAME: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.USERFRIENDLYNAME;
-    case PATIENTREPORTEDNAME: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.PATIENTREPORTEDNAME;
-    case MANUFACTURERNAME: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.MANUFACTURERNAME;
-    case MODELNAME: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.MODELNAME;
-    case OTHER: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.OTHER;
-    default: return org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType.NULL;
+    case UDILABELNAME: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.UDILABELNAME;
+    case USERFRIENDLYNAME: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME;
+    case PATIENTREPORTEDNAME: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME;
+    case MANUFACTURERNAME: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MANUFACTURERNAME;
+    case MODELNAME: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MODELNAME;
+    case OTHER: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.OTHER;
+    default: return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType convertDeviceNameType(org.hl7.fhir.r5.model.DeviceDefinition.DeviceNameType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType convertDeviceNameType(org.hl7.fhir.r5.model.Enumerations.DeviceNameType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

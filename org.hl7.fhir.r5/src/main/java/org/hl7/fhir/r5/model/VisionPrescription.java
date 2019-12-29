@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,227 +67,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * An authorization for the provision of glasses and/or contact lenses to a patient.
  */
 @ResourceDef(name="VisionPrescription", profile="http://hl7.org/fhir/StructureDefinition/VisionPrescription")
 public class VisionPrescription extends DomainResource {
-
-    public enum VisionStatus {
-        /**
-         * The instance is currently in-force.
-         */
-        ACTIVE, 
-        /**
-         * The instance is withdrawn, rescinded or reversed.
-         */
-        CANCELLED, 
-        /**
-         * A new instance the contents of which is not complete.
-         */
-        DRAFT, 
-        /**
-         * The instance was entered in error.
-         */
-        ENTEREDINERROR, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static VisionStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown VisionStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case CANCELLED: return "cancelled";
-            case DRAFT: return "draft";
-            case ENTEREDINERROR: return "entered-in-error";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACTIVE: return "http://hl7.org/fhir/fm-status";
-            case CANCELLED: return "http://hl7.org/fhir/fm-status";
-            case DRAFT: return "http://hl7.org/fhir/fm-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "The instance is currently in-force.";
-            case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
-            case DRAFT: return "A new instance the contents of which is not complete.";
-            case ENTEREDINERROR: return "The instance was entered in error.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case CANCELLED: return "Cancelled";
-            case DRAFT: return "Draft";
-            case ENTEREDINERROR: return "Entered in Error";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class VisionStatusEnumFactory implements EnumFactory<VisionStatus> {
-    public VisionStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return VisionStatus.ACTIVE;
-        if ("cancelled".equals(codeString))
-          return VisionStatus.CANCELLED;
-        if ("draft".equals(codeString))
-          return VisionStatus.DRAFT;
-        if ("entered-in-error".equals(codeString))
-          return VisionStatus.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown VisionStatus code '"+codeString+"'");
-        }
-        public Enumeration<VisionStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<VisionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("active".equals(codeString))
-          return new Enumeration<VisionStatus>(this, VisionStatus.ACTIVE);
-        if ("cancelled".equals(codeString))
-          return new Enumeration<VisionStatus>(this, VisionStatus.CANCELLED);
-        if ("draft".equals(codeString))
-          return new Enumeration<VisionStatus>(this, VisionStatus.DRAFT);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<VisionStatus>(this, VisionStatus.ENTEREDINERROR);
-        throw new FHIRException("Unknown VisionStatus code '"+codeString+"'");
-        }
-    public String toCode(VisionStatus code) {
-      if (code == VisionStatus.ACTIVE)
-        return "active";
-      if (code == VisionStatus.CANCELLED)
-        return "cancelled";
-      if (code == VisionStatus.DRAFT)
-        return "draft";
-      if (code == VisionStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      return "?";
-      }
-    public String toSystem(VisionStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum VisionEyes {
-        /**
-         * Right Eye.
-         */
-        RIGHT, 
-        /**
-         * Left Eye.
-         */
-        LEFT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static VisionEyes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("right".equals(codeString))
-          return RIGHT;
-        if ("left".equals(codeString))
-          return LEFT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown VisionEyes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RIGHT: return "right";
-            case LEFT: return "left";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case RIGHT: return "http://hl7.org/fhir/vision-eye-codes";
-            case LEFT: return "http://hl7.org/fhir/vision-eye-codes";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RIGHT: return "Right Eye.";
-            case LEFT: return "Left Eye.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RIGHT: return "Right Eye";
-            case LEFT: return "Left Eye";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class VisionEyesEnumFactory implements EnumFactory<VisionEyes> {
-    public VisionEyes fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("right".equals(codeString))
-          return VisionEyes.RIGHT;
-        if ("left".equals(codeString))
-          return VisionEyes.LEFT;
-        throw new IllegalArgumentException("Unknown VisionEyes code '"+codeString+"'");
-        }
-        public Enumeration<VisionEyes> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<VisionEyes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("right".equals(codeString))
-          return new Enumeration<VisionEyes>(this, VisionEyes.RIGHT);
-        if ("left".equals(codeString))
-          return new Enumeration<VisionEyes>(this, VisionEyes.LEFT);
-        throw new FHIRException("Unknown VisionEyes code '"+codeString+"'");
-        }
-    public String toCode(VisionEyes code) {
-      if (code == VisionEyes.RIGHT)
-        return "right";
-      if (code == VisionEyes.LEFT)
-        return "left";
-      return "?";
-      }
-    public String toSystem(VisionEyes code) {
-      return code.getSystem();
-      }
-    }
 
     public enum VisionBase {
         /**
@@ -412,6 +198,98 @@ public class VisionPrescription extends DomainResource {
       }
     }
 
+    public enum VisionEyes {
+        /**
+         * Right Eye.
+         */
+        RIGHT, 
+        /**
+         * Left Eye.
+         */
+        LEFT, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static VisionEyes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("right".equals(codeString))
+          return RIGHT;
+        if ("left".equals(codeString))
+          return LEFT;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown VisionEyes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case RIGHT: return "right";
+            case LEFT: return "left";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case RIGHT: return "http://hl7.org/fhir/vision-eye-codes";
+            case LEFT: return "http://hl7.org/fhir/vision-eye-codes";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case RIGHT: return "Right Eye.";
+            case LEFT: return "Left Eye.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case RIGHT: return "Right Eye";
+            case LEFT: return "Left Eye";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class VisionEyesEnumFactory implements EnumFactory<VisionEyes> {
+    public VisionEyes fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("right".equals(codeString))
+          return VisionEyes.RIGHT;
+        if ("left".equals(codeString))
+          return VisionEyes.LEFT;
+        throw new IllegalArgumentException("Unknown VisionEyes code '"+codeString+"'");
+        }
+        public Enumeration<VisionEyes> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<VisionEyes>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("right".equals(codeString))
+          return new Enumeration<VisionEyes>(this, VisionEyes.RIGHT);
+        if ("left".equals(codeString))
+          return new Enumeration<VisionEyes>(this, VisionEyes.LEFT);
+        throw new FHIRException("Unknown VisionEyes code '"+codeString+"'");
+        }
+    public String toCode(VisionEyes code) {
+      if (code == VisionEyes.RIGHT)
+        return "right";
+      if (code == VisionEyes.LEFT)
+        return "left";
+      return "?";
+      }
+    public String toSystem(VisionEyes code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class VisionPrescriptionLensSpecificationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -526,10 +404,10 @@ public class VisionPrescription extends DomainResource {
     /**
      * Constructor
      */
-      public VisionPrescriptionLensSpecificationComponent(CodeableConcept product, Enumeration<VisionEyes> eye) {
+      public VisionPrescriptionLensSpecificationComponent(CodeableConcept product, VisionEyes eye) {
         super();
-        this.product = product;
-        this.eye = eye;
+        this.setProduct(product);
+        this.setEye(eye);
       }
 
         /**
@@ -824,7 +702,7 @@ public class VisionPrescription extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #prism}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #prism}, creating it if it does not already exist {3}
          */
         public PrismComponent getPrismFirstRep() { 
           if (getPrism().isEmpty()) {
@@ -1267,7 +1145,7 @@ public class VisionPrescription extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
          */
         public Annotation getNoteFirstRep() { 
           if (getNote().isEmpty()) {
@@ -1288,7 +1166,7 @@ public class VisionPrescription extends DomainResource {
           children.add(new Property("power", "decimal", "Contact lens power measured in dioptres (0.25 units).", 0, 1, power));
           children.add(new Property("backCurve", "decimal", "Back curvature measured in millimetres.", 0, 1, backCurve));
           children.add(new Property("diameter", "decimal", "Contact lens diameter measured in millimetres.", 0, 1, diameter));
-          children.add(new Property("duration", "SimpleQuantity", "The recommended maximum wear period for the lens.", 0, 1, duration));
+          children.add(new Property("duration", "Quantity", "The recommended maximum wear period for the lens.", 0, 1, duration));
           children.add(new Property("color", "string", "Special color or pattern.", 0, 1, color));
           children.add(new Property("brand", "string", "Brand recommendations or restrictions.", 0, 1, brand));
           children.add(new Property("note", "Annotation", "Notes for special requirements such as coatings and lens materials.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1307,7 +1185,7 @@ public class VisionPrescription extends DomainResource {
           case 106858757: /*power*/  return new Property("power", "decimal", "Contact lens power measured in dioptres (0.25 units).", 0, 1, power);
           case 1309344840: /*backCurve*/  return new Property("backCurve", "decimal", "Back curvature measured in millimetres.", 0, 1, backCurve);
           case -233204595: /*diameter*/  return new Property("diameter", "decimal", "Contact lens diameter measured in millimetres.", 0, 1, diameter);
-          case -1992012396: /*duration*/  return new Property("duration", "SimpleQuantity", "The recommended maximum wear period for the lens.", 0, 1, duration);
+          case -1992012396: /*duration*/  return new Property("duration", "Quantity", "The recommended maximum wear period for the lens.", 0, 1, duration);
           case 94842723: /*color*/  return new Property("color", "string", "Special color or pattern.", 0, 1, color);
           case 93997959: /*brand*/  return new Property("brand", "string", "Brand recommendations or restrictions.", 0, 1, brand);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Notes for special requirements such as coatings and lens materials.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1460,7 +1338,7 @@ public class VisionPrescription extends DomainResource {
         case 106858757: /*power*/ return new String[] {"decimal"};
         case 1309344840: /*backCurve*/ return new String[] {"decimal"};
         case -233204595: /*diameter*/ return new String[] {"decimal"};
-        case -1992012396: /*duration*/ return new String[] {"SimpleQuantity"};
+        case -1992012396: /*duration*/ return new String[] {"Quantity"};
         case 94842723: /*color*/ return new String[] {"string"};
         case 93997959: /*brand*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -1476,41 +1354,41 @@ public class VisionPrescription extends DomainResource {
           return this.product;
         }
         else if (name.equals("eye")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.eye");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.eye");
         }
         else if (name.equals("sphere")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.sphere");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.sphere");
         }
         else if (name.equals("cylinder")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.cylinder");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.cylinder");
         }
         else if (name.equals("axis")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.axis");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.axis");
         }
         else if (name.equals("prism")) {
           return addPrism();
         }
         else if (name.equals("add")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.add");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.add");
         }
         else if (name.equals("power")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.power");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.power");
         }
         else if (name.equals("backCurve")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.backCurve");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.backCurve");
         }
         else if (name.equals("diameter")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.diameter");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.diameter");
         }
         else if (name.equals("duration")) {
           this.duration = new Quantity();
           return this.duration;
         }
         else if (name.equals("color")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.color");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.color");
         }
         else if (name.equals("brand")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.brand");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.brand");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -1620,10 +1498,10 @@ public class VisionPrescription extends DomainResource {
     /**
      * Constructor
      */
-      public PrismComponent(DecimalType amount, Enumeration<VisionBase> base) {
+      public PrismComponent(BigDecimal amount, VisionBase base) {
         super();
-        this.amount = amount;
-        this.base = base;
+        this.setAmount(amount);
+        this.setBase(base);
       }
 
         /**
@@ -1810,10 +1688,10 @@ public class VisionPrescription extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("amount")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.amount");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.prism.amount");
         }
         else if (name.equals("base")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.base");
+          throw new FHIRException("Cannot call addChild on a primitive type VisionPrescription.lensSpecification.prism.base");
         }
         else
           return super.addChild(name);
@@ -1875,7 +1753,7 @@ public class VisionPrescription extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | cancelled | draft | entered-in-error", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fm-status")
-    protected Enumeration<VisionStatus> status;
+    protected Enumeration<FinancialResourceStatusCodes> status;
 
     /**
      * The date this resource was created.
@@ -1919,7 +1797,7 @@ public class VisionPrescription extends DomainResource {
     @Description(shortDefinition="Vision lens authorization", formalDefinition="Contain the details of  the individual lens specifications and serves as the authorization for the fullfillment by certified professionals." )
     protected List<VisionPrescriptionLensSpecificationComponent> lensSpecification;
 
-    private static final long serialVersionUID = 252562003L;
+    private static final long serialVersionUID = -194296688L;
 
   /**
    * Constructor
@@ -1931,13 +1809,14 @@ public class VisionPrescription extends DomainResource {
   /**
    * Constructor
    */
-    public VisionPrescription(Enumeration<VisionStatus> status, DateTimeType created, Reference patient, DateTimeType dateWritten, Reference prescriber) {
+    public VisionPrescription(FinancialResourceStatusCodes status, Date created, Reference patient, Date dateWritten, Reference prescriber, VisionPrescriptionLensSpecificationComponent lensSpecification) {
       super();
-      this.status = status;
-      this.created = created;
-      this.patient = patient;
-      this.dateWritten = dateWritten;
-      this.prescriber = prescriber;
+      this.setStatus(status);
+      this.setCreated(created);
+      this.setPatient(patient);
+      this.setDateWritten(dateWritten);
+      this.setPrescriber(prescriber);
+      this.addLensSpecification(lensSpecification);
     }
 
     /**
@@ -1984,7 +1863,7 @@ public class VisionPrescription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1996,12 +1875,12 @@ public class VisionPrescription extends DomainResource {
     /**
      * @return {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<VisionStatus> getStatusElement() { 
+    public Enumeration<FinancialResourceStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create VisionPrescription.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<VisionStatus>(new VisionStatusEnumFactory()); // bb
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -2016,7 +1895,7 @@ public class VisionPrescription extends DomainResource {
     /**
      * @param value {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public VisionPrescription setStatusElement(Enumeration<VisionStatus> value) { 
+    public VisionPrescription setStatusElement(Enumeration<FinancialResourceStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -2024,16 +1903,16 @@ public class VisionPrescription extends DomainResource {
     /**
      * @return The status of the resource instance.
      */
-    public VisionStatus getStatus() { 
+    public FinancialResourceStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the resource instance.
      */
-    public VisionPrescription setStatus(VisionStatus value) { 
+    public VisionPrescription setStatus(FinancialResourceStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<VisionStatus>(new VisionStatusEnumFactory());
+          this.status = new Enumeration<FinancialResourceStatusCodes>(new FinancialResourceStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -2244,7 +2123,7 @@ public class VisionPrescription extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #lensSpecification}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #lensSpecification}, creating it if it does not already exist {3}
      */
     public VisionPrescriptionLensSpecificationComponent getLensSpecificationFirstRep() { 
       if (getLensSpecification().isEmpty()) {
@@ -2285,7 +2164,7 @@ public class VisionPrescription extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<VisionStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FinancialResourceStatusCodes>
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
@@ -2304,8 +2183,8 @@ public class VisionPrescription extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new VisionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<VisionStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
           return value;
         case 1028554472: // created
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -2335,8 +2214,8 @@ public class VisionPrescription extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new VisionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<VisionStatus>
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
         } else if (name.equals("created")) {
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("patient")) {
@@ -2489,78 +2368,6 @@ public class VisionPrescription extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>prescriber</b>
-   * <p>
-   * Description: <b>Who authorized the vision prescription</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.prescriber</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="prescriber", path="VisionPrescription.prescriber", description="Who authorized the vision prescription", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
-  public static final String SP_PRESCRIBER = "prescriber";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>prescriber</b>
-   * <p>
-   * Description: <b>Who authorized the vision prescription</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.prescriber</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRESCRIBER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRESCRIBER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>VisionPrescription:prescriber</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRESCRIBER = new ca.uhn.fhir.model.api.Include("VisionPrescription:prescriber").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Return prescriptions with this external identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>VisionPrescription.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="VisionPrescription.identifier", description="Return prescriptions with this external identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Return prescriptions with this external identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>VisionPrescription.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The identity of a patient to list dispenses for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="VisionPrescription.patient", description="The identity of a patient to list dispenses for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The identity of a patient to list dispenses for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>VisionPrescription:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("VisionPrescription:patient").toLocked();
-
- /**
    * Search parameter: <b>datewritten</b>
    * <p>
    * Description: <b>Return prescriptions written on this date</b><br>
@@ -2581,30 +2388,30 @@ public class VisionPrescription extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATEWRITTEN = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATEWRITTEN);
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>prescriber</b>
    * <p>
-   * Description: <b>Return prescriptions with this encounter identifier</b><br>
+   * Description: <b>Who authorized the vision prescription</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.encounter</b><br>
+   * Path: <b>VisionPrescription.prescriber</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="VisionPrescription.encounter", description="Return prescriptions with this encounter identifier", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="prescriber", path="VisionPrescription.prescriber", description="Who authorized the vision prescription", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
+  public static final String SP_PRESCRIBER = "prescriber";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>prescriber</b>
    * <p>
-   * Description: <b>Return prescriptions with this encounter identifier</b><br>
+   * Description: <b>Who authorized the vision prescription</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>VisionPrescription.encounter</b><br>
+   * Path: <b>VisionPrescription.prescriber</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRESCRIBER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRESCRIBER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>VisionPrescription:encounter</b>".
+   * the path value of "<b>VisionPrescription:prescriber</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("VisionPrescription:encounter").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRESCRIBER = new ca.uhn.fhir.model.api.Include("VisionPrescription:prescriber").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -2625,6 +2432,238 @@ public class VisionPrescription extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter", description="Multiple Resources: \r\n\r\n* [Composition](composition.html): Context of the Composition\r\n* [DeviceRequest](devicerequest.html): Encounter during which request was created\r\n* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made\r\n* [DocumentReference](documentreference.html): Context of the document  content\r\n* [Flag](flag.html): Alert relevant during encounter\r\n* [List](list.html): Context in which list created\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier\r\n* [Observation](observation.html): Encounter related to the observation\r\n* [Procedure](procedure.html): The Encounter during which this Procedure was created\r\n* [RiskAssessment](riskassessment.html): Where was assessment performed?\r\n* [ServiceRequest](servicerequest.html): An encounter in which this request is made\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Composition](composition.html): Context of the Composition
+* [DeviceRequest](devicerequest.html): Encounter during which request was created
+* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
+* [DocumentReference](documentreference.html): Context of the document  content
+* [Flag](flag.html): Alert relevant during encounter
+* [List](list.html): Context in which list created
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
+* [Observation](observation.html): Encounter related to the observation
+* [Procedure](procedure.html): The Encounter during which this Procedure was created
+* [RiskAssessment](riskassessment.html): Where was assessment performed?
+* [ServiceRequest](servicerequest.html): An encounter in which this request is made
+* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.context.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VisionPrescription:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("VisionPrescription:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Master Version Specific Identifier\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>VisionPrescription:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("VisionPrescription:patient").toLocked();
 
 
 }

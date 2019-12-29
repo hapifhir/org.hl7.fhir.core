@@ -108,19 +108,19 @@ public class AppointmentResponse extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus convertParticipantStatus(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ParticipationStatus convertParticipantStatus(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACCEPTED: return org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus.ACCEPTED;
-    case DECLINED: return org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus.DECLINED;
-    case TENTATIVE: return org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus.TENTATIVE;
-    case NEEDSACTION: return org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus.NEEDSACTION;
-    default: return org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus.NULL;
+    case ACCEPTED: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED;
+    case DECLINED: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.DECLINED;
+    case TENTATIVE: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.TENTATIVE;
+    case NEEDSACTION: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NEEDSACTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus convertParticipantStatus(org.hl7.fhir.r5.model.AppointmentResponse.ParticipantStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus convertParticipantStatus(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -121,7 +121,7 @@ public class ListResource extends VersionConvertor_40_50 {
       tgt.setOrderedBy(convertCodeableConcept(src.getOrderedBy()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.ListResource.ListEntryComponent t : src.getEntry())
+    for (org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent t : src.getEntry())
       tgt.addEntry(convertListEntryComponent(t));
     if (src.hasEmptyReason())
       tgt.setEmptyReason(convertCodeableConcept(src.getEmptyReason()));
@@ -150,18 +150,18 @@ public class ListResource extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ListResource.ListMode convertListMode(org.hl7.fhir.r4.model.ListResource.ListMode src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ListMode convertListMode(org.hl7.fhir.r4.model.ListResource.ListMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case WORKING: return org.hl7.fhir.r5.model.ListResource.ListMode.WORKING;
-    case SNAPSHOT: return org.hl7.fhir.r5.model.ListResource.ListMode.SNAPSHOT;
-    case CHANGES: return org.hl7.fhir.r5.model.ListResource.ListMode.CHANGES;
-    default: return org.hl7.fhir.r5.model.ListResource.ListMode.NULL;
+    case WORKING: return org.hl7.fhir.r5.model.Enumerations.ListMode.WORKING;
+    case SNAPSHOT: return org.hl7.fhir.r5.model.Enumerations.ListMode.SNAPSHOT;
+    case CHANGES: return org.hl7.fhir.r5.model.Enumerations.ListMode.CHANGES;
+    default: return org.hl7.fhir.r5.model.Enumerations.ListMode.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ListResource.ListMode convertListMode(org.hl7.fhir.r5.model.ListResource.ListMode src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ListResource.ListMode convertListMode(org.hl7.fhir.r5.model.Enumerations.ListMode src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -172,10 +172,10 @@ public class ListResource extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ListResource.ListEntryComponent convertListEntryComponent(org.hl7.fhir.r4.model.ListResource.ListEntryComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent convertListEntryComponent(org.hl7.fhir.r4.model.ListResource.ListEntryComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.ListResource.ListEntryComponent tgt = new org.hl7.fhir.r5.model.ListResource.ListEntryComponent();
+    org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent tgt = new org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent();
     copyElement(src, tgt);
     if (src.hasFlag())
       tgt.setFlag(convertCodeableConcept(src.getFlag()));
@@ -188,7 +188,7 @@ public class ListResource extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ListResource.ListEntryComponent convertListEntryComponent(org.hl7.fhir.r5.model.ListResource.ListEntryComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ListResource.ListEntryComponent convertListEntryComponent(org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ListResource.ListEntryComponent tgt = new org.hl7.fhir.r4.model.ListResource.ListEntryComponent();

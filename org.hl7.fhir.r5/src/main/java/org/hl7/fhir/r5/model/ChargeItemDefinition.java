@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,42 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
 import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -67,168 +67,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.
  */
 @ResourceDef(name="ChargeItemDefinition", profile="http://hl7.org/fhir/StructureDefinition/ChargeItemDefinition")
-@ChildOrder(names={"url", "identifier", "version", "title", "derivedFromUri", "partOf", "replaces", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "copyright", "approvalDate", "lastReviewDate", "effectivePeriod", "code", "instance", "applicability", "propertyGroup"})
-public class ChargeItemDefinition extends CanonicalResource {
-
-    public enum ChargeItemDefinitionPriceComponentType {
-        /**
-         * the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.
-         */
-        BASE, 
-        /**
-         * the amount is a surcharge applied on the base price.
-         */
-        SURCHARGE, 
-        /**
-         * the amount is a deduction applied on the base price.
-         */
-        DEDUCTION, 
-        /**
-         * the amount is a discount applied on the base price.
-         */
-        DISCOUNT, 
-        /**
-         * the amount is the tax component of the total price.
-         */
-        TAX, 
-        /**
-         * the amount is of informational character, it has not been applied in the calculation of the total price.
-         */
-        INFORMATIONAL, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ChargeItemDefinitionPriceComponentType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("base".equals(codeString))
-          return BASE;
-        if ("surcharge".equals(codeString))
-          return SURCHARGE;
-        if ("deduction".equals(codeString))
-          return DEDUCTION;
-        if ("discount".equals(codeString))
-          return DISCOUNT;
-        if ("tax".equals(codeString))
-          return TAX;
-        if ("informational".equals(codeString))
-          return INFORMATIONAL;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ChargeItemDefinitionPriceComponentType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BASE: return "base";
-            case SURCHARGE: return "surcharge";
-            case DEDUCTION: return "deduction";
-            case DISCOUNT: return "discount";
-            case TAX: return "tax";
-            case INFORMATIONAL: return "informational";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case BASE: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case SURCHARGE: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case DEDUCTION: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case DISCOUNT: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case TAX: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case INFORMATIONAL: return "http://hl7.org/fhir/invoice-priceComponentType";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BASE: return "the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.";
-            case SURCHARGE: return "the amount is a surcharge applied on the base price.";
-            case DEDUCTION: return "the amount is a deduction applied on the base price.";
-            case DISCOUNT: return "the amount is a discount applied on the base price.";
-            case TAX: return "the amount is the tax component of the total price.";
-            case INFORMATIONAL: return "the amount is of informational character, it has not been applied in the calculation of the total price.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BASE: return "base price";
-            case SURCHARGE: return "surcharge";
-            case DEDUCTION: return "deduction";
-            case DISCOUNT: return "discount";
-            case TAX: return "tax";
-            case INFORMATIONAL: return "informational";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ChargeItemDefinitionPriceComponentTypeEnumFactory implements EnumFactory<ChargeItemDefinitionPriceComponentType> {
-    public ChargeItemDefinitionPriceComponentType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("base".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.BASE;
-        if ("surcharge".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.SURCHARGE;
-        if ("deduction".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.DEDUCTION;
-        if ("discount".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.DISCOUNT;
-        if ("tax".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.TAX;
-        if ("informational".equals(codeString))
-          return ChargeItemDefinitionPriceComponentType.INFORMATIONAL;
-        throw new IllegalArgumentException("Unknown ChargeItemDefinitionPriceComponentType code '"+codeString+"'");
-        }
-        public Enumeration<ChargeItemDefinitionPriceComponentType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ChargeItemDefinitionPriceComponentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("base".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.BASE);
-        if ("surcharge".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.SURCHARGE);
-        if ("deduction".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DEDUCTION);
-        if ("discount".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DISCOUNT);
-        if ("tax".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.TAX);
-        if ("informational".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.INFORMATIONAL);
-        throw new FHIRException("Unknown ChargeItemDefinitionPriceComponentType code '"+codeString+"'");
-        }
-    public String toCode(ChargeItemDefinitionPriceComponentType code) {
-      if (code == ChargeItemDefinitionPriceComponentType.BASE)
-        return "base";
-      if (code == ChargeItemDefinitionPriceComponentType.SURCHARGE)
-        return "surcharge";
-      if (code == ChargeItemDefinitionPriceComponentType.DEDUCTION)
-        return "deduction";
-      if (code == ChargeItemDefinitionPriceComponentType.DISCOUNT)
-        return "discount";
-      if (code == ChargeItemDefinitionPriceComponentType.TAX)
-        return "tax";
-      if (code == ChargeItemDefinitionPriceComponentType.INFORMATIONAL)
-        return "informational";
-      return "?";
-      }
-    public String toSystem(ChargeItemDefinitionPriceComponentType code) {
-      return code.getSystem();
-      }
-    }
+public class ChargeItemDefinition extends MetadataResource {
 
     @Block()
     public static class ChargeItemDefinitionApplicabilityComponent extends BackboneElement implements IBaseBackboneElement {
@@ -493,13 +337,13 @@ public class ChargeItemDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.description");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.language");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.language");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.expression");
         }
         else
           return super.addChild(name);
@@ -621,7 +465,7 @@ public class ChargeItemDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #applicability}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #applicability}, creating it if it does not already exist {3}
          */
         public ChargeItemDefinitionApplicabilityComponent getApplicabilityFirstRep() { 
           if (getApplicability().isEmpty()) {
@@ -674,7 +518,7 @@ public class ChargeItemDefinition extends CanonicalResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #priceComponent}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #priceComponent}, creating it if it does not already exist {3}
          */
         public ChargeItemDefinitionPropertyGroupPriceComponentComponent getPriceComponentFirstRep() { 
           if (getPriceComponent().isEmpty()) {
@@ -827,7 +671,7 @@ public class ChargeItemDefinition extends CanonicalResource {
         @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="base | surcharge | deduction | discount | tax | informational", formalDefinition="This code identifies the type of the component." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/invoice-priceComponentType")
-        protected Enumeration<ChargeItemDefinitionPriceComponentType> type;
+        protected Enumeration<InvoicePriceComponentType> type;
 
         /**
          * A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.
@@ -850,7 +694,7 @@ public class ChargeItemDefinition extends CanonicalResource {
         @Description(shortDefinition="Monetary amount associated with this component", formalDefinition="The amount calculated for this component." )
         protected Money amount;
 
-        private static final long serialVersionUID = -841451335L;
+        private static final long serialVersionUID = 1223988958L;
 
     /**
      * Constructor
@@ -862,20 +706,20 @@ public class ChargeItemDefinition extends CanonicalResource {
     /**
      * Constructor
      */
-      public ChargeItemDefinitionPropertyGroupPriceComponentComponent(Enumeration<ChargeItemDefinitionPriceComponentType> type) {
+      public ChargeItemDefinitionPropertyGroupPriceComponentComponent(InvoicePriceComponentType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
          * @return {@link #type} (This code identifies the type of the component.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public Enumeration<ChargeItemDefinitionPriceComponentType> getTypeElement() { 
+        public Enumeration<InvoicePriceComponentType> getTypeElement() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ChargeItemDefinitionPropertyGroupPriceComponentComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<ChargeItemDefinitionPriceComponentType>(new ChargeItemDefinitionPriceComponentTypeEnumFactory()); // bb
+              this.type = new Enumeration<InvoicePriceComponentType>(new InvoicePriceComponentTypeEnumFactory()); // bb
           return this.type;
         }
 
@@ -890,7 +734,7 @@ public class ChargeItemDefinition extends CanonicalResource {
         /**
          * @param value {@link #type} (This code identifies the type of the component.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setTypeElement(Enumeration<ChargeItemDefinitionPriceComponentType> value) { 
+        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setTypeElement(Enumeration<InvoicePriceComponentType> value) { 
           this.type = value;
           return this;
         }
@@ -898,16 +742,16 @@ public class ChargeItemDefinition extends CanonicalResource {
         /**
          * @return This code identifies the type of the component.
          */
-        public ChargeItemDefinitionPriceComponentType getType() { 
+        public InvoicePriceComponentType getType() { 
           return this.type == null ? null : this.type.getValue();
         }
 
         /**
          * @param value This code identifies the type of the component.
          */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setType(ChargeItemDefinitionPriceComponentType value) { 
+        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setType(InvoicePriceComponentType value) { 
             if (this.type == null)
-              this.type = new Enumeration<ChargeItemDefinitionPriceComponentType>(new ChargeItemDefinitionPriceComponentTypeEnumFactory());
+              this.type = new Enumeration<InvoicePriceComponentType>(new InvoicePriceComponentTypeEnumFactory());
             this.type.setValue(value);
           return this;
         }
@@ -1050,7 +894,7 @@ public class ChargeItemDefinition extends CanonicalResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ChargeItemDefinitionPriceComponentType>
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<InvoicePriceComponentType>
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Money
@@ -1063,8 +907,8 @@ public class ChargeItemDefinition extends CanonicalResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ChargeItemDefinitionPriceComponentType>
+          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1083,8 +927,8 @@ public class ChargeItemDefinition extends CanonicalResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ChargeItemDefinitionPriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ChargeItemDefinitionPriceComponentType>
+          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("factor")) {
@@ -1123,14 +967,14 @@ public class ChargeItemDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.propertyGroup.priceComponent.type");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.propertyGroup.priceComponent.factor");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();
@@ -1188,65 +1032,144 @@ public class ChargeItemDefinition extends CanonicalResource {
   }
 
     /**
+     * An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this charge item definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers." )
+    protected UriType url;
+
+    /**
      * A formal identifier that is used to identify this charge item definition when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional identifier for the charge item definition", formalDefinition="A formal identifier that is used to identify this charge item definition when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
+     * The identifier that is used to identify this version of the charge item definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the charge item definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets.
+     */
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the charge item definition", formalDefinition="The identifier that is used to identify this version of the charge item definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the charge item definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets." )
+    protected StringType version;
+
+    /**
+     * A short, descriptive, user-friendly title for the charge item definition.
+     */
+    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this charge item definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the charge item definition." )
+    protected StringType title;
+
+    /**
      * The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition.
      */
-    @Child(name = "derivedFromUri", type = {UriType.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "derivedFromUri", type = {UriType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Underlying externally-defined charge item definition", formalDefinition="The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition." )
     protected List<UriType> derivedFromUri;
 
     /**
      * A larger definition of which this particular definition is a component or step.
      */
-    @Child(name = "partOf", type = {CanonicalType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "partOf", type = {CanonicalType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A larger definition of which this particular definition is a component or step", formalDefinition="A larger definition of which this particular definition is a component or step." )
     protected List<CanonicalType> partOf;
 
     /**
      * As new versions of a protocol or guideline are defined, allows identification of what versions are replaced by a new instance.
      */
-    @Child(name = "replaces", type = {CanonicalType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "replaces", type = {CanonicalType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Completed or terminated request(s) whose function is taken by this new request", formalDefinition="As new versions of a protocol or guideline are defined, allows identification of what versions are replaced by a new instance." )
     protected List<CanonicalType> replaces;
 
     /**
+     * The current state of the ChargeItemDefinition.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the ChargeItemDefinition." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
+     * The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the charge item definition.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the charge item definition." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the charge item definition from a consumer's perspective.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Natural language description of the charge item definition", formalDefinition="A free text natural language description of the charge item definition from a consumer's perspective." )
+    protected MarkdownType description;
+
+    /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the charge item definition is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for charge item definition (if applicable)", formalDefinition="A legal or geographic region in which the charge item definition is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the charge item definition was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the charge item definition was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the charge item definition content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the charge item definition is expected to be used", formalDefinition="The period during which the charge item definition content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * The defined billing details in this resource pertain to the given billing code.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Billing codes or product types this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given billing code." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/chargeitem-billingcodes")
     protected CodeableConcept code;
@@ -1254,25 +1177,25 @@ public class ChargeItemDefinition extends CanonicalResource {
     /**
      * The defined billing details in this resource pertain to the given product instance(s).
      */
-    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instances this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given product instance(s)." )
     protected List<Reference> instance;
 
     /**
      * Expressions that describe applicability criteria for the billing code.
      */
-    @Child(name = "applicability", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "applicability", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Whether or not the billing code is applicable", formalDefinition="Expressions that describe applicability criteria for the billing code." )
     protected List<ChargeItemDefinitionApplicabilityComponent> applicability;
 
     /**
      * Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.
      */
-    @Child(name = "propertyGroup", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "propertyGroup", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Group of properties which are applicable under the same conditions", formalDefinition="Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply." )
     protected List<ChargeItemDefinitionPropertyGroupComponent> propertyGroup;
 
-    private static final long serialVersionUID = -699176936L;
+    private static final long serialVersionUID = -789505112L;
 
   /**
    * Constructor
@@ -1284,10 +1207,10 @@ public class ChargeItemDefinition extends CanonicalResource {
   /**
    * Constructor
    */
-    public ChargeItemDefinition(UriType url, Enumeration<PublicationStatus> status) {
+    public ChargeItemDefinition(String url, PublicationStatus status) {
       super();
-      this.url = url;
-      this.status = status;
+      this.setUrl(url);
+      this.setStatus(status);
     }
 
     /**
@@ -1379,7 +1302,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1603,7 +1526,7 @@ public class ChargeItemDefinition extends CanonicalResource {
       if (this.partOf == null)
         return false;
       for (CanonicalType v : this.partOf)
-        if (v.getValue().equals(value)) // canonical(ChargeItemDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -1664,7 +1587,7 @@ public class ChargeItemDefinition extends CanonicalResource {
       if (this.replaces == null)
         return false;
       for (CanonicalType v : this.replaces)
-        if (v.getValue().equals(value)) // canonical(ChargeItemDefinition)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -1901,7 +1824,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -2003,7 +1926,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -2056,7 +1979,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -2304,7 +2227,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #instance}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #instance}, creating it if it does not already exist {3}
      */
     public Reference getInstanceFirstRep() { 
       if (getInstance().isEmpty()) {
@@ -2357,7 +2280,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #applicability}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #applicability}, creating it if it does not already exist {3}
      */
     public ChargeItemDefinitionApplicabilityComponent getApplicabilityFirstRep() { 
       if (getApplicability().isEmpty()) {
@@ -2410,7 +2333,7 @@ public class ChargeItemDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #propertyGroup}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #propertyGroup}, creating it if it does not already exist {3}
      */
     public ChargeItemDefinitionPropertyGroupComponent getPropertyGroupFirstRep() { 
       if (getPropertyGroup().isEmpty()) {
@@ -2419,6 +2342,64 @@ public class ChargeItemDefinition extends CanonicalResource {
       return getPropertyGroup().get(0);
     }
 
+    /**
+     * @return {@link #name} (A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    }
+
+    public boolean hasNameElement() { 
+      return false;
+    }
+    public boolean hasName() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #name} (A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public ChargeItemDefinition setNameElement(StringType value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    }
+    public String getName() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    }
+    /**
+     * @param value A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public ChargeItemDefinition setName(String value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    }
+    /**
+     * @return {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public MarkdownType getPurposeElement() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    }
+
+    public boolean hasPurposeElement() { 
+      return false;
+    }
+    public boolean hasPurpose() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public ChargeItemDefinition setPurposeElement(MarkdownType value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    }
+    public String getPurpose() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    }
+    /**
+     * @param value Explanation of why this charge item definition is needed and why it has been designed as it has.
+     */
+    public ChargeItemDefinition setPurpose(String value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url));
@@ -2868,8 +2849,12 @@ public class ChargeItemDefinition extends CanonicalResource {
         if (!(other_ instanceof ChargeItemDefinition))
           return false;
         ChargeItemDefinition o = (ChargeItemDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(derivedFromUri, o.derivedFromUri, true)
-           && compareDeep(partOf, o.partOf, true) && compareDeep(replaces, o.replaces, true) && compareDeep(copyright, o.copyright, true)
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(title, o.title, true) && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(partOf, o.partOf, true)
+           && compareDeep(replaces, o.replaces, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
+           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(copyright, o.copyright, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
            && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(code, o.code, true) && compareDeep(instance, o.instance, true)
            && compareDeep(applicability, o.applicability, true) && compareDeep(propertyGroup, o.propertyGroup, true)
@@ -2883,15 +2868,19 @@ public class ChargeItemDefinition extends CanonicalResource {
         if (!(other_ instanceof ChargeItemDefinition))
           return false;
         ChargeItemDefinition o = (ChargeItemDefinition) other_;
-        return compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(copyright, o.copyright, true)
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
+           && compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(partOf, o.partOf, true) && compareValues(replaces, o.replaces, true)
+           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
+           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(copyright, o.copyright, true)
            && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, derivedFromUri
-          , partOf, replaces, copyright, approvalDate, lastReviewDate, effectivePeriod, code
-          , instance, applicability, propertyGroup);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , title, derivedFromUri, partOf, replaces, status, experimental, date, publisher
+          , contact, description, useContext, jurisdiction, copyright, approvalDate, lastReviewDate
+          , effectivePeriod, code, instance, applicability, propertyGroup);
       }
 
   @Override
@@ -2900,51 +2889,51 @@ public class ChargeItemDefinition extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
+   * Search parameter: <b>context-quantity</b>
    * <p>
-   * Description: <b>The charge item definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.date</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="ChargeItemDefinition.date", description="The charge item definition publication date", type="date" )
-  public static final String SP_DATE = "date";
+  @SearchParamDefinition(name="context-quantity", path="(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the charge item definition", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
    * <p>
-   * Description: <b>The charge item definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.date</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>context-type-quantity</b>
    * <p>
-   * Description: <b>External identifier for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.identifier</b><br>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="ChargeItemDefinition.identifier", description="External identifier for the charge item definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="context-type-quantity", path="ChargeItemDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
    * <p>
-   * Description: <b>External identifier for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.identifier</b><br>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
  /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the charge item definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
    * </p>
    */
   @SearchParamDefinition(name="context-type-value", path="ChargeItemDefinition.useContext", description="A use context type and value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context"} )
@@ -2954,50 +2943,10 @@ public class ChargeItemDefinition extends CanonicalResource {
    * <p>
    * Description: <b>A use context type and value assigned to the charge item definition</b><br>
    * Type: <b>composite</b><br>
-   * Path: <b></b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="ChargeItemDefinition.jurisdiction", description="Intended jurisdiction for the charge item definition", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="ChargeItemDefinition.description", description="The description of the charge item definition", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>context-type</b>
@@ -3020,84 +2969,64 @@ public class ChargeItemDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>title</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>The human-friendly name of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ChargeItemDefinition.title", description="The human-friendly name of the charge item definition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the charge item definition</b><br>
+   * Description: <b>A use context assigned to the charge item definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.version</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="ChargeItemDefinition.version", description="The business version of the charge item definition", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="context", path="(ChargeItemDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the charge item definition", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
    * <p>
-   * Description: <b>The business version of the charge item definition</b><br>
+   * Description: <b>A use context assigned to the charge item definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.version</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
-   * Search parameter: <b>url</b>
+   * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>The uri that identifies the charge item definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ChargeItemDefinition.url</b><br>
+   * Description: <b>The charge item definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ChargeItemDefinition.date</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="ChargeItemDefinition.url", description="The uri that identifies the charge item definition", type="uri" )
-  public static final String SP_URL = "url";
+  @SearchParamDefinition(name="date", path="ChargeItemDefinition.date", description="The charge item definition publication date", type="date" )
+  public static final String SP_DATE = "date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>The uri that identifies the charge item definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ChargeItemDefinition.url</b><br>
+   * Description: <b>The charge item definition publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ChargeItemDefinition.date</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
  /**
-   * Search parameter: <b>context-quantity</b>
+   * Search parameter: <b>description</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.valueQuantity, ChargeItemDefinition.useContext.valueRange</b><br>
+   * Description: <b>The description of the charge item definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ChargeItemDefinition.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the charge item definition", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+  @SearchParamDefinition(name="description", path="ChargeItemDefinition.description", description="The description of the charge item definition", type="string" )
+  public static final String SP_DESCRIPTION = "description";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.valueQuantity, ChargeItemDefinition.useContext.valueRange</b><br>
+   * Description: <b>The description of the charge item definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ChargeItemDefinition.description</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
    * Search parameter: <b>effective</b>
@@ -3120,24 +3049,44 @@ public class ChargeItemDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
+   * Description: <b>External identifier for the charge item definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.valueCodeableConcept</b><br>
+   * Path: <b>ChargeItemDefinition.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(ChargeItemDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the charge item definition", type="token" )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="identifier", path="ChargeItemDefinition.identifier", description="External identifier for the charge item definition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
+   * Description: <b>External identifier for the charge item definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.valueCodeableConcept</b><br>
+   * Path: <b>ChargeItemDefinition.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="jurisdiction", path="ChargeItemDefinition.jurisdiction", description="Intended jurisdiction for the charge item definition", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>publisher</b>
@@ -3160,26 +3109,6 @@ public class ChargeItemDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="ChargeItemDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>The current status of the charge item definition</b><br>
@@ -3198,6 +3127,66 @@ public class ChargeItemDefinition extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the charge item definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ChargeItemDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ChargeItemDefinition.title", description="The human-friendly name of the charge item definition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the charge item definition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ChargeItemDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the charge item definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ChargeItemDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="ChargeItemDefinition.url", description="The uri that identifies the charge item definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the charge item definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ChargeItemDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>The business version of the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ChargeItemDefinition.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="ChargeItemDefinition.version", description="The business version of the charge item definition", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>The business version of the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ChargeItemDefinition.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

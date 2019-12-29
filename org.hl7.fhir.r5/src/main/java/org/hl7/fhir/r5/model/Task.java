@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,11 +66,216 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A task to be performed.
  */
 @ResourceDef(name="Task", profile="http://hl7.org/fhir/StructureDefinition/Task")
 public class Task extends DomainResource {
+
+    public enum TaskIntent {
+        /**
+         * The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.
+         */
+        UNKNOWN, 
+        /**
+         * The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.
+         */
+        PROPOSAL, 
+        /**
+         * The request represents an intention to ensure something occurs without providing an authorization for others to act.
+         */
+        PLAN, 
+        /**
+         * The request represents a request/demand and authorization for action by a Practitioner.
+         */
+        ORDER, 
+        /**
+         * The request represents an original authorization for action.
+         */
+        ORIGINALORDER, 
+        /**
+         * The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.
+         */
+        REFLEXORDER, 
+        /**
+         * The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.
+         */
+        FILLERORDER, 
+        /**
+         * An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.
+         */
+        INSTANCEORDER, 
+        /**
+         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
+         */
+        OPTION, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static TaskIntent fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if ("proposal".equals(codeString))
+          return PROPOSAL;
+        if ("plan".equals(codeString))
+          return PLAN;
+        if ("order".equals(codeString))
+          return ORDER;
+        if ("original-order".equals(codeString))
+          return ORIGINALORDER;
+        if ("reflex-order".equals(codeString))
+          return REFLEXORDER;
+        if ("filler-order".equals(codeString))
+          return FILLERORDER;
+        if ("instance-order".equals(codeString))
+          return INSTANCEORDER;
+        if ("option".equals(codeString))
+          return OPTION;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNKNOWN: return "unknown";
+            case PROPOSAL: return "proposal";
+            case PLAN: return "plan";
+            case ORDER: return "order";
+            case ORIGINALORDER: return "original-order";
+            case REFLEXORDER: return "reflex-order";
+            case FILLERORDER: return "filler-order";
+            case INSTANCEORDER: return "instance-order";
+            case OPTION: return "option";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case UNKNOWN: return "http://hl7.org/fhir/task-intent";
+            case PROPOSAL: return "http://hl7.org/fhir/request-intent";
+            case PLAN: return "http://hl7.org/fhir/request-intent";
+            case ORDER: return "http://hl7.org/fhir/request-intent";
+            case ORIGINALORDER: return "http://hl7.org/fhir/request-intent";
+            case REFLEXORDER: return "http://hl7.org/fhir/request-intent";
+            case FILLERORDER: return "http://hl7.org/fhir/request-intent";
+            case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
+            case OPTION: return "http://hl7.org/fhir/request-intent";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNKNOWN: return "The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.";
+            case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
+            case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
+            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
+            case ORIGINALORDER: return "The request represents an original authorization for action.";
+            case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
+            case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
+            case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
+            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNKNOWN: return "Unknown";
+            case PROPOSAL: return "Proposal";
+            case PLAN: return "Plan";
+            case ORDER: return "Order";
+            case ORIGINALORDER: return "Original Order";
+            case REFLEXORDER: return "Reflex Order";
+            case FILLERORDER: return "Filler Order";
+            case INSTANCEORDER: return "Instance Order";
+            case OPTION: return "Option";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class TaskIntentEnumFactory implements EnumFactory<TaskIntent> {
+    public TaskIntent fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unknown".equals(codeString))
+          return TaskIntent.UNKNOWN;
+        if ("proposal".equals(codeString))
+          return TaskIntent.PROPOSAL;
+        if ("plan".equals(codeString))
+          return TaskIntent.PLAN;
+        if ("order".equals(codeString))
+          return TaskIntent.ORDER;
+        if ("original-order".equals(codeString))
+          return TaskIntent.ORIGINALORDER;
+        if ("reflex-order".equals(codeString))
+          return TaskIntent.REFLEXORDER;
+        if ("filler-order".equals(codeString))
+          return TaskIntent.FILLERORDER;
+        if ("instance-order".equals(codeString))
+          return TaskIntent.INSTANCEORDER;
+        if ("option".equals(codeString))
+          return TaskIntent.OPTION;
+        throw new IllegalArgumentException("Unknown TaskIntent code '"+codeString+"'");
+        }
+        public Enumeration<TaskIntent> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<TaskIntent>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("unknown".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.UNKNOWN);
+        if ("proposal".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.PROPOSAL);
+        if ("plan".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.PLAN);
+        if ("order".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.ORDER);
+        if ("original-order".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.ORIGINALORDER);
+        if ("reflex-order".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.REFLEXORDER);
+        if ("filler-order".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.FILLERORDER);
+        if ("instance-order".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.INSTANCEORDER);
+        if ("option".equals(codeString))
+          return new Enumeration<TaskIntent>(this, TaskIntent.OPTION);
+        throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
+        }
+    public String toCode(TaskIntent code) {
+      if (code == TaskIntent.UNKNOWN)
+        return "unknown";
+      if (code == TaskIntent.PROPOSAL)
+        return "proposal";
+      if (code == TaskIntent.PLAN)
+        return "plan";
+      if (code == TaskIntent.ORDER)
+        return "order";
+      if (code == TaskIntent.ORIGINALORDER)
+        return "original-order";
+      if (code == TaskIntent.REFLEXORDER)
+        return "reflex-order";
+      if (code == TaskIntent.FILLERORDER)
+        return "filler-order";
+      if (code == TaskIntent.INSTANCEORDER)
+        return "instance-order";
+      if (code == TaskIntent.OPTION)
+        return "option";
+      return "?";
+      }
+    public String toSystem(TaskIntent code) {
+      return code.getSystem();
+      }
+    }
 
     public enum TaskStatus {
         /**
@@ -323,334 +529,6 @@ public class Task extends DomainResource {
       }
     }
 
-    public enum TaskIntent {
-        /**
-         * The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.
-         */
-        UNKNOWN, 
-        /**
-         * null
-         */
-        PROPOSAL, 
-        /**
-         * null
-         */
-        PLAN, 
-        /**
-         * null
-         */
-        ORDER, 
-        /**
-         * null
-         */
-        ORIGINALORDER, 
-        /**
-         * null
-         */
-        REFLEXORDER, 
-        /**
-         * null
-         */
-        FILLERORDER, 
-        /**
-         * null
-         */
-        INSTANCEORDER, 
-        /**
-         * null
-         */
-        OPTION, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TaskIntent fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if ("proposal".equals(codeString))
-          return PROPOSAL;
-        if ("plan".equals(codeString))
-          return PLAN;
-        if ("order".equals(codeString))
-          return ORDER;
-        if ("original-order".equals(codeString))
-          return ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return INSTANCEORDER;
-        if ("option".equals(codeString))
-          return OPTION;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UNKNOWN: return "unknown";
-            case PROPOSAL: return "proposal";
-            case PLAN: return "plan";
-            case ORDER: return "order";
-            case ORIGINALORDER: return "original-order";
-            case REFLEXORDER: return "reflex-order";
-            case FILLERORDER: return "filler-order";
-            case INSTANCEORDER: return "instance-order";
-            case OPTION: return "option";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case UNKNOWN: return "http://hl7.org/fhir/task-intent";
-            case PROPOSAL: return "http://hl7.org/fhir/request-intent";
-            case PLAN: return "http://hl7.org/fhir/request-intent";
-            case ORDER: return "http://hl7.org/fhir/request-intent";
-            case ORIGINALORDER: return "http://hl7.org/fhir/request-intent";
-            case REFLEXORDER: return "http://hl7.org/fhir/request-intent";
-            case FILLERORDER: return "http://hl7.org/fhir/request-intent";
-            case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
-            case OPTION: return "http://hl7.org/fhir/request-intent";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UNKNOWN: return "The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.";
-            case PROPOSAL: return "";
-            case PLAN: return "";
-            case ORDER: return "";
-            case ORIGINALORDER: return "";
-            case REFLEXORDER: return "";
-            case FILLERORDER: return "";
-            case INSTANCEORDER: return "";
-            case OPTION: return "";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UNKNOWN: return "Unknown";
-            case PROPOSAL: return "proposal";
-            case PLAN: return "plan";
-            case ORDER: return "order";
-            case ORIGINALORDER: return "original-order";
-            case REFLEXORDER: return "reflex-order";
-            case FILLERORDER: return "filler-order";
-            case INSTANCEORDER: return "instance-order";
-            case OPTION: return "option";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TaskIntentEnumFactory implements EnumFactory<TaskIntent> {
-    public TaskIntent fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unknown".equals(codeString))
-          return TaskIntent.UNKNOWN;
-        if ("proposal".equals(codeString))
-          return TaskIntent.PROPOSAL;
-        if ("plan".equals(codeString))
-          return TaskIntent.PLAN;
-        if ("order".equals(codeString))
-          return TaskIntent.ORDER;
-        if ("original-order".equals(codeString))
-          return TaskIntent.ORIGINALORDER;
-        if ("reflex-order".equals(codeString))
-          return TaskIntent.REFLEXORDER;
-        if ("filler-order".equals(codeString))
-          return TaskIntent.FILLERORDER;
-        if ("instance-order".equals(codeString))
-          return TaskIntent.INSTANCEORDER;
-        if ("option".equals(codeString))
-          return TaskIntent.OPTION;
-        throw new IllegalArgumentException("Unknown TaskIntent code '"+codeString+"'");
-        }
-        public Enumeration<TaskIntent> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TaskIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("unknown".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.UNKNOWN);
-        if ("proposal".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.PROPOSAL);
-        if ("plan".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.PLAN);
-        if ("order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.ORDER);
-        if ("original-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.ORIGINALORDER);
-        if ("reflex-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.REFLEXORDER);
-        if ("filler-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.FILLERORDER);
-        if ("instance-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.INSTANCEORDER);
-        if ("option".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.OPTION);
-        throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
-        }
-    public String toCode(TaskIntent code) {
-      if (code == TaskIntent.UNKNOWN)
-        return "unknown";
-      if (code == TaskIntent.PROPOSAL)
-        return "proposal";
-      if (code == TaskIntent.PLAN)
-        return "plan";
-      if (code == TaskIntent.ORDER)
-        return "order";
-      if (code == TaskIntent.ORIGINALORDER)
-        return "original-order";
-      if (code == TaskIntent.REFLEXORDER)
-        return "reflex-order";
-      if (code == TaskIntent.FILLERORDER)
-        return "filler-order";
-      if (code == TaskIntent.INSTANCEORDER)
-        return "instance-order";
-      if (code == TaskIntent.OPTION)
-        return "option";
-      return "?";
-      }
-    public String toSystem(TaskIntent code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum TaskPriority {
-        /**
-         * The request has normal priority.
-         */
-        ROUTINE, 
-        /**
-         * The request should be actioned promptly - higher priority than routine.
-         */
-        URGENT, 
-        /**
-         * The request should be actioned as soon as possible - higher priority than urgent.
-         */
-        ASAP, 
-        /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
-         */
-        STAT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TaskPriority fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return ROUTINE;
-        if ("urgent".equals(codeString))
-          return URGENT;
-        if ("asap".equals(codeString))
-          return ASAP;
-        if ("stat".equals(codeString))
-          return STAT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TaskPriority code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ROUTINE: return "routine";
-            case URGENT: return "urgent";
-            case ASAP: return "asap";
-            case STAT: return "stat";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ROUTINE: return "http://hl7.org/fhir/request-priority";
-            case URGENT: return "http://hl7.org/fhir/request-priority";
-            case ASAP: return "http://hl7.org/fhir/request-priority";
-            case STAT: return "http://hl7.org/fhir/request-priority";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ROUTINE: return "The request has normal priority.";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ROUTINE: return "Routine";
-            case URGENT: return "Urgent";
-            case ASAP: return "ASAP";
-            case STAT: return "STAT";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TaskPriorityEnumFactory implements EnumFactory<TaskPriority> {
-    public TaskPriority fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("routine".equals(codeString))
-          return TaskPriority.ROUTINE;
-        if ("urgent".equals(codeString))
-          return TaskPriority.URGENT;
-        if ("asap".equals(codeString))
-          return TaskPriority.ASAP;
-        if ("stat".equals(codeString))
-          return TaskPriority.STAT;
-        throw new IllegalArgumentException("Unknown TaskPriority code '"+codeString+"'");
-        }
-        public Enumeration<TaskPriority> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TaskPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("routine".equals(codeString))
-          return new Enumeration<TaskPriority>(this, TaskPriority.ROUTINE);
-        if ("urgent".equals(codeString))
-          return new Enumeration<TaskPriority>(this, TaskPriority.URGENT);
-        if ("asap".equals(codeString))
-          return new Enumeration<TaskPriority>(this, TaskPriority.ASAP);
-        if ("stat".equals(codeString))
-          return new Enumeration<TaskPriority>(this, TaskPriority.STAT);
-        throw new FHIRException("Unknown TaskPriority code '"+codeString+"'");
-        }
-    public String toCode(TaskPriority code) {
-      if (code == TaskPriority.ROUTINE)
-        return "routine";
-      if (code == TaskPriority.URGENT)
-        return "urgent";
-      if (code == TaskPriority.ASAP)
-        return "asap";
-      if (code == TaskPriority.STAT)
-        return "stat";
-      return "?";
-      }
-    public String toSystem(TaskPriority code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class TaskRestrictionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -796,7 +674,7 @@ public class Task extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #recipient}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #recipient}, creating it if it does not already exist {3}
          */
         public Reference getRecipientFirstRep() { 
           if (getRecipient().isEmpty()) {
@@ -889,7 +767,7 @@ public class Task extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("repetitions")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Task.repetitions");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.restriction.repetitions");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -964,11 +842,11 @@ public class Task extends DomainResource {
         /**
          * The value of the input parameter as a basic type.
          */
-        @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Content to use in performing the task", formalDefinition="The value of the input parameter as a basic type." )
-        protected org.hl7.fhir.r5.model.DataType value;
+        protected DataType value;
 
-        private static final long serialVersionUID = -638916132L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
@@ -980,10 +858,10 @@ public class Task extends DomainResource {
     /**
      * Constructor
      */
-      public ParameterComponent(CodeableConcept type, org.hl7.fhir.r5.model.DataType value) {
+      public ParameterComponent(CodeableConcept type, DataType value) {
         super();
-        this.type = type;
-        this.value = value;
+        this.setType(type);
+        this.setValue(value);
       }
 
         /**
@@ -1013,8 +891,773 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
-        public org.hl7.fhir.r5.model.DataType getValue() { 
+        public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Base64BinaryType getValueBase64BinaryType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Base64BinaryType();
+          if (!(this.value instanceof Base64BinaryType))
+            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Base64BinaryType) this.value;
+        }
+
+        public boolean hasValueBase64BinaryType() { 
+          return this != null && this.value instanceof Base64BinaryType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public CanonicalType getValueCanonicalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CanonicalType();
+          if (!(this.value instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CanonicalType) this.value;
+        }
+
+        public boolean hasValueCanonicalType() { 
+          return this != null && this.value instanceof CanonicalType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public IdType getValueIdType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IdType();
+          if (!(this.value instanceof IdType))
+            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IdType) this.value;
+        }
+
+        public boolean hasValueIdType() { 
+          return this != null && this.value instanceof IdType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public InstantType getValueInstantType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new InstantType();
+          if (!(this.value instanceof InstantType))
+            throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (InstantType) this.value;
+        }
+
+        public boolean hasValueInstantType() { 
+          return this != null && this.value instanceof InstantType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Integer64Type getValueInteger64Type() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Integer64Type();
+          if (!(this.value instanceof Integer64Type))
+            throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Integer64Type) this.value;
+        }
+
+        public boolean hasValueInteger64Type() { 
+          return this != null && this.value instanceof Integer64Type;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
+        }
+
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public OidType getValueOidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new OidType();
+          if (!(this.value instanceof OidType))
+            throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (OidType) this.value;
+        }
+
+        public boolean hasValueOidType() { 
+          return this != null && this.value instanceof OidType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public PositiveIntType getValuePositiveIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new PositiveIntType();
+          if (!(this.value instanceof PositiveIntType))
+            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (PositiveIntType) this.value;
+        }
+
+        public boolean hasValuePositiveIntType() { 
+          return this != null && this.value instanceof PositiveIntType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public TimeType getValueTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TimeType();
+          if (!(this.value instanceof TimeType))
+            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TimeType) this.value;
+        }
+
+        public boolean hasValueTimeType() { 
+          return this != null && this.value instanceof TimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public UnsignedIntType getValueUnsignedIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UnsignedIntType();
+          if (!(this.value instanceof UnsignedIntType))
+            throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UnsignedIntType) this.value;
+        }
+
+        public boolean hasValueUnsignedIntType() { 
+          return this != null && this.value instanceof UnsignedIntType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public UriType getValueUriType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UriType();
+          if (!(this.value instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UriType) this.value;
+        }
+
+        public boolean hasValueUriType() { 
+          return this != null && this.value instanceof UriType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public UrlType getValueUrlType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UrlType();
+          if (!(this.value instanceof UrlType))
+            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UrlType) this.value;
+        }
+
+        public boolean hasValueUrlType() { 
+          return this != null && this.value instanceof UrlType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public UuidType getValueUuidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UuidType();
+          if (!(this.value instanceof UuidType))
+            throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UuidType) this.value;
+        }
+
+        public boolean hasValueUuidType() { 
+          return this != null && this.value instanceof UuidType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Address getValueAddress() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Address();
+          if (!(this.value instanceof Address))
+            throw new FHIRException("Type mismatch: the type Address was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Address) this.value;
+        }
+
+        public boolean hasValueAddress() { 
+          return this != null && this.value instanceof Address;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Age getValueAge() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Age();
+          if (!(this.value instanceof Age))
+            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Age) this.value;
+        }
+
+        public boolean hasValueAge() { 
+          return this != null && this.value instanceof Age;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Annotation getValueAnnotation() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Annotation();
+          if (!(this.value instanceof Annotation))
+            throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Annotation) this.value;
+        }
+
+        public boolean hasValueAnnotation() { 
+          return this != null && this.value instanceof Annotation;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public ContactPoint getValueContactPoint() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactPoint();
+          if (!(this.value instanceof ContactPoint))
+            throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactPoint) this.value;
+        }
+
+        public boolean hasValueContactPoint() { 
+          return this != null && this.value instanceof ContactPoint;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Count getValueCount() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Count();
+          if (!(this.value instanceof Count))
+            throw new FHIRException("Type mismatch: the type Count was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Count) this.value;
+        }
+
+        public boolean hasValueCount() { 
+          return this != null && this.value instanceof Count;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Distance getValueDistance() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Distance();
+          if (!(this.value instanceof Distance))
+            throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Distance) this.value;
+        }
+
+        public boolean hasValueDistance() { 
+          return this != null && this.value instanceof Distance;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Duration getValueDuration() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Duration();
+          if (!(this.value instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Duration) this.value;
+        }
+
+        public boolean hasValueDuration() { 
+          return this != null && this.value instanceof Duration;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public HumanName getValueHumanName() throws FHIRException { 
+          if (this.value == null)
+            this.value = new HumanName();
+          if (!(this.value instanceof HumanName))
+            throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (HumanName) this.value;
+        }
+
+        public boolean hasValueHumanName() { 
+          return this != null && this.value instanceof HumanName;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Identifier getValueIdentifier() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Identifier();
+          if (!(this.value instanceof Identifier))
+            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Identifier) this.value;
+        }
+
+        public boolean hasValueIdentifier() { 
+          return this != null && this.value instanceof Identifier;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Money getValueMoney() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Money();
+          if (!(this.value instanceof Money))
+            throw new FHIRException("Type mismatch: the type Money was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Money) this.value;
+        }
+
+        public boolean hasValueMoney() { 
+          return this != null && this.value instanceof Money;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Period getValuePeriod() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Period();
+          if (!(this.value instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Period) this.value;
+        }
+
+        public boolean hasValuePeriod() { 
+          return this != null && this.value instanceof Period;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Ratio getValueRatio() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Ratio();
+          if (!(this.value instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Ratio) this.value;
+        }
+
+        public boolean hasValueRatio() { 
+          return this != null && this.value instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public SampledData getValueSampledData() throws FHIRException { 
+          if (this.value == null)
+            this.value = new SampledData();
+          if (!(this.value instanceof SampledData))
+            throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (SampledData) this.value;
+        }
+
+        public boolean hasValueSampledData() { 
+          return this != null && this.value instanceof SampledData;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Signature getValueSignature() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Signature();
+          if (!(this.value instanceof Signature))
+            throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Signature) this.value;
+        }
+
+        public boolean hasValueSignature() { 
+          return this != null && this.value instanceof Signature;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Timing getValueTiming() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Timing();
+          if (!(this.value instanceof Timing))
+            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Timing) this.value;
+        }
+
+        public boolean hasValueTiming() { 
+          return this != null && this.value instanceof Timing;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public ContactDetail getValueContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactDetail();
+          if (!(this.value instanceof ContactDetail))
+            throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactDetail) this.value;
+        }
+
+        public boolean hasValueContactDetail() { 
+          return this != null && this.value instanceof ContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Contributor getValueContributor() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Contributor();
+          if (!(this.value instanceof Contributor))
+            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Contributor) this.value;
+        }
+
+        public boolean hasValueContributor() { 
+          return this != null && this.value instanceof Contributor;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public DataRequirement getValueDataRequirement() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DataRequirement();
+          if (!(this.value instanceof DataRequirement))
+            throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DataRequirement) this.value;
+        }
+
+        public boolean hasValueDataRequirement() { 
+          return this != null && this.value instanceof DataRequirement;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Expression getValueExpression() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Expression();
+          if (!(this.value instanceof Expression))
+            throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Expression) this.value;
+        }
+
+        public boolean hasValueExpression() { 
+          return this != null && this.value instanceof Expression;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public ParameterDefinition getValueParameterDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ParameterDefinition();
+          if (!(this.value instanceof ParameterDefinition))
+            throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ParameterDefinition) this.value;
+        }
+
+        public boolean hasValueParameterDefinition() { 
+          return this != null && this.value instanceof ParameterDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public RelatedArtifact getValueRelatedArtifact() throws FHIRException { 
+          if (this.value == null)
+            this.value = new RelatedArtifact();
+          if (!(this.value instanceof RelatedArtifact))
+            throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (RelatedArtifact) this.value;
+        }
+
+        public boolean hasValueRelatedArtifact() { 
+          return this != null && this.value instanceof RelatedArtifact;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public TriggerDefinition getValueTriggerDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TriggerDefinition();
+          if (!(this.value instanceof TriggerDefinition))
+            throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TriggerDefinition) this.value;
+        }
+
+        public boolean hasValueTriggerDefinition() { 
+          return this != null && this.value instanceof TriggerDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public UsageContext getValueUsageContext() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UsageContext();
+          if (!(this.value instanceof UsageContext))
+            throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UsageContext) this.value;
+        }
+
+        public boolean hasValueUsageContext() { 
+          return this != null && this.value instanceof UsageContext;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Dosage getValueDosage() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Dosage();
+          if (!(this.value instanceof Dosage))
+            throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Dosage) this.value;
+        }
+
+        public boolean hasValueDosage() { 
+          return this != null && this.value instanceof Dosage;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public Meta getValueMeta() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Meta();
+          if (!(this.value instanceof Meta))
+            throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Meta) this.value;
+        }
+
+        public boolean hasValueMeta() { 
+          return this != null && this.value instanceof Meta;
         }
 
         public boolean hasValue() { 
@@ -1024,7 +1667,9 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #value} (The value of the input parameter as a basic type.)
          */
-        public ParameterComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
+        public ParameterComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+            throw new Error("Not the right type for Task.input.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1032,51 +1677,66 @@ public class Task extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the task execution.", 0, 1, type));
-          children.add(new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the task execution.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -786218365: /*valueCanonical*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -766209282: /*valueCode*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 231604844: /*valueId*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1668687056: /*valueInstant*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1410178407: /*valueOid*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -765708322: /*valueTime*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1410172354: /*valueUrl*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -765667124: /*valueUuid*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -478981821: /*valueAddress*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 2030767386: /*valueRatio*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -962229101: /*valueSampledData*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -540985785: /*valueSignature*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1406282469: /*valueTiming*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
-          case -1858636920: /*valueDosage*/  return new Property("value[x]", "*", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 231604844: /*valueId*/  return new Property("value[x]", "id", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1668687056: /*valueInstant*/  return new Property("value[x]", "instant", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1122120181: /*valueInteger64*/  return new Property("value[x]", "integer64", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410178407: /*valueOid*/  return new Property("value[x]", "oid", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "positiveInt", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "unsignedInt", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410172354: /*valueUrl*/  return new Property("value[x]", "url", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -765667124: /*valueUuid*/  return new Property("value[x]", "uuid", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -478981821: /*valueAddress*/  return new Property("value[x]", "Address", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410191922: /*valueAge*/  return new Property("value[x]", "Age", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -456359802: /*valueDistance*/  return new Property("value[x]", "Distance", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "HumanName", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "Identifier", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 2026560975: /*valueMoney*/  return new Property("value[x]", "Money", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the input parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1086,7 +1746,7 @@ public class Task extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // org.hl7.fhir.r5.model.Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1099,7 +1759,7 @@ public class Task extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1111,7 +1771,7 @@ public class Task extends DomainResource {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1132,7 +1792,7 @@ public class Task extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"*"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1182,6 +1842,10 @@ public class Task extends DomainResource {
         }
         else if (name.equals("valueInteger")) {
           this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger64")) {
+          this.value = new Integer64Type();
           return this.value;
         }
         else if (name.equals("valueMarkdown")) {
@@ -1403,11 +2067,11 @@ public class Task extends DomainResource {
         /**
          * The value of the Output parameter as a basic type.
          */
-        @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Result of output", formalDefinition="The value of the Output parameter as a basic type." )
-        protected org.hl7.fhir.r5.model.DataType value;
+        protected DataType value;
 
-        private static final long serialVersionUID = -638916132L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
@@ -1419,10 +2083,10 @@ public class Task extends DomainResource {
     /**
      * Constructor
      */
-      public TaskOutputComponent(CodeableConcept type, org.hl7.fhir.r5.model.DataType value) {
+      public TaskOutputComponent(CodeableConcept type, DataType value) {
         super();
-        this.type = type;
-        this.value = value;
+        this.setType(type);
+        this.setValue(value);
       }
 
         /**
@@ -1452,8 +2116,773 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public org.hl7.fhir.r5.model.DataType getValue() { 
+        public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Base64BinaryType getValueBase64BinaryType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Base64BinaryType();
+          if (!(this.value instanceof Base64BinaryType))
+            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Base64BinaryType) this.value;
+        }
+
+        public boolean hasValueBase64BinaryType() { 
+          return this != null && this.value instanceof Base64BinaryType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public CanonicalType getValueCanonicalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CanonicalType();
+          if (!(this.value instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CanonicalType) this.value;
+        }
+
+        public boolean hasValueCanonicalType() { 
+          return this != null && this.value instanceof CanonicalType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public IdType getValueIdType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IdType();
+          if (!(this.value instanceof IdType))
+            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IdType) this.value;
+        }
+
+        public boolean hasValueIdType() { 
+          return this != null && this.value instanceof IdType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public InstantType getValueInstantType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new InstantType();
+          if (!(this.value instanceof InstantType))
+            throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (InstantType) this.value;
+        }
+
+        public boolean hasValueInstantType() { 
+          return this != null && this.value instanceof InstantType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Integer64Type getValueInteger64Type() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Integer64Type();
+          if (!(this.value instanceof Integer64Type))
+            throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Integer64Type) this.value;
+        }
+
+        public boolean hasValueInteger64Type() { 
+          return this != null && this.value instanceof Integer64Type;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
+        }
+
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public OidType getValueOidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new OidType();
+          if (!(this.value instanceof OidType))
+            throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (OidType) this.value;
+        }
+
+        public boolean hasValueOidType() { 
+          return this != null && this.value instanceof OidType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public PositiveIntType getValuePositiveIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new PositiveIntType();
+          if (!(this.value instanceof PositiveIntType))
+            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (PositiveIntType) this.value;
+        }
+
+        public boolean hasValuePositiveIntType() { 
+          return this != null && this.value instanceof PositiveIntType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public TimeType getValueTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TimeType();
+          if (!(this.value instanceof TimeType))
+            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TimeType) this.value;
+        }
+
+        public boolean hasValueTimeType() { 
+          return this != null && this.value instanceof TimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public UnsignedIntType getValueUnsignedIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UnsignedIntType();
+          if (!(this.value instanceof UnsignedIntType))
+            throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UnsignedIntType) this.value;
+        }
+
+        public boolean hasValueUnsignedIntType() { 
+          return this != null && this.value instanceof UnsignedIntType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public UriType getValueUriType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UriType();
+          if (!(this.value instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UriType) this.value;
+        }
+
+        public boolean hasValueUriType() { 
+          return this != null && this.value instanceof UriType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public UrlType getValueUrlType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UrlType();
+          if (!(this.value instanceof UrlType))
+            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UrlType) this.value;
+        }
+
+        public boolean hasValueUrlType() { 
+          return this != null && this.value instanceof UrlType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public UuidType getValueUuidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UuidType();
+          if (!(this.value instanceof UuidType))
+            throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UuidType) this.value;
+        }
+
+        public boolean hasValueUuidType() { 
+          return this != null && this.value instanceof UuidType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Address getValueAddress() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Address();
+          if (!(this.value instanceof Address))
+            throw new FHIRException("Type mismatch: the type Address was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Address) this.value;
+        }
+
+        public boolean hasValueAddress() { 
+          return this != null && this.value instanceof Address;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Age getValueAge() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Age();
+          if (!(this.value instanceof Age))
+            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Age) this.value;
+        }
+
+        public boolean hasValueAge() { 
+          return this != null && this.value instanceof Age;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Annotation getValueAnnotation() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Annotation();
+          if (!(this.value instanceof Annotation))
+            throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Annotation) this.value;
+        }
+
+        public boolean hasValueAnnotation() { 
+          return this != null && this.value instanceof Annotation;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public ContactPoint getValueContactPoint() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactPoint();
+          if (!(this.value instanceof ContactPoint))
+            throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactPoint) this.value;
+        }
+
+        public boolean hasValueContactPoint() { 
+          return this != null && this.value instanceof ContactPoint;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Count getValueCount() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Count();
+          if (!(this.value instanceof Count))
+            throw new FHIRException("Type mismatch: the type Count was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Count) this.value;
+        }
+
+        public boolean hasValueCount() { 
+          return this != null && this.value instanceof Count;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Distance getValueDistance() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Distance();
+          if (!(this.value instanceof Distance))
+            throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Distance) this.value;
+        }
+
+        public boolean hasValueDistance() { 
+          return this != null && this.value instanceof Distance;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Duration getValueDuration() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Duration();
+          if (!(this.value instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Duration) this.value;
+        }
+
+        public boolean hasValueDuration() { 
+          return this != null && this.value instanceof Duration;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public HumanName getValueHumanName() throws FHIRException { 
+          if (this.value == null)
+            this.value = new HumanName();
+          if (!(this.value instanceof HumanName))
+            throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (HumanName) this.value;
+        }
+
+        public boolean hasValueHumanName() { 
+          return this != null && this.value instanceof HumanName;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Identifier getValueIdentifier() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Identifier();
+          if (!(this.value instanceof Identifier))
+            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Identifier) this.value;
+        }
+
+        public boolean hasValueIdentifier() { 
+          return this != null && this.value instanceof Identifier;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Money getValueMoney() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Money();
+          if (!(this.value instanceof Money))
+            throw new FHIRException("Type mismatch: the type Money was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Money) this.value;
+        }
+
+        public boolean hasValueMoney() { 
+          return this != null && this.value instanceof Money;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Period getValuePeriod() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Period();
+          if (!(this.value instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Period) this.value;
+        }
+
+        public boolean hasValuePeriod() { 
+          return this != null && this.value instanceof Period;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Ratio getValueRatio() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Ratio();
+          if (!(this.value instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Ratio) this.value;
+        }
+
+        public boolean hasValueRatio() { 
+          return this != null && this.value instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public SampledData getValueSampledData() throws FHIRException { 
+          if (this.value == null)
+            this.value = new SampledData();
+          if (!(this.value instanceof SampledData))
+            throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (SampledData) this.value;
+        }
+
+        public boolean hasValueSampledData() { 
+          return this != null && this.value instanceof SampledData;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Signature getValueSignature() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Signature();
+          if (!(this.value instanceof Signature))
+            throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Signature) this.value;
+        }
+
+        public boolean hasValueSignature() { 
+          return this != null && this.value instanceof Signature;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Timing getValueTiming() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Timing();
+          if (!(this.value instanceof Timing))
+            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Timing) this.value;
+        }
+
+        public boolean hasValueTiming() { 
+          return this != null && this.value instanceof Timing;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public ContactDetail getValueContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactDetail();
+          if (!(this.value instanceof ContactDetail))
+            throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactDetail) this.value;
+        }
+
+        public boolean hasValueContactDetail() { 
+          return this != null && this.value instanceof ContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Contributor getValueContributor() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Contributor();
+          if (!(this.value instanceof Contributor))
+            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Contributor) this.value;
+        }
+
+        public boolean hasValueContributor() { 
+          return this != null && this.value instanceof Contributor;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public DataRequirement getValueDataRequirement() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DataRequirement();
+          if (!(this.value instanceof DataRequirement))
+            throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DataRequirement) this.value;
+        }
+
+        public boolean hasValueDataRequirement() { 
+          return this != null && this.value instanceof DataRequirement;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Expression getValueExpression() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Expression();
+          if (!(this.value instanceof Expression))
+            throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Expression) this.value;
+        }
+
+        public boolean hasValueExpression() { 
+          return this != null && this.value instanceof Expression;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public ParameterDefinition getValueParameterDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ParameterDefinition();
+          if (!(this.value instanceof ParameterDefinition))
+            throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ParameterDefinition) this.value;
+        }
+
+        public boolean hasValueParameterDefinition() { 
+          return this != null && this.value instanceof ParameterDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public RelatedArtifact getValueRelatedArtifact() throws FHIRException { 
+          if (this.value == null)
+            this.value = new RelatedArtifact();
+          if (!(this.value instanceof RelatedArtifact))
+            throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (RelatedArtifact) this.value;
+        }
+
+        public boolean hasValueRelatedArtifact() { 
+          return this != null && this.value instanceof RelatedArtifact;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public TriggerDefinition getValueTriggerDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TriggerDefinition();
+          if (!(this.value instanceof TriggerDefinition))
+            throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TriggerDefinition) this.value;
+        }
+
+        public boolean hasValueTriggerDefinition() { 
+          return this != null && this.value instanceof TriggerDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public UsageContext getValueUsageContext() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UsageContext();
+          if (!(this.value instanceof UsageContext))
+            throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UsageContext) this.value;
+        }
+
+        public boolean hasValueUsageContext() { 
+          return this != null && this.value instanceof UsageContext;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Dosage getValueDosage() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Dosage();
+          if (!(this.value instanceof Dosage))
+            throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Dosage) this.value;
+        }
+
+        public boolean hasValueDosage() { 
+          return this != null && this.value instanceof Dosage;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public Meta getValueMeta() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Meta();
+          if (!(this.value instanceof Meta))
+            throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Meta) this.value;
+        }
+
+        public boolean hasValueMeta() { 
+          return this != null && this.value instanceof Meta;
         }
 
         public boolean hasValue() { 
@@ -1463,7 +2892,9 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public TaskOutputComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
+        public TaskOutputComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+            throw new Error("Not the right type for Task.output.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1471,51 +2902,66 @@ public class Task extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type));
-          children.add(new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -786218365: /*valueCanonical*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -766209282: /*valueCode*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 231604844: /*valueId*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1668687056: /*valueInstant*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1410178407: /*valueOid*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -765708322: /*valueTime*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1410172354: /*valueUrl*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -765667124: /*valueUuid*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -478981821: /*valueAddress*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 2030767386: /*valueRatio*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -962229101: /*valueSampledData*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -540985785: /*valueSignature*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1406282469: /*valueTiming*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case -1858636920: /*valueDosage*/  return new Property("value[x]", "*", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 231604844: /*valueId*/  return new Property("value[x]", "id", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1668687056: /*valueInstant*/  return new Property("value[x]", "instant", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1122120181: /*valueInteger64*/  return new Property("value[x]", "integer64", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410178407: /*valueOid*/  return new Property("value[x]", "oid", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "positiveInt", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "unsignedInt", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410172354: /*valueUrl*/  return new Property("value[x]", "url", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -765667124: /*valueUuid*/  return new Property("value[x]", "uuid", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -478981821: /*valueAddress*/  return new Property("value[x]", "Address", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410191922: /*valueAge*/  return new Property("value[x]", "Age", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -456359802: /*valueDistance*/  return new Property("value[x]", "Distance", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "HumanName", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "Identifier", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 2026560975: /*valueMoney*/  return new Property("value[x]", "Money", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1525,7 +2971,7 @@ public class Task extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // org.hl7.fhir.r5.model.Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1538,7 +2984,7 @@ public class Task extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1550,7 +2996,7 @@ public class Task extends DomainResource {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1571,7 +3017,7 @@ public class Task extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"*"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1621,6 +3067,10 @@ public class Task extends DomainResource {
         }
         else if (name.equals("valueInteger")) {
           this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger64")) {
+          this.value = new Integer64Type();
           return this.value;
         }
         else if (name.equals("valueMarkdown")) {
@@ -1908,7 +3358,7 @@ public class Task extends DomainResource {
     @Child(name = "priority", type = {CodeType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the Task should be addressed with respect to other requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-    protected Enumeration<TaskPriority> priority;
+    protected Enumeration<RequestPriority> priority;
 
     /**
      * A name or code (or both) briefly describing what the task involves.
@@ -2052,7 +3502,7 @@ public class Task extends DomainResource {
     @Description(shortDefinition="Information produced as part of task", formalDefinition="Outputs produced by the Task." )
     protected List<TaskOutputComponent> output;
 
-    private static final long serialVersionUID = 931729108L;
+    private static final long serialVersionUID = -1820039698L;
 
   /**
    * Constructor
@@ -2064,10 +3514,10 @@ public class Task extends DomainResource {
   /**
    * Constructor
    */
-    public Task(Enumeration<TaskStatus> status, Enumeration<TaskIntent> intent) {
+    public Task(TaskStatus status, TaskIntent intent) {
       super();
-      this.status = status;
-      this.intent = intent;
+      this.setStatus(status);
+      this.setIntent(intent);
     }
 
     /**
@@ -2114,7 +3564,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2265,7 +3715,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
      */
     public Reference getBasedOnFirstRep() { 
       if (getBasedOn().isEmpty()) {
@@ -2342,7 +3792,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #partOf}, creating it if it does not already exist {3}
      */
     public Reference getPartOfFirstRep() { 
       if (getPartOf().isEmpty()) {
@@ -2492,12 +3942,12 @@ public class Task extends DomainResource {
     /**
      * @return {@link #priority} (Indicates how quickly the Task should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public Enumeration<TaskPriority> getPriorityElement() { 
+    public Enumeration<RequestPriority> getPriorityElement() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Task.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new Enumeration<TaskPriority>(new TaskPriorityEnumFactory()); // bb
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
       return this.priority;
     }
 
@@ -2512,7 +3962,7 @@ public class Task extends DomainResource {
     /**
      * @param value {@link #priority} (Indicates how quickly the Task should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public Task setPriorityElement(Enumeration<TaskPriority> value) { 
+    public Task setPriorityElement(Enumeration<RequestPriority> value) { 
       this.priority = value;
       return this;
     }
@@ -2520,19 +3970,19 @@ public class Task extends DomainResource {
     /**
      * @return Indicates how quickly the Task should be addressed with respect to other requests.
      */
-    public TaskPriority getPriority() { 
+    public RequestPriority getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
      * @param value Indicates how quickly the Task should be addressed with respect to other requests.
      */
-    public Task setPriority(TaskPriority value) { 
+    public Task setPriority(RequestPriority value) { 
       if (value == null)
         this.priority = null;
       else {
         if (this.priority == null)
-          this.priority = new Enumeration<TaskPriority>(new TaskPriorityEnumFactory());
+          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
         this.priority.setValue(value);
       }
       return this;
@@ -2873,7 +4323,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #performerType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #performerType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getPerformerTypeFirstRep() { 
       if (getPerformerType().isEmpty()) {
@@ -3022,7 +4472,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #insurance}, creating it if it does not already exist {3}
      */
     public Reference getInsuranceFirstRep() { 
       if (getInsurance().isEmpty()) {
@@ -3075,7 +4525,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -3128,7 +4578,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist {3}
      */
     public Reference getRelevantHistoryFirstRep() { 
       if (getRelevantHistory().isEmpty()) {
@@ -3205,7 +4655,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
      */
     public ParameterComponent getInputFirstRep() { 
       if (getInput().isEmpty()) {
@@ -3258,7 +4708,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist {3}
      */
     public TaskOutputComponent getOutputFirstRep() { 
       if (getOutput().isEmpty()) {
@@ -3354,7 +4804,7 @@ public class Task extends DomainResource {
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
         case 2008591314: /*businessStatus*/ return this.businessStatus == null ? new Base[0] : new Base[] {this.businessStatus}; // CodeableConcept
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<TaskIntent>
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<TaskPriority>
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : new Base[] {this.focus}; // Reference
@@ -3416,8 +4866,8 @@ public class Task extends DomainResource {
           this.intent = (Enumeration) value; // Enumeration<TaskIntent>
           return value;
         case -1165461084: // priority
-          value = new TaskPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<TaskPriority>
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -3509,8 +4959,8 @@ public class Task extends DomainResource {
           value = new TaskIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<TaskIntent>
         } else if (name.equals("priority")) {
-          value = new TaskPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<TaskPriority>
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
@@ -3862,10 +5312,10 @@ public class Task extends DomainResource {
         if (!(other_ instanceof Task))
           return false;
         Task o = (Task) other_;
-        return compareValues(instantiatesUri, o.instantiatesUri, true) && compareValues(status, o.status, true)
-           && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true) && compareValues(description, o.description, true)
-           && compareValues(authoredOn, o.authoredOn, true) && compareValues(lastModified, o.lastModified, true)
-          ;
+        return compareValues(instantiatesCanonical, o.instantiatesCanonical, true) && compareValues(instantiatesUri, o.instantiatesUri, true)
+           && compareValues(status, o.status, true) && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true)
+           && compareValues(description, o.description, true) && compareValues(authoredOn, o.authoredOn, true)
+           && compareValues(lastModified, o.lastModified, true);
       }
 
       public boolean isEmpty() {
@@ -3883,76 +5333,50 @@ public class Task extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>owner</b>
+   * Search parameter: <b>authored-on</b>
    * <p>
-   * Description: <b>Search by task owner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.owner</b><br>
+   * Description: <b>Search by creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Task.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="owner", path="Task.owner", description="Search by task owner", type="reference", target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_OWNER = "owner";
+  @SearchParamDefinition(name="authored-on", path="Task.authoredOn", description="Search by creation date", type="date" )
+  public static final String SP_AUTHORED_ON = "authored-on";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>owner</b>
+   * <b>Fluent Client</b> search parameter constant for <b>authored-on</b>
    * <p>
-   * Description: <b>Search by task owner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.owner</b><br>
+   * Description: <b>Search by creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Task.authoredOn</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNER);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED_ON = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED_ON);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Search by requests this task is based on</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="Task.basedOn", description="Search by requests this task is based on", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Search by requests this task is based on</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:owner</b>".
+   * the path value of "<b>Task:based-on</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Task:owner").toLocked();
-
- /**
-   * Search parameter: <b>requester</b>
-   * <p>
-   * Description: <b>Search by task requester</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.requester</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="requester", path="Task.requester", description="Search by task requester", type="reference", target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_REQUESTER = "requester";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
-   * <p>
-   * Description: <b>Search by task requester</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.requester</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:requester</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("Task:requester").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Search for a task instance by its business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Task.identifier", description="Search for a task instance by its business identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Search for a task instance by its business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Task:based-on").toLocked();
 
  /**
    * Search parameter: <b>business-status</b>
@@ -3975,26 +5399,6 @@ public class Task extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam BUSINESS_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BUSINESS_STATUS);
 
  /**
-   * Search parameter: <b>period</b>
-   * <p>
-   * Description: <b>Search by period Task is/was underway</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Task.executionPeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="period", path="Task.executionPeriod", description="Search by period Task is/was underway", type="date" )
-  public static final String SP_PERIOD = "period";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>period</b>
-   * <p>
-   * Description: <b>Search by period Task is/was underway</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Task.executionPeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
-
- /**
    * Search parameter: <b>code</b>
    * <p>
    * Description: <b>Search by task code</b><br>
@@ -4013,104 +5417,6 @@ public class Task extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>performer</b>
-   * <p>
-   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.performerType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer", path="Task.performerType", description="Search by recommended type of performer (e.g., Requester, Performer, Scheduler).", type="token" )
-  public static final String SP_PERFORMER = "performer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer</b>
-   * <p>
-   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.performerType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PERFORMER);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Search by subject</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.for</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Task.for", description="Search by subject", type="reference" )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Search by subject</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.for</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Task:subject").toLocked();
-
- /**
-   * Search parameter: <b>focus</b>
-   * <p>
-   * Description: <b>Search by task focus</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.focus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="focus", path="Task.focus", description="Search by task focus", type="reference" )
-  public static final String SP_FOCUS = "focus";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
-   * <p>
-   * Description: <b>Search by task focus</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.focus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOCUS = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOCUS);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:focus</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOCUS = new ca.uhn.fhir.model.api.Include("Task:focus").toLocked();
-
- /**
-   * Search parameter: <b>part-of</b>
-   * <p>
-   * Description: <b>Search by task this task is part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.partOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="part-of", path="Task.partOf", description="Search by task this task is part of", type="reference", target={Task.class } )
-  public static final String SP_PART_OF = "part-of";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
-   * <p>
-   * Description: <b>Search by task this task is part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.partOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_OF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:part-of</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("Task:part-of").toLocked();
 
  /**
    * Search parameter: <b>encounter</b>
@@ -4139,64 +5445,30 @@ public class Task extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Task:encounter").toLocked();
 
  /**
-   * Search parameter: <b>priority</b>
+   * Search parameter: <b>focus</b>
    * <p>
-   * Description: <b>Search by task priority</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.priority</b><br>
+   * Description: <b>Search by task focus</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.focus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="priority", path="Task.priority", description="Search by task priority", type="token" )
-  public static final String SP_PRIORITY = "priority";
+  @SearchParamDefinition(name="focus", path="Task.focus", description="Search by task focus", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_FOCUS = "focus";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
+   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
    * <p>
-   * Description: <b>Search by task priority</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.priority</b><br>
+   * Description: <b>Search by task focus</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.focus</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOCUS = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOCUS);
 
- /**
-   * Search parameter: <b>authored-on</b>
-   * <p>
-   * Description: <b>Search by creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Task.authoredOn</b><br>
-   * </p>
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:focus</b>".
    */
-  @SearchParamDefinition(name="authored-on", path="Task.authoredOn", description="Search by creation date", type="date" )
-  public static final String SP_AUTHORED_ON = "authored-on";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>authored-on</b>
-   * <p>
-   * Description: <b>Search by creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Task.authoredOn</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED_ON = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED_ON);
-
- /**
-   * Search parameter: <b>intent</b>
-   * <p>
-   * Description: <b>Search by task intent</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.intent</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="intent", path="Task.intent", description="Search by task intent", type="token" )
-  public static final String SP_INTENT = "intent";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>intent</b>
-   * <p>
-   * Description: <b>Search by task intent</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.intent</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTENT);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOCUS = new ca.uhn.fhir.model.api.Include("Task:focus").toLocked();
 
  /**
    * Search parameter: <b>group-identifier</b>
@@ -4219,56 +5491,44 @@ public class Task extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>based-on</b>
+   * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>Search by requests this task is based on</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.basedOn</b><br>
+   * Description: <b>Search for a task instance by its business identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="based-on", path="Task.basedOn", description="Search by requests this task is based on", type="reference" )
-  public static final String SP_BASED_ON = "based-on";
+  @SearchParamDefinition(name="identifier", path="Task.identifier", description="Search for a task instance by its business identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Search by requests this task is based on</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.basedOn</b><br>
+   * Description: <b>Search for a task instance by its business identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:based-on</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Task:based-on").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>patient</b>
+   * Search parameter: <b>intent</b>
    * <p>
-   * Description: <b>Search by patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.for</b><br>
+   * Description: <b>Search by task intent</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.intent</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Task.for.where(resolve() is Patient)", description="Search by patient", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
+  @SearchParamDefinition(name="intent", path="Task.intent", description="Search by task intent", type="token" )
+  public static final String SP_INTENT = "intent";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <b>Fluent Client</b> search parameter constant for <b>intent</b>
    * <p>
-   * Description: <b>Search by patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Task.for</b><br>
+   * Description: <b>Search by task intent</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.intent</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Task:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Task:patient").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTENT);
 
  /**
    * Search parameter: <b>modified</b>
@@ -4291,6 +5551,170 @@ public class Task extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam MODIFIED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_MODIFIED);
 
  /**
+   * Search parameter: <b>owner</b>
+   * <p>
+   * Description: <b>Search by task owner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.owner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="owner", path="Task.owner", description="Search by task owner", type="reference", target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_OWNER = "owner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>owner</b>
+   * <p>
+   * Description: <b>Search by task owner</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.owner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:owner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Task:owner").toLocked();
+
+ /**
+   * Search parameter: <b>part-of</b>
+   * <p>
+   * Description: <b>Search by task this task is part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.partOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="part-of", path="Task.partOf", description="Search by task this task is part of", type="reference", target={Task.class } )
+  public static final String SP_PART_OF = "part-of";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
+   * <p>
+   * Description: <b>Search by task this task is part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.partOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_OF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:part-of</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("Task:part-of").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Search by patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.for.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Task.for.where(resolve() is Patient)", description="Search by patient", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Search by patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.for.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Task:patient").toLocked();
+
+ /**
+   * Search parameter: <b>performer</b>
+   * <p>
+   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.performerType</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="performer", path="Task.performerType", description="Search by recommended type of performer (e.g., Requester, Performer, Scheduler).", type="token" )
+  public static final String SP_PERFORMER = "performer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>performer</b>
+   * <p>
+   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.performerType</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PERFORMER);
+
+ /**
+   * Search parameter: <b>period</b>
+   * <p>
+   * Description: <b>Search by period Task is/was underway</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Task.executionPeriod</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="period", path="Task.executionPeriod", description="Search by period Task is/was underway", type="date" )
+  public static final String SP_PERIOD = "period";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>period</b>
+   * <p>
+   * Description: <b>Search by period Task is/was underway</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Task.executionPeriod</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
+
+ /**
+   * Search parameter: <b>priority</b>
+   * <p>
+   * Description: <b>Search by task priority</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.priority</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="priority", path="Task.priority", description="Search by task priority", type="token" )
+  public static final String SP_PRIORITY = "priority";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
+   * <p>
+   * Description: <b>Search by task priority</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Task.priority</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
+
+ /**
+   * Search parameter: <b>requester</b>
+   * <p>
+   * Description: <b>Search by task requester</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.requester</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="requester", path="Task.requester", description="Search by task requester", type="reference", target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_REQUESTER = "requester";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>requester</b>
+   * <p>
+   * Description: <b>Search by task requester</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.requester</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:requester</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTER = new ca.uhn.fhir.model.api.Include("Task:requester").toLocked();
+
+ /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>Search by task status</b><br>
@@ -4309,6 +5733,32 @@ public class Task extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Search by subject</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.for</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Task.for", description="Search by subject", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Search by subject</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.for</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Task:subject").toLocked();
 
 
 }

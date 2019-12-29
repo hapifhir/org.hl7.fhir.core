@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,98 +66,13 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Common Ancestor declaration for conformance and knowledge artifact resources.
  */
 public abstract class CanonicalResource extends DomainResource {
 
-    /**
-     * An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.
-     */
-    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this metadata resource, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers." )
-    protected UriType url;
-
-    /**
-     * The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
-     */
-    @Child(name = "version", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Business version of the metadata resource", formalDefinition="The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
-    protected StringType version;
-
-    /**
-     * A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.
-     */
-    @Child(name = "name", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name for this metadata resource (computer friendly)", formalDefinition="A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
-    protected StringType name;
-
-    /**
-     * A short, descriptive, user-friendly title for the metadata resource.
-     */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name for this metadata resource (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the metadata resource." )
-    protected StringType title;
-
-    /**
-     * The status of this metadata resource. Enables tracking the life-cycle of the content.
-     */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this metadata resource. Enables tracking the life-cycle of the content." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
-    protected Enumeration<PublicationStatus> status;
-
-    /**
-     * A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-     */
-    @Child(name = "experimental", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
-    protected BooleanType experimental;
-
-    /**
-     * The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes.
-     */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes." )
-    protected DateTimeType date;
-
-    /**
-     * The name of the organization or individual that published the metadata resource.
-     */
-    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the metadata resource." )
-    protected StringType publisher;
-
-    /**
-     * Contact details to assist a user in finding and communicating with the publisher.
-     */
-    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
-    protected List<ContactDetail> contact;
-
-    /**
-     * A free text natural language description of the metadata resource from a consumer's perspective.
-     */
-    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Natural language description of the metadata resource", formalDefinition="A free text natural language description of the metadata resource from a consumer's perspective." )
-    protected MarkdownType description;
-
-    /**
-     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate metadata resource instances.
-     */
-    @Child(name = "useContext", type = {UsageContext.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate metadata resource instances." )
-    protected List<UsageContext> useContext;
-
-    /**
-     * A legal or geographic region in which the metadata resource is intended to be used.
-     */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Intended jurisdiction for metadata resource (if applicable)", formalDefinition="A legal or geographic region in which the metadata resource is intended to be used." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
-    protected List<CodeableConcept> jurisdiction;
-
-    private static final long serialVersionUID = 1952104592L;
+    private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
@@ -169,622 +84,310 @@ public abstract class CanonicalResource extends DomainResource {
   /**
    * Constructor
    */
-    public CanonicalResource(Enumeration<PublicationStatus> status) {
+    public CanonicalResource(PublicationStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
-    public UriType getUrlElement() { 
-      if (this.url == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.url");
-        else if (Configuration.doAutoCreate())
-          this.url = new UriType(); // bb
-      return this.url;
-    }
+    public abstract UriType getUrlElement(); 
 
-    public boolean hasUrlElement() { 
-      return this.url != null && !this.url.isEmpty();
-    }
-
-    public boolean hasUrl() { 
-      return this.url != null && !this.url.isEmpty();
-    }
+    public abstract boolean hasUrlElement(); 
+    public abstract boolean hasUrl(); 
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
-    public CanonicalResource setUrlElement(UriType value) { 
-      this.url = value;
-      return this;
-    }
+    public abstract CanonicalResource setUrlElement(UriType value); 
+    /**
+     * @return An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
+     */
+    public abstract String getUrl(); 
+    /**
+     * @param value An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
+     */
+    public abstract CanonicalResource setUrl(String value); 
+    /**
+     * @return {@link #identifier} (A formal identifier that is used to identify this canonical resource when it is represented in other formats, or referenced in a specification, model, design or an instance.)
+     */
+    public abstract List<Identifier> getIdentifier(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract CanonicalResource setIdentifier(List<Identifier> theIdentifier); 
+    public abstract boolean hasIdentifier(); 
+
+    public abstract Identifier addIdentifier(); //3
+    public abstract CanonicalResource addIdentifier(Identifier t); //3
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {1}
+     */
+    public abstract Identifier getIdentifierFirstRep(); 
+    /**
+     * @return {@link #version} (The identifier that is used to identify this version of the canonical resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the canonical resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     */
+    public abstract StringType getVersionElement(); 
+
+    public abstract boolean hasVersionElement(); 
+    public abstract boolean hasVersion(); 
 
     /**
-     * @return An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.
+     * @param value {@link #version} (The identifier that is used to identify this version of the canonical resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the canonical resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public String getUrl() { 
-      return this.url == null ? null : this.url.getValue();
-    }
+    public abstract CanonicalResource setVersionElement(StringType value); 
+    /**
+     * @return The identifier that is used to identify this version of the canonical resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the canonical resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     */
+    public abstract String getVersion(); 
+    /**
+     * @param value The identifier that is used to identify this version of the canonical resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the canonical resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     */
+    public abstract CanonicalResource setVersion(String value); 
+    /**
+     * @return {@link #name} (A natural language name identifying the canonical resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public abstract StringType getNameElement(); 
+
+    public abstract boolean hasNameElement(); 
+    public abstract boolean hasName(); 
 
     /**
-     * @param value An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.
+     * @param value {@link #name} (A natural language name identifying the canonical resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
-    public CanonicalResource setUrl(String value) { 
-      if (Utilities.noString(value))
-        this.url = null;
-      else {
-        if (this.url == null)
-          this.url = new UriType();
-        this.url.setValue(value);
-      }
-      return this;
-    }
+    public abstract CanonicalResource setNameElement(StringType value); 
+    /**
+     * @return A natural language name identifying the canonical resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public abstract String getName(); 
+    /**
+     * @param value A natural language name identifying the canonical resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public abstract CanonicalResource setName(String value); 
+    /**
+     * @return {@link #title} (A short, descriptive, user-friendly title for the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public abstract StringType getTitleElement(); 
+
+    public abstract boolean hasTitleElement(); 
+    public abstract boolean hasTitle(); 
 
     /**
-     * @return {@link #version} (The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     * @param value {@link #title} (A short, descriptive, user-friendly title for the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
-    public StringType getVersionElement() { 
-      if (this.version == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.version");
-        else if (Configuration.doAutoCreate())
-          this.version = new StringType(); // bb
-      return this.version;
-    }
+    public abstract CanonicalResource setTitleElement(StringType value); 
+    /**
+     * @return A short, descriptive, user-friendly title for the canonical resource.
+     */
+    public abstract String getTitle(); 
+    /**
+     * @param value A short, descriptive, user-friendly title for the canonical resource.
+     */
+    public abstract CanonicalResource setTitle(String value); 
+    /**
+     * @return {@link #status} (The status of this canonical resource. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public abstract Enumeration<PublicationStatus> getStatusElement(); 
 
-    public boolean hasVersionElement() { 
-      return this.version != null && !this.version.isEmpty();
-    }
-
-    public boolean hasVersion() { 
-      return this.version != null && !this.version.isEmpty();
-    }
+    public abstract boolean hasStatusElement(); 
+    public abstract boolean hasStatus(); 
 
     /**
-     * @param value {@link #version} (The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     * @param value {@link #status} (The status of this canonical resource. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CanonicalResource setVersionElement(StringType value) { 
-      this.version = value;
-      return this;
-    }
+    public abstract CanonicalResource setStatusElement(Enumeration<PublicationStatus> value); 
+    /**
+     * @return The status of this canonical resource. Enables tracking the life-cycle of the content.
+     */
+    public abstract PublicationStatus getStatus(); 
+    /**
+     * @param value The status of this canonical resource. Enables tracking the life-cycle of the content.
+     */
+    public abstract CanonicalResource setStatus(PublicationStatus value); 
+    /**
+     * @return {@link #experimental} (A Boolean value to indicate that this canonical resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public abstract BooleanType getExperimentalElement(); 
+
+    public abstract boolean hasExperimentalElement(); 
+    public abstract boolean hasExperimental(); 
 
     /**
-     * @return The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     * @param value {@link #experimental} (A Boolean value to indicate that this canonical resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
      */
-    public String getVersion() { 
-      return this.version == null ? null : this.version.getValue();
-    }
+    public abstract CanonicalResource setExperimentalElement(BooleanType value); 
+    /**
+     * @return A Boolean value to indicate that this canonical resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public abstract boolean getExperimental(); 
+    /**
+     * @param value A Boolean value to indicate that this canonical resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public abstract CanonicalResource setExperimental(boolean value); 
+    /**
+     * @return {@link #date} (The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     */
+    public abstract DateTimeType getDateElement(); 
+
+    public abstract boolean hasDateElement(); 
+    public abstract boolean hasDate(); 
 
     /**
-     * @param value The identifier that is used to identify this version of the metadata resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the metadata resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     * @param value {@link #date} (The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
-    public CanonicalResource setVersion(String value) { 
-      if (Utilities.noString(value))
-        this.version = null;
-      else {
-        if (this.version == null)
-          this.version = new StringType();
-        this.version.setValue(value);
-      }
-      return this;
-    }
+    public abstract CanonicalResource setDateElement(DateTimeType value); 
+    /**
+     * @return The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
+     */
+    public abstract Date getDate(); 
+    /**
+     * @param value The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
+     */
+    public abstract CanonicalResource setDate(Date value); 
+    /**
+     * @return {@link #publisher} (The name of the organization or individual that published the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     */
+    public abstract StringType getPublisherElement(); 
+
+    public abstract boolean hasPublisherElement(); 
+    public abstract boolean hasPublisher(); 
 
     /**
-     * @return {@link #name} (A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual that published the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
-    public StringType getNameElement() { 
-      if (this.name == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.name");
-        else if (Configuration.doAutoCreate())
-          this.name = new StringType(); // bb
-      return this.name;
-    }
-
-    public boolean hasNameElement() { 
-      return this.name != null && !this.name.isEmpty();
-    }
-
-    public boolean hasName() { 
-      return this.name != null && !this.name.isEmpty();
-    }
-
+    public abstract CanonicalResource setPublisherElement(StringType value); 
     /**
-     * @param value {@link #name} (A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @return The name of the organization or individual that published the canonical resource.
      */
-    public CanonicalResource setNameElement(StringType value) { 
-      this.name = value;
-      return this;
-    }
-
+    public abstract String getPublisher(); 
     /**
-     * @return A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     * @param value The name of the organization or individual that published the canonical resource.
      */
-    public String getName() { 
-      return this.name == null ? null : this.name.getValue();
-    }
-
-    /**
-     * @param value A natural language name identifying the metadata resource. This name should be usable as an identifier for the module by machine processing applications such as code generation.
-     */
-    public CanonicalResource setName(String value) { 
-      if (Utilities.noString(value))
-        this.name = null;
-      else {
-        if (this.name == null)
-          this.name = new StringType();
-        this.name.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for the metadata resource.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public StringType getTitleElement() { 
-      if (this.title == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.title");
-        else if (Configuration.doAutoCreate())
-          this.title = new StringType(); // bb
-      return this.title;
-    }
-
-    public boolean hasTitleElement() { 
-      return this.title != null && !this.title.isEmpty();
-    }
-
-    public boolean hasTitle() { 
-      return this.title != null && !this.title.isEmpty();
-    }
-
-    /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for the metadata resource.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public CanonicalResource setTitleElement(StringType value) { 
-      this.title = value;
-      return this;
-    }
-
-    /**
-     * @return A short, descriptive, user-friendly title for the metadata resource.
-     */
-    public String getTitle() { 
-      return this.title == null ? null : this.title.getValue();
-    }
-
-    /**
-     * @param value A short, descriptive, user-friendly title for the metadata resource.
-     */
-    public CanonicalResource setTitle(String value) { 
-      if (Utilities.noString(value))
-        this.title = null;
-      else {
-        if (this.title == null)
-          this.title = new StringType();
-        this.title.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #status} (The status of this metadata resource. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public Enumeration<PublicationStatus> getStatusElement() { 
-      if (this.status == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.status");
-        else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
-      return this.status;
-    }
-
-    public boolean hasStatusElement() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    public boolean hasStatus() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    /**
-     * @param value {@link #status} (The status of this metadata resource. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public CanonicalResource setStatusElement(Enumeration<PublicationStatus> value) { 
-      this.status = value;
-      return this;
-    }
-
-    /**
-     * @return The status of this metadata resource. Enables tracking the life-cycle of the content.
-     */
-    public PublicationStatus getStatus() { 
-      return this.status == null ? null : this.status.getValue();
-    }
-
-    /**
-     * @param value The status of this metadata resource. Enables tracking the life-cycle of the content.
-     */
-    public CanonicalResource setStatus(PublicationStatus value) { 
-        if (this.status == null)
-          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
-        this.status.setValue(value);
-      return this;
-    }
-
-    /**
-     * @return {@link #experimental} (A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public BooleanType getExperimentalElement() { 
-      if (this.experimental == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.experimental");
-        else if (Configuration.doAutoCreate())
-          this.experimental = new BooleanType(); // bb
-      return this.experimental;
-    }
-
-    public boolean hasExperimentalElement() { 
-      return this.experimental != null && !this.experimental.isEmpty();
-    }
-
-    public boolean hasExperimental() { 
-      return this.experimental != null && !this.experimental.isEmpty();
-    }
-
-    /**
-     * @param value {@link #experimental} (A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public CanonicalResource setExperimentalElement(BooleanType value) { 
-      this.experimental = value;
-      return this;
-    }
-
-    /**
-     * @return A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-     */
-    public boolean getExperimental() { 
-      return this.experimental == null || this.experimental.isEmpty() ? false : this.experimental.getValue();
-    }
-
-    /**
-     * @param value A Boolean value to indicate that this metadata resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-     */
-    public CanonicalResource setExperimental(boolean value) { 
-        if (this.experimental == null)
-          this.experimental = new BooleanType();
-        this.experimental.setValue(value);
-      return this;
-    }
-
-    /**
-     * @return {@link #date} (The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-     */
-    public DateTimeType getDateElement() { 
-      if (this.date == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.date");
-        else if (Configuration.doAutoCreate())
-          this.date = new DateTimeType(); // bb
-      return this.date;
-    }
-
-    public boolean hasDateElement() { 
-      return this.date != null && !this.date.isEmpty();
-    }
-
-    public boolean hasDate() { 
-      return this.date != null && !this.date.isEmpty();
-    }
-
-    /**
-     * @param value {@link #date} (The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-     */
-    public CanonicalResource setDateElement(DateTimeType value) { 
-      this.date = value;
-      return this;
-    }
-
-    /**
-     * @return The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes.
-     */
-    public Date getDate() { 
-      return this.date == null ? null : this.date.getValue();
-    }
-
-    /**
-     * @param value The date  (and optionally time) when the metadata resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the metadata resource changes.
-     */
-    public CanonicalResource setDate(Date value) { 
-      if (value == null)
-        this.date = null;
-      else {
-        if (this.date == null)
-          this.date = new DateTimeType();
-        this.date.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #publisher} (The name of the organization or individual that published the metadata resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public StringType getPublisherElement() { 
-      if (this.publisher == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.publisher");
-        else if (Configuration.doAutoCreate())
-          this.publisher = new StringType(); // bb
-      return this.publisher;
-    }
-
-    public boolean hasPublisherElement() { 
-      return this.publisher != null && !this.publisher.isEmpty();
-    }
-
-    public boolean hasPublisher() { 
-      return this.publisher != null && !this.publisher.isEmpty();
-    }
-
-    /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the metadata resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public CanonicalResource setPublisherElement(StringType value) { 
-      this.publisher = value;
-      return this;
-    }
-
-    /**
-     * @return The name of the organization or individual that published the metadata resource.
-     */
-    public String getPublisher() { 
-      return this.publisher == null ? null : this.publisher.getValue();
-    }
-
-    /**
-     * @param value The name of the organization or individual that published the metadata resource.
-     */
-    public CanonicalResource setPublisher(String value) { 
-      if (Utilities.noString(value))
-        this.publisher = null;
-      else {
-        if (this.publisher == null)
-          this.publisher = new StringType();
-        this.publisher.setValue(value);
-      }
-      return this;
-    }
-
+    public abstract CanonicalResource setPublisher(String value); 
     /**
      * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
      */
-    public List<ContactDetail> getContact() { 
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      return this.contact;
-    }
-
+    public abstract List<ContactDetail> getContact(); 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CanonicalResource setContact(List<ContactDetail> theContact) { 
-      this.contact = theContact;
-      return this;
-    }
+    public abstract CanonicalResource setContact(List<ContactDetail> theContact); 
+    public abstract boolean hasContact(); 
 
-    public boolean hasContact() { 
-      if (this.contact == null)
-        return false;
-      for (ContactDetail item : this.contact)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
+    public abstract ContactDetail addContact(); //3
+    public abstract CanonicalResource addContact(ContactDetail t); //3
+    /**
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {1}
+     */
+    public abstract ContactDetail getContactFirstRep(); 
+    /**
+     * @return {@link #description} (A free text natural language description of the canonical resource from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public abstract MarkdownType getDescriptionElement(); 
 
-    public ContactDetail addContact() { //3
-      ContactDetail t = new ContactDetail();
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      this.contact.add(t);
-      return t;
-    }
-
-    public CanonicalResource addContact(ContactDetail t) { //3
-      if (t == null)
-        return this;
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      this.contact.add(t);
-      return this;
-    }
+    public abstract boolean hasDescriptionElement(); 
+    public abstract boolean hasDescription(); 
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @param value {@link #description} (A free text natural language description of the canonical resource from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public ContactDetail getContactFirstRep() { 
-      if (getContact().isEmpty()) {
-        addContact();
-      }
-      return getContact().get(0);
-    }
-
+    public abstract CanonicalResource setDescriptionElement(MarkdownType value); 
     /**
-     * @return {@link #description} (A free text natural language description of the metadata resource from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return A free text natural language description of the canonical resource from a consumer's perspective.
      */
-    public MarkdownType getDescriptionElement() { 
-      if (this.description == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MetadataResource.description");
-        else if (Configuration.doAutoCreate())
-          this.description = new MarkdownType(); // bb
-      return this.description;
-    }
-
-    public boolean hasDescriptionElement() { 
-      return this.description != null && !this.description.isEmpty();
-    }
-
-    public boolean hasDescription() { 
-      return this.description != null && !this.description.isEmpty();
-    }
-
+    public abstract String getDescription(); 
     /**
-     * @param value {@link #description} (A free text natural language description of the metadata resource from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value A free text natural language description of the canonical resource from a consumer's perspective.
      */
-    public CanonicalResource setDescriptionElement(MarkdownType value) { 
-      this.description = value;
-      return this;
-    }
-
+    public abstract CanonicalResource setDescription(String value); 
     /**
-     * @return A free text natural language description of the metadata resource from a consumer's perspective.
+     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate canonical resource instances.)
      */
-    public String getDescription() { 
-      return this.description == null ? null : this.description.getValue();
-    }
-
-    /**
-     * @param value A free text natural language description of the metadata resource from a consumer's perspective.
-     */
-    public CanonicalResource setDescription(String value) { 
-      if (value == null)
-        this.description = null;
-      else {
-        if (this.description == null)
-          this.description = new MarkdownType();
-        this.description.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate metadata resource instances.)
-     */
-    public List<UsageContext> getUseContext() { 
-      if (this.useContext == null)
-        this.useContext = new ArrayList<UsageContext>();
-      return this.useContext;
-    }
-
+    public abstract List<UsageContext> getUseContext(); 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CanonicalResource setUseContext(List<UsageContext> theUseContext) { 
-      this.useContext = theUseContext;
-      return this;
-    }
+    public abstract CanonicalResource setUseContext(List<UsageContext> theUseContext); 
+    public abstract boolean hasUseContext(); 
 
-    public boolean hasUseContext() { 
-      if (this.useContext == null)
-        return false;
-      for (UsageContext item : this.useContext)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public UsageContext addUseContext() { //3
-      UsageContext t = new UsageContext();
-      if (this.useContext == null)
-        this.useContext = new ArrayList<UsageContext>();
-      this.useContext.add(t);
-      return t;
-    }
-
-    public CanonicalResource addUseContext(UsageContext t) { //3
-      if (t == null)
-        return this;
-      if (this.useContext == null)
-        this.useContext = new ArrayList<UsageContext>();
-      this.useContext.add(t);
-      return this;
-    }
-
+    public abstract UsageContext addUseContext(); //3
+    public abstract CanonicalResource addUseContext(UsageContext t); //3
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {1}
      */
-    public UsageContext getUseContextFirstRep() { 
-      if (getUseContext().isEmpty()) {
-        addUseContext();
-      }
-      return getUseContext().get(0);
-    }
-
+    public abstract UsageContext getUseContextFirstRep(); 
     /**
-     * @return {@link #jurisdiction} (A legal or geographic region in which the metadata resource is intended to be used.)
+     * @return {@link #jurisdiction} (A legal or geographic region in which the canonical resource is intended to be used.)
      */
-    public List<CodeableConcept> getJurisdiction() { 
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      return this.jurisdiction;
-    }
-
+    public abstract List<CodeableConcept> getJurisdiction(); 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CanonicalResource setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      this.jurisdiction = theJurisdiction;
-      return this;
-    }
+    public abstract CanonicalResource setJurisdiction(List<CodeableConcept> theJurisdiction); 
+    public abstract boolean hasJurisdiction(); 
 
-    public boolean hasJurisdiction() { 
-      if (this.jurisdiction == null)
-        return false;
-      for (CodeableConcept item : this.jurisdiction)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
+    public abstract CodeableConcept addJurisdiction(); //3
+    public abstract CanonicalResource addJurisdiction(CodeableConcept t); //3
+    /**
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {1}
+     */
+    public abstract CodeableConcept getJurisdictionFirstRep(); 
+    /**
+     * @return {@link #purpose} (Explanation of why this canonical resource is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public abstract MarkdownType getPurposeElement(); 
 
-    public CodeableConcept addJurisdiction() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      this.jurisdiction.add(t);
-      return t;
-    }
-
-    public CanonicalResource addJurisdiction(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      this.jurisdiction.add(t);
-      return this;
-    }
+    public abstract boolean hasPurposeElement(); 
+    public abstract boolean hasPurpose(); 
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @param value {@link #purpose} (Explanation of why this canonical resource is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
-    public CodeableConcept getJurisdictionFirstRep() { 
-      if (getJurisdiction().isEmpty()) {
-        addJurisdiction();
-      }
-      return getJurisdiction().get(0);
-    }
+    public abstract CanonicalResource setPurposeElement(MarkdownType value); 
+    /**
+     * @return Explanation of why this canonical resource is needed and why it has been designed as it has.
+     */
+    public abstract String getPurpose(); 
+    /**
+     * @param value Explanation of why this canonical resource is needed and why it has been designed as it has.
+     */
+    public abstract CanonicalResource setPurpose(String value); 
+    /**
+     * @return {@link #copyright} (A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public abstract MarkdownType getCopyrightElement(); 
 
+    public abstract boolean hasCopyrightElement(); 
+    public abstract boolean hasCopyright(); 
+
+    /**
+     * @param value {@link #copyright} (A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public abstract CanonicalResource setCopyrightElement(MarkdownType value); 
+    /**
+     * @return A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.
+     */
+    public abstract String getCopyright(); 
+    /**
+     * @param value A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.
+     */
+    public abstract CanonicalResource setCopyright(String value); 
       protected void listChildren(List<Property> children) {
-     // todo: add a flag to decide whether to do this... super.listChildren(children);
+        super.listChildren(children);
+      }
+
+      @Override
+      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+        switch (_hash) {
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
+        }
+
       }
 
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
-        case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
-        case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
-        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
-        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
-        case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
-        case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -793,43 +396,6 @@ public abstract class CanonicalResource extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 116079: // url
-          this.url = TypeConvertor.castToUri(value); // UriType
-          return value;
-        case 351608024: // version
-          this.version = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3373707: // name
-          this.name = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 110371416: // title
-          this.title = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -892481550: // status
-          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
-          return value;
-        case -404562712: // experimental
-          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case 3076014: // date
-          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
-          return value;
-        case 1447404028: // publisher
-          this.publisher = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 951526432: // contact
-          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
-          return value;
-        case -1724546052: // description
-          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        case -669707736: // useContext
-          this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
-          return value;
-        case -507075711: // jurisdiction
-          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -837,51 +403,12 @@ public abstract class CanonicalResource extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("url")) {
-          this.url = TypeConvertor.castToUri(value); // UriType
-        } else if (name.equals("version")) {
-          this.version = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("title")) {
-          this.title = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("status")) {
-          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
-        } else if (name.equals("experimental")) {
-          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("date")) {
-          this.date = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("publisher")) {
-          this.publisher = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("contact")) {
-          this.getContact().add(TypeConvertor.castToContactDetail(value));
-        } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("useContext")) {
-          this.getUseContext().add(TypeConvertor.castToUsageContext(value));
-        } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
-        } else
           return super.setProperty(name, value);
-        return value;
       }
 
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 116079:  return getUrlElement();
-        case 351608024:  return getVersionElement();
-        case 3373707:  return getNameElement();
-        case 110371416:  return getTitleElement();
-        case -892481550:  return getStatusElement();
-        case -404562712:  return getExperimentalElement();
-        case 3076014:  return getDateElement();
-        case 1447404028:  return getPublisherElement();
-        case 951526432:  return addContact(); 
-        case -1724546052:  return getDescriptionElement();
-        case -669707736:  return addUseContext(); 
-        case -507075711:  return addJurisdiction(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -890,18 +417,6 @@ public abstract class CanonicalResource extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 116079: /*url*/ return new String[] {"uri"};
-        case 351608024: /*version*/ return new String[] {"string"};
-        case 3373707: /*name*/ return new String[] {"string"};
-        case 110371416: /*title*/ return new String[] {"string"};
-        case -892481550: /*status*/ return new String[] {"code"};
-        case -404562712: /*experimental*/ return new String[] {"boolean"};
-        case 3076014: /*date*/ return new String[] {"dateTime"};
-        case 1447404028: /*publisher*/ return new String[] {"string"};
-        case 951526432: /*contact*/ return new String[] {"ContactDetail"};
-        case -1724546052: /*description*/ return new String[] {"markdown"};
-        case -669707736: /*useContext*/ return new String[] {"UsageContext"};
-        case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -909,48 +424,11 @@ public abstract class CanonicalResource extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.url");
-        }
-        else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.version");
-        }
-        else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.name");
-        }
-        else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.title");
-        }
-        else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.status");
-        }
-        else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.experimental");
-        }
-        else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.date");
-        }
-        else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.publisher");
-        }
-        else if (name.equals("contact")) {
-          return addContact();
-        }
-        else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MetadataResource.description");
-        }
-        else if (name.equals("useContext")) {
-          return addUseContext();
-        }
-        else if (name.equals("jurisdiction")) {
-          return addJurisdiction();
-        }
-        else
           return super.addChild(name);
       }
 
   public String fhirType() {
-    return "MetadataResource";
+    return "CanonicalResource";
 
   }
 
@@ -958,30 +436,6 @@ public abstract class CanonicalResource extends DomainResource {
 
       public void copyValues(CanonicalResource dst) {
         super.copyValues(dst);
-        dst.url = url == null ? null : url.copy();
-        dst.version = version == null ? null : version.copy();
-        dst.name = name == null ? null : name.copy();
-        dst.title = title == null ? null : title.copy();
-        dst.status = status == null ? null : status.copy();
-        dst.experimental = experimental == null ? null : experimental.copy();
-        dst.date = date == null ? null : date.copy();
-        dst.publisher = publisher == null ? null : publisher.copy();
-        if (contact != null) {
-          dst.contact = new ArrayList<ContactDetail>();
-          for (ContactDetail i : contact)
-            dst.contact.add(i.copy());
-        };
-        dst.description = description == null ? null : description.copy();
-        if (useContext != null) {
-          dst.useContext = new ArrayList<UsageContext>();
-          for (UsageContext i : useContext)
-            dst.useContext.add(i.copy());
-        };
-        if (jurisdiction != null) {
-          dst.jurisdiction = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : jurisdiction)
-            dst.jurisdiction.add(i.copy());
-        };
       }
 
       @Override
@@ -991,11 +445,7 @@ public abstract class CanonicalResource extends DomainResource {
         if (!(other_ instanceof CanonicalResource))
           return false;
         CanonicalResource o = (CanonicalResource) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true);
+        return true;
       }
 
       @Override
@@ -1005,19 +455,14 @@ public abstract class CanonicalResource extends DomainResource {
         if (!(other_ instanceof CanonicalResource))
           return false;
         CanonicalResource o = (CanonicalResource) other_;
-        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
-           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
-           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-          ;
+        return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
-          , status, experimental, date, publisher, contact, description, useContext, jurisdiction
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
       }
 
-// added from java-adornments.txt:
+// Manual code (from Configuration.txt)t:
       @Override
       public String toString() {
         return fhirType()+"["+getUrl()+"]";

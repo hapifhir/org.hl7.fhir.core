@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,11 +66,136 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device.
  */
 @ResourceDef(name="Device", profile="http://hl7.org/fhir/StructureDefinition/Device")
 public class Device extends DomainResource {
+
+    public enum FHIRDeviceStatus {
+        /**
+         * The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.
+         */
+        ACTIVE, 
+        /**
+         * The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.
+         */
+        INACTIVE, 
+        /**
+         * The device was entered in error and voided.
+         */
+        ENTEREDINERROR, 
+        /**
+         * The status of the device has not been determined.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static FHIRDeviceStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case ENTEREDINERROR: return "entered-in-error";
+            case UNKNOWN: return "unknown";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ACTIVE: return "http://hl7.org/fhir/device-status";
+            case INACTIVE: return "http://hl7.org/fhir/device-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
+            case UNKNOWN: return "http://hl7.org/fhir/device-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.";
+            case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
+            case ENTEREDINERROR: return "The device was entered in error and voided.";
+            case UNKNOWN: return "The status of the device has not been determined.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case ENTEREDINERROR: return "Entered in Error";
+            case UNKNOWN: return "Unknown";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class FHIRDeviceStatusEnumFactory implements EnumFactory<FHIRDeviceStatus> {
+    public FHIRDeviceStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return FHIRDeviceStatus.ACTIVE;
+        if ("inactive".equals(codeString))
+          return FHIRDeviceStatus.INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return FHIRDeviceStatus.ENTEREDINERROR;
+        if ("unknown".equals(codeString))
+          return FHIRDeviceStatus.UNKNOWN;
+        throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
+        }
+        public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<FHIRDeviceStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("active".equals(codeString))
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ACTIVE);
+        if ("inactive".equals(codeString))
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.INACTIVE);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR);
+        if ("unknown".equals(codeString))
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.UNKNOWN);
+        throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
+        }
+    public String toCode(FHIRDeviceStatus code) {
+      if (code == FHIRDeviceStatus.ACTIVE)
+        return "active";
+      if (code == FHIRDeviceStatus.INACTIVE)
+        return "inactive";
+      if (code == FHIRDeviceStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == FHIRDeviceStatus.UNKNOWN)
+        return "unknown";
+      return "?";
+      }
+    public String toSystem(FHIRDeviceStatus code) {
+      return code.getSystem();
+      }
+    }
 
     public enum UDIEntryType {
         /**
@@ -223,286 +349,6 @@ public class Device extends DomainResource {
       return "?";
       }
     public String toSystem(UDIEntryType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum FHIRDeviceStatus {
-        /**
-         * The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.
-         */
-        ACTIVE, 
-        /**
-         * The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.
-         */
-        INACTIVE, 
-        /**
-         * The device was entered in error and voided.
-         */
-        ENTEREDINERROR, 
-        /**
-         * The status of the device has not been determined.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static FHIRDeviceStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACTIVE: return "active";
-            case INACTIVE: return "inactive";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ACTIVE: return "http://hl7.org/fhir/device-status";
-            case INACTIVE: return "http://hl7.org/fhir/device-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
-            case UNKNOWN: return "http://hl7.org/fhir/device-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACTIVE: return "The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.";
-            case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
-            case ENTEREDINERROR: return "The device was entered in error and voided.";
-            case UNKNOWN: return "The status of the device has not been determined.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACTIVE: return "Active";
-            case INACTIVE: return "Inactive";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class FHIRDeviceStatusEnumFactory implements EnumFactory<FHIRDeviceStatus> {
-    public FHIRDeviceStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("active".equals(codeString))
-          return FHIRDeviceStatus.ACTIVE;
-        if ("inactive".equals(codeString))
-          return FHIRDeviceStatus.INACTIVE;
-        if ("entered-in-error".equals(codeString))
-          return FHIRDeviceStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return FHIRDeviceStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
-        }
-        public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<FHIRDeviceStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("active".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ACTIVE);
-        if ("inactive".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.INACTIVE);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.UNKNOWN);
-        throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
-        }
-    public String toCode(FHIRDeviceStatus code) {
-      if (code == FHIRDeviceStatus.ACTIVE)
-        return "active";
-      if (code == FHIRDeviceStatus.INACTIVE)
-        return "inactive";
-      if (code == FHIRDeviceStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == FHIRDeviceStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(FHIRDeviceStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DeviceNameType {
-        /**
-         * UDI Label name.
-         */
-        UDILABELNAME, 
-        /**
-         * User Friendly name.
-         */
-        USERFRIENDLYNAME, 
-        /**
-         * Patient Reported name.
-         */
-        PATIENTREPORTEDNAME, 
-        /**
-         * Manufacturer name.
-         */
-        MANUFACTURERNAME, 
-        /**
-         * Model name.
-         */
-        MODELNAME, 
-        /**
-         * other.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceNameType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("udi-label-name".equals(codeString))
-          return UDILABELNAME;
-        if ("user-friendly-name".equals(codeString))
-          return USERFRIENDLYNAME;
-        if ("patient-reported-name".equals(codeString))
-          return PATIENTREPORTEDNAME;
-        if ("manufacturer-name".equals(codeString))
-          return MANUFACTURERNAME;
-        if ("model-name".equals(codeString))
-          return MODELNAME;
-        if ("other".equals(codeString))
-          return OTHER;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UDILABELNAME: return "udi-label-name";
-            case USERFRIENDLYNAME: return "user-friendly-name";
-            case PATIENTREPORTEDNAME: return "patient-reported-name";
-            case MANUFACTURERNAME: return "manufacturer-name";
-            case MODELNAME: return "model-name";
-            case OTHER: return "other";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case UDILABELNAME: return "http://hl7.org/fhir/device-nametype";
-            case USERFRIENDLYNAME: return "http://hl7.org/fhir/device-nametype";
-            case PATIENTREPORTEDNAME: return "http://hl7.org/fhir/device-nametype";
-            case MANUFACTURERNAME: return "http://hl7.org/fhir/device-nametype";
-            case MODELNAME: return "http://hl7.org/fhir/device-nametype";
-            case OTHER: return "http://hl7.org/fhir/device-nametype";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name.";
-            case USERFRIENDLYNAME: return "User Friendly name.";
-            case PATIENTREPORTEDNAME: return "Patient Reported name.";
-            case MANUFACTURERNAME: return "Manufacturer name.";
-            case MODELNAME: return "Model name.";
-            case OTHER: return "other.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name";
-            case USERFRIENDLYNAME: return "User Friendly name";
-            case PATIENTREPORTEDNAME: return "Patient Reported name";
-            case MANUFACTURERNAME: return "Manufacturer name";
-            case MODELNAME: return "Model name";
-            case OTHER: return "other";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceNameTypeEnumFactory implements EnumFactory<DeviceNameType> {
-    public DeviceNameType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("udi-label-name".equals(codeString))
-          return DeviceNameType.UDILABELNAME;
-        if ("user-friendly-name".equals(codeString))
-          return DeviceNameType.USERFRIENDLYNAME;
-        if ("patient-reported-name".equals(codeString))
-          return DeviceNameType.PATIENTREPORTEDNAME;
-        if ("manufacturer-name".equals(codeString))
-          return DeviceNameType.MANUFACTURERNAME;
-        if ("model-name".equals(codeString))
-          return DeviceNameType.MODELNAME;
-        if ("other".equals(codeString))
-          return DeviceNameType.OTHER;
-        throw new IllegalArgumentException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-        public Enumeration<DeviceNameType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceNameType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("udi-label-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME);
-        if ("user-friendly-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME);
-        if ("patient-reported-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME);
-        if ("manufacturer-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME);
-        if ("model-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME);
-        if ("other".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER);
-        throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-    public String toCode(DeviceNameType code) {
-      if (code == DeviceNameType.UDILABELNAME)
-        return "udi-label-name";
-      if (code == DeviceNameType.USERFRIENDLYNAME)
-        return "user-friendly-name";
-      if (code == DeviceNameType.PATIENTREPORTEDNAME)
-        return "patient-reported-name";
-      if (code == DeviceNameType.MANUFACTURERNAME)
-        return "manufacturer-name";
-      if (code == DeviceNameType.MODELNAME)
-        return "model-name";
-      if (code == DeviceNameType.OTHER)
-        return "other";
-      return "?";
-      }
-    public String toSystem(DeviceNameType code) {
       return code.getSystem();
       }
     }
@@ -1011,22 +857,22 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("deviceIdentifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.deviceIdentifier");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.deviceIdentifier");
         }
         else if (name.equals("issuer")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.issuer");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.issuer");
         }
         else if (name.equals("jurisdiction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.jurisdiction");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.jurisdiction");
         }
         else if (name.equals("carrierAIDC")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.carrierAIDC");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.carrierAIDC");
         }
         else if (name.equals("carrierHRF")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.carrierHRF");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.carrierHRF");
         }
         else if (name.equals("entryType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.entryType");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.udiCarrier.entryType");
         }
         else
           return super.addChild(name);
@@ -1114,10 +960,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     /**
      * Constructor
      */
-      public DeviceDeviceNameComponent(StringType name, Enumeration<DeviceNameType> type) {
+      public DeviceDeviceNameComponent(String name, DeviceNameType type) {
         super();
-        this.name = name;
-        this.type = type;
+        this.setName(name);
+        this.setType(type);
       }
 
         /**
@@ -1290,10 +1136,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.deviceName.name");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.deviceName.type");
         }
         else
           return super.addChild(name);
@@ -1372,7 +1218,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceSpecializationComponent(CodeableConcept systemType) {
         super();
-        this.systemType = systemType;
+        this.setSystemType(systemType);
       }
 
         /**
@@ -1526,7 +1372,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           return this.systemType;
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.version");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.specialization.version");
         }
         else
           return super.addChild(name);
@@ -1610,9 +1456,9 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     /**
      * Constructor
      */
-      public DeviceVersionComponent(StringType value) {
+      public DeviceVersionComponent(String value) {
         super();
-        this.value = value;
+        this.setValue(value);
       }
 
         /**
@@ -1800,7 +1646,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           return this.component;
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.value");
+          throw new FHIRException("Cannot call addChild on a primitive type Device.version.value");
         }
         else
           return super.addChild(name);
@@ -1888,7 +1734,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DevicePropertyComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1959,7 +1805,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist {3}
          */
         public Quantity getValueQuantityFirstRep() { 
           if (getValueQuantity().isEmpty()) {
@@ -2012,7 +1858,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The first repetition of repeating field {@link #valueCode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #valueCode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getValueCodeFirstRep() { 
           if (getValueCode().isEmpty()) {
@@ -2410,7 +2256,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2487,7 +2333,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #udiCarrier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #udiCarrier}, creating it if it does not already exist {3}
      */
     public DeviceUdiCarrierComponent getUdiCarrierFirstRep() { 
       if (getUdiCarrier().isEmpty()) {
@@ -2589,7 +2435,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #statusReason}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #statusReason}, creating it if it does not already exist {3}
      */
     public CodeableConcept getStatusReasonFirstRep() { 
       if (getStatusReason().isEmpty()) {
@@ -2936,7 +2782,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #deviceName}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #deviceName}, creating it if it does not already exist {3}
      */
     public DeviceDeviceNameComponent getDeviceNameFirstRep() { 
       if (getDeviceName().isEmpty()) {
@@ -3111,7 +2957,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist {3}
      */
     public DeviceSpecializationComponent getSpecializationFirstRep() { 
       if (getSpecialization().isEmpty()) {
@@ -3164,7 +3010,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #version}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #version}, creating it if it does not already exist {3}
      */
     public DeviceVersionComponent getVersionFirstRep() { 
       if (getVersion().isEmpty()) {
@@ -3217,7 +3063,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
      */
     public DevicePropertyComponent getPropertyFirstRep() { 
       if (getProperty().isEmpty()) {
@@ -3318,7 +3164,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactPoint getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -3444,7 +3290,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -3497,7 +3343,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #safety}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #safety}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSafetyFirstRep() { 
       if (getSafety().isEmpty()) {
@@ -4066,24 +3912,24 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
    }
 
  /**
-   * Search parameter: <b>udi-di</b>
+   * Search parameter: <b>device-name</b>
    * <p>
-   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Device.udiCarrier</b><br>
+   * Path: <b>Device.deviceName.name | Device.type.coding.display | Device.type.text</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="udi-di", path="Device.udiCarrier.deviceIdentifier", description="The udi Device Identifier (DI)", type="string" )
-  public static final String SP_UDI_DI = "udi-di";
+  @SearchParamDefinition(name="device-name", path="Device.deviceName.name | Device.type.coding.display | Device.type.text", description="A server defined search that may match any of the string fields in Device.deviceName or Device.type.", type="string" )
+  public static final String SP_DEVICE_NAME = "device-name";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>udi-di</b>
+   * <b>Fluent Client</b> search parameter constant for <b>device-name</b>
    * <p>
-   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Device.udiCarrier</b><br>
+   * Path: <b>Device.deviceName.name | Device.type.coding.display | Device.type.text</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_DI = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_DI);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DEVICE_NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DEVICE_NAME);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -4104,118 +3950,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>udi-carrier</b>
-   * <p>
-   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.udiCarrier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="udi-carrier", path="Device.udiCarrier.carrierHRF", description="UDI Barcode (RFID or other technology) string in *HRF* format.", type="string" )
-  public static final String SP_UDI_CARRIER = "udi-carrier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>udi-carrier</b>
-   * <p>
-   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.udiCarrier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_CARRIER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_CARRIER);
-
- /**
-   * Search parameter: <b>device-name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.deviceName</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="device-name", path="Device.deviceName.name | Device.type.coding.display | Device.type.text", description="A server defined search that may match any of the string fields in Device.deviceName or Device.type.", type="string" )
-  public static final String SP_DEVICE_NAME = "device-name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>device-name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.deviceName</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DEVICE_NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DEVICE_NAME);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Device.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Device.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Device:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Device:patient").toLocked();
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>The organization responsible for the device</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Device.owner</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="organization", path="Device.owner", description="The organization responsible for the device", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
-   * <p>
-   * Description: <b>The organization responsible for the device</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Device.owner</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Device:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Device:organization").toLocked();
-
- /**
-   * Search parameter: <b>model</b>
-   * <p>
-   * Description: <b>The model of the device</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.modelNumber</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="model", path="Device.modelNumber", description="The model of the device", type="string" )
-  public static final String SP_MODEL = "model";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>model</b>
-   * <p>
-   * Description: <b>The model of the device</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.modelNumber</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam MODEL = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MODEL);
 
  /**
    * Search parameter: <b>location</b>
@@ -4244,6 +3978,118 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
   public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Device:location").toLocked();
 
  /**
+   * Search parameter: <b>manufacturer</b>
+   * <p>
+   * Description: <b>The manufacturer of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.manufacturer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufacturer", path="Device.manufacturer", description="The manufacturer of the device", type="string" )
+  public static final String SP_MANUFACTURER = "manufacturer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
+   * <p>
+   * Description: <b>The manufacturer of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.manufacturer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MANUFACTURER);
+
+ /**
+   * Search parameter: <b>model</b>
+   * <p>
+   * Description: <b>The model of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.modelNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="model", path="Device.modelNumber", description="The model of the device", type="string" )
+  public static final String SP_MODEL = "model";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>model</b>
+   * <p>
+   * Description: <b>The model of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.modelNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam MODEL = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MODEL);
+
+ /**
+   * Search parameter: <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.owner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="organization", path="Device.owner", description="The organization responsible for the device", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.owner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Device:organization").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Device:patient").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Device.status", description="active | inactive | entered-in-error | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
    * Search parameter: <b>type</b>
    * <p>
    * Description: <b>The type of the device</b><br>
@@ -4262,6 +4108,46 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>udi-carrier</b>
+   * <p>
+   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.carrierHRF</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="udi-carrier", path="Device.udiCarrier.carrierHRF", description="UDI Barcode (RFID or other technology) string in *HRF* format.", type="string" )
+  public static final String SP_UDI_CARRIER = "udi-carrier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>udi-carrier</b>
+   * <p>
+   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.carrierHRF</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_CARRIER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_CARRIER);
+
+ /**
+   * Search parameter: <b>udi-di</b>
+   * <p>
+   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.deviceIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="udi-di", path="Device.udiCarrier.deviceIdentifier", description="The udi Device Identifier (DI)", type="string" )
+  public static final String SP_UDI_DI = "udi-di";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>udi-di</b>
+   * <p>
+   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.deviceIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_DI = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_DI);
 
  /**
    * Search parameter: <b>url</b>
@@ -4284,44 +4170,24 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
   public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
  /**
-   * Search parameter: <b>manufacturer</b>
+   * Search parameter: <b>din</b>
    * <p>
-   * Description: <b>The manufacturer of the device</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.manufacturer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="manufacturer", path="Device.manufacturer", description="The manufacturer of the device", type="string" )
-  public static final String SP_MANUFACTURER = "manufacturer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
-   * <p>
-   * Description: <b>The manufacturer of the device</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Device.manufacturer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MANUFACTURER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Description: <b>The donation identification number (DIN)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Device.status</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Device.status", description="active | inactive | entered-in-error | unknown", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="din", path="Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')", description="The donation identification number (DIN)", type="token" )
+  public static final String SP_DIN = "din";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>din</b>
    * <p>
-   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Description: <b>The donation identification number (DIN)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Device.status</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DIN);
 
 
 }

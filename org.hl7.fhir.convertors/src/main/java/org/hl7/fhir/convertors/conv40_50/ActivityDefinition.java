@@ -260,30 +260,30 @@ public class ActivityDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind convertActivityDefinitionKind(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType convertActivityDefinitionKind(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case APPOINTMENT: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT;
-    case APPOINTMENTRESPONSE: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENTRESPONSE;
-    case CAREPLAN: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.CAREPLAN;
-    case CLAIM: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.CLAIM;
-    case COMMUNICATIONREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.COMMUNICATIONREQUEST;
-    case CONTRACT: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.CONTRACT;
-    case DEVICEREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.DEVICEREQUEST;
-    case ENROLLMENTREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.ENROLLMENTREQUEST;
-    case IMMUNIZATIONRECOMMENDATION: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION;
-    case MEDICATIONREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.MEDICATIONREQUEST;
-    case NUTRITIONORDER: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.NUTRITIONORDER;
-    case SERVICEREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.SERVICEREQUEST;
-    case SUPPLYREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.SUPPLYREQUEST;
-    case TASK: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.TASK;
-    case VISIONPRESCRIPTION: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION;
-    default: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind.NULL;
+    case APPOINTMENT: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENT;
+    case APPOINTMENTRESPONSE: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENTRESPONSE;
+    case CAREPLAN: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CAREPLAN;
+    case CLAIM: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CLAIM;
+    case COMMUNICATIONREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.COMMUNICATIONREQUEST;
+    case CONTRACT: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CONTRACT;
+    case DEVICEREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.DEVICEREQUEST;
+    case ENROLLMENTREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.ENROLLMENTREQUEST;
+    case IMMUNIZATIONRECOMMENDATION: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.IMMUNIZATIONRECOMMENDATION;
+    case MEDICATIONREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.MEDICATIONREQUEST;
+    case NUTRITIONORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NUTRITIONORDER;
+    case SERVICEREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SERVICEREQUEST;
+    case SUPPLYREQUEST: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST;
+    case TASK: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.TASK;
+    case VISIONPRESCRIPTION: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION;
+    default: return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind convertActivityDefinitionKind(org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionKind src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind convertActivityDefinitionKind(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -306,24 +306,24 @@ public class ActivityDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.PLAN;
-    case DIRECTIVE: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.DIRECTIVE;
-    case ORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent.NULL;
+    case PROPOSAL: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+    case PLAN: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+    case DIRECTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+    case ORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+    case ORIGINALORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+    case REFLEXORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+    case FILLERORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+    case INSTANCEORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+    case OPTION: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.ActivityDefinition.RequestIntent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -340,19 +340,19 @@ public class ActivityDefinition extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority.NULL;
+    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.ActivityDefinition.RequestPriority src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -388,19 +388,19 @@ public class ActivityDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType convertActivityParticipantType(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.ActionParticipantType convertActivityParticipantType(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PATIENT: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType.PATIENT;
-    case PRACTITIONER: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType.PRACTITIONER;
-    case RELATEDPERSON: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType.RELATEDPERSON;
-    case DEVICE: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType.DEVICE;
-    default: return org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType.NULL;
+    case PATIENT: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PATIENT;
+    case PRACTITIONER: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PRACTITIONER;
+    case RELATEDPERSON: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.RELATEDPERSON;
+    case DEVICE: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.DEVICE;
+    default: return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType convertActivityParticipantType(org.hl7.fhir.r5.model.ActivityDefinition.ActivityParticipantType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType convertActivityParticipantType(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

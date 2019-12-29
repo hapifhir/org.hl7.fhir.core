@@ -200,6 +200,13 @@ public class TextFile {
     sw.close(); 
   }
   
+  public static void bytesToFile(byte[] bytes, File f) throws IOException {
+    OutputStream sw = new FileOutputStream(f);
+    sw.write(bytes);
+    sw.flush();
+    sw.close(); 
+  }
+  
   public static void appendBytesToFile(byte[] bytes, String path) throws IOException {
     byte[] linebreak = new byte[] {13, 10};
     Files.write(Paths.get(path), linebreak, StandardOpenOption.APPEND);

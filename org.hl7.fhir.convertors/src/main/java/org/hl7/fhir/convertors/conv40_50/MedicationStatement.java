@@ -144,23 +144,23 @@ public class MedicationStatement extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ACTIVE;
-    case COMPLETED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ENTEREDINERROR;
-    case INTENDED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.INTENDED;
-    case STOPPED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.STOPPED;
-    case ONHOLD: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.ONHOLD;
-    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.UNKNOWN;
-    case NOTTAKEN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.NOTTAKEN;
-    default: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus.NULL;
+    case ACTIVE: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ACTIVE;
+    case COMPLETED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ENTEREDINERROR;
+    case INTENDED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.INTENDED;
+    case STOPPED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.STOPPED;
+    case ONHOLD: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ONHOLD;
+    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN;
+    case NOTTAKEN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NOTTAKEN;
+    default: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

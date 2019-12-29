@@ -235,7 +235,7 @@ public class Location extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent();
     copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.DaysOfWeek> t : src.getDaysOfWeek())
+    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> t : src.getDaysOfWeek())
       copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
     if (src.hasAllDay())
       tgt.setAllDayElement(convertBoolean(src.getAllDayElement()));
@@ -246,22 +246,22 @@ public class Location extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Location.DaysOfWeek convertDaysOfWeek(org.hl7.fhir.r4.model.Location.DaysOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.DaysOfWeek convertDaysOfWeek(org.hl7.fhir.r4.model.Location.DaysOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case MON: return org.hl7.fhir.r5.model.Location.DaysOfWeek.MON;
-    case TUE: return org.hl7.fhir.r5.model.Location.DaysOfWeek.TUE;
-    case WED: return org.hl7.fhir.r5.model.Location.DaysOfWeek.WED;
-    case THU: return org.hl7.fhir.r5.model.Location.DaysOfWeek.THU;
-    case FRI: return org.hl7.fhir.r5.model.Location.DaysOfWeek.FRI;
-    case SAT: return org.hl7.fhir.r5.model.Location.DaysOfWeek.SAT;
-    case SUN: return org.hl7.fhir.r5.model.Location.DaysOfWeek.SUN;
-    default: return org.hl7.fhir.r5.model.Location.DaysOfWeek.NULL;
+    case MON: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON;
+    case TUE: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE;
+    case WED: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED;
+    case THU: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU;
+    case FRI: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI;
+    case SAT: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT;
+    case SUN: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN;
+    default: return org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.Location.DaysOfWeek convertDaysOfWeek(org.hl7.fhir.r5.model.Location.DaysOfWeek src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Location.DaysOfWeek convertDaysOfWeek(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,167 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The characteristics, operational status and capabilities of a medical-related component of a medical device.
  */
 @ResourceDef(name="DeviceDefinition", profile="http://hl7.org/fhir/StructureDefinition/DeviceDefinition")
 public class DeviceDefinition extends DomainResource {
-
-    public enum DeviceNameType {
-        /**
-         * UDI Label name.
-         */
-        UDILABELNAME, 
-        /**
-         * User Friendly name.
-         */
-        USERFRIENDLYNAME, 
-        /**
-         * Patient Reported name.
-         */
-        PATIENTREPORTEDNAME, 
-        /**
-         * Manufacturer name.
-         */
-        MANUFACTURERNAME, 
-        /**
-         * Model name.
-         */
-        MODELNAME, 
-        /**
-         * other.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DeviceNameType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("udi-label-name".equals(codeString))
-          return UDILABELNAME;
-        if ("user-friendly-name".equals(codeString))
-          return USERFRIENDLYNAME;
-        if ("patient-reported-name".equals(codeString))
-          return PATIENTREPORTEDNAME;
-        if ("manufacturer-name".equals(codeString))
-          return MANUFACTURERNAME;
-        if ("model-name".equals(codeString))
-          return MODELNAME;
-        if ("other".equals(codeString))
-          return OTHER;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UDILABELNAME: return "udi-label-name";
-            case USERFRIENDLYNAME: return "user-friendly-name";
-            case PATIENTREPORTEDNAME: return "patient-reported-name";
-            case MANUFACTURERNAME: return "manufacturer-name";
-            case MODELNAME: return "model-name";
-            case OTHER: return "other";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case UDILABELNAME: return "http://hl7.org/fhir/device-nametype";
-            case USERFRIENDLYNAME: return "http://hl7.org/fhir/device-nametype";
-            case PATIENTREPORTEDNAME: return "http://hl7.org/fhir/device-nametype";
-            case MANUFACTURERNAME: return "http://hl7.org/fhir/device-nametype";
-            case MODELNAME: return "http://hl7.org/fhir/device-nametype";
-            case OTHER: return "http://hl7.org/fhir/device-nametype";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name.";
-            case USERFRIENDLYNAME: return "User Friendly name.";
-            case PATIENTREPORTEDNAME: return "Patient Reported name.";
-            case MANUFACTURERNAME: return "Manufacturer name.";
-            case MODELNAME: return "Model name.";
-            case OTHER: return "other.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name";
-            case USERFRIENDLYNAME: return "User Friendly name";
-            case PATIENTREPORTEDNAME: return "Patient Reported name";
-            case MANUFACTURERNAME: return "Manufacturer name";
-            case MODELNAME: return "Model name";
-            case OTHER: return "other";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DeviceNameTypeEnumFactory implements EnumFactory<DeviceNameType> {
-    public DeviceNameType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("udi-label-name".equals(codeString))
-          return DeviceNameType.UDILABELNAME;
-        if ("user-friendly-name".equals(codeString))
-          return DeviceNameType.USERFRIENDLYNAME;
-        if ("patient-reported-name".equals(codeString))
-          return DeviceNameType.PATIENTREPORTEDNAME;
-        if ("manufacturer-name".equals(codeString))
-          return DeviceNameType.MANUFACTURERNAME;
-        if ("model-name".equals(codeString))
-          return DeviceNameType.MODELNAME;
-        if ("other".equals(codeString))
-          return DeviceNameType.OTHER;
-        throw new IllegalArgumentException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-        public Enumeration<DeviceNameType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DeviceNameType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("udi-label-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME);
-        if ("user-friendly-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME);
-        if ("patient-reported-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME);
-        if ("manufacturer-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME);
-        if ("model-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME);
-        if ("other".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER);
-        throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
-        }
-    public String toCode(DeviceNameType code) {
-      if (code == DeviceNameType.UDILABELNAME)
-        return "udi-label-name";
-      if (code == DeviceNameType.USERFRIENDLYNAME)
-        return "user-friendly-name";
-      if (code == DeviceNameType.PATIENTREPORTEDNAME)
-        return "patient-reported-name";
-      if (code == DeviceNameType.MANUFACTURERNAME)
-        return "manufacturer-name";
-      if (code == DeviceNameType.MODELNAME)
-        return "model-name";
-      if (code == DeviceNameType.OTHER)
-        return "other";
-      return "?";
-      }
-    public String toSystem(DeviceNameType code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class DeviceDefinitionUdiDeviceIdentifierComponent extends BackboneElement implements IBaseBackboneElement {
@@ -262,11 +108,11 @@ public class DeviceDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public DeviceDefinitionUdiDeviceIdentifierComponent(StringType deviceIdentifier, UriType issuer, UriType jurisdiction) {
+      public DeviceDefinitionUdiDeviceIdentifierComponent(String deviceIdentifier, String issuer, String jurisdiction) {
         super();
-        this.deviceIdentifier = deviceIdentifier;
-        this.issuer = issuer;
-        this.jurisdiction = jurisdiction;
+        this.setDeviceIdentifier(deviceIdentifier);
+        this.setIssuer(issuer);
+        this.setJurisdiction(jurisdiction);
       }
 
         /**
@@ -488,13 +334,13 @@ public class DeviceDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("deviceIdentifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.deviceIdentifier");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.udiDeviceIdentifier.deviceIdentifier");
         }
         else if (name.equals("issuer")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.issuer");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.udiDeviceIdentifier.issuer");
         }
         else if (name.equals("jurisdiction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.jurisdiction");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.udiDeviceIdentifier.jurisdiction");
         }
         else
           return super.addChild(name);
@@ -577,10 +423,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     /**
      * Constructor
      */
-      public DeviceDefinitionDeviceNameComponent(StringType name, Enumeration<DeviceNameType> type) {
+      public DeviceDefinitionDeviceNameComponent(String name, DeviceNameType type) {
         super();
-        this.name = name;
-        this.type = type;
+        this.setName(name);
+        this.setType(type);
       }
 
         /**
@@ -753,10 +599,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.deviceName.name");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.deviceName.type");
         }
         else
           return super.addChild(name);
@@ -833,9 +679,9 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     /**
      * Constructor
      */
-      public DeviceDefinitionSpecializationComponent(StringType systemType) {
+      public DeviceDefinitionSpecializationComponent(String systemType) {
         super();
-        this.systemType = systemType;
+        this.setSystemType(systemType);
       }
 
         /**
@@ -1006,10 +852,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("systemType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.systemType");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.specialization.systemType");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.specialization.version");
         }
         else
           return super.addChild(name);
@@ -1088,7 +934,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceDefinitionCapabilityComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1159,7 +1005,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The first repetition of repeating field {@link #description}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #description}, creating it if it does not already exist {3}
          */
         public CodeableConcept getDescriptionFirstRep() { 
           if (getDescription().isEmpty()) {
@@ -1336,7 +1182,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceDefinitionPropertyComponent(CodeableConcept type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1407,7 +1253,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist {3}
          */
         public Quantity getValueQuantityFirstRep() { 
           if (getValueQuantity().isEmpty()) {
@@ -1460,7 +1306,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The first repetition of repeating field {@link #valueCode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #valueCode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getValueCodeFirstRep() { 
           if (getValueCode().isEmpty()) {
@@ -1657,7 +1503,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceDefinitionMaterialComponent(CodeableConcept substance) {
         super();
-        this.substance = substance;
+        this.setSubstance(substance);
       }
 
         /**
@@ -1862,10 +1708,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           return this.substance;
         }
         else if (name.equals("alternate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.alternate");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.material.alternate");
         }
         else if (name.equals("allergenicIndicator")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.allergenicIndicator");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.material.allergenicIndicator");
         }
         else
           return super.addChild(name);
@@ -2074,7 +1920,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     @Description(shortDefinition="A substance used to create the material(s) of which the device is made", formalDefinition="A substance used to create the material(s) of which the device is made." )
     protected List<DeviceDefinitionMaterialComponent> material;
 
-    private static final long serialVersionUID = 1684072748L;
+    private static final long serialVersionUID = 740460962L;
 
   /**
    * Constructor
@@ -2127,7 +1973,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -2180,7 +2026,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #udiDeviceIdentifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #udiDeviceIdentifier}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionUdiDeviceIdentifierComponent getUdiDeviceIdentifierFirstRep() { 
       if (getUdiDeviceIdentifier().isEmpty()) {
@@ -2284,7 +2130,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #deviceName}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #deviceName}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionDeviceNameComponent getDeviceNameFirstRep() { 
       if (getDeviceName().isEmpty()) {
@@ -2410,7 +2256,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionSpecializationComponent getSpecializationFirstRep() { 
       if (getSpecialization().isEmpty()) {
@@ -2524,7 +2370,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #safety}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #safety}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSafetyFirstRep() { 
       if (getSafety().isEmpty()) {
@@ -2577,7 +2423,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #shelfLifeStorage}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #shelfLifeStorage}, creating it if it does not already exist {3}
      */
     public ProductShelfLife getShelfLifeStorageFirstRep() { 
       if (getShelfLifeStorage().isEmpty()) {
@@ -2654,7 +2500,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #languageCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #languageCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getLanguageCodeFirstRep() { 
       if (getLanguageCode().isEmpty()) {
@@ -2707,7 +2553,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #capability}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #capability}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionCapabilityComponent getCapabilityFirstRep() { 
       if (getCapability().isEmpty()) {
@@ -2760,7 +2606,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionPropertyComponent getPropertyFirstRep() { 
       if (getProperty().isEmpty()) {
@@ -2837,7 +2683,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactPoint getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -2988,7 +2834,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -3089,7 +2935,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The first repetition of repeating field {@link #material}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #material}, creating it if it does not already exist {3}
      */
     public DeviceDefinitionMaterialComponent getMaterialFirstRep() { 
       if (getMaterial().isEmpty()) {
@@ -3131,8 +2977,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
         case 418079503: /*manufacturer[x]*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
-        case -630681790: /*manufacturerString*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
-        case 1104934522: /*manufacturerReference*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
+        case -630681790: /*manufacturerString*/  return new Property("manufacturer[x]", "string", "A name of the manufacturer.", 0, 1, manufacturer);
+        case 1104934522: /*manufacturerReference*/  return new Property("manufacturer[x]", "Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
         case 780988929: /*deviceName*/  return new Property("deviceName", "", "A name given to the device to identify it.", 0, java.lang.Integer.MAX_VALUE, deviceName);
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device.", 0, 1, modelNumber);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "What kind of device or device system this is.", 0, 1, type);
@@ -3162,7 +3008,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -99121287: /*udiDeviceIdentifier*/ return this.udiDeviceIdentifier == null ? new Base[0] : this.udiDeviceIdentifier.toArray(new Base[this.udiDeviceIdentifier.size()]); // DeviceDefinitionUdiDeviceIdentifierComponent
-        case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Type
+        case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // DataType
         case 780988929: /*deviceName*/ return this.deviceName == null ? new Base[0] : this.deviceName.toArray(new Base[this.deviceName.size()]); // DeviceDefinitionDeviceNameComponent
         case 346619858: /*modelNumber*/ return this.modelNumber == null ? new Base[0] : new Base[] {this.modelNumber}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
@@ -3197,7 +3043,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value); // DeviceDefinitionUdiDeviceIdentifierComponent
           return value;
         case -1969347631: // manufacturer
-          this.manufacturer = TypeConvertor.castToType(value); // Type
+          this.manufacturer = TypeConvertor.castToType(value); // DataType
           return value;
         case 780988929: // deviceName
           this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value); // DeviceDefinitionDeviceNameComponent
@@ -3268,7 +3114,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         } else if (name.equals("udiDeviceIdentifier")) {
           this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
         } else if (name.equals("manufacturer[x]")) {
-          this.manufacturer = TypeConvertor.castToType(value); // Type
+          this.manufacturer = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("deviceName")) {
           this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value);
         } else if (name.equals("modelNumber")) {
@@ -3590,6 +3436,26 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
    }
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the component</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="DeviceDefinition.identifier", description="The identifier of the component", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the component</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
    * Search parameter: <b>parent</b>
    * <p>
    * Description: <b>The parent DeviceDefinition resource</b><br>
@@ -3614,26 +3480,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
    * the path value of "<b>DeviceDefinition:parent</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("DeviceDefinition:parent").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the component</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceDefinition.identifier", description="The identifier of the component", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the component</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>type</b>

@@ -72,3 +72,11 @@
     }    
     return res;
   }
+
+  public String getName() {
+    return getWorkingCode();
+  }
+
+  public boolean isResourceReference() {
+    return "Reference".equals(getCode()) && hasTargetProfile();
+  }

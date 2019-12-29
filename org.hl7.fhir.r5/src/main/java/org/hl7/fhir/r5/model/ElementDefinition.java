@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,197 +25,254 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
-// added from java-adornments.txt:
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
-
-// end addition
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import  org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import  org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
+import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 /**
- * Captures constraints on each element within the resource, profile, or extension.
+ * Base StructureDefinition for ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.
  */
 @DatatypeDef(name="ElementDefinition")
 public class ElementDefinition extends BackboneType implements ICompositeType {
 
-    public enum PropertyRepresentation {
+    public enum AggregationMode {
         /**
-         * In XML, this property is represented as an attribute not an element.
+         * The reference is a local reference to a contained resource.
          */
-        XMLATTR, 
+        CONTAINED, 
         /**
-         * This element is represented using the XML text attribute (primitives only).
+         * The reference to a resource that has to be resolved externally to the resource that includes the reference.
          */
-        XMLTEXT, 
+        REFERENCED, 
         /**
-         * The type of this element is indicated using xsi:type.
+         * The resource the reference points to will be found in the same bundle as the resource that includes the reference.
          */
-        TYPEATTR, 
-        /**
-         * Use CDA narrative instead of XHTML.
-         */
-        CDATEXT, 
-        /**
-         * The property is represented using XHTML.
-         */
-        XHTML, 
+        BUNDLED, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static PropertyRepresentation fromCode(String codeString) throws FHIRException {
+        public static AggregationMode fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("xmlAttr".equals(codeString))
-          return XMLATTR;
-        if ("xmlText".equals(codeString))
-          return XMLTEXT;
-        if ("typeAttr".equals(codeString))
-          return TYPEATTR;
-        if ("cdaText".equals(codeString))
-          return CDATEXT;
-        if ("xhtml".equals(codeString))
-          return XHTML;
+        if ("contained".equals(codeString))
+          return CONTAINED;
+        if ("referenced".equals(codeString))
+          return REFERENCED;
+        if ("bundled".equals(codeString))
+          return BUNDLED;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
+          throw new FHIRException("Unknown AggregationMode code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case XMLATTR: return "xmlAttr";
-            case XMLTEXT: return "xmlText";
-            case TYPEATTR: return "typeAttr";
-            case CDATEXT: return "cdaText";
-            case XHTML: return "xhtml";
+            case CONTAINED: return "contained";
+            case REFERENCED: return "referenced";
+            case BUNDLED: return "bundled";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case XMLATTR: return "http://hl7.org/fhir/property-representation";
-            case XMLTEXT: return "http://hl7.org/fhir/property-representation";
-            case TYPEATTR: return "http://hl7.org/fhir/property-representation";
-            case CDATEXT: return "http://hl7.org/fhir/property-representation";
-            case XHTML: return "http://hl7.org/fhir/property-representation";
+            case CONTAINED: return "http://hl7.org/fhir/resource-aggregation-mode";
+            case REFERENCED: return "http://hl7.org/fhir/resource-aggregation-mode";
+            case BUNDLED: return "http://hl7.org/fhir/resource-aggregation-mode";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case XMLATTR: return "In XML, this property is represented as an attribute not an element.";
-            case XMLTEXT: return "This element is represented using the XML text attribute (primitives only).";
-            case TYPEATTR: return "The type of this element is indicated using xsi:type.";
-            case CDATEXT: return "Use CDA narrative instead of XHTML.";
-            case XHTML: return "The property is represented using XHTML.";
+            case CONTAINED: return "The reference is a local reference to a contained resource.";
+            case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
+            case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case XMLATTR: return "XML Attribute";
-            case XMLTEXT: return "XML Text";
-            case TYPEATTR: return "Type Attribute";
-            case CDATEXT: return "CDA Text Format";
-            case XHTML: return "XHTML";
+            case CONTAINED: return "Contained";
+            case REFERENCED: return "Referenced";
+            case BUNDLED: return "Bundled";
             default: return "?";
           }
         }
     }
 
-  public static class PropertyRepresentationEnumFactory implements EnumFactory<PropertyRepresentation> {
-    public PropertyRepresentation fromCode(String codeString) throws IllegalArgumentException {
+  public static class AggregationModeEnumFactory implements EnumFactory<AggregationMode> {
+    public AggregationMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("xmlAttr".equals(codeString))
-          return PropertyRepresentation.XMLATTR;
-        if ("xmlText".equals(codeString))
-          return PropertyRepresentation.XMLTEXT;
-        if ("typeAttr".equals(codeString))
-          return PropertyRepresentation.TYPEATTR;
-        if ("cdaText".equals(codeString))
-          return PropertyRepresentation.CDATEXT;
-        if ("xhtml".equals(codeString))
-          return PropertyRepresentation.XHTML;
-        throw new IllegalArgumentException("Unknown PropertyRepresentation code '"+codeString+"'");
+        if ("contained".equals(codeString))
+          return AggregationMode.CONTAINED;
+        if ("referenced".equals(codeString))
+          return AggregationMode.REFERENCED;
+        if ("bundled".equals(codeString))
+          return AggregationMode.BUNDLED;
+        throw new IllegalArgumentException("Unknown AggregationMode code '"+codeString+"'");
         }
-        public Enumeration<PropertyRepresentation> fromType(Base code) throws FHIRException {
+        public Enumeration<AggregationMode> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PropertyRepresentation>(this);
+            return new Enumeration<AggregationMode>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("xmlAttr".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLATTR);
-        if ("xmlText".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLTEXT);
-        if ("typeAttr".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.TYPEATTR);
-        if ("cdaText".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.CDATEXT);
-        if ("xhtml".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XHTML);
-        throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
+        if ("contained".equals(codeString))
+          return new Enumeration<AggregationMode>(this, AggregationMode.CONTAINED);
+        if ("referenced".equals(codeString))
+          return new Enumeration<AggregationMode>(this, AggregationMode.REFERENCED);
+        if ("bundled".equals(codeString))
+          return new Enumeration<AggregationMode>(this, AggregationMode.BUNDLED);
+        throw new FHIRException("Unknown AggregationMode code '"+codeString+"'");
         }
-    public String toCode(PropertyRepresentation code) {
-      if (code == PropertyRepresentation.XMLATTR)
-        return "xmlAttr";
-      if (code == PropertyRepresentation.XMLTEXT)
-        return "xmlText";
-      if (code == PropertyRepresentation.TYPEATTR)
-        return "typeAttr";
-      if (code == PropertyRepresentation.CDATEXT)
-        return "cdaText";
-      if (code == PropertyRepresentation.XHTML)
-        return "xhtml";
+    public String toCode(AggregationMode code) {
+      if (code == AggregationMode.CONTAINED)
+        return "contained";
+      if (code == AggregationMode.REFERENCED)
+        return "referenced";
+      if (code == AggregationMode.BUNDLED)
+        return "bundled";
       return "?";
       }
-    public String toSystem(PropertyRepresentation code) {
+    public String toSystem(AggregationMode code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum ConstraintSeverity {
+        /**
+         * If the constraint is violated, the resource is not conformant.
+         */
+        ERROR, 
+        /**
+         * If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.
+         */
+        WARNING, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ConstraintSeverity fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("error".equals(codeString))
+          return ERROR;
+        if ("warning".equals(codeString))
+          return WARNING;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ERROR: return "error";
+            case WARNING: return "warning";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ERROR: return "http://hl7.org/fhir/constraint-severity";
+            case WARNING: return "http://hl7.org/fhir/constraint-severity";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ERROR: return "If the constraint is violated, the resource is not conformant.";
+            case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ERROR: return "Error";
+            case WARNING: return "Warning";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ConstraintSeverityEnumFactory implements EnumFactory<ConstraintSeverity> {
+    public ConstraintSeverity fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("error".equals(codeString))
+          return ConstraintSeverity.ERROR;
+        if ("warning".equals(codeString))
+          return ConstraintSeverity.WARNING;
+        throw new IllegalArgumentException("Unknown ConstraintSeverity code '"+codeString+"'");
+        }
+        public Enumeration<ConstraintSeverity> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ConstraintSeverity>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("error".equals(codeString))
+          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.ERROR);
+        if ("warning".equals(codeString))
+          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.WARNING);
+        throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
+        }
+    public String toCode(ConstraintSeverity code) {
+      if (code == ConstraintSeverity.ERROR)
+        return "error";
+      if (code == ConstraintSeverity.WARNING)
+        return "warning";
+      return "?";
+      }
+    public String toSystem(ConstraintSeverity code) {
       return code.getSystem();
       }
     }
@@ -359,218 +417,142 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
     }
 
-    public enum SlicingRules {
+    public enum PropertyRepresentation {
         /**
-         * No additional content is allowed other than that described by the slices in this profile.
+         * In XML, this property is represented as an attribute not an element.
          */
-        CLOSED, 
+        XMLATTR, 
         /**
-         * Additional content is allowed anywhere in the list.
+         * This element is represented using the XML text attribute (primitives only).
          */
-        OPEN, 
+        XMLTEXT, 
         /**
-         * Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.
+         * The type of this element is indicated using xsi:type.
          */
-        OPENATEND, 
+        TYPEATTR, 
+        /**
+         * Use CDA narrative instead of XHTML.
+         */
+        CDATEXT, 
+        /**
+         * The property is represented using XHTML.
+         */
+        XHTML, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static SlicingRules fromCode(String codeString) throws FHIRException {
+        public static PropertyRepresentation fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("closed".equals(codeString))
-          return CLOSED;
-        if ("open".equals(codeString))
-          return OPEN;
-        if ("openAtEnd".equals(codeString))
-          return OPENATEND;
+        if ("xmlAttr".equals(codeString))
+          return XMLATTR;
+        if ("xmlText".equals(codeString))
+          return XMLTEXT;
+        if ("typeAttr".equals(codeString))
+          return TYPEATTR;
+        if ("cdaText".equals(codeString))
+          return CDATEXT;
+        if ("xhtml".equals(codeString))
+          return XHTML;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown SlicingRules code '"+codeString+"'");
+          throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case CLOSED: return "closed";
-            case OPEN: return "open";
-            case OPENATEND: return "openAtEnd";
+            case XMLATTR: return "xmlAttr";
+            case XMLTEXT: return "xmlText";
+            case TYPEATTR: return "typeAttr";
+            case CDATEXT: return "cdaText";
+            case XHTML: return "xhtml";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case CLOSED: return "http://hl7.org/fhir/resource-slicing-rules";
-            case OPEN: return "http://hl7.org/fhir/resource-slicing-rules";
-            case OPENATEND: return "http://hl7.org/fhir/resource-slicing-rules";
+            case XMLATTR: return "http://hl7.org/fhir/property-representation";
+            case XMLTEXT: return "http://hl7.org/fhir/property-representation";
+            case TYPEATTR: return "http://hl7.org/fhir/property-representation";
+            case CDATEXT: return "http://hl7.org/fhir/property-representation";
+            case XHTML: return "http://hl7.org/fhir/property-representation";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case CLOSED: return "No additional content is allowed other than that described by the slices in this profile.";
-            case OPEN: return "Additional content is allowed anywhere in the list.";
-            case OPENATEND: return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
+            case XMLATTR: return "In XML, this property is represented as an attribute not an element.";
+            case XMLTEXT: return "This element is represented using the XML text attribute (primitives only).";
+            case TYPEATTR: return "The type of this element is indicated using xsi:type.";
+            case CDATEXT: return "Use CDA narrative instead of XHTML.";
+            case XHTML: return "The property is represented using XHTML.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case CLOSED: return "Closed";
-            case OPEN: return "Open";
-            case OPENATEND: return "Open at End";
+            case XMLATTR: return "XML Attribute";
+            case XMLTEXT: return "XML Text";
+            case TYPEATTR: return "Type Attribute";
+            case CDATEXT: return "CDA Text Format";
+            case XHTML: return "XHTML";
             default: return "?";
           }
         }
     }
 
-  public static class SlicingRulesEnumFactory implements EnumFactory<SlicingRules> {
-    public SlicingRules fromCode(String codeString) throws IllegalArgumentException {
+  public static class PropertyRepresentationEnumFactory implements EnumFactory<PropertyRepresentation> {
+    public PropertyRepresentation fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("closed".equals(codeString))
-          return SlicingRules.CLOSED;
-        if ("open".equals(codeString))
-          return SlicingRules.OPEN;
-        if ("openAtEnd".equals(codeString))
-          return SlicingRules.OPENATEND;
-        throw new IllegalArgumentException("Unknown SlicingRules code '"+codeString+"'");
+        if ("xmlAttr".equals(codeString))
+          return PropertyRepresentation.XMLATTR;
+        if ("xmlText".equals(codeString))
+          return PropertyRepresentation.XMLTEXT;
+        if ("typeAttr".equals(codeString))
+          return PropertyRepresentation.TYPEATTR;
+        if ("cdaText".equals(codeString))
+          return PropertyRepresentation.CDATEXT;
+        if ("xhtml".equals(codeString))
+          return PropertyRepresentation.XHTML;
+        throw new IllegalArgumentException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
-        public Enumeration<SlicingRules> fromType(Base code) throws FHIRException {
+        public Enumeration<PropertyRepresentation> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SlicingRules>(this);
+            return new Enumeration<PropertyRepresentation>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("closed".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.CLOSED);
-        if ("open".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.OPEN);
-        if ("openAtEnd".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.OPENATEND);
-        throw new FHIRException("Unknown SlicingRules code '"+codeString+"'");
+        if ("xmlAttr".equals(codeString))
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLATTR);
+        if ("xmlText".equals(codeString))
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLTEXT);
+        if ("typeAttr".equals(codeString))
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.TYPEATTR);
+        if ("cdaText".equals(codeString))
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.CDATEXT);
+        if ("xhtml".equals(codeString))
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XHTML);
+        throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
-    public String toCode(SlicingRules code) {
-      if (code == SlicingRules.CLOSED)
-        return "closed";
-      if (code == SlicingRules.OPEN)
-        return "open";
-      if (code == SlicingRules.OPENATEND)
-        return "openAtEnd";
+    public String toCode(PropertyRepresentation code) {
+      if (code == PropertyRepresentation.XMLATTR)
+        return "xmlAttr";
+      if (code == PropertyRepresentation.XMLTEXT)
+        return "xmlText";
+      if (code == PropertyRepresentation.TYPEATTR)
+        return "typeAttr";
+      if (code == PropertyRepresentation.CDATEXT)
+        return "cdaText";
+      if (code == PropertyRepresentation.XHTML)
+        return "xhtml";
       return "?";
       }
-    public String toSystem(SlicingRules code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum AggregationMode {
-        /**
-         * The reference is a local reference to a contained resource.
-         */
-        CONTAINED, 
-        /**
-         * The reference to a resource that has to be resolved externally to the resource that includes the reference.
-         */
-        REFERENCED, 
-        /**
-         * The resource the reference points to will be found in the same bundle as the resource that includes the reference.
-         */
-        BUNDLED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static AggregationMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("contained".equals(codeString))
-          return CONTAINED;
-        if ("referenced".equals(codeString))
-          return REFERENCED;
-        if ("bundled".equals(codeString))
-          return BUNDLED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown AggregationMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CONTAINED: return "contained";
-            case REFERENCED: return "referenced";
-            case BUNDLED: return "bundled";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case CONTAINED: return "http://hl7.org/fhir/resource-aggregation-mode";
-            case REFERENCED: return "http://hl7.org/fhir/resource-aggregation-mode";
-            case BUNDLED: return "http://hl7.org/fhir/resource-aggregation-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CONTAINED: return "The reference is a local reference to a contained resource.";
-            case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
-            case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CONTAINED: return "Contained";
-            case REFERENCED: return "Referenced";
-            case BUNDLED: return "Bundled";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class AggregationModeEnumFactory implements EnumFactory<AggregationMode> {
-    public AggregationMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("contained".equals(codeString))
-          return AggregationMode.CONTAINED;
-        if ("referenced".equals(codeString))
-          return AggregationMode.REFERENCED;
-        if ("bundled".equals(codeString))
-          return AggregationMode.BUNDLED;
-        throw new IllegalArgumentException("Unknown AggregationMode code '"+codeString+"'");
-        }
-        public Enumeration<AggregationMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<AggregationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("contained".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.CONTAINED);
-        if ("referenced".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.REFERENCED);
-        if ("bundled".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.BUNDLED);
-        throw new FHIRException("Unknown AggregationMode code '"+codeString+"'");
-        }
-    public String toCode(AggregationMode code) {
-      if (code == AggregationMode.CONTAINED)
-        return "contained";
-      if (code == AggregationMode.REFERENCED)
-        return "referenced";
-      if (code == AggregationMode.BUNDLED)
-        return "bundled";
-      return "?";
-      }
-    public String toSystem(AggregationMode code) {
+    public String toSystem(PropertyRepresentation code) {
       return code.getSystem();
       }
     }
@@ -683,94 +665,110 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
     }
 
-    public enum ConstraintSeverity {
+    public enum SlicingRules {
         /**
-         * If the constraint is violated, the resource is not conformant.
+         * No additional content is allowed other than that described by the slices in this profile.
          */
-        ERROR, 
+        CLOSED, 
         /**
-         * If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.
+         * Additional content is allowed anywhere in the list.
          */
-        WARNING, 
+        OPEN, 
+        /**
+         * Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.
+         */
+        OPENATEND, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static ConstraintSeverity fromCode(String codeString) throws FHIRException {
+        public static SlicingRules fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("error".equals(codeString))
-          return ERROR;
-        if ("warning".equals(codeString))
-          return WARNING;
+        if ("closed".equals(codeString))
+          return CLOSED;
+        if ("open".equals(codeString))
+          return OPEN;
+        if ("openAtEnd".equals(codeString))
+          return OPENATEND;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
+          throw new FHIRException("Unknown SlicingRules code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case ERROR: return "error";
-            case WARNING: return "warning";
+            case CLOSED: return "closed";
+            case OPEN: return "open";
+            case OPENATEND: return "openAtEnd";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case ERROR: return "http://hl7.org/fhir/constraint-severity";
-            case WARNING: return "http://hl7.org/fhir/constraint-severity";
+            case CLOSED: return "http://hl7.org/fhir/resource-slicing-rules";
+            case OPEN: return "http://hl7.org/fhir/resource-slicing-rules";
+            case OPENATEND: return "http://hl7.org/fhir/resource-slicing-rules";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case ERROR: return "If the constraint is violated, the resource is not conformant.";
-            case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
+            case CLOSED: return "No additional content is allowed other than that described by the slices in this profile.";
+            case OPEN: return "Additional content is allowed anywhere in the list.";
+            case OPENATEND: return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case ERROR: return "Error";
-            case WARNING: return "Warning";
+            case CLOSED: return "Closed";
+            case OPEN: return "Open";
+            case OPENATEND: return "Open at End";
             default: return "?";
           }
         }
     }
 
-  public static class ConstraintSeverityEnumFactory implements EnumFactory<ConstraintSeverity> {
-    public ConstraintSeverity fromCode(String codeString) throws IllegalArgumentException {
+  public static class SlicingRulesEnumFactory implements EnumFactory<SlicingRules> {
+    public SlicingRules fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("error".equals(codeString))
-          return ConstraintSeverity.ERROR;
-        if ("warning".equals(codeString))
-          return ConstraintSeverity.WARNING;
-        throw new IllegalArgumentException("Unknown ConstraintSeverity code '"+codeString+"'");
+        if ("closed".equals(codeString))
+          return SlicingRules.CLOSED;
+        if ("open".equals(codeString))
+          return SlicingRules.OPEN;
+        if ("openAtEnd".equals(codeString))
+          return SlicingRules.OPENATEND;
+        throw new IllegalArgumentException("Unknown SlicingRules code '"+codeString+"'");
         }
-        public Enumeration<ConstraintSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<SlicingRules> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConstraintSeverity>(this);
+            return new Enumeration<SlicingRules>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("error".equals(codeString))
-          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.ERROR);
-        if ("warning".equals(codeString))
-          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.WARNING);
-        throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
+        if ("closed".equals(codeString))
+          return new Enumeration<SlicingRules>(this, SlicingRules.CLOSED);
+        if ("open".equals(codeString))
+          return new Enumeration<SlicingRules>(this, SlicingRules.OPEN);
+        if ("openAtEnd".equals(codeString))
+          return new Enumeration<SlicingRules>(this, SlicingRules.OPENATEND);
+        throw new FHIRException("Unknown SlicingRules code '"+codeString+"'");
         }
-    public String toCode(ConstraintSeverity code) {
-      if (code == ConstraintSeverity.ERROR)
-        return "error";
-      if (code == ConstraintSeverity.WARNING)
-        return "warning";
+    public String toCode(SlicingRules code) {
+      if (code == SlicingRules.CLOSED)
+        return "closed";
+      if (code == SlicingRules.OPEN)
+        return "open";
+      if (code == SlicingRules.OPENATEND)
+        return "openAtEnd";
       return "?";
       }
-    public String toSystem(ConstraintSeverity code) {
+    public String toSystem(SlicingRules code) {
       return code.getSystem();
       }
     }
@@ -818,9 +816,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionSlicingComponent(Enumeration<SlicingRules> rules) {
+      public ElementDefinitionSlicingComponent(SlicingRules rules) {
         super();
-        this.rules = rules;
+        this.setRules(rules);
       }
 
         /**
@@ -867,7 +865,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #discriminator}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #discriminator}, creating it if it does not already exist {3}
          */
         public ElementDefinitionSlicingDiscriminatorComponent getDiscriminatorFirstRep() { 
           if (getDiscriminator().isEmpty()) {
@@ -1114,13 +1112,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return addDiscriminator();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.description");
         }
         else if (name.equals("ordered")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.ordered");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.ordered");
         }
         else if (name.equals("rules")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.rules");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.rules");
         }
         else
           return super.addChild(name);
@@ -1207,10 +1205,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionSlicingDiscriminatorComponent(Enumeration<DiscriminatorType> type, StringType path) {
+      public ElementDefinitionSlicingDiscriminatorComponent(DiscriminatorType type, String path) {
         super();
-        this.type = type;
-        this.path = path;
+        this.setType(type);
+        this.setPath(path);
       }
 
         /**
@@ -1379,10 +1377,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.discriminator.type");
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.path");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.discriminator.path");
         }
         else
           return super.addChild(name);
@@ -1434,10 +1432,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     @Block()
     public static class ElementDefinitionBaseComponent extends Element implements IBaseDatatypeElement {
         /**
-         * The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.
+         * The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.
          */
         @Child(name = "path", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Path that identifies the base element", formalDefinition="The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base." )
+        @Description(shortDefinition="Path that identifies the base element", formalDefinition="The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base." )
         protected StringType path;
 
         /**
@@ -1466,15 +1464,15 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionBaseComponent(StringType path, UnsignedIntType min, StringType max) {
+      public ElementDefinitionBaseComponent(String path, int min, String max) {
         super();
-        this.path = path;
-        this.min = min;
-        this.max = max;
+        this.setPath(path);
+        this.setMin(min);
+        this.setMax(max);
       }
 
         /**
-         * @return {@link #path} (The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
+         * @return {@link #path} (The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
          */
         public StringType getPathElement() { 
           if (this.path == null)
@@ -1494,7 +1492,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @param value {@link #path} (The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
+         * @param value {@link #path} (The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
          */
         public ElementDefinitionBaseComponent setPathElement(StringType value) { 
           this.path = value;
@@ -1502,14 +1500,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.
+         * @return The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.
          */
         public String getPath() { 
           return this.path == null ? null : this.path.getValue();
         }
 
         /**
-         * @param value The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.
+         * @param value The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.
          */
         public ElementDefinitionBaseComponent setPath(String value) { 
             if (this.path == null)
@@ -1610,7 +1608,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("path", "string", "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.", 0, 1, path));
+          children.add(new Property("path", "string", "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.", 0, 1, path));
           children.add(new Property("min", "unsignedInt", "Minimum cardinality of the base element identified by the path.", 0, 1, min));
           children.add(new Property("max", "string", "Maximum cardinality of the base element identified by the path.", 0, 1, max));
         }
@@ -1618,7 +1616,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3433509: /*path*/  return new Property("path", "string", "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [[[StructureDefinition]]] without a StructureDefinition.base.", 0, 1, path);
+          case 3433509: /*path*/  return new Property("path", "string", "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.", 0, 1, path);
           case 108114: /*min*/  return new Property("min", "unsignedInt", "Minimum cardinality of the base element identified by the path.", 0, 1, min);
           case 107876: /*max*/  return new Property("max", "string", "Maximum cardinality of the base element identified by the path.", 0, 1, max);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1692,13 +1690,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.path");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.path");
         }
         else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.min");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.min");
         }
         else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.max");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.max");
         }
         else
           return super.addChild(name);
@@ -1802,9 +1800,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public TypeRefComponent(UriType code) {
+      public TypeRefComponent(String code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -1908,7 +1906,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           if (this.profile == null)
             return false;
           for (CanonicalType v : this.profile)
-            if (v.getValue().equals(value)) // canonical(StructureDefinition|ImplementationGuide)
+            if (v.getValue().equals(value)) // canonical
               return true;
           return false;
         }
@@ -1969,7 +1967,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           if (this.targetProfile == null)
             return false;
           for (CanonicalType v : this.targetProfile)
-            if (v.getValue().equals(value)) // canonical(StructureDefinition|ImplementationGuide)
+            if (v.getValue().equals(value)) // canonical
               return true;
           return false;
         }
@@ -2192,19 +2190,19 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.code");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.code");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.profile");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.profile");
         }
         else if (name.equals("targetProfile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.targetProfile");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.targetProfile");
         }
         else if (name.equals("aggregation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.aggregation");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.aggregation");
         }
         else if (name.equals("versioning")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.versioning");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.versioning");
         }
         else
           return super.addChild(name);
@@ -2256,7 +2254,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         if (!(other_ instanceof TypeRefComponent))
           return false;
         TypeRefComponent o = (TypeRefComponent) other_;
-        return compareValues(code, o.code, true) && compareValues(aggregation, o.aggregation, true) && compareValues(versioning, o.versioning, true)
+        return compareValues(code, o.code, true) && compareValues(profile, o.profile, true) && compareValues(targetProfile, o.targetProfile, true)
+           && compareValues(aggregation, o.aggregation, true) && compareValues(versioning, o.versioning, true)
           ;
       }
 
@@ -2275,8 +2274,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   public boolean hasTarget() {
     return Utilities.existsInList(getCode(), "Reference", "canonical", "CodeableReference");
   }
-
-  /**
+  
+    /**
    * This code checks for the system prefix and returns the FHIR type
    * 
    * @return
@@ -2345,6 +2344,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }    
     return res;
   }
+
+  public String getName() {
+    return getWorkingCode();
+  }
+
+  public boolean isResourceReference() {
+    return "Reference".equals(getCode()) && hasTargetProfile();
+  }
 // end addition
   }
 
@@ -2360,11 +2367,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         /**
          * The actual value for the element, which must be one of the types allowed for this element.
          */
-        @Child(name = "value", type = {}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Value of Example (one of allowed types)", formalDefinition="The actual value for the element, which must be one of the types allowed for this element." )
-        protected org.hl7.fhir.r5.model.DataType value;
+        protected DataType value;
 
-        private static final long serialVersionUID = 668923394L;
+        private static final long serialVersionUID = 463190922L;
 
     /**
      * Constructor
@@ -2376,10 +2383,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionExampleComponent(StringType label, org.hl7.fhir.r5.model.DataType value) {
+      public ElementDefinitionExampleComponent(String label, DataType value) {
         super();
-        this.label = label;
-        this.value = value;
+        this.setLabel(label);
+        this.setValue(value);
       }
 
         /**
@@ -2430,8 +2437,773 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         /**
          * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
-        public org.hl7.fhir.r5.model.DataType getValue() { 
+        public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Base64BinaryType getValueBase64BinaryType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Base64BinaryType();
+          if (!(this.value instanceof Base64BinaryType))
+            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Base64BinaryType) this.value;
+        }
+
+        public boolean hasValueBase64BinaryType() { 
+          return this != null && this.value instanceof Base64BinaryType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public CanonicalType getValueCanonicalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CanonicalType();
+          if (!(this.value instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CanonicalType) this.value;
+        }
+
+        public boolean hasValueCanonicalType() { 
+          return this != null && this.value instanceof CanonicalType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public IdType getValueIdType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IdType();
+          if (!(this.value instanceof IdType))
+            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IdType) this.value;
+        }
+
+        public boolean hasValueIdType() { 
+          return this != null && this.value instanceof IdType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public InstantType getValueInstantType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new InstantType();
+          if (!(this.value instanceof InstantType))
+            throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (InstantType) this.value;
+        }
+
+        public boolean hasValueInstantType() { 
+          return this != null && this.value instanceof InstantType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Integer64Type getValueInteger64Type() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Integer64Type();
+          if (!(this.value instanceof Integer64Type))
+            throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Integer64Type) this.value;
+        }
+
+        public boolean hasValueInteger64Type() { 
+          return this != null && this.value instanceof Integer64Type;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public MarkdownType getValueMarkdownType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new MarkdownType();
+          if (!(this.value instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (MarkdownType) this.value;
+        }
+
+        public boolean hasValueMarkdownType() { 
+          return this != null && this.value instanceof MarkdownType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public OidType getValueOidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new OidType();
+          if (!(this.value instanceof OidType))
+            throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (OidType) this.value;
+        }
+
+        public boolean hasValueOidType() { 
+          return this != null && this.value instanceof OidType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public PositiveIntType getValuePositiveIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new PositiveIntType();
+          if (!(this.value instanceof PositiveIntType))
+            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (PositiveIntType) this.value;
+        }
+
+        public boolean hasValuePositiveIntType() { 
+          return this != null && this.value instanceof PositiveIntType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public TimeType getValueTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TimeType();
+          if (!(this.value instanceof TimeType))
+            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TimeType) this.value;
+        }
+
+        public boolean hasValueTimeType() { 
+          return this != null && this.value instanceof TimeType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public UnsignedIntType getValueUnsignedIntType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UnsignedIntType();
+          if (!(this.value instanceof UnsignedIntType))
+            throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UnsignedIntType) this.value;
+        }
+
+        public boolean hasValueUnsignedIntType() { 
+          return this != null && this.value instanceof UnsignedIntType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public UriType getValueUriType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UriType();
+          if (!(this.value instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UriType) this.value;
+        }
+
+        public boolean hasValueUriType() { 
+          return this != null && this.value instanceof UriType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public UrlType getValueUrlType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UrlType();
+          if (!(this.value instanceof UrlType))
+            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UrlType) this.value;
+        }
+
+        public boolean hasValueUrlType() { 
+          return this != null && this.value instanceof UrlType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public UuidType getValueUuidType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UuidType();
+          if (!(this.value instanceof UuidType))
+            throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UuidType) this.value;
+        }
+
+        public boolean hasValueUuidType() { 
+          return this != null && this.value instanceof UuidType;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Address getValueAddress() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Address();
+          if (!(this.value instanceof Address))
+            throw new FHIRException("Type mismatch: the type Address was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Address) this.value;
+        }
+
+        public boolean hasValueAddress() { 
+          return this != null && this.value instanceof Address;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Age getValueAge() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Age();
+          if (!(this.value instanceof Age))
+            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Age) this.value;
+        }
+
+        public boolean hasValueAge() { 
+          return this != null && this.value instanceof Age;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Annotation getValueAnnotation() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Annotation();
+          if (!(this.value instanceof Annotation))
+            throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Annotation) this.value;
+        }
+
+        public boolean hasValueAnnotation() { 
+          return this != null && this.value instanceof Annotation;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public ContactPoint getValueContactPoint() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactPoint();
+          if (!(this.value instanceof ContactPoint))
+            throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactPoint) this.value;
+        }
+
+        public boolean hasValueContactPoint() { 
+          return this != null && this.value instanceof ContactPoint;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Count getValueCount() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Count();
+          if (!(this.value instanceof Count))
+            throw new FHIRException("Type mismatch: the type Count was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Count) this.value;
+        }
+
+        public boolean hasValueCount() { 
+          return this != null && this.value instanceof Count;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Distance getValueDistance() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Distance();
+          if (!(this.value instanceof Distance))
+            throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Distance) this.value;
+        }
+
+        public boolean hasValueDistance() { 
+          return this != null && this.value instanceof Distance;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Duration getValueDuration() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Duration();
+          if (!(this.value instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Duration) this.value;
+        }
+
+        public boolean hasValueDuration() { 
+          return this != null && this.value instanceof Duration;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public HumanName getValueHumanName() throws FHIRException { 
+          if (this.value == null)
+            this.value = new HumanName();
+          if (!(this.value instanceof HumanName))
+            throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (HumanName) this.value;
+        }
+
+        public boolean hasValueHumanName() { 
+          return this != null && this.value instanceof HumanName;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Identifier getValueIdentifier() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Identifier();
+          if (!(this.value instanceof Identifier))
+            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Identifier) this.value;
+        }
+
+        public boolean hasValueIdentifier() { 
+          return this != null && this.value instanceof Identifier;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Money getValueMoney() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Money();
+          if (!(this.value instanceof Money))
+            throw new FHIRException("Type mismatch: the type Money was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Money) this.value;
+        }
+
+        public boolean hasValueMoney() { 
+          return this != null && this.value instanceof Money;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Period getValuePeriod() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Period();
+          if (!(this.value instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Period) this.value;
+        }
+
+        public boolean hasValuePeriod() { 
+          return this != null && this.value instanceof Period;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Ratio getValueRatio() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Ratio();
+          if (!(this.value instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Ratio) this.value;
+        }
+
+        public boolean hasValueRatio() { 
+          return this != null && this.value instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public SampledData getValueSampledData() throws FHIRException { 
+          if (this.value == null)
+            this.value = new SampledData();
+          if (!(this.value instanceof SampledData))
+            throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (SampledData) this.value;
+        }
+
+        public boolean hasValueSampledData() { 
+          return this != null && this.value instanceof SampledData;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Signature getValueSignature() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Signature();
+          if (!(this.value instanceof Signature))
+            throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Signature) this.value;
+        }
+
+        public boolean hasValueSignature() { 
+          return this != null && this.value instanceof Signature;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Timing getValueTiming() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Timing();
+          if (!(this.value instanceof Timing))
+            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Timing) this.value;
+        }
+
+        public boolean hasValueTiming() { 
+          return this != null && this.value instanceof Timing;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public ContactDetail getValueContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ContactDetail();
+          if (!(this.value instanceof ContactDetail))
+            throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ContactDetail) this.value;
+        }
+
+        public boolean hasValueContactDetail() { 
+          return this != null && this.value instanceof ContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Contributor getValueContributor() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Contributor();
+          if (!(this.value instanceof Contributor))
+            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Contributor) this.value;
+        }
+
+        public boolean hasValueContributor() { 
+          return this != null && this.value instanceof Contributor;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public DataRequirement getValueDataRequirement() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DataRequirement();
+          if (!(this.value instanceof DataRequirement))
+            throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DataRequirement) this.value;
+        }
+
+        public boolean hasValueDataRequirement() { 
+          return this != null && this.value instanceof DataRequirement;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Expression getValueExpression() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Expression();
+          if (!(this.value instanceof Expression))
+            throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Expression) this.value;
+        }
+
+        public boolean hasValueExpression() { 
+          return this != null && this.value instanceof Expression;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public ParameterDefinition getValueParameterDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ParameterDefinition();
+          if (!(this.value instanceof ParameterDefinition))
+            throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ParameterDefinition) this.value;
+        }
+
+        public boolean hasValueParameterDefinition() { 
+          return this != null && this.value instanceof ParameterDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public RelatedArtifact getValueRelatedArtifact() throws FHIRException { 
+          if (this.value == null)
+            this.value = new RelatedArtifact();
+          if (!(this.value instanceof RelatedArtifact))
+            throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (RelatedArtifact) this.value;
+        }
+
+        public boolean hasValueRelatedArtifact() { 
+          return this != null && this.value instanceof RelatedArtifact;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public TriggerDefinition getValueTriggerDefinition() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TriggerDefinition();
+          if (!(this.value instanceof TriggerDefinition))
+            throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TriggerDefinition) this.value;
+        }
+
+        public boolean hasValueTriggerDefinition() { 
+          return this != null && this.value instanceof TriggerDefinition;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public UsageContext getValueUsageContext() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UsageContext();
+          if (!(this.value instanceof UsageContext))
+            throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UsageContext) this.value;
+        }
+
+        public boolean hasValueUsageContext() { 
+          return this != null && this.value instanceof UsageContext;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Dosage getValueDosage() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Dosage();
+          if (!(this.value instanceof Dosage))
+            throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Dosage) this.value;
+        }
+
+        public boolean hasValueDosage() { 
+          return this != null && this.value instanceof Dosage;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public Meta getValueMeta() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Meta();
+          if (!(this.value instanceof Meta))
+            throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Meta) this.value;
+        }
+
+        public boolean hasValueMeta() { 
+          return this != null && this.value instanceof Meta;
         }
 
         public boolean hasValue() { 
@@ -2441,7 +3213,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
-        public ElementDefinitionExampleComponent setValue(org.hl7.fhir.r5.model.DataType value) { 
+        public ElementDefinitionExampleComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+            throw new Error("Not the right type for ElementDefinition.example.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2449,51 +3223,66 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label));
-          children.add(new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 102727412: /*label*/  return new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -786218365: /*valueCanonical*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -766209282: /*valueCode*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 231604844: /*valueId*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1668687056: /*valueInstant*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1410178407: /*valueOid*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -765708322: /*valueTime*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1410172354: /*valueUrl*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -765667124: /*valueUuid*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -478981821: /*valueAddress*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 2030767386: /*valueRatio*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -962229101: /*valueSampledData*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -540985785: /*valueSignature*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1406282469: /*valueTiming*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case -1858636920: /*valueDosage*/  return new Property("value[x]", "*", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 231604844: /*valueId*/  return new Property("value[x]", "id", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1668687056: /*valueInstant*/  return new Property("value[x]", "instant", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1122120181: /*valueInteger64*/  return new Property("value[x]", "integer64", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -497880704: /*valueMarkdown*/  return new Property("value[x]", "markdown", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410178407: /*valueOid*/  return new Property("value[x]", "oid", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1249932027: /*valuePositiveInt*/  return new Property("value[x]", "positiveInt", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 26529417: /*valueUnsignedInt*/  return new Property("value[x]", "unsignedInt", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410172354: /*valueUrl*/  return new Property("value[x]", "url", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -765667124: /*valueUuid*/  return new Property("value[x]", "uuid", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -478981821: /*valueAddress*/  return new Property("value[x]", "Address", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410191922: /*valueAge*/  return new Property("value[x]", "Age", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -456359802: /*valueDistance*/  return new Property("value[x]", "Distance", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -2026205465: /*valueHumanName*/  return new Property("value[x]", "HumanName", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "Identifier", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 2026560975: /*valueMoney*/  return new Property("value[x]", "Money", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2503,7 +3292,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 102727412: /*label*/ return this.label == null ? new Base[0] : new Base[] {this.label}; // StringType
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // org.hl7.fhir.r5.model.Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2516,7 +3305,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           this.label = TypeConvertor.castToString(value); // StringType
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2528,7 +3317,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         if (name.equals("label")) {
           this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2538,8 +3327,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 102727412:  return getLabelElement();
-        case -1410166417:  return getValue(); 
-        case 111972721:  return getValue(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2549,7 +3338,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 102727412: /*label*/ return new String[] {"string"};
-        case 111972721: /*value*/ return new String[] {"*"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2558,7 +3347,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.label");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.example.label");
         }
         else if (name.equals("valueBase64Binary")) {
           this.value = new Base64BinaryType();
@@ -2598,6 +3387,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
         else if (name.equals("valueInteger")) {
           this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger64")) {
+          this.value = new Integer64Type();
           return this.value;
         }
         else if (name.equals("valueMarkdown")) {
@@ -2871,11 +3664,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionConstraintComponent(IdType key, Enumeration<ConstraintSeverity> severity, StringType human) {
+      public ElementDefinitionConstraintComponent(String key, ConstraintSeverity severity, String human) {
         super();
-        this.key = key;
-        this.severity = severity;
-        this.human = human;
+        this.setKey(key);
+        this.setSeverity(severity);
+        this.setHuman(human);
       }
 
         /**
@@ -3335,25 +4128,25 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("key")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.key");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.key");
         }
         else if (name.equals("requirements")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.requirements");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.requirements");
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.severity");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.severity");
         }
         else if (name.equals("human")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.human");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.human");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.expression");
         }
         else if (name.equals("xpath")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.xpath");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.xpath");
         }
         else if (name.equals("source")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.source");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.source");
         }
         else
           return super.addChild(name);
@@ -3397,7 +4190,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         ElementDefinitionConstraintComponent o = (ElementDefinitionConstraintComponent) other_;
         return compareValues(key, o.key, true) && compareValues(requirements, o.requirements, true) && compareValues(severity, o.severity, true)
            && compareValues(human, o.human, true) && compareValues(expression, o.expression, true) && compareValues(xpath, o.xpath, true)
-          ;
+           && compareValues(source, o.source, true);
       }
 
       public boolean isEmpty() {
@@ -3448,9 +4241,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionBindingComponent(Enumeration<BindingStrength> strength) {
+      public ElementDefinitionBindingComponent(BindingStrength strength) {
         super();
-        this.strength = strength;
+        this.setStrength(strength);
       }
 
         /**
@@ -3682,13 +4475,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("strength")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.strength");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.strength");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.description");
         }
         else if (name.equals("valueSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.valueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.valueSet");
         }
         else
           return super.addChild(name);
@@ -3726,7 +4519,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return false;
         ElementDefinitionBindingComponent o = (ElementDefinitionBindingComponent) other_;
         return compareValues(strength, o.strength, true) && compareValues(description, o.description, true)
-          ;
+           && compareValues(valueSet, o.valueSet, true);
       }
 
       public boolean isEmpty() {
@@ -3784,10 +4577,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Constructor
      */
-      public ElementDefinitionMappingComponent(IdType identity, StringType map) {
+      public ElementDefinitionMappingComponent(String identity, String map) {
         super();
-        this.identity = identity;
-        this.map = map;
+        this.setIdentity(identity);
+        this.setMap(map);
       }
 
         /**
@@ -4072,16 +4865,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.identity");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.identity");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.language");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.language");
         }
         else if (name.equals("map")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.map");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.map");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.comment");
+          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.comment");
         }
         else
           return super.addChild(name);
@@ -4259,9 +5052,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').
      */
-    @Child(name = "defaultValue", type = {}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "defaultValue", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specified value if missing from instance", formalDefinition="The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false')." )
-    protected org.hl7.fhir.r5.model.DataType defaultValue;
+    protected DataType defaultValue;
 
     /**
      * The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').
@@ -4280,9 +5073,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     /**
      * Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.
      */
-    @Child(name = "fixed", type = {}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "fixed", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must be exactly this", formalDefinition="Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing." )
-    protected org.hl7.fhir.r5.model.DataType fixed;
+    protected DataType fixed;
 
     /**
      * Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
@@ -4297,9 +5090,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.
      */
-    @Child(name = "pattern", type = {}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "pattern", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must have at least these property values", formalDefinition="Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value." )
-    protected org.hl7.fhir.r5.model.DataType pattern;
+    protected DataType pattern;
 
     /**
      * A sample value for this element demonstrating the type of information that would typically be found in the element.
@@ -4311,14 +5104,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.
      */
-    @Child(name = "minValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=23, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "minValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, Integer64Type.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=23, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Minimum Allowed Value (for some types)", formalDefinition="The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity." )
     protected DataType minValue;
 
     /**
      * The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.
      */
-    @Child(name = "maxValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=24, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "maxValue", type = {DateType.class, DateTimeType.class, InstantType.class, TimeType.class, DecimalType.class, IntegerType.class, Integer64Type.class, PositiveIntType.class, UnsignedIntType.class, Quantity.class}, order=24, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Maximum Allowed Value (for some types)", formalDefinition="The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity." )
     protected DataType maxValue;
 
@@ -4385,7 +5178,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     @Description(shortDefinition="Map element to another set of definitions", formalDefinition="Identifies a concept from an external specification that roughly corresponds to this element." )
     protected List<ElementDefinitionMappingComponent> mapping;
 
-    private static final long serialVersionUID = -1452126939L;
+    private static final long serialVersionUID = 821951601L;
 
   /**
    * Constructor
@@ -4397,9 +5190,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
   /**
    * Constructor
    */
-    public ElementDefinition(StringType path) {
+    public ElementDefinition(String path) {
       super();
-      this.path = path;
+      this.setPath(path);
     }
 
     /**
@@ -4695,7 +5488,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     /**
-     * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
      */
     public Coding getCodeFirstRep() { 
       if (getCode().isEmpty()) {
@@ -5196,7 +5989,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     /**
-     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
      */
     public TypeRefComponent getTypeFirstRep() { 
       if (getType().isEmpty()) {
@@ -5208,8 +6001,773 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
-    public org.hl7.fhir.r5.model.DataType getDefaultValue() { 
+    public DataType getDefaultValue() { 
       return this.defaultValue;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Base64BinaryType getDefaultValueBase64BinaryType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Base64BinaryType();
+      if (!(this.defaultValue instanceof Base64BinaryType))
+        throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Base64BinaryType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueBase64BinaryType() { 
+      return this != null && this.defaultValue instanceof Base64BinaryType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public BooleanType getDefaultValueBooleanType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new BooleanType();
+      if (!(this.defaultValue instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (BooleanType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueBooleanType() { 
+      return this != null && this.defaultValue instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public CanonicalType getDefaultValueCanonicalType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new CanonicalType();
+      if (!(this.defaultValue instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (CanonicalType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCanonicalType() { 
+      return this != null && this.defaultValue instanceof CanonicalType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public CodeType getDefaultValueCodeType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new CodeType();
+      if (!(this.defaultValue instanceof CodeType))
+        throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (CodeType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCodeType() { 
+      return this != null && this.defaultValue instanceof CodeType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public DateType getDefaultValueDateType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new DateType();
+      if (!(this.defaultValue instanceof DateType))
+        throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (DateType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDateType() { 
+      return this != null && this.defaultValue instanceof DateType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public DateTimeType getDefaultValueDateTimeType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new DateTimeType();
+      if (!(this.defaultValue instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (DateTimeType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDateTimeType() { 
+      return this != null && this.defaultValue instanceof DateTimeType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public DecimalType getDefaultValueDecimalType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new DecimalType();
+      if (!(this.defaultValue instanceof DecimalType))
+        throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (DecimalType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDecimalType() { 
+      return this != null && this.defaultValue instanceof DecimalType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public IdType getDefaultValueIdType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new IdType();
+      if (!(this.defaultValue instanceof IdType))
+        throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (IdType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueIdType() { 
+      return this != null && this.defaultValue instanceof IdType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public InstantType getDefaultValueInstantType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new InstantType();
+      if (!(this.defaultValue instanceof InstantType))
+        throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (InstantType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueInstantType() { 
+      return this != null && this.defaultValue instanceof InstantType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public IntegerType getDefaultValueIntegerType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new IntegerType();
+      if (!(this.defaultValue instanceof IntegerType))
+        throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (IntegerType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueIntegerType() { 
+      return this != null && this.defaultValue instanceof IntegerType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Integer64Type getDefaultValueInteger64Type() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Integer64Type();
+      if (!(this.defaultValue instanceof Integer64Type))
+        throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Integer64Type) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueInteger64Type() { 
+      return this != null && this.defaultValue instanceof Integer64Type;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public MarkdownType getDefaultValueMarkdownType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new MarkdownType();
+      if (!(this.defaultValue instanceof MarkdownType))
+        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (MarkdownType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueMarkdownType() { 
+      return this != null && this.defaultValue instanceof MarkdownType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public OidType getDefaultValueOidType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new OidType();
+      if (!(this.defaultValue instanceof OidType))
+        throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (OidType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueOidType() { 
+      return this != null && this.defaultValue instanceof OidType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public PositiveIntType getDefaultValuePositiveIntType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new PositiveIntType();
+      if (!(this.defaultValue instanceof PositiveIntType))
+        throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (PositiveIntType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValuePositiveIntType() { 
+      return this != null && this.defaultValue instanceof PositiveIntType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public StringType getDefaultValueStringType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new StringType();
+      if (!(this.defaultValue instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (StringType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueStringType() { 
+      return this != null && this.defaultValue instanceof StringType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public TimeType getDefaultValueTimeType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new TimeType();
+      if (!(this.defaultValue instanceof TimeType))
+        throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (TimeType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueTimeType() { 
+      return this != null && this.defaultValue instanceof TimeType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public UnsignedIntType getDefaultValueUnsignedIntType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new UnsignedIntType();
+      if (!(this.defaultValue instanceof UnsignedIntType))
+        throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (UnsignedIntType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueUnsignedIntType() { 
+      return this != null && this.defaultValue instanceof UnsignedIntType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public UriType getDefaultValueUriType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new UriType();
+      if (!(this.defaultValue instanceof UriType))
+        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (UriType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueUriType() { 
+      return this != null && this.defaultValue instanceof UriType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public UrlType getDefaultValueUrlType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new UrlType();
+      if (!(this.defaultValue instanceof UrlType))
+        throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (UrlType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueUrlType() { 
+      return this != null && this.defaultValue instanceof UrlType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public UuidType getDefaultValueUuidType() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new UuidType();
+      if (!(this.defaultValue instanceof UuidType))
+        throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (UuidType) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueUuidType() { 
+      return this != null && this.defaultValue instanceof UuidType;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Address getDefaultValueAddress() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Address();
+      if (!(this.defaultValue instanceof Address))
+        throw new FHIRException("Type mismatch: the type Address was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Address) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueAddress() { 
+      return this != null && this.defaultValue instanceof Address;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Age getDefaultValueAge() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Age();
+      if (!(this.defaultValue instanceof Age))
+        throw new FHIRException("Type mismatch: the type Age was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Age) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueAge() { 
+      return this != null && this.defaultValue instanceof Age;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Annotation getDefaultValueAnnotation() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Annotation();
+      if (!(this.defaultValue instanceof Annotation))
+        throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Annotation) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueAnnotation() { 
+      return this != null && this.defaultValue instanceof Annotation;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Attachment getDefaultValueAttachment() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Attachment();
+      if (!(this.defaultValue instanceof Attachment))
+        throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Attachment) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueAttachment() { 
+      return this != null && this.defaultValue instanceof Attachment;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public CodeableConcept getDefaultValueCodeableConcept() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new CodeableConcept();
+      if (!(this.defaultValue instanceof CodeableConcept))
+        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCodeableConcept() { 
+      return this != null && this.defaultValue instanceof CodeableConcept;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Coding getDefaultValueCoding() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Coding();
+      if (!(this.defaultValue instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Coding) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCoding() { 
+      return this != null && this.defaultValue instanceof Coding;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public ContactPoint getDefaultValueContactPoint() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new ContactPoint();
+      if (!(this.defaultValue instanceof ContactPoint))
+        throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (ContactPoint) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueContactPoint() { 
+      return this != null && this.defaultValue instanceof ContactPoint;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Count getDefaultValueCount() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Count();
+      if (!(this.defaultValue instanceof Count))
+        throw new FHIRException("Type mismatch: the type Count was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Count) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCount() { 
+      return this != null && this.defaultValue instanceof Count;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Distance getDefaultValueDistance() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Distance();
+      if (!(this.defaultValue instanceof Distance))
+        throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Distance) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDistance() { 
+      return this != null && this.defaultValue instanceof Distance;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Duration getDefaultValueDuration() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Duration();
+      if (!(this.defaultValue instanceof Duration))
+        throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Duration) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDuration() { 
+      return this != null && this.defaultValue instanceof Duration;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public HumanName getDefaultValueHumanName() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new HumanName();
+      if (!(this.defaultValue instanceof HumanName))
+        throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (HumanName) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueHumanName() { 
+      return this != null && this.defaultValue instanceof HumanName;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Identifier getDefaultValueIdentifier() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Identifier();
+      if (!(this.defaultValue instanceof Identifier))
+        throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Identifier) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueIdentifier() { 
+      return this != null && this.defaultValue instanceof Identifier;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Money getDefaultValueMoney() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Money();
+      if (!(this.defaultValue instanceof Money))
+        throw new FHIRException("Type mismatch: the type Money was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Money) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueMoney() { 
+      return this != null && this.defaultValue instanceof Money;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Period getDefaultValuePeriod() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Period();
+      if (!(this.defaultValue instanceof Period))
+        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Period) this.defaultValue;
+    }
+
+    public boolean hasDefaultValuePeriod() { 
+      return this != null && this.defaultValue instanceof Period;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Quantity getDefaultValueQuantity() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Quantity();
+      if (!(this.defaultValue instanceof Quantity))
+        throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Quantity) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueQuantity() { 
+      return this != null && this.defaultValue instanceof Quantity;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Range getDefaultValueRange() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Range();
+      if (!(this.defaultValue instanceof Range))
+        throw new FHIRException("Type mismatch: the type Range was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Range) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueRange() { 
+      return this != null && this.defaultValue instanceof Range;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Ratio getDefaultValueRatio() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Ratio();
+      if (!(this.defaultValue instanceof Ratio))
+        throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Ratio) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueRatio() { 
+      return this != null && this.defaultValue instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Reference getDefaultValueReference() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Reference();
+      if (!(this.defaultValue instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Reference) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueReference() { 
+      return this != null && this.defaultValue instanceof Reference;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public SampledData getDefaultValueSampledData() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new SampledData();
+      if (!(this.defaultValue instanceof SampledData))
+        throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (SampledData) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueSampledData() { 
+      return this != null && this.defaultValue instanceof SampledData;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Signature getDefaultValueSignature() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Signature();
+      if (!(this.defaultValue instanceof Signature))
+        throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Signature) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueSignature() { 
+      return this != null && this.defaultValue instanceof Signature;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Timing getDefaultValueTiming() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Timing();
+      if (!(this.defaultValue instanceof Timing))
+        throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Timing) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueTiming() { 
+      return this != null && this.defaultValue instanceof Timing;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public ContactDetail getDefaultValueContactDetail() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new ContactDetail();
+      if (!(this.defaultValue instanceof ContactDetail))
+        throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (ContactDetail) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueContactDetail() { 
+      return this != null && this.defaultValue instanceof ContactDetail;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Contributor getDefaultValueContributor() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Contributor();
+      if (!(this.defaultValue instanceof Contributor))
+        throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Contributor) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueContributor() { 
+      return this != null && this.defaultValue instanceof Contributor;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public DataRequirement getDefaultValueDataRequirement() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new DataRequirement();
+      if (!(this.defaultValue instanceof DataRequirement))
+        throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (DataRequirement) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDataRequirement() { 
+      return this != null && this.defaultValue instanceof DataRequirement;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Expression getDefaultValueExpression() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Expression();
+      if (!(this.defaultValue instanceof Expression))
+        throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Expression) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueExpression() { 
+      return this != null && this.defaultValue instanceof Expression;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public ParameterDefinition getDefaultValueParameterDefinition() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new ParameterDefinition();
+      if (!(this.defaultValue instanceof ParameterDefinition))
+        throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (ParameterDefinition) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueParameterDefinition() { 
+      return this != null && this.defaultValue instanceof ParameterDefinition;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public RelatedArtifact getDefaultValueRelatedArtifact() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new RelatedArtifact();
+      if (!(this.defaultValue instanceof RelatedArtifact))
+        throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (RelatedArtifact) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueRelatedArtifact() { 
+      return this != null && this.defaultValue instanceof RelatedArtifact;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public TriggerDefinition getDefaultValueTriggerDefinition() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new TriggerDefinition();
+      if (!(this.defaultValue instanceof TriggerDefinition))
+        throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (TriggerDefinition) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueTriggerDefinition() { 
+      return this != null && this.defaultValue instanceof TriggerDefinition;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public UsageContext getDefaultValueUsageContext() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new UsageContext();
+      if (!(this.defaultValue instanceof UsageContext))
+        throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (UsageContext) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueUsageContext() { 
+      return this != null && this.defaultValue instanceof UsageContext;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Dosage getDefaultValueDosage() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Dosage();
+      if (!(this.defaultValue instanceof Dosage))
+        throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Dosage) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueDosage() { 
+      return this != null && this.defaultValue instanceof Dosage;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public Meta getDefaultValueMeta() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new Meta();
+      if (!(this.defaultValue instanceof Meta))
+        throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (Meta) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueMeta() { 
+      return this != null && this.defaultValue instanceof Meta;
     }
 
     public boolean hasDefaultValue() { 
@@ -5219,7 +6777,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
-    public ElementDefinition setDefaultValue(org.hl7.fhir.r5.model.DataType value) { 
+    public ElementDefinition setDefaultValue(DataType value) { 
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+        throw new Error("Not the right type for ElementDefinition.defaultValue[x]: "+value.fhirType());
       this.defaultValue = value;
       return this;
     }
@@ -5325,8 +6885,773 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
-    public org.hl7.fhir.r5.model.DataType getFixed() { 
+    public DataType getFixed() { 
       return this.fixed;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Base64BinaryType getFixedBase64BinaryType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Base64BinaryType();
+      if (!(this.fixed instanceof Base64BinaryType))
+        throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Base64BinaryType) this.fixed;
+    }
+
+    public boolean hasFixedBase64BinaryType() { 
+      return this != null && this.fixed instanceof Base64BinaryType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public BooleanType getFixedBooleanType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new BooleanType();
+      if (!(this.fixed instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (BooleanType) this.fixed;
+    }
+
+    public boolean hasFixedBooleanType() { 
+      return this != null && this.fixed instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public CanonicalType getFixedCanonicalType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new CanonicalType();
+      if (!(this.fixed instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (CanonicalType) this.fixed;
+    }
+
+    public boolean hasFixedCanonicalType() { 
+      return this != null && this.fixed instanceof CanonicalType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public CodeType getFixedCodeType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new CodeType();
+      if (!(this.fixed instanceof CodeType))
+        throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (CodeType) this.fixed;
+    }
+
+    public boolean hasFixedCodeType() { 
+      return this != null && this.fixed instanceof CodeType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public DateType getFixedDateType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new DateType();
+      if (!(this.fixed instanceof DateType))
+        throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (DateType) this.fixed;
+    }
+
+    public boolean hasFixedDateType() { 
+      return this != null && this.fixed instanceof DateType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public DateTimeType getFixedDateTimeType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new DateTimeType();
+      if (!(this.fixed instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (DateTimeType) this.fixed;
+    }
+
+    public boolean hasFixedDateTimeType() { 
+      return this != null && this.fixed instanceof DateTimeType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public DecimalType getFixedDecimalType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new DecimalType();
+      if (!(this.fixed instanceof DecimalType))
+        throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (DecimalType) this.fixed;
+    }
+
+    public boolean hasFixedDecimalType() { 
+      return this != null && this.fixed instanceof DecimalType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public IdType getFixedIdType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new IdType();
+      if (!(this.fixed instanceof IdType))
+        throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (IdType) this.fixed;
+    }
+
+    public boolean hasFixedIdType() { 
+      return this != null && this.fixed instanceof IdType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public InstantType getFixedInstantType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new InstantType();
+      if (!(this.fixed instanceof InstantType))
+        throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (InstantType) this.fixed;
+    }
+
+    public boolean hasFixedInstantType() { 
+      return this != null && this.fixed instanceof InstantType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public IntegerType getFixedIntegerType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new IntegerType();
+      if (!(this.fixed instanceof IntegerType))
+        throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (IntegerType) this.fixed;
+    }
+
+    public boolean hasFixedIntegerType() { 
+      return this != null && this.fixed instanceof IntegerType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Integer64Type getFixedInteger64Type() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Integer64Type();
+      if (!(this.fixed instanceof Integer64Type))
+        throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Integer64Type) this.fixed;
+    }
+
+    public boolean hasFixedInteger64Type() { 
+      return this != null && this.fixed instanceof Integer64Type;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public MarkdownType getFixedMarkdownType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new MarkdownType();
+      if (!(this.fixed instanceof MarkdownType))
+        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (MarkdownType) this.fixed;
+    }
+
+    public boolean hasFixedMarkdownType() { 
+      return this != null && this.fixed instanceof MarkdownType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public OidType getFixedOidType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new OidType();
+      if (!(this.fixed instanceof OidType))
+        throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (OidType) this.fixed;
+    }
+
+    public boolean hasFixedOidType() { 
+      return this != null && this.fixed instanceof OidType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public PositiveIntType getFixedPositiveIntType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new PositiveIntType();
+      if (!(this.fixed instanceof PositiveIntType))
+        throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (PositiveIntType) this.fixed;
+    }
+
+    public boolean hasFixedPositiveIntType() { 
+      return this != null && this.fixed instanceof PositiveIntType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public StringType getFixedStringType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new StringType();
+      if (!(this.fixed instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (StringType) this.fixed;
+    }
+
+    public boolean hasFixedStringType() { 
+      return this != null && this.fixed instanceof StringType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public TimeType getFixedTimeType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new TimeType();
+      if (!(this.fixed instanceof TimeType))
+        throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (TimeType) this.fixed;
+    }
+
+    public boolean hasFixedTimeType() { 
+      return this != null && this.fixed instanceof TimeType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public UnsignedIntType getFixedUnsignedIntType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new UnsignedIntType();
+      if (!(this.fixed instanceof UnsignedIntType))
+        throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (UnsignedIntType) this.fixed;
+    }
+
+    public boolean hasFixedUnsignedIntType() { 
+      return this != null && this.fixed instanceof UnsignedIntType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public UriType getFixedUriType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new UriType();
+      if (!(this.fixed instanceof UriType))
+        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (UriType) this.fixed;
+    }
+
+    public boolean hasFixedUriType() { 
+      return this != null && this.fixed instanceof UriType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public UrlType getFixedUrlType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new UrlType();
+      if (!(this.fixed instanceof UrlType))
+        throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (UrlType) this.fixed;
+    }
+
+    public boolean hasFixedUrlType() { 
+      return this != null && this.fixed instanceof UrlType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public UuidType getFixedUuidType() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new UuidType();
+      if (!(this.fixed instanceof UuidType))
+        throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (UuidType) this.fixed;
+    }
+
+    public boolean hasFixedUuidType() { 
+      return this != null && this.fixed instanceof UuidType;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Address getFixedAddress() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Address();
+      if (!(this.fixed instanceof Address))
+        throw new FHIRException("Type mismatch: the type Address was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Address) this.fixed;
+    }
+
+    public boolean hasFixedAddress() { 
+      return this != null && this.fixed instanceof Address;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Age getFixedAge() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Age();
+      if (!(this.fixed instanceof Age))
+        throw new FHIRException("Type mismatch: the type Age was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Age) this.fixed;
+    }
+
+    public boolean hasFixedAge() { 
+      return this != null && this.fixed instanceof Age;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Annotation getFixedAnnotation() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Annotation();
+      if (!(this.fixed instanceof Annotation))
+        throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Annotation) this.fixed;
+    }
+
+    public boolean hasFixedAnnotation() { 
+      return this != null && this.fixed instanceof Annotation;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Attachment getFixedAttachment() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Attachment();
+      if (!(this.fixed instanceof Attachment))
+        throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Attachment) this.fixed;
+    }
+
+    public boolean hasFixedAttachment() { 
+      return this != null && this.fixed instanceof Attachment;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public CodeableConcept getFixedCodeableConcept() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new CodeableConcept();
+      if (!(this.fixed instanceof CodeableConcept))
+        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.fixed;
+    }
+
+    public boolean hasFixedCodeableConcept() { 
+      return this != null && this.fixed instanceof CodeableConcept;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Coding getFixedCoding() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Coding();
+      if (!(this.fixed instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Coding) this.fixed;
+    }
+
+    public boolean hasFixedCoding() { 
+      return this != null && this.fixed instanceof Coding;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public ContactPoint getFixedContactPoint() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new ContactPoint();
+      if (!(this.fixed instanceof ContactPoint))
+        throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (ContactPoint) this.fixed;
+    }
+
+    public boolean hasFixedContactPoint() { 
+      return this != null && this.fixed instanceof ContactPoint;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Count getFixedCount() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Count();
+      if (!(this.fixed instanceof Count))
+        throw new FHIRException("Type mismatch: the type Count was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Count) this.fixed;
+    }
+
+    public boolean hasFixedCount() { 
+      return this != null && this.fixed instanceof Count;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Distance getFixedDistance() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Distance();
+      if (!(this.fixed instanceof Distance))
+        throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Distance) this.fixed;
+    }
+
+    public boolean hasFixedDistance() { 
+      return this != null && this.fixed instanceof Distance;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Duration getFixedDuration() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Duration();
+      if (!(this.fixed instanceof Duration))
+        throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Duration) this.fixed;
+    }
+
+    public boolean hasFixedDuration() { 
+      return this != null && this.fixed instanceof Duration;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public HumanName getFixedHumanName() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new HumanName();
+      if (!(this.fixed instanceof HumanName))
+        throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (HumanName) this.fixed;
+    }
+
+    public boolean hasFixedHumanName() { 
+      return this != null && this.fixed instanceof HumanName;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Identifier getFixedIdentifier() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Identifier();
+      if (!(this.fixed instanceof Identifier))
+        throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Identifier) this.fixed;
+    }
+
+    public boolean hasFixedIdentifier() { 
+      return this != null && this.fixed instanceof Identifier;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Money getFixedMoney() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Money();
+      if (!(this.fixed instanceof Money))
+        throw new FHIRException("Type mismatch: the type Money was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Money) this.fixed;
+    }
+
+    public boolean hasFixedMoney() { 
+      return this != null && this.fixed instanceof Money;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Period getFixedPeriod() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Period();
+      if (!(this.fixed instanceof Period))
+        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Period) this.fixed;
+    }
+
+    public boolean hasFixedPeriod() { 
+      return this != null && this.fixed instanceof Period;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Quantity getFixedQuantity() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Quantity();
+      if (!(this.fixed instanceof Quantity))
+        throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Quantity) this.fixed;
+    }
+
+    public boolean hasFixedQuantity() { 
+      return this != null && this.fixed instanceof Quantity;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Range getFixedRange() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Range();
+      if (!(this.fixed instanceof Range))
+        throw new FHIRException("Type mismatch: the type Range was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Range) this.fixed;
+    }
+
+    public boolean hasFixedRange() { 
+      return this != null && this.fixed instanceof Range;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Ratio getFixedRatio() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Ratio();
+      if (!(this.fixed instanceof Ratio))
+        throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Ratio) this.fixed;
+    }
+
+    public boolean hasFixedRatio() { 
+      return this != null && this.fixed instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Reference getFixedReference() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Reference();
+      if (!(this.fixed instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Reference) this.fixed;
+    }
+
+    public boolean hasFixedReference() { 
+      return this != null && this.fixed instanceof Reference;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public SampledData getFixedSampledData() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new SampledData();
+      if (!(this.fixed instanceof SampledData))
+        throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (SampledData) this.fixed;
+    }
+
+    public boolean hasFixedSampledData() { 
+      return this != null && this.fixed instanceof SampledData;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Signature getFixedSignature() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Signature();
+      if (!(this.fixed instanceof Signature))
+        throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Signature) this.fixed;
+    }
+
+    public boolean hasFixedSignature() { 
+      return this != null && this.fixed instanceof Signature;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Timing getFixedTiming() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Timing();
+      if (!(this.fixed instanceof Timing))
+        throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Timing) this.fixed;
+    }
+
+    public boolean hasFixedTiming() { 
+      return this != null && this.fixed instanceof Timing;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public ContactDetail getFixedContactDetail() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new ContactDetail();
+      if (!(this.fixed instanceof ContactDetail))
+        throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (ContactDetail) this.fixed;
+    }
+
+    public boolean hasFixedContactDetail() { 
+      return this != null && this.fixed instanceof ContactDetail;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Contributor getFixedContributor() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Contributor();
+      if (!(this.fixed instanceof Contributor))
+        throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Contributor) this.fixed;
+    }
+
+    public boolean hasFixedContributor() { 
+      return this != null && this.fixed instanceof Contributor;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public DataRequirement getFixedDataRequirement() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new DataRequirement();
+      if (!(this.fixed instanceof DataRequirement))
+        throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (DataRequirement) this.fixed;
+    }
+
+    public boolean hasFixedDataRequirement() { 
+      return this != null && this.fixed instanceof DataRequirement;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Expression getFixedExpression() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Expression();
+      if (!(this.fixed instanceof Expression))
+        throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Expression) this.fixed;
+    }
+
+    public boolean hasFixedExpression() { 
+      return this != null && this.fixed instanceof Expression;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public ParameterDefinition getFixedParameterDefinition() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new ParameterDefinition();
+      if (!(this.fixed instanceof ParameterDefinition))
+        throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (ParameterDefinition) this.fixed;
+    }
+
+    public boolean hasFixedParameterDefinition() { 
+      return this != null && this.fixed instanceof ParameterDefinition;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public RelatedArtifact getFixedRelatedArtifact() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new RelatedArtifact();
+      if (!(this.fixed instanceof RelatedArtifact))
+        throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (RelatedArtifact) this.fixed;
+    }
+
+    public boolean hasFixedRelatedArtifact() { 
+      return this != null && this.fixed instanceof RelatedArtifact;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public TriggerDefinition getFixedTriggerDefinition() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new TriggerDefinition();
+      if (!(this.fixed instanceof TriggerDefinition))
+        throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (TriggerDefinition) this.fixed;
+    }
+
+    public boolean hasFixedTriggerDefinition() { 
+      return this != null && this.fixed instanceof TriggerDefinition;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public UsageContext getFixedUsageContext() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new UsageContext();
+      if (!(this.fixed instanceof UsageContext))
+        throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (UsageContext) this.fixed;
+    }
+
+    public boolean hasFixedUsageContext() { 
+      return this != null && this.fixed instanceof UsageContext;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Dosage getFixedDosage() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Dosage();
+      if (!(this.fixed instanceof Dosage))
+        throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Dosage) this.fixed;
+    }
+
+    public boolean hasFixedDosage() { 
+      return this != null && this.fixed instanceof Dosage;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public Meta getFixedMeta() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new Meta();
+      if (!(this.fixed instanceof Meta))
+        throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (Meta) this.fixed;
+    }
+
+    public boolean hasFixedMeta() { 
+      return this != null && this.fixed instanceof Meta;
     }
 
     public boolean hasFixed() { 
@@ -5336,7 +7661,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @param value {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
-    public ElementDefinition setFixed(org.hl7.fhir.r5.model.DataType value) { 
+    public ElementDefinition setFixed(DataType value) { 
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+        throw new Error("Not the right type for ElementDefinition.fixed[x]: "+value.fhirType());
       this.fixed = value;
       return this;
     }
@@ -5354,8 +7681,1283 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.)
      */
-    public org.hl7.fhir.r5.model.DataType getPattern() { 
+    public DataType getPattern() { 
       return this.pattern;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Base64BinaryType getPatternBase64BinaryType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Base64BinaryType();
+      if (!(this.pattern instanceof Base64BinaryType))
+        throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Base64BinaryType) this.pattern;
+    }
+
+    public boolean hasPatternBase64BinaryType() { 
+      return this != null && this.pattern instanceof Base64BinaryType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public BooleanType getPatternBooleanType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new BooleanType();
+      if (!(this.pattern instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (BooleanType) this.pattern;
+    }
+
+    public boolean hasPatternBooleanType() { 
+      return this != null && this.pattern instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public CanonicalType getPatternCanonicalType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new CanonicalType();
+      if (!(this.pattern instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (CanonicalType) this.pattern;
+    }
+
+    public boolean hasPatternCanonicalType() { 
+      return this != null && this.pattern instanceof CanonicalType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public CodeType getPatternCodeType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new CodeType();
+      if (!(this.pattern instanceof CodeType))
+        throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (CodeType) this.pattern;
+    }
+
+    public boolean hasPatternCodeType() { 
+      return this != null && this.pattern instanceof CodeType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public DateType getPatternDateType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new DateType();
+      if (!(this.pattern instanceof DateType))
+        throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (DateType) this.pattern;
+    }
+
+    public boolean hasPatternDateType() { 
+      return this != null && this.pattern instanceof DateType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public DateTimeType getPatternDateTimeType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new DateTimeType();
+      if (!(this.pattern instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (DateTimeType) this.pattern;
+    }
+
+    public boolean hasPatternDateTimeType() { 
+      return this != null && this.pattern instanceof DateTimeType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public DecimalType getPatternDecimalType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new DecimalType();
+      if (!(this.pattern instanceof DecimalType))
+        throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (DecimalType) this.pattern;
+    }
+
+    public boolean hasPatternDecimalType() { 
+      return this != null && this.pattern instanceof DecimalType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public IdType getPatternIdType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new IdType();
+      if (!(this.pattern instanceof IdType))
+        throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (IdType) this.pattern;
+    }
+
+    public boolean hasPatternIdType() { 
+      return this != null && this.pattern instanceof IdType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public InstantType getPatternInstantType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new InstantType();
+      if (!(this.pattern instanceof InstantType))
+        throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (InstantType) this.pattern;
+    }
+
+    public boolean hasPatternInstantType() { 
+      return this != null && this.pattern instanceof InstantType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public IntegerType getPatternIntegerType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new IntegerType();
+      if (!(this.pattern instanceof IntegerType))
+        throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (IntegerType) this.pattern;
+    }
+
+    public boolean hasPatternIntegerType() { 
+      return this != null && this.pattern instanceof IntegerType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Integer64Type getPatternInteger64Type() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Integer64Type();
+      if (!(this.pattern instanceof Integer64Type))
+        throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Integer64Type) this.pattern;
+    }
+
+    public boolean hasPatternInteger64Type() { 
+      return this != null && this.pattern instanceof Integer64Type;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public MarkdownType getPatternMarkdownType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new MarkdownType();
+      if (!(this.pattern instanceof MarkdownType))
+        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (MarkdownType) this.pattern;
+    }
+
+    public boolean hasPatternMarkdownType() { 
+      return this != null && this.pattern instanceof MarkdownType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public OidType getPatternOidType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new OidType();
+      if (!(this.pattern instanceof OidType))
+        throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (OidType) this.pattern;
+    }
+
+    public boolean hasPatternOidType() { 
+      return this != null && this.pattern instanceof OidType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public PositiveIntType getPatternPositiveIntType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new PositiveIntType();
+      if (!(this.pattern instanceof PositiveIntType))
+        throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (PositiveIntType) this.pattern;
+    }
+
+    public boolean hasPatternPositiveIntType() { 
+      return this != null && this.pattern instanceof PositiveIntType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public StringType getPatternStringType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new StringType();
+      if (!(this.pattern instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (StringType) this.pattern;
+    }
+
+    public boolean hasPatternStringType() { 
+      return this != null && this.pattern instanceof StringType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public TimeType getPatternTimeType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new TimeType();
+      if (!(this.pattern instanceof TimeType))
+        throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (TimeType) this.pattern;
+    }
+
+    public boolean hasPatternTimeType() { 
+      return this != null && this.pattern instanceof TimeType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public UnsignedIntType getPatternUnsignedIntType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new UnsignedIntType();
+      if (!(this.pattern instanceof UnsignedIntType))
+        throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (UnsignedIntType) this.pattern;
+    }
+
+    public boolean hasPatternUnsignedIntType() { 
+      return this != null && this.pattern instanceof UnsignedIntType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public UriType getPatternUriType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new UriType();
+      if (!(this.pattern instanceof UriType))
+        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (UriType) this.pattern;
+    }
+
+    public boolean hasPatternUriType() { 
+      return this != null && this.pattern instanceof UriType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public UrlType getPatternUrlType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new UrlType();
+      if (!(this.pattern instanceof UrlType))
+        throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (UrlType) this.pattern;
+    }
+
+    public boolean hasPatternUrlType() { 
+      return this != null && this.pattern instanceof UrlType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public UuidType getPatternUuidType() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new UuidType();
+      if (!(this.pattern instanceof UuidType))
+        throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (UuidType) this.pattern;
+    }
+
+    public boolean hasPatternUuidType() { 
+      return this != null && this.pattern instanceof UuidType;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Address getPatternAddress() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Address();
+      if (!(this.pattern instanceof Address))
+        throw new FHIRException("Type mismatch: the type Address was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Address) this.pattern;
+    }
+
+    public boolean hasPatternAddress() { 
+      return this != null && this.pattern instanceof Address;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Age getPatternAge() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Age();
+      if (!(this.pattern instanceof Age))
+        throw new FHIRException("Type mismatch: the type Age was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Age) this.pattern;
+    }
+
+    public boolean hasPatternAge() { 
+      return this != null && this.pattern instanceof Age;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Annotation getPatternAnnotation() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Annotation();
+      if (!(this.pattern instanceof Annotation))
+        throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Annotation) this.pattern;
+    }
+
+    public boolean hasPatternAnnotation() { 
+      return this != null && this.pattern instanceof Annotation;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Attachment getPatternAttachment() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Attachment();
+      if (!(this.pattern instanceof Attachment))
+        throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Attachment) this.pattern;
+    }
+
+    public boolean hasPatternAttachment() { 
+      return this != null && this.pattern instanceof Attachment;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public CodeableConcept getPatternCodeableConcept() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new CodeableConcept();
+      if (!(this.pattern instanceof CodeableConcept))
+        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.pattern;
+    }
+
+    public boolean hasPatternCodeableConcept() { 
+      return this != null && this.pattern instanceof CodeableConcept;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Coding getPatternCoding() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Coding();
+      if (!(this.pattern instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Coding) this.pattern;
+    }
+
+    public boolean hasPatternCoding() { 
+      return this != null && this.pattern instanceof Coding;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public ContactPoint getPatternContactPoint() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new ContactPoint();
+      if (!(this.pattern instanceof ContactPoint))
+        throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (ContactPoint) this.pattern;
+    }
+
+    public boolean hasPatternContactPoint() { 
+      return this != null && this.pattern instanceof ContactPoint;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Count getPatternCount() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Count();
+      if (!(this.pattern instanceof Count))
+        throw new FHIRException("Type mismatch: the type Count was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Count) this.pattern;
+    }
+
+    public boolean hasPatternCount() { 
+      return this != null && this.pattern instanceof Count;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Distance getPatternDistance() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Distance();
+      if (!(this.pattern instanceof Distance))
+        throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Distance) this.pattern;
+    }
+
+    public boolean hasPatternDistance() { 
+      return this != null && this.pattern instanceof Distance;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Duration getPatternDuration() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Duration();
+      if (!(this.pattern instanceof Duration))
+        throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Duration) this.pattern;
+    }
+
+    public boolean hasPatternDuration() { 
+      return this != null && this.pattern instanceof Duration;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public HumanName getPatternHumanName() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new HumanName();
+      if (!(this.pattern instanceof HumanName))
+        throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (HumanName) this.pattern;
+    }
+
+    public boolean hasPatternHumanName() { 
+      return this != null && this.pattern instanceof HumanName;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Identifier getPatternIdentifier() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Identifier();
+      if (!(this.pattern instanceof Identifier))
+        throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Identifier) this.pattern;
+    }
+
+    public boolean hasPatternIdentifier() { 
+      return this != null && this.pattern instanceof Identifier;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Money getPatternMoney() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Money();
+      if (!(this.pattern instanceof Money))
+        throw new FHIRException("Type mismatch: the type Money was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Money) this.pattern;
+    }
+
+    public boolean hasPatternMoney() { 
+      return this != null && this.pattern instanceof Money;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Period getPatternPeriod() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Period();
+      if (!(this.pattern instanceof Period))
+        throw new FHIRException("Type mismatch: the type Period was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Period) this.pattern;
+    }
+
+    public boolean hasPatternPeriod() { 
+      return this != null && this.pattern instanceof Period;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Quantity getPatternQuantity() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Quantity();
+      if (!(this.pattern instanceof Quantity))
+        throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Quantity) this.pattern;
+    }
+
+    public boolean hasPatternQuantity() { 
+      return this != null && this.pattern instanceof Quantity;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Range getPatternRange() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Range();
+      if (!(this.pattern instanceof Range))
+        throw new FHIRException("Type mismatch: the type Range was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Range) this.pattern;
+    }
+
+    public boolean hasPatternRange() { 
+      return this != null && this.pattern instanceof Range;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Ratio getPatternRatio() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Ratio();
+      if (!(this.pattern instanceof Ratio))
+        throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Ratio) this.pattern;
+    }
+
+    public boolean hasPatternRatio() { 
+      return this != null && this.pattern instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Reference getPatternReference() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Reference();
+      if (!(this.pattern instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Reference) this.pattern;
+    }
+
+    public boolean hasPatternReference() { 
+      return this != null && this.pattern instanceof Reference;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public SampledData getPatternSampledData() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new SampledData();
+      if (!(this.pattern instanceof SampledData))
+        throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (SampledData) this.pattern;
+    }
+
+    public boolean hasPatternSampledData() { 
+      return this != null && this.pattern instanceof SampledData;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Signature getPatternSignature() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Signature();
+      if (!(this.pattern instanceof Signature))
+        throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Signature) this.pattern;
+    }
+
+    public boolean hasPatternSignature() { 
+      return this != null && this.pattern instanceof Signature;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Timing getPatternTiming() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Timing();
+      if (!(this.pattern instanceof Timing))
+        throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Timing) this.pattern;
+    }
+
+    public boolean hasPatternTiming() { 
+      return this != null && this.pattern instanceof Timing;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public ContactDetail getPatternContactDetail() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new ContactDetail();
+      if (!(this.pattern instanceof ContactDetail))
+        throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (ContactDetail) this.pattern;
+    }
+
+    public boolean hasPatternContactDetail() { 
+      return this != null && this.pattern instanceof ContactDetail;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Contributor getPatternContributor() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Contributor();
+      if (!(this.pattern instanceof Contributor))
+        throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Contributor) this.pattern;
+    }
+
+    public boolean hasPatternContributor() { 
+      return this != null && this.pattern instanceof Contributor;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public DataRequirement getPatternDataRequirement() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new DataRequirement();
+      if (!(this.pattern instanceof DataRequirement))
+        throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (DataRequirement) this.pattern;
+    }
+
+    public boolean hasPatternDataRequirement() { 
+      return this != null && this.pattern instanceof DataRequirement;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Expression getPatternExpression() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Expression();
+      if (!(this.pattern instanceof Expression))
+        throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Expression) this.pattern;
+    }
+
+    public boolean hasPatternExpression() { 
+      return this != null && this.pattern instanceof Expression;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public ParameterDefinition getPatternParameterDefinition() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new ParameterDefinition();
+      if (!(this.pattern instanceof ParameterDefinition))
+        throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (ParameterDefinition) this.pattern;
+    }
+
+    public boolean hasPatternParameterDefinition() { 
+      return this != null && this.pattern instanceof ParameterDefinition;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public RelatedArtifact getPatternRelatedArtifact() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new RelatedArtifact();
+      if (!(this.pattern instanceof RelatedArtifact))
+        throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (RelatedArtifact) this.pattern;
+    }
+
+    public boolean hasPatternRelatedArtifact() { 
+      return this != null && this.pattern instanceof RelatedArtifact;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public TriggerDefinition getPatternTriggerDefinition() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new TriggerDefinition();
+      if (!(this.pattern instanceof TriggerDefinition))
+        throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (TriggerDefinition) this.pattern;
+    }
+
+    public boolean hasPatternTriggerDefinition() { 
+      return this != null && this.pattern instanceof TriggerDefinition;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public UsageContext getPatternUsageContext() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new UsageContext();
+      if (!(this.pattern instanceof UsageContext))
+        throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (UsageContext) this.pattern;
+    }
+
+    public boolean hasPatternUsageContext() { 
+      return this != null && this.pattern instanceof UsageContext;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Dosage getPatternDosage() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Dosage();
+      if (!(this.pattern instanceof Dosage))
+        throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Dosage) this.pattern;
+    }
+
+    public boolean hasPatternDosage() { 
+      return this != null && this.pattern instanceof Dosage;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public Meta getPatternMeta() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new Meta();
+      if (!(this.pattern instanceof Meta))
+        throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (Meta) this.pattern;
+    }
+
+    public boolean hasPatternMeta() { 
+      return this != null && this.pattern instanceof Meta;
     }
 
     public boolean hasPattern() { 
@@ -5375,7 +8977,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.)
      */
-    public ElementDefinition setPattern(org.hl7.fhir.r5.model.DataType value) { 
+    public ElementDefinition setPattern(DataType value) { 
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+        throw new Error("Not the right type for ElementDefinition.pattern[x]: "+value.fhirType());
       this.pattern = value;
       return this;
     }
@@ -5424,7 +9028,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     /**
-     * @return The first repetition of repeating field {@link #example}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #example}, creating it if it does not already exist {3}
      */
     public ElementDefinitionExampleComponent getExampleFirstRep() { 
       if (getExample().isEmpty()) {
@@ -5530,6 +9134,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       return this != null && this.minValue instanceof IntegerType;
     }
 
+    /**
+     * @return {@link #minValue} (The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
+     */
     public Integer64Type getMinValueInteger64Type() throws FHIRException { 
       if (this.minValue == null)
         this.minValue = new Integer64Type();
@@ -5539,7 +9146,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     public boolean hasMinValueInteger64Type() { 
-      return this != null && this.minValue instanceof IntegerType;
+      return this != null && this.minValue instanceof Integer64Type;
     }
 
     /**
@@ -5698,6 +9305,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       return this != null && this.maxValue instanceof IntegerType;
     }
 
+    /**
+     * @return {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
+     */
     public Integer64Type getMaxValueInteger64Type() throws FHIRException { 
       if (this.maxValue == null)
         this.maxValue = new Integer64Type();
@@ -5709,7 +9319,6 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     public boolean hasMaxValueInteger64Type() { 
       return this != null && this.maxValue instanceof Integer64Type;
     }
-
 
     /**
      * @return {@link #maxValue} (The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.)
@@ -5920,7 +9529,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     /**
-     * @return The first repetition of repeating field {@link #constraint}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #constraint}, creating it if it does not already exist {3}
      */
     public ElementDefinitionConstraintComponent getConstraintFirstRep() { 
       if (getConstraint().isEmpty()) {
@@ -6181,7 +9790,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     }
 
     /**
-     * @return The first repetition of repeating field {@link #mapping}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #mapping}, creating it if it does not already exist {3}
      */
     public ElementDefinitionMappingComponent getMappingFirstRep() { 
       if (getMapping().isEmpty()) {
@@ -6209,14 +9818,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         children.add(new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base));
         children.add(new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference));
         children.add(new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue));
+        children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue));
         children.add(new Property("meaningWhenMissing", "markdown", "The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').", 0, 1, meaningWhenMissing));
         children.add(new Property("orderMeaning", "string", "If present, indicates that the order of the repeating element has meaning and describes what that meaning is.  If absent, it means that the order of the element has no meaning.", 0, 1, orderMeaning));
-        children.add(new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed));
-        children.add(new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern));
+        children.add(new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed));
+        children.add(new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern));
         children.add(new Property("example", "", "A sample value for this element demonstrating the type of information that would typically be found in the element.", 0, java.lang.Integer.MAX_VALUE, example));
-        children.add(new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue));
-        children.add(new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue));
+        children.add(new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue));
+        children.add(new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue));
         children.add(new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element.", 0, 1, maxLength));
         children.add(new Property("condition", "id", "A reference to an invariant that may make additional statements about the cardinality or value in the instance.", 0, java.lang.Integer.MAX_VALUE, condition));
         children.add(new Property("constraint", "", "Formal constraints such as co-occurrence and other constraints that can be computationally evaluated within the context of the instance.", 0, java.lang.Integer.MAX_VALUE, constraint));
@@ -6248,145 +9857,192 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 3016401: /*base*/  return new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base);
         case 1193747154: /*contentReference*/  return new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference);
         case 3575610: /*type*/  return new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type);
-        case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1470297600: /*defaultValueBase64Binary*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 600437336: /*defaultValueBoolean*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 264593188: /*defaultValueCanonical*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1044993469: /*defaultValueCode*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1045010302: /*defaultValueDate*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1220374379: /*defaultValueDateTime*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 2077989249: /*defaultValueDecimal*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -2059245333: /*defaultValueId*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1801671663: /*defaultValueInstant*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1801189522: /*defaultValueInteger*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -325436225: /*defaultValueMarkdown*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 587910138: /*defaultValueOid*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -737344154: /*defaultValuePositiveInt*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -320515103: /*defaultValueString*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1045494429: /*defaultValueTime*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 539117290: /*defaultValueUnsignedInt*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 587916188: /*defaultValueUri*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 587916191: /*defaultValueUrl*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 1045535627: /*defaultValueUuid*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -611966428: /*defaultValueAddress*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1851689217: /*defaultValueAnnotation*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 2034820339: /*defaultValueAttachment*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -410434095: /*defaultValueCodeableConcept*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -783616198: /*defaultValueCoding*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -344740576: /*defaultValueContactPoint*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -975393912: /*defaultValueHumanName*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1915078535: /*defaultValueIdentifier*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -420255343: /*defaultValuePeriod*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1857379237: /*defaultValueQuantity*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1951495315: /*defaultValueRange*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1951489477: /*defaultValueRatio*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -1488914053: /*defaultValueReference*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -449641228: /*defaultValueSampledData*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case 509825768: /*defaultValueSignature*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -302193638: /*defaultValueTiming*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -754548089: /*defaultValueDosage*/  return new Property("defaultValue[x]", "*", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1470297600: /*defaultValueBase64Binary*/  return new Property("defaultValue[x]", "base64Binary", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 600437336: /*defaultValueBoolean*/  return new Property("defaultValue[x]", "boolean", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 264593188: /*defaultValueCanonical*/  return new Property("defaultValue[x]", "canonical", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1044993469: /*defaultValueCode*/  return new Property("defaultValue[x]", "code", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1045010302: /*defaultValueDate*/  return new Property("defaultValue[x]", "date", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1220374379: /*defaultValueDateTime*/  return new Property("defaultValue[x]", "dateTime", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 2077989249: /*defaultValueDecimal*/  return new Property("defaultValue[x]", "decimal", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -2059245333: /*defaultValueId*/  return new Property("defaultValue[x]", "id", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1801671663: /*defaultValueInstant*/  return new Property("defaultValue[x]", "instant", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1801189522: /*defaultValueInteger*/  return new Property("defaultValue[x]", "integer", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -71308628: /*defaultValueInteger64*/  return new Property("defaultValue[x]", "integer64", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -325436225: /*defaultValueMarkdown*/  return new Property("defaultValue[x]", "markdown", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587910138: /*defaultValueOid*/  return new Property("defaultValue[x]", "oid", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -737344154: /*defaultValuePositiveInt*/  return new Property("defaultValue[x]", "positiveInt", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -320515103: /*defaultValueString*/  return new Property("defaultValue[x]", "string", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1045494429: /*defaultValueTime*/  return new Property("defaultValue[x]", "time", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 539117290: /*defaultValueUnsignedInt*/  return new Property("defaultValue[x]", "unsignedInt", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587916188: /*defaultValueUri*/  return new Property("defaultValue[x]", "uri", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587916191: /*defaultValueUrl*/  return new Property("defaultValue[x]", "url", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1045535627: /*defaultValueUuid*/  return new Property("defaultValue[x]", "uuid", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -611966428: /*defaultValueAddress*/  return new Property("defaultValue[x]", "Address", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587896623: /*defaultValueAge*/  return new Property("defaultValue[x]", "Age", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1851689217: /*defaultValueAnnotation*/  return new Property("defaultValue[x]", "Annotation", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 2034820339: /*defaultValueAttachment*/  return new Property("defaultValue[x]", "Attachment", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -410434095: /*defaultValueCodeableConcept*/  return new Property("defaultValue[x]", "CodeableConcept", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -783616198: /*defaultValueCoding*/  return new Property("defaultValue[x]", "Coding", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -344740576: /*defaultValueContactPoint*/  return new Property("defaultValue[x]", "ContactPoint", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1964924097: /*defaultValueCount*/  return new Property("defaultValue[x]", "Count", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -283915323: /*defaultValueDistance*/  return new Property("defaultValue[x]", "Distance", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1730579812: /*defaultValueDuration*/  return new Property("defaultValue[x]", "Duration", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -975393912: /*defaultValueHumanName*/  return new Property("defaultValue[x]", "HumanName", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1915078535: /*defaultValueIdentifier*/  return new Property("defaultValue[x]", "Identifier", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1955695888: /*defaultValueMoney*/  return new Property("defaultValue[x]", "Money", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -420255343: /*defaultValuePeriod*/  return new Property("defaultValue[x]", "Period", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1857379237: /*defaultValueQuantity*/  return new Property("defaultValue[x]", "Quantity", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1951495315: /*defaultValueRange*/  return new Property("defaultValue[x]", "Range", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1951489477: /*defaultValueRatio*/  return new Property("defaultValue[x]", "Ratio", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -1488914053: /*defaultValueReference*/  return new Property("defaultValue[x]", "Reference", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -449641228: /*defaultValueSampledData*/  return new Property("defaultValue[x]", "SampledData", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 509825768: /*defaultValueSignature*/  return new Property("defaultValue[x]", "Signature", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -302193638: /*defaultValueTiming*/  return new Property("defaultValue[x]", "Timing", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1845473985: /*defaultValueContactDetail*/  return new Property("defaultValue[x]", "ContactDetail", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1793609483: /*defaultValueContributor*/  return new Property("defaultValue[x]", "Contributor", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 375217257: /*defaultValueDataRequirement*/  return new Property("defaultValue[x]", "DataRequirement", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -2092097944: /*defaultValueExpression*/  return new Property("defaultValue[x]", "Expression", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -701053940: /*defaultValueParameterDefinition*/  return new Property("defaultValue[x]", "ParameterDefinition", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 412877133: /*defaultValueRelatedArtifact*/  return new Property("defaultValue[x]", "RelatedArtifact", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1913203547: /*defaultValueTriggerDefinition*/  return new Property("defaultValue[x]", "TriggerDefinition", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -701644642: /*defaultValueUsageContext*/  return new Property("defaultValue[x]", "UsageContext", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -754548089: /*defaultValueDosage*/  return new Property("defaultValue[x]", "Dosage", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1045282261: /*defaultValueMeta*/  return new Property("defaultValue[x]", "Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 1857257103: /*meaningWhenMissing*/  return new Property("meaningWhenMissing", "markdown", "The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').", 0, 1, meaningWhenMissing);
         case 1828196047: /*orderMeaning*/  return new Property("orderMeaning", "string", "If present, indicates that the order of the repeating element has meaning and describes what that meaning is.  If absent, it means that the order of the element has no meaning.", 0, 1, orderMeaning);
-        case -391522164: /*fixed[x]*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 97445748: /*fixed*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -799290428: /*fixedBase64Binary*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 520851988: /*fixedBoolean*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1092485088: /*fixedCanonical*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 746991489: /*fixedCode*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 747008322: /*fixedDate*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -1246771409: /*fixedDateTime*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1998403901: /*fixedDecimal*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -843914321: /*fixedId*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -1881257011: /*fixedInstant*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -1880774870: /*fixedInteger*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1502385283: /*fixedMarkdown*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -391534154: /*fixedOid*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 297821986: /*fixedPositiveInt*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1062390949: /*fixedString*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 747492449: /*fixedTime*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1574283430: /*fixedUnsignedInt*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -391528104: /*fixedUri*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -391528101: /*fixedUrl*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 747533647: /*fixedUuid*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -691551776: /*fixedAddress*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -1956844093: /*fixedAnnotation*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1929665463: /*fixedAttachment*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1962764685: /*fixedCodeableConcept*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 599289854: /*fixedCoding*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1680638692: /*fixedContactPoint*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -147502012: /*fixedHumanName*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -2020233411: /*fixedIdentifier*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 962650709: /*fixedPeriod*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -29557729: /*fixedQuantity*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1695345193: /*fixedRange*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1695351031: /*fixedRatio*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -661022153: /*fixedReference*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 585524912: /*fixedSampledData*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1337717668: /*fixedSignature*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 1080712414: /*fixedTiming*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 628357963: /*fixedDosage*/  return new Property("fixed[x]", "*", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -885125392: /*pattern[x]*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -791090288: /*pattern*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 2127857120: /*patternBase64Binary*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1776945544: /*patternBoolean*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 522246980: /*patternCanonical*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1669806691: /*patternCode*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1669789858: /*patternDate*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 535949131: /*patternDateTime*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -299393631: /*patternDecimal*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -28553013: /*patternId*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 115912753: /*patternInstant*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 116394894: /*patternInteger*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1009861473: /*patternMarkdown*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -885137382: /*patternOid*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 2054814086: /*patternPositiveInt*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 2096647105: /*patternString*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1669305731: /*patternTime*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -963691766: /*patternUnsignedInt*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -885131332: /*patternUri*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -885131329: /*patternUrl*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1669264533: /*patternUuid*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1305617988: /*patternAddress*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1840611039: /*patternAnnotation*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1432153299: /*patternAttachment*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -400610831: /*patternCodeableConcept*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1633546010: /*patternCoding*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 312818944: /*patternContactPoint*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -717740120: /*patternHumanName*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1777221721: /*patternIdentifier*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1996906865: /*patternPeriod*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1753162811: /*patternQuantity*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -210954355: /*patternRange*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -210948517: /*patternRatio*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1231260261: /*patternReference*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -1952450284: /*patternSampledData*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 767479560: /*patternSignature*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 2114968570: /*patternTiming*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case 1662614119: /*patternDosage*/  return new Property("pattern[x]", "*", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -391522164: /*fixed[x]*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 97445748: /*fixed*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -799290428: /*fixedBase64Binary*/  return new Property("fixed[x]", "base64Binary", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 520851988: /*fixedBoolean*/  return new Property("fixed[x]", "boolean", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1092485088: /*fixedCanonical*/  return new Property("fixed[x]", "canonical", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 746991489: /*fixedCode*/  return new Property("fixed[x]", "code", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 747008322: /*fixedDate*/  return new Property("fixed[x]", "date", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1246771409: /*fixedDateTime*/  return new Property("fixed[x]", "dateTime", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1998403901: /*fixedDecimal*/  return new Property("fixed[x]", "decimal", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -843914321: /*fixedId*/  return new Property("fixed[x]", "id", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1881257011: /*fixedInstant*/  return new Property("fixed[x]", "instant", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1880774870: /*fixedInteger*/  return new Property("fixed[x]", "integer", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 756583272: /*fixedInteger64*/  return new Property("fixed[x]", "integer64", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1502385283: /*fixedMarkdown*/  return new Property("fixed[x]", "markdown", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -391534154: /*fixedOid*/  return new Property("fixed[x]", "oid", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 297821986: /*fixedPositiveInt*/  return new Property("fixed[x]", "positiveInt", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1062390949: /*fixedString*/  return new Property("fixed[x]", "string", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 747492449: /*fixedTime*/  return new Property("fixed[x]", "time", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1574283430: /*fixedUnsignedInt*/  return new Property("fixed[x]", "unsignedInt", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -391528104: /*fixedUri*/  return new Property("fixed[x]", "uri", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -391528101: /*fixedUrl*/  return new Property("fixed[x]", "url", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 747533647: /*fixedUuid*/  return new Property("fixed[x]", "uuid", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -691551776: /*fixedAddress*/  return new Property("fixed[x]", "Address", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -391547669: /*fixedAge*/  return new Property("fixed[x]", "Age", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1956844093: /*fixedAnnotation*/  return new Property("fixed[x]", "Annotation", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1929665463: /*fixedAttachment*/  return new Property("fixed[x]", "Attachment", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1962764685: /*fixedCodeableConcept*/  return new Property("fixed[x]", "CodeableConcept", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 599289854: /*fixedCoding*/  return new Property("fixed[x]", "Coding", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1680638692: /*fixedContactPoint*/  return new Property("fixed[x]", "ContactPoint", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1681916411: /*fixedCount*/  return new Property("fixed[x]", "Count", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1543906185: /*fixedDistance*/  return new Property("fixed[x]", "Distance", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -736565976: /*fixedDuration*/  return new Property("fixed[x]", "Duration", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -147502012: /*fixedHumanName*/  return new Property("fixed[x]", "HumanName", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -2020233411: /*fixedIdentifier*/  return new Property("fixed[x]", "Identifier", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1691144620: /*fixedMoney*/  return new Property("fixed[x]", "Money", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 962650709: /*fixedPeriod*/  return new Property("fixed[x]", "Period", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -29557729: /*fixedQuantity*/  return new Property("fixed[x]", "Quantity", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1695345193: /*fixedRange*/  return new Property("fixed[x]", "Range", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1695351031: /*fixedRatio*/  return new Property("fixed[x]", "Ratio", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -661022153: /*fixedReference*/  return new Property("fixed[x]", "Reference", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 585524912: /*fixedSampledData*/  return new Property("fixed[x]", "SampledData", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1337717668: /*fixedSignature*/  return new Property("fixed[x]", "Signature", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1080712414: /*fixedTiming*/  return new Property("fixed[x]", "Timing", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 207721853: /*fixedContactDetail*/  return new Property("fixed[x]", "ContactDetail", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1466191673: /*fixedContributor*/  return new Property("fixed[x]", "Contributor", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1546551259: /*fixedDataRequirement*/  return new Property("fixed[x]", "DataRequirement", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 2097714476: /*fixedExpression*/  return new Property("fixed[x]", "Expression", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -2126861880: /*fixedParameterDefinition*/  return new Property("fixed[x]", "ParameterDefinition", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -1508891383: /*fixedRelatedArtifact*/  return new Property("fixed[x]", "RelatedArtifact", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1929596951: /*fixedTriggerDefinition*/  return new Property("fixed[x]", "TriggerDefinition", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1323734626: /*fixedUsageContext*/  return new Property("fixed[x]", "UsageContext", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 628357963: /*fixedDosage*/  return new Property("fixed[x]", "Dosage", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 747280281: /*fixedMeta*/  return new Property("fixed[x]", "Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -885125392: /*pattern[x]*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -791090288: /*pattern*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 2127857120: /*patternBase64Binary*/  return new Property("pattern[x]", "base64Binary", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1776945544: /*patternBoolean*/  return new Property("pattern[x]", "boolean", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 522246980: /*patternCanonical*/  return new Property("pattern[x]", "canonical", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1669806691: /*patternCode*/  return new Property("pattern[x]", "code", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1669789858: /*patternDate*/  return new Property("pattern[x]", "date", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 535949131: /*patternDateTime*/  return new Property("pattern[x]", "dateTime", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -299393631: /*patternDecimal*/  return new Property("pattern[x]", "decimal", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -28553013: /*patternId*/  return new Property("pattern[x]", "id", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 115912753: /*patternInstant*/  return new Property("pattern[x]", "instant", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 116394894: /*patternInteger*/  return new Property("pattern[x]", "integer", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 186345164: /*patternInteger64*/  return new Property("pattern[x]", "integer64", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1009861473: /*patternMarkdown*/  return new Property("pattern[x]", "markdown", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -885137382: /*patternOid*/  return new Property("pattern[x]", "oid", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 2054814086: /*patternPositiveInt*/  return new Property("pattern[x]", "positiveInt", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 2096647105: /*patternString*/  return new Property("pattern[x]", "string", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1669305731: /*patternTime*/  return new Property("pattern[x]", "time", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -963691766: /*patternUnsignedInt*/  return new Property("pattern[x]", "unsignedInt", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -885131332: /*patternUri*/  return new Property("pattern[x]", "uri", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -885131329: /*patternUrl*/  return new Property("pattern[x]", "url", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1669264533: /*patternUuid*/  return new Property("pattern[x]", "uuid", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1305617988: /*patternAddress*/  return new Property("pattern[x]", "Address", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -885150897: /*patternAge*/  return new Property("pattern[x]", "Age", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1840611039: /*patternAnnotation*/  return new Property("pattern[x]", "Annotation", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1432153299: /*patternAttachment*/  return new Property("pattern[x]", "Attachment", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -400610831: /*patternCodeableConcept*/  return new Property("pattern[x]", "CodeableConcept", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1633546010: /*patternCoding*/  return new Property("pattern[x]", "Coding", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 312818944: /*patternContactPoint*/  return new Property("pattern[x]", "ContactPoint", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -224383137: /*patternCount*/  return new Property("pattern[x]", "Count", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -968340571: /*patternDistance*/  return new Property("pattern[x]", "Distance", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1046154564: /*patternDuration*/  return new Property("pattern[x]", "Duration", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -717740120: /*patternHumanName*/  return new Property("pattern[x]", "HumanName", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1777221721: /*patternIdentifier*/  return new Property("pattern[x]", "Identifier", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -215154928: /*patternMoney*/  return new Property("pattern[x]", "Money", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1996906865: /*patternPeriod*/  return new Property("pattern[x]", "Period", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1753162811: /*patternQuantity*/  return new Property("pattern[x]", "Quantity", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -210954355: /*patternRange*/  return new Property("pattern[x]", "Range", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -210948517: /*patternRatio*/  return new Property("pattern[x]", "Ratio", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1231260261: /*patternReference*/  return new Property("pattern[x]", "Reference", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1952450284: /*patternSampledData*/  return new Property("pattern[x]", "SampledData", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 767479560: /*patternSignature*/  return new Property("pattern[x]", "Signature", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 2114968570: /*patternTiming*/  return new Property("pattern[x]", "Timing", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 754982625: /*patternContactDetail*/  return new Property("pattern[x]", "ContactDetail", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 290800427: /*patternContributor*/  return new Property("pattern[x]", "Contributor", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 385040521: /*patternDataRequirement*/  return new Property("pattern[x]", "DataRequirement", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1600202312: /*patternExpression*/  return new Property("pattern[x]", "Expression", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 318609452: /*patternParameterDefinition*/  return new Property("pattern[x]", "ParameterDefinition", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 422700397: /*patternRelatedArtifact*/  return new Property("pattern[x]", "RelatedArtifact", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1531541637: /*patternTriggerDefinition*/  return new Property("pattern[x]", "TriggerDefinition", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -44085122: /*patternUsageContext*/  return new Property("pattern[x]", "UsageContext", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1662614119: /*patternDosage*/  return new Property("pattern[x]", "Dosage", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -1669517899: /*patternMeta*/  return new Property("pattern[x]", "Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -1322970774: /*example*/  return new Property("example", "", "A sample value for this element demonstrating the type of information that would typically be found in the element.", 0, java.lang.Integer.MAX_VALUE, example);
-        case -55301663: /*minValue[x]*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -1376969153: /*minValue*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -1715058035: /*minValueDate*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case 1635517178: /*minValueDateTime*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case 151382690: /*minValueInstant*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -1714573908: /*minValueTime*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -263923694: /*minValueDecimal*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case 151864831: /*minValueInteger*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case 1570935671: /*minValuePositiveInt*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -1447570181: /*minValueUnsignedInt*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case -1442236438: /*minValueQuantity*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
-        case 622130931: /*maxValue[x]*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 399227501: /*maxValue*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 2105483195: /*maxValueDate*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 1699385640: /*maxValueDateTime*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 1261821620: /*maxValueInstant*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 2105967322: /*maxValueTime*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 846515236: /*maxValueDecimal*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 1262303761: /*maxValueInteger*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case 1605774985: /*maxValuePositiveInt*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case -1412730867: /*maxValueUnsignedInt*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
-        case -1378367976: /*maxValueQuantity*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case -55301663: /*minValue[x]*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -1376969153: /*minValue*/  return new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -1715058035: /*minValueDate*/  return new Property("minValue[x]", "date", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case 1635517178: /*minValueDateTime*/  return new Property("minValue[x]", "dateTime", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case 151382690: /*minValueInstant*/  return new Property("minValue[x]", "instant", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -1714573908: /*minValueTime*/  return new Property("minValue[x]", "time", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -263923694: /*minValueDecimal*/  return new Property("minValue[x]", "decimal", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case 151864831: /*minValueInteger*/  return new Property("minValue[x]", "integer", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -86783747: /*minValueInteger64*/  return new Property("minValue[x]", "integer64", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case 1570935671: /*minValuePositiveInt*/  return new Property("minValue[x]", "positiveInt", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -1447570181: /*minValueUnsignedInt*/  return new Property("minValue[x]", "unsignedInt", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case -1442236438: /*minValueQuantity*/  return new Property("minValue[x]", "Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue);
+        case 622130931: /*maxValue[x]*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 399227501: /*maxValue*/  return new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 2105483195: /*maxValueDate*/  return new Property("maxValue[x]", "date", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 1699385640: /*maxValueDateTime*/  return new Property("maxValue[x]", "dateTime", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 1261821620: /*maxValueInstant*/  return new Property("maxValue[x]", "instant", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 2105967322: /*maxValueTime*/  return new Property("maxValue[x]", "time", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 846515236: /*maxValueDecimal*/  return new Property("maxValue[x]", "decimal", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 1262303761: /*maxValueInteger*/  return new Property("maxValue[x]", "integer", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 1893138575: /*maxValueInteger64*/  return new Property("maxValue[x]", "integer64", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case 1605774985: /*maxValuePositiveInt*/  return new Property("maxValue[x]", "positiveInt", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case -1412730867: /*maxValueUnsignedInt*/  return new Property("maxValue[x]", "unsignedInt", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
+        case -1378367976: /*maxValueQuantity*/  return new Property("maxValue[x]", "Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue);
         case -791400086: /*maxLength*/  return new Property("maxLength", "integer", "Indicates the maximum length in characters that is permitted to be present in conformant instances and which is expected to be supported by conformant consumers that support the element.", 0, 1, maxLength);
         case -861311717: /*condition*/  return new Property("condition", "id", "A reference to an invariant that may make additional statements about the cardinality or value in the instance.", 0, java.lang.Integer.MAX_VALUE, condition);
         case -190376483: /*constraint*/  return new Property("constraint", "", "Formal constraints such as co-occurrence and other constraints that can be computationally evaluated within the context of the instance.", 0, java.lang.Integer.MAX_VALUE, constraint);
@@ -6421,14 +10077,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 3016401: /*base*/ return this.base == null ? new Base[0] : new Base[] {this.base}; // ElementDefinitionBaseComponent
         case 1193747154: /*contentReference*/ return this.contentReference == null ? new Base[0] : new Base[] {this.contentReference}; // UriType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // TypeRefComponent
-        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // org.hl7.fhir.r5.model.Type
+        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // DataType
         case 1857257103: /*meaningWhenMissing*/ return this.meaningWhenMissing == null ? new Base[0] : new Base[] {this.meaningWhenMissing}; // MarkdownType
         case 1828196047: /*orderMeaning*/ return this.orderMeaning == null ? new Base[0] : new Base[] {this.orderMeaning}; // StringType
-        case 97445748: /*fixed*/ return this.fixed == null ? new Base[0] : new Base[] {this.fixed}; // org.hl7.fhir.r5.model.Type
-        case -791090288: /*pattern*/ return this.pattern == null ? new Base[0] : new Base[] {this.pattern}; // org.hl7.fhir.r5.model.Type
+        case 97445748: /*fixed*/ return this.fixed == null ? new Base[0] : new Base[] {this.fixed}; // DataType
+        case -791090288: /*pattern*/ return this.pattern == null ? new Base[0] : new Base[] {this.pattern}; // DataType
         case -1322970774: /*example*/ return this.example == null ? new Base[0] : this.example.toArray(new Base[this.example.size()]); // ElementDefinitionExampleComponent
-        case -1376969153: /*minValue*/ return this.minValue == null ? new Base[0] : new Base[] {this.minValue}; // Type
-        case 399227501: /*maxValue*/ return this.maxValue == null ? new Base[0] : new Base[] {this.maxValue}; // Type
+        case -1376969153: /*minValue*/ return this.minValue == null ? new Base[0] : new Base[] {this.minValue}; // DataType
+        case 399227501: /*maxValue*/ return this.maxValue == null ? new Base[0] : new Base[] {this.maxValue}; // DataType
         case -791400086: /*maxLength*/ return this.maxLength == null ? new Base[0] : new Base[] {this.maxLength}; // IntegerType
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // IdType
         case -190376483: /*constraint*/ return this.constraint == null ? new Base[0] : this.constraint.toArray(new Base[this.constraint.size()]); // ElementDefinitionConstraintComponent
@@ -6499,7 +10155,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.getType().add((TypeRefComponent) value); // TypeRefComponent
           return value;
         case -659125328: // defaultValue
-          this.defaultValue = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.defaultValue = TypeConvertor.castToType(value); // DataType
           return value;
         case 1857257103: // meaningWhenMissing
           this.meaningWhenMissing = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -6508,19 +10164,19 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.orderMeaning = TypeConvertor.castToString(value); // StringType
           return value;
         case 97445748: // fixed
-          this.fixed = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.fixed = TypeConvertor.castToType(value); // DataType
           return value;
         case -791090288: // pattern
-          this.pattern = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.pattern = TypeConvertor.castToType(value); // DataType
           return value;
         case -1322970774: // example
           this.getExample().add((ElementDefinitionExampleComponent) value); // ElementDefinitionExampleComponent
           return value;
         case -1376969153: // minValue
-          this.minValue = TypeConvertor.castToType(value); // Type
+          this.minValue = TypeConvertor.castToType(value); // DataType
           return value;
         case 399227501: // maxValue
-          this.maxValue = TypeConvertor.castToType(value); // Type
+          this.maxValue = TypeConvertor.castToType(value); // DataType
           return value;
         case -791400086: // maxLength
           this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
@@ -6592,21 +10248,21 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         } else if (name.equals("type")) {
           this.getType().add((TypeRefComponent) value);
         } else if (name.equals("defaultValue[x]")) {
-          this.defaultValue = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.defaultValue = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("meaningWhenMissing")) {
           this.meaningWhenMissing = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("orderMeaning")) {
           this.orderMeaning = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("fixed[x]")) {
-          this.fixed = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.fixed = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("pattern[x]")) {
-          this.pattern = TypeConvertor.castToType(value); // org.hl7.fhir.r5.model.Type
+          this.pattern = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("example")) {
           this.getExample().add((ElementDefinitionExampleComponent) value);
         } else if (name.equals("minValue[x]")) {
-          this.minValue = TypeConvertor.castToType(value); // Type
+          this.minValue = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("maxValue[x]")) {
-          this.maxValue = TypeConvertor.castToType(value); // Type
+          this.maxValue = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("maxLength")) {
           this.maxLength = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("condition")) {
@@ -6639,7 +10295,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 333040519:  return getSliceIsConstrainingElement();
         case 102727412:  return getLabelElement();
         case 3059181:  return addCode(); 
-        case -2119287345:  return getSlicing(); 
+        case -2119287345:  return getSlicing();
         case 109413500:  return getShortElement();
         case -1014418093:  return getDefinitionElement();
         case 950398559:  return getCommentElement();
@@ -6647,22 +10303,22 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 92902992:  return addAliasElement();
         case 108114:  return getMinElement();
         case 107876:  return getMaxElement();
-        case 3016401:  return getBase(); 
+        case 3016401:  return getBase();
         case 1193747154:  return getContentReferenceElement();
         case 3575610:  return addType(); 
-        case 587922128:  return getDefaultValue(); 
-        case -659125328:  return getDefaultValue(); 
+        case 587922128:  return getDefaultValue();
+        case -659125328:  return getDefaultValue();
         case 1857257103:  return getMeaningWhenMissingElement();
         case 1828196047:  return getOrderMeaningElement();
-        case -391522164:  return getFixed(); 
-        case 97445748:  return getFixed(); 
-        case -885125392:  return getPattern(); 
-        case -791090288:  return getPattern(); 
+        case -391522164:  return getFixed();
+        case 97445748:  return getFixed();
+        case -885125392:  return getPattern();
+        case -791090288:  return getPattern();
         case -1322970774:  return addExample(); 
-        case -55301663:  return getMinValue(); 
-        case -1376969153:  return getMinValue(); 
-        case 622130931:  return getMaxValue(); 
-        case 399227501:  return getMaxValue(); 
+        case -55301663:  return getMinValue();
+        case -1376969153:  return getMinValue();
+        case 622130931:  return getMaxValue();
+        case 399227501:  return getMaxValue();
         case -791400086:  return getMaxLengthElement();
         case -861311717:  return addConditionElement();
         case -190376483:  return addConstraint(); 
@@ -6670,7 +10326,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case -1408783839:  return getIsModifierElement();
         case -1854387259:  return getIsModifierReasonElement();
         case 1857548060:  return getIsSummaryElement();
-        case -108220795:  return getBinding(); 
+        case -108220795:  return getBinding();
         case 837556430:  return addMapping(); 
         default: return super.makeProperty(hash, name);
         }
@@ -6697,14 +10353,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 3016401: /*base*/ return new String[] {};
         case 1193747154: /*contentReference*/ return new String[] {"uri"};
         case 3575610: /*type*/ return new String[] {};
-        case -659125328: /*defaultValue*/ return new String[] {"*"};
+        case -659125328: /*defaultValue*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         case 1857257103: /*meaningWhenMissing*/ return new String[] {"markdown"};
         case 1828196047: /*orderMeaning*/ return new String[] {"string"};
-        case 97445748: /*fixed*/ return new String[] {"*"};
-        case -791090288: /*pattern*/ return new String[] {"*"};
+        case 97445748: /*fixed*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case -791090288: /*pattern*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         case -1322970774: /*example*/ return new String[] {};
-        case -1376969153: /*minValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "positiveInt", "unsignedInt", "Quantity"};
-        case 399227501: /*maxValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "positiveInt", "unsignedInt", "Quantity"};
+        case -1376969153: /*minValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "integer64", "positiveInt", "unsignedInt", "Quantity"};
+        case 399227501: /*maxValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "integer64", "positiveInt", "unsignedInt", "Quantity"};
         case -791400086: /*maxLength*/ return new String[] {"integer"};
         case -861311717: /*condition*/ return new String[] {"id"};
         case -190376483: /*constraint*/ return new String[] {};
@@ -6812,6 +10468,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         }
         else if (name.equals("defaultValueInteger")) {
           this.defaultValue = new IntegerType();
+          return this.defaultValue;
+        }
+        else if (name.equals("defaultValueInteger64")) {
+          this.defaultValue = new Integer64Type();
           return this.defaultValue;
         }
         else if (name.equals("defaultValueMarkdown")) {
@@ -7020,6 +10680,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.fixed = new IntegerType();
           return this.fixed;
         }
+        else if (name.equals("fixedInteger64")) {
+          this.fixed = new Integer64Type();
+          return this.fixed;
+        }
         else if (name.equals("fixedMarkdown")) {
           this.fixed = new MarkdownType();
           return this.fixed;
@@ -7220,6 +10884,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.pattern = new IntegerType();
           return this.pattern;
         }
+        else if (name.equals("patternInteger64")) {
+          this.pattern = new Integer64Type();
+          return this.pattern;
+        }
         else if (name.equals("patternMarkdown")) {
           this.pattern = new MarkdownType();
           return this.pattern;
@@ -7407,6 +11075,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.minValue = new IntegerType();
           return this.minValue;
         }
+        else if (name.equals("minValueInteger64")) {
+          this.minValue = new Integer64Type();
+          return this.minValue;
+        }
         else if (name.equals("minValuePositiveInt")) {
           this.minValue = new PositiveIntType();
           return this.minValue;
@@ -7441,6 +11113,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         }
         else if (name.equals("maxValueInteger")) {
           this.maxValue = new IntegerType();
+          return this.maxValue;
+        }
+        else if (name.equals("maxValueInteger64")) {
+          this.maxValue = new Integer64Type();
           return this.maxValue;
         }
         else if (name.equals("maxValuePositiveInt")) {
@@ -7621,7 +11297,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           );
       }
 
-// added from java-adornments.txt:
+// Manual code (from Configuration.txt)t:
   
   public String toString() {
     if (hasId())
@@ -7647,15 +11323,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
   }
   
   
-  
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : type) {
+    for (TypeRefComponent tr : getType()) {
       if (tr.hasCode())
-        b.append(tr.getCode());
+        b.append(tr.getWorkingCode());
     }
     return b.toString();
-   }
+  }
   
   public TypeRefComponent getType(String code) {
     for (TypeRefComponent tr : getType()) 
@@ -7677,9 +11352,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       setIsModifier(modifier);
       setIsSummary(inSummary);
     }
-  }
+  }  
 
-  public String present() {
+ public String present() {
     return hasId() ? getId() : getPath();
   }
 
@@ -7705,10 +11380,26 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         return true;
     }
     return false;
-  }
+  }  
 
   public boolean isChoice() {
     return getPath().endsWith("[x]");
+  }  
+
+  public String getName() {
+    return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
+  }
+
+  public boolean unbounded() {
+    return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
+  }
+
+  public boolean isMandatory() {
+    return getMin() > 0;
+  }
+
+  public boolean isInlineType() {
+    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
   }  
 
 

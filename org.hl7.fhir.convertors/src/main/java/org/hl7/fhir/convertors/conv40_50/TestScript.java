@@ -68,7 +68,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(convertIdentifier(src.getIdentifier()));
     if (src.hasVersion())
       tgt.setVersionElement(convertString(src.getVersionElement()));
     if (src.hasName())
@@ -124,7 +124,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasVersion())
       tgt.setVersionElement(convertString(src.getVersionElement()));
     if (src.hasName())
@@ -440,7 +440,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasType())
       tgt.setType(convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResourceElement(convertCode(src.getResourceElement()));
+      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
     if (src.hasLabel())
       tgt.setLabelElement(convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -482,7 +482,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasType())
       tgt.setType(convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResourceElement(convertCode(src.getResourceElement()));
+      tgt.setResource(src.getResource().toCode());
     if (src.hasLabel())
       tgt.setLabelElement(convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -606,7 +606,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResourceElement(convertCode(src.getResourceElement()));
+      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
     if (src.hasResponse())
       tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
     if (src.hasResponseCode())
@@ -658,7 +658,7 @@ public class TestScript extends VersionConvertor_40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResourceElement(convertCode(src.getResourceElement()));
+      tgt.setResource(src.getResource().toCode());
     if (src.hasResponse())
       tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
     if (src.hasResponseCode())

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,6 +67,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Invoice containing collected ChargeItems from an Account with calculated individual and total price for Billing purpose.
  */
@@ -212,162 +214,6 @@ public class Invoice extends DomainResource {
       }
     }
 
-    public enum InvoicePriceComponentType {
-        /**
-         * the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.
-         */
-        BASE, 
-        /**
-         * the amount is a surcharge applied on the base price.
-         */
-        SURCHARGE, 
-        /**
-         * the amount is a deduction applied on the base price.
-         */
-        DEDUCTION, 
-        /**
-         * the amount is a discount applied on the base price.
-         */
-        DISCOUNT, 
-        /**
-         * the amount is the tax component of the total price.
-         */
-        TAX, 
-        /**
-         * the amount is of informational character, it has not been applied in the calculation of the total price.
-         */
-        INFORMATIONAL, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static InvoicePriceComponentType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("base".equals(codeString))
-          return BASE;
-        if ("surcharge".equals(codeString))
-          return SURCHARGE;
-        if ("deduction".equals(codeString))
-          return DEDUCTION;
-        if ("discount".equals(codeString))
-          return DISCOUNT;
-        if ("tax".equals(codeString))
-          return TAX;
-        if ("informational".equals(codeString))
-          return INFORMATIONAL;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown InvoicePriceComponentType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case BASE: return "base";
-            case SURCHARGE: return "surcharge";
-            case DEDUCTION: return "deduction";
-            case DISCOUNT: return "discount";
-            case TAX: return "tax";
-            case INFORMATIONAL: return "informational";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case BASE: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case SURCHARGE: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case DEDUCTION: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case DISCOUNT: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case TAX: return "http://hl7.org/fhir/invoice-priceComponentType";
-            case INFORMATIONAL: return "http://hl7.org/fhir/invoice-priceComponentType";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case BASE: return "the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.";
-            case SURCHARGE: return "the amount is a surcharge applied on the base price.";
-            case DEDUCTION: return "the amount is a deduction applied on the base price.";
-            case DISCOUNT: return "the amount is a discount applied on the base price.";
-            case TAX: return "the amount is the tax component of the total price.";
-            case INFORMATIONAL: return "the amount is of informational character, it has not been applied in the calculation of the total price.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case BASE: return "base price";
-            case SURCHARGE: return "surcharge";
-            case DEDUCTION: return "deduction";
-            case DISCOUNT: return "discount";
-            case TAX: return "tax";
-            case INFORMATIONAL: return "informational";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class InvoicePriceComponentTypeEnumFactory implements EnumFactory<InvoicePriceComponentType> {
-    public InvoicePriceComponentType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("base".equals(codeString))
-          return InvoicePriceComponentType.BASE;
-        if ("surcharge".equals(codeString))
-          return InvoicePriceComponentType.SURCHARGE;
-        if ("deduction".equals(codeString))
-          return InvoicePriceComponentType.DEDUCTION;
-        if ("discount".equals(codeString))
-          return InvoicePriceComponentType.DISCOUNT;
-        if ("tax".equals(codeString))
-          return InvoicePriceComponentType.TAX;
-        if ("informational".equals(codeString))
-          return InvoicePriceComponentType.INFORMATIONAL;
-        throw new IllegalArgumentException("Unknown InvoicePriceComponentType code '"+codeString+"'");
-        }
-        public Enumeration<InvoicePriceComponentType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<InvoicePriceComponentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("base".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.BASE);
-        if ("surcharge".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.SURCHARGE);
-        if ("deduction".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DEDUCTION);
-        if ("discount".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DISCOUNT);
-        if ("tax".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.TAX);
-        if ("informational".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.INFORMATIONAL);
-        throw new FHIRException("Unknown InvoicePriceComponentType code '"+codeString+"'");
-        }
-    public String toCode(InvoicePriceComponentType code) {
-      if (code == InvoicePriceComponentType.BASE)
-        return "base";
-      if (code == InvoicePriceComponentType.SURCHARGE)
-        return "surcharge";
-      if (code == InvoicePriceComponentType.DEDUCTION)
-        return "deduction";
-      if (code == InvoicePriceComponentType.DISCOUNT)
-        return "discount";
-      if (code == InvoicePriceComponentType.TAX)
-        return "tax";
-      if (code == InvoicePriceComponentType.INFORMATIONAL)
-        return "informational";
-      return "?";
-      }
-    public String toSystem(InvoicePriceComponentType code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class InvoiceParticipantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -398,7 +244,7 @@ public class Invoice extends DomainResource {
      */
       public InvoiceParticipantComponent(Reference actor) {
         super();
-        this.actor = actor;
+        this.setActor(actor);
       }
 
         /**
@@ -600,7 +446,7 @@ public class Invoice extends DomainResource {
         @Description(shortDefinition="Components of total line item price", formalDefinition="The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice as to how the prices have been calculated." )
         protected List<InvoiceLineItemPriceComponentComponent> priceComponent;
 
-        private static final long serialVersionUID = -1013610189L;
+        private static final long serialVersionUID = -973836547L;
 
     /**
      * Constructor
@@ -614,7 +460,7 @@ public class Invoice extends DomainResource {
      */
       public InvoiceLineItemComponent(DataType chargeItem) {
         super();
-        this.chargeItem = chargeItem;
+        this.setChargeItem(chargeItem);
       }
 
         /**
@@ -757,7 +603,7 @@ public class Invoice extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #priceComponent}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #priceComponent}, creating it if it does not already exist {3}
          */
         public InvoiceLineItemPriceComponentComponent getPriceComponentFirstRep() { 
           if (getPriceComponent().isEmpty()) {
@@ -779,8 +625,8 @@ public class Invoice extends DomainResource {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "Sequence in which the items appear on the invoice.", 0, 1, sequence);
           case 351104825: /*chargeItem[x]*/  return new Property("chargeItem[x]", "Reference(ChargeItem)|CodeableConcept", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
           case 1417779175: /*chargeItem*/  return new Property("chargeItem[x]", "Reference(ChargeItem)|CodeableConcept", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
-          case 753580836: /*chargeItemReference*/  return new Property("chargeItem[x]", "Reference(ChargeItem)|CodeableConcept", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
-          case 1226532026: /*chargeItemCodeableConcept*/  return new Property("chargeItem[x]", "Reference(ChargeItem)|CodeableConcept", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
+          case 753580836: /*chargeItemReference*/  return new Property("chargeItem[x]", "Reference(ChargeItem)", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
+          case 1226532026: /*chargeItemCodeableConcept*/  return new Property("chargeItem[x]", "CodeableConcept", "The ChargeItem contains information such as the billing code, date, amount etc. If no further details are required for the lineItem, inline billing codes can be added using the CodeableConcept data type instead of the Reference.", 0, 1, chargeItem);
           case 1219095988: /*priceComponent*/  return new Property("priceComponent", "", "The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice as to how the prices have been calculated.", 0, java.lang.Integer.MAX_VALUE, priceComponent);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -791,7 +637,7 @@ public class Invoice extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 1349547969: /*sequence*/ return this.sequence == null ? new Base[0] : new Base[] {this.sequence}; // PositiveIntType
-        case 1417779175: /*chargeItem*/ return this.chargeItem == null ? new Base[0] : new Base[] {this.chargeItem}; // Type
+        case 1417779175: /*chargeItem*/ return this.chargeItem == null ? new Base[0] : new Base[] {this.chargeItem}; // DataType
         case 1219095988: /*priceComponent*/ return this.priceComponent == null ? new Base[0] : this.priceComponent.toArray(new Base[this.priceComponent.size()]); // InvoiceLineItemPriceComponentComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -805,7 +651,7 @@ public class Invoice extends DomainResource {
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         case 1417779175: // chargeItem
-          this.chargeItem = TypeConvertor.castToType(value); // Type
+          this.chargeItem = TypeConvertor.castToType(value); // DataType
           return value;
         case 1219095988: // priceComponent
           this.getPriceComponent().add((InvoiceLineItemPriceComponentComponent) value); // InvoiceLineItemPriceComponentComponent
@@ -820,7 +666,7 @@ public class Invoice extends DomainResource {
         if (name.equals("sequence")) {
           this.sequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("chargeItem[x]")) {
-          this.chargeItem = TypeConvertor.castToType(value); // Type
+          this.chargeItem = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("priceComponent")) {
           this.getPriceComponent().add((InvoiceLineItemPriceComponentComponent) value);
         } else
@@ -854,7 +700,7 @@ public class Invoice extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Invoice.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.sequence");
         }
         else if (name.equals("chargeItemReference")) {
           this.chargeItem = new Reference();
@@ -964,9 +810,9 @@ public class Invoice extends DomainResource {
     /**
      * Constructor
      */
-      public InvoiceLineItemPriceComponentComponent(Enumeration<InvoicePriceComponentType> type) {
+      public InvoiceLineItemPriceComponentComponent(InvoicePriceComponentType type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -1225,14 +1071,14 @@ public class Invoice extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Invoice.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.priceComponent.type");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Invoice.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.priceComponent.factor");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();
@@ -1414,9 +1260,9 @@ public class Invoice extends DomainResource {
   /**
    * Constructor
    */
-    public Invoice(Enumeration<InvoiceStatus> status) {
+    public Invoice(InvoiceStatus status) {
       super();
-      this.status = status;
+      this.setStatus(status);
     }
 
     /**
@@ -1463,7 +1309,7 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1731,7 +1577,7 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
      */
     public InvoiceParticipantComponent getParticipantFirstRep() { 
       if (getParticipant().isEmpty()) {
@@ -1832,7 +1678,7 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #lineItem}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #lineItem}, creating it if it does not already exist {3}
      */
     public InvoiceLineItemComponent getLineItemFirstRep() { 
       if (getLineItem().isEmpty()) {
@@ -1885,7 +1731,7 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #totalPriceComponent}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #totalPriceComponent}, creating it if it does not already exist {3}
      */
     public InvoiceLineItemPriceComponentComponent getTotalPriceComponentFirstRep() { 
       if (getTotalPriceComponent().isEmpty()) {
@@ -2035,7 +1881,7 @@ public class Invoice extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -2411,6 +2257,32 @@ public class Invoice extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>account</b>
+   * <p>
+   * Description: <b>Account that is being balanced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.account</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="account", path="Invoice.account", description="Account that is being balanced", type="reference", target={Account.class } )
+  public static final String SP_ACCOUNT = "account";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>account</b>
+   * <p>
+   * Description: <b>Account that is being balanced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.account</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACCOUNT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:account</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACCOUNT = new ca.uhn.fhir.model.api.Include("Invoice:account").toLocked();
+
+ /**
    * Search parameter: <b>date</b>
    * <p>
    * Description: <b>Invoice date / posting date</b><br>
@@ -2451,92 +2323,6 @@ public class Invoice extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>totalgross</b>
-   * <p>
-   * Description: <b>Gross total of this Invoice</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>Invoice.totalGross</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="totalgross", path="Invoice.totalGross", description="Gross total of this Invoice", type="quantity" )
-  public static final String SP_TOTALGROSS = "totalgross";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>totalgross</b>
-   * <p>
-   * Description: <b>Gross total of this Invoice</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>Invoice.totalGross</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam TOTALGROSS = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_TOTALGROSS);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Recipient(s) of goods and services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Invoice.subject", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Recipient(s) of goods and services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Invoice:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Invoice:subject").toLocked();
-
- /**
-   * Search parameter: <b>participant-role</b>
-   * <p>
-   * Description: <b>Type of involvement in creation of this Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.participant.role</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="participant-role", path="Invoice.participant.role", description="Type of involvement in creation of this Invoice", type="token" )
-  public static final String SP_PARTICIPANT_ROLE = "participant-role";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>participant-role</b>
-   * <p>
-   * Description: <b>Type of involvement in creation of this Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.participant.role</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_ROLE);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>Type of Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Invoice.type", description="Type of Invoice", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>Type of Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
    * Search parameter: <b>issuer</b>
    * <p>
    * Description: <b>Issuing Organization of Invoice</b><br>
@@ -2563,6 +2349,26 @@ public class Invoice extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ISSUER = new ca.uhn.fhir.model.api.Include("Invoice:issuer").toLocked();
 
  /**
+   * Search parameter: <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant-role", path="Invoice.participant.role", description="Type of involvement in creation of this Invoice", type="token" )
+  public static final String SP_PARTICIPANT_ROLE = "participant-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_ROLE);
+
+ /**
    * Search parameter: <b>participant</b>
    * <p>
    * Description: <b>Individual who was involved</b><br>
@@ -2570,7 +2376,7 @@ public class Invoice extends DomainResource {
    * Path: <b>Invoice.participant.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="participant", path="Invoice.participant.actor", description="Individual who was involved", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="participant", path="Invoice.participant.actor", description="Individual who was involved", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PARTICIPANT = "participant";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>participant</b>
@@ -2587,6 +2393,124 @@ public class Invoice extends DomainResource {
    * the path value of "<b>Invoice:participant</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("Invoice:participant").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Invoice.subject.where(resolve() is Patient)", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Invoice:patient").toLocked();
+
+ /**
+   * Search parameter: <b>recipient</b>
+   * <p>
+   * Description: <b>Recipient of this invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.recipient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recipient", path="Invoice.recipient", description="Recipient of this invoice", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Organization.class, Patient.class, RelatedPerson.class } )
+  public static final String SP_RECIPIENT = "recipient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
+   * <p>
+   * Description: <b>Recipient of this invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.recipient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RECIPIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RECIPIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:recipient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("Invoice:recipient").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Invoice.status", description="draft | issued | balanced | cancelled | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Invoice.subject", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Invoice:subject").toLocked();
+
+ /**
+   * Search parameter: <b>totalgross</b>
+   * <p>
+   * Description: <b>Gross total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalGross</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="totalgross", path="Invoice.totalGross", description="Gross total of this Invoice", type="quantity" )
+  public static final String SP_TOTALGROSS = "totalgross";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>totalgross</b>
+   * <p>
+   * Description: <b>Gross total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalGross</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam TOTALGROSS = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_TOTALGROSS);
 
  /**
    * Search parameter: <b>totalnet</b>
@@ -2609,102 +2533,24 @@ public class Invoice extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam TOTALNET = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_TOTALNET);
 
  /**
-   * Search parameter: <b>patient</b>
+   * Search parameter: <b>type</b>
    * <p>
-   * Description: <b>Recipient(s) of goods and services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Invoice.subject.where(resolve() is Patient)", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Recipient(s) of goods and services</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Invoice:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Invoice:patient").toLocked();
-
- /**
-   * Search parameter: <b>recipient</b>
-   * <p>
-   * Description: <b>Recipient of this invoice</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.recipient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="recipient", path="Invoice.recipient", description="Recipient of this invoice", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Organization.class, Patient.class, RelatedPerson.class } )
-  public static final String SP_RECIPIENT = "recipient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
-   * <p>
-   * Description: <b>Recipient of this invoice</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.recipient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RECIPIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RECIPIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Invoice:recipient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("Invoice:recipient").toLocked();
-
- /**
-   * Search parameter: <b>account</b>
-   * <p>
-   * Description: <b>Account that is being balanced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.account</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="account", path="Invoice.account", description="Account that is being balanced", type="reference", target={Account.class } )
-  public static final String SP_ACCOUNT = "account";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>account</b>
-   * <p>
-   * Description: <b>Account that is being balanced</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Invoice.account</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACCOUNT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Invoice:account</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACCOUNT = new ca.uhn.fhir.model.api.Include("Invoice:account").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Description: <b>Type of Invoice</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Invoice.status</b><br>
+   * Path: <b>Invoice.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Invoice.status", description="draft | issued | balanced | cancelled | entered-in-error", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="type", path="Invoice.type", description="Type of Invoice", type="token" )
+  public static final String SP_TYPE = "type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Description: <b>Type of Invoice</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Invoice.status</b><br>
+   * Path: <b>Invoice.type</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

@@ -325,8 +325,8 @@ public class AuditEvent extends VersionConvertor_40_50 {
       tgt.addSecurityLabel(convertCoding(t));
     if (src.hasName())
       tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     if (src.hasQuery())
       tgt.setQueryElement(convertBase64Binary(src.getQueryElement()));
     for (org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail())
@@ -351,8 +351,8 @@ public class AuditEvent extends VersionConvertor_40_50 {
       tgt.addSecurityLabel(convertCoding(t));
     if (src.hasName())
       tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
     if (src.hasQuery())
       tgt.setQueryElement(convertBase64Binary(src.getQueryElement()));
     for (org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail())

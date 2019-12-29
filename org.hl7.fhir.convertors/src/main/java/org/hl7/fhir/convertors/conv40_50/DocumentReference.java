@@ -140,19 +140,19 @@ public class DocumentReference extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus convertReferredDocumentStatus(org.hl7.fhir.r4.model.DocumentReference.ReferredDocumentStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.CompositionStatus convertReferredDocumentStatus(org.hl7.fhir.r4.model.DocumentReference.ReferredDocumentStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PRELIMINARY: return org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus.AMENDED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus.NULL;
+    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.PRELIMINARY;
+    case FINAL: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.FINAL;
+    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.AMENDED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.ENTEREDINERROR;
+    default: return org.hl7.fhir.r5.model.Enumerations.CompositionStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DocumentReference.ReferredDocumentStatus convertReferredDocumentStatus(org.hl7.fhir.r5.model.DocumentReference.ReferredDocumentStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DocumentReference.ReferredDocumentStatus convertReferredDocumentStatus(org.hl7.fhir.r5.model.Enumerations.CompositionStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -188,19 +188,19 @@ public class DocumentReference extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case REPLACES: return org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType.REPLACES;
-    case TRANSFORMS: return org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType.TRANSFORMS;
-    case SIGNS: return org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType.SIGNS;
-    case APPENDS: return org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType.APPENDS;
-    default: return org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType.NULL;
+    case REPLACES: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.REPLACES;
+    case TRANSFORMS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.TRANSFORMS;
+    case SIGNS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.SIGNS;
+    case APPENDS: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.APPENDS;
+    default: return org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r5.model.DocumentReference.DocumentRelationshipType src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

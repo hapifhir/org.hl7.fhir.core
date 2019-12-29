@@ -22,6 +22,14 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
@@ -102,7 +110,7 @@ public class OperationDefinition extends VersionConvertor_40_50 {
     if (src.hasBase())
       tgt.setBaseElement(convertCanonical(src.getBaseElement()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getResource())
-      tgt.getResource().add(convertCode(t));
+      tgt.getResource().add(convertResourceEnum(t));
     if (src.hasSystem())
       tgt.setSystemElement(convertBoolean(src.getSystemElement()));
     if (src.hasType())
@@ -161,8 +169,8 @@ public class OperationDefinition extends VersionConvertor_40_50 {
       tgt.setCommentElement(convertMarkdown(src.getCommentElement()));
     if (src.hasBase())
       tgt.setBaseElement(convertCanonical(src.getBaseElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getResource())
-      tgt.getResource().add(convertCode(t));
+    for (CodeType t : src.getResource())
+      tgt.getResource().add(convertResourceEnum(t));
     if (src.hasSystem())
       tgt.setSystemElement(convertBoolean(src.getSystemElement()));
     if (src.hasType())
@@ -216,7 +224,7 @@ public class OperationDefinition extends VersionConvertor_40_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.getTypeElement().setValue(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(convertCanonical(t));
     if (src.hasSearchType())
@@ -246,7 +254,7 @@ public class OperationDefinition extends VersionConvertor_40_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setTypeElement(convertCode(src.getTypeElement()));
+      tgt.setTypeElement(new org.hl7.fhir.r4.model.CodeType(src.getType().toCode()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(convertCanonical(t));
     if (src.hasSearchType())
@@ -260,17 +268,17 @@ public class OperationDefinition extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.OperationDefinition.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case IN: return org.hl7.fhir.r5.model.OperationDefinition.OperationParameterUse.IN;
-    case OUT: return org.hl7.fhir.r5.model.OperationDefinition.OperationParameterUse.OUT;
-    default: return org.hl7.fhir.r5.model.OperationDefinition.OperationParameterUse.NULL;
+    case IN: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN;
+    case OUT: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.OUT;
+    default: return org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.r5.model.OperationDefinition.OperationParameterUse src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

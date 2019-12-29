@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,39 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,6 +65,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * The regulatory authorization of a medicinal product.
  */
@@ -87,7 +88,7 @@ public class RegulatedAuthorization extends DomainResource {
         @Description(shortDefinition="Type of this date, for example the data exclusitity period for a medicinal product", formalDefinition="Type of this date, for example the data exclusitity period for a medicinal product." )
         protected CodeableConcept type;
 
-        private static final long serialVersionUID = -835284681L;
+        private static final long serialVersionUID = 950845613L;
 
     /**
      * Constructor
@@ -101,8 +102,8 @@ public class RegulatedAuthorization extends DomainResource {
      */
       public RegulatedAuthorizationRelatedDateComponent(DataType date, CodeableConcept type) {
         super();
-        this.date = date;
-        this.type = type;
+        this.setDate(date);
+        this.setType(type);
       }
 
         /**
@@ -191,8 +192,8 @@ public class RegulatedAuthorization extends DomainResource {
           switch (_hash) {
           case 1443311122: /*date[x]*/  return new Property("date[x]", "Period|dateTime", "Another date associated with the authorization.", 0, 1, date);
           case 3076014: /*date*/  return new Property("date[x]", "Period|dateTime", "Another date associated with the authorization.", 0, 1, date);
-          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period|dateTime", "Another date associated with the authorization.", 0, 1, date);
-          case 185136489: /*dateDateTime*/  return new Property("date[x]", "Period|dateTime", "Another date associated with the authorization.", 0, 1, date);
+          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period", "Another date associated with the authorization.", 0, 1, date);
+          case 185136489: /*dateDateTime*/  return new Property("date[x]", "dateTime", "Another date associated with the authorization.", 0, 1, date);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of this date, for example the data exclusitity period for a medicinal product.", 0, 1, type);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -202,7 +203,7 @@ public class RegulatedAuthorization extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // Type
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DataType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -213,7 +214,7 @@ public class RegulatedAuthorization extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3076014: // date
-          this.date = TypeConvertor.castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // DataType
           return value;
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -226,7 +227,7 @@ public class RegulatedAuthorization extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("date[x]")) {
-          this.date = TypeConvertor.castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
@@ -353,7 +354,7 @@ public class RegulatedAuthorization extends DomainResource {
         @Description(shortDefinition="Applcations submitted to obtain a marketing authorization. Steps within the longer running case or procedure", formalDefinition="Applcations submitted to obtain a marketing authorization. Steps within the longer running case or procedure." )
         protected List<RegulatedAuthorizationCaseComponent> application;
 
-        private static final long serialVersionUID = 69566519L;
+        private static final long serialVersionUID = 2052202113L;
 
     /**
      * Constructor
@@ -529,7 +530,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #application}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #application}, creating it if it does not already exist {3}
          */
         public RegulatedAuthorizationCaseComponent getApplicationFirstRep() { 
           if (getApplication().isEmpty()) {
@@ -555,8 +556,8 @@ public class RegulatedAuthorization extends DomainResource {
           case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status of the case.", 0, 1, status);
           case 1443311122: /*date[x]*/  return new Property("date[x]", "Period|dateTime", "Date of case.", 0, 1, date);
           case 3076014: /*date*/  return new Property("date[x]", "Period|dateTime", "Date of case.", 0, 1, date);
-          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period|dateTime", "Date of case.", 0, 1, date);
-          case 185136489: /*dateDateTime*/  return new Property("date[x]", "Period|dateTime", "Date of case.", 0, 1, date);
+          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period", "Date of case.", 0, 1, date);
+          case 185136489: /*dateDateTime*/  return new Property("date[x]", "dateTime", "Date of case.", 0, 1, date);
           case 1554253136: /*application*/  return new Property("application", "@RegulatedAuthorization.case", "Applcations submitted to obtain a marketing authorization. Steps within the longer running case or procedure.", 0, java.lang.Integer.MAX_VALUE, application);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -569,7 +570,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // Type
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DataType
         case 1554253136: /*application*/ return this.application == null ? new Base[0] : this.application.toArray(new Base[this.application.size()]); // RegulatedAuthorizationCaseComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -589,7 +590,7 @@ public class RegulatedAuthorization extends DomainResource {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3076014: // date
-          this.date = TypeConvertor.castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // DataType
           return value;
         case 1554253136: // application
           this.getApplication().add((RegulatedAuthorizationCaseComponent) value); // RegulatedAuthorizationCaseComponent
@@ -608,7 +609,7 @@ public class RegulatedAuthorization extends DomainResource {
         } else if (name.equals("status")) {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("date[x]")) {
-          this.date = TypeConvertor.castToType(value); // Type
+          this.date = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("application")) {
           this.getApplication().add((RegulatedAuthorizationCaseComponent) value);
         } else
@@ -748,9 +749,9 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * General textual supporting information.
      */
-    @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General textual supporting information", formalDefinition="General textual supporting information." )
-    protected StringType description;
+    protected MarkdownType description;
 
     /**
      * The region (country, jurisdiction etc.) in which the marketing authorization has been granted.
@@ -822,7 +823,7 @@ public class RegulatedAuthorization extends DomainResource {
     @Description(shortDefinition="The case or regulatory procedure for granting or amending a marketing authorization", formalDefinition="The case or regulatory procedure for granting or amending a marketing authorization." )
     protected RegulatedAuthorizationCaseComponent case_;
 
-    private static final long serialVersionUID = -1221561439L;
+    private static final long serialVersionUID = -1485439613L;
 
   /**
    * Constructor
@@ -875,7 +876,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -935,12 +936,12 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * @return {@link #description} (General textual supporting information.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public StringType getDescriptionElement() { 
+    public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create RegulatedAuthorization.description");
         else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
+          this.description = new MarkdownType(); // bb
       return this.description;
     }
 
@@ -955,7 +956,7 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * @param value {@link #description} (General textual supporting information.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public RegulatedAuthorization setDescriptionElement(StringType value) { 
+    public RegulatedAuthorization setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -971,11 +972,11 @@ public class RegulatedAuthorization extends DomainResource {
      * @param value General textual supporting information.
      */
     public RegulatedAuthorization setDescription(String value) { 
-      if (Utilities.noString(value))
+      if (value == null)
         this.description = null;
       else {
         if (this.description == null)
-          this.description = new StringType();
+          this.description = new MarkdownType();
         this.description.setValue(value);
       }
       return this;
@@ -1025,7 +1026,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #region}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #region}, creating it if it does not already exist {3}
      */
     public CodeableConcept getRegionFirstRep() { 
       if (getRegion().isEmpty()) {
@@ -1175,7 +1176,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #basis}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #basis}, creating it if it does not already exist {3}
      */
     public CodeableConcept getBasisFirstRep() { 
       if (getBasis().isEmpty()) {
@@ -1228,7 +1229,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedDate}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedDate}, creating it if it does not already exist {3}
      */
     public RegulatedAuthorizationRelatedDateComponent getRelatedDateFirstRep() { 
       if (getRelatedDate().isEmpty()) {
@@ -1281,7 +1282,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdictionalAuthorization}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdictionalAuthorization}, creating it if it does not already exist {3}
      */
     public Reference getJurisdictionalAuthorizationFirstRep() { 
       if (getJurisdictionalAuthorization().isEmpty()) {
@@ -1367,7 +1368,7 @@ public class RegulatedAuthorization extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Business identifier for the marketing authorization, as assigned by a regulator.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition)", "The product that is being authorized.", 0, 1, subject));
         children.add(new Property("type", "CodeableConcept", "Type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type));
-        children.add(new Property("description", "string", "General textual supporting information.", 0, 1, description));
+        children.add(new Property("description", "markdown", "General textual supporting information.", 0, 1, description));
         children.add(new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region));
         children.add(new Property("status", "CodeableConcept", "The status of the marketing authorization.", 0, 1, status));
         children.add(new Property("statusDate", "dateTime", "The date at which the given status has become applicable.", 0, 1, statusDate));
@@ -1386,7 +1387,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for the marketing authorization, as assigned by a regulator.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition)", "The product that is being authorized.", 0, 1, subject);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type);
-        case -1724546052: /*description*/  return new Property("description", "string", "General textual supporting information.", 0, 1, description);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "General textual supporting information.", 0, 1, description);
         case -934795532: /*region*/  return new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status of the marketing authorization.", 0, 1, status);
         case 247524032: /*statusDate*/  return new Property("statusDate", "dateTime", "The date at which the given status has become applicable.", 0, 1, statusDate);
@@ -1408,7 +1409,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -934795532: /*region*/ return this.region == null ? new Base[0] : this.region.toArray(new Base[this.region.size()]); // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case 247524032: /*statusDate*/ return this.statusDate == null ? new Base[0] : new Base[] {this.statusDate}; // DateTimeType
@@ -1437,7 +1438,7 @@ public class RegulatedAuthorization extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -934795532: // region
           this.getRegion().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1483,7 +1484,7 @@ public class RegulatedAuthorization extends DomainResource {
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("region")) {
           this.getRegion().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("status")) {
@@ -1537,7 +1538,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -1724546052: /*description*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
         case -934795532: /*region*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
         case 247524032: /*statusDate*/ return new String[] {"dateTime"};
@@ -1699,50 +1700,44 @@ public class RegulatedAuthorization extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>case-type</b>
    * <p>
-   * Description: <b>Business identifier for the marketing authorization, as assigned by a regulator</b><br>
+   * Description: <b>Type of case</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * Path: <b>RegulatedAuthorization.case.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="RegulatedAuthorization.identifier", description="Business identifier for the marketing authorization, as assigned by a regulator", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="case-type", path="RegulatedAuthorization.case.type", description="Type of case", type="token" )
+  public static final String SP_CASE_TYPE = "case-type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>case-type</b>
    * <p>
-   * Description: <b>Business identifier for the marketing authorization, as assigned by a regulator</b><br>
+   * Description: <b>Type of case</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * Path: <b>RegulatedAuthorization.case.type</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CASE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CASE_TYPE);
 
  /**
-   * Search parameter: <b>subject</b>
+   * Search parameter: <b>case</b>
    * <p>
-   * Description: <b>The product that is being authorized</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * Description: <b>The case or procedure number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The product that is being authorized", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, MedicinalProductDefinition.class, PackagedProductDefinition.class, PlanDefinition.class, ResearchStudy.class } )
-  public static final String SP_SUBJECT = "subject";
+  @SearchParamDefinition(name="case", path="RegulatedAuthorization.case.identifier", description="The case or procedure number", type="token" )
+  public static final String SP_CASE = "case";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <b>Fluent Client</b> search parameter constant for <b>case</b>
    * <p>
-   * Description: <b>The product that is being authorized</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * Description: <b>The case or procedure number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RegulatedAuthorization:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RegulatedAuthorization:subject").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CASE);
 
  /**
    * Search parameter: <b>holder</b>
@@ -1771,6 +1766,26 @@ public class RegulatedAuthorization extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_HOLDER = new ca.uhn.fhir.model.api.Include("RegulatedAuthorization:holder").toLocked();
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for the marketing authorization, as assigned by a regulator</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="RegulatedAuthorization.identifier", description="Business identifier for the marketing authorization, as assigned by a regulator", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for the marketing authorization, as assigned by a regulator</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
    * Search parameter: <b>region</b>
    * <p>
    * Description: <b>The region (country, jurisdiction etc.) in which the marketing authorization has been granted</b><br>
@@ -1791,26 +1806,6 @@ public class RegulatedAuthorization extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REGION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REGION);
 
  /**
-   * Search parameter: <b>case</b>
-   * <p>
-   * Description: <b>The case or procedure number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="case", path="RegulatedAuthorization.case.identifier", description="The case or procedure number", type="token" )
-  public static final String SP_CASE = "case";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>case</b>
-   * <p>
-   * Description: <b>The case or procedure number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CASE);
-
- /**
    * Search parameter: <b>status</b>
    * <p>
    * Description: <b>The status of the marketing authorization</b><br>
@@ -1829,6 +1824,32 @@ public class RegulatedAuthorization extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The product that is being authorized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The product that is being authorized", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, MedicinalProductDefinition.class, PackagedProductDefinition.class, PlanDefinition.class, ResearchStudy.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The product that is being authorized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RegulatedAuthorization:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RegulatedAuthorization:subject").toLocked();
 
 
 }

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
+import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalListSorter;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -23,6 +24,16 @@ import org.hl7.fhir.utilities.VersionUtilities;
  */
 
 public class CanonicalResourceManager<T extends CanonicalResource> {
+
+  public class CanonicalListSorter implements Comparator<CanonicalResource> {
+
+    @Override
+    public int compare(CanonicalResource arg0, CanonicalResource arg1) {
+      String u0 = arg0.getUrl();
+      String u1 = arg1.getUrl();
+      return u0.compareTo(u1);
+    }
+  }
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
     @Override
@@ -193,6 +204,17 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         res.add(t);
       }
     }
+    return res;
+  }
+
+  public List<T> getSortedList() {
+    List<T> res = new ArrayList<>();
+    for (T t : list) {
+      if (!res.contains(t)) {
+        res.add(t);
+      }
+    }
+    Collections.sort(res, new CanonicalListSorter());
     return res;
   }
 

@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,63 +66,296 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Catalog entries are wrappers that contextualize items included in a catalog.
  */
 @ResourceDef(name="CatalogEntry", profile="http://hl7.org/fhir/StructureDefinition/CatalogEntry")
 public class CatalogEntry extends DomainResource {
 
+    public enum CatalogEntryRelationType {
+        /**
+         * Depending on the context, the item of the related catalog entry may be added by the performer.
+         */
+        TRIGGERS, 
+        /**
+         * the related catalog entry supersedes this one when it is not active.
+         */
+        ISREPLACEDBY, 
+        /**
+         * The related catalog entry is excluded by this one.
+         */
+        EXCLUDES, 
+        /**
+         * The item of the related catalog entry  will be part of the orders containing the current item.
+         */
+        INCLUDES, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CatalogEntryRelationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("triggers".equals(codeString))
+          return TRIGGERS;
+        if ("is-replaced-by".equals(codeString))
+          return ISREPLACEDBY;
+        if ("excludes".equals(codeString))
+          return EXCLUDES;
+        if ("includes".equals(codeString))
+          return INCLUDES;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TRIGGERS: return "triggers";
+            case ISREPLACEDBY: return "is-replaced-by";
+            case EXCLUDES: return "excludes";
+            case INCLUDES: return "includes";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case TRIGGERS: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case ISREPLACEDBY: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case EXCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
+            case INCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TRIGGERS: return "Depending on the context, the item of the related catalog entry may be added by the performer.";
+            case ISREPLACEDBY: return "the related catalog entry supersedes this one when it is not active.";
+            case EXCLUDES: return "The related catalog entry is excluded by this one.";
+            case INCLUDES: return "The item of the related catalog entry  will be part of the orders containing the current item.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TRIGGERS: return "Triggers";
+            case ISREPLACEDBY: return "Is replaced by";
+            case EXCLUDES: return "Excludes";
+            case INCLUDES: return "Includes";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CatalogEntryRelationTypeEnumFactory implements EnumFactory<CatalogEntryRelationType> {
+    public CatalogEntryRelationType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("triggers".equals(codeString))
+          return CatalogEntryRelationType.TRIGGERS;
+        if ("is-replaced-by".equals(codeString))
+          return CatalogEntryRelationType.ISREPLACEDBY;
+        if ("excludes".equals(codeString))
+          return CatalogEntryRelationType.EXCLUDES;
+        if ("includes".equals(codeString))
+          return CatalogEntryRelationType.INCLUDES;
+        throw new IllegalArgumentException("Unknown CatalogEntryRelationType code '"+codeString+"'");
+        }
+        public Enumeration<CatalogEntryRelationType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CatalogEntryRelationType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("triggers".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.TRIGGERS);
+        if ("is-replaced-by".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.ISREPLACEDBY);
+        if ("excludes".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.EXCLUDES);
+        if ("includes".equals(codeString))
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.INCLUDES);
+        throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
+        }
+    public String toCode(CatalogEntryRelationType code) {
+      if (code == CatalogEntryRelationType.TRIGGERS)
+        return "triggers";
+      if (code == CatalogEntryRelationType.ISREPLACEDBY)
+        return "is-replaced-by";
+      if (code == CatalogEntryRelationType.EXCLUDES)
+        return "excludes";
+      if (code == CatalogEntryRelationType.INCLUDES)
+        return "includes";
+      return "?";
+      }
+    public String toSystem(CatalogEntryRelationType code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum CatalogEntryStatus {
+        /**
+         * 
+         */
+        DRAFT, 
+        /**
+         * 
+         */
+        ACTIVE, 
+        /**
+         * 
+         */
+        RETIRED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CatalogEntryStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("retired".equals(codeString))
+          return RETIRED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DRAFT: return "draft";
+            case ACTIVE: return "active";
+            case RETIRED: return "retired";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case DRAFT: return "http://hl7.org/fhir/catalogentry-status";
+            case ACTIVE: return "http://hl7.org/fhir/catalogentry-status";
+            case RETIRED: return "http://hl7.org/fhir/catalogentry-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DRAFT: return "";
+            case ACTIVE: return "";
+            case RETIRED: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DRAFT: return "Draft";
+            case ACTIVE: return "Active";
+            case RETIRED: return "Retired";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CatalogEntryStatusEnumFactory implements EnumFactory<CatalogEntryStatus> {
+    public CatalogEntryStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return CatalogEntryStatus.DRAFT;
+        if ("active".equals(codeString))
+          return CatalogEntryStatus.ACTIVE;
+        if ("retired".equals(codeString))
+          return CatalogEntryStatus.RETIRED;
+        throw new IllegalArgumentException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+        public Enumeration<CatalogEntryStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CatalogEntryStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("draft".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.DRAFT);
+        if ("active".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.ACTIVE);
+        if ("retired".equals(codeString))
+          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.RETIRED);
+        throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
+        }
+    public String toCode(CatalogEntryStatus code) {
+      if (code == CatalogEntryStatus.DRAFT)
+        return "draft";
+      if (code == CatalogEntryStatus.ACTIVE)
+        return "active";
+      if (code == CatalogEntryStatus.RETIRED)
+        return "retired";
+      return "?";
+      }
+    public String toSystem(CatalogEntryStatus code) {
+      return code.getSystem();
+      }
+    }
+
     public enum CatalogEntryType {
         /**
-         * null
+         * 
          */
         ACTIVITYDEFINITION, 
         /**
-         * null
+         * 
          */
         PLANDEFINITION, 
         /**
-         * null
+         * 
          */
         SPECIMENDEFINITION, 
         /**
-         * null
+         * 
          */
         OBSERVATIONDEFINITION, 
         /**
-         * null
+         * 
          */
         DEVICEDEFINITION, 
         /**
-         * null
+         * 
          */
         ORGANIZATION, 
         /**
-         * null
+         * 
          */
         PRACTITIONER, 
         /**
-         * null
+         * 
          */
         PRACTITIONERROLE, 
         /**
-         * null
+         * 
          */
         HEALTHCARESERVICE, 
         /**
-         * null
+         * 
          */
         MEDICATIONKNOWLEDGE, 
         /**
-         * null
+         * 
          */
         MEDICATION, 
         /**
-         * null
+         * 
          */
         SUBSTANCE, 
         /**
-         * null
+         * 
          */
         LOCATION, 
         /**
@@ -339,238 +573,6 @@ public class CatalogEntry extends DomainResource {
       }
     }
 
-    public enum CatalogEntryStatus {
-        /**
-         * null
-         */
-        DRAFT, 
-        /**
-         * null
-         */
-        ACTIVE, 
-        /**
-         * null
-         */
-        RETIRED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CatalogEntryStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return DRAFT;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("retired".equals(codeString))
-          return RETIRED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DRAFT: return "draft";
-            case ACTIVE: return "active";
-            case RETIRED: return "retired";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DRAFT: return "http://hl7.org/fhir/catalogentry-status";
-            case ACTIVE: return "http://hl7.org/fhir/catalogentry-status";
-            case RETIRED: return "http://hl7.org/fhir/catalogentry-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DRAFT: return "";
-            case ACTIVE: return "";
-            case RETIRED: return "";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DRAFT: return "Draft";
-            case ACTIVE: return "Active";
-            case RETIRED: return "Retired";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CatalogEntryStatusEnumFactory implements EnumFactory<CatalogEntryStatus> {
-    public CatalogEntryStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("draft".equals(codeString))
-          return CatalogEntryStatus.DRAFT;
-        if ("active".equals(codeString))
-          return CatalogEntryStatus.ACTIVE;
-        if ("retired".equals(codeString))
-          return CatalogEntryStatus.RETIRED;
-        throw new IllegalArgumentException("Unknown CatalogEntryStatus code '"+codeString+"'");
-        }
-        public Enumeration<CatalogEntryStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CatalogEntryStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("draft".equals(codeString))
-          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.DRAFT);
-        if ("active".equals(codeString))
-          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.ACTIVE);
-        if ("retired".equals(codeString))
-          return new Enumeration<CatalogEntryStatus>(this, CatalogEntryStatus.RETIRED);
-        throw new FHIRException("Unknown CatalogEntryStatus code '"+codeString+"'");
-        }
-    public String toCode(CatalogEntryStatus code) {
-      if (code == CatalogEntryStatus.DRAFT)
-        return "draft";
-      if (code == CatalogEntryStatus.ACTIVE)
-        return "active";
-      if (code == CatalogEntryStatus.RETIRED)
-        return "retired";
-      return "?";
-      }
-    public String toSystem(CatalogEntryStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum CatalogEntryRelationType {
-        /**
-         * Depending on the context, the item of the related catalog entry may be added by the performer.
-         */
-        TRIGGERS, 
-        /**
-         * the related catalog entry supersedes this one when it is not active.
-         */
-        ISREPLACEDBY, 
-        /**
-         * The related catalog entry is excluded by this one.
-         */
-        EXCLUDES, 
-        /**
-         * The item of the related catalog entry  will be part of the orders containing the current item.
-         */
-        INCLUDES, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static CatalogEntryRelationType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("triggers".equals(codeString))
-          return TRIGGERS;
-        if ("is-replaced-by".equals(codeString))
-          return ISREPLACEDBY;
-        if ("excludes".equals(codeString))
-          return EXCLUDES;
-        if ("includes".equals(codeString))
-          return INCLUDES;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TRIGGERS: return "triggers";
-            case ISREPLACEDBY: return "is-replaced-by";
-            case EXCLUDES: return "excludes";
-            case INCLUDES: return "includes";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TRIGGERS: return "http://hl7.org/fhir/catalogentry-relation-type";
-            case ISREPLACEDBY: return "http://hl7.org/fhir/catalogentry-relation-type";
-            case EXCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
-            case INCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TRIGGERS: return "Depending on the context, the item of the related catalog entry may be added by the performer.";
-            case ISREPLACEDBY: return "the related catalog entry supersedes this one when it is not active.";
-            case EXCLUDES: return "The related catalog entry is excluded by this one.";
-            case INCLUDES: return "The item of the related catalog entry  will be part of the orders containing the current item.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TRIGGERS: return "Triggers";
-            case ISREPLACEDBY: return "Is replaced by";
-            case EXCLUDES: return "Excludes";
-            case INCLUDES: return "Includes";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class CatalogEntryRelationTypeEnumFactory implements EnumFactory<CatalogEntryRelationType> {
-    public CatalogEntryRelationType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("triggers".equals(codeString))
-          return CatalogEntryRelationType.TRIGGERS;
-        if ("is-replaced-by".equals(codeString))
-          return CatalogEntryRelationType.ISREPLACEDBY;
-        if ("excludes".equals(codeString))
-          return CatalogEntryRelationType.EXCLUDES;
-        if ("includes".equals(codeString))
-          return CatalogEntryRelationType.INCLUDES;
-        throw new IllegalArgumentException("Unknown CatalogEntryRelationType code '"+codeString+"'");
-        }
-        public Enumeration<CatalogEntryRelationType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<CatalogEntryRelationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("triggers".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.TRIGGERS);
-        if ("is-replaced-by".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.ISREPLACEDBY);
-        if ("excludes".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.EXCLUDES);
-        if ("includes".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.INCLUDES);
-        throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
-        }
-    public String toCode(CatalogEntryRelationType code) {
-      if (code == CatalogEntryRelationType.TRIGGERS)
-        return "triggers";
-      if (code == CatalogEntryRelationType.ISREPLACEDBY)
-        return "is-replaced-by";
-      if (code == CatalogEntryRelationType.EXCLUDES)
-        return "excludes";
-      if (code == CatalogEntryRelationType.INCLUDES)
-        return "includes";
-      return "?";
-      }
-    public String toSystem(CatalogEntryRelationType code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class CatalogEntryRelatedEntryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -600,10 +602,10 @@ public class CatalogEntry extends DomainResource {
     /**
      * Constructor
      */
-      public CatalogEntryRelatedEntryComponent(Enumeration<CatalogEntryRelationType> relationship, Reference target) {
+      public CatalogEntryRelatedEntryComponent(CatalogEntryRelationType relationship, Reference target) {
         super();
-        this.relationship = relationship;
-        this.target = target;
+        this.setRelationship(relationship);
+        this.setTarget(target);
       }
 
         /**
@@ -751,7 +753,7 @@ public class CatalogEntry extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("relationship")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.relationship");
+          throw new FHIRException("Cannot call addChild on a primitive type CatalogEntry.relatedEntry.relationship");
         }
         else if (name.equals("target")) {
           this.target = new Reference();
@@ -931,10 +933,10 @@ public class CatalogEntry extends DomainResource {
   /**
    * Constructor
    */
-    public CatalogEntry(BooleanType orderable, Reference referencedItem) {
+    public CatalogEntry(boolean orderable, Reference referencedItem) {
       super();
-      this.orderable = orderable;
-      this.referencedItem = referencedItem;
+      this.setOrderable(orderable);
+      this.setReferencedItem(referencedItem);
     }
 
     /**
@@ -981,7 +983,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -1274,7 +1276,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatedEntry}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relatedEntry}, creating it if it does not already exist {3}
      */
     public CatalogEntryRelatedEntryComponent getRelatedEntryFirstRep() { 
       if (getRelatedEntry().isEmpty()) {
@@ -1351,7 +1353,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -1428,7 +1430,7 @@ public class CatalogEntry extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #billingCode}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #billingCode}, creating it if it does not already exist {3}
      */
     public CodeableConcept getBillingCodeFirstRep() { 
       if (getBillingCode().isEmpty()) {
@@ -2020,30 +2022,44 @@ public class CatalogEntry extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>related-entry</b>
+   * Search parameter: <b>name</b>
    * <p>
-   * Description: <b>The reference to the related entry</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
+   * Description: <b>Displayable name assigned to the catalog entry</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CatalogEntry.name</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="related-entry", path="CatalogEntry.relatedEntry.target", description="The reference to the related entry", type="reference", target={CatalogEntry.class } )
-  public static final String SP_RELATED_ENTRY = "related-entry";
+  @SearchParamDefinition(name="name", path="CatalogEntry.name", description="Displayable name assigned to the catalog entry", type="string" )
+  public static final String SP_NAME = "name";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>related-entry</b>
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
    * <p>
-   * Description: <b>The reference to the related entry</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
+   * Description: <b>Displayable name assigned to the catalog entry</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CatalogEntry.name</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED_ENTRY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED_ENTRY);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CatalogEntry:related-entry</b>".
+ /**
+   * Search parameter: <b>orderable</b>
+   * <p>
+   * Description: <b>Is orderable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.orderable</b><br>
+   * </p>
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED_ENTRY = new ca.uhn.fhir.model.api.Include("CatalogEntry:related-entry").toLocked();
+  @SearchParamDefinition(name="orderable", path="CatalogEntry.orderable", description="Is orderable", type="token" )
+  public static final String SP_ORDERABLE = "orderable";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>orderable</b>
+   * <p>
+   * Description: <b>Is orderable</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.orderable</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ORDERABLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ORDERABLE);
 
  /**
    * Search parameter: <b>referenced-item</b>
@@ -2072,64 +2088,30 @@ public class CatalogEntry extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_REFERENCED_ITEM = new ca.uhn.fhir.model.api.Include("CatalogEntry:referenced-item").toLocked();
 
  /**
-   * Search parameter: <b>orderable</b>
+   * Search parameter: <b>related-entry</b>
    * <p>
-   * Description: <b>Is orderable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CatalogEntry.orderable</b><br>
+   * Description: <b>The reference to the related entry</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="orderable", path="CatalogEntry.orderable", description="Is orderable", type="token" )
-  public static final String SP_ORDERABLE = "orderable";
+  @SearchParamDefinition(name="related-entry", path="CatalogEntry.relatedEntry.target", description="The reference to the related entry", type="reference", target={CatalogEntry.class } )
+  public static final String SP_RELATED_ENTRY = "related-entry";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>orderable</b>
+   * <b>Fluent Client</b> search parameter constant for <b>related-entry</b>
    * <p>
-   * Description: <b>Is orderable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CatalogEntry.orderable</b><br>
+   * Description: <b>The reference to the related entry</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CatalogEntry.relatedEntry.target</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ORDERABLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ORDERABLE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED_ENTRY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED_ENTRY);
 
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Displayable name assigned to the catalog entry</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CatalogEntry.name</b><br>
-   * </p>
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CatalogEntry:related-entry</b>".
    */
-  @SearchParamDefinition(name="name", path="CatalogEntry.name", description="Displayable name assigned to the catalog entry", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Displayable name assigned to the catalog entry</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CatalogEntry.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CatalogEntry.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="CatalogEntry.type", description="ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CatalogEntry.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED_ENTRY = new ca.uhn.fhir.model.api.Include("CatalogEntry:related-entry").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -2150,6 +2132,26 @@ public class CatalogEntry extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="CatalogEntry.type", description="ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>ActivityDefinition | PlanDefinition | SpecimenDefinition | ObservationDefinition | DeviceDefinition | Organization | Practitioner | PractitionerRole | HealthcareService | MedicationKnowledge | Medication | Substance | Location</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CatalogEntry.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

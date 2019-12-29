@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,50 +25,52 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseElement;
-import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
-import org.hl7.fhir.utilities.Utilities;
-
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.instance.model.api.IBaseElement;
+import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 /**
- * Base definition for all elements in a resource.
+ * Base StructureDefinition for Element Type: Base definition for all elements in a resource.
  */
+@DatatypeDef(name="Element")
 public abstract class Element extends Base implements IBaseHasExtensions, IBaseElement {
 
     /**
@@ -186,7 +189,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     }
 
     /**
-     * @return The first repetition of repeating field {@link #extension}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #extension}, creating it if it does not already exist {3}
      */
     public Extension getExtensionFirstRep() { 
       if (getExtension().isEmpty()) {
@@ -195,40 +198,8 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       return getExtension().get(0);
     }
 
-   /**
-    * Returns an unmodifiable list containing all extensions on this element which 
-    * match the given URL.
-    * 
-    * @param theUrl The URL. Must not be blank or null.
-    * @return an unmodifiable list containing all extensions on this element which 
-    * match the given URL
-    */
-   public List<Extension> getExtensionsByUrl(String theUrl) {
-     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-     ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtension()) {
-       if (theUrl.equals(next.getUrl())) {
-         retVal.add(next);
-       }
-     }
-     return java.util.Collections.unmodifiableList(retVal);
-   }
-  public boolean hasExtension(String theUrl) {
-    return !getExtensionsByUrl(theUrl).isEmpty(); 
-  }
-
-  public String getExtensionString(String theUrl) throws FHIRException {
-    List<Extension> ext = getExtensionsByUrl(theUrl); 
-    if (ext.isEmpty()) 
-      return null; 
-    if (ext.size() > 1) 
-      throw new FHIRException("Multiple matching extensions found");
-    if (!ext.get(0).getValue().isPrimitive())
-      throw new FHIRException("Extension could not be converted to a string");
-    return ext.get(0).getValue().primitiveValue();
-  }
-
       protected void listChildren(List<Property> children) {
+        super.listChildren(children);
         children.add(new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id));
         children.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
       }
@@ -318,6 +289,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       public abstract Element copy();
 
       public void copyValues(Element dst) {
+        super.copyValues(dst);
         dst.id = id == null ? null : id.copy();
         if (extension != null) {
           dst.extension = new ArrayList<Extension>();
@@ -350,7 +322,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension);
       }
 
-// added from java-adornments.txt:
+// Manual code (from Configuration.txt)t:
   @Override
   public String getIdBase() {
     return getId();
@@ -398,23 +370,56 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * This is used in the FHIRPath engine to record that no extensions are allowed for this item in the context in which it is used.
     * todo: enforce this....
     */
-  private boolean disallowExtensions;
+    private boolean disallowExtensions;
 
-  public boolean isDisallowExtensions() {
-    return disallowExtensions;
-  }
+    public boolean isDisallowExtensions() {
+      return disallowExtensions;
+    }
 
-  public Element setDisallowExtensions(boolean disallowExtensions) {
-    this.disallowExtensions = disallowExtensions;
-    return this;
-  }
+    public Element setDisallowExtensions(boolean disallowExtensions) {
+      this.disallowExtensions = disallowExtensions;
+      return this;
+    }
 
-  public Element noExtensions() {
-    this.disallowExtensions = true;
-    return this;
-  }
+    public Element noExtensions() {
+      this.disallowExtensions = true;
+      return this;
+    }
   
+   /**
+    * Returns an unmodifiable list containing all extensions on this element which 
+    * match the given URL.
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    * @return an unmodifiable list containing all extensions on this element which 
+    * match the given URL
+    */
+   public List<Extension> getExtensionsByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     for (Extension next : getExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
+   public boolean hasExtension(String theUrl) {
+     return !getExtensionsByUrl(theUrl).isEmpty(); 
+   }
 
+
+  public String getExtensionString(String theUrl) throws FHIRException {
+    List<Extension> ext = getExtensionsByUrl(theUrl); 
+    if (ext.isEmpty()) 
+      return null; 
+    if (ext.size() > 1) 
+      throw new FHIRException("Multiple matching extensions found");
+    if (!ext.get(0).getValue().isPrimitive())
+      throw new FHIRException("Extension could not be converted to a string");
+    return ext.get(0).getValue().primitiveValue();
+  }
 // end addition
 
 }

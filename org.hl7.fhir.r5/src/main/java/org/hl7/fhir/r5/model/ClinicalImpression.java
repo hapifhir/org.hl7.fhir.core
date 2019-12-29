@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,40 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -65,199 +66,12 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called "ClinicalImpression" rather than "ClinicalAssessment" to avoid confusion with the recording of assessment tools such as Apgar score.
  */
 @ResourceDef(name="ClinicalImpression", profile="http://hl7.org/fhir/StructureDefinition/ClinicalImpression")
 public class ClinicalImpression extends DomainResource {
-
-    public enum ClinicalImpressionStatus {
-        /**
-         * The core event has not started yet, but some staging activities have begun (e.g. surgical suite preparation).  Preparation stages may be tracked for billing purposes.
-         */
-        PREPARATION, 
-        /**
-         * The event is currently occurring.
-         */
-        INPROGRESS, 
-        /**
-         * The event was terminated prior to any activity beyond preparation.  I.e. The 'main' activity has not yet begun.  The boundary between preparatory and the 'main' activity is context-specific.
-         */
-        NOTDONE, 
-        /**
-         * The event has been temporarily stopped but is expected to resume in the future.
-         */
-        ONHOLD, 
-        /**
-         * The event was terminated prior to the full completion of the intended activity but after at least some of the 'main' activity (beyond preparation) has occurred.
-         */
-        STOPPED, 
-        /**
-         * The event has now concluded.
-         */
-        COMPLETED, 
-        /**
-         * This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
-         */
-        ENTEREDINERROR, 
-        /**
-         * The authoring/source system does not know which of the status values currently applies for this event.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ClinicalImpressionStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("preparation".equals(codeString))
-          return PREPARATION;
-        if ("in-progress".equals(codeString))
-          return INPROGRESS;
-        if ("not-done".equals(codeString))
-          return NOTDONE;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("stopped".equals(codeString))
-          return STOPPED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PREPARATION: return "preparation";
-            case INPROGRESS: return "in-progress";
-            case NOTDONE: return "not-done";
-            case ONHOLD: return "on-hold";
-            case STOPPED: return "stopped";
-            case COMPLETED: return "completed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PREPARATION: return "http://hl7.org/fhir/event-status";
-            case INPROGRESS: return "http://hl7.org/fhir/event-status";
-            case NOTDONE: return "http://hl7.org/fhir/event-status";
-            case ONHOLD: return "http://hl7.org/fhir/event-status";
-            case STOPPED: return "http://hl7.org/fhir/event-status";
-            case COMPLETED: return "http://hl7.org/fhir/event-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
-            case UNKNOWN: return "http://hl7.org/fhir/event-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PREPARATION: return "The core event has not started yet, but some staging activities have begun (e.g. surgical suite preparation).  Preparation stages may be tracked for billing purposes.";
-            case INPROGRESS: return "The event is currently occurring.";
-            case NOTDONE: return "The event was terminated prior to any activity beyond preparation.  I.e. The 'main' activity has not yet begun.  The boundary between preparatory and the 'main' activity is context-specific.";
-            case ONHOLD: return "The event has been temporarily stopped but is expected to resume in the future.";
-            case STOPPED: return "The event was terminated prior to the full completion of the intended activity but after at least some of the 'main' activity (beyond preparation) has occurred.";
-            case COMPLETED: return "The event has now concluded.";
-            case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this event.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PREPARATION: return "Preparation";
-            case INPROGRESS: return "In Progress";
-            case NOTDONE: return "Not Done";
-            case ONHOLD: return "On Hold";
-            case STOPPED: return "Stopped";
-            case COMPLETED: return "Completed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ClinicalImpressionStatusEnumFactory implements EnumFactory<ClinicalImpressionStatus> {
-    public ClinicalImpressionStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("preparation".equals(codeString))
-          return ClinicalImpressionStatus.PREPARATION;
-        if ("in-progress".equals(codeString))
-          return ClinicalImpressionStatus.INPROGRESS;
-        if ("not-done".equals(codeString))
-          return ClinicalImpressionStatus.NOTDONE;
-        if ("on-hold".equals(codeString))
-          return ClinicalImpressionStatus.ONHOLD;
-        if ("stopped".equals(codeString))
-          return ClinicalImpressionStatus.STOPPED;
-        if ("completed".equals(codeString))
-          return ClinicalImpressionStatus.COMPLETED;
-        if ("entered-in-error".equals(codeString))
-          return ClinicalImpressionStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return ClinicalImpressionStatus.UNKNOWN;
-        throw new IllegalArgumentException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
-        }
-        public Enumeration<ClinicalImpressionStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ClinicalImpressionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("preparation".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.PREPARATION);
-        if ("in-progress".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.INPROGRESS);
-        if ("not-done".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.NOTDONE);
-        if ("on-hold".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.ONHOLD);
-        if ("stopped".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.STOPPED);
-        if ("completed".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.COMPLETED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<ClinicalImpressionStatus>(this, ClinicalImpressionStatus.UNKNOWN);
-        throw new FHIRException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
-        }
-    public String toCode(ClinicalImpressionStatus code) {
-      if (code == ClinicalImpressionStatus.PREPARATION)
-        return "preparation";
-      if (code == ClinicalImpressionStatus.INPROGRESS)
-        return "in-progress";
-      if (code == ClinicalImpressionStatus.NOTDONE)
-        return "not-done";
-      if (code == ClinicalImpressionStatus.ONHOLD)
-        return "on-hold";
-      if (code == ClinicalImpressionStatus.STOPPED)
-        return "stopped";
-      if (code == ClinicalImpressionStatus.COMPLETED)
-        return "completed";
-      if (code == ClinicalImpressionStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == ClinicalImpressionStatus.UNKNOWN)
-        return "unknown";
-      return "?";
-      }
-    public String toSystem(ClinicalImpressionStatus code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class ClinicalImpressionFindingComponent extends BackboneElement implements IBaseBackboneElement {
@@ -481,7 +295,7 @@ public class ClinicalImpression extends DomainResource {
           return this.itemReference;
         }
         else if (name.equals("basis")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.basis");
+          throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.finding.basis");
         }
         else
           return super.addChild(name);
@@ -546,7 +360,7 @@ public class ClinicalImpression extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown", formalDefinition="Identifies the workflow status of the assessment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/event-status")
-    protected Enumeration<ClinicalImpressionStatus> status;
+    protected Enumeration<EventStatus> status;
 
     /**
      * Captures the reason for the current state of the ClinicalImpression.
@@ -557,93 +371,86 @@ public class ClinicalImpression extends DomainResource {
     protected CodeableConcept statusReason;
 
     /**
-     * Categorizes the type of clinical assessment performed.
-     */
-    @Child(name = "code", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Kind of assessment performed", formalDefinition="Categorizes the type of clinical assessment performed." )
-    protected CodeableConcept code;
-
-    /**
      * A summary of the context and/or cause of the assessment - why / where it was performed, and what patient events/status prompted it.
      */
-    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Why/how the assessment was performed", formalDefinition="A summary of the context and/or cause of the assessment - why / where it was performed, and what patient events/status prompted it." )
     protected StringType description;
 
     /**
      * The patient or group of individuals assessed as part of this record.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Patient or group assessed", formalDefinition="The patient or group of individuals assessed as part of this record." )
     protected Reference subject;
 
     /**
      * The Encounter during which this ClinicalImpression was created or to which the creation of this record is tightly associated.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "encounter", type = {Encounter.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The Encounter during which this ClinicalImpression was created", formalDefinition="The Encounter during which this ClinicalImpression was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
 
     /**
      * The point in time or period over which the subject was assessed.
      */
-    @Child(name = "effective", type = {DateTimeType.class, Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effective", type = {DateTimeType.class, Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Time of assessment", formalDefinition="The point in time or period over which the subject was assessed." )
     protected DataType effective;
 
     /**
      * Indicates when the documentation of the assessment was complete.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the assessment was documented", formalDefinition="Indicates when the documentation of the assessment was complete." )
     protected DateTimeType date;
 
     /**
      * The clinician performing the assessment.
      */
-    @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "performer", type = {Practitioner.class, PractitionerRole.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The clinician performing the assessment", formalDefinition="The clinician performing the assessment." )
     protected Reference performer;
 
     /**
      * A reference to the last assessment that was conducted on this patient. Assessments are often/usually ongoing in nature; a care provider (practitioner or team) will make new assessments on an ongoing basis as new data arises or the patient's conditions changes.
      */
-    @Child(name = "previous", type = {ClinicalImpression.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "previous", type = {ClinicalImpression.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reference to last assessment", formalDefinition="A reference to the last assessment that was conducted on this patient. Assessments are often/usually ongoing in nature; a care provider (practitioner or team) will make new assessments on an ongoing basis as new data arises or the patient's conditions changes." )
     protected Reference previous;
 
     /**
      * A list of the relevant problems/conditions for a patient.
      */
-    @Child(name = "problem", type = {Condition.class, AllergyIntolerance.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "problem", type = {Condition.class, AllergyIntolerance.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Relevant impressions of patient state", formalDefinition="A list of the relevant problems/conditions for a patient." )
     protected List<Reference> problem;
 
     /**
      * Reference to a specific published clinical protocol that was followed during this assessment, and/or that provides evidence in support of the diagnosis.
      */
-    @Child(name = "protocol", type = {UriType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "protocol", type = {UriType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Clinical Protocol followed", formalDefinition="Reference to a specific published clinical protocol that was followed during this assessment, and/or that provides evidence in support of the diagnosis." )
     protected List<UriType> protocol;
 
     /**
      * A text summary of the investigations and the diagnosis.
      */
-    @Child(name = "summary", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "summary", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Summary of the assessment", formalDefinition="A text summary of the investigations and the diagnosis." )
     protected StringType summary;
 
     /**
      * Specific findings or diagnoses that were considered likely or relevant to ongoing treatment.
      */
-    @Child(name = "finding", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "finding", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Possible or likely findings and diagnoses", formalDefinition="Specific findings or diagnoses that were considered likely or relevant to ongoing treatment." )
     protected List<ClinicalImpressionFindingComponent> finding;
 
     /**
      * Estimate of likely outcome.
      */
-    @Child(name = "prognosisCodeableConcept", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "prognosisCodeableConcept", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Estimate of likely outcome", formalDefinition="Estimate of likely outcome." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinicalimpression-prognosis")
     protected List<CodeableConcept> prognosisCodeableConcept;
@@ -651,25 +458,25 @@ public class ClinicalImpression extends DomainResource {
     /**
      * RiskAssessment expressing likely outcome.
      */
-    @Child(name = "prognosisReference", type = {RiskAssessment.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "prognosisReference", type = {RiskAssessment.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="RiskAssessment expressing likely outcome", formalDefinition="RiskAssessment expressing likely outcome." )
     protected List<Reference> prognosisReference;
 
     /**
      * Information supporting the clinical impression, which can contain investigation results.
      */
-    @Child(name = "supportingInfo", type = {Reference.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {Reference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information supporting the clinical impression", formalDefinition="Information supporting the clinical impression, which can contain investigation results." )
     protected List<Reference> supportingInfo;
 
     /**
      * Commentary about the impression, typically recorded after the impression itself was made, though supplemental notes by the original author could also appear.
      */
-    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about the ClinicalImpression", formalDefinition="Commentary about the impression, typically recorded after the impression itself was made, though supplemental notes by the original author could also appear." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 33409762L;
+    private static final long serialVersionUID = 2042987378L;
 
   /**
    * Constructor
@@ -681,10 +488,10 @@ public class ClinicalImpression extends DomainResource {
   /**
    * Constructor
    */
-    public ClinicalImpression(Enumeration<ClinicalImpressionStatus> status, Reference subject) {
+    public ClinicalImpression(EventStatus status, Reference subject) {
       super();
-      this.status = status;
-      this.subject = subject;
+      this.setStatus(status);
+      this.setSubject(subject);
     }
 
     /**
@@ -731,7 +538,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -743,12 +550,12 @@ public class ClinicalImpression extends DomainResource {
     /**
      * @return {@link #status} (Identifies the workflow status of the assessment.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<ClinicalImpressionStatus> getStatusElement() { 
+    public Enumeration<EventStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ClinicalImpression.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ClinicalImpressionStatus>(new ClinicalImpressionStatusEnumFactory()); // bb
+          this.status = new Enumeration<EventStatus>(new EventStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -763,7 +570,7 @@ public class ClinicalImpression extends DomainResource {
     /**
      * @param value {@link #status} (Identifies the workflow status of the assessment.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public ClinicalImpression setStatusElement(Enumeration<ClinicalImpressionStatus> value) { 
+    public ClinicalImpression setStatusElement(Enumeration<EventStatus> value) { 
       this.status = value;
       return this;
     }
@@ -771,16 +578,16 @@ public class ClinicalImpression extends DomainResource {
     /**
      * @return Identifies the workflow status of the assessment.
      */
-    public ClinicalImpressionStatus getStatus() { 
+    public EventStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value Identifies the workflow status of the assessment.
      */
-    public ClinicalImpression setStatus(ClinicalImpressionStatus value) { 
+    public ClinicalImpression setStatus(EventStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<ClinicalImpressionStatus>(new ClinicalImpressionStatusEnumFactory());
+          this.status = new Enumeration<EventStatus>(new EventStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -806,30 +613,6 @@ public class ClinicalImpression extends DomainResource {
      */
     public ClinicalImpression setStatusReason(CodeableConcept value) { 
       this.statusReason = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #code} (Categorizes the type of clinical assessment performed.)
-     */
-    public CodeableConcept getCode() { 
-      if (this.code == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ClinicalImpression.code");
-        else if (Configuration.doAutoCreate())
-          this.code = new CodeableConcept(); // cc
-      return this.code;
-    }
-
-    public boolean hasCode() { 
-      return this.code != null && !this.code.isEmpty();
-    }
-
-    /**
-     * @param value {@link #code} (Categorizes the type of clinical assessment performed.)
-     */
-    public ClinicalImpression setCode(CodeableConcept value) { 
-      this.code = value;
       return this;
     }
 
@@ -1122,7 +905,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #problem}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #problem}, creating it if it does not already exist {3}
      */
     public Reference getProblemFirstRep() { 
       if (getProblem().isEmpty()) {
@@ -1285,7 +1068,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #finding}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #finding}, creating it if it does not already exist {3}
      */
     public ClinicalImpressionFindingComponent getFindingFirstRep() { 
       if (getFinding().isEmpty()) {
@@ -1338,7 +1121,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #prognosisCodeableConcept}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #prognosisCodeableConcept}, creating it if it does not already exist {3}
      */
     public CodeableConcept getPrognosisCodeableConceptFirstRep() { 
       if (getPrognosisCodeableConcept().isEmpty()) {
@@ -1391,7 +1174,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #prognosisReference}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #prognosisReference}, creating it if it does not already exist {3}
      */
     public Reference getPrognosisReferenceFirstRep() { 
       if (getPrognosisReference().isEmpty()) {
@@ -1444,7 +1227,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist {3}
      */
     public Reference getSupportingInfoFirstRep() { 
       if (getSupportingInfo().isEmpty()) {
@@ -1497,7 +1280,7 @@ public class ClinicalImpression extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
      */
     public Annotation getNoteFirstRep() { 
       if (getNote().isEmpty()) {
@@ -1511,7 +1294,6 @@ public class ClinicalImpression extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this clinical impression by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Identifies the workflow status of the assessment.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the ClinicalImpression.", 0, 1, statusReason));
-        children.add(new Property("code", "CodeableConcept", "Categorizes the type of clinical assessment performed.", 0, 1, code));
         children.add(new Property("description", "string", "A summary of the context and/or cause of the assessment - why / where it was performed, and what patient events/status prompted it.", 0, 1, description));
         children.add(new Property("subject", "Reference(Patient|Group)", "The patient or group of individuals assessed as part of this record.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this ClinicalImpression was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
@@ -1535,14 +1317,13 @@ public class ClinicalImpression extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this clinical impression by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "Identifies the workflow status of the assessment.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the ClinicalImpression.", 0, 1, statusReason);
-        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Categorizes the type of clinical assessment performed.", 0, 1, code);
         case -1724546052: /*description*/  return new Property("description", "string", "A summary of the context and/or cause of the assessment - why / where it was performed, and what patient events/status prompted it.", 0, 1, description);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The patient or group of individuals assessed as part of this record.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this ClinicalImpression was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
         case 247104889: /*effective[x]*/  return new Property("effective[x]", "dateTime|Period", "The point in time or period over which the subject was assessed.", 0, 1, effective);
         case -1468651097: /*effective*/  return new Property("effective[x]", "dateTime|Period", "The point in time or period over which the subject was assessed.", 0, 1, effective);
-        case -275306910: /*effectiveDateTime*/  return new Property("effective[x]", "dateTime|Period", "The point in time or period over which the subject was assessed.", 0, 1, effective);
-        case -403934648: /*effectivePeriod*/  return new Property("effective[x]", "dateTime|Period", "The point in time or period over which the subject was assessed.", 0, 1, effective);
+        case -275306910: /*effectiveDateTime*/  return new Property("effective[x]", "dateTime", "The point in time or period over which the subject was assessed.", 0, 1, effective);
+        case -403934648: /*effectivePeriod*/  return new Property("effective[x]", "Period", "The point in time or period over which the subject was assessed.", 0, 1, effective);
         case 3076014: /*date*/  return new Property("date", "dateTime", "Indicates when the documentation of the assessment was complete.", 0, 1, date);
         case 481140686: /*performer*/  return new Property("performer", "Reference(Practitioner|PractitionerRole)", "The clinician performing the assessment.", 0, 1, performer);
         case -1273775369: /*previous*/  return new Property("previous", "Reference(ClinicalImpression)", "A reference to the last assessment that was conducted on this patient. Assessments are often/usually ongoing in nature; a care provider (practitioner or team) will make new assessments on an ongoing basis as new data arises or the patient's conditions changes.", 0, 1, previous);
@@ -1563,13 +1344,12 @@ public class ClinicalImpression extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ClinicalImpressionStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<EventStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
-        case -1468651097: /*effective*/ return this.effective == null ? new Base[0] : new Base[] {this.effective}; // Type
+        case -1468651097: /*effective*/ return this.effective == null ? new Base[0] : new Base[] {this.effective}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : new Base[] {this.performer}; // Reference
         case -1273775369: /*previous*/ return this.previous == null ? new Base[0] : new Base[] {this.previous}; // Reference
@@ -1593,14 +1373,11 @@ public class ClinicalImpression extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ClinicalImpressionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ClinicalImpressionStatus>
+          value = new EventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EventStatus>
           return value;
         case 2051346646: // statusReason
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
@@ -1612,7 +1389,7 @@ public class ClinicalImpression extends DomainResource {
           this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1468651097: // effective
-          this.effective = TypeConvertor.castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -1657,12 +1434,10 @@ public class ClinicalImpression extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ClinicalImpressionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ClinicalImpressionStatus>
+          value = new EventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EventStatus>
         } else if (name.equals("statusReason")) {
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("subject")) {
@@ -1670,7 +1445,7 @@ public class ClinicalImpression extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("effective[x]")) {
-          this.effective = TypeConvertor.castToType(value); // Type
+          this.effective = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
@@ -1704,7 +1479,6 @@ public class ClinicalImpression extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 2051346646:  return getStatusReason();
-        case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
         case -1867885268:  return getSubject();
         case 1524132147:  return getEncounter();
@@ -1732,7 +1506,6 @@ public class ClinicalImpression extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 2051346646: /*statusReason*/ return new String[] {"CodeableConcept"};
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
@@ -1764,10 +1537,6 @@ public class ClinicalImpression extends DomainResource {
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
           return this.statusReason;
-        }
-        else if (name.equals("code")) {
-          this.code = new CodeableConcept();
-          return this.code;
         }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.description");
@@ -1847,7 +1616,6 @@ public class ClinicalImpression extends DomainResource {
         };
         dst.status = status == null ? null : status.copy();
         dst.statusReason = statusReason == null ? null : statusReason.copy();
-        dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.subject = subject == null ? null : subject.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
@@ -1905,12 +1673,12 @@ public class ClinicalImpression extends DomainResource {
           return false;
         ClinicalImpression o = (ClinicalImpression) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(statusReason, o.statusReason, true)
-           && compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(encounter, o.encounter, true) && compareDeep(effective, o.effective, true) && compareDeep(date, o.date, true)
-           && compareDeep(performer, o.performer, true) && compareDeep(previous, o.previous, true) && compareDeep(problem, o.problem, true)
-           && compareDeep(protocol, o.protocol, true) && compareDeep(summary, o.summary, true) && compareDeep(finding, o.finding, true)
-           && compareDeep(prognosisCodeableConcept, o.prognosisCodeableConcept, true) && compareDeep(prognosisReference, o.prognosisReference, true)
-           && compareDeep(supportingInfo, o.supportingInfo, true) && compareDeep(note, o.note, true);
+           && compareDeep(description, o.description, true) && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true)
+           && compareDeep(effective, o.effective, true) && compareDeep(date, o.date, true) && compareDeep(performer, o.performer, true)
+           && compareDeep(previous, o.previous, true) && compareDeep(problem, o.problem, true) && compareDeep(protocol, o.protocol, true)
+           && compareDeep(summary, o.summary, true) && compareDeep(finding, o.finding, true) && compareDeep(prognosisCodeableConcept, o.prognosisCodeableConcept, true)
+           && compareDeep(prognosisReference, o.prognosisReference, true) && compareDeep(supportingInfo, o.supportingInfo, true)
+           && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -1926,9 +1694,9 @@ public class ClinicalImpression extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, statusReason
-          , code, description, subject, encounter, effective, date, performer, previous
-          , problem, protocol, summary, finding, prognosisCodeableConcept, prognosisReference
-          , supportingInfo, note);
+          , description, subject, encounter, effective, date, performer, previous, problem
+          , protocol, summary, finding, prognosisCodeableConcept, prognosisReference, supportingInfo
+          , note);
       }
 
   @Override
@@ -1937,24 +1705,76 @@ public class ClinicalImpression extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>date</b>
+   * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>When the assessment was documented</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ClinicalImpression.date</b><br>
+   * Description: <b>The Encounter during which this ClinicalImpression was created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalImpression.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="ClinicalImpression.date", description="When the assessment was documented", type="date" )
-  public static final String SP_DATE = "date";
+  @SearchParamDefinition(name="encounter", path="ClinicalImpression.encounter", description="The Encounter during which this ClinicalImpression was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>When the assessment was documented</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ClinicalImpression.date</b><br>
+   * Description: <b>The Encounter during which this ClinicalImpression was created</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalImpression.encounter</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalImpression:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("ClinicalImpression:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>finding-code</b>
+   * <p>
+   * Description: <b>What was found</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="finding-code", path="ClinicalImpression.finding.itemCodeableConcept", description="What was found", type="token" )
+  public static final String SP_FINDING_CODE = "finding-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>finding-code</b>
+   * <p>
+   * Description: <b>What was found</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FINDING_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FINDING_CODE);
+
+ /**
+   * Search parameter: <b>finding-ref</b>
+   * <p>
+   * Description: <b>What was found</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="finding-ref", path="ClinicalImpression.finding.itemReference", description="What was found", type="reference", target={Condition.class, DocumentReference.class, Observation.class } )
+  public static final String SP_FINDING_REF = "finding-ref";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>finding-ref</b>
+   * <p>
+   * Description: <b>What was found</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FINDING_REF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FINDING_REF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalImpression:finding-ref</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FINDING_REF = new ca.uhn.fhir.model.api.Include("ClinicalImpression:finding-ref").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -1977,32 +1797,6 @@ public class ClinicalImpression extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>problem</b>
-   * <p>
-   * Description: <b>Relevant impressions of patient state</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.problem</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="problem", path="ClinicalImpression.problem", description="Relevant impressions of patient state", type="reference", target={AllergyIntolerance.class, Condition.class } )
-  public static final String SP_PROBLEM = "problem";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>problem</b>
-   * <p>
-   * Description: <b>Relevant impressions of patient state</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.problem</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROBLEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROBLEM);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalImpression:problem</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROBLEM = new ca.uhn.fhir.model.api.Include("ClinicalImpression:problem").toLocked();
-
- /**
    * Search parameter: <b>performer</b>
    * <p>
    * Description: <b>The clinician performing the assessment</b><br>
@@ -2010,7 +1804,7 @@ public class ClinicalImpression extends DomainResource {
    * Path: <b>ClinicalImpression.performer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="performer", path="ClinicalImpression.performer", description="The clinician performing the assessment", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="performer", path="ClinicalImpression.performer", description="The clinician performing the assessment", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
   public static final String SP_PERFORMER = "performer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>performer</b>
@@ -2055,50 +1849,50 @@ public class ClinicalImpression extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PREVIOUS = new ca.uhn.fhir.model.api.Include("ClinicalImpression:previous").toLocked();
 
  /**
-   * Search parameter: <b>finding-code</b>
+   * Search parameter: <b>problem</b>
    * <p>
-   * Description: <b>What was found</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="finding-code", path="ClinicalImpression.finding.itemCodeableConcept", description="What was found", type="token" )
-  public static final String SP_FINDING_CODE = "finding-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>finding-code</b>
-   * <p>
-   * Description: <b>What was found</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FINDING_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FINDING_CODE);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Patient or group assessed</b><br>
+   * Description: <b>Relevant impressions of patient state</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.subject</b><br>
+   * Path: <b>ClinicalImpression.problem</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="ClinicalImpression.subject.where(resolve() is Patient)", description="Patient or group assessed", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
+  @SearchParamDefinition(name="problem", path="ClinicalImpression.problem", description="Relevant impressions of patient state", type="reference", target={AllergyIntolerance.class, Condition.class } )
+  public static final String SP_PROBLEM = "problem";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <b>Fluent Client</b> search parameter constant for <b>problem</b>
    * <p>
-   * Description: <b>Patient or group assessed</b><br>
+   * Description: <b>Relevant impressions of patient state</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.subject</b><br>
+   * Path: <b>ClinicalImpression.problem</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROBLEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROBLEM);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalImpression:patient</b>".
+   * the path value of "<b>ClinicalImpression:problem</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ClinicalImpression:patient").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROBLEM = new ca.uhn.fhir.model.api.Include("ClinicalImpression:problem").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalImpression.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ClinicalImpression.status", description="preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalImpression.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>subject</b>
@@ -2108,7 +1902,7 @@ public class ClinicalImpression extends DomainResource {
    * Path: <b>ClinicalImpression.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="ClinicalImpression.subject", description="Patient or group assessed", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="subject", path="ClinicalImpression.subject", description="Patient or group assessed", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -2134,7 +1928,7 @@ public class ClinicalImpression extends DomainResource {
    * Path: <b>ClinicalImpression.supportingInfo</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="supporting-info", path="ClinicalImpression.supportingInfo", description="Information supporting the clinical impression", type="reference" )
+  @SearchParamDefinition(name="supporting-info", path="ClinicalImpression.supportingInfo", description="Information supporting the clinical impression", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUPPORTING_INFO = "supporting-info";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>
@@ -2153,76 +1947,156 @@ public class ClinicalImpression extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTING_INFO = new ca.uhn.fhir.model.api.Include("ClinicalImpression:supporting-info").toLocked();
 
  /**
-   * Search parameter: <b>encounter</b>
+   * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>The Encounter during which this ClinicalImpression was created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.encounter</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [List](list.html): When the list was prepared
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="encounter", path="ClinicalImpression.encounter", description="The Encounter during which this ClinicalImpression was created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  public static final String SP_DATE = "date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>The Encounter during which this ClinicalImpression was created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.encounter</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded
+* [CarePlan](careplan.html): Time period plan covers
+* [CareTeam](careteam.html): A date within the coverage time period.
+* [ClinicalImpression](clinicalimpression.html): When the assessment was documented
+* [Composition](composition.html): Composition editing time
+* [Consent](consent.html): When consent was agreed to
+* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
+* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
+* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
+* [Flag](flag.html): Time period when flag is active
+* [Immunization](immunization.html): Vaccination  (non)-Administration Date
+* [List](list.html): When the list was prepared
+* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period
+* [Procedure](procedure.html): When the procedure occurred or is occurring
+* [RiskAssessment](riskassessment.html): When was assessment made?
+* [SupplyRequest](supplyrequest.html): When the request was made
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Group.class, Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalImpression:encounter</b>".
+   * the path value of "<b>ClinicalImpression:patient</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("ClinicalImpression:encounter").toLocked();
-
- /**
-   * Search parameter: <b>finding-ref</b>
-   * <p>
-   * Description: <b>What was found</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="finding-ref", path="ClinicalImpression.finding.itemReference", description="What was found", type="reference", target={Condition.class, DocumentReference.class, Observation.class } )
-  public static final String SP_FINDING_REF = "finding-ref";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>finding-ref</b>
-   * <p>
-   * Description: <b>What was found</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FINDING_REF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FINDING_REF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalImpression:finding-ref</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_FINDING_REF = new ca.uhn.fhir.model.api.Include("ClinicalImpression:finding-ref").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="ClinicalImpression.status", description="preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ClinicalImpression:patient").toLocked();
 
 
 }

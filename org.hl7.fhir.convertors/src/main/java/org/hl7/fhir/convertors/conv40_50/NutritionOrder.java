@@ -144,22 +144,22 @@ public class NutritionOrder extends VersionConvertor_40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus convertNutritionOrderStatus(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertNutritionOrderStatus(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case DRAFT: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.DRAFT;
-    case ACTIVE: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.ONHOLD;
-    case REVOKED: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.REVOKED;
-    case COMPLETED: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus.NULL;
+    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+    case ONHOLD: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+    case REVOKED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+    case COMPLETED: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus convertNutritionOrderStatus(org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderStatus src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus convertNutritionOrderStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
@@ -174,24 +174,24 @@ public class NutritionOrder extends VersionConvertor_40_50 {
   }
 }
 
-  public static org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent convertNutritiionOrderIntent(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertNutritiionOrderIntent(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.PLAN;
-    case DIRECTIVE: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.DIRECTIVE;
-    case ORDER: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent.NULL;
+    case PROPOSAL: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+    case PLAN: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+    case DIRECTIVE: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+    case ORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+    case ORIGINALORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+    case REFLEXORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+    case FILLERORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+    case INSTANCEORDER: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+    case OPTION: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+    default: return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
   }
 }
 
-  public static org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent convertNutritiionOrderIntent(org.hl7.fhir.r5.model.NutritionOrder.NutritiionOrderIntent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent convertNutritiionOrderIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {

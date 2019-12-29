@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,41 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import java.math.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,13 +67,14 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
 /**
  * Legally enforceable, formally recorded unilateral or bilateral directive i.e., a policy or agreement.
  */
 @ResourceDef(name="Contract", profile="http://hl7.org/fhir/StructureDefinition/Contract")
 public class Contract extends DomainResource {
 
-    public enum ContractStatus {
+    public enum ContractResourcePublicationStatusCodes {
         /**
          * Contract is augmented with additional information to correct errors in a predecessor or to updated values in a predecessor. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: revised; replaced.
          */
@@ -137,7 +139,7 @@ public class Contract extends DomainResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static ContractStatus fromCode(String codeString) throws FHIRException {
+        public static ContractResourcePublicationStatusCodes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("amended".equals(codeString))
@@ -173,307 +175,7 @@ public class Contract extends DomainResource {
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown ContractStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AMENDED: return "amended";
-            case APPENDED: return "appended";
-            case CANCELLED: return "cancelled";
-            case DISPUTED: return "disputed";
-            case ENTEREDINERROR: return "entered-in-error";
-            case EXECUTABLE: return "executable";
-            case EXECUTED: return "executed";
-            case NEGOTIABLE: return "negotiable";
-            case OFFERED: return "offered";
-            case POLICY: return "policy";
-            case REJECTED: return "rejected";
-            case RENEWED: return "renewed";
-            case REVOKED: return "revoked";
-            case RESOLVED: return "resolved";
-            case TERMINATED: return "terminated";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case AMENDED: return "http://hl7.org/fhir/contract-status";
-            case APPENDED: return "http://hl7.org/fhir/contract-status";
-            case CANCELLED: return "http://hl7.org/fhir/contract-status";
-            case DISPUTED: return "http://hl7.org/fhir/contract-status";
-            case ENTEREDINERROR: return "http://hl7.org/fhir/contract-status";
-            case EXECUTABLE: return "http://hl7.org/fhir/contract-status";
-            case EXECUTED: return "http://hl7.org/fhir/contract-status";
-            case NEGOTIABLE: return "http://hl7.org/fhir/contract-status";
-            case OFFERED: return "http://hl7.org/fhir/contract-status";
-            case POLICY: return "http://hl7.org/fhir/contract-status";
-            case REJECTED: return "http://hl7.org/fhir/contract-status";
-            case RENEWED: return "http://hl7.org/fhir/contract-status";
-            case REVOKED: return "http://hl7.org/fhir/contract-status";
-            case RESOLVED: return "http://hl7.org/fhir/contract-status";
-            case TERMINATED: return "http://hl7.org/fhir/contract-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AMENDED: return "Contract is augmented with additional information to correct errors in a predecessor or to updated values in a predecessor. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: revised; replaced.";
-            case APPENDED: return "Contract is augmented with additional information that was missing from a predecessor Contract. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: updated, replaced.";
-            case CANCELLED: return "Contract is terminated due to failure of the Grantor and/or the Grantee to fulfil one or more contract provisions. Usage: Abnormal contract termination. Precedence Order = 10. Comparable FHIR and v.3 status codes: stopped; failed; aborted.";
-            case DISPUTED: return "Contract is pended to rectify failure of the Grantor or the Grantee to fulfil contract provision(s). E.g., Grantee complaint about Grantor's failure to comply with contract provisions. Usage: Contract pended. Precedence Order = 7. Comparable FHIR and v.3 status codes: on hold; pended; suspended.";
-            case ENTEREDINERROR: return "Contract was created in error. No Precedence Order.  Status may be applied to a Contract with any status.";
-            case EXECUTABLE: return "Contract execution pending; may be executed when either the Grantor or the Grantee accepts the contract provisions by signing. I.e., where either the Grantor or the Grantee has signed, but not both. E.g., when an insurance applicant signs the insurers application, which references the policy. Usage: Optional first step of contract execution activity.  May be skipped and contracting activity moves directly to executed state. Precedence Order = 3. Comparable FHIR and v.3 status codes: draft; preliminary; planned; intended; active.";
-            case EXECUTED: return "Contract is activated for period stipulated when both the Grantor and Grantee have signed it. Usage: Required state for normal completion of contracting activity.  Precedence Order = 6. Comparable FHIR and v.3 status codes: accepted; completed.";
-            case NEGOTIABLE: return "Contract execution is suspended while either or both the Grantor and Grantee propose and consider new or revised contract provisions. I.e., where the party which has not signed proposes changes to the terms.  E .g., a life insurer declines to agree to the signed application because the life insurer has evidence that the applicant, who asserted to being younger or a non-smoker to get a lower premium rate - but offers instead to agree to a higher premium based on the applicants actual age or smoking status. Usage: Optional contract activity between executable and executed state. Precedence Order = 4. Comparable FHIR and v.3 status codes: in progress; review; held.";
-            case OFFERED: return "Contract is a proposal by either the Grantor or the Grantee. Aka - A Contract hard copy or electronic 'template', 'form' or 'application'. E.g., health insurance application; consent directive form. Usage: Beginning of contract negotiation, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 2. Comparable FHIR and v.3 status codes: requested; new.";
-            case POLICY: return "Contract template is available as the basis for an application or offer by the Grantor or Grantee. E.g., health insurance policy; consent directive policy.  Usage: Required initial contract activity, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 1. Comparable FHIR and v.3 status codes: proposed; intended.";
-            case REJECTED: return " Execution of the Contract is not completed because either or both the Grantor and Grantee decline to accept some or all of the contract provisions. Usage: Optional contract activity between executable and abnormal termination. Precedence Order = 5. Comparable FHIR and v.3 status codes:  stopped; cancelled.";
-            case RENEWED: return "Beginning of a successor Contract at the termination of predecessor Contract lifecycle. Usage: Follows termination of a preceding Contract that has reached its expiry date. Precedence Order = 13. Comparable FHIR and v.3 status codes: superseded.";
-            case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
-            case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
-            case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AMENDED: return "Amended";
-            case APPENDED: return "Appended";
-            case CANCELLED: return "Cancelled";
-            case DISPUTED: return "Disputed";
-            case ENTEREDINERROR: return "Entered in Error";
-            case EXECUTABLE: return "Executable";
-            case EXECUTED: return "Executed";
-            case NEGOTIABLE: return "Negotiable";
-            case OFFERED: return "Offered";
-            case POLICY: return "Policy";
-            case REJECTED: return "Rejected";
-            case RENEWED: return "Renewed";
-            case REVOKED: return "Revoked";
-            case RESOLVED: return "Resolved";
-            case TERMINATED: return "Terminated";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ContractStatusEnumFactory implements EnumFactory<ContractStatus> {
-    public ContractStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("amended".equals(codeString))
-          return ContractStatus.AMENDED;
-        if ("appended".equals(codeString))
-          return ContractStatus.APPENDED;
-        if ("cancelled".equals(codeString))
-          return ContractStatus.CANCELLED;
-        if ("disputed".equals(codeString))
-          return ContractStatus.DISPUTED;
-        if ("entered-in-error".equals(codeString))
-          return ContractStatus.ENTEREDINERROR;
-        if ("executable".equals(codeString))
-          return ContractStatus.EXECUTABLE;
-        if ("executed".equals(codeString))
-          return ContractStatus.EXECUTED;
-        if ("negotiable".equals(codeString))
-          return ContractStatus.NEGOTIABLE;
-        if ("offered".equals(codeString))
-          return ContractStatus.OFFERED;
-        if ("policy".equals(codeString))
-          return ContractStatus.POLICY;
-        if ("rejected".equals(codeString))
-          return ContractStatus.REJECTED;
-        if ("renewed".equals(codeString))
-          return ContractStatus.RENEWED;
-        if ("revoked".equals(codeString))
-          return ContractStatus.REVOKED;
-        if ("resolved".equals(codeString))
-          return ContractStatus.RESOLVED;
-        if ("terminated".equals(codeString))
-          return ContractStatus.TERMINATED;
-        throw new IllegalArgumentException("Unknown ContractStatus code '"+codeString+"'");
-        }
-        public Enumeration<ContractStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ContractStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("amended".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.AMENDED);
-        if ("appended".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.APPENDED);
-        if ("cancelled".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.CANCELLED);
-        if ("disputed".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.DISPUTED);
-        if ("entered-in-error".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.ENTEREDINERROR);
-        if ("executable".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.EXECUTABLE);
-        if ("executed".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.EXECUTED);
-        if ("negotiable".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.NEGOTIABLE);
-        if ("offered".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.OFFERED);
-        if ("policy".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.POLICY);
-        if ("rejected".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.REJECTED);
-        if ("renewed".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.RENEWED);
-        if ("revoked".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.REVOKED);
-        if ("resolved".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.RESOLVED);
-        if ("terminated".equals(codeString))
-          return new Enumeration<ContractStatus>(this, ContractStatus.TERMINATED);
-        throw new FHIRException("Unknown ContractStatus code '"+codeString+"'");
-        }
-    public String toCode(ContractStatus code) {
-      if (code == ContractStatus.AMENDED)
-        return "amended";
-      if (code == ContractStatus.APPENDED)
-        return "appended";
-      if (code == ContractStatus.CANCELLED)
-        return "cancelled";
-      if (code == ContractStatus.DISPUTED)
-        return "disputed";
-      if (code == ContractStatus.ENTEREDINERROR)
-        return "entered-in-error";
-      if (code == ContractStatus.EXECUTABLE)
-        return "executable";
-      if (code == ContractStatus.EXECUTED)
-        return "executed";
-      if (code == ContractStatus.NEGOTIABLE)
-        return "negotiable";
-      if (code == ContractStatus.OFFERED)
-        return "offered";
-      if (code == ContractStatus.POLICY)
-        return "policy";
-      if (code == ContractStatus.REJECTED)
-        return "rejected";
-      if (code == ContractStatus.RENEWED)
-        return "renewed";
-      if (code == ContractStatus.REVOKED)
-        return "revoked";
-      if (code == ContractStatus.RESOLVED)
-        return "resolved";
-      if (code == ContractStatus.TERMINATED)
-        return "terminated";
-      return "?";
-      }
-    public String toSystem(ContractStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ContractPublicationStatus {
-        /**
-         * Contract is augmented with additional information to correct errors in a predecessor or to updated values in a predecessor. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: revised; replaced.
-         */
-        AMENDED, 
-        /**
-         * Contract is augmented with additional information that was missing from a predecessor Contract. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: updated, replaced.
-         */
-        APPENDED, 
-        /**
-         * Contract is terminated due to failure of the Grantor and/or the Grantee to fulfil one or more contract provisions. Usage: Abnormal contract termination. Precedence Order = 10. Comparable FHIR and v.3 status codes: stopped; failed; aborted.
-         */
-        CANCELLED, 
-        /**
-         * Contract is pended to rectify failure of the Grantor or the Grantee to fulfil contract provision(s). E.g., Grantee complaint about Grantor's failure to comply with contract provisions. Usage: Contract pended. Precedence Order = 7. Comparable FHIR and v.3 status codes: on hold; pended; suspended.
-         */
-        DISPUTED, 
-        /**
-         * Contract was created in error. No Precedence Order.  Status may be applied to a Contract with any status.
-         */
-        ENTEREDINERROR, 
-        /**
-         * Contract execution pending; may be executed when either the Grantor or the Grantee accepts the contract provisions by signing. I.e., where either the Grantor or the Grantee has signed, but not both. E.g., when an insurance applicant signs the insurers application, which references the policy. Usage: Optional first step of contract execution activity.  May be skipped and contracting activity moves directly to executed state. Precedence Order = 3. Comparable FHIR and v.3 status codes: draft; preliminary; planned; intended; active.
-         */
-        EXECUTABLE, 
-        /**
-         * Contract is activated for period stipulated when both the Grantor and Grantee have signed it. Usage: Required state for normal completion of contracting activity.  Precedence Order = 6. Comparable FHIR and v.3 status codes: accepted; completed.
-         */
-        EXECUTED, 
-        /**
-         * Contract execution is suspended while either or both the Grantor and Grantee propose and consider new or revised contract provisions. I.e., where the party which has not signed proposes changes to the terms.  E .g., a life insurer declines to agree to the signed application because the life insurer has evidence that the applicant, who asserted to being younger or a non-smoker to get a lower premium rate - but offers instead to agree to a higher premium based on the applicants actual age or smoking status. Usage: Optional contract activity between executable and executed state. Precedence Order = 4. Comparable FHIR and v.3 status codes: in progress; review; held.
-         */
-        NEGOTIABLE, 
-        /**
-         * Contract is a proposal by either the Grantor or the Grantee. Aka - A Contract hard copy or electronic 'template', 'form' or 'application'. E.g., health insurance application; consent directive form. Usage: Beginning of contract negotiation, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 2. Comparable FHIR and v.3 status codes: requested; new.
-         */
-        OFFERED, 
-        /**
-         * Contract template is available as the basis for an application or offer by the Grantor or Grantee. E.g., health insurance policy; consent directive policy.  Usage: Required initial contract activity, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 1. Comparable FHIR and v.3 status codes: proposed; intended.
-         */
-        POLICY, 
-        /**
-         *  Execution of the Contract is not completed because either or both the Grantor and Grantee decline to accept some or all of the contract provisions. Usage: Optional contract activity between executable and abnormal termination. Precedence Order = 5. Comparable FHIR and v.3 status codes:  stopped; cancelled.
-         */
-        REJECTED, 
-        /**
-         * Beginning of a successor Contract at the termination of predecessor Contract lifecycle. Usage: Follows termination of a preceding Contract that has reached its expiry date. Precedence Order = 13. Comparable FHIR and v.3 status codes: superseded.
-         */
-        RENEWED, 
-        /**
-         * A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.
-         */
-        REVOKED, 
-        /**
-         * Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.
-         */
-        RESOLVED, 
-        /**
-         * Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.
-         */
-        TERMINATED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ContractPublicationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("amended".equals(codeString))
-          return AMENDED;
-        if ("appended".equals(codeString))
-          return APPENDED;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("disputed".equals(codeString))
-          return DISPUTED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("executable".equals(codeString))
-          return EXECUTABLE;
-        if ("executed".equals(codeString))
-          return EXECUTED;
-        if ("negotiable".equals(codeString))
-          return NEGOTIABLE;
-        if ("offered".equals(codeString))
-          return OFFERED;
-        if ("policy".equals(codeString))
-          return POLICY;
-        if ("rejected".equals(codeString))
-          return REJECTED;
-        if ("renewed".equals(codeString))
-          return RENEWED;
-        if ("revoked".equals(codeString))
-          return REVOKED;
-        if ("resolved".equals(codeString))
-          return RESOLVED;
-        if ("terminated".equals(codeString))
-          return TERMINATED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ContractPublicationStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -557,117 +259,417 @@ public class Contract extends DomainResource {
         }
     }
 
-  public static class ContractPublicationStatusEnumFactory implements EnumFactory<ContractPublicationStatus> {
-    public ContractPublicationStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class ContractResourcePublicationStatusCodesEnumFactory implements EnumFactory<ContractResourcePublicationStatusCodes> {
+    public ContractResourcePublicationStatusCodes fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("amended".equals(codeString))
-          return ContractPublicationStatus.AMENDED;
+          return ContractResourcePublicationStatusCodes.AMENDED;
         if ("appended".equals(codeString))
-          return ContractPublicationStatus.APPENDED;
+          return ContractResourcePublicationStatusCodes.APPENDED;
         if ("cancelled".equals(codeString))
-          return ContractPublicationStatus.CANCELLED;
+          return ContractResourcePublicationStatusCodes.CANCELLED;
         if ("disputed".equals(codeString))
-          return ContractPublicationStatus.DISPUTED;
+          return ContractResourcePublicationStatusCodes.DISPUTED;
         if ("entered-in-error".equals(codeString))
-          return ContractPublicationStatus.ENTEREDINERROR;
+          return ContractResourcePublicationStatusCodes.ENTEREDINERROR;
         if ("executable".equals(codeString))
-          return ContractPublicationStatus.EXECUTABLE;
+          return ContractResourcePublicationStatusCodes.EXECUTABLE;
         if ("executed".equals(codeString))
-          return ContractPublicationStatus.EXECUTED;
+          return ContractResourcePublicationStatusCodes.EXECUTED;
         if ("negotiable".equals(codeString))
-          return ContractPublicationStatus.NEGOTIABLE;
+          return ContractResourcePublicationStatusCodes.NEGOTIABLE;
         if ("offered".equals(codeString))
-          return ContractPublicationStatus.OFFERED;
+          return ContractResourcePublicationStatusCodes.OFFERED;
         if ("policy".equals(codeString))
-          return ContractPublicationStatus.POLICY;
+          return ContractResourcePublicationStatusCodes.POLICY;
         if ("rejected".equals(codeString))
-          return ContractPublicationStatus.REJECTED;
+          return ContractResourcePublicationStatusCodes.REJECTED;
         if ("renewed".equals(codeString))
-          return ContractPublicationStatus.RENEWED;
+          return ContractResourcePublicationStatusCodes.RENEWED;
         if ("revoked".equals(codeString))
-          return ContractPublicationStatus.REVOKED;
+          return ContractResourcePublicationStatusCodes.REVOKED;
         if ("resolved".equals(codeString))
-          return ContractPublicationStatus.RESOLVED;
+          return ContractResourcePublicationStatusCodes.RESOLVED;
         if ("terminated".equals(codeString))
-          return ContractPublicationStatus.TERMINATED;
-        throw new IllegalArgumentException("Unknown ContractPublicationStatus code '"+codeString+"'");
+          return ContractResourcePublicationStatusCodes.TERMINATED;
+        throw new IllegalArgumentException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<ContractPublicationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ContractResourcePublicationStatusCodes> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContractPublicationStatus>(this);
+            return new Enumeration<ContractResourcePublicationStatusCodes>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("amended".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.AMENDED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.AMENDED);
         if ("appended".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.APPENDED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.APPENDED);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.CANCELLED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.CANCELLED);
         if ("disputed".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.DISPUTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.DISPUTED);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.ENTEREDINERROR);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.ENTEREDINERROR);
         if ("executable".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.EXECUTABLE);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTABLE);
         if ("executed".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.EXECUTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.EXECUTED);
         if ("negotiable".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.NEGOTIABLE);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.NEGOTIABLE);
         if ("offered".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.OFFERED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.OFFERED);
         if ("policy".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.POLICY);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.POLICY);
         if ("rejected".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.REJECTED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REJECTED);
         if ("renewed".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.RENEWED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RENEWED);
         if ("revoked".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.REVOKED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.REVOKED);
         if ("resolved".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.RESOLVED);
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.RESOLVED);
         if ("terminated".equals(codeString))
-          return new Enumeration<ContractPublicationStatus>(this, ContractPublicationStatus.TERMINATED);
-        throw new FHIRException("Unknown ContractPublicationStatus code '"+codeString+"'");
+          return new Enumeration<ContractResourcePublicationStatusCodes>(this, ContractResourcePublicationStatusCodes.TERMINATED);
+        throw new FHIRException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
-    public String toCode(ContractPublicationStatus code) {
-      if (code == ContractPublicationStatus.AMENDED)
+    public String toCode(ContractResourcePublicationStatusCodes code) {
+      if (code == ContractResourcePublicationStatusCodes.AMENDED)
         return "amended";
-      if (code == ContractPublicationStatus.APPENDED)
+      if (code == ContractResourcePublicationStatusCodes.APPENDED)
         return "appended";
-      if (code == ContractPublicationStatus.CANCELLED)
+      if (code == ContractResourcePublicationStatusCodes.CANCELLED)
         return "cancelled";
-      if (code == ContractPublicationStatus.DISPUTED)
+      if (code == ContractResourcePublicationStatusCodes.DISPUTED)
         return "disputed";
-      if (code == ContractPublicationStatus.ENTEREDINERROR)
+      if (code == ContractResourcePublicationStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
-      if (code == ContractPublicationStatus.EXECUTABLE)
+      if (code == ContractResourcePublicationStatusCodes.EXECUTABLE)
         return "executable";
-      if (code == ContractPublicationStatus.EXECUTED)
+      if (code == ContractResourcePublicationStatusCodes.EXECUTED)
         return "executed";
-      if (code == ContractPublicationStatus.NEGOTIABLE)
+      if (code == ContractResourcePublicationStatusCodes.NEGOTIABLE)
         return "negotiable";
-      if (code == ContractPublicationStatus.OFFERED)
+      if (code == ContractResourcePublicationStatusCodes.OFFERED)
         return "offered";
-      if (code == ContractPublicationStatus.POLICY)
+      if (code == ContractResourcePublicationStatusCodes.POLICY)
         return "policy";
-      if (code == ContractPublicationStatus.REJECTED)
+      if (code == ContractResourcePublicationStatusCodes.REJECTED)
         return "rejected";
-      if (code == ContractPublicationStatus.RENEWED)
+      if (code == ContractResourcePublicationStatusCodes.RENEWED)
         return "renewed";
-      if (code == ContractPublicationStatus.REVOKED)
+      if (code == ContractResourcePublicationStatusCodes.REVOKED)
         return "revoked";
-      if (code == ContractPublicationStatus.RESOLVED)
+      if (code == ContractResourcePublicationStatusCodes.RESOLVED)
         return "resolved";
-      if (code == ContractPublicationStatus.TERMINATED)
+      if (code == ContractResourcePublicationStatusCodes.TERMINATED)
         return "terminated";
       return "?";
       }
-    public String toSystem(ContractPublicationStatus code) {
+    public String toSystem(ContractResourcePublicationStatusCodes code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum ContractResourceStatusCodes {
+        /**
+         * Contract is augmented with additional information to correct errors in a predecessor or to updated values in a predecessor. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: revised; replaced.
+         */
+        AMENDED, 
+        /**
+         * Contract is augmented with additional information that was missing from a predecessor Contract. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: updated, replaced.
+         */
+        APPENDED, 
+        /**
+         * Contract is terminated due to failure of the Grantor and/or the Grantee to fulfil one or more contract provisions. Usage: Abnormal contract termination. Precedence Order = 10. Comparable FHIR and v.3 status codes: stopped; failed; aborted.
+         */
+        CANCELLED, 
+        /**
+         * Contract is pended to rectify failure of the Grantor or the Grantee to fulfil contract provision(s). E.g., Grantee complaint about Grantor's failure to comply with contract provisions. Usage: Contract pended. Precedence Order = 7. Comparable FHIR and v.3 status codes: on hold; pended; suspended.
+         */
+        DISPUTED, 
+        /**
+         * Contract was created in error. No Precedence Order.  Status may be applied to a Contract with any status.
+         */
+        ENTEREDINERROR, 
+        /**
+         * Contract execution pending; may be executed when either the Grantor or the Grantee accepts the contract provisions by signing. I.e., where either the Grantor or the Grantee has signed, but not both. E.g., when an insurance applicant signs the insurers application, which references the policy. Usage: Optional first step of contract execution activity.  May be skipped and contracting activity moves directly to executed state. Precedence Order = 3. Comparable FHIR and v.3 status codes: draft; preliminary; planned; intended; active.
+         */
+        EXECUTABLE, 
+        /**
+         * Contract is activated for period stipulated when both the Grantor and Grantee have signed it. Usage: Required state for normal completion of contracting activity.  Precedence Order = 6. Comparable FHIR and v.3 status codes: accepted; completed.
+         */
+        EXECUTED, 
+        /**
+         * Contract execution is suspended while either or both the Grantor and Grantee propose and consider new or revised contract provisions. I.e., where the party which has not signed proposes changes to the terms.  E .g., a life insurer declines to agree to the signed application because the life insurer has evidence that the applicant, who asserted to being younger or a non-smoker to get a lower premium rate - but offers instead to agree to a higher premium based on the applicants actual age or smoking status. Usage: Optional contract activity between executable and executed state. Precedence Order = 4. Comparable FHIR and v.3 status codes: in progress; review; held.
+         */
+        NEGOTIABLE, 
+        /**
+         * Contract is a proposal by either the Grantor or the Grantee. Aka - A Contract hard copy or electronic 'template', 'form' or 'application'. E.g., health insurance application; consent directive form. Usage: Beginning of contract negotiation, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 2. Comparable FHIR and v.3 status codes: requested; new.
+         */
+        OFFERED, 
+        /**
+         * Contract template is available as the basis for an application or offer by the Grantor or Grantee. E.g., health insurance policy; consent directive policy.  Usage: Required initial contract activity, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 1. Comparable FHIR and v.3 status codes: proposed; intended.
+         */
+        POLICY, 
+        /**
+         *  Execution of the Contract is not completed because either or both the Grantor and Grantee decline to accept some or all of the contract provisions. Usage: Optional contract activity between executable and abnormal termination. Precedence Order = 5. Comparable FHIR and v.3 status codes:  stopped; cancelled.
+         */
+        REJECTED, 
+        /**
+         * Beginning of a successor Contract at the termination of predecessor Contract lifecycle. Usage: Follows termination of a preceding Contract that has reached its expiry date. Precedence Order = 13. Comparable FHIR and v.3 status codes: superseded.
+         */
+        RENEWED, 
+        /**
+         * A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.
+         */
+        REVOKED, 
+        /**
+         * Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.
+         */
+        RESOLVED, 
+        /**
+         * Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.
+         */
+        TERMINATED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ContractResourceStatusCodes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("amended".equals(codeString))
+          return AMENDED;
+        if ("appended".equals(codeString))
+          return APPENDED;
+        if ("cancelled".equals(codeString))
+          return CANCELLED;
+        if ("disputed".equals(codeString))
+          return DISPUTED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("executable".equals(codeString))
+          return EXECUTABLE;
+        if ("executed".equals(codeString))
+          return EXECUTED;
+        if ("negotiable".equals(codeString))
+          return NEGOTIABLE;
+        if ("offered".equals(codeString))
+          return OFFERED;
+        if ("policy".equals(codeString))
+          return POLICY;
+        if ("rejected".equals(codeString))
+          return REJECTED;
+        if ("renewed".equals(codeString))
+          return RENEWED;
+        if ("revoked".equals(codeString))
+          return REVOKED;
+        if ("resolved".equals(codeString))
+          return RESOLVED;
+        if ("terminated".equals(codeString))
+          return TERMINATED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AMENDED: return "amended";
+            case APPENDED: return "appended";
+            case CANCELLED: return "cancelled";
+            case DISPUTED: return "disputed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case EXECUTABLE: return "executable";
+            case EXECUTED: return "executed";
+            case NEGOTIABLE: return "negotiable";
+            case OFFERED: return "offered";
+            case POLICY: return "policy";
+            case REJECTED: return "rejected";
+            case RENEWED: return "renewed";
+            case REVOKED: return "revoked";
+            case RESOLVED: return "resolved";
+            case TERMINATED: return "terminated";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case AMENDED: return "http://hl7.org/fhir/contract-status";
+            case APPENDED: return "http://hl7.org/fhir/contract-status";
+            case CANCELLED: return "http://hl7.org/fhir/contract-status";
+            case DISPUTED: return "http://hl7.org/fhir/contract-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/contract-status";
+            case EXECUTABLE: return "http://hl7.org/fhir/contract-status";
+            case EXECUTED: return "http://hl7.org/fhir/contract-status";
+            case NEGOTIABLE: return "http://hl7.org/fhir/contract-status";
+            case OFFERED: return "http://hl7.org/fhir/contract-status";
+            case POLICY: return "http://hl7.org/fhir/contract-status";
+            case REJECTED: return "http://hl7.org/fhir/contract-status";
+            case RENEWED: return "http://hl7.org/fhir/contract-status";
+            case REVOKED: return "http://hl7.org/fhir/contract-status";
+            case RESOLVED: return "http://hl7.org/fhir/contract-status";
+            case TERMINATED: return "http://hl7.org/fhir/contract-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AMENDED: return "Contract is augmented with additional information to correct errors in a predecessor or to updated values in a predecessor. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: revised; replaced.";
+            case APPENDED: return "Contract is augmented with additional information that was missing from a predecessor Contract. Usage: Contract altered within effective time. Precedence Order = 9. Comparable FHIR and v.3 status codes: updated, replaced.";
+            case CANCELLED: return "Contract is terminated due to failure of the Grantor and/or the Grantee to fulfil one or more contract provisions. Usage: Abnormal contract termination. Precedence Order = 10. Comparable FHIR and v.3 status codes: stopped; failed; aborted.";
+            case DISPUTED: return "Contract is pended to rectify failure of the Grantor or the Grantee to fulfil contract provision(s). E.g., Grantee complaint about Grantor's failure to comply with contract provisions. Usage: Contract pended. Precedence Order = 7. Comparable FHIR and v.3 status codes: on hold; pended; suspended.";
+            case ENTEREDINERROR: return "Contract was created in error. No Precedence Order.  Status may be applied to a Contract with any status.";
+            case EXECUTABLE: return "Contract execution pending; may be executed when either the Grantor or the Grantee accepts the contract provisions by signing. I.e., where either the Grantor or the Grantee has signed, but not both. E.g., when an insurance applicant signs the insurers application, which references the policy. Usage: Optional first step of contract execution activity.  May be skipped and contracting activity moves directly to executed state. Precedence Order = 3. Comparable FHIR and v.3 status codes: draft; preliminary; planned; intended; active.";
+            case EXECUTED: return "Contract is activated for period stipulated when both the Grantor and Grantee have signed it. Usage: Required state for normal completion of contracting activity.  Precedence Order = 6. Comparable FHIR and v.3 status codes: accepted; completed.";
+            case NEGOTIABLE: return "Contract execution is suspended while either or both the Grantor and Grantee propose and consider new or revised contract provisions. I.e., where the party which has not signed proposes changes to the terms.  E .g., a life insurer declines to agree to the signed application because the life insurer has evidence that the applicant, who asserted to being younger or a non-smoker to get a lower premium rate - but offers instead to agree to a higher premium based on the applicants actual age or smoking status. Usage: Optional contract activity between executable and executed state. Precedence Order = 4. Comparable FHIR and v.3 status codes: in progress; review; held.";
+            case OFFERED: return "Contract is a proposal by either the Grantor or the Grantee. Aka - A Contract hard copy or electronic 'template', 'form' or 'application'. E.g., health insurance application; consent directive form. Usage: Beginning of contract negotiation, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 2. Comparable FHIR and v.3 status codes: requested; new.";
+            case POLICY: return "Contract template is available as the basis for an application or offer by the Grantor or Grantee. E.g., health insurance policy; consent directive policy.  Usage: Required initial contract activity, which may have been completed as a precondition because used for 0..* contracts. Precedence Order = 1. Comparable FHIR and v.3 status codes: proposed; intended.";
+            case REJECTED: return " Execution of the Contract is not completed because either or both the Grantor and Grantee decline to accept some or all of the contract provisions. Usage: Optional contract activity between executable and abnormal termination. Precedence Order = 5. Comparable FHIR and v.3 status codes:  stopped; cancelled.";
+            case RENEWED: return "Beginning of a successor Contract at the termination of predecessor Contract lifecycle. Usage: Follows termination of a preceding Contract that has reached its expiry date. Precedence Order = 13. Comparable FHIR and v.3 status codes: superseded.";
+            case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
+            case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
+            case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AMENDED: return "Amended";
+            case APPENDED: return "Appended";
+            case CANCELLED: return "Cancelled";
+            case DISPUTED: return "Disputed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case EXECUTABLE: return "Executable";
+            case EXECUTED: return "Executed";
+            case NEGOTIABLE: return "Negotiable";
+            case OFFERED: return "Offered";
+            case POLICY: return "Policy";
+            case REJECTED: return "Rejected";
+            case RENEWED: return "Renewed";
+            case REVOKED: return "Revoked";
+            case RESOLVED: return "Resolved";
+            case TERMINATED: return "Terminated";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ContractResourceStatusCodesEnumFactory implements EnumFactory<ContractResourceStatusCodes> {
+    public ContractResourceStatusCodes fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("amended".equals(codeString))
+          return ContractResourceStatusCodes.AMENDED;
+        if ("appended".equals(codeString))
+          return ContractResourceStatusCodes.APPENDED;
+        if ("cancelled".equals(codeString))
+          return ContractResourceStatusCodes.CANCELLED;
+        if ("disputed".equals(codeString))
+          return ContractResourceStatusCodes.DISPUTED;
+        if ("entered-in-error".equals(codeString))
+          return ContractResourceStatusCodes.ENTEREDINERROR;
+        if ("executable".equals(codeString))
+          return ContractResourceStatusCodes.EXECUTABLE;
+        if ("executed".equals(codeString))
+          return ContractResourceStatusCodes.EXECUTED;
+        if ("negotiable".equals(codeString))
+          return ContractResourceStatusCodes.NEGOTIABLE;
+        if ("offered".equals(codeString))
+          return ContractResourceStatusCodes.OFFERED;
+        if ("policy".equals(codeString))
+          return ContractResourceStatusCodes.POLICY;
+        if ("rejected".equals(codeString))
+          return ContractResourceStatusCodes.REJECTED;
+        if ("renewed".equals(codeString))
+          return ContractResourceStatusCodes.RENEWED;
+        if ("revoked".equals(codeString))
+          return ContractResourceStatusCodes.REVOKED;
+        if ("resolved".equals(codeString))
+          return ContractResourceStatusCodes.RESOLVED;
+        if ("terminated".equals(codeString))
+          return ContractResourceStatusCodes.TERMINATED;
+        throw new IllegalArgumentException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
+        }
+        public Enumeration<ContractResourceStatusCodes> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ContractResourceStatusCodes>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("amended".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.AMENDED);
+        if ("appended".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.APPENDED);
+        if ("cancelled".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.CANCELLED);
+        if ("disputed".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.DISPUTED);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.ENTEREDINERROR);
+        if ("executable".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTABLE);
+        if ("executed".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.EXECUTED);
+        if ("negotiable".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.NEGOTIABLE);
+        if ("offered".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.OFFERED);
+        if ("policy".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.POLICY);
+        if ("rejected".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REJECTED);
+        if ("renewed".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RENEWED);
+        if ("revoked".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.REVOKED);
+        if ("resolved".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.RESOLVED);
+        if ("terminated".equals(codeString))
+          return new Enumeration<ContractResourceStatusCodes>(this, ContractResourceStatusCodes.TERMINATED);
+        throw new FHIRException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
+        }
+    public String toCode(ContractResourceStatusCodes code) {
+      if (code == ContractResourceStatusCodes.AMENDED)
+        return "amended";
+      if (code == ContractResourceStatusCodes.APPENDED)
+        return "appended";
+      if (code == ContractResourceStatusCodes.CANCELLED)
+        return "cancelled";
+      if (code == ContractResourceStatusCodes.DISPUTED)
+        return "disputed";
+      if (code == ContractResourceStatusCodes.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == ContractResourceStatusCodes.EXECUTABLE)
+        return "executable";
+      if (code == ContractResourceStatusCodes.EXECUTED)
+        return "executed";
+      if (code == ContractResourceStatusCodes.NEGOTIABLE)
+        return "negotiable";
+      if (code == ContractResourceStatusCodes.OFFERED)
+        return "offered";
+      if (code == ContractResourceStatusCodes.POLICY)
+        return "policy";
+      if (code == ContractResourceStatusCodes.REJECTED)
+        return "rejected";
+      if (code == ContractResourceStatusCodes.RENEWED)
+        return "renewed";
+      if (code == ContractResourceStatusCodes.REVOKED)
+        return "revoked";
+      if (code == ContractResourceStatusCodes.RESOLVED)
+        return "resolved";
+      if (code == ContractResourceStatusCodes.TERMINATED)
+        return "terminated";
+      return "?";
+      }
+    public String toSystem(ContractResourceStatusCodes code) {
       return code.getSystem();
       }
     }
@@ -710,7 +712,7 @@ public class Contract extends DomainResource {
         @Child(name = "publicationStatus", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +", formalDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-publicationstatus")
-        protected Enumeration<ContractPublicationStatus> publicationStatus;
+        protected Enumeration<ContractResourcePublicationStatusCodes> publicationStatus;
 
         /**
          * A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.
@@ -719,7 +721,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Publication Ownership", formalDefinition="A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content." )
         protected MarkdownType copyright;
 
-        private static final long serialVersionUID = -1586317331L;
+        private static final long serialVersionUID = 306178803L;
 
     /**
      * Constructor
@@ -731,10 +733,10 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public ContentDefinitionComponent(CodeableConcept type, Enumeration<ContractPublicationStatus> publicationStatus) {
+      public ContentDefinitionComponent(CodeableConcept type, ContractResourcePublicationStatusCodes publicationStatus) {
         super();
-        this.type = type;
-        this.publicationStatus = publicationStatus;
+        this.setType(type);
+        this.setPublicationStatus(publicationStatus);
       }
 
         /**
@@ -861,12 +863,12 @@ public class Contract extends DomainResource {
         /**
          * @return {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable +.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
-        public Enumeration<ContractPublicationStatus> getPublicationStatusElement() { 
+        public Enumeration<ContractResourcePublicationStatusCodes> getPublicationStatusElement() { 
           if (this.publicationStatus == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ContentDefinitionComponent.publicationStatus");
             else if (Configuration.doAutoCreate())
-              this.publicationStatus = new Enumeration<ContractPublicationStatus>(new ContractPublicationStatusEnumFactory()); // bb
+              this.publicationStatus = new Enumeration<ContractResourcePublicationStatusCodes>(new ContractResourcePublicationStatusCodesEnumFactory()); // bb
           return this.publicationStatus;
         }
 
@@ -881,7 +883,7 @@ public class Contract extends DomainResource {
         /**
          * @param value {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable +.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
-        public ContentDefinitionComponent setPublicationStatusElement(Enumeration<ContractPublicationStatus> value) { 
+        public ContentDefinitionComponent setPublicationStatusElement(Enumeration<ContractResourcePublicationStatusCodes> value) { 
           this.publicationStatus = value;
           return this;
         }
@@ -889,16 +891,16 @@ public class Contract extends DomainResource {
         /**
          * @return amended | appended | cancelled | disputed | entered-in-error | executable +.
          */
-        public ContractPublicationStatus getPublicationStatus() { 
+        public ContractResourcePublicationStatusCodes getPublicationStatus() { 
           return this.publicationStatus == null ? null : this.publicationStatus.getValue();
         }
 
         /**
          * @param value amended | appended | cancelled | disputed | entered-in-error | executable +.
          */
-        public ContentDefinitionComponent setPublicationStatus(ContractPublicationStatus value) { 
+        public ContentDefinitionComponent setPublicationStatus(ContractResourcePublicationStatusCodes value) { 
             if (this.publicationStatus == null)
-              this.publicationStatus = new Enumeration<ContractPublicationStatus>(new ContractPublicationStatusEnumFactory());
+              this.publicationStatus = new Enumeration<ContractResourcePublicationStatusCodes>(new ContractResourcePublicationStatusCodesEnumFactory());
             this.publicationStatus.setValue(value);
           return this;
         }
@@ -983,7 +985,7 @@ public class Contract extends DomainResource {
         case -1868521062: /*subType*/ return this.subType == null ? new Base[0] : new Base[] {this.subType}; // CodeableConcept
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // Reference
         case 1470566394: /*publicationDate*/ return this.publicationDate == null ? new Base[0] : new Base[] {this.publicationDate}; // DateTimeType
-        case 616500542: /*publicationStatus*/ return this.publicationStatus == null ? new Base[0] : new Base[] {this.publicationStatus}; // Enumeration<ContractPublicationStatus>
+        case 616500542: /*publicationStatus*/ return this.publicationStatus == null ? new Base[0] : new Base[] {this.publicationStatus}; // Enumeration<ContractResourcePublicationStatusCodes>
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1006,8 +1008,8 @@ public class Contract extends DomainResource {
           this.publicationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case 616500542: // publicationStatus
-          value = new ContractPublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.publicationStatus = (Enumeration) value; // Enumeration<ContractPublicationStatus>
+          value = new ContractResourcePublicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.publicationStatus = (Enumeration) value; // Enumeration<ContractResourcePublicationStatusCodes>
           return value;
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -1028,8 +1030,8 @@ public class Contract extends DomainResource {
         } else if (name.equals("publicationDate")) {
           this.publicationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publicationStatus")) {
-          value = new ContractPublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.publicationStatus = (Enumeration) value; // Enumeration<ContractPublicationStatus>
+          value = new ContractResourcePublicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.publicationStatus = (Enumeration) value; // Enumeration<ContractResourcePublicationStatusCodes>
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
@@ -1080,13 +1082,13 @@ public class Contract extends DomainResource {
           return this.publisher;
         }
         else if (name.equals("publicationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.publicationDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.publicationDate");
         }
         else if (name.equals("publicationStatus")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.publicationStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.publicationStatus");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.contentDefinition.copyright");
         }
         else
           return super.addChild(name);
@@ -1231,7 +1233,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Nested Contract Term Group", formalDefinition="Nested group of Contract Provisions." )
         protected List<TermComponent> group;
 
-        private static final long serialVersionUID = -460907186L;
+        private static final long serialVersionUID = -1647037544L;
 
     /**
      * Constructor
@@ -1245,7 +1247,7 @@ public class Contract extends DomainResource {
      */
       public TermComponent(ContractOfferComponent offer) {
         super();
-        this.offer = offer;
+        this.setOffer(offer);
       }
 
         /**
@@ -1537,7 +1539,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #securityLabel}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #securityLabel}, creating it if it does not already exist {3}
          */
         public SecurityLabelComponent getSecurityLabelFirstRep() { 
           if (getSecurityLabel().isEmpty()) {
@@ -1614,7 +1616,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #asset}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #asset}, creating it if it does not already exist {3}
          */
         public ContractAssetComponent getAssetFirstRep() { 
           if (getAsset().isEmpty()) {
@@ -1667,7 +1669,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #action}, creating it if it does not already exist {3}
          */
         public ActionComponent getActionFirstRep() { 
           if (getAction().isEmpty()) {
@@ -1720,7 +1722,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #group}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #group}, creating it if it does not already exist {3}
          */
         public TermComponent getGroupFirstRep() { 
           if (getGroup().isEmpty()) {
@@ -1753,8 +1755,8 @@ public class Contract extends DomainResource {
           case -793235316: /*applies*/  return new Property("applies", "Period", "Relevant time or time-period when this Contract Provision is applicable.", 0, 1, applies);
           case -957295375: /*topic[x]*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "The entity that the term applies to.", 0, 1, topic);
           case 110546223: /*topic*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "The entity that the term applies to.", 0, 1, topic);
-          case 777778802: /*topicCodeableConcept*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "The entity that the term applies to.", 0, 1, topic);
-          case -343345444: /*topicReference*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "The entity that the term applies to.", 0, 1, topic);
+          case 777778802: /*topicCodeableConcept*/  return new Property("topic[x]", "CodeableConcept", "The entity that the term applies to.", 0, 1, topic);
+          case -343345444: /*topicReference*/  return new Property("topic[x]", "Reference(Any)", "The entity that the term applies to.", 0, 1, topic);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A legal clause or condition contained within a contract that requires one or both parties to perform a particular requirement by some specified time or prevents one or both parties from performing a particular requirement by some specified time.", 0, 1, type);
           case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "A specialized legal clause or condition based on overarching contract type.", 0, 1, subType);
           case 3556653: /*text*/  return new Property("text", "string", "Statement of a provision in a policy or a contract.", 0, 1, text);
@@ -1774,7 +1776,7 @@ public class Contract extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case -1179159893: /*issued*/ return this.issued == null ? new Base[0] : new Base[] {this.issued}; // DateTimeType
         case -793235316: /*applies*/ return this.applies == null ? new Base[0] : new Base[] {this.applies}; // Period
-        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // Type
+        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // DataType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1868521062: /*subType*/ return this.subType == null ? new Base[0] : new Base[] {this.subType}; // CodeableConcept
         case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
@@ -1801,7 +1803,7 @@ public class Contract extends DomainResource {
           this.applies = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 110546223: // topic
-          this.topic = TypeConvertor.castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // DataType
           return value;
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1841,7 +1843,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("applies")) {
           this.applies = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("topic[x]")) {
-          this.topic = TypeConvertor.castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
@@ -1911,7 +1913,7 @@ public class Contract extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.issued");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.issued");
         }
         else if (name.equals("applies")) {
           this.applies = new Period();
@@ -1934,7 +1936,7 @@ public class Contract extends DomainResource {
           return this.subType;
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.text");
         }
         else if (name.equals("securityLabel")) {
           return addSecurityLabel();
@@ -2077,7 +2079,7 @@ public class Contract extends DomainResource {
      */
       public SecurityLabelComponent(Coding classification) {
         super();
-        this.classification = classification;
+        this.setClassification(classification);
       }
 
         /**
@@ -2209,7 +2211,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
          */
         public Coding getCategoryFirstRep() { 
           if (getCategory().isEmpty()) {
@@ -2262,7 +2264,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #control}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #control}, creating it if it does not already exist {3}
          */
         public Coding getControlFirstRep() { 
           if (getControl().isEmpty()) {
@@ -2365,7 +2367,7 @@ public class Contract extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("number")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.number");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.securityLabel.number");
         }
         else if (name.equals("classification")) {
           this.classification = new Coding();
@@ -2568,7 +2570,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
          */
         public Identifier getIdentifierFirstRep() { 
           if (getIdentifier().isEmpty()) {
@@ -2621,7 +2623,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #party}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #party}, creating it if it does not already exist {3}
          */
         public ContractPartyComponent getPartyFirstRep() { 
           if (getParty().isEmpty()) {
@@ -2746,7 +2748,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #decisionMode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #decisionMode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getDecisionModeFirstRep() { 
           if (getDecisionMode().isEmpty()) {
@@ -2799,7 +2801,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #answer}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #answer}, creating it if it does not already exist {3}
          */
         public AnswerComponent getAnswerFirstRep() { 
           if (getAnswer().isEmpty()) {
@@ -3157,13 +3159,13 @@ public class Contract extends DomainResource {
           return addAnswer();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.text");
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.linkId");
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.offer.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -3278,9 +3280,10 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public ContractPartyComponent(CodeableConcept role) {
+      public ContractPartyComponent(Reference reference, CodeableConcept role) {
         super();
-        this.role = role;
+        this.addReference(reference);
+        this.setRole(role);
       }
 
         /**
@@ -3327,7 +3330,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #reference}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #reference}, creating it if it does not already exist {3}
          */
         public Reference getReferenceFirstRep() { 
           if (getReference().isEmpty()) {
@@ -3500,7 +3503,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="The actual answer response", formalDefinition="Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research." )
         protected DataType value;
 
-        private static final long serialVersionUID = -732981989L;
+        private static final long serialVersionUID = -1135414639L;
 
     /**
      * Constructor
@@ -3514,7 +3517,7 @@ public class Contract extends DomainResource {
      */
       public AnswerComponent(DataType value) {
         super();
-        this.value = value;
+        this.setValue(value);
       }
 
         /**
@@ -3728,18 +3731,18 @@ public class Contract extends DomainResource {
           switch (_hash) {
           case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
           case 111972721: /*value*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -766192449: /*valueDate*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -765708322: /*valueTime*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Any)", "Response to an offer clause or question text,  which enables selection of values to be agreed to, e.g., the period of participation, the date of occupancy of a rental, warrently duration, or whether biospecimen may be used for further research.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3748,7 +3751,7 @@ public class Contract extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Type
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3758,7 +3761,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3768,7 +3771,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // Type
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -4078,7 +4081,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
          */
         public CodeableConcept getTypeFirstRep() { 
           if (getType().isEmpty()) {
@@ -4131,7 +4134,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #typeReference}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #typeReference}, creating it if it does not already exist {3}
          */
         public Reference getTypeReferenceFirstRep() { 
           if (getTypeReference().isEmpty()) {
@@ -4184,7 +4187,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #subtype}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #subtype}, creating it if it does not already exist {3}
          */
         public CodeableConcept getSubtypeFirstRep() { 
           if (getSubtype().isEmpty()) {
@@ -4261,7 +4264,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #context}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #context}, creating it if it does not already exist {3}
          */
         public AssetContextComponent getContextFirstRep() { 
           if (getContext().isEmpty()) {
@@ -4363,7 +4366,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #periodType}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #periodType}, creating it if it does not already exist {3}
          */
         public CodeableConcept getPeriodTypeFirstRep() { 
           if (getPeriodType().isEmpty()) {
@@ -4416,7 +4419,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #period}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #period}, creating it if it does not already exist {3}
          */
         public Period getPeriodFirstRep() { 
           if (getPeriod().isEmpty()) {
@@ -4469,7 +4472,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #usePeriod}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #usePeriod}, creating it if it does not already exist {3}
          */
         public Period getUsePeriodFirstRep() { 
           if (getUsePeriod().isEmpty()) {
@@ -4632,7 +4635,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #answer}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #answer}, creating it if it does not already exist {3}
          */
         public AnswerComponent getAnswerFirstRep() { 
           if (getAnswer().isEmpty()) {
@@ -4746,7 +4749,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #valuedItem}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #valuedItem}, creating it if it does not already exist {3}
          */
         public ValuedItemComponent getValuedItemFirstRep() { 
           if (getValuedItem().isEmpty()) {
@@ -4979,7 +4982,7 @@ public class Contract extends DomainResource {
           return addContext();
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.condition");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.condition");
         }
         else if (name.equals("periodType")) {
           return addPeriodType();
@@ -4991,16 +4994,16 @@ public class Contract extends DomainResource {
           return addUsePeriod();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.text");
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.linkId");
         }
         else if (name.equals("answer")) {
           return addAnswer();
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.securityLabelNumber");
         }
         else if (name.equals("valuedItem")) {
           return addValuedItem();
@@ -5218,7 +5221,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
          */
         public CodeableConcept getCodeFirstRep() { 
           if (getCode().isEmpty()) {
@@ -5367,7 +5370,7 @@ public class Contract extends DomainResource {
           return addCode();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.context.text");
         }
         else
           return super.addChild(name);
@@ -5522,7 +5525,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Security Labels that define affected terms", formalDefinition="A set of security labels that define which terms are controlled by this condition." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = -1559329888L;
+        private static final long serialVersionUID = 915998998L;
 
     /**
      * Constructor
@@ -6134,7 +6137,7 @@ public class Contract extends DomainResource {
           children.add(new Property("entity[x]", "CodeableConcept|Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity));
           children.add(new Property("identifier", "Identifier", "Identifies a Contract Valued Item instance.", 0, 1, identifier));
           children.add(new Property("effectiveTime", "dateTime", "Indicates the time during which this Contract ValuedItem information is effective.", 0, 1, effectiveTime));
-          children.add(new Property("quantity", "SimpleQuantity", "Specifies the units by which the Contract Valued Item is measured or counted, and quantifies the countable or measurable Contract Valued Item instances.", 0, 1, quantity));
+          children.add(new Property("quantity", "Quantity", "Specifies the units by which the Contract Valued Item is measured or counted, and quantifies the countable or measurable Contract Valued Item instances.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "A Contract Valued Item unit valuation measure.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of the Contract Valued Item delivered. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
           children.add(new Property("points", "decimal", "An amount that expresses the weighting (based on difficulty, cost and/or resource intensiveness) associated with the Contract Valued Item delivered. The concept of Points allows for assignment of point values for a Contract Valued Item, such that a monetary amount can be assigned to each point.", 0, 1, points));
@@ -6152,11 +6155,11 @@ public class Contract extends DomainResource {
           switch (_hash) {
           case -740568643: /*entity[x]*/  return new Property("entity[x]", "CodeableConcept|Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
           case -1298275357: /*entity*/  return new Property("entity[x]", "CodeableConcept|Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
-          case 924197182: /*entityCodeableConcept*/  return new Property("entity[x]", "CodeableConcept|Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
-          case -356635992: /*entityReference*/  return new Property("entity[x]", "CodeableConcept|Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
+          case 924197182: /*entityCodeableConcept*/  return new Property("entity[x]", "CodeableConcept", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
+          case -356635992: /*entityReference*/  return new Property("entity[x]", "Reference(Any)", "Specific type of Contract Valued Item that may be priced.", 0, 1, entity);
           case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifies a Contract Valued Item instance.", 0, 1, identifier);
           case -929905388: /*effectiveTime*/  return new Property("effectiveTime", "dateTime", "Indicates the time during which this Contract ValuedItem information is effective.", 0, 1, effectiveTime);
-          case -1285004149: /*quantity*/  return new Property("quantity", "SimpleQuantity", "Specifies the units by which the Contract Valued Item is measured or counted, and quantifies the countable or measurable Contract Valued Item instances.", 0, 1, quantity);
+          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Specifies the units by which the Contract Valued Item is measured or counted, and quantifies the countable or measurable Contract Valued Item instances.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "A Contract Valued Item unit valuation measure.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of the Contract Valued Item delivered. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
           case -982754077: /*points*/  return new Property("points", "decimal", "An amount that expresses the weighting (based on difficulty, cost and/or resource intensiveness) associated with the Contract Valued Item delivered. The concept of Points allows for assignment of point values for a Contract Valued Item, such that a monetary amount can be assigned to each point.", 0, 1, points);
@@ -6175,7 +6178,7 @@ public class Contract extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1298275357: /*entity*/ return this.entity == null ? new Base[0] : new Base[] {this.entity}; // Type
+        case -1298275357: /*entity*/ return this.entity == null ? new Base[0] : new Base[] {this.entity}; // DataType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case -929905388: /*effectiveTime*/ return this.effectiveTime == null ? new Base[0] : new Base[] {this.effectiveTime}; // DateTimeType
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
@@ -6198,7 +6201,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1298275357: // entity
-          this.entity = TypeConvertor.castToType(value); // Type
+          this.entity = TypeConvertor.castToType(value); // DataType
           return value;
         case -1618432855: // identifier
           this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
@@ -6247,7 +6250,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("entity[x]")) {
-          this.entity = TypeConvertor.castToType(value); // Type
+          this.entity = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("identifier")) {
           this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("effectiveTime")) {
@@ -6308,7 +6311,7 @@ public class Contract extends DomainResource {
         case -1298275357: /*entity*/ return new String[] {"CodeableConcept", "Reference"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -929905388: /*effectiveTime*/ return new String[] {"dateTime"};
-        case -1285004149: /*quantity*/ return new String[] {"SimpleQuantity"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
         case -982754077: /*points*/ return new String[] {"decimal"};
@@ -6339,7 +6342,7 @@ public class Contract extends DomainResource {
           return this.identifier;
         }
         else if (name.equals("effectiveTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.effectiveTime");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.effectiveTime");
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -6350,20 +6353,20 @@ public class Contract extends DomainResource {
           return this.unitPrice;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.factor");
         }
         else if (name.equals("points")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.points");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.points");
         }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("payment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.payment");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.payment");
         }
         else if (name.equals("paymentDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.paymentDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.paymentDate");
         }
         else if (name.equals("responsible")) {
           this.responsible = new Reference();
@@ -6374,10 +6377,10 @@ public class Contract extends DomainResource {
           return this.recipient;
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.linkId");
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.asset.valuedItem.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -6611,7 +6614,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Action restriction numbers", formalDefinition="Security labels that protects the action." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = 2009887830L;
+        private static final long serialVersionUID = -701731764L;
 
     /**
      * Constructor
@@ -6625,9 +6628,9 @@ public class Contract extends DomainResource {
      */
       public ActionComponent(CodeableConcept type, CodeableConcept intent, CodeableConcept status) {
         super();
-        this.type = type;
-        this.intent = intent;
-        this.status = status;
+        this.setType(type);
+        this.setIntent(intent);
+        this.setStatus(status);
       }
 
         /**
@@ -6743,7 +6746,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
          */
         public ActionSubjectComponent getSubjectFirstRep() { 
           if (getSubject().isEmpty()) {
@@ -7056,7 +7059,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #requester}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #requester}, creating it if it does not already exist {3}
          */
         public Reference getRequesterFirstRep() { 
           if (getRequester().isEmpty()) {
@@ -7170,7 +7173,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #performerType}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #performerType}, creating it if it does not already exist {3}
          */
         public CodeableConcept getPerformerTypeFirstRep() { 
           if (getPerformerType().isEmpty()) {
@@ -7332,7 +7335,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
          */
         public CodeableConcept getReasonCodeFirstRep() { 
           if (getReasonCode().isEmpty()) {
@@ -7385,7 +7388,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
          */
         public Reference getReasonReferenceFirstRep() { 
           if (getReasonReference().isEmpty()) {
@@ -7560,7 +7563,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
          */
         public Annotation getNoteFirstRep() { 
           if (getNote().isEmpty()) {
@@ -7668,9 +7671,9 @@ public class Contract extends DomainResource {
           case -288783036: /*contextLinkId*/  return new Property("contextLinkId", "string", "Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, contextLinkId);
           case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When action happens.", 0, 1, occurrence);
           case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When action happens.", 0, 1, occurrence);
-          case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When action happens.", 0, 1, occurrence);
-          case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When action happens.", 0, 1, occurrence);
-          case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When action happens.", 0, 1, occurrence);
+          case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "When action happens.", 0, 1, occurrence);
+          case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "Period", "When action happens.", 0, 1, occurrence);
+          case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "When action happens.", 0, 1, occurrence);
           case 693933948: /*requester*/  return new Property("requester", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Device|Group|Organization)", "Who or what initiated the action and has responsibility for its activation.", 0, java.lang.Integer.MAX_VALUE, requester);
           case -1468032687: /*requesterLinkId*/  return new Property("requesterLinkId", "string", "Id [identifier??] of the clause or question text related to the requester of this action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, requesterLinkId);
           case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The type of individual that is desired or required to perform or not perform the action.", 0, java.lang.Integer.MAX_VALUE, performerType);
@@ -7699,7 +7702,7 @@ public class Contract extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // Reference
         case -288783036: /*contextLinkId*/ return this.contextLinkId == null ? new Base[0] : this.contextLinkId.toArray(new Base[this.contextLinkId.size()]); // StringType
-        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // Type
+        case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : this.requester.toArray(new Base[this.requester.size()]); // Reference
         case -1468032687: /*requesterLinkId*/ return this.requesterLinkId == null ? new Base[0] : this.requesterLinkId.toArray(new Base[this.requesterLinkId.size()]); // StringType
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : this.performerType.toArray(new Base[this.performerType.size()]); // CodeableConcept
@@ -7745,7 +7748,7 @@ public class Contract extends DomainResource {
           this.getContextLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 1687874001: // occurrence
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
           return value;
         case 693933948: // requester
           this.getRequester().add(TypeConvertor.castToReference(value)); // Reference
@@ -7807,7 +7810,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("contextLinkId")) {
           this.getContextLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("occurrence[x]")) {
-          this.occurrence = TypeConvertor.castToType(value); // Type
+          this.occurrence = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("requester")) {
           this.getRequester().add(TypeConvertor.castToReference(value));
         } else if (name.equals("requesterLinkId")) {
@@ -7899,7 +7902,7 @@ public class Contract extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.doNotPerform");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -7913,7 +7916,7 @@ public class Contract extends DomainResource {
           return this.intent;
         }
         else if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.linkId");
         }
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
@@ -7924,7 +7927,7 @@ public class Contract extends DomainResource {
           return this.context;
         }
         else if (name.equals("contextLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.contextLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.contextLinkId");
         }
         else if (name.equals("occurrenceDateTime")) {
           this.occurrence = new DateTimeType();
@@ -7942,7 +7945,7 @@ public class Contract extends DomainResource {
           return addRequester();
         }
         else if (name.equals("requesterLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.requesterLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.requesterLinkId");
         }
         else if (name.equals("performerType")) {
           return addPerformerType();
@@ -7956,7 +7959,7 @@ public class Contract extends DomainResource {
           return this.performer;
         }
         else if (name.equals("performerLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.performerLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.performerLinkId");
         }
         else if (name.equals("reasonCode")) {
           return addReasonCode();
@@ -7965,16 +7968,16 @@ public class Contract extends DomainResource {
           return addReasonReference();
         }
         else if (name.equals("reason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.reason");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.reason");
         }
         else if (name.equals("reasonLinkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.reasonLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.reasonLinkId");
         }
         else if (name.equals("note")) {
           return addNote();
         }
         else if (name.equals("securityLabelNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.securityLabelNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.securityLabelNumber");
         }
         else
           return super.addChild(name);
@@ -8134,6 +8137,14 @@ public class Contract extends DomainResource {
         super();
       }
 
+    /**
+     * Constructor
+     */
+      public ActionSubjectComponent(Reference reference) {
+        super();
+        this.addReference(reference);
+      }
+
         /**
          * @return {@link #reference} (The entity the action is performed or not performed on or for.)
          */
@@ -8178,7 +8189,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #reference}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #reference}, creating it if it does not already exist {3}
          */
         public Reference getReferenceFirstRep() { 
           if (getReference().isEmpty()) {
@@ -8378,10 +8389,11 @@ public class Contract extends DomainResource {
     /**
      * Constructor
      */
-      public SignatoryComponent(Coding type, Reference party) {
+      public SignatoryComponent(Coding type, Reference party, Signature signature) {
         super();
-        this.type = type;
-        this.party = party;
+        this.setType(type);
+        this.setParty(party);
+        this.addSignature(signature);
       }
 
         /**
@@ -8476,7 +8488,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The first repetition of repeating field {@link #signature}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #signature}, creating it if it does not already exist {3}
          */
         public Signature getSignatureFirstRep() { 
           if (getSignature().isEmpty()) {
@@ -8641,7 +8653,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Easily comprehended representation of this Contract", formalDefinition="Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability." )
         protected DataType content;
 
-        private static final long serialVersionUID = -1763459053L;
+        private static final long serialVersionUID = -1954179063L;
 
     /**
      * Constructor
@@ -8655,7 +8667,7 @@ public class Contract extends DomainResource {
      */
       public FriendlyLanguageComponent(DataType content) {
         super();
-        this.content = content;
+        this.setContent(content);
       }
 
         /**
@@ -8719,8 +8731,8 @@ public class Contract extends DomainResource {
           switch (_hash) {
           case 264548711: /*content[x]*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
           case 951530617: /*content*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
-          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
-          case 1193747154: /*contentReference*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
+          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
+          case 1193747154: /*contentReference*/  return new Property("content[x]", "Reference(Composition|DocumentReference|QuestionnaireResponse)", "Human readable rendering of this Contract in a format and representation intended to enhance comprehension and ensure understandability.", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -8729,7 +8741,7 @@ public class Contract extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // Type
+        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -8739,7 +8751,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8749,7 +8761,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -8839,7 +8851,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Contract Legal Text", formalDefinition="Contract legal text in human renderable form." )
         protected DataType content;
 
-        private static final long serialVersionUID = -1763459053L;
+        private static final long serialVersionUID = -1954179063L;
 
     /**
      * Constructor
@@ -8853,7 +8865,7 @@ public class Contract extends DomainResource {
      */
       public LegalLanguageComponent(DataType content) {
         super();
-        this.content = content;
+        this.setContent(content);
       }
 
         /**
@@ -8917,8 +8929,8 @@ public class Contract extends DomainResource {
           switch (_hash) {
           case 264548711: /*content[x]*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Contract legal text in human renderable form.", 0, 1, content);
           case 951530617: /*content*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Contract legal text in human renderable form.", 0, 1, content);
-          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Contract legal text in human renderable form.", 0, 1, content);
-          case 1193747154: /*contentReference*/  return new Property("content[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse)", "Contract legal text in human renderable form.", 0, 1, content);
+          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment", "Contract legal text in human renderable form.", 0, 1, content);
+          case 1193747154: /*contentReference*/  return new Property("content[x]", "Reference(Composition|DocumentReference|QuestionnaireResponse)", "Contract legal text in human renderable form.", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -8927,7 +8939,7 @@ public class Contract extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // Type
+        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -8937,7 +8949,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8947,7 +8959,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -9037,7 +9049,7 @@ public class Contract extends DomainResource {
         @Description(shortDefinition="Computable Contract Rules", formalDefinition="Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal)." )
         protected DataType content;
 
-        private static final long serialVersionUID = -1763459053L;
+        private static final long serialVersionUID = -1954179063L;
 
     /**
      * Constructor
@@ -9051,7 +9063,7 @@ public class Contract extends DomainResource {
      */
       public ComputableLanguageComponent(DataType content) {
         super();
-        this.content = content;
+        this.setContent(content);
       }
 
         /**
@@ -9115,8 +9127,8 @@ public class Contract extends DomainResource {
           switch (_hash) {
           case 264548711: /*content[x]*/  return new Property("content[x]", "Attachment|Reference(DocumentReference)", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
           case 951530617: /*content*/  return new Property("content[x]", "Attachment|Reference(DocumentReference)", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
-          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment|Reference(DocumentReference)", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
-          case 1193747154: /*contentReference*/  return new Property("content[x]", "Attachment|Reference(DocumentReference)", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
+          case -702028164: /*contentAttachment*/  return new Property("content[x]", "Attachment", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
+          case 1193747154: /*contentReference*/  return new Property("content[x]", "Reference(DocumentReference)", "Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal).", 0, 1, content);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -9125,7 +9137,7 @@ public class Contract extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // Type
+        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -9135,7 +9147,7 @@ public class Contract extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 951530617: // content
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -9145,7 +9157,7 @@ public class Contract extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("content[x]")) {
-          this.content = TypeConvertor.castToType(value); // Type
+          this.content = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -9253,7 +9265,7 @@ public class Contract extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable +", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-status")
-    protected Enumeration<ContractStatus> status;
+    protected Enumeration<ContractResourceStatusCodes> status;
 
     /**
      * Legal states of the formation of a legal instrument, which is a formally executed written document that can be formally attributed to its author, records and formally expresses a legally enforceable act, process, or contractual duty, obligation, or right, and therefore evidences that act, process, or agreement.
@@ -9464,7 +9476,7 @@ public class Contract extends DomainResource {
     @Description(shortDefinition="Binding Contract", formalDefinition="Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract." )
     protected DataType legallyBinding;
 
-    private static final long serialVersionUID = 1448103871L;
+    private static final long serialVersionUID = -792431459L;
 
   /**
    * Constructor
@@ -9517,7 +9529,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
     public Identifier getIdentifierFirstRep() { 
       if (getIdentifier().isEmpty()) {
@@ -9627,12 +9639,12 @@ public class Contract extends DomainResource {
     /**
      * @return {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<ContractStatus> getStatusElement() { 
+    public Enumeration<ContractResourceStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Contract.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ContractStatus>(new ContractStatusEnumFactory()); // bb
+          this.status = new Enumeration<ContractResourceStatusCodes>(new ContractResourceStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -9647,7 +9659,7 @@ public class Contract extends DomainResource {
     /**
      * @param value {@link #status} (The status of the resource instance.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Contract setStatusElement(Enumeration<ContractStatus> value) { 
+    public Contract setStatusElement(Enumeration<ContractResourceStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -9655,19 +9667,19 @@ public class Contract extends DomainResource {
     /**
      * @return The status of the resource instance.
      */
-    public ContractStatus getStatus() { 
+    public ContractResourceStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the resource instance.
      */
-    public Contract setStatus(ContractStatus value) { 
+    public Contract setStatus(ContractResourceStatusCodes value) { 
       if (value == null)
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<ContractStatus>(new ContractStatusEnumFactory());
+          this.status = new Enumeration<ContractResourceStatusCodes>(new ContractResourceStatusCodesEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -9935,7 +9947,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
     public Reference getSubjectFirstRep() { 
       if (getSubject().isEmpty()) {
@@ -9988,7 +10000,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #authority}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #authority}, creating it if it does not already exist {3}
      */
     public Reference getAuthorityFirstRep() { 
       if (getAuthority().isEmpty()) {
@@ -10041,7 +10053,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #domain}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #domain}, creating it if it does not already exist {3}
      */
     public Reference getDomainFirstRep() { 
       if (getDomain().isEmpty()) {
@@ -10094,7 +10106,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist {3}
      */
     public Reference getSiteFirstRep() { 
       if (getSite().isEmpty()) {
@@ -10478,7 +10490,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subType}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #subType}, creating it if it does not already exist {3}
      */
     public CodeableConcept getSubTypeFirstRep() { 
       if (getSubType().isEmpty()) {
@@ -10555,7 +10567,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #term}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #term}, creating it if it does not already exist {3}
      */
     public TermComponent getTermFirstRep() { 
       if (getTerm().isEmpty()) {
@@ -10608,7 +10620,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #supportingInfo}, creating it if it does not already exist {3}
      */
     public Reference getSupportingInfoFirstRep() { 
       if (getSupportingInfo().isEmpty()) {
@@ -10661,7 +10673,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #relevantHistory}, creating it if it does not already exist {3}
      */
     public Reference getRelevantHistoryFirstRep() { 
       if (getRelevantHistory().isEmpty()) {
@@ -10714,7 +10726,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #signer}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #signer}, creating it if it does not already exist {3}
      */
     public SignatoryComponent getSignerFirstRep() { 
       if (getSigner().isEmpty()) {
@@ -10767,7 +10779,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #friendly}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #friendly}, creating it if it does not already exist {3}
      */
     public FriendlyLanguageComponent getFriendlyFirstRep() { 
       if (getFriendly().isEmpty()) {
@@ -10820,7 +10832,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #legal}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #legal}, creating it if it does not already exist {3}
      */
     public LegalLanguageComponent getLegalFirstRep() { 
       if (getLegal().isEmpty()) {
@@ -10873,7 +10885,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist {3}
      */
     public ComputableLanguageComponent getRuleFirstRep() { 
       if (getRule().isEmpty()) {
@@ -10996,8 +11008,8 @@ public class Contract extends DomainResource {
         case 109264468: /*scope*/  return new Property("scope", "CodeableConcept", "A selector of legal concerns for this Contract definition, derivative, or instance in any legal state.", 0, 1, scope);
         case -957295375: /*topic[x]*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
         case 110546223: /*topic*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
-        case 777778802: /*topicCodeableConcept*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
-        case -343345444: /*topicReference*/  return new Property("topic[x]", "CodeableConcept|Reference(Any)", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
+        case 777778802: /*topicCodeableConcept*/  return new Property("topic[x]", "CodeableConcept", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
+        case -343345444: /*topicReference*/  return new Property("topic[x]", "Reference(Any)", "Narrows the range of legal concerns to focus on the achievement of specific contractual objectives.", 0, 1, topic);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A high-level category for the legal instrument, whether constructed as a Contract definition, derivative, or instance in any legal state.  Provides additional information about its content within the context of the Contract's scope to distinguish the kinds of systems that would be interested in the contract.", 0, 1, type);
         case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "Sub-category for the Contract that distinguishes the kinds of systems that would be interested in the Contract within the context of the Contract's scope.", 0, java.lang.Integer.MAX_VALUE, subType);
         case 247055020: /*contentDefinition*/  return new Property("contentDefinition", "", "Precusory content developed with a focus and intent of supporting the formation a Contract instance, which may be associated with and transformable into a Contract.", 0, 1, contentDefinition);
@@ -11010,8 +11022,8 @@ public class Contract extends DomainResource {
         case 3512060: /*rule*/  return new Property("rule", "", "List of Computable Policy Rule Language Representations of this Contract.", 0, java.lang.Integer.MAX_VALUE, rule);
         case -772497791: /*legallyBinding[x]*/  return new Property("legallyBinding[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse|Contract)", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
         case -126751329: /*legallyBinding*/  return new Property("legallyBinding[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse|Contract)", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
-        case 344057890: /*legallyBindingAttachment*/  return new Property("legallyBinding[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse|Contract)", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
-        case -296528788: /*legallyBindingReference*/  return new Property("legallyBinding[x]", "Attachment|Reference(Composition|DocumentReference|QuestionnaireResponse|Contract)", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
+        case 344057890: /*legallyBindingAttachment*/  return new Property("legallyBinding[x]", "Attachment", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
+        case -296528788: /*legallyBindingReference*/  return new Property("legallyBinding[x]", "Reference(Composition|DocumentReference|QuestionnaireResponse|Contract)", "Legally binding Contract: This is the signed and legally recognized representation of the Contract, which is considered the \"source of truth\" and which would be the basis for legal action related to enforcement of this Contract.", 0, 1, legallyBinding);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -11023,7 +11035,7 @@ public class Contract extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ContractStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ContractResourceStatusCodes>
         case 568606040: /*legalState*/ return this.legalState == null ? new Base[0] : new Base[] {this.legalState}; // CodeableConcept
         case 8911915: /*instantiatesCanonical*/ return this.instantiatesCanonical == null ? new Base[0] : new Base[] {this.instantiatesCanonical}; // Reference
         case -1926393373: /*instantiatesUri*/ return this.instantiatesUri == null ? new Base[0] : new Base[] {this.instantiatesUri}; // UriType
@@ -11041,7 +11053,7 @@ public class Contract extends DomainResource {
         case 92902992: /*alias*/ return this.alias == null ? new Base[0] : this.alias.toArray(new Base[this.alias.size()]); // StringType
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
         case 109264468: /*scope*/ return this.scope == null ? new Base[0] : new Base[] {this.scope}; // CodeableConcept
-        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // Type
+        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // DataType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1868521062: /*subType*/ return this.subType == null ? new Base[0] : this.subType.toArray(new Base[this.subType.size()]); // CodeableConcept
         case 247055020: /*contentDefinition*/ return this.contentDefinition == null ? new Base[0] : new Base[] {this.contentDefinition}; // ContentDefinitionComponent
@@ -11052,7 +11064,7 @@ public class Contract extends DomainResource {
         case -1423054677: /*friendly*/ return this.friendly == null ? new Base[0] : this.friendly.toArray(new Base[this.friendly.size()]); // FriendlyLanguageComponent
         case 102851257: /*legal*/ return this.legal == null ? new Base[0] : this.legal.toArray(new Base[this.legal.size()]); // LegalLanguageComponent
         case 3512060: /*rule*/ return this.rule == null ? new Base[0] : this.rule.toArray(new Base[this.rule.size()]); // ComputableLanguageComponent
-        case -126751329: /*legallyBinding*/ return this.legallyBinding == null ? new Base[0] : new Base[] {this.legallyBinding}; // Type
+        case -126751329: /*legallyBinding*/ return this.legallyBinding == null ? new Base[0] : new Base[] {this.legallyBinding}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -11071,8 +11083,8 @@ public class Contract extends DomainResource {
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new ContractStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ContractStatus>
+          value = new ContractResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ContractResourceStatusCodes>
           return value;
         case 568606040: // legalState
           this.legalState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -11126,7 +11138,7 @@ public class Contract extends DomainResource {
           this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 110546223: // topic
-          this.topic = TypeConvertor.castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // DataType
           return value;
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -11159,7 +11171,7 @@ public class Contract extends DomainResource {
           this.getRule().add((ComputableLanguageComponent) value); // ComputableLanguageComponent
           return value;
         case -126751329: // legallyBinding
-          this.legallyBinding = TypeConvertor.castToType(value); // Type
+          this.legallyBinding = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -11175,8 +11187,8 @@ public class Contract extends DomainResource {
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new ContractStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ContractStatus>
+          value = new ContractResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ContractResourceStatusCodes>
         } else if (name.equals("legalState")) {
           this.legalState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("instantiatesCanonical")) {
@@ -11212,7 +11224,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("scope")) {
           this.scope = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("topic[x]")) {
-          this.topic = TypeConvertor.castToType(value); // Type
+          this.topic = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subType")) {
@@ -11234,7 +11246,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("rule")) {
           this.getRule().add((ComputableLanguageComponent) value);
         } else if (name.equals("legallyBinding[x]")) {
-          this.legallyBinding = TypeConvertor.castToType(value); // Type
+          this.legallyBinding = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -11604,98 +11616,6 @@ public class Contract extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identity of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Contract.identifier", description="The identity of the contract", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identity of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>instantiates</b>
-   * <p>
-   * Description: <b>A source definition of the contract</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.instantiatesUri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="instantiates", path="Contract.instantiatesUri", description="A source definition of the contract", type="uri" )
-  public static final String SP_INSTANTIATES = "instantiates";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates</b>
-   * <p>
-   * Description: <b>A source definition of the contract</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.instantiatesUri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Contract.subject.where(resolve() is Patient)", description="The identity of the subject of the contract (if a patient)", type="reference", target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Contract:patient").toLocked();
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Contract.subject", description="The identity of the subject of the contract", type="reference" )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Contract:subject").toLocked();
-
- /**
    * Search parameter: <b>authority</b>
    * <p>
    * Description: <b>The authority of the contract</b><br>
@@ -11748,6 +11668,46 @@ public class Contract extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_DOMAIN = new ca.uhn.fhir.model.api.Include("Contract:domain").toLocked();
 
  /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identity of the contract</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Contract.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Contract.identifier", description="The identity of the contract", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identity of the contract</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Contract.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>instantiates</b>
+   * <p>
+   * Description: <b>A source definition of the contract</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Contract.instantiatesUri</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="instantiates", path="Contract.instantiatesUri", description="A source definition of the contract", type="uri" )
+  public static final String SP_INSTANTIATES = "instantiates";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>instantiates</b>
+   * <p>
+   * Description: <b>A source definition of the contract</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Contract.instantiatesUri</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES);
+
+ /**
    * Search parameter: <b>issued</b>
    * <p>
    * Description: <b>The date/time the contract was issued</b><br>
@@ -11768,24 +11728,30 @@ public class Contract extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
 
  /**
-   * Search parameter: <b>url</b>
+   * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>The basal contract definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.url</b><br>
+   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Contract.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="Contract.url", description="The basal contract definition", type="uri" )
-  public static final String SP_URL = "url";
+  @SearchParamDefinition(name="patient", path="Contract.subject.where(resolve() is Patient)", description="The identity of the subject of the contract (if a patient)", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>The basal contract definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.url</b><br>
+   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Contract.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Contract:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Contract:patient").toLocked();
 
  /**
    * Search parameter: <b>signer</b>
@@ -11832,6 +11798,52 @@ public class Contract extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The identity of the subject of the contract</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Contract.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Contract.subject", description="The identity of the subject of the contract", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The identity of the subject of the contract</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Contract.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Contract:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Contract:subject").toLocked();
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The basal contract definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Contract.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="Contract.url", description="The basal contract definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The basal contract definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Contract.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

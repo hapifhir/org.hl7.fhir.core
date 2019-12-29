@@ -22,6 +22,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.SearchParameter.SearchModifierCodeEnumFactory;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
@@ -94,7 +97,7 @@ public class SearchParameter extends VersionConvertor_40_50 {
     if (src.hasCode())
       tgt.setCodeElement(convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getBase())
-      tgt.getBase().add(convertCode(t));
+      tgt.getBase().add(convertResourceEnum(t));
     if (src.hasType())
       tgt.setType(Enumerations.convertSearchParamType(src.getType()));
     if (src.hasExpression())
@@ -104,7 +107,7 @@ public class SearchParameter extends VersionConvertor_40_50 {
     if (src.hasXpathUsage())
       tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getTarget())
-      tgt.getTarget().add(convertCode(t));
+      tgt.getTarget().add(convertResourceEnum(t));
     if (src.hasMultipleOr())
       tgt.setMultipleOrElement(convertBoolean(src.getMultipleOrElement()));
     if (src.hasMultipleAnd())
@@ -153,8 +156,8 @@ public class SearchParameter extends VersionConvertor_40_50 {
       tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(convertCode(src.getCodeElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getBase())
-      tgt.getBase().add(convertCode(t));
+    for (CodeType t : src.getBase())
+      tgt.getBase().add(convertResourceEnum(t));
     if (src.hasType())
       tgt.setType(Enumerations.convertSearchParamType(src.getType()));
     if (src.hasExpression())
@@ -163,8 +166,8 @@ public class SearchParameter extends VersionConvertor_40_50 {
       tgt.setXpathElement(convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
       tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getTarget())
-      tgt.getTarget().add(convertCode(t));
+    for (CodeType t : src.getTarget())
+      tgt.getTarget().add(convertResourceEnum(t));
     if (src.hasMultipleOr())
       tgt.setMultipleOrElement(convertBoolean(src.getMultipleOrElement()));
     if (src.hasMultipleAnd())

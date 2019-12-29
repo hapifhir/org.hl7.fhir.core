@@ -1,19 +1,20 @@
 package org.hl7.fhir.r5.model;
 
-/*-
+
+/*
  * #%L
  * org.hl7.fhir.r5
  * %%
  * Copyright (C) 2014 - 2019 Health Level 7
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,41 +25,40 @@ package org.hl7.fhir.r5.model;
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
   
-  Redistribution and use in source and binary forms, with or without modification, 
+  Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
   
-   * Redistributions of source code must retain the above copyright notice, this 
+   * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
    * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
   
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+  */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-
-import org.hl7.fhir.instance.model.api.IBaseConformance;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -66,521 +66,118 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.instance.model.api.IBaseConformance;
 /**
  * A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
  */
 @ResourceDef(name="CapabilityStatement", profile="http://hl7.org/fhir/StructureDefinition/CapabilityStatement")
-@ChildOrder(names={"url", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "kind", "instantiates", "imports", "software", "implementation", "fhirVersion", "format", "patchFormat", "implementationGuide", "rest", "messaging", "document"})
 public class CapabilityStatement extends CanonicalResource implements IBaseConformance {
 
-    public enum CapabilityStatementKind {
+    public enum ConditionalDeleteStatus {
         /**
-         * The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.
+         * No support for conditional deletes.
          */
-        INSTANCE, 
+        NOTSUPPORTED, 
         /**
-         * The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.
+         * Conditional deletes are supported, but only single resources at a time.
          */
-        CAPABILITY, 
+        SINGLE, 
         /**
-         * The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.
+         * Conditional deletes are supported, and multiple resources can be deleted in a single interaction.
          */
-        REQUIREMENTS, 
+        MULTIPLE, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static CapabilityStatementKind fromCode(String codeString) throws FHIRException {
+        public static ConditionalDeleteStatus fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("instance".equals(codeString))
-          return INSTANCE;
-        if ("capability".equals(codeString))
-          return CAPABILITY;
-        if ("requirements".equals(codeString))
-          return REQUIREMENTS;
+        if ("not-supported".equals(codeString))
+          return NOTSUPPORTED;
+        if ("single".equals(codeString))
+          return SINGLE;
+        if ("multiple".equals(codeString))
+          return MULTIPLE;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
+          throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case INSTANCE: return "instance";
-            case CAPABILITY: return "capability";
-            case REQUIREMENTS: return "requirements";
+            case NOTSUPPORTED: return "not-supported";
+            case SINGLE: return "single";
+            case MULTIPLE: return "multiple";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case INSTANCE: return "http://hl7.org/fhir/capability-statement-kind";
-            case CAPABILITY: return "http://hl7.org/fhir/capability-statement-kind";
-            case REQUIREMENTS: return "http://hl7.org/fhir/capability-statement-kind";
+            case NOTSUPPORTED: return "http://hl7.org/fhir/conditional-delete-status";
+            case SINGLE: return "http://hl7.org/fhir/conditional-delete-status";
+            case MULTIPLE: return "http://hl7.org/fhir/conditional-delete-status";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
-            case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
-            case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NOTSUPPORTED: return "No support for conditional deletes.";
+            case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
+            case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case INSTANCE: return "Instance";
-            case CAPABILITY: return "Capability";
-            case REQUIREMENTS: return "Requirements";
+            case NOTSUPPORTED: return "Not Supported";
+            case SINGLE: return "Single Deletes Supported";
+            case MULTIPLE: return "Multiple Deletes Supported";
             default: return "?";
           }
         }
     }
 
-  public static class CapabilityStatementKindEnumFactory implements EnumFactory<CapabilityStatementKind> {
-    public CapabilityStatementKind fromCode(String codeString) throws IllegalArgumentException {
+  public static class ConditionalDeleteStatusEnumFactory implements EnumFactory<ConditionalDeleteStatus> {
+    public ConditionalDeleteStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("instance".equals(codeString))
-          return CapabilityStatementKind.INSTANCE;
-        if ("capability".equals(codeString))
-          return CapabilityStatementKind.CAPABILITY;
-        if ("requirements".equals(codeString))
-          return CapabilityStatementKind.REQUIREMENTS;
-        throw new IllegalArgumentException("Unknown CapabilityStatementKind code '"+codeString+"'");
+        if ("not-supported".equals(codeString))
+          return ConditionalDeleteStatus.NOTSUPPORTED;
+        if ("single".equals(codeString))
+          return ConditionalDeleteStatus.SINGLE;
+        if ("multiple".equals(codeString))
+          return ConditionalDeleteStatus.MULTIPLE;
+        throw new IllegalArgumentException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
-        public Enumeration<CapabilityStatementKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionalDeleteStatus> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CapabilityStatementKind>(this);
+            return new Enumeration<ConditionalDeleteStatus>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("instance".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.INSTANCE);
-        if ("capability".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.CAPABILITY);
-        if ("requirements".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.REQUIREMENTS);
-        throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
+        if ("not-supported".equals(codeString))
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NOTSUPPORTED);
+        if ("single".equals(codeString))
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.SINGLE);
+        if ("multiple".equals(codeString))
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.MULTIPLE);
+        throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
-    public String toCode(CapabilityStatementKind code) {
-      if (code == CapabilityStatementKind.INSTANCE)
-        return "instance";
-      if (code == CapabilityStatementKind.CAPABILITY)
-        return "capability";
-      if (code == CapabilityStatementKind.REQUIREMENTS)
-        return "requirements";
+    public String toCode(ConditionalDeleteStatus code) {
+      if (code == ConditionalDeleteStatus.NOTSUPPORTED)
+        return "not-supported";
+      if (code == ConditionalDeleteStatus.SINGLE)
+        return "single";
+      if (code == ConditionalDeleteStatus.MULTIPLE)
+        return "multiple";
       return "?";
       }
-    public String toSystem(CapabilityStatementKind code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum RestfulCapabilityMode {
-        /**
-         * The application acts as a client for this resource.
-         */
-        CLIENT, 
-        /**
-         * The application acts as a server for this resource.
-         */
-        SERVER, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static RestfulCapabilityMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("client".equals(codeString))
-          return CLIENT;
-        if ("server".equals(codeString))
-          return SERVER;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown RestfulCapabilityMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CLIENT: return "client";
-            case SERVER: return "server";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case CLIENT: return "http://hl7.org/fhir/restful-capability-mode";
-            case SERVER: return "http://hl7.org/fhir/restful-capability-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CLIENT: return "The application acts as a client for this resource.";
-            case SERVER: return "The application acts as a server for this resource.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CLIENT: return "Client";
-            case SERVER: return "Server";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class RestfulCapabilityModeEnumFactory implements EnumFactory<RestfulCapabilityMode> {
-    public RestfulCapabilityMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("client".equals(codeString))
-          return RestfulCapabilityMode.CLIENT;
-        if ("server".equals(codeString))
-          return RestfulCapabilityMode.SERVER;
-        throw new IllegalArgumentException("Unknown RestfulCapabilityMode code '"+codeString+"'");
-        }
-        public Enumeration<RestfulCapabilityMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<RestfulCapabilityMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("client".equals(codeString))
-          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.CLIENT);
-        if ("server".equals(codeString))
-          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.SERVER);
-        throw new FHIRException("Unknown RestfulCapabilityMode code '"+codeString+"'");
-        }
-    public String toCode(RestfulCapabilityMode code) {
-      if (code == RestfulCapabilityMode.CLIENT)
-        return "client";
-      if (code == RestfulCapabilityMode.SERVER)
-        return "server";
-      return "?";
-      }
-    public String toSystem(RestfulCapabilityMode code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum TypeRestfulInteraction {
-        /**
-         * null
-         */
-        READ, 
-        /**
-         * null
-         */
-        VREAD, 
-        /**
-         * null
-         */
-        UPDATE, 
-        /**
-         * null
-         */
-        PATCH, 
-        /**
-         * null
-         */
-        DELETE, 
-        /**
-         * null
-         */
-        HISTORYINSTANCE, 
-        /**
-         * null
-         */
-        HISTORYTYPE, 
-        /**
-         * null
-         */
-        CREATE, 
-        /**
-         * null
-         */
-        SEARCHTYPE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TypeRestfulInteraction fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("read".equals(codeString))
-          return READ;
-        if ("vread".equals(codeString))
-          return VREAD;
-        if ("update".equals(codeString))
-          return UPDATE;
-        if ("patch".equals(codeString))
-          return PATCH;
-        if ("delete".equals(codeString))
-          return DELETE;
-        if ("history-instance".equals(codeString))
-          return HISTORYINSTANCE;
-        if ("history-type".equals(codeString))
-          return HISTORYTYPE;
-        if ("create".equals(codeString))
-          return CREATE;
-        if ("search-type".equals(codeString))
-          return SEARCHTYPE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TypeRestfulInteraction code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case READ: return "read";
-            case VREAD: return "vread";
-            case UPDATE: return "update";
-            case PATCH: return "patch";
-            case DELETE: return "delete";
-            case HISTORYINSTANCE: return "history-instance";
-            case HISTORYTYPE: return "history-type";
-            case CREATE: return "create";
-            case SEARCHTYPE: return "search-type";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case READ: return "http://hl7.org/fhir/restful-interaction";
-            case VREAD: return "http://hl7.org/fhir/restful-interaction";
-            case UPDATE: return "http://hl7.org/fhir/restful-interaction";
-            case PATCH: return "http://hl7.org/fhir/restful-interaction";
-            case DELETE: return "http://hl7.org/fhir/restful-interaction";
-            case HISTORYINSTANCE: return "http://hl7.org/fhir/restful-interaction";
-            case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
-            case CREATE: return "http://hl7.org/fhir/restful-interaction";
-            case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case READ: return "";
-            case VREAD: return "";
-            case UPDATE: return "";
-            case PATCH: return "";
-            case DELETE: return "";
-            case HISTORYINSTANCE: return "";
-            case HISTORYTYPE: return "";
-            case CREATE: return "";
-            case SEARCHTYPE: return "";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case READ: return "read";
-            case VREAD: return "vread";
-            case UPDATE: return "update";
-            case PATCH: return "patch";
-            case DELETE: return "delete";
-            case HISTORYINSTANCE: return "history-instance";
-            case HISTORYTYPE: return "history-type";
-            case CREATE: return "create";
-            case SEARCHTYPE: return "search-type";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TypeRestfulInteractionEnumFactory implements EnumFactory<TypeRestfulInteraction> {
-    public TypeRestfulInteraction fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("read".equals(codeString))
-          return TypeRestfulInteraction.READ;
-        if ("vread".equals(codeString))
-          return TypeRestfulInteraction.VREAD;
-        if ("update".equals(codeString))
-          return TypeRestfulInteraction.UPDATE;
-        if ("patch".equals(codeString))
-          return TypeRestfulInteraction.PATCH;
-        if ("delete".equals(codeString))
-          return TypeRestfulInteraction.DELETE;
-        if ("history-instance".equals(codeString))
-          return TypeRestfulInteraction.HISTORYINSTANCE;
-        if ("history-type".equals(codeString))
-          return TypeRestfulInteraction.HISTORYTYPE;
-        if ("create".equals(codeString))
-          return TypeRestfulInteraction.CREATE;
-        if ("search-type".equals(codeString))
-          return TypeRestfulInteraction.SEARCHTYPE;
-        throw new IllegalArgumentException("Unknown TypeRestfulInteraction code '"+codeString+"'");
-        }
-        public Enumeration<TypeRestfulInteraction> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TypeRestfulInteraction>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("read".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.READ);
-        if ("vread".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.VREAD);
-        if ("update".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.UPDATE);
-        if ("patch".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.PATCH);
-        if ("delete".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.DELETE);
-        if ("history-instance".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYINSTANCE);
-        if ("history-type".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYTYPE);
-        if ("create".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.CREATE);
-        if ("search-type".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.SEARCHTYPE);
-        throw new FHIRException("Unknown TypeRestfulInteraction code '"+codeString+"'");
-        }
-    public String toCode(TypeRestfulInteraction code) {
-      if (code == TypeRestfulInteraction.READ)
-        return "read";
-      if (code == TypeRestfulInteraction.VREAD)
-        return "vread";
-      if (code == TypeRestfulInteraction.UPDATE)
-        return "update";
-      if (code == TypeRestfulInteraction.PATCH)
-        return "patch";
-      if (code == TypeRestfulInteraction.DELETE)
-        return "delete";
-      if (code == TypeRestfulInteraction.HISTORYINSTANCE)
-        return "history-instance";
-      if (code == TypeRestfulInteraction.HISTORYTYPE)
-        return "history-type";
-      if (code == TypeRestfulInteraction.CREATE)
-        return "create";
-      if (code == TypeRestfulInteraction.SEARCHTYPE)
-        return "search-type";
-      return "?";
-      }
-    public String toSystem(TypeRestfulInteraction code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ResourceVersionPolicy {
-        /**
-         * VersionId meta-property is not supported (server) or used (client).
-         */
-        NOVERSION, 
-        /**
-         * VersionId meta-property is supported (server) or used (client).
-         */
-        VERSIONED, 
-        /**
-         * VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).
-         */
-        VERSIONEDUPDATE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ResourceVersionPolicy fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("no-version".equals(codeString))
-          return NOVERSION;
-        if ("versioned".equals(codeString))
-          return VERSIONED;
-        if ("versioned-update".equals(codeString))
-          return VERSIONEDUPDATE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ResourceVersionPolicy code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOVERSION: return "no-version";
-            case VERSIONED: return "versioned";
-            case VERSIONEDUPDATE: return "versioned-update";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case NOVERSION: return "http://hl7.org/fhir/versioning-policy";
-            case VERSIONED: return "http://hl7.org/fhir/versioning-policy";
-            case VERSIONEDUPDATE: return "http://hl7.org/fhir/versioning-policy";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
-            case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
-            case VERSIONEDUPDATE: return "VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOVERSION: return "No VersionId Support";
-            case VERSIONED: return "Versioned";
-            case VERSIONEDUPDATE: return "VersionId tracked fully";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ResourceVersionPolicyEnumFactory implements EnumFactory<ResourceVersionPolicy> {
-    public ResourceVersionPolicy fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("no-version".equals(codeString))
-          return ResourceVersionPolicy.NOVERSION;
-        if ("versioned".equals(codeString))
-          return ResourceVersionPolicy.VERSIONED;
-        if ("versioned-update".equals(codeString))
-          return ResourceVersionPolicy.VERSIONEDUPDATE;
-        throw new IllegalArgumentException("Unknown ResourceVersionPolicy code '"+codeString+"'");
-        }
-        public Enumeration<ResourceVersionPolicy> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ResourceVersionPolicy>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("no-version".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NOVERSION);
-        if ("versioned".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONED);
-        if ("versioned-update".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONEDUPDATE);
-        throw new FHIRException("Unknown ResourceVersionPolicy code '"+codeString+"'");
-        }
-    public String toCode(ResourceVersionPolicy code) {
-      if (code == ResourceVersionPolicy.NOVERSION)
-        return "no-version";
-      if (code == ResourceVersionPolicy.VERSIONED)
-        return "versioned";
-      if (code == ResourceVersionPolicy.VERSIONEDUPDATE)
-        return "versioned-update";
-      return "?";
-      }
-    public String toSystem(ResourceVersionPolicy code) {
+    public String toSystem(ConditionalDeleteStatus code) {
       return code.getSystem();
       }
     }
@@ -709,110 +306,186 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
     }
 
-    public enum ConditionalDeleteStatus {
+    public enum DocumentMode {
         /**
-         * No support for conditional deletes.
+         * The application produces documents of the specified type.
          */
-        NOTSUPPORTED, 
+        PRODUCER, 
         /**
-         * Conditional deletes are supported, but only single resources at a time.
+         * The application consumes documents of the specified type.
          */
-        SINGLE, 
-        /**
-         * Conditional deletes are supported, and multiple resources can be deleted in a single interaction.
-         */
-        MULTIPLE, 
+        CONSUMER, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static ConditionalDeleteStatus fromCode(String codeString) throws FHIRException {
+        public static DocumentMode fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("not-supported".equals(codeString))
-          return NOTSUPPORTED;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if ("multiple".equals(codeString))
-          return MULTIPLE;
+        if ("producer".equals(codeString))
+          return PRODUCER;
+        if ("consumer".equals(codeString))
+          return CONSUMER;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
+          throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case NOTSUPPORTED: return "not-supported";
-            case SINGLE: return "single";
-            case MULTIPLE: return "multiple";
+            case PRODUCER: return "producer";
+            case CONSUMER: return "consumer";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case NOTSUPPORTED: return "http://hl7.org/fhir/conditional-delete-status";
-            case SINGLE: return "http://hl7.org/fhir/conditional-delete-status";
-            case MULTIPLE: return "http://hl7.org/fhir/conditional-delete-status";
+            case PRODUCER: return "http://hl7.org/fhir/document-mode";
+            case CONSUMER: return "http://hl7.org/fhir/document-mode";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case NOTSUPPORTED: return "No support for conditional deletes.";
-            case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
-            case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+            case PRODUCER: return "The application produces documents of the specified type.";
+            case CONSUMER: return "The application consumes documents of the specified type.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case NOTSUPPORTED: return "Not Supported";
-            case SINGLE: return "Single Deletes Supported";
-            case MULTIPLE: return "Multiple Deletes Supported";
+            case PRODUCER: return "Producer";
+            case CONSUMER: return "Consumer";
             default: return "?";
           }
         }
     }
 
-  public static class ConditionalDeleteStatusEnumFactory implements EnumFactory<ConditionalDeleteStatus> {
-    public ConditionalDeleteStatus fromCode(String codeString) throws IllegalArgumentException {
+  public static class DocumentModeEnumFactory implements EnumFactory<DocumentMode> {
+    public DocumentMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("not-supported".equals(codeString))
-          return ConditionalDeleteStatus.NOTSUPPORTED;
-        if ("single".equals(codeString))
-          return ConditionalDeleteStatus.SINGLE;
-        if ("multiple".equals(codeString))
-          return ConditionalDeleteStatus.MULTIPLE;
-        throw new IllegalArgumentException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
+        if ("producer".equals(codeString))
+          return DocumentMode.PRODUCER;
+        if ("consumer".equals(codeString))
+          return DocumentMode.CONSUMER;
+        throw new IllegalArgumentException("Unknown DocumentMode code '"+codeString+"'");
         }
-        public Enumeration<ConditionalDeleteStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentMode> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConditionalDeleteStatus>(this);
+            return new Enumeration<DocumentMode>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("not-supported".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NOTSUPPORTED);
-        if ("single".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.SINGLE);
-        if ("multiple".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.MULTIPLE);
-        throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
+        if ("producer".equals(codeString))
+          return new Enumeration<DocumentMode>(this, DocumentMode.PRODUCER);
+        if ("consumer".equals(codeString))
+          return new Enumeration<DocumentMode>(this, DocumentMode.CONSUMER);
+        throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
         }
-    public String toCode(ConditionalDeleteStatus code) {
-      if (code == ConditionalDeleteStatus.NOTSUPPORTED)
-        return "not-supported";
-      if (code == ConditionalDeleteStatus.SINGLE)
-        return "single";
-      if (code == ConditionalDeleteStatus.MULTIPLE)
-        return "multiple";
+    public String toCode(DocumentMode code) {
+      if (code == DocumentMode.PRODUCER)
+        return "producer";
+      if (code == DocumentMode.CONSUMER)
+        return "consumer";
       return "?";
       }
-    public String toSystem(ConditionalDeleteStatus code) {
+    public String toSystem(DocumentMode code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum EventCapabilityMode {
+        /**
+         * The application sends requests and receives responses.
+         */
+        SENDER, 
+        /**
+         * The application receives requests and sends responses.
+         */
+        RECEIVER, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static EventCapabilityMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("sender".equals(codeString))
+          return SENDER;
+        if ("receiver".equals(codeString))
+          return RECEIVER;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SENDER: return "sender";
+            case RECEIVER: return "receiver";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case SENDER: return "http://hl7.org/fhir/event-capability-mode";
+            case RECEIVER: return "http://hl7.org/fhir/event-capability-mode";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SENDER: return "The application sends requests and receives responses.";
+            case RECEIVER: return "The application receives requests and sends responses.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SENDER: return "Sender";
+            case RECEIVER: return "Receiver";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class EventCapabilityModeEnumFactory implements EnumFactory<EventCapabilityMode> {
+    public EventCapabilityMode fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("sender".equals(codeString))
+          return EventCapabilityMode.SENDER;
+        if ("receiver".equals(codeString))
+          return EventCapabilityMode.RECEIVER;
+        throw new IllegalArgumentException("Unknown EventCapabilityMode code '"+codeString+"'");
+        }
+        public Enumeration<EventCapabilityMode> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<EventCapabilityMode>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("sender".equals(codeString))
+          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.SENDER);
+        if ("receiver".equals(codeString))
+          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.RECEIVER);
+        throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
+        }
+    public String toCode(EventCapabilityMode code) {
+      if (code == EventCapabilityMode.SENDER)
+        return "sender";
+      if (code == EventCapabilityMode.RECEIVER)
+        return "receiver";
+      return "?";
+      }
+    public String toSystem(EventCapabilityMode code) {
       return code.getSystem();
       }
     }
@@ -957,21 +630,129 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
     }
 
+    public enum ResourceVersionPolicy {
+        /**
+         * VersionId meta-property is not supported (server) or used (client).
+         */
+        NOVERSION, 
+        /**
+         * VersionId meta-property is supported (server) or used (client).
+         */
+        VERSIONED, 
+        /**
+         * VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).
+         */
+        VERSIONEDUPDATE, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ResourceVersionPolicy fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("no-version".equals(codeString))
+          return NOVERSION;
+        if ("versioned".equals(codeString))
+          return VERSIONED;
+        if ("versioned-update".equals(codeString))
+          return VERSIONEDUPDATE;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ResourceVersionPolicy code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOVERSION: return "no-version";
+            case VERSIONED: return "versioned";
+            case VERSIONEDUPDATE: return "versioned-update";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case NOVERSION: return "http://hl7.org/fhir/versioning-policy";
+            case VERSIONED: return "http://hl7.org/fhir/versioning-policy";
+            case VERSIONEDUPDATE: return "http://hl7.org/fhir/versioning-policy";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
+            case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
+            case VERSIONEDUPDATE: return "VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOVERSION: return "No VersionId Support";
+            case VERSIONED: return "Versioned";
+            case VERSIONEDUPDATE: return "VersionId tracked fully";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ResourceVersionPolicyEnumFactory implements EnumFactory<ResourceVersionPolicy> {
+    public ResourceVersionPolicy fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("no-version".equals(codeString))
+          return ResourceVersionPolicy.NOVERSION;
+        if ("versioned".equals(codeString))
+          return ResourceVersionPolicy.VERSIONED;
+        if ("versioned-update".equals(codeString))
+          return ResourceVersionPolicy.VERSIONEDUPDATE;
+        throw new IllegalArgumentException("Unknown ResourceVersionPolicy code '"+codeString+"'");
+        }
+        public Enumeration<ResourceVersionPolicy> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ResourceVersionPolicy>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("no-version".equals(codeString))
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NOVERSION);
+        if ("versioned".equals(codeString))
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONED);
+        if ("versioned-update".equals(codeString))
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONEDUPDATE);
+        throw new FHIRException("Unknown ResourceVersionPolicy code '"+codeString+"'");
+        }
+    public String toCode(ResourceVersionPolicy code) {
+      if (code == ResourceVersionPolicy.NOVERSION)
+        return "no-version";
+      if (code == ResourceVersionPolicy.VERSIONED)
+        return "versioned";
+      if (code == ResourceVersionPolicy.VERSIONEDUPDATE)
+        return "versioned-update";
+      return "?";
+      }
+    public String toSystem(ResourceVersionPolicy code) {
+      return code.getSystem();
+      }
+    }
+
     public enum SystemRestfulInteraction {
         /**
-         * null
+         * Update, create or delete a set of resources as a single transaction.
          */
         TRANSACTION, 
         /**
-         * null
+         * perform a set of a separate interactions in a single http operation
          */
         BATCH, 
         /**
-         * null
+         * Search all resources based on some filter criteria.
          */
         SEARCHSYSTEM, 
         /**
-         * null
+         * Retrieve the change history for all resources on a system.
          */
         HISTORYSYSTEM, 
         /**
@@ -1014,10 +795,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
         public String getDefinition() {
           switch (this) {
-            case TRANSACTION: return "";
-            case BATCH: return "";
-            case SEARCHSYSTEM: return "";
-            case HISTORYSYSTEM: return "";
+            case TRANSACTION: return "Update, create or delete a set of resources as a single transaction.";
+            case BATCH: return "perform a set of a separate interactions in a single http operation";
+            case SEARCHSYSTEM: return "Search all resources based on some filter criteria.";
+            case HISTORYSYSTEM: return "Retrieve the change history for all resources on a system.";
             default: return "?";
           }
         }
@@ -1081,186 +862,206 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
     }
 
-    public enum EventCapabilityMode {
+    public enum TypeRestfulInteraction {
         /**
-         * The application sends requests and receives responses.
+         * Read the current state of the resource.
          */
-        SENDER, 
+        READ, 
         /**
-         * The application receives requests and sends responses.
+         * Read the state of a specific version of the resource.
          */
-        RECEIVER, 
+        VREAD, 
+        /**
+         * Update an existing resource by its id (or create it if it is new).
+         */
+        UPDATE, 
+        /**
+         * Update an existing resource by posting a set of changes to it.
+         */
+        PATCH, 
+        /**
+         * Delete a resource.
+         */
+        DELETE, 
+        /**
+         * Retrieve the change history for a particular resource.
+         */
+        HISTORYINSTANCE, 
+        /**
+         * Retrieve the change history for all resources of a particular type.
+         */
+        HISTORYTYPE, 
+        /**
+         * Create a new resource with a server assigned id.
+         */
+        CREATE, 
+        /**
+         * Search all resources of the specified type based on some filter criteria.
+         */
+        SEARCHTYPE, 
         /**
          * added to help the parsers with the generic types
          */
         NULL;
-        public static EventCapabilityMode fromCode(String codeString) throws FHIRException {
+        public static TypeRestfulInteraction fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("sender".equals(codeString))
-          return SENDER;
-        if ("receiver".equals(codeString))
-          return RECEIVER;
+        if ("read".equals(codeString))
+          return READ;
+        if ("vread".equals(codeString))
+          return VREAD;
+        if ("update".equals(codeString))
+          return UPDATE;
+        if ("patch".equals(codeString))
+          return PATCH;
+        if ("delete".equals(codeString))
+          return DELETE;
+        if ("history-instance".equals(codeString))
+          return HISTORYINSTANCE;
+        if ("history-type".equals(codeString))
+          return HISTORYTYPE;
+        if ("create".equals(codeString))
+          return CREATE;
+        if ("search-type".equals(codeString))
+          return SEARCHTYPE;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
-          throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
+          throw new FHIRException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
-            case SENDER: return "sender";
-            case RECEIVER: return "receiver";
+            case READ: return "read";
+            case VREAD: return "vread";
+            case UPDATE: return "update";
+            case PATCH: return "patch";
+            case DELETE: return "delete";
+            case HISTORYINSTANCE: return "history-instance";
+            case HISTORYTYPE: return "history-type";
+            case CREATE: return "create";
+            case SEARCHTYPE: return "search-type";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case SENDER: return "http://hl7.org/fhir/event-capability-mode";
-            case RECEIVER: return "http://hl7.org/fhir/event-capability-mode";
+            case READ: return "http://hl7.org/fhir/restful-interaction";
+            case VREAD: return "http://hl7.org/fhir/restful-interaction";
+            case UPDATE: return "http://hl7.org/fhir/restful-interaction";
+            case PATCH: return "http://hl7.org/fhir/restful-interaction";
+            case DELETE: return "http://hl7.org/fhir/restful-interaction";
+            case HISTORYINSTANCE: return "http://hl7.org/fhir/restful-interaction";
+            case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
+            case CREATE: return "http://hl7.org/fhir/restful-interaction";
+            case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case SENDER: return "The application sends requests and receives responses.";
-            case RECEIVER: return "The application receives requests and sends responses.";
+            case READ: return "Read the current state of the resource.";
+            case VREAD: return "Read the state of a specific version of the resource.";
+            case UPDATE: return "Update an existing resource by its id (or create it if it is new).";
+            case PATCH: return "Update an existing resource by posting a set of changes to it.";
+            case DELETE: return "Delete a resource.";
+            case HISTORYINSTANCE: return "Retrieve the change history for a particular resource.";
+            case HISTORYTYPE: return "Retrieve the change history for all resources of a particular type.";
+            case CREATE: return "Create a new resource with a server assigned id.";
+            case SEARCHTYPE: return "Search all resources of the specified type based on some filter criteria.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case SENDER: return "Sender";
-            case RECEIVER: return "Receiver";
+            case READ: return "read";
+            case VREAD: return "vread";
+            case UPDATE: return "update";
+            case PATCH: return "patch";
+            case DELETE: return "delete";
+            case HISTORYINSTANCE: return "history-instance";
+            case HISTORYTYPE: return "history-type";
+            case CREATE: return "create";
+            case SEARCHTYPE: return "search-type";
             default: return "?";
           }
         }
     }
 
-  public static class EventCapabilityModeEnumFactory implements EnumFactory<EventCapabilityMode> {
-    public EventCapabilityMode fromCode(String codeString) throws IllegalArgumentException {
+  public static class TypeRestfulInteractionEnumFactory implements EnumFactory<TypeRestfulInteraction> {
+    public TypeRestfulInteraction fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("sender".equals(codeString))
-          return EventCapabilityMode.SENDER;
-        if ("receiver".equals(codeString))
-          return EventCapabilityMode.RECEIVER;
-        throw new IllegalArgumentException("Unknown EventCapabilityMode code '"+codeString+"'");
+        if ("read".equals(codeString))
+          return TypeRestfulInteraction.READ;
+        if ("vread".equals(codeString))
+          return TypeRestfulInteraction.VREAD;
+        if ("update".equals(codeString))
+          return TypeRestfulInteraction.UPDATE;
+        if ("patch".equals(codeString))
+          return TypeRestfulInteraction.PATCH;
+        if ("delete".equals(codeString))
+          return TypeRestfulInteraction.DELETE;
+        if ("history-instance".equals(codeString))
+          return TypeRestfulInteraction.HISTORYINSTANCE;
+        if ("history-type".equals(codeString))
+          return TypeRestfulInteraction.HISTORYTYPE;
+        if ("create".equals(codeString))
+          return TypeRestfulInteraction.CREATE;
+        if ("search-type".equals(codeString))
+          return TypeRestfulInteraction.SEARCHTYPE;
+        throw new IllegalArgumentException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
-        public Enumeration<EventCapabilityMode> fromType(Base code) throws FHIRException {
+        public Enumeration<TypeRestfulInteraction> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EventCapabilityMode>(this);
+            return new Enumeration<TypeRestfulInteraction>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("sender".equals(codeString))
-          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.SENDER);
-        if ("receiver".equals(codeString))
-          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.RECEIVER);
-        throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
+        if ("read".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.READ);
+        if ("vread".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.VREAD);
+        if ("update".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.UPDATE);
+        if ("patch".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.PATCH);
+        if ("delete".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.DELETE);
+        if ("history-instance".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYINSTANCE);
+        if ("history-type".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYTYPE);
+        if ("create".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.CREATE);
+        if ("search-type".equals(codeString))
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.SEARCHTYPE);
+        throw new FHIRException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
-    public String toCode(EventCapabilityMode code) {
-      if (code == EventCapabilityMode.SENDER)
-        return "sender";
-      if (code == EventCapabilityMode.RECEIVER)
-        return "receiver";
+    public String toCode(TypeRestfulInteraction code) {
+      if (code == TypeRestfulInteraction.READ)
+        return "read";
+      if (code == TypeRestfulInteraction.VREAD)
+        return "vread";
+      if (code == TypeRestfulInteraction.UPDATE)
+        return "update";
+      if (code == TypeRestfulInteraction.PATCH)
+        return "patch";
+      if (code == TypeRestfulInteraction.DELETE)
+        return "delete";
+      if (code == TypeRestfulInteraction.HISTORYINSTANCE)
+        return "history-instance";
+      if (code == TypeRestfulInteraction.HISTORYTYPE)
+        return "history-type";
+      if (code == TypeRestfulInteraction.CREATE)
+        return "create";
+      if (code == TypeRestfulInteraction.SEARCHTYPE)
+        return "search-type";
       return "?";
       }
-    public String toSystem(EventCapabilityMode code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum DocumentMode {
-        /**
-         * The application produces documents of the specified type.
-         */
-        PRODUCER, 
-        /**
-         * The application consumes documents of the specified type.
-         */
-        CONSUMER, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DocumentMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("producer".equals(codeString))
-          return PRODUCER;
-        if ("consumer".equals(codeString))
-          return CONSUMER;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRODUCER: return "producer";
-            case CONSUMER: return "consumer";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PRODUCER: return "http://hl7.org/fhir/document-mode";
-            case CONSUMER: return "http://hl7.org/fhir/document-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRODUCER: return "The application produces documents of the specified type.";
-            case CONSUMER: return "The application consumes documents of the specified type.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRODUCER: return "Producer";
-            case CONSUMER: return "Consumer";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DocumentModeEnumFactory implements EnumFactory<DocumentMode> {
-    public DocumentMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("producer".equals(codeString))
-          return DocumentMode.PRODUCER;
-        if ("consumer".equals(codeString))
-          return DocumentMode.CONSUMER;
-        throw new IllegalArgumentException("Unknown DocumentMode code '"+codeString+"'");
-        }
-        public Enumeration<DocumentMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DocumentMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("producer".equals(codeString))
-          return new Enumeration<DocumentMode>(this, DocumentMode.PRODUCER);
-        if ("consumer".equals(codeString))
-          return new Enumeration<DocumentMode>(this, DocumentMode.CONSUMER);
-        throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
-        }
-    public String toCode(DocumentMode code) {
-      if (code == DocumentMode.PRODUCER)
-        return "producer";
-      if (code == DocumentMode.CONSUMER)
-        return "consumer";
-      return "?";
-      }
-    public String toSystem(DocumentMode code) {
+    public String toSystem(TypeRestfulInteraction code) {
       return code.getSystem();
       }
     }
@@ -1300,9 +1101,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementSoftwareComponent(StringType name) {
+      public CapabilityStatementSoftwareComponent(String name) {
         super();
-        this.name = name;
+        this.setName(name);
       }
 
         /**
@@ -1532,13 +1333,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.name");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.version");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.version");
         }
         else if (name.equals("releaseDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.releaseDate");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.software.releaseDate");
         }
         else
           return super.addChild(name);
@@ -1626,9 +1427,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementImplementationComponent(StringType description) {
+      public CapabilityStatementImplementationComponent(String description) {
         super();
-        this.description = description;
+        this.setDescription(description);
       }
 
         /**
@@ -1833,10 +1634,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementation.description");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.url");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.implementation.url");
         }
         else if (name.equals("custodian")) {
           this.custodian = new Reference();
@@ -1963,9 +1764,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementRestComponent(Enumeration<RestfulCapabilityMode> mode) {
+      public CapabilityStatementRestComponent(RestfulCapabilityMode mode) {
         super();
-        this.mode = mode;
+        this.setMode(mode);
       }
 
         /**
@@ -2130,7 +1931,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #resource}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #resource}, creating it if it does not already exist {3}
          */
         public CapabilityStatementRestResourceComponent getResourceFirstRep() { 
           if (getResource().isEmpty()) {
@@ -2183,7 +1984,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #interaction}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #interaction}, creating it if it does not already exist {3}
          */
         public SystemInteractionComponent getInteractionFirstRep() { 
           if (getInteraction().isEmpty()) {
@@ -2236,7 +2037,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #searchParam}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #searchParam}, creating it if it does not already exist {3}
          */
         public CapabilityStatementRestResourceSearchParamComponent getSearchParamFirstRep() { 
           if (getSearchParam().isEmpty()) {
@@ -2289,7 +2090,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #operation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #operation}, creating it if it does not already exist {3}
          */
         public CapabilityStatementRestResourceOperationComponent getOperationFirstRep() { 
           if (getOperation().isEmpty()) {
@@ -2354,7 +2155,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           if (this.compartment == null)
             return false;
           for (CanonicalType v : this.compartment)
-            if (v.getValue().equals(value)) // canonical(CompartmentDefinition)
+            if (v.getValue().equals(value)) // canonical
               return true;
           return false;
         }
@@ -2495,10 +2296,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.mode");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.documentation");
         }
         else if (name.equals("security")) {
           this.security = new CapabilityStatementRestSecurityComponent();
@@ -2517,7 +2318,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return addOperation();
         }
         else if (name.equals("compartment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.compartment");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.compartment");
         }
         else
           return super.addChild(name);
@@ -2580,7 +2381,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementRestComponent))
           return false;
         CapabilityStatementRestComponent o = (CapabilityStatementRestComponent) other_;
-        return compareValues(mode, o.mode, true) && compareValues(documentation, o.documentation, true);
+        return compareValues(mode, o.mode, true) && compareValues(documentation, o.documentation, true) && compareValues(compartment, o.compartment, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -2717,7 +2519,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #service}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #service}, creating it if it does not already exist {3}
          */
         public CodeableConcept getServiceFirstRep() { 
           if (getService().isEmpty()) {
@@ -2859,13 +2661,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("cors")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.cors");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.security.cors");
         }
         else if (name.equals("service")) {
           return addService();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.security.description");
         }
         else
           return super.addChild(name);
@@ -3059,9 +2861,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementRestResourceComponent(CodeType type) {
+      public CapabilityStatementRestResourceComponent(String type) {
         super();
-        this.type = type;
+        this.setType(type);
       }
 
         /**
@@ -3214,7 +3016,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           if (this.supportedProfile == null)
             return false;
           for (CanonicalType v : this.supportedProfile)
-            if (v.getValue().equals(value)) // canonical(StructureDefinition)
+            if (v.getValue().equals(value)) // canonical
               return true;
           return false;
         }
@@ -3312,7 +3114,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #interaction}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #interaction}, creating it if it does not already exist {3}
          */
         public ResourceInteractionComponent getInteractionFirstRep() { 
           if (getInteraction().isEmpty()) {
@@ -3875,7 +3677,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #searchParam}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #searchParam}, creating it if it does not already exist {3}
          */
         public CapabilityStatementRestResourceSearchParamComponent getSearchParamFirstRep() { 
           if (getSearchParam().isEmpty()) {
@@ -3928,7 +3730,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #operation}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #operation}, creating it if it does not already exist {3}
          */
         public CapabilityStatementRestResourceOperationComponent getOperationFirstRep() { 
           if (getOperation().isEmpty()) {
@@ -4169,49 +3971,49 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.type");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.type");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.profile");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.profile");
         }
         else if (name.equals("supportedProfile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.supportedProfile");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.supportedProfile");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.documentation");
         }
         else if (name.equals("interaction")) {
           return addInteraction();
         }
         else if (name.equals("versioning")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.versioning");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.versioning");
         }
         else if (name.equals("readHistory")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.readHistory");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.readHistory");
         }
         else if (name.equals("updateCreate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.updateCreate");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.updateCreate");
         }
         else if (name.equals("conditionalCreate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalCreate");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalCreate");
         }
         else if (name.equals("conditionalRead")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalRead");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalRead");
         }
         else if (name.equals("conditionalUpdate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalUpdate");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalUpdate");
         }
         else if (name.equals("conditionalDelete")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.conditionalDelete");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.conditionalDelete");
         }
         else if (name.equals("referencePolicy")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.referencePolicy");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.referencePolicy");
         }
         else if (name.equals("searchInclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.searchInclude");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchInclude");
         }
         else if (name.equals("searchRevInclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.searchRevInclude");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchRevInclude");
         }
         else if (name.equals("searchParam")) {
           return addSearchParam();
@@ -4302,7 +4104,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementRestResourceComponent))
           return false;
         CapabilityStatementRestResourceComponent o = (CapabilityStatementRestResourceComponent) other_;
-        return compareValues(type, o.type, true) && compareValues(documentation, o.documentation, true) && compareValues(versioning, o.versioning, true)
+        return compareValues(type, o.type, true) && compareValues(profile, o.profile, true) && compareValues(supportedProfile, o.supportedProfile, true)
+           && compareValues(documentation, o.documentation, true) && compareValues(versioning, o.versioning, true)
            && compareValues(readHistory, o.readHistory, true) && compareValues(updateCreate, o.updateCreate, true)
            && compareValues(conditionalCreate, o.conditionalCreate, true) && compareValues(conditionalRead, o.conditionalRead, true)
            && compareValues(conditionalUpdate, o.conditionalUpdate, true) && compareValues(conditionalDelete, o.conditionalDelete, true)
@@ -4353,9 +4156,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public ResourceInteractionComponent(Enumeration<TypeRestfulInteraction> code) {
+      public ResourceInteractionComponent(TypeRestfulInteraction code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -4528,10 +4331,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.code");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.interaction.code");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.interaction.documentation");
         }
         else
           return super.addChild(name);
@@ -4590,10 +4393,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         protected StringType name;
 
         /**
-         * An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
+         * An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
          */
         @Child(name = "definition", type = {CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Source of definition for parameter", formalDefinition="An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs." )
+        @Description(shortDefinition="Source of definition for parameter", formalDefinition="An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs." )
         protected CanonicalType definition;
 
         /**
@@ -4623,10 +4426,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementRestResourceSearchParamComponent(StringType name, Enumeration<SearchParamType> type) {
+      public CapabilityStatementRestResourceSearchParamComponent(String name, SearchParamType type) {
         super();
-        this.name = name;
-        this.type = type;
+        this.setName(name);
+        this.setType(type);
       }
 
         /**
@@ -4675,7 +4478,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return {@link #definition} (An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
+         * @return {@link #definition} (An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
          */
         public CanonicalType getDefinitionElement() { 
           if (this.definition == null)
@@ -4695,7 +4498,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @param value {@link #definition} (An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
+         * @param value {@link #definition} (An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
          */
         public CapabilityStatementRestResourceSearchParamComponent setDefinitionElement(CanonicalType value) { 
           this.definition = value;
@@ -4703,14 +4506,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
+         * @return An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
          */
         public String getDefinition() { 
           return this.definition == null ? null : this.definition.getValue();
         }
 
         /**
-         * @param value An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
+         * @param value An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.
          */
         public CapabilityStatementRestResourceSearchParamComponent setDefinition(String value) { 
           if (Utilities.noString(value))
@@ -4820,7 +4623,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name of the search parameter used in the interface.", 0, 1, name));
-          children.add(new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition));
+          children.add(new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition));
           children.add(new Property("type", "code", "The type of value a search parameter refers to, and how the content is interpreted.", 0, 1, type));
           children.add(new Property("documentation", "markdown", "This allows documentation of any distinct behaviors about how the search parameter is used.  For example, text matching algorithms.", 0, 1, documentation));
         }
@@ -4829,7 +4632,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "string", "The name of the search parameter used in the interface.", 0, 1, name);
-          case -1014418093: /*definition*/  return new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition);
+          case -1014418093: /*definition*/  return new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition);
           case 3575610: /*type*/  return new Property("type", "code", "The type of value a search parameter refers to, and how the content is interpreted.", 0, 1, type);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "This allows documentation of any distinct behaviors about how the search parameter is used.  For example, text matching algorithms.", 0, 1, documentation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -4913,16 +4716,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.name");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.definition");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.type");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.type");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.searchParam.documentation");
         }
         else
           return super.addChild(name);
@@ -4960,8 +4763,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementRestResourceSearchParamComponent))
           return false;
         CapabilityStatementRestResourceSearchParamComponent o = (CapabilityStatementRestResourceSearchParamComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(type, o.type, true) && compareValues(documentation, o.documentation, true)
-          ;
+        return compareValues(name, o.name, true) && compareValues(definition, o.definition, true) && compareValues(type, o.type, true)
+           && compareValues(documentation, o.documentation, true);
       }
 
       public boolean isEmpty() {
@@ -4986,10 +4789,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         protected StringType name;
 
         /**
-         * Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
+         * Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
          */
         @Child(name = "definition", type = {CanonicalType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The defined operation/query", formalDefinition="Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported." )
+        @Description(shortDefinition="The defined operation/query", formalDefinition="Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported." )
         protected CanonicalType definition;
 
         /**
@@ -5011,10 +4814,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementRestResourceOperationComponent(StringType name, CanonicalType definition) {
+      public CapabilityStatementRestResourceOperationComponent(String name, String definition) {
         super();
-        this.name = name;
-        this.definition = definition;
+        this.setName(name);
+        this.setDefinition(definition);
       }
 
         /**
@@ -5063,7 +4866,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return {@link #definition} (Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
+         * @return {@link #definition} (Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
          */
         public CanonicalType getDefinitionElement() { 
           if (this.definition == null)
@@ -5083,7 +4886,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @param value {@link #definition} (Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
+         * @param value {@link #definition} (Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.). This is the underlying object with id, value and extensions. The accessor "getDefinition" gives direct access to the value
          */
         public CapabilityStatementRestResourceOperationComponent setDefinitionElement(CanonicalType value) { 
           this.definition = value;
@@ -5091,14 +4894,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
+         * @return Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
          */
         public String getDefinition() { 
           return this.definition == null ? null : this.definition.getValue();
         }
 
         /**
-         * @param value Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
+         * @param value Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.
          */
         public CapabilityStatementRestResourceOperationComponent setDefinition(String value) { 
             if (this.definition == null)
@@ -5159,7 +4962,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name of the operation or query. For an operation, this is the name  prefixed with $ and used in the URL. For a query, this is the name used in the _query parameter when the query is called.", 0, 1, name));
-          children.add(new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition));
+          children.add(new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition));
           children.add(new Property("documentation", "markdown", "Documentation that describes anything special about the operation behavior, possibly detailing different behavior for system, type and instance-level invocation of the operation.", 0, 1, documentation));
         }
 
@@ -5167,7 +4970,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "string", "The name of the operation or query. For an operation, this is the name  prefixed with $ and used in the URL. For a query, this is the name used in the _query parameter when the query is called.", 0, 1, name);
-          case -1014418093: /*definition*/  return new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition);
+          case -1014418093: /*definition*/  return new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Documentation that describes anything special about the operation behavior, possibly detailing different behavior for system, type and instance-level invocation of the operation.", 0, 1, documentation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -5240,13 +5043,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.name");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.name");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.definition");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.resource.operation.documentation");
         }
         else
           return super.addChild(name);
@@ -5283,7 +5086,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementRestResourceOperationComponent))
           return false;
         CapabilityStatementRestResourceOperationComponent o = (CapabilityStatementRestResourceOperationComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(documentation, o.documentation, true);
+        return compareValues(name, o.name, true) && compareValues(definition, o.definition, true) && compareValues(documentation, o.documentation, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -5327,9 +5131,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public SystemInteractionComponent(Enumeration<SystemRestfulInteraction> code) {
+      public SystemInteractionComponent(SystemRestfulInteraction code) {
         super();
-        this.code = code;
+        this.setCode(code);
       }
 
         /**
@@ -5502,10 +5306,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.code");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.interaction.code");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.rest.interaction.documentation");
         }
         else
           return super.addChild(name);
@@ -5637,7 +5441,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
          */
         public CapabilityStatementMessagingEndpointComponent getEndpointFirstRep() { 
           if (getEndpoint().isEmpty()) {
@@ -5784,7 +5588,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         /**
-         * @return The first repetition of repeating field {@link #supportedMessage}, creating it if it does not already exist
+         * @return The first repetition of repeating field {@link #supportedMessage}, creating it if it does not already exist {3}
          */
         public CapabilityStatementMessagingSupportedMessageComponent getSupportedMessageFirstRep() { 
           if (getSupportedMessage().isEmpty()) {
@@ -5890,10 +5694,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return addEndpoint();
         }
         else if (name.equals("reliableCache")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.reliableCache");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.reliableCache");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.documentation");
         }
         else if (name.equals("supportedMessage")) {
           return addSupportedMessage();
@@ -5988,10 +5792,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementMessagingEndpointComponent(Coding protocol, UrlType address) {
+      public CapabilityStatementMessagingEndpointComponent(Coding protocol, String address) {
         super();
-        this.protocol = protocol;
-        this.address = address;
+        this.setProtocol(protocol);
+        this.setAddress(address);
       }
 
         /**
@@ -6141,7 +5945,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return this.protocol;
         }
         else if (name.equals("address")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.address");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.endpoint.address");
         }
         else
           return super.addChild(name);
@@ -6219,10 +6023,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementMessagingSupportedMessageComponent(Enumeration<EventCapabilityMode> mode, CanonicalType definition) {
+      public CapabilityStatementMessagingSupportedMessageComponent(EventCapabilityMode mode, String definition) {
         super();
-        this.mode = mode;
-        this.definition = definition;
+        this.setMode(mode);
+        this.setDefinition(definition);
       }
 
         /**
@@ -6391,10 +6195,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.supportedMessage.mode");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.definition");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.messaging.supportedMessage.definition");
         }
         else
           return super.addChild(name);
@@ -6429,7 +6233,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementMessagingSupportedMessageComponent))
           return false;
         CapabilityStatementMessagingSupportedMessageComponent o = (CapabilityStatementMessagingSupportedMessageComponent) other_;
-        return compareValues(mode, o.mode, true);
+        return compareValues(mode, o.mode, true) && compareValues(definition, o.definition, true);
       }
 
       public boolean isEmpty() {
@@ -6479,10 +6283,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Constructor
      */
-      public CapabilityStatementDocumentComponent(Enumeration<DocumentMode> mode, CanonicalType profile) {
+      public CapabilityStatementDocumentComponent(DocumentMode mode, String profile) {
         super();
-        this.mode = mode;
-        this.profile = profile;
+        this.setMode(mode);
+        this.setProfile(profile);
       }
 
         /**
@@ -6710,13 +6514,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.mode");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.documentation");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.profile");
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement.document.profile");
         }
         else
           return super.addChild(name);
@@ -6753,7 +6557,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatementDocumentComponent))
           return false;
         CapabilityStatementDocumentComponent o = (CapabilityStatementDocumentComponent) other_;
-        return compareValues(mode, o.mode, true) && compareValues(documentation, o.documentation, true);
+        return compareValues(mode, o.mode, true) && compareValues(documentation, o.documentation, true) && compareValues(profile, o.profile, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -6769,23 +6574,109 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
   }
 
     /**
+     * An absolute URI that is used to identify this capability statement when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this capability statement is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the capability statement is stored on different servers.
+     */
+    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical identifier for this capability statement, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this capability statement when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this capability statement is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the capability statement is stored on different servers." )
+    protected UriType url;
+
+    /**
+     * The identifier that is used to identify this version of the capability statement when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the capability statement author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     */
+    @Child(name = "version", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Business version of the capability statement", formalDefinition="The identifier that is used to identify this version of the capability statement when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the capability statement author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
+    protected StringType version;
+
+    /**
+     * A natural language name identifying the capability statement. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this capability statement (computer friendly)", formalDefinition="A natural language name identifying the capability statement. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
+     * A short, descriptive, user-friendly title for the capability statement.
+     */
+    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this capability statement (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the capability statement." )
+    protected StringType title;
+
+    /**
+     * The status of this capability statement. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this capability statement. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
+     * A Boolean value to indicate that this capability statement is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this capability statement is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
+     * The date  (and optionally time) when the capability statement was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the capability statement changes.
+     */
+    @Child(name = "date", type = {DateTimeType.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the capability statement was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the capability statement changes." )
+    protected DateTimeType date;
+
+    /**
+     * The name of the organization or individual that published the capability statement.
+     */
+    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the capability statement." )
+    protected StringType publisher;
+
+    /**
+     * Contact details to assist a user in finding and communicating with the publisher.
+     */
+    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
+
+    /**
+     * A free text natural language description of the capability statement from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.
+     */
+    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Natural language description of the capability statement", formalDefinition="A free text natural language description of the capability statement from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP." )
+    protected MarkdownType description;
+
+    /**
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate capability statement instances.
+     */
+    @Child(name = "useContext", type = {UsageContext.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate capability statement instances." )
+    protected List<UsageContext> useContext;
+
+    /**
+     * A legal or geographic region in which the capability statement is intended to be used.
+     */
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Intended jurisdiction for capability statement (if applicable)", formalDefinition="A legal or geographic region in which the capability statement is intended to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
+    protected List<CodeableConcept> jurisdiction;
+
+    /**
      * Explanation of why this capability statement is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=0, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this capability statement is defined", formalDefinition="Explanation of why this capability statement is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the capability statement and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the capability statement.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the capability statement and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the capability statement." )
     protected MarkdownType copyright;
 
     /**
      * The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase).
      */
-    @Child(name = "kind", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=14, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="instance | capability | requirements", formalDefinition="The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/capability-statement-kind")
     protected Enumeration<CapabilityStatementKind> kind;
@@ -6793,35 +6684,35 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * Reference to a canonical URL of another CapabilityStatement that this software implements. This capability statement is a published API description that corresponds to a business service. The server may actually implement a subset of the capability statement it claims to implement, so the capability statement must specify the full capability details.
      */
-    @Child(name = "instantiates", type = {CanonicalType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "instantiates", type = {CanonicalType.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Canonical URL of another capability statement this implements", formalDefinition="Reference to a canonical URL of another CapabilityStatement that this software implements. This capability statement is a published API description that corresponds to a business service. The server may actually implement a subset of the capability statement it claims to implement, so the capability statement must specify the full capability details." )
     protected List<CanonicalType> instantiates;
 
     /**
      * Reference to a canonical URL of another CapabilityStatement that this software adds to. The capability statement automatically includes everything in the other statement, and it is not duplicated, though the server may repeat the same resources, interactions and operations to add additional details to them.
      */
-    @Child(name = "imports", type = {CanonicalType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "imports", type = {CanonicalType.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Canonical URL of another capability statement this adds to", formalDefinition="Reference to a canonical URL of another CapabilityStatement that this software adds to. The capability statement automatically includes everything in the other statement, and it is not duplicated, though the server may repeat the same resources, interactions and operations to add additional details to them." )
     protected List<CanonicalType> imports;
 
     /**
      * Software that is covered by this capability statement.  It is used when the capability statement describes the capabilities of a particular software version, independent of an installation.
      */
-    @Child(name = "software", type = {}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "software", type = {}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Software that is covered by this capability statement", formalDefinition="Software that is covered by this capability statement.  It is used when the capability statement describes the capabilities of a particular software version, independent of an installation." )
     protected CapabilityStatementSoftwareComponent software;
 
     /**
      * Identifies a specific implementation instance that is described by the capability statement - i.e. a particular installation, rather than the capabilities of a software program.
      */
-    @Child(name = "implementation", type = {}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "implementation", type = {}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If this describes a specific instance", formalDefinition="Identifies a specific implementation instance that is described by the capability statement - i.e. a particular installation, rather than the capabilities of a software program." )
     protected CapabilityStatementImplementationComponent implementation;
 
     /**
      * The version of the FHIR specification that this CapabilityStatement describes (which SHALL be the same as the FHIR version of the CapabilityStatement itself). There is no default value.
      */
-    @Child(name = "fhirVersion", type = {CodeType.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "fhirVersion", type = {CodeType.class}, order=19, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="FHIR Version the system supports", formalDefinition="The version of the FHIR specification that this CapabilityStatement describes (which SHALL be the same as the FHIR version of the CapabilityStatement itself). There is no default value." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/FHIR-version")
     protected Enumeration<FHIRVersion> fhirVersion;
@@ -6829,7 +6720,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * A list of the formats supported by this implementation using their content types.
      */
-    @Child(name = "format", type = {CodeType.class}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "format", type = {CodeType.class}, order=20, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="formats supported (xml | json | ttl | mime type)", formalDefinition="A list of the formats supported by this implementation using their content types." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
     protected List<CodeType> format;
@@ -6837,7 +6728,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * A list of the patch formats supported by this implementation using their content types.
      */
-    @Child(name = "patchFormat", type = {CodeType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "patchFormat", type = {CodeType.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Patch formats supported", formalDefinition="A list of the patch formats supported by this implementation using their content types." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
     protected List<CodeType> patchFormat;
@@ -6845,32 +6736,32 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * A list of implementation guides that the server does (or should) support in their entirety.
      */
-    @Child(name = "implementationGuide", type = {CanonicalType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "implementationGuide", type = {CanonicalType.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Implementation guides supported", formalDefinition="A list of implementation guides that the server does (or should) support in their entirety." )
     protected List<CanonicalType> implementationGuide;
 
     /**
      * A definition of the restful capabilities of the solution, if any.
      */
-    @Child(name = "rest", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "rest", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="If the endpoint is a RESTful one", formalDefinition="A definition of the restful capabilities of the solution, if any." )
     protected List<CapabilityStatementRestComponent> rest;
 
     /**
      * A description of the messaging capabilities of the solution.
      */
-    @Child(name = "messaging", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "messaging", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="If messaging is supported", formalDefinition="A description of the messaging capabilities of the solution." )
     protected List<CapabilityStatementMessagingComponent> messaging;
 
     /**
      * A document definition.
      */
-    @Child(name = "document", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "document", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Document definition", formalDefinition="A document definition." )
     protected List<CapabilityStatementDocumentComponent> document;
 
-    private static final long serialVersionUID = -1050288843L;
+    private static final long serialVersionUID = 1554492069L;
 
   /**
    * Constructor
@@ -6882,12 +6773,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
   /**
    * Constructor
    */
-    public CapabilityStatement(Enumeration<PublicationStatus> status, DateTimeType date, Enumeration<CapabilityStatementKind> kind, Enumeration<FHIRVersion> fhirVersion) {
+    public CapabilityStatement(PublicationStatus status, Date date, CapabilityStatementKind kind, FHIRVersion fhirVersion, String format) {
       super();
-      this.status = status;
-      this.date = date;
-      this.kind = kind;
-      this.fhirVersion = fhirVersion;
+      this.setStatus(status);
+      this.setDate(date);
+      this.setKind(kind);
+      this.setFhirVersion(fhirVersion);
+      this.addFormat(format);
     }
 
     /**
@@ -7314,7 +7206,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
     public ContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
@@ -7416,7 +7308,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {3}
      */
     public UsageContext getUseContextFirstRep() { 
       if (getUseContext().isEmpty()) {
@@ -7469,7 +7361,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       if (getJurisdiction().isEmpty()) {
@@ -7677,7 +7569,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (this.instantiates == null)
         return false;
       for (CanonicalType v : this.instantiates)
-        if (v.getValue().equals(value)) // canonical(CapabilityStatement)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -7738,7 +7630,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (this.imports == null)
         return false;
       for (CanonicalType v : this.imports)
-        if (v.getValue().equals(value)) // canonical(CapabilityStatement)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -8014,7 +7906,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (this.implementationGuide == null)
         return false;
       for (CanonicalType v : this.implementationGuide)
-        if (v.getValue().equals(value)) // canonical(ImplementationGuide)
+        if (v.getValue().equals(value)) // canonical
           return true;
       return false;
     }
@@ -8063,7 +7955,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #rest}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #rest}, creating it if it does not already exist {3}
      */
     public CapabilityStatementRestComponent getRestFirstRep() { 
       if (getRest().isEmpty()) {
@@ -8116,7 +8008,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #messaging}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #messaging}, creating it if it does not already exist {3}
      */
     public CapabilityStatementMessagingComponent getMessagingFirstRep() { 
       if (getMessaging().isEmpty()) {
@@ -8169,7 +8061,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     /**
-     * @return The first repetition of repeating field {@link #document}, creating it if it does not already exist
+     * @return The first repetition of repeating field {@link #document}, creating it if it does not already exist {3}
      */
     public CapabilityStatementDocumentComponent getDocumentFirstRep() { 
       if (getDocument().isEmpty()) {
@@ -8178,6 +8070,34 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return getDocument().get(0);
     }
 
+    /**
+     * @return {@link #identifier} (A formal identifier that is used to identify this capability statement when it is represented in other formats, or referenced in a specification, model, design or an instance.)
+     */
+    public List<Identifier> getIdentifier() { 
+      throw new Error("The resource type \"CapabilityStatement\" does not implement the property \"identifier\"");
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CapabilityStatement setIdentifier(List<Identifier> theIdentifier) { 
+      throw new Error("The resource type \"CapabilityStatement\" does not implement the property \"identifier\"");
+    }
+    public boolean hasIdentifier() { 
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      throw new Error("The resource type \"CapabilityStatement\" does not implement the property \"identifier\"");
+    }
+    public CapabilityStatement addIdentifier(Identifier t) { //3
+      throw new Error("The resource type \"CapabilityStatement\" does not implement the property \"identifier\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {2}
+     */
+    public Identifier getIdentifierFirstRep() { 
+      throw new Error("The resource type \"CapabilityStatement\" does not implement the property \"identifier\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this capability statement when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this capability statement is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the capability statement is stored on different servers.", 0, 1, url));
@@ -8677,12 +8597,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatement))
           return false;
         CapabilityStatement o = (CapabilityStatement) other_;
-        return compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(kind, o.kind, true)
-           && compareDeep(instantiates, o.instantiates, true) && compareDeep(imports, o.imports, true) && compareDeep(software, o.software, true)
-           && compareDeep(implementation, o.implementation, true) && compareDeep(fhirVersion, o.fhirVersion, true)
-           && compareDeep(format, o.format, true) && compareDeep(patchFormat, o.patchFormat, true) && compareDeep(implementationGuide, o.implementationGuide, true)
-           && compareDeep(rest, o.rest, true) && compareDeep(messaging, o.messaging, true) && compareDeep(document, o.document, true)
-          ;
+        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
+           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
+           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
+           && compareDeep(kind, o.kind, true) && compareDeep(instantiates, o.instantiates, true) && compareDeep(imports, o.imports, true)
+           && compareDeep(software, o.software, true) && compareDeep(implementation, o.implementation, true)
+           && compareDeep(fhirVersion, o.fhirVersion, true) && compareDeep(format, o.format, true) && compareDeep(patchFormat, o.patchFormat, true)
+           && compareDeep(implementationGuide, o.implementationGuide, true) && compareDeep(rest, o.rest, true)
+           && compareDeep(messaging, o.messaging, true) && compareDeep(document, o.document, true);
       }
 
       @Override
@@ -8692,227 +8616,26 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         if (!(other_ instanceof CapabilityStatement))
           return false;
         CapabilityStatement o = (CapabilityStatement) other_;
-        return compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(kind, o.kind, true)
-           && compareValues(fhirVersion, o.fhirVersion, true) && compareValues(format, o.format, true) && compareValues(patchFormat, o.patchFormat, true)
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(kind, o.kind, true)
+           && compareValues(instantiates, o.instantiates, true) && compareValues(imports, o.imports, true) && compareValues(fhirVersion, o.fhirVersion, true)
+           && compareValues(format, o.format, true) && compareValues(patchFormat, o.patchFormat, true) && compareValues(implementationGuide, o.implementationGuide, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(purpose, copyright, kind
-          , instantiates, imports, software, implementation, fhirVersion, format, patchFormat
-          , implementationGuide, rest, messaging, document);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
+          , status, experimental, date, publisher, contact, description, useContext, jurisdiction
+          , purpose, copyright, kind, instantiates, imports, software, implementation, fhirVersion
+          , format, patchFormat, implementationGuide, rest, messaging, document);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.CapabilityStatement;
    }
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The capability statement publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="CapabilityStatement.date", description="The capability statement publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The capability statement publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>resource-profile</b>
-   * <p>
-   * Description: <b>A profile id invoked in a capability statement</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.profile</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="resource-profile", path="CapabilityStatement.rest.resource.profile", description="A profile id invoked in a capability statement", type="reference", target={StructureDefinition.class } )
-  public static final String SP_RESOURCE_PROFILE = "resource-profile";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>resource-profile</b>
-   * <p>
-   * Description: <b>A profile id invoked in a capability statement</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.profile</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RESOURCE_PROFILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RESOURCE_PROFILE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CapabilityStatement:resource-profile</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RESOURCE_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement:resource-profile").toLocked();
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext", description="A use context type and value assigned to the capability statement", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>software</b>
-   * <p>
-   * Description: <b>Part of the name of a software application</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.software.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="software", path="CapabilityStatement.software.name", description="Part of the name of a software application", type="string" )
-  public static final String SP_SOFTWARE = "software";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>software</b>
-   * <p>
-   * Description: <b>Part of the name of a software application</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.software.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam SOFTWARE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_SOFTWARE);
-
- /**
-   * Search parameter: <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="resource", path="CapabilityStatement.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
-  public static final String SP_RESOURCE = "resource";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="CapabilityStatement.jurisdiction", description="Intended jurisdiction for the capability statement", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>format</b>
-   * <p>
-   * Description: <b>formats supported (xml | json | ttl | mime type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.format</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="format", path="CapabilityStatement.format", description="formats supported (xml | json | ttl | mime type)", type="token" )
-  public static final String SP_FORMAT = "format";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>format</b>
-   * <p>
-   * Description: <b>formats supported (xml | json | ttl | mime type)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.format</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORMAT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORMAT);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="CapabilityStatement.description", description="The description of the capability statement", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="CapabilityStatement.useContext.code", description="A type of use context assigned to the capability statement", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="CapabilityStatement.title", description="The human-friendly name of the capability statement", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
  /**
    * Search parameter: <b>fhirversion</b>
@@ -8935,210 +8658,24 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam FHIRVERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FHIRVERSION);
 
  /**
-   * Search parameter: <b>version</b>
+   * Search parameter: <b>format</b>
    * <p>
-   * Description: <b>The business version of the capability statement</b><br>
+   * Description: <b>formats supported (xml | json | ttl | mime type)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version</b><br>
+   * Path: <b>CapabilityStatement.format</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="CapabilityStatement.version", description="The business version of the capability statement", type="token" )
-  public static final String SP_VERSION = "version";
+  @SearchParamDefinition(name="format", path="CapabilityStatement.format", description="formats supported (xml | json | ttl | mime type)", type="token" )
+  public static final String SP_FORMAT = "format";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <b>Fluent Client</b> search parameter constant for <b>format</b>
    * <p>
-   * Description: <b>The business version of the capability statement</b><br>
+   * Description: <b>formats supported (xml | json | ttl | mime type)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version</b><br>
+   * Path: <b>CapabilityStatement.format</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the capability statement</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url", description="The uri that identifies the capability statement", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the capability statement</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>supported-profile</b>
-   * <p>
-   * Description: <b>Profiles for use cases supported</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.supportedProfile</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="supported-profile", path="CapabilityStatement.rest.resource.supportedProfile", description="Profiles for use cases supported", type="reference", target={StructureDefinition.class } )
-  public static final String SP_SUPPORTED_PROFILE = "supported-profile";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>supported-profile</b>
-   * <p>
-   * Description: <b>Profiles for use cases supported</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CapabilityStatement.rest.resource.supportedProfile</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUPPORTED_PROFILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUPPORTED_PROFILE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CapabilityStatement:supported-profile</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTED_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement:supported-profile").toLocked();
-
- /**
-   * Search parameter: <b>mode</b>
-   * <p>
-   * Description: <b>Mode - restful (server/client) or messaging (sender/receiver)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.mode</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="mode", path="CapabilityStatement.rest.mode", description="Mode - restful (server/client) or messaging (sender/receiver)", type="token" )
-  public static final String SP_MODE = "mode";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>mode</b>
-   * <p>
-   * Description: <b>Mode - restful (server/client) or messaging (sender/receiver)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.mode</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MODE);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the capability statement</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>CapabilityStatement.useContext.valueQuantity, CapabilityStatement.useContext.valueRange</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the capability statement", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the capability statement</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>CapabilityStatement.useContext.valueQuantity, CapabilityStatement.useContext.valueRange</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>security-service</b>
-   * <p>
-   * Description: <b>OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.security.service</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="security-service", path="CapabilityStatement.rest.security.service", description="OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates", type="token" )
-  public static final String SP_SECURITY_SERVICE = "security-service";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>security-service</b>
-   * <p>
-   * Description: <b>OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.rest.security.service</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SECURITY_SERVICE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SECURITY_SERVICE);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="CapabilityStatement.name", description="Computationally friendly name of the capability statement", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.valueCodeableConcept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept)", description="A use context assigned to the capability statement", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.valueCodeableConcept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="CapabilityStatement.publisher", description="Name of the publisher of the capability statement", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the capability statement</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext", description="A use context type and quantity- or range-based value assigned to the capability statement", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORMAT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORMAT);
 
  /**
    * Search parameter: <b>guide</b>
@@ -9167,26 +8704,856 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
   public static final ca.uhn.fhir.model.api.Include INCLUDE_GUIDE = new ca.uhn.fhir.model.api.Include("CapabilityStatement:guide").toLocked();
 
  /**
-   * Search parameter: <b>status</b>
+   * Search parameter: <b>mode</b>
    * <p>
-   * Description: <b>The current status of the capability statement</b><br>
+   * Description: <b>Mode - restful (server/client) or messaging (sender/receiver)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status</b><br>
+   * Path: <b>CapabilityStatement.rest.mode</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="CapabilityStatement.status", description="The current status of the capability statement", type="token" )
+  @SearchParamDefinition(name="mode", path="CapabilityStatement.rest.mode", description="Mode - restful (server/client) or messaging (sender/receiver)", type="token" )
+  public static final String SP_MODE = "mode";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>mode</b>
+   * <p>
+   * Description: <b>Mode - restful (server/client) or messaging (sender/receiver)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.rest.mode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MODE);
+
+ /**
+   * Search parameter: <b>resource-profile</b>
+   * <p>
+   * Description: <b>A profile id invoked in a capability statement</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.profile</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="resource-profile", path="CapabilityStatement.rest.resource.profile", description="A profile id invoked in a capability statement", type="reference", target={StructureDefinition.class } )
+  public static final String SP_RESOURCE_PROFILE = "resource-profile";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>resource-profile</b>
+   * <p>
+   * Description: <b>A profile id invoked in a capability statement</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.profile</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RESOURCE_PROFILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RESOURCE_PROFILE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CapabilityStatement:resource-profile</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RESOURCE_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement:resource-profile").toLocked();
+
+ /**
+   * Search parameter: <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="resource", path="CapabilityStatement.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
+  public static final String SP_RESOURCE = "resource";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
+
+ /**
+   * Search parameter: <b>security-service</b>
+   * <p>
+   * Description: <b>OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.rest.security.service</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="security-service", path="CapabilityStatement.rest.security.service", description="OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates", type="token" )
+  public static final String SP_SECURITY_SERVICE = "security-service";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>security-service</b>
+   * <p>
+   * Description: <b>OAuth | SMART-on-FHIR | NTLM | Basic | Kerberos | Certificates</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.rest.security.service</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SECURITY_SERVICE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SECURITY_SERVICE);
+
+ /**
+   * Search parameter: <b>software</b>
+   * <p>
+   * Description: <b>Part of the name of a software application</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.software.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="software", path="CapabilityStatement.software.name", description="Part of the name of a software application", type="string" )
+  public static final String SP_SOFTWARE = "software";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>software</b>
+   * <p>
+   * Description: <b>Part of the name of a software application</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.software.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam SOFTWARE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_SOFTWARE);
+
+ /**
+   * Search parameter: <b>supported-profile</b>
+   * <p>
+   * Description: <b>Profiles for use cases supported</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.supportedProfile</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="supported-profile", path="CapabilityStatement.rest.resource.supportedProfile", description="Profiles for use cases supported", type="reference", target={StructureDefinition.class } )
+  public static final String SP_SUPPORTED_PROFILE = "supported-profile";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>supported-profile</b>
+   * <p>
+   * Description: <b>Profiles for use cases supported</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CapabilityStatement.rest.resource.supportedProfile</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUPPORTED_PROFILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUPPORTED_PROFILE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CapabilityStatement:supported-profile</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUPPORTED_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement:supported-profile").toLocked();
+
+ /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
+* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
+</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
+* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
+</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
+
+ /**
+   * Search parameter: <b>context-type</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A type of use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
+* [StructureMap](structuremap.html): A type of use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A type of use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type", path="CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A type of use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A type of use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A type of use context assigned to the value set\r\n", type="token" )
+  public static final String SP_CONTEXT_TYPE = "context-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A type of use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
+* [StructureMap](structuremap.html): A type of use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A type of use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
+* [StructureMap](structuremap.html): A use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
+* [StructureMap](structuremap.html): A use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
+* [CodeSystem](codesystem.html): The code system publication date
+* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
+* [ConceptMap](conceptmap.html): The concept map publication date
+* [GraphDefinition](graphdefinition.html): The graph definition publication date
+* [ImplementationGuide](implementationguide.html): The implementation guide publication date
+* [MessageDefinition](messagedefinition.html): The message definition publication date
+* [NamingSystem](namingsystem.html): The naming system publication date
+* [OperationDefinition](operationdefinition.html): The operation definition publication date
+* [SearchParameter](searchparameter.html): The search parameter publication date
+* [StructureDefinition](structuredefinition.html): The structure definition publication date
+* [StructureMap](structuremap.html): The structure map publication date
+* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
+* [ValueSet](valueset.html): The value set publication date
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The capability statement publication date\r\n* [CodeSystem](codesystem.html): The code system publication date\r\n* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date\r\n* [ConceptMap](conceptmap.html): The concept map publication date\r\n* [GraphDefinition](graphdefinition.html): The graph definition publication date\r\n* [ImplementationGuide](implementationguide.html): The implementation guide publication date\r\n* [MessageDefinition](messagedefinition.html): The message definition publication date\r\n* [NamingSystem](namingsystem.html): The naming system publication date\r\n* [OperationDefinition](operationdefinition.html): The operation definition publication date\r\n* [SearchParameter](searchparameter.html): The search parameter publication date\r\n* [StructureDefinition](structuredefinition.html): The structure definition publication date\r\n* [StructureMap](structuremap.html): The structure map publication date\r\n* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date\r\n* [ValueSet](valueset.html): The value set publication date\r\n", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
+* [CodeSystem](codesystem.html): The code system publication date
+* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
+* [ConceptMap](conceptmap.html): The concept map publication date
+* [GraphDefinition](graphdefinition.html): The graph definition publication date
+* [ImplementationGuide](implementationguide.html): The implementation guide publication date
+* [MessageDefinition](messagedefinition.html): The message definition publication date
+* [NamingSystem](namingsystem.html): The naming system publication date
+* [OperationDefinition](operationdefinition.html): The operation definition publication date
+* [SearchParameter](searchparameter.html): The search parameter publication date
+* [StructureDefinition](structuredefinition.html): The structure definition publication date
+* [StructureMap](structuremap.html): The structure map publication date
+* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
+* [ValueSet](valueset.html): The value set publication date
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>description</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
+* [CodeSystem](codesystem.html): The description of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
+* [ConceptMap](conceptmap.html): The description of the concept map
+* [GraphDefinition](graphdefinition.html): The description of the graph definition
+* [ImplementationGuide](implementationguide.html): The description of the implementation guide
+* [MessageDefinition](messagedefinition.html): The description of the message definition
+* [NamingSystem](namingsystem.html): The description of the naming system
+* [OperationDefinition](operationdefinition.html): The description of the operation definition
+* [SearchParameter](searchparameter.html): The description of the search parameter
+* [StructureDefinition](structuredefinition.html): The description of the structure definition
+* [StructureMap](structuremap.html): The description of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
+* [ValueSet](valueset.html): The description of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="description", path="CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The description of the capability statement\r\n* [CodeSystem](codesystem.html): The description of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition\r\n* [ConceptMap](conceptmap.html): The description of the concept map\r\n* [GraphDefinition](graphdefinition.html): The description of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The description of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The description of the message definition\r\n* [NamingSystem](namingsystem.html): The description of the naming system\r\n* [OperationDefinition](operationdefinition.html): The description of the operation definition\r\n* [SearchParameter](searchparameter.html): The description of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The description of the structure definition\r\n* [StructureMap](structuremap.html): The description of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities\r\n* [ValueSet](valueset.html): The description of the value set\r\n", type="string" )
+  public static final String SP_DESCRIPTION = "description";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
+* [CodeSystem](codesystem.html): The description of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
+* [ConceptMap](conceptmap.html): The description of the concept map
+* [GraphDefinition](graphdefinition.html): The description of the graph definition
+* [ImplementationGuide](implementationguide.html): The description of the implementation guide
+* [MessageDefinition](messagedefinition.html): The description of the message definition
+* [NamingSystem](namingsystem.html): The description of the naming system
+* [OperationDefinition](operationdefinition.html): The description of the operation definition
+* [SearchParameter](searchparameter.html): The description of the search parameter
+* [StructureDefinition](structuredefinition.html): The description of the structure definition
+* [StructureMap](structuremap.html): The description of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
+* [ValueSet](valueset.html): The description of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
+* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
+* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
+* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
+* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
+* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
+* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
+* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
+* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
+* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
+* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
+* [ValueSet](valueset.html): Intended jurisdiction for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="jurisdiction", path="CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement\r\n* [CodeSystem](codesystem.html): Intended jurisdiction for the code system\r\n* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map\r\n* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition\r\n* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition\r\n* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system\r\n* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition\r\n* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter\r\n* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition\r\n* [StructureMap](structuremap.html): Intended jurisdiction for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities\r\n* [ValueSet](valueset.html): Intended jurisdiction for the value set\r\n", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
+* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
+* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
+* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
+* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
+* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
+* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
+* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
+* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
+* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
+* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
+* [ValueSet](valueset.html): Intended jurisdiction for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
+* [CodeSystem](codesystem.html): Computationally friendly name of the code system
+* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
+* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
+* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
+* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
+* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
+* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
+* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
+* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
+* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
+* [StructureMap](structuremap.html): Computationally friendly name of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
+* [ValueSet](valueset.html): Computationally friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): Computationally friendly name of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition\r\n* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map\r\n* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition\r\n* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system\r\n* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition\r\n* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition\r\n* [StructureMap](structuremap.html): Computationally friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): Computationally friendly name of the value set\r\n", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
+* [CodeSystem](codesystem.html): Computationally friendly name of the code system
+* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
+* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
+* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
+* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
+* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
+* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
+* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
+* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
+* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
+* [StructureMap](structuremap.html): Computationally friendly name of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
+* [ValueSet](valueset.html): Computationally friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>publisher</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
+* [CodeSystem](codesystem.html): Name of the publisher of the code system
+* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
+* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
+* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
+* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
+* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
+* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
+* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
+* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
+* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
+* [StructureMap](structuremap.html): Name of the publisher of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
+* [ValueSet](valueset.html): Name of the publisher of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="publisher", path="CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement\r\n* [CodeSystem](codesystem.html): Name of the publisher of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition\r\n* [ConceptMap](conceptmap.html): Name of the publisher of the concept map\r\n* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition\r\n* [NamingSystem](namingsystem.html): Name of the publisher of the naming system\r\n* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition\r\n* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition\r\n* [StructureMap](structuremap.html): Name of the publisher of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities\r\n* [ValueSet](valueset.html): Name of the publisher of the value set\r\n", type="string" )
+  public static final String SP_PUBLISHER = "publisher";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
+* [CodeSystem](codesystem.html): Name of the publisher of the code system
+* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
+* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
+* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
+* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
+* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
+* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
+* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
+* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
+* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
+* [StructureMap](structuremap.html): Name of the publisher of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
+* [ValueSet](valueset.html): Name of the publisher of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement\r\n* [CodeSystem](codesystem.html): The current status of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition\r\n* [ConceptMap](conceptmap.html): The current status of the concept map\r\n* [GraphDefinition](graphdefinition.html): The current status of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The current status of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The current status of the message definition\r\n* [NamingSystem](namingsystem.html): The current status of the naming system\r\n* [OperationDefinition](operationdefinition.html): The current status of the operation definition\r\n* [SearchParameter](searchparameter.html): The current status of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The current status of the structure definition\r\n* [StructureMap](structuremap.html): The current status of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities\r\n* [ValueSet](valueset.html): The current status of the value set\r\n", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>The current status of the capability statement</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status</b><br>
+   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
-// added from java-adornments.txt:
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
+* [CodeSystem](codesystem.html): The human-friendly name of the code system
+* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
+* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
+* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
+* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
+* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
+* [StructureMap](structuremap.html): The human-friendly name of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
+* [ValueSet](valueset.html): The human-friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): The human-friendly name of the code system\r\n* [ConceptMap](conceptmap.html): The human-friendly name of the concept map\r\n* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition\r\n* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition\r\n* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition\r\n* [StructureMap](structuremap.html): The human-friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): The human-friendly name of the value set\r\n", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
+* [CodeSystem](codesystem.html): The human-friendly name of the code system
+* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
+* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
+* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
+* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
+* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
+* [StructureMap](structuremap.html): The human-friendly name of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
+* [ValueSet](valueset.html): The human-friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
+* [CodeSystem](codesystem.html): The business version of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
+* [ConceptMap](conceptmap.html): The business version of the concept map
+* [GraphDefinition](graphdefinition.html): The business version of the graph definition
+* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
+* [MessageDefinition](messagedefinition.html): The business version of the message definition
+* [NamingSystem](namingsystem.html): The business version of the naming system
+* [OperationDefinition](operationdefinition.html): The business version of the operation definition
+* [SearchParameter](searchparameter.html): The business version of the search parameter
+* [StructureDefinition](structuredefinition.html): The business version of the structure definition
+* [StructureMap](structuremap.html): The business version of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
+* [ValueSet](valueset.html): The business version of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement\r\n* [CodeSystem](codesystem.html): The business version of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition\r\n* [ConceptMap](conceptmap.html): The business version of the concept map\r\n* [GraphDefinition](graphdefinition.html): The business version of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The business version of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The business version of the message definition\r\n* [NamingSystem](namingsystem.html): The business version of the naming system\r\n* [OperationDefinition](operationdefinition.html): The business version of the operation definition\r\n* [SearchParameter](searchparameter.html): The business version of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The business version of the structure definition\r\n* [StructureMap](structuremap.html): The business version of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities\r\n* [ValueSet](valueset.html): The business version of the value set\r\n", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
+* [CodeSystem](codesystem.html): The business version of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
+* [ConceptMap](conceptmap.html): The business version of the concept map
+* [GraphDefinition](graphdefinition.html): The business version of the graph definition
+* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
+* [MessageDefinition](messagedefinition.html): The business version of the message definition
+* [NamingSystem](namingsystem.html): The business version of the naming system
+* [OperationDefinition](operationdefinition.html): The business version of the operation definition
+* [SearchParameter](searchparameter.html): The business version of the search parameter
+* [StructureDefinition](structuredefinition.html): The business version of the structure definition
+* [StructureMap](structuremap.html): The business version of the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
+* [ValueSet](valueset.html): The business version of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+// Manual code (from Configuration.txt)t:
 
 // end addition
 
