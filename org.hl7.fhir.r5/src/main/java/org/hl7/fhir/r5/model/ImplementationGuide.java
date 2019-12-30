@@ -10926,10 +10926,17 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this implementation guide when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -10952,6 +10959,13 @@ public class ImplementationGuide extends CanonicalResource {
      */
     public Identifier getIdentifierFirstRep() { 
       throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPurposeMax() { 
+      return 0;
     }
     /**
      * @return {@link #purpose} (Explanation of why this implementation guide is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value

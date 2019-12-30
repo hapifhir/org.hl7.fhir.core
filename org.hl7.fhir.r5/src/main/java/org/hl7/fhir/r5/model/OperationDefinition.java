@@ -3317,10 +3317,17 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this operation definition when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -3343,6 +3350,13 @@ public class OperationDefinition extends CanonicalResource {
      */
     public Identifier getIdentifierFirstRep() { 
       throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightMax() { 
+      return 0;
     }
     /**
      * @return {@link #copyright} (A copyright statement relating to the operation definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the operation definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value

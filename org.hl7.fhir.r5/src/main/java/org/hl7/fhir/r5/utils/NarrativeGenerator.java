@@ -4263,7 +4263,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().addText(path+p.getName());
       tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
       XhtmlNode td = tr.td();
-      StructureDefinition sd = context.fetchTypeDefinition(p.getType().toCode());
+      StructureDefinition sd = p.getType() != null ? context.fetchTypeDefinition(p.getType().toCode()) : null;
       if (sd == null)
         td.tx(p.hasType() ? p.getType().toCode() : "");
       else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {

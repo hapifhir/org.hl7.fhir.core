@@ -4297,10 +4297,17 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"identifier\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining

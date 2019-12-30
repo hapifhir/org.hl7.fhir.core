@@ -11685,6 +11685,13 @@ public class TestScript extends CanonicalResource {
     }
 
     /**
+     * only one on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 1;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this test script when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 

@@ -2842,6 +2842,13 @@ public class Evidence extends MetadataResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getNameMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #name} (A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public StringType getNameElement() { 
@@ -2869,6 +2876,13 @@ public class Evidence extends MetadataResource {
      */
     public Evidence setName(String value) { 
       throw new Error("The resource type \"Evidence\" does not implement the property \"name\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getExperimentalMax() { 
+      return 0;
     }
     /**
      * @return {@link #experimental} (A Boolean value to indicate that this evidence is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
@@ -2900,6 +2914,13 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"experimental\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPublisherMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #publisher} (The name of the organization or individual that published the evidence.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
@@ -2929,10 +2950,17 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"publisher\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getContactMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
      */
     public List<ContactDetail> getContact() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"contact\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -2957,10 +2985,17 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"contact\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getJurisdictionMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #jurisdiction} (A legal or geographic region in which the evidence is intended to be used.)
      */
     public List<CodeableConcept> getJurisdiction() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -2983,6 +3018,13 @@ public class Evidence extends MetadataResource {
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPurposeMax() { 
+      return 0;
     }
     /**
      * @return {@link #purpose} (Explanation of why this evidence is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
@@ -3014,6 +3056,13 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #copyright} (A copyright statement relating to the evidence and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public MarkdownType getCopyrightElement() { 
@@ -3041,6 +3090,13 @@ public class Evidence extends MetadataResource {
      */
     public Evidence setCopyright(String value) { 
       throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEffectivePeriodMax() { 
+      return 0;
     }
     /**
      * @return {@link #effectivePeriod} (The period during which the evidence content was or is planned to be in active use.)
