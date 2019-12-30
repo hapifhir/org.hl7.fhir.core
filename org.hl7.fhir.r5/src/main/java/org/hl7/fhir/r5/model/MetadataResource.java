@@ -81,6 +81,12 @@ public abstract class MetadataResource extends CanonicalResource {
     }
 
     /**
+     * How many allowed for this property by the implementation
+     */
+    public int getApprovalDateMax() { 
+      return 1;
+    }
+    /**
      * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public abstract DateType getApprovalDateElement(); 
@@ -101,6 +107,12 @@ public abstract class MetadataResource extends CanonicalResource {
      */
     public abstract MetadataResource setApprovalDate(Date value); 
     /**
+     * How many allowed for this property by the implementation
+     */
+    public int getLastReviewDateMax() { 
+      return 1;
+    }
+    /**
      * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
     public abstract DateType getLastReviewDateElement(); 
@@ -120,6 +132,12 @@ public abstract class MetadataResource extends CanonicalResource {
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
     public abstract MetadataResource setLastReviewDate(Date value); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getEffectivePeriodMax() { 
+      return 1;
+    }
     /**
      * @return {@link #effectivePeriod} (The period during which the metadata resource content was or is planned to be in active use.)
      */

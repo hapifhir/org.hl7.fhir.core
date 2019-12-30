@@ -1212,10 +1212,17 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this compartment definition when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -1238,6 +1245,13 @@ public class CompartmentDefinition extends CanonicalResource {
      */
     public Identifier getIdentifierFirstRep() { 
       throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTitleMax() { 
+      return 0;
     }
     /**
      * @return {@link #title} (A short, descriptive, user-friendly title for the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
@@ -1269,10 +1283,17 @@ public class CompartmentDefinition extends CanonicalResource {
       throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"title\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getJurisdictionMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #jurisdiction} (A legal or geographic region in which the compartment definition is intended to be used.)
      */
     public List<CodeableConcept> getJurisdiction() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+      return new ArrayList<>();
     }
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
@@ -1295,6 +1316,13 @@ public class CompartmentDefinition extends CanonicalResource {
      */
     public CodeableConcept getJurisdictionFirstRep() { 
       throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightMax() { 
+      return 0;
     }
     /**
      * @return {@link #copyright} (A copyright statement relating to the compartment definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value

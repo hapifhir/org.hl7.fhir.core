@@ -1682,9 +1682,17 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  throw new Error("??");
 		}
 		boolean isReferenceRefField = (analysis.getName().equals("Reference") && e.getName().equals("reference"));
-		
+
+
 		String simpleType = getSimpleType(tn);
 		if (e.unbounded() || (inh != null && inh.unbounded())) {
+		  if (!e.unbounded()) {
+		    jdoc(indent, "only one on this implementation");
+		    write(indent+"@Override\r\n");
+		    write(indent+"public int get"+getTitle(getElementName(e.getName(), false))+"Max() { \r\n");
+		    write(indent+"  return 1;\r\n");
+		    write(indent+"}\r\n");
+		  }
 		  /*
 		   * getXXX()for repeatable type
 		   */
@@ -2032,6 +2040,11 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       throw new Error("??");
     }
     boolean isReferenceRefField = (ti.getDefn().getName().equals("Reference") && e.getName().equals("reference"));
+
+    jdoc(indent, "How many allowed for this property by the implementation");
+    write(indent+"public int get"+getTitle(getElementName(e.getName(), false))+"Max() { \r\n");
+    write(indent+"  return "+(e.getMax().equals("*") ? "Integer.MAX_VALUE" : "1")+";\r\n");
+    write(indent+"}\r\n");
     
     String simpleType = getSimpleType(tn);
     if (e.unbounded()) {
@@ -2189,6 +2202,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 
   private void generateUnimplementedAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
+    System.out.println("   .. unimplemented: "+e.getPath());
     String tn = e.getUserString("java.type");
     String className = ti.getName();
 
@@ -2200,8 +2214,15 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     }
     boolean isReferenceRefField = (analysis.getName().equals("Reference") && e.getName().equals("reference"));
     
+    jdoc(indent, "not supported on this implementation");
+    write(indent+"@Override\r\n");
+    write(indent+"public int get"+getTitle(getElementName(e.getName(), false))+"Max() { \r\n");
+    write(indent+"  return 0;\r\n");
+    write(indent+"}\r\n");
+    
     String simpleType = getSimpleType(tn);
     if (e.unbounded()) {
+
       /*
        * getXXX()for repeatable type
        */
@@ -2213,7 +2234,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         listGenericType = tn;
       }
       write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+      write(indent+"  return new ArrayList<>();\r\n");
       write(indent+"}\r\n");
       /*
        * setXXX(List<foo>) for repeating type

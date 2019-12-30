@@ -2962,6 +2962,13 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPurposeMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #purpose} (Explanation of why this condition definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public MarkdownType getPurposeElement() { 
@@ -2989,6 +2996,13 @@ public class ConditionDefinition extends MetadataResource {
      */
     public ConditionDefinition setPurpose(String value) { 
       throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightMax() { 
+      return 0;
     }
     /**
      * @return {@link #copyright} (A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
@@ -3020,6 +3034,13 @@ public class ConditionDefinition extends MetadataResource {
       throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getApprovalDateMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public DateType getApprovalDateElement() { 
@@ -3049,6 +3070,13 @@ public class ConditionDefinition extends MetadataResource {
       throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
     }
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getLastReviewDateMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
     public DateType getLastReviewDateElement() { 
@@ -3076,6 +3104,13 @@ public class ConditionDefinition extends MetadataResource {
      */
     public ConditionDefinition setLastReviewDate(Date value) { 
       throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEffectivePeriodMax() { 
+      return 0;
     }
     /**
      * @return {@link #effectivePeriod} (The period during which the condition definition content was or is planned to be in active use.)

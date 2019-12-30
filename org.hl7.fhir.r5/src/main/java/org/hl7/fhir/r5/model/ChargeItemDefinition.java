@@ -2343,6 +2343,13 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getNameMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #name} (A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public StringType getNameElement() { 
@@ -2370,6 +2377,13 @@ public class ChargeItemDefinition extends MetadataResource {
      */
     public ChargeItemDefinition setName(String value) { 
       throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPurposeMax() { 
+      return 0;
     }
     /**
      * @return {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value

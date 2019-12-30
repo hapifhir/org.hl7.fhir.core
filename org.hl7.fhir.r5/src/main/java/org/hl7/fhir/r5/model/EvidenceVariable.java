@@ -2782,6 +2782,13 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getExperimentalMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #experimental} (A Boolean value to indicate that this evidence variable is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
      */
     public BooleanType getExperimentalElement() { 
@@ -2809,6 +2816,13 @@ public class EvidenceVariable extends MetadataResource {
      */
     public EvidenceVariable setExperimental(boolean value) { 
       throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"experimental\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getPurposeMax() { 
+      return 0;
     }
     /**
      * @return {@link #purpose} (Explanation of why this evidence variable is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value

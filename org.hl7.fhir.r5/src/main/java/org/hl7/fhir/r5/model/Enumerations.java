@@ -6271,7 +6271,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _3_0_1, 
         /**
-         * FHIR Release 3 (STU) with 1 technical errata.
+         * FHIR Release 3 (STU) with 2 technical errata.
          */
         _3_0_2, 
         /**
@@ -6287,7 +6287,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_0_0, 
         /**
-         * FHIR Release 4 (Normative + STU).
+         * FHIR Release 4 (Normative + STU) - Technical Correction #1
          */
         _4_0_1, 
         /**
@@ -6433,7 +6433,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _3_3_0: return "R4 Ballot #1.";
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
-            case _4_0_1: return "FHIR Release 4 (Technical Correction).";
+            case _4_0_1: return "FHIR Release 4 (Normative + STU) - Technical Correction #1";
             case _4_1_0: return "Current build after R4.";
             default: return "?";
           }

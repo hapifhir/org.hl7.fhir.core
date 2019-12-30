@@ -493,6 +493,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
       }
+      if (derived.getUrl().equals("http://sharedhealth.exchange/fhir/StructureDefinition/profile-operationoutcome")) {
+        debug = true;
+      }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
       if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
@@ -520,6 +523,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       setIds(derived, false);
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       //Check that all differential elements have a corresponding snapshot element
+      int ce = 0;
       for (ElementDefinition e : diff.getElement()) {
         if (!e.hasUserData("diff-source"))
           throw new Error("Unxpected internal condition - no source on diff element");
@@ -532,14 +536,23 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
           b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
           if (e.hasId()) {
+            ce++;
             String msg = "No match found in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+e.getId(), msg, ValidationMessage.IssueSeverity.ERROR));
           }
         }
       }
       if (!Utilities.noString(b.toString())) {
-        String msg = "The profile "+derived.getUrl()+" has several elements in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
+        String msg = "The profile "+derived.getUrl()+" has "+ce+" "+Utilities.pluralize("element", ce)+" in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
         System.out.println("Error in snapshot generation: "+msg);
+        if (!debug) {
+          System.out.println("Differential: ");
+          for (ElementDefinition ed : derived.getDifferential().getElement())
+            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+          System.out.println("Snapshot: ");
+          for (ElementDefinition ed : derived.getSnapshot().getElement())
+            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+        }
         if (exception)
           throw new DefinitionException(msg);
         else
@@ -1983,13 +1996,14 @@ public class ProfileUtilities extends TranslatingUtilities {
       String[] sp = statedPath.split("\\.");
       boolean ok = sp.length == p.length;
       for (int j = 0; j < p.length; j++) {
-        ok = ok && sp.length > j && (p[j].equals(sp[j]) || (p[j].endsWith("[x]") && sp[j].startsWith(p[j].substring(0, p[j].length()-3))));
+        ok = ok && sp.length > j && (p[j].equals(sp[j]) || isSameBase(p[j], sp[j]));
       }
-      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 && 
-            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) && 
-            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
-        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
-      }
+// don't need this debug check - everything is ok      
+//      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 && 
+//            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) && 
+//            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
+//        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
+//      }
       if (ok) {
         /* 
          * Commenting this out because it raises warnings when profiling inherited elements.  For example,
@@ -2004,6 +2018,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return result;
+  }
+
+
+  public boolean isSameBase(String p, String sp) {
+    return (p.endsWith("[x]") && sp.startsWith(p.substring(0, p.length()-3))) || (sp.endsWith("[x]") && p.startsWith(sp.substring(0, sp.length()-3))) ;
   }
 
   private int findEndOfElement(StructureDefinitionDifferentialComponent context, int cursor) {
@@ -4171,6 +4190,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           return i;
         }
         if (p.endsWith("[x]") && actual.startsWith(p.substring(0, p.length()-3)) && !(actual.endsWith("[x]")) && !actual.substring(p.length()-3).contains(".")) {
+          return i;
+        }
+        if (actual.endsWith("[x]") && p.startsWith(actual.substring(0, actual.length()-3)) && !p.substring(actual.length()-3).contains(".")) {
           return i;
         }
         if (path.startsWith(p+".") && snapshot.get(i).hasContentReference()) {

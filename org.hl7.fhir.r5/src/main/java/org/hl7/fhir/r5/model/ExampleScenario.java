@@ -4573,6 +4573,13 @@ public class ExampleScenario extends CanonicalResource {
     }
 
     /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTitleMax() { 
+      return 0;
+    }
+    /**
      * @return {@link #title} (A short, descriptive, user-friendly title for the example scenario.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public StringType getTitleElement() { 
@@ -4600,6 +4607,13 @@ public class ExampleScenario extends CanonicalResource {
      */
     public ExampleScenario setTitle(String value) { 
       throw new Error("The resource type \"ExampleScenario\" does not implement the property \"title\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getDescriptionMax() { 
+      return 0;
     }
     /**
      * @return {@link #description} (A free text natural language description of the example scenario from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
