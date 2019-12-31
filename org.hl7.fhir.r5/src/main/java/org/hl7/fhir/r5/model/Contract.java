@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6572,49 +6572,35 @@ public class Contract extends DomainResource {
         protected List<StringType> performerLinkId;
 
         /**
-         * Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited.
+         * Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited. Either a coded concept, or another resource whose existence justifies permitting or not permitting this action.
          */
-        @Child(name = "reasonCode", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Why is action (not) needed?", formalDefinition="Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited." )
+        @Child(name = "reason", type = {CodeableReference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Why is action (not) needed?", formalDefinition="Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited. Either a coded concept, or another resource whose existence justifies permitting or not permitting this action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-PurposeOfUse")
-        protected List<CodeableConcept> reasonCode;
-
-        /**
-         * Indicates another resource whose existence justifies permitting or not permitting this action.
-         */
-        @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class, Questionnaire.class, QuestionnaireResponse.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Why is action (not) needed?", formalDefinition="Indicates another resource whose existence justifies permitting or not permitting this action." )
-        protected List<Reference> reasonReference;
-
-        /**
-         * Describes why the action is to be performed or not performed in textual form.
-         */
-        @Child(name = "reason", type = {StringType.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Why action is to be performed", formalDefinition="Describes why the action is to be performed or not performed in textual form." )
-        protected List<StringType> reason;
+        protected List<CodeableReference> reason;
 
         /**
          * Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.
          */
-        @Child(name = "reasonLinkId", type = {StringType.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "reasonLinkId", type = {StringType.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Pointer to specific item", formalDefinition="Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse." )
         protected List<StringType> reasonLinkId;
 
         /**
          * Comments made about the term action made by the requester, performer, subject or other participants.
          */
-        @Child(name = "note", type = {Annotation.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Comments about the action", formalDefinition="Comments made about the term action made by the requester, performer, subject or other participants." )
         protected List<Annotation> note;
 
         /**
          * Security labels that protects the action.
          */
-        @Child(name = "securityLabelNumber", type = {UnsignedIntType.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "securityLabelNumber", type = {UnsignedIntType.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Action restriction numbers", formalDefinition="Security labels that protects the action." )
         protected List<UnsignedIntType> securityLabelNumber;
 
-        private static final long serialVersionUID = -701731764L;
+        private static final long serialVersionUID = 337159017L;
 
     /**
      * Constructor
@@ -7292,124 +7278,18 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #reasonCode} (Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited.)
+         * @return {@link #reason} (Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited. Either a coded concept, or another resource whose existence justifies permitting or not permitting this action.)
          */
-        public List<CodeableConcept> getReasonCode() { 
-          if (this.reasonCode == null)
-            this.reasonCode = new ArrayList<CodeableConcept>();
-          return this.reasonCode;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ActionComponent setReasonCode(List<CodeableConcept> theReasonCode) { 
-          this.reasonCode = theReasonCode;
-          return this;
-        }
-
-        public boolean hasReasonCode() { 
-          if (this.reasonCode == null)
-            return false;
-          for (CodeableConcept item : this.reasonCode)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addReasonCode() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.reasonCode == null)
-            this.reasonCode = new ArrayList<CodeableConcept>();
-          this.reasonCode.add(t);
-          return t;
-        }
-
-        public ActionComponent addReasonCode(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.reasonCode == null)
-            this.reasonCode = new ArrayList<CodeableConcept>();
-          this.reasonCode.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getReasonCodeFirstRep() { 
-          if (getReasonCode().isEmpty()) {
-            addReasonCode();
-          }
-          return getReasonCode().get(0);
-        }
-
-        /**
-         * @return {@link #reasonReference} (Indicates another resource whose existence justifies permitting or not permitting this action.)
-         */
-        public List<Reference> getReasonReference() { 
-          if (this.reasonReference == null)
-            this.reasonReference = new ArrayList<Reference>();
-          return this.reasonReference;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ActionComponent setReasonReference(List<Reference> theReasonReference) { 
-          this.reasonReference = theReasonReference;
-          return this;
-        }
-
-        public boolean hasReasonReference() { 
-          if (this.reasonReference == null)
-            return false;
-          for (Reference item : this.reasonReference)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Reference addReasonReference() { //3
-          Reference t = new Reference();
-          if (this.reasonReference == null)
-            this.reasonReference = new ArrayList<Reference>();
-          this.reasonReference.add(t);
-          return t;
-        }
-
-        public ActionComponent addReasonReference(Reference t) { //3
-          if (t == null)
-            return this;
-          if (this.reasonReference == null)
-            this.reasonReference = new ArrayList<Reference>();
-          this.reasonReference.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-         */
-        public Reference getReasonReferenceFirstRep() { 
-          if (getReasonReference().isEmpty()) {
-            addReasonReference();
-          }
-          return getReasonReference().get(0);
-        }
-
-        /**
-         * @return {@link #reason} (Describes why the action is to be performed or not performed in textual form.)
-         */
-        public List<StringType> getReason() { 
+        public List<CodeableReference> getReason() { 
           if (this.reason == null)
-            this.reason = new ArrayList<StringType>();
+            this.reason = new ArrayList<CodeableReference>();
           return this.reason;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ActionComponent setReason(List<StringType> theReason) { 
+        public ActionComponent setReason(List<CodeableReference> theReason) { 
           this.reason = theReason;
           return this;
         }
@@ -7417,45 +7297,37 @@ public class Contract extends DomainResource {
         public boolean hasReason() { 
           if (this.reason == null)
             return false;
-          for (StringType item : this.reason)
+          for (CodeableReference item : this.reason)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        /**
-         * @return {@link #reason} (Describes why the action is to be performed or not performed in textual form.)
-         */
-        public StringType addReasonElement() {//2 
-          StringType t = new StringType();
+        public CodeableReference addReason() { //3
+          CodeableReference t = new CodeableReference();
           if (this.reason == null)
-            this.reason = new ArrayList<StringType>();
+            this.reason = new ArrayList<CodeableReference>();
           this.reason.add(t);
           return t;
         }
 
-        /**
-         * @param value {@link #reason} (Describes why the action is to be performed or not performed in textual form.)
-         */
-        public ActionComponent addReason(String value) { //1
-          StringType t = new StringType();
-          t.setValue(value);
+        public ActionComponent addReason(CodeableReference t) { //3
+          if (t == null)
+            return this;
           if (this.reason == null)
-            this.reason = new ArrayList<StringType>();
+            this.reason = new ArrayList<CodeableReference>();
           this.reason.add(t);
           return this;
         }
 
         /**
-         * @param value {@link #reason} (Describes why the action is to be performed or not performed in textual form.)
+         * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
          */
-        public boolean hasReason(String value) { 
-          if (this.reason == null)
-            return false;
-          for (StringType v : this.reason)
-            if (v.getValue().equals(value)) // string
-              return true;
-          return false;
+        public CodeableReference getReasonFirstRep() { 
+          if (getReason().isEmpty()) {
+            addReason();
+          }
+          return getReason().get(0);
         }
 
         /**
@@ -7650,9 +7522,7 @@ public class Contract extends DomainResource {
           children.add(new Property("performerRole", "CodeableConcept", "The type of role or competency of an individual desired or required to perform or not perform the action.", 0, 1, performerRole));
           children.add(new Property("performer", "Reference(RelatedPerson|Patient|Practitioner|PractitionerRole|CareTeam|Device|Substance|Organization|Location)", "Indicates who or what is being asked to perform (or not perform) the ction.", 0, 1, performer));
           children.add(new Property("performerLinkId", "string", "Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, performerLinkId));
-          children.add(new Property("reasonCode", "CodeableConcept", "Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-          children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference|Questionnaire|QuestionnaireResponse)", "Indicates another resource whose existence justifies permitting or not permitting this action.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
-          children.add(new Property("reason", "string", "Describes why the action is to be performed or not performed in textual form.", 0, java.lang.Integer.MAX_VALUE, reason));
+          children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference|Questionnaire|QuestionnaireResponse)", "Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited. Either a coded concept, or another resource whose existence justifies permitting or not permitting this action.", 0, java.lang.Integer.MAX_VALUE, reason));
           children.add(new Property("reasonLinkId", "string", "Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, reasonLinkId));
           children.add(new Property("note", "Annotation", "Comments made about the term action made by the requester, performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
           children.add(new Property("securityLabelNumber", "unsignedInt", "Security labels that protects the action.", 0, java.lang.Integer.MAX_VALUE, securityLabelNumber));
@@ -7680,9 +7550,7 @@ public class Contract extends DomainResource {
           case -901513884: /*performerRole*/  return new Property("performerRole", "CodeableConcept", "The type of role or competency of an individual desired or required to perform or not perform the action.", 0, 1, performerRole);
           case 481140686: /*performer*/  return new Property("performer", "Reference(RelatedPerson|Patient|Practitioner|PractitionerRole|CareTeam|Device|Substance|Organization|Location)", "Indicates who or what is being asked to perform (or not perform) the ction.", 0, 1, performer);
           case 1051302947: /*performerLinkId*/  return new Property("performerLinkId", "string", "Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, performerLinkId);
-          case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-          case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference|Questionnaire|QuestionnaireResponse)", "Indicates another resource whose existence justifies permitting or not permitting this action.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
-          case -934964668: /*reason*/  return new Property("reason", "string", "Describes why the action is to be performed or not performed in textual form.", 0, java.lang.Integer.MAX_VALUE, reason);
+          case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference|Questionnaire|QuestionnaireResponse)", "Rationale for the action to be performed or not performed. Describes why the action is permitted or prohibited. Either a coded concept, or another resource whose existence justifies permitting or not permitting this action.", 0, java.lang.Integer.MAX_VALUE, reason);
           case -1557963239: /*reasonLinkId*/  return new Property("reasonLinkId", "string", "Id [identifier??] of the clause or question text related to the reason type or reference of this  action in the referenced form or QuestionnaireResponse.", 0, java.lang.Integer.MAX_VALUE, reasonLinkId);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the term action made by the requester, performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
           case -149460995: /*securityLabelNumber*/  return new Property("securityLabelNumber", "unsignedInt", "Security labels that protects the action.", 0, java.lang.Integer.MAX_VALUE, securityLabelNumber);
@@ -7709,9 +7577,7 @@ public class Contract extends DomainResource {
         case -901513884: /*performerRole*/ return this.performerRole == null ? new Base[0] : new Base[] {this.performerRole}; // CodeableConcept
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : new Base[] {this.performer}; // Reference
         case 1051302947: /*performerLinkId*/ return this.performerLinkId == null ? new Base[0] : this.performerLinkId.toArray(new Base[this.performerLinkId.size()]); // StringType
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
-        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // StringType
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case -1557963239: /*reasonLinkId*/ return this.reasonLinkId == null ? new Base[0] : this.reasonLinkId.toArray(new Base[this.reasonLinkId.size()]); // StringType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -149460995: /*securityLabelNumber*/ return this.securityLabelNumber == null ? new Base[0] : this.securityLabelNumber.toArray(new Base[this.securityLabelNumber.size()]); // UnsignedIntType
@@ -7768,14 +7634,8 @@ public class Contract extends DomainResource {
         case 1051302947: // performerLinkId
           this.getPerformerLinkId().add(TypeConvertor.castToString(value)); // StringType
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
         case -934964668: // reason
-          this.getReason().add(TypeConvertor.castToString(value)); // StringType
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1557963239: // reasonLinkId
           this.getReasonLinkId().add(TypeConvertor.castToString(value)); // StringType
@@ -7823,12 +7683,8 @@ public class Contract extends DomainResource {
           this.performer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("performerLinkId")) {
           this.getPerformerLinkId().add(TypeConvertor.castToString(value));
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reason")) {
-          this.getReason().add(TypeConvertor.castToString(value));
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("reasonLinkId")) {
           this.getReasonLinkId().add(TypeConvertor.castToString(value));
         } else if (name.equals("note")) {
@@ -7859,9 +7715,7 @@ public class Contract extends DomainResource {
         case -901513884:  return getPerformerRole();
         case 481140686:  return getPerformer();
         case 1051302947:  return addPerformerLinkIdElement();
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
-        case -934964668:  return addReasonElement();
+        case -934964668:  return addReason(); 
         case -1557963239:  return addReasonLinkIdElement();
         case 3387378:  return addNote(); 
         case -149460995:  return addSecurityLabelNumberElement();
@@ -7888,9 +7742,7 @@ public class Contract extends DomainResource {
         case -901513884: /*performerRole*/ return new String[] {"CodeableConcept"};
         case 481140686: /*performer*/ return new String[] {"Reference"};
         case 1051302947: /*performerLinkId*/ return new String[] {"string"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
-        case -934964668: /*reason*/ return new String[] {"string"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case -1557963239: /*reasonLinkId*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -149460995: /*securityLabelNumber*/ return new String[] {"unsignedInt"};
@@ -7961,14 +7813,8 @@ public class Contract extends DomainResource {
         else if (name.equals("performerLinkId")) {
           throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.performerLinkId");
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
-        }
         else if (name.equals("reason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.reason");
+          return addReason();
         }
         else if (name.equals("reasonLinkId")) {
           throw new FHIRException("Cannot call addChild on a primitive type Contract.term.action.reasonLinkId");
@@ -8034,19 +7880,9 @@ public class Contract extends DomainResource {
           for (StringType i : performerLinkId)
             dst.performerLinkId.add(i.copy());
         };
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
-        };
         if (reason != null) {
-          dst.reason = new ArrayList<StringType>();
-          for (StringType i : reason)
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
             dst.reason.add(i.copy());
         };
         if (reasonLinkId != null) {
@@ -8079,7 +7915,6 @@ public class Contract extends DomainResource {
            && compareDeep(requester, o.requester, true) && compareDeep(requesterLinkId, o.requesterLinkId, true)
            && compareDeep(performerType, o.performerType, true) && compareDeep(performerRole, o.performerRole, true)
            && compareDeep(performer, o.performer, true) && compareDeep(performerLinkId, o.performerLinkId, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
            && compareDeep(reason, o.reason, true) && compareDeep(reasonLinkId, o.reasonLinkId, true) && compareDeep(note, o.note, true)
            && compareDeep(securityLabelNumber, o.securityLabelNumber, true);
       }
@@ -8093,15 +7928,15 @@ public class Contract extends DomainResource {
         ActionComponent o = (ActionComponent) other_;
         return compareValues(doNotPerform, o.doNotPerform, true) && compareValues(linkId, o.linkId, true) && compareValues(contextLinkId, o.contextLinkId, true)
            && compareValues(requesterLinkId, o.requesterLinkId, true) && compareValues(performerLinkId, o.performerLinkId, true)
-           && compareValues(reason, o.reason, true) && compareValues(reasonLinkId, o.reasonLinkId, true) && compareValues(securityLabelNumber, o.securityLabelNumber, true)
+           && compareValues(reasonLinkId, o.reasonLinkId, true) && compareValues(securityLabelNumber, o.securityLabelNumber, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(doNotPerform, type, subject
           , intent, linkId, status, context, contextLinkId, occurrence, requester, requesterLinkId
-          , performerType, performerRole, performer, performerLinkId, reasonCode, reasonReference
-          , reason, reasonLinkId, note, securityLabelNumber);
+          , performerType, performerRole, performer, performerLinkId, reason, reasonLinkId
+          , note, securityLabelNumber);
       }
 
   public String fhirType() {

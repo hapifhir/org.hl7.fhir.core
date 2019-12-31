@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -102,7 +102,7 @@ public class CarePlan extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam())
       tgt.addCareTeam(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getAddresses())
-      tgt.addAddressesReference(convertReference(t));
+      tgt.addAddresses(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getGoal())
@@ -155,8 +155,9 @@ public class CarePlan extends VersionConvertor_40_50 {
       tgt.addContributor(convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam())
       tgt.addCareTeam(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getAddressesReference())
-      tgt.addAddresses(convertReference(t));
+    for (CodeableReference t : src.getAddresses())
+      if (t.hasReference())
+      tgt.addAddresses(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo())
       tgt.addSupportingInfo(convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getGoal())
@@ -228,9 +229,9 @@ public class CarePlan extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
     copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept())
-      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t));
+      tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+      tgt.addOutcome(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getProgress())
       tgt.addProgress(convertAnnotation(t));
     if (src.hasReference())
@@ -245,10 +246,12 @@ public class CarePlan extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
     copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOutcomeCodeableConcept())
-      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasConcept())
+      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasReference())
+      tgt.addOutcomeReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getProgress())
       tgt.addProgress(convertAnnotation(t));
     if (src.hasReference())
@@ -272,9 +275,9 @@ public class CarePlan extends VersionConvertor_40_50 {
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getGoal())
       tgt.addGoal(convertReference(t));
     if (src.hasStatus())
@@ -313,10 +316,12 @@ public class CarePlan extends VersionConvertor_40_50 {
       tgt.getInstantiatesUri().add(convertUri(t));
     if (src.hasCode())
       tgt.setCode(convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getGoal())
       tgt.addGoal(convertReference(t));
     if (src.hasStatus())

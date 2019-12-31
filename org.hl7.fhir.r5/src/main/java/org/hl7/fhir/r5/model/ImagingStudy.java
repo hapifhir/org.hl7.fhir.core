@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2010,42 +2010,35 @@ public class ImagingStudy extends DomainResource {
     protected Reference location;
 
     /**
-     * Description of clinical condition indicating why the ImagingStudy was requested.
+     * Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Why the study was requested", formalDefinition="Description of clinical condition indicating why the ImagingStudy was requested." )
+    @Child(name = "reason", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Why the study was requested / performed", formalDefinition="Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-reason")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Indicates another resource whose existence justifies this Study.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Why was study performed", formalDefinition="Indicates another resource whose existence justifies this Study." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.
      */
-    @Child(name = "note", type = {Annotation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="User-defined comments", formalDefinition="Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element." )
     protected List<Annotation> note;
 
     /**
      * The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed.
      */
-    @Child(name = "description", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Institution-generated description", formalDefinition="The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed." )
     protected StringType description;
 
     /**
      * Each study has one or more series of images or other content.
      */
-    @Child(name = "series", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "series", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Each study has one or more series of instances", formalDefinition="Each study has one or more series of images or other content." )
     protected List<ImagingStudySeriesComponent> series;
 
-    private static final long serialVersionUID = -1858427615L;
+    private static final long serialVersionUID = -564369223L;
 
   /**
    * Constructor
@@ -2662,109 +2655,56 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (Description of clinical condition indicating why the ImagingStudy was requested.)
+     * @return {@link #reason} (Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ImagingStudy setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public ImagingStudy setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public ImagingStudy addReasonCode(CodeableConcept t) { //3
+    public ImagingStudy addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Indicates another resource whose existence justifies this Study.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ImagingStudy setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public ImagingStudy addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -2938,8 +2878,7 @@ public class ImagingStudy extends DomainResource {
         children.add(new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in Study. This value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances));
         children.add(new Property("procedure", "", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure));
         children.add(new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location));
-        children.add(new Property("reasonCode", "CodeableConcept", "Description of clinical condition indicating why the ImagingStudy was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("description", "string", "The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed.", 0, 1, description));
         children.add(new Property("series", "", "Each study has one or more series of images or other content.", 0, java.lang.Integer.MAX_VALUE, series));
@@ -2962,8 +2901,7 @@ public class ImagingStudy extends DomainResource {
         case -1043544226: /*numberOfInstances*/  return new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in Study. This value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances);
         case -1095204141: /*procedure*/  return new Property("procedure", "", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Description of clinical condition indicating why the ImagingStudy was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1724546052: /*description*/  return new Property("description", "string", "The Imaging Manager description of the study. Institution-generated description or classification of the Study (component) performed.", 0, 1, description);
         case -905838985: /*series*/  return new Property("series", "", "Each study has one or more series of images or other content.", 0, java.lang.Integer.MAX_VALUE, series);
@@ -2989,8 +2927,7 @@ public class ImagingStudy extends DomainResource {
         case -1043544226: /*numberOfInstances*/ return this.numberOfInstances == null ? new Base[0] : new Base[] {this.numberOfInstances}; // UnsignedIntType
         case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : this.procedure.toArray(new Base[this.procedure.size()]); // ImagingStudyProcedureComponent
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -905838985: /*series*/ return this.series == null ? new Base[0] : this.series.toArray(new Base[this.series.size()]); // ImagingStudySeriesComponent
@@ -3045,11 +2982,8 @@ public class ImagingStudy extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -3096,10 +3030,8 @@ public class ImagingStudy extends DomainResource {
           this.getProcedure().add((ImagingStudyProcedureComponent) value);
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("description")) {
@@ -3128,8 +3060,7 @@ public class ImagingStudy extends DomainResource {
         case -1043544226:  return getNumberOfInstancesElement();
         case -1095204141:  return addProcedure(); 
         case 1901043637:  return getLocation();
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 3387378:  return addNote(); 
         case -1724546052:  return getDescriptionElement();
         case -905838985:  return addSeries(); 
@@ -3155,8 +3086,7 @@ public class ImagingStudy extends DomainResource {
         case -1043544226: /*numberOfInstances*/ return new String[] {"unsignedInt"};
         case -1095204141: /*procedure*/ return new String[] {};
         case 1901043637: /*location*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -905838985: /*series*/ return new String[] {};
@@ -3213,11 +3143,8 @@ public class ImagingStudy extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -3283,15 +3210,10 @@ public class ImagingStudy extends DomainResource {
             dst.procedure.add(i.copy());
         };
         dst.location = location == null ? null : location.copy();
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -3322,9 +3244,8 @@ public class ImagingStudy extends DomainResource {
            && compareDeep(basedOn, o.basedOn, true) && compareDeep(referrer, o.referrer, true) && compareDeep(interpreter, o.interpreter, true)
            && compareDeep(endpoint, o.endpoint, true) && compareDeep(numberOfSeries, o.numberOfSeries, true)
            && compareDeep(numberOfInstances, o.numberOfInstances, true) && compareDeep(procedure, o.procedure, true)
-           && compareDeep(location, o.location, true) && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(note, o.note, true) && compareDeep(description, o.description, true) && compareDeep(series, o.series, true)
-          ;
+           && compareDeep(location, o.location, true) && compareDeep(reason, o.reason, true) && compareDeep(note, o.note, true)
+           && compareDeep(description, o.description, true) && compareDeep(series, o.series, true);
       }
 
       @Override
@@ -3342,8 +3263,7 @@ public class ImagingStudy extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, modality
           , subject, encounter, started, basedOn, referrer, interpreter, endpoint, numberOfSeries
-          , numberOfInstances, procedure, location, reasonCode, reasonReference, note, description
-          , series);
+          , numberOfInstances, procedure, location, reason, note, description, series);
       }
 
   @Override
@@ -3566,17 +3486,17 @@ public class ImagingStudy extends DomainResource {
    * <p>
    * Description: <b>The reason for the study</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImagingStudy.reasonCode</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason", path="ImagingStudy.reasonCode", description="The reason for the study", type="token" )
+  @SearchParamDefinition(name="reason", path="", description="The reason for the study", type="token" )
   public static final String SP_REASON = "reason";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reason</b>
    * <p>
    * Description: <b>The reason for the study</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImagingStudy.reasonCode</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REASON = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REASON);

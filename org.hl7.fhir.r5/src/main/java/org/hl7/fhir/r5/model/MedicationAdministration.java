@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -987,10 +987,10 @@ public class MedicationAdministration extends DomainResource {
     protected Reference encounter;
 
     /**
-     * Additional information (for example, patient height and weight) that supports the administration of the medication.
+     * Additional information (for example, patient height and weight) that supports the administration of the medication.  This attribute can be used to provide documentation of specific characteristics of the patient present at the time of administration.  For example, if the dose says "give "x" if the heartrate exceeds "y"", then the heart rate can be included using this attribute.
      */
     @Child(name = "supportingInformation", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Additional information to support administration", formalDefinition="Additional information (for example, patient height and weight) that supports the administration of the medication." )
+    @Description(shortDefinition="Additional information to support administration", formalDefinition="Additional information (for example, patient height and weight) that supports the administration of the medication.  This attribute can be used to provide documentation of specific characteristics of the patient present at the time of administration.  For example, if the dose says \"give \"x\" if the heartrate exceeds \"y\"\", then the heart rate can be included using this attribute." )
     protected List<Reference> supportingInformation;
 
     /**
@@ -1015,56 +1015,49 @@ public class MedicationAdministration extends DomainResource {
     protected List<MedicationAdministrationPerformerComponent> performer;
 
     /**
-     * A code indicating why the medication was given.
+     * A code, Condition or observation that supports why the medication was administered.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Reason administration performed", formalDefinition="A code indicating why the medication was given." )
+    @Child(name = "reason", type = {CodeableReference.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Concept, condition or observation that supports why the medication was administered", formalDefinition="A code, Condition or observation that supports why the medication was administered." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/reason-medication-given-codes")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Condition or observation that supports why the medication was administered.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Condition or observation that supports why the medication was administered", formalDefinition="Condition or observation that supports why the medication was administered." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * The original request, instruction or authority to perform the administration.
      */
-    @Child(name = "request", type = {MedicationRequest.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "request", type = {MedicationRequest.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Request administration performed against", formalDefinition="The original request, instruction or authority to perform the administration." )
     protected Reference request;
 
     /**
      * The device used in administering the medication to the patient.  For example, a particular infusion pump.
      */
-    @Child(name = "device", type = {Device.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "device", type = {Device.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Device used to administer", formalDefinition="The device used in administering the medication to the patient.  For example, a particular infusion pump." )
     protected List<Reference> device;
 
     /**
      * Extra information about the medication administration that is not conveyed by the other attributes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information about the administration", formalDefinition="Extra information about the medication administration that is not conveyed by the other attributes." )
     protected List<Annotation> note;
 
     /**
      * Describes the medication dosage information details e.g. dose, rate, site, route, etc.
      */
-    @Child(name = "dosage", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "dosage", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details of how medication was taken", formalDefinition="Describes the medication dosage information details e.g. dose, rate, site, route, etc." )
     protected MedicationAdministrationDosageComponent dosage;
 
     /**
      * A summary of the events of interest that have occurred, such as when the administration was verified.
      */
-    @Child(name = "eventHistory", type = {Provenance.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "eventHistory", type = {Provenance.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A list of events of interest in the lifecycle", formalDefinition="A summary of the events of interest that have occurred, such as when the administration was verified." )
     protected List<Reference> eventHistory;
 
-    private static final long serialVersionUID = -1672509843L;
+    private static final long serialVersionUID = -854071403L;
 
   /**
    * Constructor
@@ -1616,7 +1609,7 @@ public class MedicationAdministration extends DomainResource {
     }
 
     /**
-     * @return {@link #supportingInformation} (Additional information (for example, patient height and weight) that supports the administration of the medication.)
+     * @return {@link #supportingInformation} (Additional information (for example, patient height and weight) that supports the administration of the medication.  This attribute can be used to provide documentation of specific characteristics of the patient present at the time of administration.  For example, if the dose says "give "x" if the heartrate exceeds "y"", then the heart rate can be included using this attribute.)
      */
     public List<Reference> getSupportingInformation() { 
       if (this.supportingInformation == null)
@@ -1822,109 +1815,56 @@ public class MedicationAdministration extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (A code indicating why the medication was given.)
+     * @return {@link #reason} (A code, Condition or observation that supports why the medication was administered.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public MedicationAdministration setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public MedicationAdministration setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public MedicationAdministration addReasonCode(CodeableConcept t) { //3
+    public MedicationAdministration addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Condition or observation that supports why the medication was administered.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicationAdministration setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public MedicationAdministration addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -2147,12 +2087,11 @@ public class MedicationAdministration extends DomainResource {
         children.add(new Property("medication[x]", "CodeableConcept|Reference(Medication)", "Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, 1, medication));
         children.add(new Property("subject", "Reference(Patient|Group)", "The person or animal or group receiving the medication.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The visit, admission, or other contact between patient and health care provider during which the medication administration was performed.", 0, 1, encounter));
-        children.add(new Property("supportingInformation", "Reference(Any)", "Additional information (for example, patient height and weight) that supports the administration of the medication.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
+        children.add(new Property("supportingInformation", "Reference(Any)", "Additional information (for example, patient height and weight) that supports the administration of the medication.  This attribute can be used to provide documentation of specific characteristics of the patient present at the time of administration.  For example, if the dose says \"give \"x\" if the heartrate exceeds \"y\"\", then the heart rate can be included using this attribute.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
         children.add(new Property("occurence[x]", "dateTime|Period", "A specific date/time or interval of time during which the administration took place (or did not take place). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, 1, occurence));
         children.add(new Property("recorded", "dateTime", "The date the occurrence of the  MedicationAdministration was first captured in the record - potentially significantly after the occurrence of the event.", 0, 1, recorded));
         children.add(new Property("performer", "", "Indicates who or what performed the medication administration and how they were involved.", 0, java.lang.Integer.MAX_VALUE, performer));
-        children.add(new Property("reasonCode", "CodeableConcept", "A code indicating why the medication was given.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport)", "Condition or observation that supports why the medication was administered.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport)", "A code, Condition or observation that supports why the medication was administered.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("request", "Reference(MedicationRequest)", "The original request, instruction or authority to perform the administration.", 0, 1, request));
         children.add(new Property("device", "Reference(Device)", "The device used in administering the medication to the patient.  For example, a particular infusion pump.", 0, java.lang.Integer.MAX_VALUE, device));
         children.add(new Property("note", "Annotation", "Extra information about the medication administration that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -2177,15 +2116,14 @@ public class MedicationAdministration extends DomainResource {
         case 2104315196: /*medicationReference*/  return new Property("medication[x]", "Reference(Medication)", "Identifies the medication that was administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, 1, medication);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The person or animal or group receiving the medication.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The visit, admission, or other contact between patient and health care provider during which the medication administration was performed.", 0, 1, encounter);
-        case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information (for example, patient height and weight) that supports the administration of the medication.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
+        case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information (for example, patient height and weight) that supports the administration of the medication.  This attribute can be used to provide documentation of specific characteristics of the patient present at the time of administration.  For example, if the dose says \"give \"x\" if the heartrate exceeds \"y\"\", then the heart rate can be included using this attribute.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
         case 144188521: /*occurence[x]*/  return new Property("occurence[x]", "dateTime|Period", "A specific date/time or interval of time during which the administration took place (or did not take place). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, 1, occurence);
         case -1192857417: /*occurence*/  return new Property("occurence[x]", "dateTime|Period", "A specific date/time or interval of time during which the administration took place (or did not take place). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, 1, occurence);
         case -820552334: /*occurenceDateTime*/  return new Property("occurence[x]", "dateTime", "A specific date/time or interval of time during which the administration took place (or did not take place). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, 1, occurence);
         case 221195608: /*occurencePeriod*/  return new Property("occurence[x]", "Period", "A specific date/time or interval of time during which the administration took place (or did not take place). For many administrations, such as swallowing a tablet the use of dateTime is more appropriate.", 0, 1, occurence);
         case -799233872: /*recorded*/  return new Property("recorded", "dateTime", "The date the occurrence of the  MedicationAdministration was first captured in the record - potentially significantly after the occurrence of the event.", 0, 1, recorded);
         case 481140686: /*performer*/  return new Property("performer", "", "Indicates who or what performed the medication administration and how they were involved.", 0, java.lang.Integer.MAX_VALUE, performer);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A code indicating why the medication was given.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport)", "Condition or observation that supports why the medication was administered.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport)", "A code, Condition or observation that supports why the medication was administered.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1095692943: /*request*/  return new Property("request", "Reference(MedicationRequest)", "The original request, instruction or authority to perform the administration.", 0, 1, request);
         case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "The device used in administering the medication to the patient.  For example, a particular infusion pump.", 0, java.lang.Integer.MAX_VALUE, device);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Extra information about the medication administration that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -2214,8 +2152,7 @@ public class MedicationAdministration extends DomainResource {
         case -1192857417: /*occurence*/ return this.occurence == null ? new Base[0] : new Base[] {this.occurence}; // DataType
         case -799233872: /*recorded*/ return this.recorded == null ? new Base[0] : new Base[] {this.recorded}; // DateTimeType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // MedicationAdministrationPerformerComponent
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -2275,11 +2212,8 @@ public class MedicationAdministration extends DomainResource {
         case 481140686: // performer
           this.getPerformer().add((MedicationAdministrationPerformerComponent) value); // MedicationAdministrationPerformerComponent
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 1095692943: // request
           this.request = TypeConvertor.castToReference(value); // Reference
@@ -2334,10 +2268,8 @@ public class MedicationAdministration extends DomainResource {
           this.recorded = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
           this.getPerformer().add((MedicationAdministrationPerformerComponent) value);
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("request")) {
           this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
@@ -2373,8 +2305,7 @@ public class MedicationAdministration extends DomainResource {
         case -1192857417:  return getOccurence();
         case -799233872:  return getRecordedElement();
         case 481140686:  return addPerformer(); 
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 1095692943:  return getRequest();
         case -1335157162:  return addDevice(); 
         case 3387378:  return addNote(); 
@@ -2403,8 +2334,7 @@ public class MedicationAdministration extends DomainResource {
         case -1192857417: /*occurence*/ return new String[] {"dateTime", "Period"};
         case -799233872: /*recorded*/ return new String[] {"dateTime"};
         case 481140686: /*performer*/ return new String[] {};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 1095692943: /*request*/ return new String[] {"Reference"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -2474,11 +2404,8 @@ public class MedicationAdministration extends DomainResource {
         else if (name.equals("performer")) {
           return addPerformer();
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("request")) {
           this.request = new Reference();
@@ -2565,15 +2492,10 @@ public class MedicationAdministration extends DomainResource {
           for (MedicationAdministrationPerformerComponent i : performer)
             dst.performer.add(i.copy());
         };
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         dst.request = request == null ? null : request.copy();
         if (device != null) {
@@ -2611,9 +2533,9 @@ public class MedicationAdministration extends DomainResource {
            && compareDeep(category, o.category, true) && compareDeep(medication, o.medication, true) && compareDeep(subject, o.subject, true)
            && compareDeep(encounter, o.encounter, true) && compareDeep(supportingInformation, o.supportingInformation, true)
            && compareDeep(occurence, o.occurence, true) && compareDeep(recorded, o.recorded, true) && compareDeep(performer, o.performer, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(request, o.request, true) && compareDeep(device, o.device, true) && compareDeep(note, o.note, true)
-           && compareDeep(dosage, o.dosage, true) && compareDeep(eventHistory, o.eventHistory, true);
+           && compareDeep(reason, o.reason, true) && compareDeep(request, o.request, true) && compareDeep(device, o.device, true)
+           && compareDeep(note, o.note, true) && compareDeep(dosage, o.dosage, true) && compareDeep(eventHistory, o.eventHistory, true)
+          ;
       }
 
       @Override
@@ -2630,8 +2552,8 @@ public class MedicationAdministration extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, partOf, status, statusReason, category, medication
-          , subject, encounter, supportingInformation, occurence, recorded, performer, reasonCode
-          , reasonReference, request, device, note, dosage, eventHistory);
+          , subject, encounter, supportingInformation, occurence, recorded, performer, reason
+          , request, device, note, dosage, eventHistory);
       }
 
   @Override
@@ -2696,17 +2618,17 @@ public class MedicationAdministration extends DomainResource {
    * <p>
    * Description: <b>Reasons for administering the medication</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationAdministration.reasonCode</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason-given", path="MedicationAdministration.reasonCode", description="Reasons for administering the medication", type="token" )
+  @SearchParamDefinition(name="reason-given", path="", description="Reasons for administering the medication", type="token" )
   public static final String SP_REASON_GIVEN = "reason-given";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reason-given</b>
    * <p>
    * Description: <b>Reasons for administering the medication</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationAdministration.reasonCode</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REASON_GIVEN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REASON_GIVEN);

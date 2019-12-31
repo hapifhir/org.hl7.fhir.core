@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -80,9 +80,9 @@ public class Appointment extends VersionConvertor_40_50 {
     if (src.hasAppointmentType())
       tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     if (src.hasPriority())
       tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
     if (src.hasDescription())
@@ -131,10 +131,12 @@ public class Appointment extends VersionConvertor_40_50 {
       tgt.addSpecialty(convertCodeableConcept(t));
     if (src.hasAppointmentType())
       tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     if (src.hasPriority())
       tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
     if (src.hasDescription())

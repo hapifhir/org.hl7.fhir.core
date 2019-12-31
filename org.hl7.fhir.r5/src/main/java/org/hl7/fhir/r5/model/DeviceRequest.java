@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -483,47 +483,40 @@ public class DeviceRequest extends DomainResource {
     /**
      * Reason or justification for the use of this device.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Coded Reason for request", formalDefinition="Reason or justification for the use of this device." )
+    @Child(name = "reason", type = {CodeableReference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Coded/Linked Reason for request", formalDefinition="Reason or justification for the use of this device." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Reason or justification for the use of this device.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Linked Reason for request", formalDefinition="Reason or justification for the use of this device." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be required for delivering the requested service.
      */
-    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be required for delivering the requested service." )
     protected List<Reference> insurance;
 
     /**
      * Additional clinical information about the patient that may influence the request fulfilment.  For example, this may include where on the subject's body the device will be used (i.e. the target site).
      */
-    @Child(name = "supportingInfo", type = {Reference.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {Reference.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional clinical information", formalDefinition="Additional clinical information about the patient that may influence the request fulfilment.  For example, this may include where on the subject's body the device will be used (i.e. the target site)." )
     protected List<Reference> supportingInfo;
 
     /**
      * Details about this request that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.
      */
-    @Child(name = "note", type = {Annotation.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Notes or comments", formalDefinition="Details about this request that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<Annotation> note;
 
     /**
      * Key events in the history of the request.
      */
-    @Child(name = "relevantHistory", type = {Provenance.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relevantHistory", type = {Provenance.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Request provenance", formalDefinition="Key events in the history of the request." )
     protected List<Reference> relevantHistory;
 
-    private static final long serialVersionUID = 1859846276L;
+    private static final long serialVersionUID = -1895022932L;
 
   /**
    * Constructor
@@ -1330,109 +1323,56 @@ public class DeviceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (Reason or justification for the use of this device.)
+     * @return {@link #reason} (Reason or justification for the use of this device.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public DeviceRequest setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public DeviceRequest setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public DeviceRequest addReasonCode(CodeableConcept t) { //3
+    public DeviceRequest addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Reason or justification for the use of this device.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public DeviceRequest setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public DeviceRequest addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -1667,8 +1607,7 @@ public class DeviceRequest extends DomainResource {
         children.add(new Property("requester", "Reference(Device|Practitioner|PractitionerRole|Organization)", "The individual who initiated the request and has responsibility for its activation.", 0, 1, requester));
         children.add(new Property("performerType", "CodeableConcept", "Desired type of performer for doing the diagnostic testing.", 0, 1, performerType));
         children.add(new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the diagnostic testing.", 0, 1, performer));
-        children.add(new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be required for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient that may influence the request fulfilment.  For example, this may include where on the subject's body the device will be used (i.e. the target site).", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
         children.add(new Property("note", "Annotation", "Details about this request that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1703,8 +1642,7 @@ public class DeviceRequest extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Practitioner|PractitionerRole|Organization)", "The individual who initiated the request and has responsibility for its activation.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "Desired type of performer for doing the diagnostic testing.", 0, 1, performerType);
         case 481140686: /*performer*/  return new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the diagnostic testing.", 0, 1, performer);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of this device.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be required for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient that may influence the request fulfilment.  For example, this may include where on the subject's body the device will be used (i.e. the target site).", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Details about this request that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1735,8 +1673,7 @@ public class DeviceRequest extends DomainResource {
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : new Base[] {this.performerType}; // CodeableConcept
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : new Base[] {this.performer}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // Reference
         case 1922406657: /*supportingInfo*/ return this.supportingInfo == null ? new Base[0] : this.supportingInfo.toArray(new Base[this.supportingInfo.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -1806,11 +1743,8 @@ public class DeviceRequest extends DomainResource {
         case 481140686: // performer
           this.performer = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 73049818: // insurance
           this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
@@ -1870,10 +1804,8 @@ public class DeviceRequest extends DomainResource {
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performer")) {
           this.performer = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("insurance")) {
           this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
@@ -1910,8 +1842,7 @@ public class DeviceRequest extends DomainResource {
         case 693933948:  return getRequester();
         case -901444568:  return getPerformerType();
         case 481140686:  return getPerformer();
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 73049818:  return addInsurance(); 
         case 1922406657:  return addSupportingInfo(); 
         case 3387378:  return addNote(); 
@@ -1942,8 +1873,7 @@ public class DeviceRequest extends DomainResource {
         case 693933948: /*requester*/ return new String[] {"Reference"};
         case -901444568: /*performerType*/ return new String[] {"CodeableConcept"};
         case 481140686: /*performer*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 73049818: /*insurance*/ return new String[] {"Reference"};
         case 1922406657: /*supportingInfo*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -2029,11 +1959,8 @@ public class DeviceRequest extends DomainResource {
           this.performer = new Reference();
           return this.performer;
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("insurance")) {
           return addInsurance();
@@ -2106,15 +2033,10 @@ public class DeviceRequest extends DomainResource {
         dst.requester = requester == null ? null : requester.copy();
         dst.performerType = performerType == null ? null : performerType.copy();
         dst.performer = performer == null ? null : performer.copy();
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         if (insurance != null) {
           dst.insurance = new ArrayList<Reference>();
@@ -2156,9 +2078,9 @@ public class DeviceRequest extends DomainResource {
            && compareDeep(code, o.code, true) && compareDeep(parameter, o.parameter, true) && compareDeep(subject, o.subject, true)
            && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(authoredOn, o.authoredOn, true)
            && compareDeep(requester, o.requester, true) && compareDeep(performerType, o.performerType, true)
-           && compareDeep(performer, o.performer, true) && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(insurance, o.insurance, true) && compareDeep(supportingInfo, o.supportingInfo, true)
-           && compareDeep(note, o.note, true) && compareDeep(relevantHistory, o.relevantHistory, true);
+           && compareDeep(performer, o.performer, true) && compareDeep(reason, o.reason, true) && compareDeep(insurance, o.insurance, true)
+           && compareDeep(supportingInfo, o.supportingInfo, true) && compareDeep(note, o.note, true) && compareDeep(relevantHistory, o.relevantHistory, true)
+          ;
       }
 
       @Override
@@ -2177,8 +2099,7 @@ public class DeviceRequest extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, priorRequest, groupIdentifier, status, intent, priority
           , code, parameter, subject, encounter, occurrence, authoredOn, requester, performerType
-          , performer, reasonCode, reasonReference, insurance, supportingInfo, note, relevantHistory
-          );
+          , performer, reason, insurance, supportingInfo, note, relevantHistory);
       }
 
   @Override

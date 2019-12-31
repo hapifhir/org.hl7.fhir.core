@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -294,23 +294,16 @@ public class DeviceUseStatement extends DomainResource {
     protected Reference device;
 
     /**
-     * Reason or justification for the use of the device.
+     * Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUseStatement.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Why device was used", formalDefinition="Reason or justification for the use of the device." )
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Indicates another resource whose existence justifies this DeviceUseStatement.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Why was DeviceUseStatement performed?", formalDefinition="Indicates another resource whose existence justifies this DeviceUseStatement." )
-    protected List<Reference> reasonReference;
+    @Child(name = "reason", type = {CodeableReference.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Why device was used", formalDefinition="Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUseStatement." )
+    protected List<CodeableReference> reason;
 
     /**
      * Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Target body site", formalDefinition="Indicates the anotomic location on the subject's body where the device was used ( i.e. the target)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected CodeableConcept bodySite;
@@ -318,11 +311,11 @@ public class DeviceUseStatement extends DomainResource {
     /**
      * Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.
      */
-    @Child(name = "note", type = {Annotation.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Addition details (comments, instructions)", formalDefinition="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 2139955761L;
+    private static final long serialVersionUID = 2097046105L;
 
   /**
    * Constructor
@@ -733,109 +726,56 @@ public class DeviceUseStatement extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (Reason or justification for the use of the device.)
+     * @return {@link #reason} (Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUseStatement.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public DeviceUseStatement setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public DeviceUseStatement setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public DeviceUseStatement addReasonCode(CodeableConcept t) { //3
+    public DeviceUseStatement addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Indicates another resource whose existence justifies this DeviceUseStatement.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public DeviceUseStatement setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public DeviceUseStatement addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -926,8 +866,7 @@ public class DeviceUseStatement extends DomainResource {
         children.add(new Property("recordedOn", "dateTime", "The time at which the statement was made/recorded.", 0, 1, recordedOn));
         children.add(new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Who reported the device was being used by the patient.", 0, 1, source));
         children.add(new Property("device", "Reference(Device)", "The details of the device used.", 0, 1, device));
-        children.add(new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of the device.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("bodySite", "CodeableConcept", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite));
         children.add(new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note));
       }
@@ -948,8 +887,7 @@ public class DeviceUseStatement extends DomainResource {
         case 735397551: /*recordedOn*/  return new Property("recordedOn", "dateTime", "The time at which the statement was made/recorded.", 0, 1, recordedOn);
         case -896505829: /*source*/  return new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Who reported the device was being used by the patient.", 0, 1, source);
         case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "The details of the device used.", 0, 1, device);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Reason or justification for the use of the device.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUseStatement.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -969,8 +907,7 @@ public class DeviceUseStatement extends DomainResource {
         case 735397551: /*recordedOn*/ return this.recordedOn == null ? new Base[0] : new Base[] {this.recordedOn}; // DateTimeType
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // Reference
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableConcept
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         default: return super.getProperty(hash, name, checkValid);
@@ -1009,11 +946,8 @@ public class DeviceUseStatement extends DomainResource {
         case -1335157162: // device
           this.device = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 1702620169: // bodySite
           this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1047,10 +981,8 @@ public class DeviceUseStatement extends DomainResource {
           this.source = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
           this.device = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("bodySite")) {
           this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("note")) {
@@ -1073,8 +1005,7 @@ public class DeviceUseStatement extends DomainResource {
         case 735397551:  return getRecordedOnElement();
         case -896505829:  return getSource();
         case -1335157162:  return getDevice();
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 1702620169:  return getBodySite();
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
@@ -1094,8 +1025,7 @@ public class DeviceUseStatement extends DomainResource {
         case 735397551: /*recordedOn*/ return new String[] {"dateTime"};
         case -896505829: /*source*/ return new String[] {"Reference"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         default: return super.getTypesForProperty(hash, name);
@@ -1144,11 +1074,8 @@ public class DeviceUseStatement extends DomainResource {
           this.device = new Reference();
           return this.device;
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("bodySite")) {
           this.bodySite = new CodeableConcept();
@@ -1195,15 +1122,10 @@ public class DeviceUseStatement extends DomainResource {
         dst.recordedOn = recordedOn == null ? null : recordedOn.copy();
         dst.source = source == null ? null : source.copy();
         dst.device = device == null ? null : device.copy();
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         dst.bodySite = bodySite == null ? null : bodySite.copy();
         if (note != null) {
@@ -1227,8 +1149,8 @@ public class DeviceUseStatement extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(status, o.status, true)
            && compareDeep(subject, o.subject, true) && compareDeep(derivedFrom, o.derivedFrom, true) && compareDeep(timing, o.timing, true)
            && compareDeep(recordedOn, o.recordedOn, true) && compareDeep(source, o.source, true) && compareDeep(device, o.device, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(bodySite, o.bodySite, true) && compareDeep(note, o.note, true);
+           && compareDeep(reason, o.reason, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(note, o.note, true)
+          ;
       }
 
       @Override
@@ -1243,8 +1165,8 @@ public class DeviceUseStatement extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, status
-          , subject, derivedFrom, timing, recordedOn, source, device, reasonCode, reasonReference
-          , bodySite, note);
+          , subject, derivedFrom, timing, recordedOn, source, device, reason, bodySite
+          , note);
       }
 
   @Override

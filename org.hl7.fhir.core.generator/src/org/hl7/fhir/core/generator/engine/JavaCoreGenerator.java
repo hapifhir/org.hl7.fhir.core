@@ -12,6 +12,7 @@ import java.util.Map;
 import org.hl7.fhir.core.generator.analysis.Analyser;
 import org.hl7.fhir.core.generator.analysis.Analysis;
 import org.hl7.fhir.core.generator.codegen.Configuration;
+import org.hl7.fhir.core.generator.codegen.JavaConstantsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaEnumerationsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaFactoryGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
@@ -78,6 +79,10 @@ public class JavaCoreGenerator {
     updateExpansions(master, expansions);
     
     System.out.println("Generate Model");   
+    System.out.println(" .. Constants");
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "Constants.java")), master, config, date, npm.version());
+    cgen.generate();
+    cgen.close();
     System.out.println(" .. Enumerations");
     JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "Enumerations.java")), master, config, date, npm.version());
     egen.generate();

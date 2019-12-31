@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4964,146 +4964,153 @@ public class SubstanceDefinition extends DomainResource {
     protected Identifier identifier;
 
     /**
+     * A business level identifier of the substance.
+     */
+    @Child(name = "version", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="A business level identifier of the substance", formalDefinition="A business level identifier of the substance." )
+    protected StringType version;
+
+    /**
      * Status of substance within the catalogue e.g. approved.
      */
-    @Child(name = "status", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "status", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Status of substance within the catalogue e.g. approved", formalDefinition="Status of substance within the catalogue e.g. approved." )
     protected CodeableConcept status;
 
     /**
      * High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological", formalDefinition="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological." )
     protected CodeableConcept category;
 
     /**
      * If the substance applies to only human or veterinary use.
      */
-    @Child(name = "domain", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "domain", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If the substance applies to only human or veterinary use", formalDefinition="If the substance applies to only human or veterinary use." )
     protected CodeableConcept domain;
 
     /**
      * Textual description of the substance.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Textual description of the substance", formalDefinition="Textual description of the substance." )
     protected MarkdownType description;
 
     /**
      * Supporting literature.
      */
-    @Child(name = "source", type = {DocumentReference.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "source", type = {DocumentReference.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Supporting literature", formalDefinition="Supporting literature." )
     protected List<Reference> source;
 
     /**
      * Textual comment about this record of a substance.
      */
-    @Child(name = "note", type = {Annotation.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "note", type = {Annotation.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Textual comment about this record of a substance", formalDefinition="Textual comment about this record of a substance." )
     protected List<Annotation> note;
 
     /**
      * A company that makes this substance.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {Organization.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that makes this substance", formalDefinition="A company that makes this substance." )
     protected List<Reference> manufacturer;
 
     /**
      * A company that supplies this substance.
      */
-    @Child(name = "supplier", type = {Organization.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "supplier", type = {Organization.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that supplies this substance", formalDefinition="A company that supplies this substance." )
     protected List<Reference> supplier;
 
     /**
      * Moiety, for structural modifications.
      */
-    @Child(name = "moiety", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "moiety", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Moiety, for structural modifications", formalDefinition="Moiety, for structural modifications." )
     protected List<SubstanceDefinitionMoietyComponent> moiety;
 
     /**
      * General specifications for this substance, including how it is related to other substances.
      */
-    @Child(name = "property", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General specifications for this substance, including how it is related to other substances", formalDefinition="General specifications for this substance, including how it is related to other substances." )
     protected List<SubstanceDefinitionPropertyComponent> property;
 
     /**
      * General information detailing this substance.
      */
-    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General information detailing this substance", formalDefinition="General information detailing this substance." )
     protected Reference referenceInformation;
 
     /**
      * Structural information.
      */
-    @Child(name = "structure", type = {}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "structure", type = {}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Structural information", formalDefinition="Structural information." )
     protected SubstanceDefinitionStructureComponent structure;
 
     /**
      * Codes associated with the substance.
      */
-    @Child(name = "code", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "code", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Codes associated with the substance", formalDefinition="Codes associated with the substance." )
     protected List<SubstanceDefinitionCodeComponent> code;
 
     /**
      * Names applicable to this substance.
      */
-    @Child(name = "name", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "name", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Names applicable to this substance", formalDefinition="Names applicable to this substance." )
     protected List<SubstanceDefinitionNameComponent> name;
 
     /**
      * The molecular weight or weight range (for proteins, polymers or nucleic acids).
      */
-    @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
     protected List<SubstanceDefinitionStructureIsotopeMolecularWeightComponent> molecularWeight;
 
     /**
      * A link between this substance and another, with details of the relationship.
      */
-    @Child(name = "relationship", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "relationship", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A link between this substance and another, with details of the relationship", formalDefinition="A link between this substance and another, with details of the relationship." )
     protected List<SubstanceDefinitionRelationshipComponent> relationship;
 
     /**
      * Data items specific to nucleic acids.
      */
-    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to nucleic acids", formalDefinition="Data items specific to nucleic acids." )
     protected Reference nucleicAcid;
 
     /**
      * Data items specific to polymers.
      */
-    @Child(name = "polymer", type = {SubstancePolymer.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "polymer", type = {SubstancePolymer.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to polymers", formalDefinition="Data items specific to polymers." )
     protected Reference polymer;
 
     /**
      * Data items specific to proteins.
      */
-    @Child(name = "protein", type = {SubstanceProtein.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "protein", type = {SubstanceProtein.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to proteins", formalDefinition="Data items specific to proteins." )
     protected Reference protein;
 
     /**
      * Material or taxonomic/anatomical source for the substance.
      */
-    @Child(name = "sourceMaterial", type = {SubstanceSourceMaterial.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sourceMaterial", type = {SubstanceSourceMaterial.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Material or taxonomic/anatomical source for the substance", formalDefinition="Material or taxonomic/anatomical source for the substance." )
     protected Reference sourceMaterial;
 
-    private static final long serialVersionUID = -2142973741L;
+    private static final long serialVersionUID = 63520388L;
 
   /**
    * Constructor
@@ -5133,6 +5140,55 @@ public class SubstanceDefinition extends DomainResource {
      */
     public SubstanceDefinition setIdentifier(Identifier value) { 
       this.identifier = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #version} (A business level identifier of the substance.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     */
+    public StringType getVersionElement() { 
+      if (this.version == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SubstanceDefinition.version");
+        else if (Configuration.doAutoCreate())
+          this.version = new StringType(); // bb
+      return this.version;
+    }
+
+    public boolean hasVersionElement() { 
+      return this.version != null && !this.version.isEmpty();
+    }
+
+    public boolean hasVersion() { 
+      return this.version != null && !this.version.isEmpty();
+    }
+
+    /**
+     * @param value {@link #version} (A business level identifier of the substance.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     */
+    public SubstanceDefinition setVersionElement(StringType value) { 
+      this.version = value;
+      return this;
+    }
+
+    /**
+     * @return A business level identifier of the substance.
+     */
+    public String getVersion() { 
+      return this.version == null ? null : this.version.getValue();
+    }
+
+    /**
+     * @param value A business level identifier of the substance.
+     */
+    public SubstanceDefinition setVersion(String value) { 
+      if (Utilities.noString(value))
+        this.version = null;
+      else {
+        if (this.version == null)
+          this.version = new StringType();
+        this.version.setValue(value);
+      }
       return this;
     }
 
@@ -5934,6 +5990,7 @@ public class SubstanceDefinition extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, 1, identifier));
+        children.add(new Property("version", "string", "A business level identifier of the substance.", 0, 1, version));
         children.add(new Property("status", "CodeableConcept", "Status of substance within the catalogue e.g. approved.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category));
         children.add(new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain));
@@ -5960,6 +6017,7 @@ public class SubstanceDefinition extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, 1, identifier);
+        case 351608024: /*version*/  return new Property("version", "string", "A business level identifier of the substance.", 0, 1, version);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "Status of substance within the catalogue e.g. approved.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category);
         case -1326197564: /*domain*/  return new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain);
@@ -5989,6 +6047,7 @@ public class SubstanceDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -1326197564: /*domain*/ return this.domain == null ? new Base[0] : new Base[] {this.domain}; // CodeableConcept
@@ -6019,6 +6078,9 @@ public class SubstanceDefinition extends DomainResource {
         switch (hash) {
         case -1618432855: // identifier
           this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          return value;
+        case 351608024: // version
+          this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -6089,6 +6151,8 @@ public class SubstanceDefinition extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("version")) {
+          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
@@ -6138,6 +6202,7 @@ public class SubstanceDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return getIdentifier();
+        case 351608024:  return getVersionElement();
         case -892481550:  return getStatus();
         case 50511102:  return getCategory();
         case -1326197564:  return getDomain();
@@ -6167,6 +6232,7 @@ public class SubstanceDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 351608024: /*version*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1326197564: /*domain*/ return new String[] {"CodeableConcept"};
@@ -6197,6 +6263,9 @@ public class SubstanceDefinition extends DomainResource {
         if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
+        }
+        else if (name.equals("version")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.version");
         }
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
@@ -6285,6 +6354,7 @@ public class SubstanceDefinition extends DomainResource {
       public void copyValues(SubstanceDefinition dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
+        dst.version = version == null ? null : version.copy();
         dst.status = status == null ? null : status.copy();
         dst.category = category == null ? null : category.copy();
         dst.domain = domain == null ? null : domain.copy();
@@ -6358,14 +6428,15 @@ public class SubstanceDefinition extends DomainResource {
         if (!(other_ instanceof SubstanceDefinition))
           return false;
         SubstanceDefinition o = (SubstanceDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
-           && compareDeep(domain, o.domain, true) && compareDeep(description, o.description, true) && compareDeep(source, o.source, true)
-           && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(supplier, o.supplier, true)
-           && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true) && compareDeep(referenceInformation, o.referenceInformation, true)
-           && compareDeep(structure, o.structure, true) && compareDeep(code, o.code, true) && compareDeep(name, o.name, true)
-           && compareDeep(molecularWeight, o.molecularWeight, true) && compareDeep(relationship, o.relationship, true)
-           && compareDeep(nucleicAcid, o.nucleicAcid, true) && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true)
-           && compareDeep(sourceMaterial, o.sourceMaterial, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true) && compareDeep(status, o.status, true)
+           && compareDeep(category, o.category, true) && compareDeep(domain, o.domain, true) && compareDeep(description, o.description, true)
+           && compareDeep(source, o.source, true) && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true)
+           && compareDeep(supplier, o.supplier, true) && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true)
+           && compareDeep(referenceInformation, o.referenceInformation, true) && compareDeep(structure, o.structure, true)
+           && compareDeep(code, o.code, true) && compareDeep(name, o.name, true) && compareDeep(molecularWeight, o.molecularWeight, true)
+           && compareDeep(relationship, o.relationship, true) && compareDeep(nucleicAcid, o.nucleicAcid, true)
+           && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true) && compareDeep(sourceMaterial, o.sourceMaterial, true)
+          ;
       }
 
       @Override
@@ -6375,14 +6446,14 @@ public class SubstanceDefinition extends DomainResource {
         if (!(other_ instanceof SubstanceDefinition))
           return false;
         SubstanceDefinition o = (SubstanceDefinition) other_;
-        return compareValues(description, o.description, true);
+        return compareValues(version, o.version, true) && compareValues(description, o.description, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, category
-          , domain, description, source, note, manufacturer, supplier, moiety, property
-          , referenceInformation, structure, code, name, molecularWeight, relationship, nucleicAcid
-          , polymer, protein, sourceMaterial);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, version, status
+          , category, domain, description, source, note, manufacturer, supplier, moiety
+          , property, referenceInformation, structure, code, name, molecularWeight, relationship
+          , nucleicAcid, polymer, protein, sourceMaterial);
       }
 
   @Override

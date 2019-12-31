@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -432,26 +432,19 @@ public class CommunicationRequest extends DomainResource {
     /**
      * Describes why the request is being made in coded or textual form.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why is communication needed?", formalDefinition="Describes why the request is being made in coded or textual form." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActReason")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Indicates another resource whose existence justifies this request.
-     */
-    @Child(name = "reasonReference", type = {Reference.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Why is communication needed?", formalDefinition="Indicates another resource whose existence justifies this request." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * Comments made about the request by the requester, sender, recipient, subject or other participants.
      */
-    @Child(name = "note", type = {Annotation.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about communication request", formalDefinition="Comments made about the request by the requester, sender, recipient, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -914137345L;
+    private static final long serialVersionUID = 239948247L;
 
   /**
    * Constructor
@@ -1305,109 +1298,56 @@ public class CommunicationRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (Describes why the request is being made in coded or textual form.)
+     * @return {@link #reason} (Describes why the request is being made in coded or textual form.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CommunicationRequest setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public CommunicationRequest setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public CommunicationRequest addReasonCode(CodeableConcept t) { //3
+    public CommunicationRequest addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Indicates another resource whose existence justifies this request.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public CommunicationRequest setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public CommunicationRequest addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -1484,8 +1424,7 @@ public class CommunicationRequest extends DomainResource {
         children.add(new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who asks for the information to be shared.", 0, 1, requester));
         children.add(new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient));
         children.add(new Property("informationProvider", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, java.lang.Integer.MAX_VALUE, informationProvider));
-        children.add(new Property("reasonCode", "CodeableConcept", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Any)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Any)", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("note", "Annotation", "Comments made about the request by the requester, sender, recipient, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
       }
 
@@ -1514,8 +1453,7 @@ public class CommunicationRequest extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, individual, or organization who asks for the information to be shared.", 0, 1, requester);
         case 820081177: /*recipient*/  return new Property("recipient", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Group|CareTeam|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.", 0, java.lang.Integer.MAX_VALUE, recipient);
         case 1255338813: /*informationProvider*/  return new Property("informationProvider", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService|Endpoint)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, java.lang.Integer.MAX_VALUE, informationProvider);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "Indicates another resource whose existence justifies this request.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Any)", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the request by the requester, sender, recipient, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1544,8 +1482,7 @@ public class CommunicationRequest extends DomainResource {
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case 820081177: /*recipient*/ return this.recipient == null ? new Base[0] : this.recipient.toArray(new Base[this.recipient.size()]); // Reference
         case 1255338813: /*informationProvider*/ return this.informationProvider == null ? new Base[0] : this.informationProvider.toArray(new Base[this.informationProvider.size()]); // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1614,11 +1551,8 @@ public class CommunicationRequest extends DomainResource {
         case 1255338813: // informationProvider
           this.getInformationProvider().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -1670,10 +1604,8 @@ public class CommunicationRequest extends DomainResource {
           this.getRecipient().add(TypeConvertor.castToReference(value));
         } else if (name.equals("informationProvider")) {
           this.getInformationProvider().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
@@ -1704,8 +1636,7 @@ public class CommunicationRequest extends DomainResource {
         case 693933948:  return getRequester();
         case 820081177:  return addRecipient(); 
         case 1255338813:  return addInformationProvider(); 
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1734,8 +1665,7 @@ public class CommunicationRequest extends DomainResource {
         case 693933948: /*requester*/ return new String[] {"Reference"};
         case 820081177: /*recipient*/ return new String[] {"Reference"};
         case 1255338813: /*informationProvider*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1811,11 +1741,8 @@ public class CommunicationRequest extends DomainResource {
         else if (name.equals("informationProvider")) {
           return addInformationProvider();
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -1892,15 +1819,10 @@ public class CommunicationRequest extends DomainResource {
           for (Reference i : informationProvider)
             dst.informationProvider.add(i.copy());
         };
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -1927,8 +1849,7 @@ public class CommunicationRequest extends DomainResource {
            && compareDeep(about, o.about, true) && compareDeep(encounter, o.encounter, true) && compareDeep(payload, o.payload, true)
            && compareDeep(occurrence, o.occurrence, true) && compareDeep(authoredOn, o.authoredOn, true) && compareDeep(requester, o.requester, true)
            && compareDeep(recipient, o.recipient, true) && compareDeep(informationProvider, o.informationProvider, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(note, o.note, true);
+           && compareDeep(reason, o.reason, true) && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -1946,7 +1867,7 @@ public class CommunicationRequest extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, replaces
           , groupIdentifier, status, statusReason, category, priority, doNotPerform, medium
           , subject, about, encounter, payload, occurrence, authoredOn, requester, recipient
-          , informationProvider, reasonCode, reasonReference, note);
+          , informationProvider, reason, note);
       }
 
   @Override

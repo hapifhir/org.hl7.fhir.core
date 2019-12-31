@@ -3656,6 +3656,20 @@ public class VersionConvertor_30_50 {
   }
 }
 
+  private static CodeableReference convertReferenceToCodableReference(org.hl7.fhir.dstu3.model.Reference src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setReference(convertReference(src));
+    return tgt;
+  }
+
+  private static CodeableReference convertCodeableConceptToCodableReference(org.hl7.fhir.dstu3.model.CodeableConcept src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setConcept(convertCodeableConcept(src));
+    return tgt;
+  }
+
+
+  
   public static org.hl7.fhir.r5.model.Appointment convertAppointment(org.hl7.fhir.dstu3.model.Appointment src) throws FHIRException {
     if (src == null)
       return null;
@@ -3674,9 +3688,9 @@ public class VersionConvertor_30_50 {
     if (src.hasAppointmentType())
       tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getIndication())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     if (src.hasPriority())
       tgt.setPriority(src.getPriority());
     if (src.hasDescription())
@@ -3721,10 +3735,12 @@ public class VersionConvertor_30_50 {
       tgt.addSpecialty(convertCodeableConcept(t));
     if (src.hasAppointmentType())
       tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addIndication(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReason(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addIndication(convertReference(t.getReference()));
     if (src.hasPriority())
       tgt.setPriority(src.getPriority());
     if (src.hasDescription())
@@ -5561,7 +5577,7 @@ public class VersionConvertor_30_50 {
       tgt.addCareTeam(convertReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAddresses()) {
-      tgt.addAddressesReference(convertReference(t));
+      tgt.addAddresses(convertReferenceToCodableReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInfo()) {
       tgt.addSupportingInfo(convertReference(t));
@@ -5626,8 +5642,9 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) {
       tgt.addCareTeam(convertReference(t));
     }
-    for (org.hl7.fhir.r5.model.Reference t : src.getAddressesReference()) {
-      tgt.addAddresses(convertReference(t));
+    for (CodeableReference t : src.getAddresses()) {
+      if (t.hasReference())
+      tgt.addAddresses(convertReference(t.getReference()));
     }
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) {
       tgt.addSupportingInfo(convertReference(t));
@@ -5652,10 +5669,10 @@ public class VersionConvertor_30_50 {
     copyElement(src, tgt);
 
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
-      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t));
+      tgt.addOutcome(convertCodeableConceptToCodableReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getOutcomeReference()) {
-      tgt.addOutcomeReference(convertReference(t));
+      tgt.addOutcome(convertReferenceToCodableReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getProgress()) {
       tgt.addProgress(convertAnnotation(t));
@@ -5676,11 +5693,13 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent();
     copyElement(src, tgt);
 
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
-      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t));
+    for (CodeableReference t : src.getOutcome()) {
+      if (t.hasConcept())
+      tgt.addOutcomeCodeableConcept(convertCodeableConcept(t.getConcept()));
     }
-    for (org.hl7.fhir.r5.model.Reference t : src.getOutcomeReference()) {
-      tgt.addOutcomeReference(convertReference(t));
+    for (CodeableReference t : src.getOutcome()) {
+      if (t.hasReference())
+      tgt.addOutcomeReference(convertReference(t.getReference()));
     }
     for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) {
       tgt.addProgress(convertAnnotation(t));
@@ -5713,10 +5732,10 @@ public class VersionConvertor_30_50 {
       tgt.setCode(convertCodeableConcept(src.getCode()));
     }
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference()) {
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getGoal()) {
       tgt.addGoal(convertReference(t));
@@ -5776,11 +5795,13 @@ public class VersionConvertor_30_50 {
     if (src.hasCode()) {
       tgt.setCode(convertCodeableConcept(src.getCode()));
     }
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode()) {
-      tgt.addReasonCode(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason()) {
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
     }
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference()) {
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason()) {
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     }
     for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) {
       tgt.addGoal(convertReference(t));
@@ -5967,9 +5988,9 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.dstu3.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertCareTeamParticipantComponent(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getManagingOrganization())
       tgt.addManagingOrganization(convertReference(t));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
@@ -5996,10 +6017,12 @@ public class VersionConvertor_30_50 {
       tgt.setPeriod(convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertCareTeamParticipantComponent(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getManagingOrganization())
       tgt.addManagingOrganization(convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
@@ -6847,9 +6870,9 @@ public class VersionConvertor_30_50 {
     org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
     copyElement(src, tgt);
     if (src.hasItemCodeableConcept())
-      tgt.setItemCodeableConcept(convertCodeableConcept(src.getItemCodeableConcept()));
+      tgt.setItem(convertCodeableConceptToCodableReference(src.getItemCodeableConcept()));
     if (src.hasItemReference())
-      tgt.setItemReference(convertReference(src.getItemReference()));
+      tgt.setItem(convertReferenceToCodableReference(src.getItemReference()));
     if (src.hasBasis())
       tgt.setBasis(src.getBasis());
     return tgt;
@@ -6860,10 +6883,10 @@ public class VersionConvertor_30_50 {
       return null;
     org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent();
     copyElement(src, tgt);
-    if (src.hasItemCodeableConcept())
-      tgt.setItem(convertType(src.getItemCodeableConcept()));
-    else if (src.hasItemReference())
-      tgt.setItem(convertType(src.getItemReference()));
+    if (src.hasItem() && src.getItem().hasConcept())
+      tgt.setItem(convertType(src.getItem().getConcept()));
+    else if (src.hasItem() && src.getItem().hasReference())
+      tgt.setItem(convertType(src.getItem().getReference()));
     if (src.hasBasis())
       tgt.setBasis(src.getBasis());
     return tgt;
@@ -7287,9 +7310,9 @@ public class VersionConvertor_30_50 {
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent t : src.getPayload())
       tgt.addPayload(convertCommunicationPayloadComponent(t));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
@@ -7333,10 +7356,12 @@ public class VersionConvertor_30_50 {
       tgt.setReceived(src.getReceived());
     if (src.hasSender())
       tgt.setSender(convertReference(src.getSender()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent t : src.getPayload())
       tgt.addPayload(convertCommunicationPayloadComponent(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
@@ -10122,7 +10147,7 @@ public class VersionConvertor_30_50 {
     if (src.hasDevice())
       tgt.setDevice(convertReference(src.getDevice()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     if (src.hasBodySite())
       tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
@@ -10149,8 +10174,9 @@ public class VersionConvertor_30_50 {
       tgt.setSource(convertReference(src.getSource()));
     if (src.hasDevice())
       tgt.setDevice(convertReference(src.getDevice()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addIndication(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addIndication(convertCodeableConcept(t.getConcept()));
     if (src.hasBodySite())
       tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
@@ -10760,7 +10786,7 @@ public class VersionConvertor_30_50 {
     if (src.hasLength())
       tgt.setLength(convertDuration(src.getLength()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Encounter.DiagnosisComponent t : src.getDiagnosis())
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAccount())
@@ -10809,8 +10835,9 @@ public class VersionConvertor_30_50 {
       tgt.setPeriod(convertPeriod(src.getPeriod()));
     if (src.hasLength())
       tgt.setLength(convertDuration(src.getLength()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReason(convertCodeableConcept(t.getConcept()));
     for (org.hl7.fhir.r5.model.Encounter.DiagnosisComponent t : src.getDiagnosis())
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount())
@@ -11437,9 +11464,9 @@ public class VersionConvertor_30_50 {
     if (src.hasDeceased())
       tgt.setDeceased(convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
@@ -11478,10 +11505,12 @@ public class VersionConvertor_30_50 {
       tgt.setEstimatedAge(src.getEstimatedAge());
     if (src.hasDeceased())
       tgt.setDeceased(convertType(src.getDeceased()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
@@ -11671,9 +11700,9 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCode())
-      tgt.addOutcomeCode(convertCodeableConcept(t));
+      tgt.addOutcome(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+      tgt.addOutcome(convertReferenceToCodableReference(t));
     return tgt;
   }
 
@@ -11708,10 +11737,12 @@ public class VersionConvertor_30_50 {
       tgt.addAddresses(convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOutcomeCode())
-      tgt.addOutcomeCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasConcept())
+      tgt.addOutcomeCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasReference())
+      tgt.addOutcomeReference(convertReference(t.getReference()));
     return tgt;
   }
 
@@ -12433,7 +12464,7 @@ public class VersionConvertor_30_50 {
       tgt.addProcedure().setValue(convertCodeableConcept(t));
     }
     if (src.hasReason()) {
-      tgt.addReasonCode(convertCodeableConcept(src.getReason()));
+      tgt.addReason(convertCodeableConceptToCodableReference(src.getReason()));
     }
     if (src.hasDescription()) {
       tgt.setDescription(src.getDescription());
@@ -12515,9 +12546,9 @@ public class VersionConvertor_30_50 {
       }
     }
     // location was added in R4 and does not exist in DSTU3
-    List<org.hl7.fhir.r5.model.CodeableConcept> reasonCodes = src.getReasonCode();
+    List<org.hl7.fhir.r5.model.CodeableReference> reasonCodes = src.getReason();
     if (reasonCodes.size() > 0) {
-      tgt.setReason(convertCodeableConcept(reasonCodes.get(0)));
+      tgt.setReason(convertCodeableConcept(reasonCodes.get(0).getConcept()));
 
       if (reasonCodes.size() > 1) {
         // TODO print a warning that only one reason could be converted
@@ -12711,7 +12742,7 @@ public class VersionConvertor_30_50 {
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
 //    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReasonNotGiven())
 //      tgt.addReason(convertCodeableConcept(t));
     return tgt;
@@ -12756,8 +12787,9 @@ public class VersionConvertor_30_50 {
       tgt.addPractitioner(convertImmunizationPractitionerComponent(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.getExplanation().addReason(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.getExplanation().addReason(convertCodeableConcept(t.getConcept()));
     return tgt;
   }
 
@@ -13737,9 +13769,9 @@ public class VersionConvertor_30_50 {
 //    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonNotGiven())
 //      tgt.addReasonNotGiven(convertCodeableConcept(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     if (src.hasPrescription())
       tgt.setRequest(convertReference(src.getPrescription()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getDevice())
@@ -13784,10 +13816,12 @@ public class VersionConvertor_30_50 {
 //      tgt.setNotGiven(src.getNotGiven());
 //    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonNotGiven())
 //      tgt.addReasonNotGiven(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     if (src.hasRequest())
       tgt.setPrescription(convertReference(src.getRequest()));
     for (org.hl7.fhir.r5.model.Reference t : src.getDevice())
@@ -14319,7 +14353,7 @@ public class VersionConvertor_30_50 {
     if (src.hasExpectedSupplyDuration())
       tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
     if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
+      tgt.setDispenser(convertReference(src.getPerformer()));
     return tgt;
   }
 
@@ -14336,8 +14370,8 @@ public class VersionConvertor_30_50 {
       tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
     if (src.hasExpectedSupplyDuration())
       tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
+    if (src.hasDispenser())
+      tgt.setPerformer(convertReference(src.getDispenser()));
     return tgt;
   }
 
@@ -14399,9 +14433,9 @@ public class VersionConvertor_30_50 {
 //    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonNotTaken())
 //      tgt.addReasonNotTaken(convertCodeableConcept(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.Dosage t : src.getDosage())
@@ -14442,10 +14476,12 @@ public class VersionConvertor_30_50 {
 //      tgt.setTaken(convertMedicationStatementTaken(src.getExtensionByUrl(VersionConvertorConstants.MODIFIER_TAKEN)));
 //    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonNotTaken())
 //      tgt.addReasonNotTaken(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Dosage t : src.getDosage())
@@ -17426,11 +17462,10 @@ public class VersionConvertor_30_50 {
     if (src.hasPerformer())
       tgt.setPerformer(convertReference(src.getPerformer()));
     if (src.hasReason()) {
-      org.hl7.fhir.r5.model.DataType t = convertType(src.getReason());
-      if (t instanceof org.hl7.fhir.r5.model.CodeableConcept)
-        tgt.addReasonCode((org.hl7.fhir.r5.model.CodeableConcept) t);
-      else
-        tgt.addReasonReference((org.hl7.fhir.r5.model.Reference) t);
+      if (src.getReason() instanceof org.hl7.fhir.dstu3.model.CodeableConcept)
+        tgt.addReason(convertCodeableConceptToCodableReference((org.hl7.fhir.dstu3.model.CodeableConcept) src.getReason()));
+      else if (src.getReason() instanceof org.hl7.fhir.dstu3.model.Reference)
+        tgt.addReason(convertReferenceToCodableReference((org.hl7.fhir.dstu3.model.Reference) src.getReason()));
     }
     for (org.hl7.fhir.dstu3.model.Reference t : src.getBasis())
       tgt.addBasis(convertReference(t));
@@ -17470,10 +17505,10 @@ public class VersionConvertor_30_50 {
       tgt.setCondition(convertReference(src.getCondition()));
     if (src.hasPerformer())
       tgt.setPerformer(convertReference(src.getPerformer()));
-    if (src.hasReasonCode())
-      tgt.setReason(convertType(src.getReasonCodeFirstRep()));
-    if (src.hasReasonReference())
-      tgt.setReason(convertType(src.getReasonReferenceFirstRep()));
+    if (src.hasReason() && src.getReasonFirstRep().hasConcept())
+      tgt.setReason(convertType(src.getReasonFirstRep().getConcept()));
+    if (src.hasReason() && src.getReasonFirstRep().hasReference())
+      tgt.setReason(convertType(src.getReasonFirstRep().getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasis())
       tgt.addBasis(convertReference(t));
     for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction())

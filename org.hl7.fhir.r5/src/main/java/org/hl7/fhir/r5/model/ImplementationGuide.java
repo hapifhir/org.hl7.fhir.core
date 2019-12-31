@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6394,10 +6394,10 @@ public class ImplementationGuide extends CanonicalResource {
         protected ImplementationGuideDefinitionPageComponent page;
 
         /**
-         * Defines how IG is built by tools.
+         * A set of parameters that defines how the implementation guide is built. The parameters are defined by the relevant tools that build the implementation guides.
          */
         @Child(name = "parameter", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Defines how IG is built by tools", formalDefinition="Defines how IG is built by tools." )
+        @Description(shortDefinition="Defines how IG is built by tools", formalDefinition="A set of parameters that defines how the implementation guide is built. The parameters are defined by the relevant tools that build the implementation guides." )
         protected List<ImplementationGuideDefinitionParameterComponent> parameter;
 
         /**
@@ -6555,7 +6555,7 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @return {@link #parameter} (Defines how IG is built by tools.)
+         * @return {@link #parameter} (A set of parameters that defines how the implementation guide is built. The parameters are defined by the relevant tools that build the implementation guides.)
          */
         public List<ImplementationGuideDefinitionParameterComponent> getParameter() { 
           if (this.parameter == null)
@@ -6665,7 +6665,7 @@ public class ImplementationGuide extends CanonicalResource {
           children.add(new Property("grouping", "", "A logical group of resources. Logical groups can be used when building pages.", 0, java.lang.Integer.MAX_VALUE, grouping));
           children.add(new Property("resource", "", "A resource that is part of the implementation guide. Conformance resources (value set, structure definition, capability statements etc.) are obvious candidates for inclusion, but any kind of resource can be included as an example resource.", 0, java.lang.Integer.MAX_VALUE, resource));
           children.add(new Property("page", "", "A page / section in the implementation guide. The root page is the implementation guide home page.", 0, 1, page));
-          children.add(new Property("parameter", "", "Defines how IG is built by tools.", 0, java.lang.Integer.MAX_VALUE, parameter));
+          children.add(new Property("parameter", "", "A set of parameters that defines how the implementation guide is built. The parameters are defined by the relevant tools that build the implementation guides.", 0, java.lang.Integer.MAX_VALUE, parameter));
           children.add(new Property("template", "", "A template for building resources.", 0, java.lang.Integer.MAX_VALUE, template));
         }
 
@@ -6675,7 +6675,7 @@ public class ImplementationGuide extends CanonicalResource {
           case 506371331: /*grouping*/  return new Property("grouping", "", "A logical group of resources. Logical groups can be used when building pages.", 0, java.lang.Integer.MAX_VALUE, grouping);
           case -341064690: /*resource*/  return new Property("resource", "", "A resource that is part of the implementation guide. Conformance resources (value set, structure definition, capability statements etc.) are obvious candidates for inclusion, but any kind of resource can be included as an example resource.", 0, java.lang.Integer.MAX_VALUE, resource);
           case 3433103: /*page*/  return new Property("page", "", "A page / section in the implementation guide. The root page is the implementation guide home page.", 0, 1, page);
-          case 1954460585: /*parameter*/  return new Property("parameter", "", "Defines how IG is built by tools.", 0, java.lang.Integer.MAX_VALUE, parameter);
+          case 1954460585: /*parameter*/  return new Property("parameter", "", "A set of parameters that defines how the implementation guide is built. The parameters are defined by the relevant tools that build the implementation guides.", 0, java.lang.Integer.MAX_VALUE, parameter);
           case -1321546630: /*template*/  return new Property("template", "", "A template for building resources.", 0, java.lang.Integer.MAX_VALUE, template);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -8070,10 +8070,10 @@ public class ImplementationGuide extends CanonicalResource {
     @Block()
     public static class ImplementationGuideDefinitionParameterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.
+         * Code that identifies parameter.
          */
         @Child(name = "code", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template", formalDefinition="apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template." )
+        @Description(shortDefinition="Code that identifies parameter", formalDefinition="Code that identifies parameter." )
         protected StringType code;
 
         /**
@@ -8102,7 +8102,7 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
         /**
-         * @return {@link #code} (apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         * @return {@link #code} (Code that identifies parameter.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
          */
         public StringType getCodeElement() { 
           if (this.code == null)
@@ -8122,7 +8122,7 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #code} (apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         * @param value {@link #code} (Code that identifies parameter.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
          */
         public ImplementationGuideDefinitionParameterComponent setCodeElement(StringType value) { 
           this.code = value;
@@ -8130,14 +8130,14 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @return apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.
+         * @return Code that identifies parameter.
          */
         public String getCode() { 
           return this.code == null ? null : this.code.getValue();
         }
 
         /**
-         * @param value apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.
+         * @param value Code that identifies parameter.
          */
         public ImplementationGuideDefinitionParameterComponent setCode(String value) { 
             if (this.code == null)
@@ -8193,14 +8193,14 @@ public class ImplementationGuide extends CanonicalResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "string", "apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.", 0, 1, code));
+          children.add(new Property("code", "string", "Code that identifies parameter.", 0, 1, code));
           children.add(new Property("value", "string", "Value for named type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "string", "apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-broken-links | generate-xml | generate-json | generate-turtle | html-template.", 0, 1, code);
+          case 3059181: /*code*/  return new Property("code", "string", "Code that identifies parameter.", 0, 1, code);
           case 111972721: /*value*/  return new Property("value", "string", "Value for named type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -9927,10 +9927,10 @@ public class ImplementationGuide extends CanonicalResource {
     protected Enumeration<SPDXLicense> license;
 
     /**
-     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.
+     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.
      */
     @Child(name = "fhirVersion", type = {CodeType.class}, order=15, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version." )
+    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/FHIR-version")
     protected List<Enumeration<FHIRVersion>> fhirVersion;
 
@@ -10711,7 +10711,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.)
      */
     public List<Enumeration<FHIRVersion>> getFhirVersion() { 
       if (this.fhirVersion == null)
@@ -10737,7 +10737,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.)
      */
     public Enumeration<FHIRVersion> addFhirVersionElement() {//2 
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10748,7 +10748,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.)
      */
     public ImplementationGuide addFhirVersion(FHIRVersion value) { //1
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10760,7 +10760,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.)
      */
     public boolean hasFhirVersion(FHIRVersion value) { 
       if (this.fhirVersion == null)
@@ -11013,7 +11013,7 @@ public class ImplementationGuide extends CanonicalResource {
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright));
         children.add(new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId));
         children.add(new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license));
-        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
+        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
         children.add(new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
         children.add(new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global));
         children.add(new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition));
@@ -11038,7 +11038,7 @@ public class ImplementationGuide extends CanonicalResource {
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright);
         case 1802060801: /*packageId*/  return new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId);
         case 166757441: /*license*/  return new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license);
-        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.1.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
+        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.2.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
         case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
         case -1243020381: /*global*/  return new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global);
         case -1014418093: /*definition*/  return new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition);

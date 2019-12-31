@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -665,24 +665,17 @@ public class Procedure extends DomainResource {
     protected Reference location;
 
     /**
-     * The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.
+     * The coded reason or reference why the procedure was performed. This may be a coded entity of some type, or may simply be present as text, or may be a reference to one of several resources that justify the procedure.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Coded reason procedure performed", formalDefinition="The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text." )
+    @Child(name = "reason", type = {CodeableReference.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The justification that the procedure was performed", formalDefinition="The coded reason or reference why the procedure was performed. This may be a coded entity of some type, or may simply be present as text, or may be a reference to one of several resources that justify the procedure." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-reason")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * The justification of why the procedure was performed.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, Procedure.class, DiagnosticReport.class, DocumentReference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The justification that the procedure was performed", formalDefinition="The justification of why the procedure was performed." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Target body sites", formalDefinition="Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected List<CodeableConcept> bodySite;
@@ -690,7 +683,7 @@ public class Procedure extends DomainResource {
     /**
      * The outcome of the procedure - did it resolve the reasons for the procedure being performed?
      */
-    @Child(name = "outcome", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "outcome", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The result of procedure", formalDefinition="The outcome of the procedure - did it resolve the reasons for the procedure being performed?" )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-outcome")
     protected CodeableConcept outcome;
@@ -698,14 +691,14 @@ public class Procedure extends DomainResource {
     /**
      * This could be a histology result, pathology report, surgical report, etc.
      */
-    @Child(name = "report", type = {DiagnosticReport.class, DocumentReference.class, Composition.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "report", type = {DiagnosticReport.class, DocumentReference.class, Composition.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Any report resulting from the procedure", formalDefinition="This could be a histology result, pathology report, surgical report, etc." )
     protected List<Reference> report;
 
     /**
      * Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.
      */
-    @Child(name = "complication", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "complication", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Complication following the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
     protected List<CodeableConcept> complication;
@@ -713,14 +706,14 @@ public class Procedure extends DomainResource {
     /**
      * Any complications that occurred during the procedure, or in the immediate post-performance period.
      */
-    @Child(name = "complicationDetail", type = {Condition.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "complicationDetail", type = {Condition.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A condition that is a result of the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period." )
     protected List<Reference> complicationDetail;
 
     /**
      * If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.
      */
-    @Child(name = "followUp", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "followUp", type = {CodeableConcept.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instructions for follow up", formalDefinition="If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-followup")
     protected List<CodeableConcept> followUp;
@@ -728,33 +721,26 @@ public class Procedure extends DomainResource {
     /**
      * Any other notes and comments about the procedure.
      */
-    @Child(name = "note", type = {Annotation.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information about the procedure", formalDefinition="Any other notes and comments about the procedure." )
     protected List<Annotation> note;
 
     /**
      * A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.
      */
-    @Child(name = "focalDevice", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "focalDevice", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Manipulated, implanted, or removed device", formalDefinition="A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure." )
     protected List<ProcedureFocalDeviceComponent> focalDevice;
 
     /**
      * Identifies medications, devices and any other substance used as part of the procedure.
      */
-    @Child(name = "usedReference", type = {Device.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "used", type = {CodeableReference.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Items used during procedure", formalDefinition="Identifies medications, devices and any other substance used as part of the procedure." )
-    protected List<Reference> usedReference;
-
-    /**
-     * Identifies coded items that were used as part of the procedure.
-     */
-    @Child(name = "usedCode", type = {CodeableConcept.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Coded items used during the procedure", formalDefinition="Identifies coded items that were used as part of the procedure." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
-    protected List<CodeableConcept> usedCode;
+    protected List<CodeableReference> used;
 
-    private static final long serialVersionUID = -1653348691L;
+    private static final long serialVersionUID = 1060230234L;
 
   /**
    * Constructor
@@ -1560,109 +1546,56 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.)
+     * @return {@link #reason} (The coded reason or reference why the procedure was performed. This may be a coded entity of some type, or may simply be present as text, or may be a reference to one of several resources that justify the procedure.)
      */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Procedure setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
+    public Procedure setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public Procedure addReasonCode(CodeableConcept t) { //3
+    public Procedure addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (The justification of why the procedure was performed.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Procedure setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public Procedure addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -2061,109 +1994,56 @@ public class Procedure extends DomainResource {
     }
 
     /**
-     * @return {@link #usedReference} (Identifies medications, devices and any other substance used as part of the procedure.)
+     * @return {@link #used} (Identifies medications, devices and any other substance used as part of the procedure.)
      */
-    public List<Reference> getUsedReference() { 
-      if (this.usedReference == null)
-        this.usedReference = new ArrayList<Reference>();
-      return this.usedReference;
+    public List<CodeableReference> getUsed() { 
+      if (this.used == null)
+        this.used = new ArrayList<CodeableReference>();
+      return this.used;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Procedure setUsedReference(List<Reference> theUsedReference) { 
-      this.usedReference = theUsedReference;
+    public Procedure setUsed(List<CodeableReference> theUsed) { 
+      this.used = theUsed;
       return this;
     }
 
-    public boolean hasUsedReference() { 
-      if (this.usedReference == null)
+    public boolean hasUsed() { 
+      if (this.used == null)
         return false;
-      for (Reference item : this.usedReference)
+      for (CodeableReference item : this.used)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addUsedReference() { //3
-      Reference t = new Reference();
-      if (this.usedReference == null)
-        this.usedReference = new ArrayList<Reference>();
-      this.usedReference.add(t);
+    public CodeableReference addUsed() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.used == null)
+        this.used = new ArrayList<CodeableReference>();
+      this.used.add(t);
       return t;
     }
 
-    public Procedure addUsedReference(Reference t) { //3
+    public Procedure addUsed(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.usedReference == null)
-        this.usedReference = new ArrayList<Reference>();
-      this.usedReference.add(t);
+      if (this.used == null)
+        this.used = new ArrayList<CodeableReference>();
+      this.used.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #usedReference}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #used}, creating it if it does not already exist {3}
      */
-    public Reference getUsedReferenceFirstRep() { 
-      if (getUsedReference().isEmpty()) {
-        addUsedReference();
+    public CodeableReference getUsedFirstRep() { 
+      if (getUsed().isEmpty()) {
+        addUsed();
       }
-      return getUsedReference().get(0);
-    }
-
-    /**
-     * @return {@link #usedCode} (Identifies coded items that were used as part of the procedure.)
-     */
-    public List<CodeableConcept> getUsedCode() { 
-      if (this.usedCode == null)
-        this.usedCode = new ArrayList<CodeableConcept>();
-      return this.usedCode;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Procedure setUsedCode(List<CodeableConcept> theUsedCode) { 
-      this.usedCode = theUsedCode;
-      return this;
-    }
-
-    public boolean hasUsedCode() { 
-      if (this.usedCode == null)
-        return false;
-      for (CodeableConcept item : this.usedCode)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addUsedCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.usedCode == null)
-        this.usedCode = new ArrayList<CodeableConcept>();
-      this.usedCode.add(t);
-      return t;
-    }
-
-    public Procedure addUsedCode(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.usedCode == null)
-        this.usedCode = new ArrayList<CodeableConcept>();
-      this.usedCode.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #usedCode}, creating it if it does not already exist {3}
-     */
-    public CodeableConcept getUsedCodeFirstRep() { 
-      if (getUsedCode().isEmpty()) {
-        addUsedCode();
-      }
-      return getUsedCode().get(0);
+      return getUsed().get(0);
     }
 
       protected void listChildren(List<Property> children) {
@@ -2185,8 +2065,7 @@ public class Procedure extends DomainResource {
         children.add(new Property("reported[x]", "boolean|Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported));
         children.add(new Property("performer", "", "Limited to \"real\" people rather than equipment.", 0, java.lang.Integer.MAX_VALUE, performer));
         children.add(new Property("location", "Reference(Location)", "The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.", 0, 1, location));
-        children.add(new Property("reasonCode", "CodeableConcept", "The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|Procedure|DiagnosticReport|DocumentReference)", "The justification of why the procedure was performed.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|Procedure|DiagnosticReport|DocumentReference)", "The coded reason or reference why the procedure was performed. This may be a coded entity of some type, or may simply be present as text, or may be a reference to one of several resources that justify the procedure.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("bodySite", "CodeableConcept", "Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.", 0, java.lang.Integer.MAX_VALUE, bodySite));
         children.add(new Property("outcome", "CodeableConcept", "The outcome of the procedure - did it resolve the reasons for the procedure being performed?", 0, 1, outcome));
         children.add(new Property("report", "Reference(DiagnosticReport|DocumentReference|Composition)", "This could be a histology result, pathology report, surgical report, etc.", 0, java.lang.Integer.MAX_VALUE, report));
@@ -2195,8 +2074,7 @@ public class Procedure extends DomainResource {
         children.add(new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp));
         children.add(new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice));
-        children.add(new Property("usedReference", "Reference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference));
-        children.add(new Property("usedCode", "CodeableConcept", "Identifies coded items that were used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedCode));
+        children.add(new Property("used", "CodeableReference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, used));
       }
 
       @Override
@@ -2229,8 +2107,7 @@ public class Procedure extends DomainResource {
         case 1198143416: /*reportedReference*/  return new Property("reported[x]", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.", 0, 1, reported);
         case 481140686: /*performer*/  return new Property("performer", "", "Limited to \"real\" people rather than equipment.", 0, java.lang.Integer.MAX_VALUE, performer);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location where the procedure actually happened.  E.g. a newborn at home, a tracheostomy at a restaurant.", 0, 1, location);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "The coded reason why the procedure was performed. This may be a coded entity of some type, or may simply be present as text.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|Procedure|DiagnosticReport|DocumentReference)", "The justification of why the procedure was performed.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|Procedure|DiagnosticReport|DocumentReference)", "The coded reason or reference why the procedure was performed. This may be a coded entity of some type, or may simply be present as text, or may be a reference to one of several resources that justify the procedure.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.", 0, java.lang.Integer.MAX_VALUE, bodySite);
         case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "The outcome of the procedure - did it resolve the reasons for the procedure being performed?", 0, 1, outcome);
         case -934521548: /*report*/  return new Property("report", "Reference(DiagnosticReport|DocumentReference|Composition)", "This could be a histology result, pathology report, surgical report, etc.", 0, java.lang.Integer.MAX_VALUE, report);
@@ -2239,8 +2116,7 @@ public class Procedure extends DomainResource {
         case 301801004: /*followUp*/  return new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1129235173: /*focalDevice*/  return new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice);
-        case -504932338: /*usedReference*/  return new Property("usedReference", "Reference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedReference);
-        case -279910582: /*usedCode*/  return new Property("usedCode", "CodeableConcept", "Identifies coded items that were used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, usedCode);
+        case 3599293: /*used*/  return new Property("used", "CodeableReference(Device|Medication|Substance|BiologicallyDerivedProduct)", "Identifies medications, devices and any other substance used as part of the procedure.", 0, java.lang.Integer.MAX_VALUE, used);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2266,8 +2142,7 @@ public class Procedure extends DomainResource {
         case -427039533: /*reported*/ return this.reported == null ? new Base[0] : new Base[] {this.reported}; // DataType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // ProcedurePerformerComponent
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // CodeableConcept
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
         case -934521548: /*report*/ return this.report == null ? new Base[0] : this.report.toArray(new Base[this.report.size()]); // Reference
@@ -2276,8 +2151,7 @@ public class Procedure extends DomainResource {
         case 301801004: /*followUp*/ return this.followUp == null ? new Base[0] : this.followUp.toArray(new Base[this.followUp.size()]); // CodeableConcept
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1129235173: /*focalDevice*/ return this.focalDevice == null ? new Base[0] : this.focalDevice.toArray(new Base[this.focalDevice.size()]); // ProcedureFocalDeviceComponent
-        case -504932338: /*usedReference*/ return this.usedReference == null ? new Base[0] : this.usedReference.toArray(new Base[this.usedReference.size()]); // Reference
-        case -279910582: /*usedCode*/ return this.usedCode == null ? new Base[0] : this.usedCode.toArray(new Base[this.usedCode.size()]); // CodeableConcept
+        case 3599293: /*used*/ return this.used == null ? new Base[0] : this.used.toArray(new Base[this.used.size()]); // CodeableReference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2338,11 +2212,8 @@ public class Procedure extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 1702620169: // bodySite
           this.getBodySite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2368,11 +2239,8 @@ public class Procedure extends DomainResource {
         case -1129235173: // focalDevice
           this.getFocalDevice().add((ProcedureFocalDeviceComponent) value); // ProcedureFocalDeviceComponent
           return value;
-        case -504932338: // usedReference
-          this.getUsedReference().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
-        case -279910582: // usedCode
-          this.getUsedCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 3599293: // used
+          this.getUsed().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2416,10 +2284,8 @@ public class Procedure extends DomainResource {
           this.getPerformer().add((ProcedurePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("bodySite")) {
           this.getBodySite().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("outcome")) {
@@ -2436,10 +2302,8 @@ public class Procedure extends DomainResource {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("focalDevice")) {
           this.getFocalDevice().add((ProcedureFocalDeviceComponent) value);
-        } else if (name.equals("usedReference")) {
-          this.getUsedReference().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("usedCode")) {
-          this.getUsedCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("used")) {
+          this.getUsed().add(TypeConvertor.castToCodeableReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2467,8 +2331,7 @@ public class Procedure extends DomainResource {
         case -427039533:  return getReported();
         case 481140686:  return addPerformer(); 
         case 1901043637:  return getLocation();
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case -934964668:  return addReason(); 
         case 1702620169:  return addBodySite(); 
         case -1106507950:  return getOutcome();
         case -934521548:  return addReport(); 
@@ -2477,8 +2340,7 @@ public class Procedure extends DomainResource {
         case 301801004:  return addFollowUp(); 
         case 3387378:  return addNote(); 
         case -1129235173:  return addFocalDevice(); 
-        case -504932338:  return addUsedReference(); 
-        case -279910582:  return addUsedCode(); 
+        case 3599293:  return addUsed(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2504,8 +2366,7 @@ public class Procedure extends DomainResource {
         case -427039533: /*reported*/ return new String[] {"boolean", "Reference"};
         case 481140686: /*performer*/ return new String[] {};
         case 1901043637: /*location*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
         case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
         case -934521548: /*report*/ return new String[] {"Reference"};
@@ -2514,8 +2375,7 @@ public class Procedure extends DomainResource {
         case 301801004: /*followUp*/ return new String[] {"CodeableConcept"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1129235173: /*focalDevice*/ return new String[] {};
-        case -504932338: /*usedReference*/ return new String[] {"Reference"};
-        case -279910582: /*usedCode*/ return new String[] {"CodeableConcept"};
+        case 3599293: /*used*/ return new String[] {"CodeableReference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2606,11 +2466,8 @@ public class Procedure extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("bodySite")) {
           return addBodySite();
@@ -2637,11 +2494,8 @@ public class Procedure extends DomainResource {
         else if (name.equals("focalDevice")) {
           return addFocalDevice();
         }
-        else if (name.equals("usedReference")) {
-          return addUsedReference();
-        }
-        else if (name.equals("usedCode")) {
-          return addUsedCode();
+        else if (name.equals("used")) {
+          return addUsed();
         }
         else
           return super.addChild(name);
@@ -2705,15 +2559,10 @@ public class Procedure extends DomainResource {
             dst.performer.add(i.copy());
         };
         dst.location = location == null ? null : location.copy();
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         if (bodySite != null) {
           dst.bodySite = new ArrayList<CodeableConcept>();
@@ -2751,15 +2600,10 @@ public class Procedure extends DomainResource {
           for (ProcedureFocalDeviceComponent i : focalDevice)
             dst.focalDevice.add(i.copy());
         };
-        if (usedReference != null) {
-          dst.usedReference = new ArrayList<Reference>();
-          for (Reference i : usedReference)
-            dst.usedReference.add(i.copy());
-        };
-        if (usedCode != null) {
-          dst.usedCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : usedCode)
-            dst.usedCode.add(i.copy());
+        if (used != null) {
+          dst.used = new ArrayList<CodeableReference>();
+          for (CodeableReference i : used)
+            dst.used.add(i.copy());
         };
       }
 
@@ -2780,11 +2624,10 @@ public class Procedure extends DomainResource {
            && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
            && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(recorded, o.recorded, true)
            && compareDeep(recorder, o.recorder, true) && compareDeep(reported, o.reported, true) && compareDeep(performer, o.performer, true)
-           && compareDeep(location, o.location, true) && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
-           && compareDeep(bodySite, o.bodySite, true) && compareDeep(outcome, o.outcome, true) && compareDeep(report, o.report, true)
-           && compareDeep(complication, o.complication, true) && compareDeep(complicationDetail, o.complicationDetail, true)
-           && compareDeep(followUp, o.followUp, true) && compareDeep(note, o.note, true) && compareDeep(focalDevice, o.focalDevice, true)
-           && compareDeep(usedReference, o.usedReference, true) && compareDeep(usedCode, o.usedCode, true)
+           && compareDeep(location, o.location, true) && compareDeep(reason, o.reason, true) && compareDeep(bodySite, o.bodySite, true)
+           && compareDeep(outcome, o.outcome, true) && compareDeep(report, o.report, true) && compareDeep(complication, o.complication, true)
+           && compareDeep(complicationDetail, o.complicationDetail, true) && compareDeep(followUp, o.followUp, true)
+           && compareDeep(note, o.note, true) && compareDeep(focalDevice, o.focalDevice, true) && compareDeep(used, o.used, true)
           ;
       }
 
@@ -2802,9 +2645,9 @@ public class Procedure extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, partOf, status, statusReason, category, code, subject
-          , encounter, occurrence, recorded, recorder, reported, performer, location, reasonCode
-          , reasonReference, bodySite, outcome, report, complication, complicationDetail, followUp
-          , note, focalDevice, usedReference, usedCode);
+          , encounter, occurrence, recorded, recorder, reported, performer, location, reason
+          , bodySite, outcome, report, complication, complicationDetail, followUp, note
+          , focalDevice, used);
       }
 
   @Override
@@ -2985,19 +2828,19 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>reason-code</b>
    * <p>
-   * Description: <b>Coded reason procedure performed</b><br>
+   * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Procedure.reasonCode</b><br>
+   * Path: <b>Procedure.reason.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason-code", path="Procedure.reasonCode", description="Coded reason procedure performed", type="token" )
+  @SearchParamDefinition(name="reason-code", path="Procedure.reason.concept", description="Reference to a concept (by class)", type="token" )
   public static final String SP_REASON_CODE = "reason-code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reason-code</b>
    * <p>
-   * Description: <b>Coded reason procedure performed</b><br>
+   * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Procedure.reasonCode</b><br>
+   * Path: <b>Procedure.reason.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REASON_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REASON_CODE);
@@ -3005,19 +2848,19 @@ public class Procedure extends DomainResource {
  /**
    * Search parameter: <b>reason-reference</b>
    * <p>
-   * Description: <b>The justification that the procedure was performed</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Procedure.reasonReference</b><br>
+   * Path: <b>Procedure.reason.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reason-reference", path="Procedure.reasonReference", description="The justification that the procedure was performed", type="reference", target={Condition.class, DiagnosticReport.class, DocumentReference.class, Observation.class, Procedure.class } )
+  @SearchParamDefinition(name="reason-reference", path="Procedure.reason.reference", description="Reference to a resource (by instance)", type="reference" )
   public static final String SP_REASON_REFERENCE = "reason-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reason-reference</b>
    * <p>
-   * Description: <b>The justification that the procedure was performed</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Procedure.reasonReference</b><br>
+   * Path: <b>Procedure.reason.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REASON_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REASON_REFERENCE);

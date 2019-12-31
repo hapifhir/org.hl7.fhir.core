@@ -29,6 +29,7 @@ package org.hl7.fhir.convertors;
 import org.hl7.fhir.convertors.conv40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnumEnumFactory;
@@ -3809,4 +3810,19 @@ public class VersionConvertor_40_50 {
   protected static org.hl7.fhir.r4.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.CodeType src) {
     return convertCode(src);
   }
+                                   
+  protected static CodeableReference convertReferenceToCodeableReference(org.hl7.fhir.r4.model.Reference src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setReference(convertReference(src));
+    return tgt;
+  }
+                                   
+  protected static CodeableReference convertCodeableConceptToCodeableReference(org.hl7.fhir.r4.model.CodeableConcept src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setConcept(convertCodeableConcept(src));
+    return tgt;
+  }
+
+
+
 }

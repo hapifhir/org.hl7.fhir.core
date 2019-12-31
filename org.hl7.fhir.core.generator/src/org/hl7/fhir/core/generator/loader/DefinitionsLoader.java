@@ -3,12 +3,14 @@ package org.hl7.fhir.core.generator.loader;
 import java.io.IOException;
 
 import org.hl7.fhir.core.generator.engine.Definitions;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.OperationDefinition;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -22,29 +24,37 @@ public class DefinitionsLoader {
     Definitions res = new Definitions();
     
     for (String t : npm.listResources("CodeSystem")) {
-      res.getCodeSystems().see((CodeSystem) new JsonParser().parse(npm.loadResource(t)));
+      res.getCodeSystems().see((CodeSystem) load(npm, t));
     }
     for (String t : npm.listResources("ValueSet")) {
-      res.getValuesets().see((ValueSet) new JsonParser().parse(npm.loadResource(t)));
+      res.getValuesets().see((ValueSet) load(npm, t));
     }
     for (String t : npm.listResources("ConceptMap")) {
-      res.getConceptMaps().see((ConceptMap) new JsonParser().parse(npm.loadResource(t)));
+      res.getConceptMaps().see((ConceptMap) load(npm, t));
     }
     for (String t : npm.listResources("CapabilityStatement")) {
-      res.getStatements().see((CapabilityStatement) new JsonParser().parse(npm.loadResource(t)));
+      res.getStatements().see((CapabilityStatement) load(npm, t));
     }
     for (String t : npm.listResources("StructureDefinition")) {
-      res.getStructures().see((StructureDefinition) new JsonParser().parse(npm.loadResource(t)));
+      res.getStructures().see((StructureDefinition) load(npm, t));
     }
     for (String t : npm.listResources("OperationDefinition")) {
-      res.getOperations().see((OperationDefinition) new JsonParser().parse(npm.loadResource(t)));
+      res.getOperations().see((OperationDefinition) load(npm, t));
     }
     for (String t : npm.listResources("SearchParameter")) {
-      res.getSearchParams().see((SearchParameter) new JsonParser().parse(npm.loadResource(t)));
+      res.getSearchParams().see((SearchParameter) load(npm, t));
     }
     for (String t : npm.listResources("CompartmentDefinition")) {
-      res.getCompartments().see((CompartmentDefinition) new JsonParser().parse(npm.loadResource(t)));
+      res.getCompartments().see((CompartmentDefinition) load(npm, t));
     }
     return res;
+  }
+
+  public static Resource load(NpmPackage npm, String t) {
+    try {
+      return new JsonParser().parse(npm.loadResource(t));
+    } catch (Exception e) {
+      throw new Error("Error reading "+t+": "+e.getMessage(), e);
+    }
   }
 }

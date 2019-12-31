@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -82,9 +82,9 @@ public class GuidanceResponse extends VersionConvertor_40_50 {
     if (src.hasPerformer())
       tgt.setPerformer(convertReference(src.getPerformer()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getEvaluationMessage())
@@ -119,10 +119,12 @@ public class GuidanceResponse extends VersionConvertor_40_50 {
       tgt.setOccurrenceDateTimeElement(convertDateTime(src.getOccurrenceDateTimeElement()));
     if (src.hasPerformer())
       tgt.setPerformer(convertReference(src.getPerformer()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEvaluationMessage())

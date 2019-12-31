@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1037,27 +1037,20 @@ public class NutritionIntake extends DomainResource {
     protected List<Reference> derivedFrom;
 
     /**
-     * A reason for why the food or fluid is /was consumed.
+     * A reason, Condition or observation for why the food or fluid is /was consumed.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Reason for why the food or fluid is /was consumed", formalDefinition="A reason for why the food or fluid is /was consumed." )
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Condition or observation that supports why the food or fluid is /was consumed.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Condition or observation that supports why the food or fluid is /was consumed", formalDefinition="Condition or observation that supports why the food or fluid is /was consumed." )
-    protected List<Reference> reasonReference;
+    @Child(name = "reasonCode", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Reason for why the food or fluid is /was consumed", formalDefinition="A reason, Condition or observation for why the food or fluid is /was consumed." )
+    protected List<CodeableReference> reasonCode;
 
     /**
      * Provides extra information about the Nutrition Intake that is not conveyed by the other attributes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Further information about the consumption", formalDefinition="Provides extra information about the Nutrition Intake that is not conveyed by the other attributes." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 2139832010L;
+    private static final long serialVersionUID = -1197329803L;
 
   /**
    * Constructor
@@ -1718,18 +1711,18 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (A reason for why the food or fluid is /was consumed.)
+     * @return {@link #reasonCode} (A reason, Condition or observation for why the food or fluid is /was consumed.)
      */
-    public List<CodeableConcept> getReasonCode() { 
+    public List<CodeableReference> getReasonCode() { 
       if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
+        this.reasonCode = new ArrayList<CodeableReference>();
       return this.reasonCode;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public NutritionIntake setReasonCode(List<CodeableConcept> theReasonCode) { 
+    public NutritionIntake setReasonCode(List<CodeableReference> theReasonCode) { 
       this.reasonCode = theReasonCode;
       return this;
     }
@@ -1737,25 +1730,25 @@ public class NutritionIntake extends DomainResource {
     public boolean hasReasonCode() { 
       if (this.reasonCode == null)
         return false;
-      for (CodeableConcept item : this.reasonCode)
+      for (CodeableReference item : this.reasonCode)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
+    public CodeableReference addReasonCode() { //3
+      CodeableReference t = new CodeableReference();
       if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
+        this.reasonCode = new ArrayList<CodeableReference>();
       this.reasonCode.add(t);
       return t;
     }
 
-    public NutritionIntake addReasonCode(CodeableConcept t) { //3
+    public NutritionIntake addReasonCode(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
+        this.reasonCode = new ArrayList<CodeableReference>();
       this.reasonCode.add(t);
       return this;
     }
@@ -1763,64 +1756,11 @@ public class NutritionIntake extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getReasonCodeFirstRep() { 
+    public CodeableReference getReasonCodeFirstRep() { 
       if (getReasonCode().isEmpty()) {
         addReasonCode();
       }
       return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Condition or observation that supports why the food or fluid is /was consumed.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public NutritionIntake setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public NutritionIntake addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
     }
 
     /**
@@ -1892,8 +1832,7 @@ public class NutritionIntake extends DomainResource {
         children.add(new Property("dateAsserted", "dateTime", "The date when the Nutrition Intake was asserted by the information source.", 0, 1, dateAsserted));
         children.add(new Property("informationSource", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Organization)", "The person or organization that provided the information about the consumption of this food or fluid. Note: Use derivedFrom when a NutritionIntake is derived from other resources.", 0, 1, informationSource));
         children.add(new Property("derivedFrom", "Reference(Any)", "Allows linking the NutritionIntake to the underlying NutritionOrder, or to other information, such as AllergyIntolerance, that supports or is used to derive the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
-        children.add(new Property("reasonCode", "CodeableConcept", "A reason for why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport)", "Condition or observation that supports why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonCode", "CodeableReference(Condition|Observation|DiagnosticReport)", "A reason, Condition or observation for why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
         children.add(new Property("note", "Annotation", "Provides extra information about the Nutrition Intake that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
       }
 
@@ -1917,8 +1856,7 @@ public class NutritionIntake extends DomainResource {
         case -1980855245: /*dateAsserted*/  return new Property("dateAsserted", "dateTime", "The date when the Nutrition Intake was asserted by the information source.", 0, 1, dateAsserted);
         case -2123220889: /*informationSource*/  return new Property("informationSource", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Organization)", "The person or organization that provided the information about the consumption of this food or fluid. Note: Use derivedFrom when a NutritionIntake is derived from other resources.", 0, 1, informationSource);
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(Any)", "Allows linking the NutritionIntake to the underlying NutritionOrder, or to other information, such as AllergyIntolerance, that supports or is used to derive the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A reason for why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport)", "Condition or observation that supports why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableReference(Condition|Observation|DiagnosticReport)", "A reason, Condition or observation for why the food or fluid is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Provides extra information about the Nutrition Intake that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1942,8 +1880,7 @@ public class NutritionIntake extends DomainResource {
         case -1980855245: /*dateAsserted*/ return this.dateAsserted == null ? new Base[0] : new Base[] {this.dateAsserted}; // DateTimeType
         case -2123220889: /*informationSource*/ return this.informationSource == null ? new Base[0] : new Base[] {this.informationSource}; // Reference
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableReference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1997,10 +1934,7 @@ public class NutritionIntake extends DomainResource {
           this.getDerivedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+          this.getReasonCode().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -2042,9 +1976,7 @@ public class NutritionIntake extends DomainResource {
         } else if (name.equals("derivedFrom")) {
           this.getDerivedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+          this.getReasonCode().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
@@ -2071,7 +2003,6 @@ public class NutritionIntake extends DomainResource {
         case -2123220889:  return getInformationSource();
         case 1077922663:  return addDerivedFrom(); 
         case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2095,8 +2026,7 @@ public class NutritionIntake extends DomainResource {
         case -1980855245: /*dateAsserted*/ return new String[] {"dateTime"};
         case -2123220889: /*informationSource*/ return new String[] {"Reference"};
         case 1077922663: /*derivedFrom*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case 722137681: /*reasonCode*/ return new String[] {"CodeableReference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2157,9 +2087,6 @@ public class NutritionIntake extends DomainResource {
         }
         else if (name.equals("reasonCode")) {
           return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -2228,14 +2155,9 @@ public class NutritionIntake extends DomainResource {
             dst.derivedFrom.add(i.copy());
         };
         if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
+          dst.reasonCode = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reasonCode)
             dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
         };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -2261,7 +2183,7 @@ public class NutritionIntake extends DomainResource {
            && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true) && compareDeep(effective, o.effective, true)
            && compareDeep(dateAsserted, o.dateAsserted, true) && compareDeep(informationSource, o.informationSource, true)
            && compareDeep(derivedFrom, o.derivedFrom, true) && compareDeep(reasonCode, o.reasonCode, true)
-           && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(note, o.note, true);
+           && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -2277,8 +2199,7 @@ public class NutritionIntake extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, partOf
           , status, statusReason, category, consumedItem, ingredientLabel, subject, encounter
-          , effective, dateAsserted, informationSource, derivedFrom, reasonCode, reasonReference
-          , note);
+          , effective, dateAsserted, informationSource, derivedFrom, reasonCode, note);
       }
 
   @Override

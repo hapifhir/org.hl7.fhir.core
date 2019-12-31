@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,28 +76,21 @@ public class ClinicalImpression extends DomainResource {
     @Block()
     public static class ClinicalImpressionFindingComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions.
+         * Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions.
          */
-        @Child(name = "itemCodeableConcept", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="What was found", formalDefinition="Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions." )
+        @Child(name = "item", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What was found", formalDefinition="Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
-        protected CodeableConcept itemCodeableConcept;
-
-        /**
-         * Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions.
-         */
-        @Child(name = "itemReference", type = {Condition.class, Observation.class, DocumentReference.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="What was found", formalDefinition="Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions." )
-        protected Reference itemReference;
+        protected CodeableReference item;
 
         /**
          * Which investigations support finding or diagnosis.
          */
-        @Child(name = "basis", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "basis", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Which investigations support finding", formalDefinition="Which investigations support finding or diagnosis." )
         protected StringType basis;
 
-        private static final long serialVersionUID = -101631301L;
+        private static final long serialVersionUID = -1363589306L;
 
     /**
      * Constructor
@@ -107,50 +100,26 @@ public class ClinicalImpression extends DomainResource {
       }
 
         /**
-         * @return {@link #itemCodeableConcept} (Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions.)
+         * @return {@link #item} (Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions.)
          */
-        public CodeableConcept getItemCodeableConcept() { 
-          if (this.itemCodeableConcept == null)
+        public CodeableReference getItem() { 
+          if (this.item == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ClinicalImpressionFindingComponent.itemCodeableConcept");
+              throw new Error("Attempt to auto-create ClinicalImpressionFindingComponent.item");
             else if (Configuration.doAutoCreate())
-              this.itemCodeableConcept = new CodeableConcept(); // cc
-          return this.itemCodeableConcept;
+              this.item = new CodeableReference(); // cc
+          return this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this.itemCodeableConcept != null && !this.itemCodeableConcept.isEmpty();
-        }
-
-        /**
-         * @param value {@link #itemCodeableConcept} (Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions.)
-         */
-        public ClinicalImpressionFindingComponent setItemCodeableConcept(CodeableConcept value) { 
-          this.itemCodeableConcept = value;
-          return this;
+        public boolean hasItem() { 
+          return this.item != null && !this.item.isEmpty();
         }
 
         /**
-         * @return {@link #itemReference} (Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions.)
+         * @param value {@link #item} (Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions.)
          */
-        public Reference getItemReference() { 
-          if (this.itemReference == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ClinicalImpressionFindingComponent.itemReference");
-            else if (Configuration.doAutoCreate())
-              this.itemReference = new Reference(); // cc
-          return this.itemReference;
-        }
-
-        public boolean hasItemReference() { 
-          return this.itemReference != null && !this.itemReference.isEmpty();
-        }
-
-        /**
-         * @param value {@link #itemReference} (Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions.)
-         */
-        public ClinicalImpressionFindingComponent setItemReference(Reference value) { 
-          this.itemReference = value;
+        public ClinicalImpressionFindingComponent setItem(CodeableReference value) { 
+          this.item = value;
           return this;
         }
 
@@ -205,16 +174,14 @@ public class ClinicalImpression extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("itemCodeableConcept", "CodeableConcept", "Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, itemCodeableConcept));
-          children.add(new Property("itemReference", "Reference(Condition|Observation|DocumentReference)", "Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, itemReference));
+          children.add(new Property("item", "CodeableReference(Condition|Observation|DocumentReference)", "Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, item));
           children.add(new Property("basis", "string", "Which investigations support finding or diagnosis.", 0, 1, basis));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 106644494: /*itemCodeableConcept*/  return new Property("itemCodeableConcept", "CodeableConcept", "Specific text or code for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, itemCodeableConcept);
-          case 1376364920: /*itemReference*/  return new Property("itemReference", "Reference(Condition|Observation|DocumentReference)", "Specific reference for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, itemReference);
+          case 3242771: /*item*/  return new Property("item", "CodeableReference(Condition|Observation|DocumentReference)", "Specific text, code or reference for finding or diagnosis, which may include ruled-out or resolved conditions.", 0, 1, item);
           case 93508670: /*basis*/  return new Property("basis", "string", "Which investigations support finding or diagnosis.", 0, 1, basis);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -224,8 +191,7 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 106644494: /*itemCodeableConcept*/ return this.itemCodeableConcept == null ? new Base[0] : new Base[] {this.itemCodeableConcept}; // CodeableConcept
-        case 1376364920: /*itemReference*/ return this.itemReference == null ? new Base[0] : new Base[] {this.itemReference}; // Reference
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // CodeableReference
         case 93508670: /*basis*/ return this.basis == null ? new Base[0] : new Base[] {this.basis}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -235,11 +201,8 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 106644494: // itemCodeableConcept
-          this.itemCodeableConcept = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 1376364920: // itemReference
-          this.itemReference = TypeConvertor.castToReference(value); // Reference
+        case 3242771: // item
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 93508670: // basis
           this.basis = TypeConvertor.castToString(value); // StringType
@@ -251,10 +214,8 @@ public class ClinicalImpression extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("itemCodeableConcept")) {
-          this.itemCodeableConcept = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("itemReference")) {
-          this.itemReference = TypeConvertor.castToReference(value); // Reference
+        if (name.equals("item")) {
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("basis")) {
           this.basis = TypeConvertor.castToString(value); // StringType
         } else
@@ -265,8 +226,7 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 106644494:  return getItemCodeableConcept();
-        case 1376364920:  return getItemReference();
+        case 3242771:  return getItem();
         case 93508670:  return getBasisElement();
         default: return super.makeProperty(hash, name);
         }
@@ -276,8 +236,7 @@ public class ClinicalImpression extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 106644494: /*itemCodeableConcept*/ return new String[] {"CodeableConcept"};
-        case 1376364920: /*itemReference*/ return new String[] {"Reference"};
+        case 3242771: /*item*/ return new String[] {"CodeableReference"};
         case 93508670: /*basis*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -286,13 +245,9 @@ public class ClinicalImpression extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("itemCodeableConcept")) {
-          this.itemCodeableConcept = new CodeableConcept();
-          return this.itemCodeableConcept;
-        }
-        else if (name.equals("itemReference")) {
-          this.itemReference = new Reference();
-          return this.itemReference;
+        if (name.equals("item")) {
+          this.item = new CodeableReference();
+          return this.item;
         }
         else if (name.equals("basis")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClinicalImpression.finding.basis");
@@ -309,8 +264,7 @@ public class ClinicalImpression extends DomainResource {
 
       public void copyValues(ClinicalImpressionFindingComponent dst) {
         super.copyValues(dst);
-        dst.itemCodeableConcept = itemCodeableConcept == null ? null : itemCodeableConcept.copy();
-        dst.itemReference = itemReference == null ? null : itemReference.copy();
+        dst.item = item == null ? null : item.copy();
         dst.basis = basis == null ? null : basis.copy();
       }
 
@@ -321,8 +275,7 @@ public class ClinicalImpression extends DomainResource {
         if (!(other_ instanceof ClinicalImpressionFindingComponent))
           return false;
         ClinicalImpressionFindingComponent o = (ClinicalImpressionFindingComponent) other_;
-        return compareDeep(itemCodeableConcept, o.itemCodeableConcept, true) && compareDeep(itemReference, o.itemReference, true)
-           && compareDeep(basis, o.basis, true);
+        return compareDeep(item, o.item, true) && compareDeep(basis, o.basis, true);
       }
 
       @Override
@@ -336,8 +289,7 @@ public class ClinicalImpression extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(itemCodeableConcept, itemReference
-          , basis);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(item, basis);
       }
 
   public String fhirType() {
@@ -1733,19 +1685,19 @@ public class ClinicalImpression extends DomainResource {
  /**
    * Search parameter: <b>finding-code</b>
    * <p>
-   * Description: <b>What was found</b><br>
+   * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
+   * Path: <b>ClinicalImpression.finding.item.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="finding-code", path="ClinicalImpression.finding.itemCodeableConcept", description="What was found", type="token" )
+  @SearchParamDefinition(name="finding-code", path="ClinicalImpression.finding.item.concept", description="Reference to a concept (by class)", type="token" )
   public static final String SP_FINDING_CODE = "finding-code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>finding-code</b>
    * <p>
-   * Description: <b>What was found</b><br>
+   * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ClinicalImpression.finding.itemCodeableConcept</b><br>
+   * Path: <b>ClinicalImpression.finding.item.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam FINDING_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FINDING_CODE);
@@ -1753,19 +1705,19 @@ public class ClinicalImpression extends DomainResource {
  /**
    * Search parameter: <b>finding-ref</b>
    * <p>
-   * Description: <b>What was found</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
+   * Path: <b>ClinicalImpression.finding.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="finding-ref", path="ClinicalImpression.finding.itemReference", description="What was found", type="reference", target={Condition.class, DocumentReference.class, Observation.class } )
+  @SearchParamDefinition(name="finding-ref", path="ClinicalImpression.finding.item.reference", description="Reference to a resource (by instance)", type="reference" )
   public static final String SP_FINDING_REF = "finding-ref";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>finding-ref</b>
    * <p>
-   * Description: <b>What was found</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ClinicalImpression.finding.itemReference</b><br>
+   * Path: <b>ClinicalImpression.finding.item.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FINDING_REF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FINDING_REF);

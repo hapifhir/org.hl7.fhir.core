@@ -51,7 +51,7 @@
         return true;
       if ("4.0.0".equals(codeString))
         return true;
-      if ("4.1.0".equals(codeString))
+      if ("4.2.0".equals(codeString))
         return true;
       return false;
       }

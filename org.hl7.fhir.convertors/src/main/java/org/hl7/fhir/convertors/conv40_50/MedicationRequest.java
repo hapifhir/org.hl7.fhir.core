@@ -316,7 +316,7 @@ public class MedicationRequest extends VersionConvertor_40_50 {
     if (src.hasExpectedSupplyDuration())
       tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
     if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
+      tgt.setDispenser(convertReference(src.getPerformer()));
     return tgt;
   }
 
@@ -337,8 +337,8 @@ public class MedicationRequest extends VersionConvertor_40_50 {
       tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
     if (src.hasExpectedSupplyDuration())
       tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
+    if (src.hasDispenser())
+      tgt.setPerformer(convertReference(src.getDispenser()));
     return tgt;
   }
 

@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -88,9 +88,9 @@ public class SupplyRequest extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getSupplier())
       tgt.addSupplier(convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     if (src.hasDeliverFrom())
       tgt.setDeliverFrom(convertReference(src.getDeliverFrom()));
     if (src.hasDeliverTo())
@@ -125,10 +125,12 @@ public class SupplyRequest extends VersionConvertor_40_50 {
       tgt.setRequester(convertReference(src.getRequester()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupplier())
       tgt.addSupplier(convertReference(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     if (src.hasDeliverFrom())
       tgt.setDeliverFrom(convertReference(src.getDeliverFrom()));
     if (src.hasDeliverTo())

@@ -255,8 +255,8 @@ public class MedicationKnowledge extends VersionConvertor_40_50 {
       tgt.setItem(convertType(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
-    if (src.hasStrength())
-      tgt.setStrength(convertRatio(src.getStrength()));
+    if (src.hasStrengthRatio())
+      tgt.setStrength(convertRatio(src.getStrengthRatio()));
     return tgt;
   }
 

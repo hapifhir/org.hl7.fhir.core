@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -98,9 +98,9 @@ public class Procedure extends VersionConvertor_40_50 {
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(convertCodeableConcept(t));
     if (src.hasOutcome())
@@ -118,9 +118,9 @@ public class Procedure extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice())
       tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getUsedReference())
-      tgt.addUsedReference(convertReference(t));
+      tgt.addUsed(convertReferenceToCodeableReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getUsedCode())
-      tgt.addUsedCode(convertCodeableConcept(t));
+      tgt.addUsed(convertCodeableConceptToCodeableReference(t));
     return tgt;
   }
 
@@ -161,10 +161,12 @@ public class Procedure extends VersionConvertor_40_50 {
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(convertCodeableConcept(t));
     if (src.hasOutcome())
@@ -181,10 +183,12 @@ public class Procedure extends VersionConvertor_40_50 {
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice())
       tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getUsedReference())
-      tgt.addUsedReference(convertReference(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getUsedCode())
-      tgt.addUsedCode(convertCodeableConcept(t));
+    for (CodeableReference t : src.getUsed())
+      if (t.hasReference())
+      tgt.addUsedReference(convertReference(t.getReference()));
+    for (CodeableReference t : src.getUsed())
+      if (t.hasConcept())
+      tgt.addUsedCode(convertCodeableConcept(t.getConcept()));
     return tgt;
   }
 
