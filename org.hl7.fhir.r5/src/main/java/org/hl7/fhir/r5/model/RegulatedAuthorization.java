@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -735,7 +735,7 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * The product that is being authorized.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class, PackagedProductDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {MedicinalProductDefinition.class, PackagedProductDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class, ObservationDefinition.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The product that is being authorized", formalDefinition="The product that is being authorized." )
     protected Reference subject;
 
@@ -1366,7 +1366,7 @@ public class RegulatedAuthorization extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for the marketing authorization, as assigned by a regulator.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition)", "The product that is being authorized.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition)", "The product that is being authorized.", 0, 1, subject));
         children.add(new Property("type", "CodeableConcept", "Type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type));
         children.add(new Property("description", "markdown", "General textual supporting information.", 0, 1, description));
         children.add(new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region));
@@ -1385,7 +1385,7 @@ public class RegulatedAuthorization extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for the marketing authorization, as assigned by a regulator.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition)", "The product that is being authorized.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition)", "The product that is being authorized.", 0, 1, subject);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type);
         case -1724546052: /*description*/  return new Property("description", "markdown", "General textual supporting information.", 0, 1, description);
         case -934795532: /*region*/  return new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region);
@@ -1833,7 +1833,7 @@ public class RegulatedAuthorization extends DomainResource {
    * Path: <b>RegulatedAuthorization.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The product that is being authorized", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, MedicinalProductDefinition.class, PackagedProductDefinition.class, PlanDefinition.class, ResearchStudy.class } )
+  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The product that is being authorized", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, MedicinalProductDefinition.class, ObservationDefinition.class, PackagedProductDefinition.class, PlanDefinition.class, ResearchStudy.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>

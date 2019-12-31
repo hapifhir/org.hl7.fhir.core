@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -912,10 +912,10 @@ public class MedicationDispense extends DomainResource {
     protected Reference encounter;
 
     /**
-     * Additional information that supports the medication being dispensed.
+     * Additional information that supports the medication being dispensed.  For example, there may be requirements that a specific lab test has been completed prior to dispensing or the patient's weight at the time of dispensing is documented.
      */
     @Child(name = "supportingInformation", type = {Reference.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Information that supports the dispensing of the medication", formalDefinition="Additional information that supports the medication being dispensed." )
+    @Description(shortDefinition="Information that supports the dispensing of the medication", formalDefinition="Additional information that supports the medication being dispensed.  For example, there may be requirements that a specific lab test has been completed prior to dispensing or the patient's weight at the time of dispensing is documented." )
     protected List<Reference> supportingInformation;
 
     /**
@@ -997,34 +997,41 @@ public class MedicationDispense extends DomainResource {
     protected List<Annotation> note;
 
     /**
+     * The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.
+     */
+    @Child(name = "renderedDosageInstruction", type = {StringType.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Full representation of the dosage instructions", formalDefinition="The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses." )
+    protected StringType renderedDosageInstruction;
+
+    /**
      * Indicates how the medication is to be used by the patient.
      */
-    @Child(name = "dosageInstruction", type = {Dosage.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "dosageInstruction", type = {Dosage.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="How the medication is to be used by the patient or administered by the caregiver", formalDefinition="Indicates how the medication is to be used by the patient." )
     protected List<Dosage> dosageInstruction;
 
     /**
      * Indicates whether or not substitution was made as part of the dispense.  In some cases, substitution will be expected but does not happen, in other cases substitution is not expected but does happen.  This block explains what substitution did or did not happen and why.  If nothing is specified, substitution was not done.
      */
-    @Child(name = "substitution", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "substitution", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Whether a substitution was performed on the dispense", formalDefinition="Indicates whether or not substitution was made as part of the dispense.  In some cases, substitution will be expected but does not happen, in other cases substitution is not expected but does happen.  This block explains what substitution did or did not happen and why.  If nothing is specified, substitution was not done." )
     protected MedicationDispenseSubstitutionComponent substitution;
 
     /**
      * Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. drug-drug interaction, duplicate therapy, dosage alert etc.
      */
-    @Child(name = "detectedIssue", type = {DetectedIssue.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "detectedIssue", type = {DetectedIssue.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Clinical issue with action", formalDefinition="Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. drug-drug interaction, duplicate therapy, dosage alert etc." )
     protected List<Reference> detectedIssue;
 
     /**
      * A summary of the events of interest that have occurred, such as when the dispense was verified.
      */
-    @Child(name = "eventHistory", type = {Provenance.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "eventHistory", type = {Provenance.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A list of relevant lifecycle events", formalDefinition="A summary of the events of interest that have occurred, such as when the dispense was verified." )
     protected List<Reference> eventHistory;
 
-    private static final long serialVersionUID = 1788928955L;
+    private static final long serialVersionUID = -1013413036L;
 
   /**
    * Constructor
@@ -1450,7 +1457,7 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
-     * @return {@link #supportingInformation} (Additional information that supports the medication being dispensed.)
+     * @return {@link #supportingInformation} (Additional information that supports the medication being dispensed.  For example, there may be requirements that a specific lab test has been completed prior to dispensing or the patient's weight at the time of dispensing is documented.)
      */
     public List<Reference> getSupportingInformation() { 
       if (this.supportingInformation == null)
@@ -1933,6 +1940,55 @@ public class MedicationDispense extends DomainResource {
     }
 
     /**
+     * @return {@link #renderedDosageInstruction} (The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.). This is the underlying object with id, value and extensions. The accessor "getRenderedDosageInstruction" gives direct access to the value
+     */
+    public StringType getRenderedDosageInstructionElement() { 
+      if (this.renderedDosageInstruction == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MedicationDispense.renderedDosageInstruction");
+        else if (Configuration.doAutoCreate())
+          this.renderedDosageInstruction = new StringType(); // bb
+      return this.renderedDosageInstruction;
+    }
+
+    public boolean hasRenderedDosageInstructionElement() { 
+      return this.renderedDosageInstruction != null && !this.renderedDosageInstruction.isEmpty();
+    }
+
+    public boolean hasRenderedDosageInstruction() { 
+      return this.renderedDosageInstruction != null && !this.renderedDosageInstruction.isEmpty();
+    }
+
+    /**
+     * @param value {@link #renderedDosageInstruction} (The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.). This is the underlying object with id, value and extensions. The accessor "getRenderedDosageInstruction" gives direct access to the value
+     */
+    public MedicationDispense setRenderedDosageInstructionElement(StringType value) { 
+      this.renderedDosageInstruction = value;
+      return this;
+    }
+
+    /**
+     * @return The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.
+     */
+    public String getRenderedDosageInstruction() { 
+      return this.renderedDosageInstruction == null ? null : this.renderedDosageInstruction.getValue();
+    }
+
+    /**
+     * @param value The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.
+     */
+    public MedicationDispense setRenderedDosageInstruction(String value) { 
+      if (Utilities.noString(value))
+        this.renderedDosageInstruction = null;
+      else {
+        if (this.renderedDosageInstruction == null)
+          this.renderedDosageInstruction = new StringType();
+        this.renderedDosageInstruction.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #dosageInstruction} (Indicates how the medication is to be used by the patient.)
      */
     public List<Dosage> getDosageInstruction() { 
@@ -2126,7 +2182,7 @@ public class MedicationDispense extends DomainResource {
         children.add(new Property("medication[x]", "CodeableConcept|Reference(Medication)", "Identifies the medication being administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, 1, medication));
         children.add(new Property("subject", "Reference(Patient|Group)", "A link to a resource representing the person or the group to whom the medication will be given.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this event.", 0, 1, encounter));
-        children.add(new Property("supportingInformation", "Reference(Any)", "Additional information that supports the medication being dispensed.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
+        children.add(new Property("supportingInformation", "Reference(Any)", "Additional information that supports the medication being dispensed.  For example, there may be requirements that a specific lab test has been completed prior to dispensing or the patient's weight at the time of dispensing is documented.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
         children.add(new Property("performer", "", "Indicates who or what performed the event.", 0, java.lang.Integer.MAX_VALUE, performer));
         children.add(new Property("location", "Reference(Location)", "The principal physical location where the dispense was performed.", 0, 1, location));
         children.add(new Property("authorizingPrescription", "Reference(MedicationRequest)", "Indicates the medication order that is being dispensed against.", 0, java.lang.Integer.MAX_VALUE, authorizingPrescription));
@@ -2138,6 +2194,7 @@ public class MedicationDispense extends DomainResource {
         children.add(new Property("destination", "Reference(Location)", "Identification of the facility/location where the medication was shipped to, as part of the dispense event.", 0, 1, destination));
         children.add(new Property("receiver", "Reference(Patient|Practitioner|RelatedPerson|Location|PractitionerRole)", "Identifies the person who picked up the medication or the location of where the medication was delivered.  This will usually be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.", 0, java.lang.Integer.MAX_VALUE, receiver));
         children.add(new Property("note", "Annotation", "Extra information about the dispense that could not be conveyed in the other attributes.", 0, java.lang.Integer.MAX_VALUE, note));
+        children.add(new Property("renderedDosageInstruction", "string", "The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.", 0, 1, renderedDosageInstruction));
         children.add(new Property("dosageInstruction", "Dosage", "Indicates how the medication is to be used by the patient.", 0, java.lang.Integer.MAX_VALUE, dosageInstruction));
         children.add(new Property("substitution", "", "Indicates whether or not substitution was made as part of the dispense.  In some cases, substitution will be expected but does not happen, in other cases substitution is not expected but does happen.  This block explains what substitution did or did not happen and why.  If nothing is specified, substitution was not done.", 0, 1, substitution));
         children.add(new Property("detectedIssue", "Reference(DetectedIssue)", "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. drug-drug interaction, duplicate therapy, dosage alert etc.", 0, java.lang.Integer.MAX_VALUE, detectedIssue));
@@ -2162,7 +2219,7 @@ public class MedicationDispense extends DomainResource {
         case 2104315196: /*medicationReference*/  return new Property("medication[x]", "Reference(Medication)", "Identifies the medication being administered. This is either a link to a resource representing the details of the medication or a simple attribute carrying a code that identifies the medication from a known list of medications.", 0, 1, medication);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "A link to a resource representing the person or the group to whom the medication will be given.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this event.", 0, 1, encounter);
-        case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information that supports the medication being dispensed.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
+        case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information that supports the medication being dispensed.  For example, there may be requirements that a specific lab test has been completed prior to dispensing or the patient's weight at the time of dispensing is documented.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
         case 481140686: /*performer*/  return new Property("performer", "", "Indicates who or what performed the event.", 0, java.lang.Integer.MAX_VALUE, performer);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the dispense was performed.", 0, 1, location);
         case -1237557856: /*authorizingPrescription*/  return new Property("authorizingPrescription", "Reference(MedicationRequest)", "Indicates the medication order that is being dispensed against.", 0, java.lang.Integer.MAX_VALUE, authorizingPrescription);
@@ -2174,6 +2231,7 @@ public class MedicationDispense extends DomainResource {
         case -1429847026: /*destination*/  return new Property("destination", "Reference(Location)", "Identification of the facility/location where the medication was shipped to, as part of the dispense event.", 0, 1, destination);
         case -808719889: /*receiver*/  return new Property("receiver", "Reference(Patient|Practitioner|RelatedPerson|Location|PractitionerRole)", "Identifies the person who picked up the medication or the location of where the medication was delivered.  This will usually be a patient or their caregiver, but some cases exist where it can be a healthcare professional or a location.", 0, java.lang.Integer.MAX_VALUE, receiver);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Extra information about the dispense that could not be conveyed in the other attributes.", 0, java.lang.Integer.MAX_VALUE, note);
+        case 1718902050: /*renderedDosageInstruction*/  return new Property("renderedDosageInstruction", "string", "The full representation of the dose of the medication included in all dosage instructions.  To be used when multiple dosage instructions are included to represent complex dosing such as increasing or tapering doses.", 0, 1, renderedDosageInstruction);
         case -1201373865: /*dosageInstruction*/  return new Property("dosageInstruction", "Dosage", "Indicates how the medication is to be used by the patient.", 0, java.lang.Integer.MAX_VALUE, dosageInstruction);
         case 826147581: /*substitution*/  return new Property("substitution", "", "Indicates whether or not substitution was made as part of the dispense.  In some cases, substitution will be expected but does not happen, in other cases substitution is not expected but does happen.  This block explains what substitution did or did not happen and why.  If nothing is specified, substitution was not done.", 0, 1, substitution);
         case 51602295: /*detectedIssue*/  return new Property("detectedIssue", "Reference(DetectedIssue)", "Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. drug-drug interaction, duplicate therapy, dosage alert etc.", 0, java.lang.Integer.MAX_VALUE, detectedIssue);
@@ -2207,6 +2265,7 @@ public class MedicationDispense extends DomainResource {
         case -1429847026: /*destination*/ return this.destination == null ? new Base[0] : new Base[] {this.destination}; // Reference
         case -808719889: /*receiver*/ return this.receiver == null ? new Base[0] : this.receiver.toArray(new Base[this.receiver.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case 1718902050: /*renderedDosageInstruction*/ return this.renderedDosageInstruction == null ? new Base[0] : new Base[] {this.renderedDosageInstruction}; // StringType
         case -1201373865: /*dosageInstruction*/ return this.dosageInstruction == null ? new Base[0] : this.dosageInstruction.toArray(new Base[this.dosageInstruction.size()]); // Dosage
         case 826147581: /*substitution*/ return this.substitution == null ? new Base[0] : new Base[] {this.substitution}; // MedicationDispenseSubstitutionComponent
         case 51602295: /*detectedIssue*/ return this.detectedIssue == null ? new Base[0] : this.detectedIssue.toArray(new Base[this.detectedIssue.size()]); // Reference
@@ -2283,6 +2342,9 @@ public class MedicationDispense extends DomainResource {
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
+        case 1718902050: // renderedDosageInstruction
+          this.renderedDosageInstruction = TypeConvertor.castToString(value); // StringType
+          return value;
         case -1201373865: // dosageInstruction
           this.getDosageInstruction().add(TypeConvertor.castToDosage(value)); // Dosage
           return value;
@@ -2345,6 +2407,8 @@ public class MedicationDispense extends DomainResource {
           this.getReceiver().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("renderedDosageInstruction")) {
+          this.renderedDosageInstruction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("dosageInstruction")) {
           this.getDosageInstruction().add(TypeConvertor.castToDosage(value));
         } else if (name.equals("substitution")) {
@@ -2384,6 +2448,7 @@ public class MedicationDispense extends DomainResource {
         case -1429847026:  return getDestination();
         case -808719889:  return addReceiver(); 
         case 3387378:  return addNote(); 
+        case 1718902050:  return getRenderedDosageInstructionElement();
         case -1201373865:  return addDosageInstruction(); 
         case 826147581:  return getSubstitution();
         case 51602295:  return addDetectedIssue(); 
@@ -2417,6 +2482,7 @@ public class MedicationDispense extends DomainResource {
         case -1429847026: /*destination*/ return new String[] {"Reference"};
         case -808719889: /*receiver*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 1718902050: /*renderedDosageInstruction*/ return new String[] {"string"};
         case -1201373865: /*dosageInstruction*/ return new String[] {"Dosage"};
         case 826147581: /*substitution*/ return new String[] {};
         case 51602295: /*detectedIssue*/ return new String[] {"Reference"};
@@ -2508,6 +2574,9 @@ public class MedicationDispense extends DomainResource {
         else if (name.equals("note")) {
           return addNote();
         }
+        else if (name.equals("renderedDosageInstruction")) {
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.renderedDosageInstruction");
+        }
         else if (name.equals("dosageInstruction")) {
           return addDosageInstruction();
         }
@@ -2595,6 +2664,7 @@ public class MedicationDispense extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
+        dst.renderedDosageInstruction = renderedDosageInstruction == null ? null : renderedDosageInstruction.copy();
         if (dosageInstruction != null) {
           dst.dosageInstruction = new ArrayList<Dosage>();
           for (Dosage i : dosageInstruction)
@@ -2632,9 +2702,9 @@ public class MedicationDispense extends DomainResource {
            && compareDeep(type, o.type, true) && compareDeep(quantity, o.quantity, true) && compareDeep(daysSupply, o.daysSupply, true)
            && compareDeep(whenPrepared, o.whenPrepared, true) && compareDeep(whenHandedOver, o.whenHandedOver, true)
            && compareDeep(destination, o.destination, true) && compareDeep(receiver, o.receiver, true) && compareDeep(note, o.note, true)
-           && compareDeep(dosageInstruction, o.dosageInstruction, true) && compareDeep(substitution, o.substitution, true)
-           && compareDeep(detectedIssue, o.detectedIssue, true) && compareDeep(eventHistory, o.eventHistory, true)
-          ;
+           && compareDeep(renderedDosageInstruction, o.renderedDosageInstruction, true) && compareDeep(dosageInstruction, o.dosageInstruction, true)
+           && compareDeep(substitution, o.substitution, true) && compareDeep(detectedIssue, o.detectedIssue, true)
+           && compareDeep(eventHistory, o.eventHistory, true);
       }
 
       @Override
@@ -2645,15 +2715,15 @@ public class MedicationDispense extends DomainResource {
           return false;
         MedicationDispense o = (MedicationDispense) other_;
         return compareValues(status, o.status, true) && compareValues(whenPrepared, o.whenPrepared, true) && compareValues(whenHandedOver, o.whenHandedOver, true)
-          ;
+           && compareValues(renderedDosageInstruction, o.renderedDosageInstruction, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, partOf
           , status, statusReason, category, medication, subject, encounter, supportingInformation
           , performer, location, authorizingPrescription, type, quantity, daysSupply, whenPrepared
-          , whenHandedOver, destination, receiver, note, dosageInstruction, substitution, detectedIssue
-          , eventHistory);
+          , whenHandedOver, destination, receiver, note, renderedDosageInstruction, dosageInstruction
+          , substitution, detectedIssue, eventHistory);
       }
 
   @Override

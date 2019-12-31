@@ -43,6 +43,7 @@ import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
@@ -2979,7 +2980,7 @@ public class VersionConvertor_10_50 {
       tgt.addCategory(convertCodeableConcept(t));
     tgt.setDescription(src.getDescription());
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAddresses())
-      tgt.addAddressesReference(convertReference(t));
+      tgt.addAddresses(convertReferenceToCodableReference(t));
 //    for (org.hl7.fhir.dstu2.model.Reference t : src.getSupport())
 //      tgt.addSupport(convertReference(t));
 //    for (org.hl7.fhir.dstu2.model.CarePlan.CarePlanRelatedPlanComponent t : src.getRelatedPlan())
@@ -2991,6 +2992,18 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent t : src.getActivity())
       tgt.addActivity(convertCarePlanActivityComponent(t));
 //    tgt.setNote(convertAnnotation(src.getNote()));
+    return tgt;
+  }
+
+  private CodeableReference convertReferenceToCodableReference(Reference src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setReference(convertReference(src));
+    return tgt;
+  }
+
+  private CodeableReference convertCodeableConceptToCodableReference(CodeableConcept src) {
+    CodeableReference tgt = new CodeableReference();
+    tgt.setConcept(convertCodeableConcept(src));
     return tgt;
   }
 
@@ -3013,8 +3026,11 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(convertCodeableConcept(t));
     tgt.setDescription(src.getDescription());
-    for (org.hl7.fhir.r5.model.Reference t : src.getAddressesReference())
-      tgt.addAddresses(convertReference(t));
+    for (CodeableReference t : src.getAddresses()) {
+      if (t.hasReference()) {
+        tgt.addAddresses(convertReference(t.getReference()));
+      }
+    }
 //    for (org.hl7.fhir.r5.model.Reference t : src.getSupport())
 //      tgt.addSupport(convertReference(t));
 //    for (org.hl7.fhir.r5.model.CarePlan.CarePlanRelatedPlanComponent t : src.getRelatedPlan())
@@ -3153,9 +3169,9 @@ public class VersionConvertor_10_50 {
 //    tgt.setKind().add(convertCodeableConcept(src.getCategory()));
     tgt.setCode(convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodableReference(t));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getGoal())
       tgt.addGoal(convertReference(t));
     tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
@@ -3179,10 +3195,12 @@ public class VersionConvertor_10_50 {
     copyElement(src, tgt);
    // tgt.setCategory(convertCodeableConcept(src.getKind()));
     tgt.setCode(convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if(t.hasConcept())
+        tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if(t.hasReference())
+        tgt.addReasonReference(convertReference(t.getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getGoal())
       tgt.addGoal(convertReference(t));
     tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
@@ -3373,7 +3391,7 @@ public class VersionConvertor_10_50 {
     tgt.setSent(src.getSent());
     tgt.setReceived(src.getReceived());
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     tgt.setSubject(convertReference(src.getSubject()));
     return tgt;
   }
@@ -3397,8 +3415,9 @@ public class VersionConvertor_10_50 {
     tgt.setEncounter(convertReference(src.getEncounter()));
     tgt.setSent(src.getSent());
     tgt.setReceived(src.getReceived());
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReason(convertCodeableConcept(t.getConcept()));
     tgt.setSubject(convertReference(src.getSubject()));
     return tgt;
   }
@@ -3467,7 +3486,7 @@ public class VersionConvertor_10_50 {
     tgt.setEncounter(convertReference(src.getEncounter()));
     tgt.setOccurrence(convertType(src.getScheduled()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     tgt.setAuthoredOn(src.getRequestedOn());
     tgt.setSubject(convertReference(src.getSubject()));
     tgt.setPriority(convertPriorityCode(src.getPriority()));
@@ -3507,8 +3526,9 @@ public class VersionConvertor_10_50 {
     tgt.setStatus(convertCommunicationRequestStatus(src.getStatus()));
     tgt.setEncounter(convertReference(src.getEncounter()));
     tgt.setScheduled(convertType(src.getOccurrence()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReason(convertCodeableConcept(t.getConcept()));
     tgt.setRequestedOn(src.getAuthoredOn());
     tgt.setSubject(convertReference(src.getSubject()));
     tgt.setPriority(convertPriorityCode(src.getPriority()));
@@ -5748,7 +5768,7 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getIndication())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu2.model.StringType t : src.getNotes())
       tgt.addNote().setText(t.getValue());
     tgt.setRecordedOn(src.getRecordedOn());
@@ -5766,8 +5786,9 @@ public class VersionConvertor_10_50 {
     tgt.setDevice(convertReference(src.getDevice()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addIndication(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addIndication(convertCodeableConcept(t.getConcept()));
     for (Annotation t : src.getNote())
       tgt.addNotes(t.getText());
     tgt.setRecordedOn(src.getRecordedOn());
@@ -6274,7 +6295,7 @@ public class VersionConvertor_10_50 {
     tgt.setPeriod(convertPeriod(src.getPeriod()));
     tgt.setLength(convertDuration(src.getLength()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodableReference(t));
     tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
     for (org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));
@@ -6307,8 +6328,9 @@ public class VersionConvertor_10_50 {
     tgt.setAppointment(convertReference(src.getAppointmentFirstRep()));
     tgt.setPeriod(convertPeriod(src.getPeriod()));
     tgt.setLength(convertDuration(src.getLength()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConcept(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReason(convertCodeableConcept(t.getConcept()));
     tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
     for (org.hl7.fhir.r5.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));

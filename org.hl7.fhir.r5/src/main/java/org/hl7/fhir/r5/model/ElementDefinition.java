@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11321,7 +11321,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     self.setMin(getMin());
     self.setMax(getMax());
   }
-  
+ 
   
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -11332,6 +11332,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     return b.toString();
   }
   
+
   public TypeRefComponent getType(String code) {
     for (TypeRefComponent tr : getType()) 
       if (tr.getCode().equals(code))
@@ -11401,6 +11402,8 @@ When pattern[x] is used to constrain a complex object, it means that each proper
   public boolean isInlineType() {
     return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
   }  
+
+
 
 
 // end addition

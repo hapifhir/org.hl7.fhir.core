@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -94,9 +94,9 @@ public class Goal extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCode())
-      tgt.addOutcomeCode(convertCodeableConcept(t));
+      tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+      tgt.addOutcome(convertReferenceToCodeableReference(t));
     return tgt;
   }
 
@@ -133,10 +133,12 @@ public class Goal extends VersionConvertor_40_50 {
       tgt.addAddresses(convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
       tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOutcomeCode())
-      tgt.addOutcomeCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getOutcomeReference())
-      tgt.addOutcomeReference(convertReference(t));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasConcept())
+      tgt.addOutcomeCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getOutcome())
+      if (t.hasReference())
+      tgt.addOutcomeReference(convertReference(t.getReference()));
     return tgt;
   }
 

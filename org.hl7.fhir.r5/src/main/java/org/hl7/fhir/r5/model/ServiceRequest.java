@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -238,58 +238,44 @@ public class ServiceRequest extends DomainResource {
     /**
      * The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.
      */
-    @Child(name = "locationCode", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "location", type = {CodeableReference.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Requested location", formalDefinition="The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType")
-    protected List<CodeableConcept> locationCode;
-
-    /**
-     * A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.
-     */
-    @Child(name = "locationReference", type = {Location.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Requested location", formalDefinition="A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center." )
-    protected List<Reference> locationReference;
+    protected List<CodeableReference> location;
 
     /**
      * An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Explanation/Justification for procedure or service", formalDefinition="An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-reason")
-    protected List<CodeableConcept> reasonCode;
-
-    /**
-     * Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.
-     */
-    @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Explanation/Justification for service or service", formalDefinition="Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`." )
-    protected List<Reference> reasonReference;
+    protected List<CodeableReference> reason;
 
     /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.
      */
-    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service." )
     protected List<Reference> insurance;
 
     /**
      * Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as "ask at order entry questions (AOEs)".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.
      */
-    @Child(name = "supportingInfo", type = {Reference.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {Reference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional clinical information", formalDefinition="Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements." )
     protected List<Reference> supportingInfo;
 
     /**
      * One or more specimens that the laboratory procedure will use.
      */
-    @Child(name = "specimen", type = {Specimen.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "specimen", type = {Specimen.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Procedure Samples", formalDefinition="One or more specimens that the laboratory procedure will use." )
     protected List<Reference> specimen;
 
     /**
      * Anatomic location where the procedure should be performed. This is the target site.
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Location on Body", formalDefinition="Anatomic location where the procedure should be performed. This is the target site." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected List<CodeableConcept> bodySite;
@@ -297,25 +283,25 @@ public class ServiceRequest extends DomainResource {
     /**
      * Any other notes and comments made about the service request. For example, internal billing notes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments", formalDefinition="Any other notes and comments made about the service request. For example, internal billing notes." )
     protected List<Annotation> note;
 
     /**
      * Instructions in terms that are understood by the patient or consumer.
      */
-    @Child(name = "patientInstruction", type = {StringType.class}, order=31, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "patientInstruction", type = {StringType.class}, order=29, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Patient or consumer-oriented instructions", formalDefinition="Instructions in terms that are understood by the patient or consumer." )
     protected StringType patientInstruction;
 
     /**
      * Key events in the history of the request.
      */
-    @Child(name = "relevantHistory", type = {Provenance.class}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relevantHistory", type = {Provenance.class}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Request provenance", formalDefinition="Key events in the history of the request." )
     protected List<Reference> relevantHistory;
 
-    private static final long serialVersionUID = -461863342L;
+    private static final long serialVersionUID = -578395935L;
 
   /**
    * Constructor
@@ -1335,215 +1321,109 @@ public class ServiceRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #locationCode} (The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.)
+     * @return {@link #location} (The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.)
      */
-    public List<CodeableConcept> getLocationCode() { 
-      if (this.locationCode == null)
-        this.locationCode = new ArrayList<CodeableConcept>();
-      return this.locationCode;
+    public List<CodeableReference> getLocation() { 
+      if (this.location == null)
+        this.location = new ArrayList<CodeableReference>();
+      return this.location;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ServiceRequest setLocationCode(List<CodeableConcept> theLocationCode) { 
-      this.locationCode = theLocationCode;
+    public ServiceRequest setLocation(List<CodeableReference> theLocation) { 
+      this.location = theLocation;
       return this;
     }
 
-    public boolean hasLocationCode() { 
-      if (this.locationCode == null)
+    public boolean hasLocation() { 
+      if (this.location == null)
         return false;
-      for (CodeableConcept item : this.locationCode)
+      for (CodeableReference item : this.location)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addLocationCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.locationCode == null)
-        this.locationCode = new ArrayList<CodeableConcept>();
-      this.locationCode.add(t);
+    public CodeableReference addLocation() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.location == null)
+        this.location = new ArrayList<CodeableReference>();
+      this.location.add(t);
       return t;
     }
 
-    public ServiceRequest addLocationCode(CodeableConcept t) { //3
+    public ServiceRequest addLocation(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.locationCode == null)
-        this.locationCode = new ArrayList<CodeableConcept>();
-      this.locationCode.add(t);
+      if (this.location == null)
+        this.location = new ArrayList<CodeableReference>();
+      this.location.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #locationCode}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #location}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getLocationCodeFirstRep() { 
-      if (getLocationCode().isEmpty()) {
-        addLocationCode();
+    public CodeableReference getLocationFirstRep() { 
+      if (getLocation().isEmpty()) {
+        addLocation();
       }
-      return getLocationCode().get(0);
+      return getLocation().get(0);
     }
 
     /**
-     * @return {@link #locationReference} (A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.)
+     * @return {@link #reason} (An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.)
      */
-    public List<Reference> getLocationReference() { 
-      if (this.locationReference == null)
-        this.locationReference = new ArrayList<Reference>();
-      return this.locationReference;
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ServiceRequest setLocationReference(List<Reference> theLocationReference) { 
-      this.locationReference = theLocationReference;
+    public ServiceRequest setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
       return this;
     }
 
-    public boolean hasLocationReference() { 
-      if (this.locationReference == null)
+    public boolean hasReason() { 
+      if (this.reason == null)
         return false;
-      for (Reference item : this.locationReference)
+      for (CodeableReference item : this.reason)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addLocationReference() { //3
-      Reference t = new Reference();
-      if (this.locationReference == null)
-        this.locationReference = new ArrayList<Reference>();
-      this.locationReference.add(t);
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return t;
     }
 
-    public ServiceRequest addLocationReference(Reference t) { //3
+    public ServiceRequest addReason(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.locationReference == null)
-        this.locationReference = new ArrayList<Reference>();
-      this.locationReference.add(t);
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #locationReference}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public Reference getLocationReferenceFirstRep() { 
-      if (getLocationReference().isEmpty()) {
-        addLocationReference();
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
       }
-      return getLocationReference().get(0);
-    }
-
-    /**
-     * @return {@link #reasonCode} (An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.)
-     */
-    public List<CodeableConcept> getReasonCode() { 
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      return this.reasonCode;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ServiceRequest setReasonCode(List<CodeableConcept> theReasonCode) { 
-      this.reasonCode = theReasonCode;
-      return this;
-    }
-
-    public boolean hasReasonCode() { 
-      if (this.reasonCode == null)
-        return false;
-      for (CodeableConcept item : this.reasonCode)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addReasonCode() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
-      return t;
-    }
-
-    public ServiceRequest addReasonCode(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonCode == null)
-        this.reasonCode = new ArrayList<CodeableConcept>();
-      this.reasonCode.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonCode}, creating it if it does not already exist {3}
-     */
-    public CodeableConcept getReasonCodeFirstRep() { 
-      if (getReasonCode().isEmpty()) {
-        addReasonCode();
-      }
-      return getReasonCode().get(0);
-    }
-
-    /**
-     * @return {@link #reasonReference} (Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.)
-     */
-    public List<Reference> getReasonReference() { 
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      return this.reasonReference;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ServiceRequest setReasonReference(List<Reference> theReasonReference) { 
-      this.reasonReference = theReasonReference;
-      return this;
-    }
-
-    public boolean hasReasonReference() { 
-      if (this.reasonReference == null)
-        return false;
-      for (Reference item : this.reasonReference)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addReasonReference() { //3
-      Reference t = new Reference();
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return t;
-    }
-
-    public ServiceRequest addReasonReference(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.reasonReference == null)
-        this.reasonReference = new ArrayList<Reference>();
-      this.reasonReference.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #reasonReference}, creating it if it does not already exist {3}
-     */
-    public Reference getReasonReferenceFirstRep() { 
-      if (getReasonReference().isEmpty()) {
-        addReasonReference();
-      }
-      return getReasonReference().get(0);
+      return getReason().get(0);
     }
 
     /**
@@ -1937,10 +1817,8 @@ public class ServiceRequest extends DomainResource {
         children.add(new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The individual who initiated the request and has responsibility for its activation.", 0, 1, requester));
         children.add(new Property("performerType", "CodeableConcept", "Desired type of performer for doing the requested service.", 0, 1, performerType));
         children.add(new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc.", 0, java.lang.Integer.MAX_VALUE, performer));
-        children.add(new Property("locationCode", "CodeableConcept", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationCode));
-        children.add(new Property("locationReference", "Reference(Location)", "A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationReference));
-        children.add(new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("location", "CodeableReference(Location)", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, location));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
         children.add(new Property("specimen", "Reference(Specimen)", "One or more specimens that the laboratory procedure will use.", 0, java.lang.Integer.MAX_VALUE, specimen));
@@ -1986,10 +1864,8 @@ public class ServiceRequest extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The individual who initiated the request and has responsibility for its activation.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "Desired type of performer for doing the requested service.", 0, 1, performerType);
         case 481140686: /*performer*/  return new Property("performer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The desired performer for doing the requested service.  For example, the surgeon, dermatopathologist, endoscopist, etc.", 0, java.lang.Integer.MAX_VALUE, performer);
-        case -58794174: /*locationCode*/  return new Property("locationCode", "CodeableConcept", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationCode);
-        case 755866390: /*locationReference*/  return new Property("locationReference", "Reference(Location)", "A reference to the the preferred location(s) where the procedure should actually happen. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, locationReference);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Indicates another resource that provides a justification for why this service is being requested.   May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case 1901043637: /*location*/  return new Property("location", "CodeableReference(Location)", "The preferred location(s) where the procedure should actually happen in coded or free text form. E.g. at home or nursing day care center.", 0, java.lang.Integer.MAX_VALUE, location);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "An explanation or justification for why this service is being requested in coded or textual form.   This is often for billing purposes.  May relate to the resources referred to in `supportingInfo`.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be needed for delivering the requested service.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient or specimen that may influence the services or their interpretations.     This information includes diagnosis, clinical findings and other observations.  In laboratory ordering these are typically referred to as \"ask at order entry questions (AOEs)\".  This includes observations explicitly requested by the producer (filler) to provide context or supporting information needed to complete the order. For example,  reporting the amount of inspired oxygen for blood gas measurements.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
         case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen)", "One or more specimens that the laboratory procedure will use.", 0, java.lang.Integer.MAX_VALUE, specimen);
@@ -2027,10 +1903,8 @@ public class ServiceRequest extends DomainResource {
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : new Base[] {this.performerType}; // CodeableConcept
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // Reference
-        case -58794174: /*locationCode*/ return this.locationCode == null ? new Base[0] : this.locationCode.toArray(new Base[this.locationCode.size()]); // CodeableConcept
-        case 755866390: /*locationReference*/ return this.locationReference == null ? new Base[0] : this.locationReference.toArray(new Base[this.locationReference.size()]); // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : this.reasonCode.toArray(new Base[this.reasonCode.size()]); // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : this.reasonReference.toArray(new Base[this.reasonReference.size()]); // Reference
+        case 1901043637: /*location*/ return this.location == null ? new Base[0] : this.location.toArray(new Base[this.location.size()]); // CodeableReference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // Reference
         case 1922406657: /*supportingInfo*/ return this.supportingInfo == null ? new Base[0] : this.supportingInfo.toArray(new Base[this.supportingInfo.size()]); // Reference
         case -2132868344: /*specimen*/ return this.specimen == null ? new Base[0] : this.specimen.toArray(new Base[this.specimen.size()]); // Reference
@@ -2115,17 +1989,11 @@ public class ServiceRequest extends DomainResource {
         case 481140686: // performer
           this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -58794174: // locationCode
-          this.getLocationCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 1901043637: // location
+          this.getLocation().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
-        case 755866390: // locationReference
-          this.getLocationReference().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
-        case 722137681: // reasonCode
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.getReasonReference().add(TypeConvertor.castToReference(value)); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 73049818: // insurance
           this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
@@ -2202,14 +2070,10 @@ public class ServiceRequest extends DomainResource {
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performer")) {
           this.getPerformer().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("locationCode")) {
-          this.getLocationCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("locationReference")) {
-          this.getLocationReference().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("reasonCode")) {
-          this.getReasonCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("reasonReference")) {
-          this.getReasonReference().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("location")) {
+          this.getLocation().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("insurance")) {
           this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("supportingInfo")) {
@@ -2257,10 +2121,8 @@ public class ServiceRequest extends DomainResource {
         case 693933948:  return getRequester();
         case -901444568:  return getPerformerType();
         case 481140686:  return addPerformer(); 
-        case -58794174:  return addLocationCode(); 
-        case 755866390:  return addLocationReference(); 
-        case 722137681:  return addReasonCode(); 
-        case -1146218137:  return addReasonReference(); 
+        case 1901043637:  return addLocation(); 
+        case -934964668:  return addReason(); 
         case 73049818:  return addInsurance(); 
         case 1922406657:  return addSupportingInfo(); 
         case -2132868344:  return addSpecimen(); 
@@ -2298,10 +2160,8 @@ public class ServiceRequest extends DomainResource {
         case 693933948: /*requester*/ return new String[] {"Reference"};
         case -901444568: /*performerType*/ return new String[] {"CodeableConcept"};
         case 481140686: /*performer*/ return new String[] {"Reference"};
-        case -58794174: /*locationCode*/ return new String[] {"CodeableConcept"};
-        case 755866390: /*locationReference*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case 1901043637: /*location*/ return new String[] {"CodeableReference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 73049818: /*insurance*/ return new String[] {"Reference"};
         case 1922406657: /*supportingInfo*/ return new String[] {"Reference"};
         case -2132868344: /*specimen*/ return new String[] {"Reference"};
@@ -2411,17 +2271,11 @@ public class ServiceRequest extends DomainResource {
         else if (name.equals("performer")) {
           return addPerformer();
         }
-        else if (name.equals("locationCode")) {
-          return addLocationCode();
+        else if (name.equals("location")) {
+          return addLocation();
         }
-        else if (name.equals("locationReference")) {
-          return addLocationReference();
-        }
-        else if (name.equals("reasonCode")) {
-          return addReasonCode();
-        }
-        else if (name.equals("reasonReference")) {
-          return addReasonReference();
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("insurance")) {
           return addInsurance();
@@ -2515,25 +2369,15 @@ public class ServiceRequest extends DomainResource {
           for (Reference i : performer)
             dst.performer.add(i.copy());
         };
-        if (locationCode != null) {
-          dst.locationCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : locationCode)
-            dst.locationCode.add(i.copy());
+        if (location != null) {
+          dst.location = new ArrayList<CodeableReference>();
+          for (CodeableReference i : location)
+            dst.location.add(i.copy());
         };
-        if (locationReference != null) {
-          dst.locationReference = new ArrayList<Reference>();
-          for (Reference i : locationReference)
-            dst.locationReference.add(i.copy());
-        };
-        if (reasonCode != null) {
-          dst.reasonCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : reasonCode)
-            dst.reasonCode.add(i.copy());
-        };
-        if (reasonReference != null) {
-          dst.reasonReference = new ArrayList<Reference>();
-          for (Reference i : reasonReference)
-            dst.reasonReference.add(i.copy());
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
         };
         if (insurance != null) {
           dst.insurance = new ArrayList<Reference>();
@@ -2587,12 +2431,11 @@ public class ServiceRequest extends DomainResource {
            && compareDeep(quantity, o.quantity, true) && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true)
            && compareDeep(occurrence, o.occurrence, true) && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(authoredOn, o.authoredOn, true)
            && compareDeep(requester, o.requester, true) && compareDeep(performerType, o.performerType, true)
-           && compareDeep(performer, o.performer, true) && compareDeep(locationCode, o.locationCode, true)
-           && compareDeep(locationReference, o.locationReference, true) && compareDeep(reasonCode, o.reasonCode, true)
-           && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(insurance, o.insurance, true)
-           && compareDeep(supportingInfo, o.supportingInfo, true) && compareDeep(specimen, o.specimen, true)
-           && compareDeep(bodySite, o.bodySite, true) && compareDeep(note, o.note, true) && compareDeep(patientInstruction, o.patientInstruction, true)
-           && compareDeep(relevantHistory, o.relevantHistory, true);
+           && compareDeep(performer, o.performer, true) && compareDeep(location, o.location, true) && compareDeep(reason, o.reason, true)
+           && compareDeep(insurance, o.insurance, true) && compareDeep(supportingInfo, o.supportingInfo, true)
+           && compareDeep(specimen, o.specimen, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(note, o.note, true)
+           && compareDeep(patientInstruction, o.patientInstruction, true) && compareDeep(relevantHistory, o.relevantHistory, true)
+          ;
       }
 
       @Override
@@ -2612,9 +2455,9 @@ public class ServiceRequest extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, replaces, requisition, status, intent, category, priority
           , doNotPerform, code, orderDetail, quantity, subject, encounter, occurrence, asNeeded
-          , authoredOn, requester, performerType, performer, locationCode, locationReference
-          , reasonCode, reasonReference, insurance, supportingInfo, specimen, bodySite, note
-          , patientInstruction, relevantHistory);
+          , authoredOn, requester, performerType, performer, location, reason, insurance
+          , supportingInfo, specimen, bodySite, note, patientInstruction, relevantHistory
+          );
       }
 
   @Override

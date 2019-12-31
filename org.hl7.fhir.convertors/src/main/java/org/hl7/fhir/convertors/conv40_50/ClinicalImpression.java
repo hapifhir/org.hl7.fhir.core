@@ -180,9 +180,9 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
     org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
     copyElement(src, tgt);
     if (src.hasItemCodeableConcept())
-      tgt.setItemCodeableConcept(convertCodeableConcept(src.getItemCodeableConcept()));
+      tgt.setItem(convertCodeableConceptToCodeableReference(src.getItemCodeableConcept()));
     if (src.hasItemReference())
-      tgt.setItemReference(convertReference(src.getItemReference()));
+      tgt.setItem(convertReferenceToCodeableReference(src.getItemReference()));
     if (src.hasBasis())
       tgt.setBasisElement(convertString(src.getBasisElement()));
     return tgt;
@@ -193,10 +193,10 @@ public class ClinicalImpression extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent();
     copyElement(src, tgt);
-    if (src.hasItemCodeableConcept())
-      tgt.setItemCodeableConcept(convertCodeableConcept(src.getItemCodeableConcept()));
-    if (src.hasItemReference())
-      tgt.setItemReference(convertReference(src.getItemReference()));
+    if (src.hasItem() && src.getItem().hasConcept())
+      tgt.setItemCodeableConcept(convertCodeableConcept(src.getItem().getConcept()));
+    if (src.hasItem() && src.getItem().hasReference())
+      tgt.setItemReference(convertReference(src.getItem().getReference()));
     if (src.hasBasis())
       tgt.setBasisElement(convertString(src.getBasisElement()));
     return tgt;

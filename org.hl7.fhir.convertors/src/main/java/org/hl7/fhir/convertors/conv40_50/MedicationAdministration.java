@@ -23,6 +23,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes;
 import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes;
@@ -93,9 +94,9 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
     for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
+      tgt.addReason(convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+      tgt.addReason(convertReferenceToCodeableReference(t));
     if (src.hasRequest())
       tgt.setRequest(convertReference(src.getRequest()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDevice())
@@ -138,10 +139,12 @@ public class MedicationAdministration extends VersionConvertor_40_50 {
       tgt.setEffective(convertType(src.getOccurence()));
     for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReasonCode(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReasonReference())
-      tgt.addReasonReference(convertReference(t));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+      tgt.addReasonReference(convertReference(t.getReference()));
     if (src.hasRequest())
       tgt.setRequest(convertReference(src.getRequest()));
     for (org.hl7.fhir.r5.model.Reference t : src.getDevice())

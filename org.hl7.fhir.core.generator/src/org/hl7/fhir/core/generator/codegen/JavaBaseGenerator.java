@@ -73,8 +73,8 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
   public String startVMarkValue() {
-    // return "// Generated on "+Config.DATE_FORMAT().format(genDate)+" for FHIR v"+version+"\r\n\r\n";
-    return "// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0\r\n\r\n";
+    return "// Generated on "+config.DATE_FORMAT().format(genDate)+" for FHIR v"+version+"\r\n\r\n";
+//    return "// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0\r\n\r\n";
   }
 
 

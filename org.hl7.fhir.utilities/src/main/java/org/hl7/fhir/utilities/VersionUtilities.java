@@ -23,8 +23,8 @@ package org.hl7.fhir.utilities;
 public class VersionUtilities {
   
   
-  public static final String CURRENT_VERSION = "4.1";
-  public static final String CURRENT_FULL_VERSION = "4.1.0";
+  public static final String CURRENT_VERSION = "4.2";
+  public static final String CURRENT_FULL_VERSION = "4.2.0";
 
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
