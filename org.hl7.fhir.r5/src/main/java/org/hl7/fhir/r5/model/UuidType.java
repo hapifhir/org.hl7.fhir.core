@@ -37,9 +37,9 @@ package org.hl7.fhir.r5.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,45 +49,48 @@ package org.hl7.fhir.r5.model;
  */
 
 
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+
 import java.net.URI;
 
+@DatatypeDef(name = "uuid", profileOf = UriType.class)
 public class UuidType extends UriType {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	/**
-	 * Constructor
-	 */
-	public UuidType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public UuidType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public UuidType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public UuidType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public UuidType copy() {
-		UuidType ret = new UuidType(getValue());
-		copyValues(ret);
+  /**
+   * Constructor
+   */
+  @Override
+  public UuidType copy() {
+    UuidType ret = new UuidType(getValue());
+    copyValues(ret);
     return ret;
-	}
-	
-	public String fhirType() {
-		return "uuid";		
-	}
+  }
+
+  public String fhirType() {
+    return "uuid";
+  }
 
 }
