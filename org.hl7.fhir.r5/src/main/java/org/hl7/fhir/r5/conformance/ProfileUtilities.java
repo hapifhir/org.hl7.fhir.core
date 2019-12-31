@@ -453,7 +453,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw new DefinitionException("Base profile "+base.getUrl()+" has no type");
     if (!derived.hasType())
       throw new DefinitionException("Derived profile "+derived.getUrl()+" has no type");
-    if (!base.getType().equals(derived.getType()) && derived.getDerivation().equals(TypeDerivationRule.CONSTRAINT))
+    if (!base.getType().equals(derived.getType()) && derived.getDerivation() != null && derived.getDerivation().equals(TypeDerivationRule.CONSTRAINT))
       throw new DefinitionException("Base & Derived profiles have different types ("+base.getUrl()+" = "+base.getType()+" vs "+derived.getUrl()+" = "+derived.getType()+")");
       
     if (snapshotStack.contains(derived.getUrl()))
@@ -486,7 +486,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
       StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
       StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
-      if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
+      if (derived.getDerivation() != null && derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
         String derivedType = derived.getType();
         if (StructureDefinitionKind.LOGICAL.equals(derived.getKind()) && derived.getType().contains("/")) {
           derivedType = derivedType.substring(derivedType.lastIndexOf("/")+1);
@@ -498,7 +498,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
-      if (derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
+      if (derived.getDerivation() != null && derived.getDerivation().equals(TypeDerivationRule.SPECIALIZATION)) {
         for (ElementDefinition e : diff.getElement()) {
           if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
             ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
@@ -558,7 +558,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
       }
-      if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (derived.getDerivation() != null && derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           if (!ed.hasBase()) {
             ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
