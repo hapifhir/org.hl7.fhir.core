@@ -59,7 +59,8 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
 public class CommunicationRequest extends VersionConvertor_40_50 {
-
+  public final static String EXT_PAYLOAD_CONTENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-CommunicationRequest.payload.content";
+  
   public static org.hl7.fhir.r5.model.CommunicationRequest convertCommunicationRequest(org.hl7.fhir.r4.model.CommunicationRequest src) throws FHIRException {
     if (src == null)
       return null;
@@ -223,8 +224,20 @@ public class CommunicationRequest extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent();
     copyElement(src, tgt);
-    if (src.hasContent())
-      tgt.setContent(convertType(src.getContent()));
+    if (org.hl7.fhir.r4.utils.ToolingExtensions.hasExtension(src, EXT_PAYLOAD_CONTENT)) {
+      org.hl7.fhir.r4.model.Extension e = org.hl7.fhir.r4.utils.ToolingExtensions.getExtension(src, EXT_PAYLOAD_CONTENT);
+      tgt.setContent(convertType(e.getValue()));
+      org.hl7.fhir.r5.utils.ToolingExtensions.removeExtension(tgt, EXT_PAYLOAD_CONTENT);
+    } else if (src.hasContent()) {
+      org.hl7.fhir.r4.model.Type content = src.getContent();
+      if (content instanceof org.hl7.fhir.r4.model.StringType) {
+        org.hl7.fhir.r4.model.StringType string = (org.hl7.fhir.r4.model.StringType)content;
+        org.hl7.fhir.r5.model.CodeableConcept code = new org.hl7.fhir.r5.model.CodeableConcept();
+        code.setTextElement((org.hl7.fhir.r5.model.StringType)convertType(string));
+        tgt.setContent(code);
+      } else
+        tgt.setContent(convertType(content));
+    }
     return tgt;
   }
 
@@ -233,10 +246,20 @@ public class CommunicationRequest extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent();
     copyElement(src, tgt);
-    if (src.hasContent())
-      tgt.setContent(convertType(src.getContent()));
+    if (src.hasContent()) {
+      org.hl7.fhir.r5.model.DataType content = src.getContent();
+      if (content instanceof org.hl7.fhir.r5.model.CodeableConcept) {
+        org.hl7.fhir.r5.model.CodeableConcept code = (org.hl7.fhir.r5.model.CodeableConcept)content;
+        if (code.hasText())
+          tgt.setContent(new org.hl7.fhir.r4.model.StringType(code.getText()));
+        if (code.hasCoding() || code.hasExtension()) {
+          org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_PAYLOAD_CONTENT);
+          e.setValue(convertType(code));
+          tgt.addExtension(e);
+        }
+      } else
+        tgt.setContent(convertType(content));
+    }
     return tgt;
   }
-
-
 }
