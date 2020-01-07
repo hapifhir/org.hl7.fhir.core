@@ -394,13 +394,12 @@ public class XhtmlNode implements IBaseXhtml {
     val = XhtmlDt.preprocessXhtmlNamespaceDeclaration(val);
 
     try {
-      // TODO: this is ugly
-      XhtmlNode fragment = new XhtmlParser().parseFragment(val);
-      this.attributes = fragment.attributes;
-      this.childNodes = fragment.childNodes;
-      this.content = fragment.content;
-      this.name = fragment.name;
-      this.nodeType= fragment.nodeType;
+      XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
+      this.attributes = fragment.getAttributes();
+      this.childNodes = fragment.getChildNodes();
+      this.content = fragment.getContent();
+      this.name = fragment.getName();
+      this.nodeType= fragment.getNodeType();
     } catch (Exception e) {
       // TODO: composer shouldn't throw exception like this
       throw new RuntimeException(e);
