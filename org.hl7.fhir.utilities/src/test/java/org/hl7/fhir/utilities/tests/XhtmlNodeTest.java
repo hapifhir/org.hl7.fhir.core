@@ -46,5 +46,14 @@ public class XhtmlNodeTest {
   }
 
 
+  @Test
+  public void testProcessingInstructionNotPreserved() {
+    XhtmlNode dt = new XhtmlNode();
+    dt.setValueAsString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><div xmlns=\"http://www.w3.org/1999/xhtml\">help i'm a bug</div>");
+    assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">help i'm a bug</div>", dt.getValueAsString());
+    assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">help i'm a bug</div>", new XhtmlNode().setValue(dt.getValue()).getValueAsString());
+  }
+
+
 
 }
