@@ -397,6 +397,10 @@ public class XhtmlNode implements IBaseXhtml {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
       this.attributes = fragment.getAttributes();
       this.childNodes = fragment.getChildNodes();
+      // Strip the <? .. ?> declaration if one was present
+      if (childNodes.size() > 0 && childNodes.get(0) != null && childNodes.get(0).getNodeType() == NodeType.Instruction) {
+        childNodes.remove(0);
+      }
       this.content = fragment.getContent();
       this.name = fragment.getName();
       this.nodeType= fragment.getNodeType();
