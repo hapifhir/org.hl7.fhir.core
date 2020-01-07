@@ -24,11 +24,13 @@ package org.hl7.fhir.r5.model;
 import java.io.IOException;
 import java.util.List;
 
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+
 
 public class XhtmlType extends Element {
 
