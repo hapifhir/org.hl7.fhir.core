@@ -473,7 +473,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       readChar();
     } else {
       unwindPoint = null;
-      List<XhtmlNode> p = new ArrayList<XhtmlNode>();
+      List<XhtmlNode> p = new ArrayList<>();
       parseElementInner(root, p, nsm, true);
     }
     return result;
@@ -489,9 +489,6 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     // what we do here is strip out any stated namespace attributes, putting them in the namesapce map
     // then we figure out what the namespace of this element is, and state it explicitly if it's not the default
     
-    // but we don't bother with any of this if we're not validating
-    if (!validatorMode)
-      return null;
     NSMap result = new NSMap(nsm);
     List<String> nsattrs = new ArrayList<String>();
     for (String an : node.getAttributes().keySet()) {
