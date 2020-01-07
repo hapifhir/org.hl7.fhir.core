@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -446,7 +447,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
   }
   
   public XhtmlDocument parse(InputStream input, String entryName) throws FHIRFormatError, IOException  {
-    rdr = new InputStreamReader(input, "UTF-8");
+    rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
     return parse(entryName);
   }
    
@@ -1176,7 +1177,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     String n = readName().toLowerCase();
     readToTagEnd();
     XhtmlNode result = new XhtmlNode(NodeType.Element);
-    
+
     int colonIndex = n.indexOf(':');
     if (colonIndex != -1) {
       n = n.substring(colonIndex + 1);
@@ -1184,7 +1185,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     
     result.setName(n);
     unwindPoint = null;
-    List<XhtmlNode> p = new ArrayList<XhtmlNode>();
+    List<XhtmlNode> p = new ArrayList<>();
     parseElementInner(result, p, null, true);
 
     return result;
