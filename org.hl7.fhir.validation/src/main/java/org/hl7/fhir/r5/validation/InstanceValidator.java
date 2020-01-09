@@ -5010,7 +5010,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   private void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, ValidationProfileSet profiles, IdStatus idstatus, NodeStack stack, boolean isEntry) throws FHIRException, FHIRException, IOException {
     assert stack != null;
     assert resource != null;
-
+    
     if (isEntry || executionId == null)
       executionId = UUID.randomUUID().toString();
     boolean ok = true;
@@ -5018,7 +5018,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     String resourceName = element.getType(); // todo: consider namespace...?
     if (defn == null) {
       long t = System.nanoTime();
-      defn = element.getProperty().getStructure();
+      if (element.isResource()) {
+        defn = element.getProperty().getStructure();
+      } 
       if (defn == null)
         defn = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
       if (profiles!=null)
