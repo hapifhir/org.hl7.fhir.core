@@ -59,7 +59,7 @@ import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
  * Primitive type "integer" in FHIR: A signed 64-bit integer
  */
 @DatatypeDef(name = "integer64")
-public class Integer64Type extends PrimitiveType<Long> implements IBaseIntegerDatatype {
+public class Integer64Type extends PrimitiveType<Long> {
 
 	private static final long serialVersionUID = 3L;
 
