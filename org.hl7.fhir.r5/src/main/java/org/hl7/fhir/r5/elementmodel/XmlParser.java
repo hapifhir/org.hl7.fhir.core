@@ -516,7 +516,7 @@ public class XmlParser extends ParserBase {
       if (element.getType().equals("xhtml")) {
         String rawXhtml = element.getValue();
         if (isCdaText(element.getProperty())) {
-          new CDANarrativeFormat().convert(xml, element.getXhtml());
+          new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
         } else {
           xml.escapedText(rawXhtml);
           xml.anchor("end-xhtml");
