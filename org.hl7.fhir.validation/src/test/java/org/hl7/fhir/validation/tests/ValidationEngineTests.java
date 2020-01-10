@@ -129,7 +129,7 @@ public class ValidationEngineTests {
     int h = hints(op);
     Assert.assertTrue(e == 1);
     Assert.assertTrue(w == 0);
-    Assert.assertTrue(h == 0);
+    Assert.assertTrue(h == 1);
     if (!TestUtilities.silent)
     System.out.println("  .. done: "+Integer.toString(e)+" errors, "+Integer.toString(w)+" warnings, "+Integer.toString(h)+" information messages");
   }

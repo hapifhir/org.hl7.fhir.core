@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.HTMLClientLogger;
+import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -79,7 +79,7 @@ public class TerminologyClientR3 implements TerminologyClient {
   }
 
   @Override
-  public void setLogger(HTMLClientLogger txLog) {
+  public void setLogger(ToolingClientLogger txLog) {
     // ignored in this version - need to roll R4 internal changes back to R2 if desired
   }
 

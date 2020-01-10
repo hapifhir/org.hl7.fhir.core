@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
+import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 
 public class TerminologyClientR5 implements TerminologyClient {
 
@@ -71,7 +72,7 @@ public class TerminologyClientR5 implements TerminologyClient {
   }
 
   @Override
-  public void setLogger(HTMLClientLogger txLog) {
+  public void setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);
   }
 

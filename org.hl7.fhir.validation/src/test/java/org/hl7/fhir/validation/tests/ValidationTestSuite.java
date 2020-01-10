@@ -93,23 +93,28 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @Test
   public void test() throws Exception {
     System.out.println("Name: " + name+" - base");
+    String txLog = null;
+    if (content.has("txLog")) {
+      txLog = content.get("txLog").getAsString();      
+    }
     String v = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    if (content.has("version")) 
+    if (content.has("version")) {
       v = content.get("version").getAsString();
+    }
       
     v = VersionUtilities.getMajMin(v);
     if (!ve.containsKey(v)) {
       if (v.startsWith("5.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, null, FhirPublication.R5, true));
+        ve.put(v, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, txLog, FhirPublication.R5, true));
       else if (v.startsWith("3.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, true));
+        ve.put(v, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true));
       else if (v.startsWith("4.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, true));
+        ve.put(v, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, txLog, FhirPublication.R4, true));
       else if (v.startsWith("1.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, true));
+        ve.put(v, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, txLog, FhirPublication.DSTU2, true));
       else if (v.startsWith("1.4"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, null, FhirPublication.DSTU2016May, true));
+        ve.put(v, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, txLog, FhirPublication.DSTU2016May, true));
       else
         throw new Exception("unknown version "+v);
     }
@@ -155,6 +160,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
     }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
+    if (content.getAsJsonObject("java").has("debug")) {
+      val.setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
+    } else {
+      val.setDebug(false);
+    }
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
@@ -277,7 +287,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
-        if (java.has("infoCount")) {
+        if (java.has("infoCount") || java.has("debug")) {
           System.out.println("hint: "+vm.getDisplay());          
         }
       }
