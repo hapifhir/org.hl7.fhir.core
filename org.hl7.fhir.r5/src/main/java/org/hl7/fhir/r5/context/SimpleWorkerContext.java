@@ -254,7 +254,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public void loadFromFile(InputStream stream, String name, IContextResourceLoader loader) throws IOException, FHIRException {
-    loadFromFile(stream, name, null);
+    loadFromFile(stream, name, loader, null);
   }
   
 	public void loadFromFile(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter) throws IOException, FHIRException {

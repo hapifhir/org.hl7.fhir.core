@@ -190,21 +190,22 @@ public class CDARoundTripTests {
   public void testSimple() throws IOException {
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     SimpleWorkerContext context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "any.xml"), "any.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "ii.xml"), "ii.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "cd.xml"), "cd.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "ce.xml"), "ce.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "cda.xml"), "cda.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ce.xml"), "ce.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
     for (StructureDefinition sd : context.getStructures()) {
       if (!sd.hasSnapshot()) {
         System.out.println("generate snapshot for "+sd.getUrl());
         context.generateSnapshot(sd, true);
       }
     }
-    Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "cda", "example.xml"), FhirFormat.XML);
+    Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
     FHIRPathEngine fp = new FHIRPathEngine(context);
     Assert.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
    
   }
+
   
 }
