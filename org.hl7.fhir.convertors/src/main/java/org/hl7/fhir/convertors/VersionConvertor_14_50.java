@@ -112,11 +112,22 @@ public class VersionConvertor_14_50 {
     CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/valueset-system");    
   }
   
+  private static boolean mappedExtension(String url) {
+    if (
+        url.equals(VersionConvertorConstants.PROFILE_EXTENSION) ||
+        url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) ||
+        url.equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION) ||
+        url.equals(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT)
+        )
+       return true;
+    return false;
+  }
+  
   private static void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.r5.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2016may.model.Extension  e : src.getExtension()) {
-      if (!Utilities.existsInList(e.getUrl(), exemptExtensions) && (!(e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION))))
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions) && !mappedExtension(e.getUrl().toString()))
         tgt.addExtension(convertExtension(e));
     }
   }
@@ -1519,7 +1530,8 @@ public class VersionConvertor_14_50 {
       }
       for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
         // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
-        tgt.addProfile(t.getValue().toString());
+        String s = ((org.hl7.fhir.dstu2016may.model.PrimitiveType<String>)t.getValue()).getValue();
+        tgt.addProfile(s);
       }
     } else {
       for (org.hl7.fhir.dstu2016may.model.UriType u : src.getProfile())
@@ -4007,6 +4019,26 @@ public class VersionConvertor_14_50 {
       tgt.setReliableCache(src.getReliableCache());
     if (src.hasDocumentation())
       tgt.setDocumentation(src.getDocumentation());
+    for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent t : src.getEvent()) {
+      org.hl7.fhir.r5.model.Extension e = new org.hl7.fhir.r5.model.Extension(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT);
+      e.addExtension(new org.hl7.fhir.r5.model.Extension("code", convertCoding(t.getCode())));
+      if (t.hasCategory())
+        e.addExtension(new org.hl7.fhir.r5.model.Extension("category", new org.hl7.fhir.r5.model.CodeType(t.getCategory().toCode())));
+      e.addExtension(new org.hl7.fhir.r5.model.Extension("mode", new org.hl7.fhir.r5.model.CodeType(t.getMode().toCode())));
+      if (t.getFocusElement().hasValue())
+        e.addExtension(new org.hl7.fhir.r5.model.Extension("focus", new org.hl7.fhir.r5.model.StringType(t.getFocus())));
+      else {
+        org.hl7.fhir.r5.model.CodeType focus = new org.hl7.fhir.r5.model.CodeType();
+        org.hl7.fhir.r5.model.Extension focusE = new org.hl7.fhir.r5.model.Extension("focus", focus);
+        copyElement(t.getFocusElement(), focus);
+        e.addExtension(focusE);
+      }
+      e.addExtension(new org.hl7.fhir.r5.model.Extension("request", convertReference(t.getRequest())));
+      e.addExtension(new org.hl7.fhir.r5.model.Extension("response", convertReference(t.getResponse())));
+      if (t.hasDocumentation())
+        e.addExtension(new org.hl7.fhir.r5.model.Extension("documentation", new org.hl7.fhir.r5.model.StringType(t.getDocumentation())));
+      tgt.addExtension(e);
+    }
     return tgt;
   }
 
@@ -4021,6 +4053,25 @@ public class VersionConvertor_14_50 {
       tgt.setReliableCache(src.getReliableCache());
     if (src.hasDocumentation())
       tgt.setDocumentation(src.getDocumentation());
+    for (org.hl7.fhir.r5.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT)) {
+      org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent event = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent();
+      tgt.addEvent(event);
+      event.setCode(convertCoding((org.hl7.fhir.r5.model.Coding)e.getExtensionByUrl("code").getValue()));
+      if (e.hasExtension("category"))
+        event.setCategory(org.hl7.fhir.dstu2016may.model.Conformance.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
+      event.setMode(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
+      org.hl7.fhir.r5.model.Extension focusE = e.getExtensionByUrl("focus");
+      if (focusE.getValue().hasPrimitiveValue())
+        event.setFocus(focusE.getValue().toString());
+      else {
+        event.setFocusElement(new org.hl7.fhir.dstu2016may.model.CodeType());
+        copyElement(focusE.getValue(), event.getFocusElement());
+      }
+      event.setRequest(convertReference((org.hl7.fhir.r5.model.Reference)e.getExtensionByUrl("request").getValue()));
+      event.setResponse(convertReference((org.hl7.fhir.r5.model.Reference)e.getExtensionByUrl("response").getValue()));
+      if (e.hasExtension("documentation"))
+        event.setDocumentation(e.getExtensionByUrl("documentation").getValue().toString());
+    }
     return tgt;
   }
 

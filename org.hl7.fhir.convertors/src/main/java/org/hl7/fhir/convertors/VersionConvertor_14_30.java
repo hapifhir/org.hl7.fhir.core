@@ -78,7 +78,7 @@ public class VersionConvertor_14_30 {
     if (src.hasId())
       tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2016may.model.Extension  e : src.getExtension()) {
-      if (!Utilities.existsInList(e.getUrl(), exemptExtensions)) {
+      if (!Utilities.existsInList(e.getUrl(), exemptExtensions) && (!(e.getUrl().equals(VersionConvertorConstants.PROFILE_EXTENSION) || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION) || e.getUrl().equals(VersionConvertorConstants.IG_DEPENDSON_VERSION_EXTENSION)))) {
         tgt.addExtension(convertExtension(e));
       }
     }
@@ -1433,7 +1433,8 @@ public class VersionConvertor_14_30 {
     }
     for (org.hl7.fhir.dstu2016may.model.Extension t : src.getExtensionsByUrl(VersionConvertorConstants.PROFILE_EXTENSION)) {
       // We don't have a good way to distinguish resources that have both 'profile' and 'targetProfile' when the type is reference, so the best we can do is by name.
-      tgt.setProfile(t.getValue().toString());
+      String s = ((org.hl7.fhir.dstu2016may.model.PrimitiveType<String>)t.getValue()).getValue();
+      tgt.setProfile(s);
     }
     for (org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> t : src.getAggregation())
       copyElement(t, tgt.addAggregationElement().setValue(convertAggregationMode(t.getValue())));
