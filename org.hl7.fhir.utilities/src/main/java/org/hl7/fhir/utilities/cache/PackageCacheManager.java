@@ -334,7 +334,8 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.r4.elements", "http://hl7.org/fhir/R4/hl7.fhir.r4.elements.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r4.expansions", "http://hl7.org/fhir/R4/hl7.fhir.r4.expansions.tgz", ini) || save;
 
-    save = checkIniHasMapping("hl7.fhir.r5.core", "http://build.fhir.org/package.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r5.core", "http://hl7.org/fhir/2020Feb/hl7.fhir.r5.core.tgz", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.r5.expansions", "http://hl7.org/fhir/2020Feb/hl7.fhir.r5.expansions.tgz", ini) || save;
 
     save = checkIniHasMapping("fhir.argonaut.ehr", "http://fhir.org/guides/argonaut", ini) || save;
     save = checkIniHasMapping("fhir.argonaut.pd", "http://fhir.org/guides/argonaut-pd", ini) || save;
