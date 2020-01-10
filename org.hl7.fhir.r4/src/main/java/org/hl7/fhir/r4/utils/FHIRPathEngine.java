@@ -1080,6 +1080,7 @@ public class FHIRPathEngine {
     case Lower: return checkParamCount(lexer, location, exp, 0);
     case Upper: return checkParamCount(lexer, location, exp, 0);
     case ToChars: return checkParamCount(lexer, location, exp, 0);
+    case IndexOf : return checkParamCount(lexer, location, exp, 1);
     case Substring: return checkParamCount(lexer, location, exp, 1, 2);
     case StartsWith: return checkParamCount(lexer, location, exp, 1);
     case EndsWith: return checkParamCount(lexer, location, exp, 1);
