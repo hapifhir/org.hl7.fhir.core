@@ -530,7 +530,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     public void addAncestorProfiles(StructureDefinition sd) {
-      if (sd.hasDerivation() && sd.getDerivation().equals(StructureDefinition.TypeDerivationRule.CONSTRAINT)) {
+      if (sd.hasDerivation() && sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT) {
         StructureDefinition parentSd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
         if (parentSd != null && !profiles.containsKey(parentSd)) {
           ProfileUsage pu = new ProfileUsage(parentSd);
@@ -944,7 +944,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true; // we don't validate these
       else {
         CodeSystem cs = getCodeSystem(system);
-        if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, "Unknown Code System " + system)) {
+        if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, "Unknown Code System '" + system+"'")) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
           if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, "Unknown Code (" + system + "#" + code + ")"))
             return warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), "Display should be '" + def.getDisplay() + "'");
@@ -962,6 +962,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "Invalid System URI: "+system+" - cannot use a value set URI as a system");
           // Lloyd: This error used to prohibit checking for downstream issues, but there are some cases where that checking needs to occur.  Please talk to me before changing the code back.
         }
+        hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Code System URI '"+system+"' is unknown so the code cannot be validated");
         return true;
       }
       catch (Exception e) {
@@ -1076,7 +1077,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
-                    ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang), cc, valueset); // we're going to validate the codings directly
+                    ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang).checkValueSetOnly(), cc, valueset); // we're going to validate the codings directly, so only check the valueset
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1112,12 +1113,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   // to validate, we'll validate that the codes actually exist
                   if (bindingsOk) {
                     for (Coding nextCoding : cc.getCoding()) {
-                      String nextCode = nextCoding.getCode();
-                      String nextSystem = nextCoding.getSystem();
-                      if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
-                        ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang), nextSystem, nextCode, null);
-                        if (!vr.isOk()) {
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, "Code {0} is not a valid code in code system {1}", nextCode, nextSystem);
+                      if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
+                        ValidationResult vr = context.validateCode(new ValidationOptions(stack.workingLang).noCheckValueSetMembership(), nextCoding, valueset);
+                        if (vr.getSeverity() != null) {
+                          if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                          } else if (vr.getSeverity() == IssueSeverity.WARNING) {
+                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                          } else {
+                            txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                          }
                         }
                       }
                     }
@@ -4335,9 +4340,6 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl) throws FHIRException, FHIRException, IOException {
     // element.markValidation(profile, definition);
 
-    if (debug) {
-    	System.out.println("  "+stack.getLiteralPath());
-    }
     //		time = System.nanoTime();
     // check type invariants
     checkInvariants(hostContext, errors, profile, definition, resource, element, stack, false);
@@ -4376,6 +4378,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   public void checkChild(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
       Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl)
       throws FHIRException, IOException, DefinitionException {
+    
     List<String> profiles = new ArrayList<String>();
     if (ei.definition != null) {
       String type = null;
@@ -4446,6 +4449,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
       }
       NodeStack localStack = stack.push(ei.element, ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
+      if (debug) {
+        System.out.println("  "+localStack.getLiteralPath());
+      }
       String localStackLiterapPath = localStack.getLiteralPath();
       String eiPath = ei.path;
       assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;

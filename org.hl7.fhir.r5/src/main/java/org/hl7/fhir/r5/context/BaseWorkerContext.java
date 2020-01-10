@@ -79,12 +79,14 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -148,7 +150,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private boolean allowLoadingDuplicates;
 
   protected TerminologyClient txClient;
-  protected HTMLClientLogger txLog;
+  protected ToolingClientLogger txLog;
   private TerminologyCapabilities txcaps;
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
@@ -593,8 +595,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
-    if (!Utilities.noString(options.getLanguage()))
+    if (!Utilities.noString(options.getLanguage())) {
       pIn.addParameter("displayLanguage", options.getLanguage());
+    }
+    if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
+      pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
+    }
   }
 
   @Override

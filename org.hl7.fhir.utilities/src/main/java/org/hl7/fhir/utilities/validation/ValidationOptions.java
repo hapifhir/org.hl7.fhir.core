@@ -1,10 +1,16 @@
 package org.hl7.fhir.utilities.validation;
 
+
 public class ValidationOptions {
+  public enum ValueSetMode {
+    ALL_CHECKS, CHECK_MEMERSHIP_ONLY, NO_MEMBERSHIP_CHECK
+  }
+
   private String language;
   private boolean useServer = true;
   private boolean useClient = true;
   private boolean guessSystem = false;
+  private ValueSetMode valueSetMode = ValueSetMode.ALL_CHECKS;
 
   public ValidationOptions() {
     super();
@@ -67,10 +73,28 @@ public class ValidationOptions {
   
 
   public String toJson() {
-    return "\"lang\":\""+language+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", \"guessSystem\":\""+Boolean.toString(guessSystem)+"\"";
+    return "\"lang\":\""+language+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", \"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\"";
   }
 
   public static ValidationOptions defaults() {
     return new ValidationOptions("en-US");
   }
+
+  public ValidationOptions checkValueSetOnly() {
+    ValidationOptions n = this.copy();
+    n.valueSetMode = ValueSetMode.CHECK_MEMERSHIP_ONLY;
+    return n;
+  }
+
+  public ValidationOptions noCheckValueSetMembership() {
+    ValidationOptions n = this.copy();
+    n.valueSetMode = ValueSetMode.NO_MEMBERSHIP_CHECK;
+    return n;
+  }
+
+  public ValueSetMode getValueSetMode() {
+    return valueSetMode;
+  }
+
+  
 }

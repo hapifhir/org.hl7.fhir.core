@@ -241,7 +241,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     try {
       tlog("Connect to "+client.getAddress());
       txClient = client;
-      txLog = new HTMLClientLogger(log);
+      if (log != null && log.endsWith(".txt")) {
+        txLog = new TextClientLogger(log);
+      } else {
+        txLog = new HTMLClientLogger(log);
+      }
       txClient.setLogger(txLog);
       return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
     } catch (Exception e) {

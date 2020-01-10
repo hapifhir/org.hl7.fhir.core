@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetCheckerSimple implements ValueSetChecker {
@@ -67,22 +68,24 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     // first, we validate the codings themselves
     List<String> errors = new ArrayList<String>();
     List<String> warnings = new ArrayList<String>();
-    for (Coding c : code.getCoding()) {
-      if (!c.hasSystem())
-        warnings.add("Coding has no system - cannot validate");
-      CodeSystem cs = context.fetchCodeSystem(c.getSystem());
-      ValidationResult res = null;
-      if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        res = context.validateCode(options.noClient(), c, null);
-      } else {
-        res = validateCode(c, cs);
+    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
+      for (Coding c : code.getCoding()) {
+        if (!c.hasSystem())
+          warnings.add("Coding has no system - cannot validate");
+        CodeSystem cs = context.fetchCodeSystem(c.getSystem());
+        ValidationResult res = null;
+        if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+          res = context.validateCode(options.noClient(), c, null);
+        } else {
+          res = validateCode(c, cs);
+        }
+        if (!res.isOk())
+          errors.add(res.getMessage());
+        else if (res.getMessage() != null)
+          warnings.add(res.getMessage());
       }
-      if (!res.isOk())
-        errors.add(res.getMessage());
-      else if (res.getMessage() != null)
-        warnings.add(res.getMessage());
     }
-    if (valueset != null) {
+    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       boolean ok = false;
       for (Coding c : code.getCoding()) {
         ok = ok || codeInValueSet(c.getSystem(), c.getCode());
@@ -101,38 +104,45 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   public ValidationResult validateCode(Coding code) throws FHIRException {
     String warningMessage = null;
     // first, we validate the concept itself
-    
-    String system = code.hasSystem() ? code.getSystem() : getValueSetSystem();
-    if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
-      system = systemForCodeInValueSet(code.getCode());
-    }
-    if (!code.hasSystem())
-      code.setSystem(system);
-    boolean inExpansion = checkExpansion(code);
-    CodeSystem cs = context.fetchCodeSystem(system);
-    if (cs == null) {
-      warningMessage = "Unable to resolve system "+system+" - system is not specified or implicit";
-      if (!inExpansion)
-        throw new FHIRException(warningMessage);
-    }
-    if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-      warningMessage = "Unable to resolve system "+system+" - system is not complete";
-      if (!inExpansion)
-        throw new FHIRException(warningMessage);
-    }
-    
+
     ValidationResult res =null;
-    if (cs!=null)
-      res = validateCode(code, cs);
-      
+    boolean inExpansion = false;
+    String system = code.hasSystem() ? code.getSystem() : getValueSetSystem();
+    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
+      if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
+        system = systemForCodeInValueSet(code.getCode());
+      }
+      if (!code.hasSystem())
+        code.setSystem(system);
+      inExpansion = checkExpansion(code);
+      CodeSystem cs = context.fetchCodeSystem(system);
+      if (cs == null) {
+        warningMessage = "Unable to resolve system "+system+" - system is not specified or implicit";
+        if (!inExpansion)
+          throw new FHIRException(warningMessage);
+      }
+      if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
+        warningMessage = "Unable to resolve system "+system+" - system is not complete";
+        if (!inExpansion)
+          throw new FHIRException(warningMessage);
+      }
+
+      if (cs!=null)
+        res = validateCode(code, cs);
+    } else {
+      inExpansion = checkExpansion(code);
+    }
+
     // then, if we have a value set, we check it's in the value set
-    if ((res==null || res.isOk()) && valueset != null && !codeInValueSet(system, code.getCode())) {
-      if (!inExpansion)
-        res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
-      else if (warningMessage!=null)
-        res = new ValidationResult(IssueSeverity.WARNING, "Code found in expansion, however: " + warningMessage);
-      else
-        res.setMessage("Code found in expansion, however: " + res.getMessage());
+    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
+      if ((res==null || res.isOk()) && !codeInValueSet(system, code.getCode())) {
+        if (!inExpansion)
+          res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+        else if (warningMessage!=null)
+          res = new ValidationResult(IssueSeverity.WARNING, "Code found in expansion, however: " + warningMessage);
+        else
+          res.setMessage("Code found in expansion, however: " + res.getMessage());
+      }
     }
     return res;
   }

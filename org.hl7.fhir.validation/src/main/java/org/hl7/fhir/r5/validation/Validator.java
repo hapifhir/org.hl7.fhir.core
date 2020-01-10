@@ -276,6 +276,11 @@ public class Validator {
         System.out.println("Specified destination (-dest parameter) is not valid: \""+dest+"\")");
       else {
         // first, prepare the context
+        String txLog = null;
+        if (hasParam(args, "-txLog")) {
+          txLog = getParam(args, "-txLog");
+          new File(txLog).delete();
+        }
         String v = getParam(args, "-version");
         if (v == null) {
           v = "current";
@@ -314,7 +319,7 @@ public class Validator {
         }
         String definitions = VersionUtilities.packageForVersion(v)+"#"+v;
         System.out.println("Loading (v = "+v+", tx server http://tx.fhir.org)");
-        ValidationEngine validator = new ValidationEngine(definitions, "http://tx.fhir.org", null, FhirPublication.fromCode(v));
+        ValidationEngine validator = new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(v));
         for (int i = 0; i < args.length; i++) {
           if ("-ig".equals(args[i])) {
             if (i+1 == args.length)
