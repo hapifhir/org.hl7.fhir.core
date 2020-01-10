@@ -19,7 +19,6 @@ import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserRdfGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserXmlGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaResourceGenerator;
-import org.hl7.fhir.core.generator.loader.DefinitionsLoader;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
@@ -43,7 +42,7 @@ public class JavaCoreGenerator {
     System.out.println("HAPI CORE Code Generator");
     if (args.length != 3) {
       System.out.println("Usage: invoke with 3 command line parameters to generate HAPI R5 code");
-      System.out.println("1: fhir version to generate from (e.g. 4.1.0 or 'current'");
+      System.out.println("1: fhir version to generate from (e.g. 4.2.0 or 'current'");
       System.out.println("2: project directory to read java-adorment from - e.g. C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5");
       System.out.println("3: project directory to generate code into - e.g. C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5.new");
     } else {
