@@ -5382,6 +5382,26 @@ public class VersionConvertor_30_40 {
       tgt.setDocumentation(src.getDocumentation());
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage())
       tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
+    for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent t : src.getEvent()) {
+      org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT);
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("code", convertCoding(t.getCode())));
+      if (t.hasCategory())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("category", new org.hl7.fhir.r4.model.CodeType(t.getCategory().toCode())));
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("mode", new org.hl7.fhir.r4.model.CodeType(t.getMode().toCode())));
+      if (t.getFocusElement().hasValue())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("focus", new org.hl7.fhir.r4.model.StringType(t.getFocus())));
+      else {
+        org.hl7.fhir.r4.model.CodeType focus = new org.hl7.fhir.r4.model.CodeType();
+        org.hl7.fhir.r4.model.Extension focusE = new org.hl7.fhir.r4.model.Extension("focus", focus);
+        copyElement(t.getFocusElement(), focus);
+        e.addExtension(focusE);
+      }
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("request", convertReference(t.getRequest())));
+      e.addExtension(new org.hl7.fhir.r4.model.Extension("response", convertReference(t.getResponse())));
+      if (t.hasDocumentation())
+        e.addExtension(new org.hl7.fhir.r4.model.Extension("documentation", new org.hl7.fhir.r4.model.StringType(t.getDocumentation())));
+      tgt.addExtension(e);
+    }
     return tgt;
   }
 
@@ -5398,6 +5418,29 @@ public class VersionConvertor_30_40 {
       tgt.setDocumentation(src.getDocumentation());
     for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage())
       tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
+    for (org.hl7.fhir.r4.model.Extension e : src.getExtensionsByUrl(VersionConvertorConstants.IG_CONFORMANCE_MESSAGE_EVENT)) {
+      org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent event = new org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEventComponent();
+      tgt.addEvent(event);
+      event.setCode(convertCoding((org.hl7.fhir.r4.model.Coding)e.getExtensionByUrl("code").getValue()));
+      if (e.hasExtension("category"))
+        event.setCategory(org.hl7.fhir.dstu3.model.CapabilityStatement.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
+      event.setMode(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
+      event.setCode(convertCoding((org.hl7.fhir.r4.model.Coding)e.getExtensionByUrl("code").getValue()));
+      if (e.hasExtension("category"))
+        event.setCategory(org.hl7.fhir.dstu3.model.CapabilityStatement.MessageSignificanceCategory.fromCode(e.getExtensionByUrl("category").getValue().toString()));
+      event.setMode(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.fromCode(e.getExtensionByUrl("mode").getValue().toString()));
+      org.hl7.fhir.r4.model.Extension focusE = e.getExtensionByUrl("focus");
+      if (focusE.getValue().hasPrimitiveValue())
+        event.setFocus(focusE.getValue().toString());
+      else {
+        event.setFocusElement(new org.hl7.fhir.dstu3.model.CodeType());
+        copyElement(focusE.getValue(), event.getFocusElement());
+      }
+      event.setRequest(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("request").getValue()));
+      event.setResponse(convertReference((org.hl7.fhir.r4.model.Reference)e.getExtensionByUrl("response").getValue()));
+      if (e.hasExtension("documentation"))
+        event.setDocumentation(e.getExtensionByUrl("documentation").getValue().toString());
+    }
     return tgt;
   }
 
