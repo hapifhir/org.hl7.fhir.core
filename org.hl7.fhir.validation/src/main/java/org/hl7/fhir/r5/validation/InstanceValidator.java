@@ -938,7 +938,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage()+" for '"+system+"#"+code+"'");
       return true;
     } else if (system.startsWith("http://hl7.org/fhir")) {
-      if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10-cm","http://hl7.org/fhir/sid/icd-9","http://hl7.org/fhir/sid/ndc","http://hl7.org/fhir/sid/srt"))
+      if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10","http://hl7.org/fhir/sid/icd-10-cm","http://hl7.org/fhir/sid/icd-9","http://hl7.org/fhir/sid/ndc","http://hl7.org/fhir/sid/srt"))
         return true; // else don't check these (for now)
       else if (system.startsWith("http://hl7.org/fhir/test"))
         return true; // we don't validate these
