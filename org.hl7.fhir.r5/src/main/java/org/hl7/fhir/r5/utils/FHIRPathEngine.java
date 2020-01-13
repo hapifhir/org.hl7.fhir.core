@@ -1449,7 +1449,8 @@ public class FHIRPathEngine {
 
   private List<Base> opIs(List<Base> left, List<Base> right) {
     List<Base> result = new ArrayList<Base>();
-    if (left.size() != 1 || right.size() != 1) 
+    if (left.size() == 0 || right.size() == 0) {
+    } else if (left.size() != 1 || right.size() != 1) 
       result.add(new BooleanType(false).noExtensions());
     else {
       String tn = convertToString(right);
