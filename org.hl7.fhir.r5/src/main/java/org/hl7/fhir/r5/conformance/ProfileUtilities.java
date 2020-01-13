@@ -687,8 +687,9 @@ public class ProfileUtilities extends TranslatingUtilities {
    */
   private ElementDefinition processPaths(String indent, StructureDefinitionSnapshotComponent result, StructureDefinitionSnapshotComponent base, StructureDefinitionDifferentialComponent differential, int baseCursor, int diffCursor, int baseLimit,
       int diffLimit, String url, String webUrl, String profileName, String contextPathSrc, String contextPathDst, boolean trimDifferential, String contextName, String resultPathBase, boolean slicingDone, String typeSlicingPath, List<ElementRedirection> redirector, StructureDefinition srcSD) throws DefinitionException, FHIRException {
-    if (debug) 
+    if (debug) {
       System.out.println(indent+"PP @ "+resultPathBase+" / "+contextPathSrc+" : base = "+baseCursor+" to "+baseLimit+", diff = "+diffCursor+" to "+diffLimit+" (slicing = "+slicingDone+", redirector = "+(redirector == null ? "null" : redirector.toString())+")");
+    }
     ElementDefinition res = null; 
     List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st entry, the allowed scope is all the entries)
@@ -696,9 +697,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = base.getElement().get(baseCursor);
       String cpath = fixedPathSource(contextPathSrc, currentBase.getPath(), redirector);
-      if (debug) 
+      if (debug) {
         System.out.println(indent+" - "+cpath+": base = "+baseCursor+" ("+descED(base.getElement(),baseCursor)+") to "+baseLimit+" ("+descED(base.getElement(),baseLimit)+"), diff = "+diffCursor+" ("+descED(differential.getElement(),diffCursor)+") to "+diffLimit+" ("+descED(differential.getElement(),diffLimit)+") "+
            "(slicingDone = "+slicingDone+") (diffpath= "+(differential.getElement().size() > diffCursor ? differential.getElement().get(diffCursor).getPath() : "n/a")+")");
+      }
       List<ElementDefinition> diffMatches = getDiffMatches(differential, cpath, diffCursor, diffLimit, profileName); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
@@ -1107,7 +1109,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           int nbl = findEndOfElement(base, baseCursor);
           int ndc = differential.getElement().indexOf(diffMatches.get(0));
           ElementDefinition elementToRemove = null;
-          boolean shortCut = !typeList.isEmpty() && typeList.get(0).type != null;
+          boolean shortCut = (!typeList.isEmpty() && typeList.get(0).type != null) || (diffMatches.get(0).hasSliceName() && !diffMatches.get(0).hasSlicing());
           // we come here whether they are sliced in the diff, or whether the short cut is used. 
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice. 
@@ -1574,6 +1576,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (!s.contains(".")) {
         if (ed.hasSliceName() && ed.getType().size() == 1) {
           typeList.add(new TypeSlice(ed, ed.getTypeFirstRep().getWorkingCode()));
+        } else if (ed.hasSliceName() && ed.getType().size() == 0) {
+          String tn = ed.getSliceName().substring(rn.length());
+          if (isDataType(tn)) {
+            typeList.add(new TypeSlice(ed, tn));
+          } else if (isDataType(Utilities.uncapitalize(tn))) {
+            typeList.add(new TypeSlice(ed, Utilities.uncapitalize(tn)));
+          }
         } else if (!ed.hasSliceName() && !s.equals("[x]")) {
           if (isDataType(s))
             typeList.add(new TypeSlice(ed, s));
