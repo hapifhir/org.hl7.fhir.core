@@ -2771,7 +2771,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (sd == null) {
             c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
           } else {
-            c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), sd.getName(), null)));           
+            c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), sd.getType(), null)));           
           }
         } else if (pkp != null && pkp.hasLinkFor(tc)) {
           c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
@@ -3292,7 +3292,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
           choicerow.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
-          choicerow.getCells().add(gen.new Cell(null, corePath+"datatypes.html#"+t, t, null, null));
+          choicerow.getCells().add(gen.new Cell(null, corePath+"datatypes.html#"+t, sd.getType(), null, null));
           //      } else if (definitions.getConstraints().contthnsKey(t)) {
           //        ProfiledType pt = definitions.getConstraints().get(t);
           //        choicerow.getCells().add(gen.new Cell(null, null, e.getName().replace("[x]", Utilities.capitalize(pt.getBaseType())), definitions.getTypes().containsKey(t) ? definitions.getTypes().get(t).getDefinition() : null, null));
@@ -3305,7 +3305,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
           choicerow.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-          choicerow.getCells().add(gen.new Cell(null, pkp.getLinkFor(corePath, t), t, null, null));
+          choicerow.getCells().add(gen.new Cell(null, pkp.getLinkFor(corePath, t), sd.getType(), null, null));
         }
         if (tr.hasProfile()) {
           Cell typeCell = choicerow.getCells().get(3);
