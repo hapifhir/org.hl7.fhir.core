@@ -37,6 +37,7 @@ import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.dstu3.model.DocumentReference.ReferredDocumentStatus;
 import org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.dstu3.model.Enumerations.SearchParamType;
 import org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent;
 import org.hl7.fhir.dstu3.model.ReferralRequest.ReferralPriority;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
@@ -9225,7 +9226,12 @@ public class VersionConvertor_10_30 {
     tgt.setMin(src.getMin());
     tgt.setMax(src.getMax());
     tgt.setDocumentation(src.getDocumentation());
-    tgt.setType(src.getType());
+    if (Utilities.existsInList(src.getType(), "token", "reference", "composite", "number", "date", "quantity", "uri")) {
+      tgt.setType("string");
+      tgt.setSearchType(SearchParamType.fromCode(src.getType()));
+    } else {
+      tgt.setType(src.getType());
+    }
     tgt.setProfile(convertReference(src.getProfile()));
     tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
     for (org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart())
@@ -9245,7 +9251,6 @@ public class VersionConvertor_10_30 {
     tgt.setDocumentation(src.getDocumentation());
     if (src.hasSearchType()) {
       tgt.setType(src.getSearchType().toCode());
-      tgt.setType("string");
     } else
       tgt.setType(src.getType());
     if (src.hasProfile())

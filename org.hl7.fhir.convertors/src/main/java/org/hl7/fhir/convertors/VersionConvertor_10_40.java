@@ -52,6 +52,8 @@ import org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r4.model.Enumeration;
+import org.hl7.fhir.r4.model.Enumerations.FHIRAllTypes;
+import org.hl7.fhir.r4.model.Enumerations.SearchParamType;
 import org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent;
 import org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration;
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
@@ -8852,7 +8854,12 @@ public class VersionConvertor_10_40 {
     tgt.setMin(src.getMin());
     tgt.setMax(src.getMax());
     tgt.setDocumentation(src.getDocumentation());
-    tgt.setType(src.getType());
+    if (Utilities.existsInList(src.getType(), "token", "reference", "composite", "number", "date", "quantity", "uri")) {
+      tgt.setType("string");
+      tgt.setSearchType(SearchParamType.fromCode(src.getType()));
+    } else {
+      tgt.setType(src.getType());
+    }    
     tgt.addTargetProfile(src.getProfile().getReference());
     tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
     for (org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart())
@@ -8872,7 +8879,6 @@ public class VersionConvertor_10_40 {
     tgt.setDocumentation(src.getDocumentation());
     if (src.hasSearchType()) {
       tgt.setType(src.getSearchType().toCode());
-      tgt.setType("string");
     } else
       tgt.setType(src.getType());
     for (org.hl7.fhir.r4.model.UriType t: src.getTargetProfile())

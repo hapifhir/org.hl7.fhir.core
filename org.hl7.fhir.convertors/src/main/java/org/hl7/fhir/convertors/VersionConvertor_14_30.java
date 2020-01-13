@@ -67,6 +67,7 @@ import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.Enumerations.SearchParamType;
 import org.hl7.fhir.dstu3.model.Timing.EventTiming;
 import org.hl7.fhir.dstu3.model.UsageContext;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -4756,8 +4757,12 @@ public class VersionConvertor_14_30 {
     tgt.setMax(src.getMax());
     if (src.hasDocumentation())
       tgt.setDocumentation(src.getDocumentation());
-    if (src.hasType())
+    if (Utilities.existsInList(src.getType(), "token", "reference", "composite", "number", "date", "quantity", "uri")) {
+      tgt.setType("string");
+      tgt.setSearchType(SearchParamType.fromCode(src.getType()));
+    } else {
       tgt.setType(src.getType());
+    }
     tgt.setSearchType(convertSearchParamType(src.getSearchType()));
     tgt.setProfile(convertReference(src.getProfile()));
     tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
