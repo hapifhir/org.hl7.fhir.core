@@ -3110,7 +3110,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       used.used = true;
       if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
         s = "@"+s;
-      Cell left = gen.new Cell(null, ref, s, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : "")+(hasDef && element.hasSliceName() ? ": " : "")+(!hasDef ? null : gt(element.getDefinitionElement())), null);
+      String hint = "";
+      hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
+      hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+      Cell left = gen.new Cell(null, ref, s, hint, null);
       row.getCells().add(left);
       Cell gc = gen.new Cell();
       row.getCells().add(gc);
@@ -3237,6 +3241,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     return slicingRow;
   }
+
+  private String checkAdd(String src, String app) {
+    return app == null ? src : src + app;
+  }
+
 
   private String listConstraintsAndConditions(ElementDefinition element) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
