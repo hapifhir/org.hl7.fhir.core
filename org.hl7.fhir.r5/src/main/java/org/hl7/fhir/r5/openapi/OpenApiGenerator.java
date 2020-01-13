@@ -426,7 +426,7 @@ public class OpenApiGenerator {
   }
 
   private void generateCreate(CapabilityStatementRestResourceComponent r) {
-    OperationWriter op = makePathRes(r).operation("put");
+    OperationWriter op = makePathRes(r).operation("post");
     op.summary("Create a new resource");
     op.operationId("create"+r.getType());
     RequestBodyWriter req = op.request();
@@ -452,7 +452,7 @@ public class OpenApiGenerator {
   }
 
   private void generateBatchTransaction(CapabilityStatementRestComponent csr) {
-    OperationWriter op = makePathSystem().operation("post");
+    OperationWriter op = makePathSystem().operation("put");
     op.summary("Batch or Transaction");
     op.operationId("transaction");
     RequestBodyWriter req = op.request();
