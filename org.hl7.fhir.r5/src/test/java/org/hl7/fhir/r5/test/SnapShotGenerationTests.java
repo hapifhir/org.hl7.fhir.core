@@ -106,6 +106,7 @@ public class SnapShotGenerationTests {
     private boolean gen;
     private boolean sort;
     private boolean fail;
+    private boolean newSliceProcessing;
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private StructureDefinition included;
@@ -117,6 +118,8 @@ public class SnapShotGenerationTests {
       gen = "true".equals(test.getAttribute("gen"));
       sort = "true".equals(test.getAttribute("sort"));
       fail = "true".equals(test.getAttribute("fail"));
+      newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
+      
       id = test.getAttribute("id");
       include = test.getAttribute("include");
       register = test.getAttribute("register");
@@ -182,6 +185,9 @@ public class SnapShotGenerationTests {
           included = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", register+".json"));          
         }
       }
+    }
+    public boolean isNewSliceProcessing() {
+      return newSliceProcessing;
     }
   }
 
@@ -472,9 +478,9 @@ public class SnapShotGenerationTests {
     
     StructureDefinition output = test.getSource().copy();
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
-    pu.setNewSlicingProcessing(true);
-    pu.setThrowException(true);
-    //pu.setDebug(true);
+    pu.setNewSlicingProcessing(test.isNewSliceProcessing());
+    pu.setThrowException(false);
+    pu.setDebug(true);
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
