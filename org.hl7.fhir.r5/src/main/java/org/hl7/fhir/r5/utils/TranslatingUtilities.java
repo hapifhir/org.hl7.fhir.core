@@ -33,11 +33,19 @@ public class TranslatingUtilities extends org.hl7.fhir.utilities.TranslatingUtil
   }
 
   public String gt(@SuppressWarnings("rawtypes") PrimitiveType value) {
-    return hasTranslator() ? ((TranslationServices) getTranslator()).gt(value) : value.asStringValue();
+    if (value == null || !value.hasPrimitiveValue()) {
+      return null;
+    } else {
+      return hasTranslator() ? ((TranslationServices) getTranslator()).gt(value) : value.asStringValue();
+    }
   }
 
   public String egt(@SuppressWarnings("rawtypes") Enumeration<? extends Enum> value) {
-    return hasTranslator() ? ((TranslationServices) getTranslator()).egt(value) : value.asStringValue();
+    if (value == null || !value.hasPrimitiveValue()) {
+      return null;
+    } else {
+      return (value == null || !value.hasPrimitiveValue()) ? null : hasTranslator() ? ((TranslationServices) getTranslator()).egt(value) : value.asStringValue();
+    }
   }
 
 
