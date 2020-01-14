@@ -875,7 +875,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new Exception("Unsupported format for "+fn);
       VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.IGR2ConvertorAdvisor5();
       r = new VersionConvertor_10_50(advisor ).convertResource(res);
-    } else if (version.equals(Constants.VERSION)) {
+    } else if (version.equals(Constants.VERSION) || "current".equals(version)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -1702,7 +1702,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else
         throw new Exception("Unsupported format for "+fn);
     } else
-      throw new Exception("Unsupported version "+version);
+      throw new Exception("Encounted unsupported configured version "+version+" loading "+fn);
 
     s.close();
   }
