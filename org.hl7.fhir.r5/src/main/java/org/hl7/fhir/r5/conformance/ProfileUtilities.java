@@ -1580,7 +1580,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           String tn = ed.getSliceName().substring(rn.length());
           if (isDataType(tn)) {
             typeList.add(new TypeSlice(ed, tn));
-          } else if (isDataType(Utilities.uncapitalize(tn))) {
+          } else if (isPrimitive(Utilities.uncapitalize(tn))) {
             typeList.add(new TypeSlice(ed, Utilities.uncapitalize(tn)));
           }
         } else if (!ed.hasSliceName() && !s.equals("[x]")) {

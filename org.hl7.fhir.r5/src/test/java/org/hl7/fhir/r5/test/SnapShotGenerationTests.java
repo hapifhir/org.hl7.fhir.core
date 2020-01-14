@@ -107,6 +107,7 @@ public class SnapShotGenerationTests {
     private boolean sort;
     private boolean fail;
     private boolean newSliceProcessing;
+    private boolean debug;
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private StructureDefinition included;
@@ -119,6 +120,7 @@ public class SnapShotGenerationTests {
       sort = "true".equals(test.getAttribute("sort"));
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
+      debug = "true".equals(test.getAttribute("debug"));
       
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -188,6 +190,9 @@ public class SnapShotGenerationTests {
     }
     public boolean isNewSliceProcessing() {
       return newSliceProcessing;
+    }
+    public boolean isDebug() {
+      return debug;
     }
   }
 
@@ -480,7 +485,7 @@ public class SnapShotGenerationTests {
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
-    pu.setDebug(true);
+    pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
