@@ -248,6 +248,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   public static final String IS_DERIVED = "derived.fact";
   public static final String UD_ERROR_STATUS = "error-status";
   private static final String GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
+  private static final boolean COPY_BINDING_EXTENSIONS = false;
+  private static final boolean DONT_DO_THIS = false;
   private final boolean ADD_REFERENCE_TO_TABLE = true;
 
   private boolean useTableForFixedValues = true;
@@ -574,12 +576,52 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
         }
       }
+      // last, check for wrong profiles or target profiles 
+      for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+        for (TypeRefComponent t : ed.getType()) {
+          for (UriType u : t.getProfile()) {
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
+            if (sd == null) {
+              if (messages != null) {
+                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
+              }
+            } else {
+              String wt = t.getWorkingCode();
+              if (ed.getPath().equals("Bundle.entry.response.outcome")) {
+                wt = "OperationOutcome";
+              }
+              if (!sd.getType().equals(wt)) {
+                boolean ok = isCompatibleType(wt, sd.getType());
+                if (!ok) {
+                  String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
+                  if (exception)
+                    throw new DefinitionException(smsg);
+                  else
+                    messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), smsg, IssueSeverity.ERROR));
+                }
+              }
+            }
+          }
+        }
+      }
     } catch (Exception e) {
       // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
       derived.setSnapshot(null);
       throw e;
     }
   }
+
+  private boolean isCompatibleType(String base, String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    while (sd != null) {
+      if (sd.getType().equals(base)) {
+        return true;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()); 
+    }
+    return false;
+  }
+
 
   private StructureDefinitionDifferentialComponent cloneDiff(StructureDefinitionDifferentialComponent source) {
     StructureDefinitionDifferentialComponent diff = new StructureDefinitionDifferentialComponent();
@@ -2293,10 +2335,25 @@ public class ProfileUtilities extends TranslatingUtilities {
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Unable to check if "+derived.getBinding().getValueSet()+" is a proper subset of " +base.getBinding().getValueSet()+" - base value set is too large to check", ValidationMessage.IssueSeverity.WARNING));
               else if (!isSubset(expBase.getValueset(), expDerived.getValueset()))
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
-
             }
           }
-          base.setBinding(derived.getBinding().copy());
+          ElementDefinitionBindingComponent d = derived.getBinding();
+          ElementDefinitionBindingComponent nb = base.getBinding().copy();
+          if (!COPY_BINDING_EXTENSIONS) {
+            nb.getExtension().clear();
+          }
+          nb.setDescription(null);
+          nb.getExtension().addAll(d.getExtension());
+          if (d.hasStrength()) {
+            nb.setStrength(d.getStrength());
+          }
+          if (d.hasDescription()) {
+            nb.setDescription(d.getDescription());
+          }
+          if (d.hasValueSet()) {
+            nb.setValueSet(d.getValueSet());
+          }
+          base.setBinding(nb);
         } else if (trimDifferential)
           derived.setBinding(null);
         else
@@ -2316,31 +2373,61 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
 
       if (derived.hasType()) {
-//        if (derived.getPath().endsWith("[x]") && derived.hasSlicing() && derived.getSlicing().getRules() != SlicingRules.CLOSED) {
-//          // if we're slicing, and not closed, then it's the same list
-//
-//          derived.getType().clear();
-//          derived.getType().addAll(base.getType());
-//        } else
-          if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
+        if (!Base.compareDeep(derived.getType(), base.getType(), false)) {
           if (base.hasType()) {
             for (TypeRefComponent ts : derived.getType()) {
-//              if (!ts.hasCode()) { // ommitted in the differential; copy it over....
-//                if (base.getType().size() > 1) 
-//                  throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": constrained type code must be present if there are multiple types ("+base.typeSummary()+")");
-//                if (base.getType().get(0).getCode() != null)
-//                  ts.setCode(base.getType().get(0).getCode());
-//              }
               boolean ok = false;
               CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
               String t = ts.getWorkingCode();
               for (TypeRefComponent td : base.getType()) {;
                 String tt = td.getWorkingCode();
                 b.append(tt);
-                if (td.hasCode() && (tt.equals(t) || "Extension".equals(tt) || (t.equals("uri") && tt.equals("string"))  || // work around for old badly generated SDs
-                    "Element".equals(tt) || "*".equals(tt) ||
-                    (("Resource".equals(tt) || ("DomainResource".equals(tt)) && pkp.isResource(t)))))
+                if (td.hasCode() && (tt.equals(t))) {
                   ok = true;
+                }
+                if (!ok) {
+                  StructureDefinition sdt = context.fetchTypeDefinition(tt);
+                  if (sdt != null && sdt.getAbstract()) {
+                    StructureDefinition sdb = context.fetchTypeDefinition(t);
+                    while (sdb != null && !ok) {
+                      ok = sdb.getType().equals(sdt.getUrl());
+                      sdb = context.fetchResource(StructureDefinition.class, sdb.getBaseDefinition());
+                    }
+                  }
+                }
+               // work around for old badly generated SDs
+                if (DONT_DO_THIS && Utilities.existsInList(tt, "Extension", "uri", "string", "Element")) {
+                  ok = true;
+                }
+                if (DONT_DO_THIS && Utilities.existsInList(tt, "Resource","DomainResource") && pkp.isResource(t)) {
+                  ok = true;
+                }
+                if (ok && ts.hasTargetProfile()) {
+                  // check that any derived target has a reference chain back to one of the base target profiles 
+                  for (UriType u : ts.getTargetProfile()) {
+                    boolean tgtOk = false;
+                    String url = u.getValue();
+                    while (url != null && !td.hasTargetProfile(url)) {
+                      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+                      if (sd == null) {
+                        if (messages != null) {
+                          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Connect check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+                        }
+                        url = null;
+                        tgtOk = true; // suppress error message
+                      } else {
+                        url = sd.getBaseDefinition();
+                      }
+                    }
+                    if (!tgtOk) {
+                      if (messages == null) {
+                        throw new FHIRException("Error at "+purl+"#"+derived.getPath()+": The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")");
+                      } else {
+                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
+                      }
+                    }
+                  }
+                }
               }
               if (!ok)
                 throw new DefinitionException("StructureDefinition "+purl+" at "+derived.getPath()+": illegal constrained type "+t+" from "+b.toString()+" in "+srcSD.getUrl());
