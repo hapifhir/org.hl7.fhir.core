@@ -4287,19 +4287,73 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, ElementDefinition child, ElementDefinition context, Element resource, Element element, NodeStack stack, IdStatus idstatus) throws FHIRException, FHIRException, IOException {
     String resourceName = element.getType();
-    long t = System.nanoTime();
-    StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-    sdTime = sdTime + (System.nanoTime() - t);
-    // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
-    ValidatorHostContext hc = null;
-    if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER ) {
-      resource = element;
-      hc = hostContext.forEntry(element);
-    } else {
-      hc = hostContext.forContained(element);
+    TypeRefComponent trr = null;
+    for (TypeRefComponent tr : child.getType()) {
+      if (tr.getCode().equals("Resource")) {
+        trr = tr;
+        break;
+      }
     }
-    if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, "No profile found for contained resource of type '" + resourceName + "'"))
-      validateResource(hc, errors, resource, element, profile, null, idstatus, stack, false);
+    if (trr == null) {
+      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, "The type '"+resourceName+" is not valid - no resources allowed here");
+    } else if (isValidResourceType(resourceName, trr)) {
+      long t = System.nanoTime();
+      StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
+      sdTime = sdTime + (System.nanoTime() - t);
+      // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
+      ValidatorHostContext hc = null;
+      if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER ) {
+        resource = element;
+        hc = hostContext.forEntry(element);
+      } else {
+        hc = hostContext.forContained(element);
+      }
+      if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, "No profile found for contained resource of type '" + resourceName + "'")) {
+        validateResource(hc, errors, resource, element, profile, null, idstatus, stack, false);
+      }
+    } else {
+      List<String> types = new ArrayList<>();
+      for (UriType u : trr.getProfile()) {
+        StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
+        if (sd != null && !types.contains(sd.getType())) {
+          types.add(sd.getType());
+        }
+      }
+      if (types.size() == 1) {
+        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, "The type '"+resourceName+"' is not valid - must be "+types.get(0));
+      } else {
+          rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, "The type '"+resourceName+"' is not valid - must be one of "+types);
+      }
+    }
+  }
+
+  private boolean isValidResourceType(String type, TypeRefComponent def) {
+    if (!def.hasProfile()) {
+      return true;
+    }
+    List<StructureDefinition> list = new ArrayList<>();
+    for (UriType u : def.getProfile()) {
+      StructureDefinition sdt = context.fetchResource(StructureDefinition.class, u.getValue());
+      if (sdt != null) {
+        list.add(sdt);
+      }
+    }
+    
+    StructureDefinition sdt = context.fetchTypeDefinition(type);
+    while (sdt != null) {
+      if (def.getWorkingCode().equals("Resource")) {
+        for (StructureDefinition sd : list) {
+          if (sd.getUrl().equals(sdt.getUrl())) {
+            return true;
+          }
+          if (sd.getType().equals(sdt.getType())) {
+            return true;
+          }
+        }
+      }
+      sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+    }
+    return false;
   }
 
   private void validateDocument(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {
@@ -4480,6 +4534,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.element, localStack, true);
 
       ei.element.markValidation(profile, ei.definition);
+      boolean elementValidated = false;
       if (type != null) {
         if (isPrimitiveType(type)) {
           checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile, stack);
@@ -4514,6 +4569,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           }
         } else if (type.equals("Resource")) {
           validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
+          elementValidated = true;
         // (str.matches(".*([.,/])work\\1$"))
         } else if (Utilities.isAbsoluteUrl(type)) {
           StructureDefinition defn = context.fetchTypeDefinition(type);
@@ -4532,7 +4588,6 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true, null);
       }
       StructureDefinition p = null;
-      boolean elementValidated = false;
       String tail = null;
       if (profiles.isEmpty()) {
         if (type != null) {
