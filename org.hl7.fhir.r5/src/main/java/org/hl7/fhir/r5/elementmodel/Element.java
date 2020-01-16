@@ -848,5 +848,14 @@ public class Element extends Base {
     this.explicitType = explicitType;
   }
 
+  public boolean hasDescendant(Element element) {
+    for (Element child : children) {
+      if (element == child || child.hasDescendant(element)) {
+        return true;        
+      }
+    }
+    return false;
+  }
+
   
 }

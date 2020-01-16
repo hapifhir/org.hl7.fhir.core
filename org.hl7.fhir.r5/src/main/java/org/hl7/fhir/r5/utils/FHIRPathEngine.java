@@ -9,9 +9,6 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
@@ -2862,7 +2859,9 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    throw new Error("not Implemented yet");
+    List<Base> result = new ArrayList<Base>();
+    result.add(new BooleanType(false));
+    return result;
   }
 
 
