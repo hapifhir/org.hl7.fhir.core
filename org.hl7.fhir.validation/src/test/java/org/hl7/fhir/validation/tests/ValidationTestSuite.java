@@ -283,10 +283,12 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     int ec = 0;
     int wc = 0;
     int hc = 0;
+    List<String> errLocs = new ArrayList<>();
     for (ValidationMessage vm : errors) {
       if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
         ec++;
         System.out.println(vm.getDisplay());
+        errLocs.add(vm.getLocation());
       }
       if (vm.getLevel() == IssueSeverity.WARNING) { 
         wc++;
@@ -305,6 +307,13 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         Assert.assertEquals("Expected "+Integer.toString(java.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", java.get("warningCount").getAsInt(), wc);
       if (java.has("infoCount"))
         Assert.assertEquals("Expected "+Integer.toString(java.get("infoCount").getAsInt())+" hints, but found "+Integer.toString(hc)+".", java.get("infoCount").getAsInt(), hc);
+    }
+    if (java.has("error-locations")) {
+      JsonArray el = java.getAsJsonArray("error-locations");
+      Assert.assertEquals("locations count is not correct", errLocs.size(), el.size());
+      for (int i = 0; i < errLocs.size(); i++) {
+        Assert.assertEquals("Location should be "+el.get(i).getAsString()+", but was "+errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
+      }
     }
     if (focus.has("output")) {
       focus.remove("output");
