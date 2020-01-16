@@ -2405,9 +2405,9 @@ public class ProfileUtilities extends TranslatingUtilities {
                 if (ok && ts.hasTargetProfile()) {
                   // check that any derived target has a reference chain back to one of the base target profiles 
                   for (UriType u : ts.getTargetProfile()) {
-                    boolean tgtOk = false;
                     String url = u.getValue();
-                    while (url != null && !td.hasTargetProfile(url)) {
+                    boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
+                    while (url != null && !tgtOk) {
                       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
                       if (sd == null) {
                         if (messages != null) {
@@ -2417,13 +2417,14 @@ public class ProfileUtilities extends TranslatingUtilities {
                         tgtOk = true; // suppress error message
                       } else {
                         url = sd.getBaseDefinition();
+                        tgtOk = td.hasTargetProfile(url);
                       }
                     }
                     if (!tgtOk) {
                       if (messages == null) {
                         throw new FHIRException("Error at "+purl+"#"+derived.getPath()+": The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")");
                       } else {
-                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
+                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "The target profile "+url+" is not a valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
                       }
                     }
                   }
