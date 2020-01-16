@@ -60,7 +60,12 @@ public interface IResourceValidator {
     }
   }
   
+  public interface IValidationProfileUsageTracker {
+    void recordProfileUsage(StructureDefinition profile, Object appContext, Element element);
+  }
+  
   public interface IValidatorResourceFetcher {
+
     Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
     boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException; 
@@ -113,7 +118,10 @@ public interface IResourceValidator {
 
   IValidatorResourceFetcher getFetcher();
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
-  
+
+  IValidationProfileUsageTracker getTracker();
+  IResourceValidator setTracker(IValidationProfileUsageTracker value);
+
   boolean isNoBindingMsgSuppressed();
   IResourceValidator setNoBindingMsgSuppressed(boolean noBindingMsgSuppressed);
   
@@ -133,6 +141,9 @@ public interface IResourceValidator {
   public boolean isErrorForUnknownProfiles();
   public void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
 
+  public boolean isShowMessagesFromReferences();
+  public void setShowMessagesFromReferences(boolean value);
+  
   public String getValidationLanguage();
   public void setValidationLanguage(String value);
   
@@ -155,34 +166,28 @@ public interface IResourceValidator {
    * @throws IOException 
    */
   void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, ValidationProfileSet profiles) throws FHIRException;
   void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, StructureDefinition profile) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
   
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, StructureDefinition profile) throws FHIRException;
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException;
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource, StructureDefinition profile) throws FHIRException;
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource, List<StructureDefinition> profiles) throws FHIRException;
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, StructureDefinition profile) throws FHIRException;
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, List<StructureDefinition> profile) throws FHIRException;
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, StructureDefinition profile) throws FHIRException;
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, List<StructureDefinition> profile) throws FHIRException;
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, StructureDefinition profile) throws FHIRException; 
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException; 
 
 
 }

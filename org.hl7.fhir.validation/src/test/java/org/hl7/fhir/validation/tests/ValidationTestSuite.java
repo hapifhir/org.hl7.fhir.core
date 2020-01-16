@@ -119,6 +119,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         throw new Exception("unknown version "+v);
     }
     vCurr = ve.get(v);
+    vCurr.setFetcher(this);
     TestingUtilities.fcontext = vCurr.getContext();
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
@@ -185,11 +186,12 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, v, messages);
+      val.getContext().cacheResource(sd);      
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       if (name.endsWith(".json"))
-        val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, sd);
+        val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
       else
-         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, sd);
+         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       checkOutcomes(errorsProfile, profile);
     }
     if (content.has("logical")) {
@@ -218,6 +220,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
   }
 
+  private List<StructureDefinition> asSdList(StructureDefinition sd) {
+    List<StructureDefinition> res = new ArrayList<StructureDefinition>();
+    res.add(sd);
+    return res;
+  }
 
   public StructureDefinition loadProfile(String filename, String contents, String v, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     StructureDefinition sd = (StructureDefinition) loadResource(filename, contents, v);
@@ -355,15 +362,23 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
-    if (url.equals("Patient/test"))
-      return new ObjectConverter(TestingUtilities.context()).convert(new Patient());
-    if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".json")) {
-      return Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".json"));
+    Element res = null;
+    if (url.equals("Patient/test")) {
+      res = new ObjectConverter(TestingUtilities.context()).convert(new Patient());
+    } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".json")) {
+      res = Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".json"));
+    } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".xml")) {
+      res = Manager.makeParser(TestingUtilities.context(), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".xml"));
     }
-    if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".xml")) {
-      return Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".xml"));
+    if (res == null && url.contains("/")) {
+      String tail = url.substring(url.indexOf("/")+1);
+      if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase()+".json")) {
+        res = Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".json"));
+      } else if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase()+".xml")) {
+        res =  Manager.makeParser(TestingUtilities.context(), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".xml"));
+      }
     }
-    return null;
+    return res;
   }
 
   @Override

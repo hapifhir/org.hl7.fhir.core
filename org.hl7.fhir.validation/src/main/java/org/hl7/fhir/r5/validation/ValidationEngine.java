@@ -146,7 +146,6 @@ import org.hl7.fhir.r5.utils.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -307,6 +306,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private PrintWriter mapLog;
   private boolean debug;
   private Set<String> loadedIgs = new HashSet<>();
+  private IValidatorResourceFetcher fetcher;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -946,8 +946,22 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws Exception {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     InstanceValidator validator = getValidator();
-    validator.validate(null, messages, stream, format, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, stream, format, asSdList(profiles));
     return messagesToOutcome(messages);
+  }
+
+  public List<StructureDefinition> asSdList(List<String> profiles) throws Error {
+    List<StructureDefinition> list = new ArrayList<>();
+    if (profiles != null) {
+      for (String p : profiles) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+        if (sd == null) {
+          throw new Error("Unable to resolve profile "+p);
+        }
+        list.add(sd);
+      }
+    }
+    return list;
   }
     
   public OperationOutcome validate(String source, List<String> profiles) throws Exception {
@@ -986,7 +1000,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
             try {
               System.out.println("Validate "+ref+" against "+ig.getUrl());
               messages.clear();
-              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(url, true));
+              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, url);
               res.add(new ScanOutputItem(ref, ig, null, messagesToOutcome(messages)));
             } catch (Exception ex) {
               res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
@@ -1000,7 +1014,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
                 try {
                   System.out.println("Validate "+ref+" against "+sd.getUrl());
                   messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(sd.getUrl(), true));
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, asSdList(sd));
                   res.add(new ScanOutputItem(ref, ig, sd, messagesToOutcome(messages)));
                 } catch (Exception ex) {
                   res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
@@ -1014,6 +1028,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return res;
   }
   
+  private List<StructureDefinition> asSdList(StructureDefinition sd) {
+    List<StructureDefinition> res = new ArrayList<StructureDefinition>();
+    res.add(sd);
+    return res;
+  }
+
   private Resource resolve(Reference reference) {
     return null;
   }
@@ -1122,7 +1142,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         validateSHEX(location, messages);
     }
     InstanceValidator validator = getValidator();
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
   }
 
@@ -1140,7 +1160,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setResourceIdRule(resourceIdRule);
     validator.setBestPracticeWarningLevel(bpWarnings);
     validator.setCheckDisplay(displayOption);   
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
   }
   
@@ -1597,13 +1617,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   @Override
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    return null;
+    return fetcher != null ? fetcher.fetch(appContext, url) : null;
   }
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
     if (!url.startsWith("http://hl7.org/fhir")) {
       return ReferenceValidationPolicy.IGNORE;
+    } else if (fetcher != null) {
+      return fetcher.validationPolicy(appContext, path, url);
     } else {
       return ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE;      
     }
@@ -1620,6 +1642,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
        "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
       return true;
     }
+    if (fetcher != null) {
+      return fetcher.resolveURL(appContext, path, url);
+    };
     return false;
   }
 
@@ -1709,6 +1734,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setSnomedExtension(String sct) {
     context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|"+sct);
+  }
+
+  public IValidatorResourceFetcher getFetcher() {
+    return fetcher;
+  }
+
+  public void setFetcher(IValidatorResourceFetcher fetcher) {
+    this.fetcher = fetcher;
   }
 
 
