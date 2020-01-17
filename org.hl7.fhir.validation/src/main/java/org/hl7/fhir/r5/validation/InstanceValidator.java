@@ -114,6 +114,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
@@ -1491,7 +1493,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   }
 
-  private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, String extensionUrl) throws FHIRException {
+  private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl) throws FHIRException {
     String url = element.getNamedChildValue("url");
     boolean isModifier = element.getName().equals("modifierExtension");
 
@@ -1541,7 +1543,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       // two questions
       // 1. can this extension be used here?
-      checkExtensionContext(errors, element, /* path+"[url='"+url+"']", */ ex, stack, ex.getUrl());
+      checkExtensionContext(errors, resource, container, ex, containerStack, hostContext);
 
       if (isModifier)
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(),
@@ -1605,76 +1607,102 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return res;
   }
 
-  private boolean checkExtensionContext(List<ValidationMessage> errors, Element element, StructureDefinition definition, NodeStack stack, String extensionParent) {
-//    String extUrl = definition.getUrl();
-//    CommaSeparatedStringBuilder p = new CommaSeparatedStringBuilder();
-//    for (String lp : stack.getLogicalPaths())
-//      p.append(lp);
-//    if (definition.getContextType() == ExtensionContext.DATATYPE) {
-//      boolean ok = false;
-//      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-//      for (StringType ct : definition.getContext()) {
-//        b.append(ct.getValue());
-//        if (ct.getValue().equals("*") || stack.getLogicalPaths().contains(ct.getValue() + ".extension"))
-//          ok = true;
-//      }
-//      return rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), ok,
-//          "The extension " + extUrl + " is not allowed to be used on the logical path set [" + p.toString() + "] (allowed: datatype=" + b.toString() + ")");
-//    } else if (definition.getContextType() == ExtensionContext.EXTENSION) {
-//      boolean ok = false;
-//      for (StringType ct : definition.getContext())
-//        if (ct.getValue().equals("*") || ct.getValue().equals(extensionParent))
-//          ok = true;
-//      return rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), ok,
-//          "The extension " + extUrl + " is not allowed to be used with the extension '" + extensionParent + "'");
-//    } else if (definition.getContextType() == ExtensionContext.RESOURCE) {
-//      boolean ok = false;
-//      // String simplePath = container.getPath();
-//      // System.out.println(simplePath);
-//      // if (effetive.endsWith(".extension") || simplePath.endsWith(".modifierExtension"))
-//      // simplePath = simplePath.substring(0, simplePath.lastIndexOf('.'));
-//      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-//      for (StringType ct : definition.getContext()) {
-//        String c = ct.getValue();
-//        b.append(c);
-//        if (c.equals("*") || stack.getLogicalPaths().contains(c + ".extension") || (c.startsWith("@") && stack.getLogicalPaths().contains(c.substring(1) + ".extension")))
-//          ;
-//        ok = true;
-//      }
-//      return rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), ok,
-//          "The extension " + extUrl + " is not allowed to be used on the logical path set " + p.toString() + " (allowed: resource=" + b.toString() + ")");
-//    } else
-//      throw new Error("Unsupported context type");
-    return true;
+  private boolean checkExtensionContext(List<ValidationMessage> errors, Element resource, Element container, StructureDefinition definition, NodeStack stack, ValidatorHostContext hostContext) {
+    String extUrl = definition.getUrl();
+    boolean ok = false;
+    CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
+    List<String> plist = new ArrayList<>();
+    
+    for (StructureDefinitionContextComponent ctxt : definition.getContext()) {
+      if (ok) { break; }
+      if (ctxt.getType() == ExtensionContextType.ELEMENT) {
+        if (plist.isEmpty()) {
+          plist.add(stripIndexes(stack.getLiteralPath()));
+          for (String s : stack.getLogicalPaths()) {
+            plist.add(stripIndexes(s));
+          }
+        }
+        String en = ctxt.getExpression();
+        contexts.append("e:"+en);
+        if (en.equals("Element") && !container.isResource()) {
+          ok = true;
+        } else if (en.equals("Resource") && container.isResource()) {
+          ok = true;
+        }        
+        for (String p : plist) {
+          if (ok) {break; }
+          if (p.equals(en)) {
+            ok = true;
+          } else {
+            String pn = p;
+            String pt = "";
+            if (p.contains(".")) {
+              pn = p.substring(0, p.indexOf("."));
+              pt = p.substring(p.indexOf("."));
+            }
+            StructureDefinition sd = context.fetchTypeDefinition(pn);
+            while (sd != null) {
+              if ((sd.getType()+pt).equals(en)) {
+                ok = true;
+                break;
+              }
+              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            }
+          }
+        } 
+      } else if (ctxt.getType() == ExtensionContextType.EXTENSION) {
+        contexts.append("x:"+ctxt.getExpression());
+        NodeStack estack = stack.parent;
+        if (estack != null && estack.getElement().fhirType().equals("Extension")) {
+          String ext = estack.element.getNamedChildValue("url");
+          if (ctxt.getExpression().equals(ext)) {
+            ok = true;
+          }
+        }
+      } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
+        contexts.append("p:"+ctxt.getExpression());
+        // The context is all elements that match the FHIRPath query found in the expression.
+        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.rootResource, resource, fpe.parse(ctxt.getExpression()));
+        if (res.contains(container)) {
+          ok = true;
+        }
+      } else {
+        throw new Error("Unrecognised extension context "+ctxt.getTypeElement().asStringValue());
+      }
+    }
+    if (!rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.literalPath, ok,
+      "The extension " + extUrl + " is not allowed to be used at this point (allowed = "+ contexts.toString() + ")")) {
+      return false;
+    } else {
+      if (definition.hasContextInvariant()) {
+        for (StringType s : definition.getContextInvariant()) {
+          if (!fpe.evaluateToBoolean(hostContext, resource, hostContext.rootResource, resource, fpe.parse(s.getValue()))) {
+            rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.literalPath, false,
+                "The extension " + extUrl + " is not allowed to be used at this point (bsed on context invariant '"+s.getValue()+"')");
+            return false;
+          }
+        }
+      } 
+      return true;
+    }
   }
-  //
-  // private String simplifyPath(String path) {
-  // String s = path.replace("/f:", ".");
-  // while (s.contains("["))
-  // s = s.substring(0, s.indexOf("["))+s.substring(s.indexOf("]")+1);
-  // String[] parts = s.split("\\.");
-  // int i = 0;
-  // while (i < parts.length && !context.getProfiles().containsKey(parts[i].toLowerCase()))
-  // i++;
-  // if (i >= parts.length)
-  // throw new Error("Unable to process part "+path);
-  // int j = parts.length - 1;
-  // while (j > 0 && (parts[j].equals("extension") || parts[j].equals("modifierExtension")))
-  // j--;
-  // StringBuilder b = new StringBuilder();
-  // boolean first = true;
-  // for (int k = i; k <= j; k++) {
-  // if (k == j || !parts[k].equals(parts[k+1])) {
-  // if (first)
-  // first = false;
-  // else
-  // b.append(".");
-  // b.append(parts[k]);
-  // }
-  // }
-  // return b.toString();
-  // }
-  //
+  
+  private String stripIndexes(String path) {
+    boolean skip = false;
+    StringBuilder b = new StringBuilder();
+    for (char c : path.toCharArray()) {
+      if (skip) {
+        if (c == ']') {
+          skip = false;
+        }
+      } else if (c == '[') {
+        skip = true;
+      } else {
+        b.append(c);
+      }
+    }
+    return b.toString();
+  }
   
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String fixedSource, String propName, Element parent) {
 	  checkFixedValue(errors, path, focus, fixed, fixedSource, propName, parent, false);
@@ -4620,7 +4648,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             thisExtension = url;
             if (rule(errors, IssueType.INVALID, ei.path, !Utilities.noString(url), "Extension.url is required")) {
               if (rule(errors, IssueType.INVALID, ei.path, (extensionUrl != null) || Utilities.isAbsoluteUrl(url), "Extension.url must be an absolute URL")) {
-                checkExtension(hostContext, errors, ei.path, resource, ei.element, ei.definition, profile, localStack, extensionUrl);
+                checkExtension(hostContext, errors, ei.path, resource, element, ei.element, ei.definition, profile, localStack, stack, extensionUrl);
               }
             }
           }
@@ -5379,8 +5407,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         }
         res.logicalPaths.add(type.getPath());
       } else if (definition != null) {
-        for (String lp : getLogicalPaths())
+        for (String lp : getLogicalPaths()) {
           res.logicalPaths.add(lp + "." + element.getName());
+        }
+        res.logicalPaths.add(definition.typeSummary());
       } else
         res.logicalPaths.addAll(getLogicalPaths());
       // CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -5429,7 +5459,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   public String reportTimes() {
-    String s = String.format("Times: overall = %d, tx = %d, sd = %d, load = %d, fpe = %d", overall, txTime, sdTime, loadTime, fpeTime);
+    String s = String.format("Times (ms): overall = %d, tx = %d, sd = %d, load = %d, fpe = %d", overall / 1000000, txTime / 1000000, sdTime / 1000000, loadTime / 1000000, fpeTime / 1000000);
     overall = 0;
     txTime = 0;
     sdTime = 0;

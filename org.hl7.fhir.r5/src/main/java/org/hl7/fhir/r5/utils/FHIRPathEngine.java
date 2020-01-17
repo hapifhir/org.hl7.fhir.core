@@ -2859,9 +2859,26 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> result = new ArrayList<Base>();
-    result.add(new BooleanType(false));
-    return result;
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    if (nl.size() != 1 || focus.size() != 1) {
+      return new ArrayList<Base>();
+    }
+    
+    String url = nl.get(0).primitiveValue();
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    if (vs == null) {
+      return new ArrayList<Base>();
+    }
+    Base l = focus.get(0);
+    if (l.fhirType().equals("code")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("Coding")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("CodeableConcept")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
+    } else {
+      return new ArrayList<Base>();
+    }
   }
 
 

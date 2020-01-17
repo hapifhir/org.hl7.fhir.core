@@ -1733,7 +1733,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   public void setSnomedExtension(String sct) {
-    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|"+sct);
+    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/"+sct);
   }
 
   public IValidatorResourceFetcher getFetcher() {

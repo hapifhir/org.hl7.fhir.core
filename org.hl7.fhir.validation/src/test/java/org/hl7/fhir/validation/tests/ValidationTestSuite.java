@@ -92,7 +92,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    System.out.println("Name: " + name+" - base");
+    System.out.println("---- "+name+" ----------------------------------------------------------------");
+    System.out.println("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
       txLog = content.get("txLog").getAsString();      
@@ -152,6 +153,14 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         val.getContext().cacheResource(sd);
       }
     }
+    if (content.has("valuesets")) {
+      for (JsonElement je : content.getAsJsonArray("valuesets")) {
+        String filename = je.getAsString();
+        String contents = TestingUtilities.loadTestResource("validator", filename);
+        ValueSet vs = (ValueSet) loadResource(filename, contents, v);
+        val.getContext().cacheResource(vs);
+      }
+    }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String filename = je.getAsString();
@@ -170,8 +179,10 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
+    System.out.println(val.reportTimes());
     checkOutcomes(errors, content);
     if (content.has("profile")) {
+      System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
       if (profile.has("supporting")) {
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
@@ -192,6 +203,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
       else
          val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
+      System.out.println(val.reportTimes());
       checkOutcomes(errorsProfile, profile);
     }
     if (content.has("logical")) {
