@@ -18658,7 +18658,7 @@ public class VersionConvertor_30_50 {
       tgt.setAbstract(src.getAbstract());
     for (org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent  t : src.getContext()) {
       if (!tgt.hasContextType())
-        tgt.setContextType(convertExtensionContext(t.getType()));
+        tgt.setContextType(convertExtensionContext(t.getType(), t.getExpression()));
       tgt.addContext(t.getExpression());
     }
     for (org.hl7.fhir.r5.model.StringType t : src.getContextInvariant())
@@ -18704,25 +18704,44 @@ public class VersionConvertor_30_50 {
     if (src == null)
       return null;
     switch (src) {
-    case RESOURCE: return org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType.FHIRPATH;
+    case RESOURCE: return org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType.ELEMENT;
     case DATATYPE: return org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType.ELEMENT;
     case EXTENSION: return org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType.EXTENSION;
     default: return org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType.NULL;
     }
   }
 
-  private static org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType src) throws FHIRException {
+  private static org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType src, String expression) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case FHIRPATH: return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.RESOURCE;
-    case ELEMENT: return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.DATATYPE;
+    case ELEMENT: 
+      String tn = expression.contains(".") ? expression.substring(0, expression.indexOf(".")) : expression;
+      if (isResource300(tn)) {
+        return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.RESOURCE;
+      } else {
+        return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.DATATYPE;
+      }
     case EXTENSION: return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.EXTENSION;
     default: return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.NULL;
     }
   }
 
-
+  private static boolean isResource300(String tn) {
+    return Utilities.existsInList(tn, "Account", "ActivityDefinition", "AllergyIntolerance", "AdverseEvent", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", 
+        "BodySite", "Bundle", "CapabilityStatement", "CarePlan", "CareTeam", "ChargeItem", "Claim", "ClaimResponse", "ClinicalImpression", "CodeSystem", "Communication", "CommunicationRequest", "CompartmentDefinition", 
+        "Composition", "ConceptMap", "Condition", "Consent", "Contract", "Coverage", "DataElement", "DetectedIssue", "Device", "DeviceComponent", "DeviceMetric", "DeviceRequest", "DeviceUseStatement", "DiagnosticReport", 
+        "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse", "Encounter", "Endpoint", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "ExpansionProfile", 
+        "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "GraphDefinition", "Group", "GuidanceResponse", "HealthcareService", "ImagingManifest", "ImagingStudy", "Immunization", 
+        "ImmunizationRecommendation", "ImplementationGuide", "Library", "Linkage", "List", "Location", "Measure", "MeasureReport", "Media", "Medication", "MedicationAdministration", "MedicationDispense", 
+        "MedicationRequest", "MedicationStatement", "MessageDefinition", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Organization", 
+        "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "PlanDefinition", "Practitioner", "PractitionerRole", "Procedure", "ProcedureRequest", "ProcessRequest", 
+        "ProcessResponse", "Provenance", "Questionnaire", "QuestionnaireResponse", "ReferralRequest", "RelatedPerson", "RequestGroup", "ResearchStudy", "ResearchSubject", "RiskAssessment", 
+        "Schedule", "SearchParameter", "Sequence", "ServiceDefinition", "Slot", "Specimen", "StructureDefinition", "StructureMap", "Subscription", "Substance", "SupplyDelivery", "SupplyRequest", 
+        "Task", "TestScript", "TestReport", "ValueSet", "VisionPrescription");
+  }
+  
   private static org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule convertTypeDerivationRule(org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule src) throws FHIRException {
     if (src == null)
       return null;

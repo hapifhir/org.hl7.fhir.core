@@ -10406,7 +10406,7 @@ public class VersionConvertor_10_40 {
     tgt.setAbstract(src.getAbstract());
     for (org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionContextComponent  t : src.getContext()) {
       if (!tgt.hasContextType())
-        tgt.setContextType(convertExtensionContext(t.getType()));
+        tgt.setContextType(convertExtensionContext(t.getType(), t.getExpression()));
       tgt.addContext(t.getExpression());
     }
     tgt.setConstrainedType(src.getType());
@@ -10457,25 +10457,42 @@ public class VersionConvertor_10_40 {
     if (src == null)
       return null;
     switch (src) {
-    case RESOURCE: return org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType.FHIRPATH;
+    case RESOURCE: return org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType.ELEMENT;
     case DATATYPE: return org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType.ELEMENT;
     case EXTENSION: return org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType.EXTENSION;
     default: return org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType.NULL;
     }
   }
 
-  private static org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType src) throws FHIRException {
+  private static org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.r4.model.StructureDefinition.ExtensionContextType src, String expression) throws FHIRException {
     if (src == null)
       return null;
     switch (src) {
     case FHIRPATH: return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.RESOURCE;
-    case ELEMENT: return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.DATATYPE;
+    case ELEMENT: 
+      String tn = expression.contains(".") ? expression.substring(0, expression.indexOf(".")) : expression;
+      if (isResource102(tn)) {
+        return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.RESOURCE;
+      } else {
+        return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.DATATYPE;
+      }
     case EXTENSION: return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.EXTENSION;
     default: return org.hl7.fhir.dstu2.model.StructureDefinition.ExtensionContext.NULL;
     }
   }
 
-
+  private static boolean isResource102(String tn) {
+    return Utilities.existsInList(tn, "AllergyIntolerance", "Appointment", "AppointmentResponse", "AuditEvent", "Basic", "Binary", "BodySite", "Bundle", "CarePlan", "Claim", "ClaimResponse", "ClinicalImpression",
+        "Communication", "CommunicationRequest", "Composition", "ConceptMap", "Condition", "Conformance", "Contract", "DetectedIssue", "Coverage", "DataElement", "Device", "DeviceComponent",
+        "DeviceMetric", "DeviceUseRequest", "DeviceUseStatement", "DiagnosticOrder", "DiagnosticReport", "DocumentManifest", "DocumentReference", "EligibilityRequest", "EligibilityResponse",
+        "Encounter", "EnrollmentRequest", "EnrollmentResponse", "EpisodeOfCare", "ExplanationOfBenefit", "FamilyMemberHistory", "Flag", "Goal", "Group", "HealthcareService", "ImagingObjectSelection",
+        "ImagingStudy", "Immunization", "ImmunizationRecommendation", "ImplementationGuide", "List", "Location", "Media", "Medication", "MedicationAdministration", "MedicationDispense", "MedicationOrder",
+        "MedicationStatement", "MessageHeader", "NamingSystem", "NutritionOrder", "Observation", "OperationDefinition", "OperationOutcome", "Order", "OrderResponse", "Organization",
+        "Parameters", "Patient", "PaymentNotice", "PaymentReconciliation", "Person", "Practitioner", "Procedure", "ProcessRequest", "ProcessResponse", "ProcedureRequest", "Provenance", "Questionnaire",
+        "QuestionnaireResponse", "ReferralRequest", "RelatedPerson", "RiskAssessment", "Schedule", "SearchParameter", "Slot", "Specimen", "StructureDefinition", "Subscription", "Substance",
+        "SupplyRequest", "SupplyDelivery", "TestScript", "ValueSet", "VisionPrescription");
+  }
+  
   public org.hl7.fhir.r4.model.ContactDetail convertStructureDefinitionContactComponent(org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionContactComponent src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
