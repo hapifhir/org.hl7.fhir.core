@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -1616,12 +1617,23 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   @Override
-  public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    return fetcher != null ? fetcher.fetch(appContext, url) : null;
+  public Element fetch(Object appContext, String url) throws FHIRException, IOException {
+    Resource resource = context.fetchResource(Resource.class, url);
+    if (resource != null) {
+      return new ObjectConverter(context).convert(resource);
+    }
+    if (fetcher != null) {
+      return fetcher.fetch(appContext, url);
+    } 
+    return null;
   }
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+    Resource resource = context.fetchResource(StructureDefinition.class, url);
+    if (resource != null) {
+      return ReferenceValidationPolicy.CHECK_VALID;
+    }
     if (!url.startsWith("http://hl7.org/fhir")) {
       return ReferenceValidationPolicy.IGNORE;
     } else if (fetcher != null) {

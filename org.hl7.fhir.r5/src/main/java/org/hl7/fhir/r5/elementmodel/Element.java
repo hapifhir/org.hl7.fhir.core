@@ -849,9 +849,11 @@ public class Element extends Base {
   }
 
   public boolean hasDescendant(Element element) {
-    for (Element child : children) {
-      if (element == child || child.hasDescendant(element)) {
-        return true;        
+    if (children != null) {
+      for (Element child : children) {
+        if (element == child || child.hasDescendant(element)) {
+          return true;        
+        }
       }
     }
     return false;

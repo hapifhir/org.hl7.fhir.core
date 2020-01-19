@@ -1613,7 +1613,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
     List<String> plist = new ArrayList<>();
     
-    for (StructureDefinitionContextComponent ctxt : definition.getContext()) {
+    for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) { break; }
       if (ctxt.getType() == ExtensionContextType.ELEMENT) {
         if (plist.isEmpty()) {
@@ -1624,7 +1624,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         String en = ctxt.getExpression();
         contexts.append("e:"+en);
-        if (en.equals("Element") && !container.isResource()) {
+        if (en.equals("Element")) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
@@ -1662,7 +1662,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
         contexts.append("p:"+ctxt.getExpression());
         // The context is all elements that match the FHIRPath query found in the expression.
-        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.rootResource, resource, fpe.parse(ctxt.getExpression()));
+        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.rootResource, container, fpe.parse(ctxt.getExpression()));
         if (res.contains(container)) {
           ok = true;
         }
@@ -1670,15 +1670,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         throw new Error("Unrecognised extension context "+ctxt.getTypeElement().asStringValue());
       }
     }
-    if (!rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.literalPath, ok,
-      "The extension " + extUrl + " is not allowed to be used at this point (allowed = "+ contexts.toString() + ")")) {
+    if (!ok) {
+      rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.literalPath, false, "The extension " + extUrl + " is not allowed to be used at this point (allowed = "+ contexts.toString() + "; this element is ["+plist.toString()+")");
       return false;
     } else {
       if (definition.hasContextInvariant()) {
         for (StringType s : definition.getContextInvariant()) {
-          if (!fpe.evaluateToBoolean(hostContext, resource, hostContext.rootResource, resource, fpe.parse(s.getValue()))) {
+          if (!fpe.evaluateToBoolean(hostContext, resource, hostContext.rootResource, container, fpe.parse(s.getValue()))) {
             rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.literalPath, false,
-                "The extension " + extUrl + " is not allowed to be used at this point (bsed on context invariant '"+s.getValue()+"')");
+                "The extension " + extUrl + " is not allowed to be used at this point (based on context invariant '"+s.getValue()+"')");
             return false;
           }
         }
@@ -1687,6 +1687,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
   
+  private List<StructureDefinitionContextComponent> fixContexts(String extUrl, List<StructureDefinitionContextComponent> list) {
+    List<StructureDefinitionContextComponent> res = new ArrayList<>();
+    for (StructureDefinitionContextComponent ctxt : list) {
+      res.add(ctxt.copy());
+    }
+    if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type".equals(extUrl)) {
+      list.get(0).setExpression("ElementDefinition.type");
+    }
+    if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
+      list.get(1).setExpression("ElementDefinition.type");
+    }
+    return list;
+  }
+
   private String stripIndexes(String path) {
     boolean skip = false;
     StringBuilder b = new StringBuilder();
@@ -2205,7 +2219,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } catch (IOException e) {
               throw new FHIRException(e);
             }
-            fetchCache.put(ref, ext);
+            if (ext != null) {
+              fetchCache.put(ref, ext);
+            }
           }
           we = ext == null ? null : makeExternalRef(ext, path);
         }
@@ -5325,6 +5341,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       this.element = element;
       literalPath = element.getName();
       workingLang = validationLanguage;
+      if (!element.getName().equals(element.fhirType())) {
+        logicalPaths = new ArrayList<>();
+        logicalPaths.add(element.fhirType());
+      }
     }	  
 
     public NodeStack(Element element, String refPath) {
@@ -5399,13 +5419,17 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       if (type != null) {
         // type will be bull if we on a stitching point of a contained resource, or if....
         res.type = type;
+        String tn = res.type.getPath();
         String t = tail(definition.getPath());
+        if ("Resource".equals(tn)) {
+          tn = element.fhirType();
+        }
         for (String lp : getLogicalPaths()) {
           res.logicalPaths.add(lp + "." + t);
           if (t.endsWith("[x]"))
             res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + type.getPath());
         }
-        res.logicalPaths.add(type.getPath());
+        res.logicalPaths.add(tn);
       } else if (definition != null) {
         for (String lp : getLogicalPaths()) {
           res.logicalPaths.add(lp + "." + element.getName());
@@ -5514,6 +5538,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // this is a hack work around for past publication of wrong FHIRPath expressions
     // R4
     // waiting for 4.0.2
+    if ("(probability is decimal) implies ((probability as decimal) <= 100)".equals(expr)) {
+      return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
+    }
 
     // handled in 4.0.1
     if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr))
