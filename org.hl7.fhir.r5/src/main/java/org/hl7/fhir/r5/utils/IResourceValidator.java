@@ -148,6 +148,16 @@ public interface IResourceValidator {
   public void setValidationLanguage(String value);
   
   /**
+   * It's common to see references such as Patient/234234 - these usually mean a reference to a Patient resource. 
+   * But there's no actual technical rule that it does, so the validator doesn't enforce that unless this setting is 
+   * set to true
+   * 
+   * @return
+   */
+  public boolean isAssumeValidRestReferences();
+  public void setAssumeValidRestReferences(boolean value);
+  
+  /**
    * Validate suite
    *  
    * you can validate one of the following representations of resources:
