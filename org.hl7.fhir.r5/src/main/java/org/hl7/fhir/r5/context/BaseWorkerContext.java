@@ -373,8 +373,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
               }
               log("=====================================================================");
               return false;
-            } else
+            } else {
+              e.printStackTrace();
               throw new TerminologyServiceException(e);
+            }
           }
           if (txcaps != null) {
             for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
