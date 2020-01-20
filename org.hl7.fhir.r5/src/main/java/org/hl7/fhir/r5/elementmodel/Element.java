@@ -859,5 +859,19 @@ public class Element extends Base {
     return false;
   }
 
+  public Element getExtension(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return child;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   
 }
