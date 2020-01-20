@@ -973,8 +973,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       List<PropertyWrapper> list = new ArrayList<PropertyWrapper>();
+      if (wrapped.children() != null) {
       for (Property c : wrapped.children())
         list.add(new PropertyWrapperDirect(c));
+      }
       return list;
     }
   }
