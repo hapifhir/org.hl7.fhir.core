@@ -1634,7 +1634,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         String en = ctxt.getExpression();
         contexts.append("e:"+en);
-        if (en.equals("Element")) {
+        if (en.equals("Element") || en.equals("*")) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
