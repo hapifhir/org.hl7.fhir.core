@@ -1900,9 +1900,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("uri") || type.equals("oid") || type.equals("uuid")  || type.equals("url") || type.equals("canonical")) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("oid:"), "URI values cannot start with oid:");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("uuid:"), "URI values cannot start with uuid:");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().equals(e.primitiveValue().trim().replace(" ", ""))
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, (e.primitiveValue().equals(e.primitiveValue().trim().replace(" ", ""))
           // work around an old invalid example in a core package
-           && !"http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(e.primitiveValue()), "URI values cannot have whitespace('"+e.primitiveValue()+"')");
+           || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(e.primitiveValue())), "URI values cannot have whitespace('"+e.primitiveValue()+"')");
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  e.primitiveValue().length() <= context.getMaxLength(), "value is longer than permitted maximum length of " + context.getMaxLength());
 
 
