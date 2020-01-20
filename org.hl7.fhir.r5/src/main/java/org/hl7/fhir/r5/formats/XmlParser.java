@@ -50,7 +50,7 @@ package org.hl7.fhir.r5.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, Jan 20, 2020 14:31+1100 for FHIR vcurrent
 
 
 
@@ -1516,7 +1516,7 @@ public class XmlParser extends XmlParserBase {
       res.getSecurity().add(parseCoding(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("tag")) {
       res.getTag().add(parseCoding(xpp));
-    } else if (!parseElementContent(eventType, xpp, res)){ 
+    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -23294,6 +23294,8 @@ public class XmlParser extends XmlParserBase {
   protected boolean parseTerminologyCapabilitiesContent(int eventType, XmlPullParser xpp, TerminologyCapabilities res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
       res.setUrlElement(parseUri(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
+      res.getIdentifier().add(parseIdentifier(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
       res.setVersionElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
@@ -27936,7 +27938,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeMetaElements(Meta element) throws IOException {
-    composeElementElements(element);
+    composeDataTypeElements(element);
     if (element.hasVersionIdElement()) {
       composeId("versionId", element.getVersionIdElement());
     }
@@ -50207,6 +50209,10 @@ public class XmlParser extends XmlParserBase {
     composeCanonicalResourceElements(element);
     if (element.hasUrlElement()) {
       composeUri("url", element.getUrlElement());
+    }
+    if (element.hasIdentifier()) { 
+      for (Identifier e : element.getIdentifier()) 
+          composeIdentifier("identifier", e);
     }
     if (element.hasVersionElement()) {
       composeString("version", element.getVersionElement());

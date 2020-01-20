@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, Jan 20, 2020 14:31+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3091,30 +3091,37 @@ public class TerminologyCapabilities extends CanonicalResource {
     protected UriType url;
 
     /**
+     * A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.
+     */
+    @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Additional identifier for the terminology capabilities", formalDefinition="A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance." )
+    protected List<Identifier> identifier;
+
+    /**
      * The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
-    @Child(name = "version", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Business version of the terminology capabilities", formalDefinition="The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
     protected StringType version;
 
     /**
      * A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this terminology capabilities (computer friendly)", formalDefinition="A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the terminology capabilities.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this terminology capabilities (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the terminology capabilities." )
     protected StringType title;
 
     /**
      * The status of this terminology capabilities. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this terminology capabilities. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -3122,49 +3129,49 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the terminology capabilities was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the terminology capabilities was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual that published the terminology capabilities.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the terminology capabilities." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the terminology capabilities", formalDefinition="A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the terminology capabilities is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for terminology capabilities (if applicable)", formalDefinition="A legal or geographic region in which the terminology capabilities is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -3172,21 +3179,21 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Explanation of why this terminology capabilities is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this terminology capabilities is defined", formalDefinition="Explanation of why this terminology capabilities is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the terminology capabilities and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the terminology capabilities." )
     protected MarkdownType copyright;
 
     /**
      * The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase).
      */
-    @Child(name = "kind", type = {CodeType.class}, order=14, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=15, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="instance | capability | requirements", formalDefinition="The way that this statement is intended to be used, to describe an actual running instance of software, a particular product (kind, not instance of software) or a class of implementation (e.g. a desired purchase)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/capability-statement-kind")
     protected Enumeration<CapabilityStatementKind> kind;
@@ -3194,42 +3201,42 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation.
      */
-    @Child(name = "software", type = {}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "software", type = {}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Software that is covered by this terminology capability statement", formalDefinition="Software that is covered by this terminology capability statement.  It is used when the statement describes the capabilities of a particular software version, independent of an installation." )
     protected TerminologyCapabilitiesSoftwareComponent software;
 
     /**
      * Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program.
      */
-    @Child(name = "implementation", type = {}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "implementation", type = {}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If this describes a specific instance", formalDefinition="Identifies a specific implementation instance that is described by the terminology capability statement - i.e. a particular installation, rather than the capabilities of a software program." )
     protected TerminologyCapabilitiesImplementationComponent implementation;
 
     /**
      * Whether the server supports lockedDate.
      */
-    @Child(name = "lockedDate", type = {BooleanType.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "lockedDate", type = {BooleanType.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Whether lockedDate is supported", formalDefinition="Whether the server supports lockedDate." )
     protected BooleanType lockedDate;
 
     /**
      * Identifies a code system that is supported by the server. If there is a no code system URL, then this declares the general assumptions a client can make about support for any CodeSystem resource.
      */
-    @Child(name = "codeSystem", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "codeSystem", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A code system supported by the server", formalDefinition="Identifies a code system that is supported by the server. If there is a no code system URL, then this declares the general assumptions a client can make about support for any CodeSystem resource." )
     protected List<TerminologyCapabilitiesCodeSystemComponent> codeSystem;
 
     /**
      * Information about the [ValueSet/$expand](valueset-operation-expand.html) operation.
      */
-    @Child(name = "expansion", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "expansion", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ValueSet/$expand](valueset-operation-expand.html) operation", formalDefinition="Information about the [ValueSet/$expand](valueset-operation-expand.html) operation." )
     protected TerminologyCapabilitiesExpansionComponent expansion;
 
     /**
      * The degree to which the server supports the code search parameter on ValueSet, if it is supported.
      */
-    @Child(name = "codeSearch", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "codeSearch", type = {CodeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="explicit | all", formalDefinition="The degree to which the server supports the code search parameter on ValueSet, if it is supported." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/code-search-support")
     protected Enumeration<CodeSearchSupport> codeSearch;
@@ -3237,25 +3244,25 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation.
      */
-    @Child(name = "validateCode", type = {}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "validateCode", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation", formalDefinition="Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation." )
     protected TerminologyCapabilitiesValidateCodeComponent validateCode;
 
     /**
      * Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation.
      */
-    @Child(name = "translation", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "translation", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation", formalDefinition="Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation." )
     protected TerminologyCapabilitiesTranslationComponent translation;
 
     /**
      * Whether the $closure operation is supported.
      */
-    @Child(name = "closure", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "closure", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about the [ConceptMap/$closure](conceptmap-operation-closure.html) operation", formalDefinition="Whether the $closure operation is supported." )
     protected TerminologyCapabilitiesClosureComponent closure;
 
-    private static final long serialVersionUID = -471633367L;
+    private static final long serialVersionUID = 1685724657L;
 
   /**
    * Constructor
@@ -3321,6 +3328,59 @@ public class TerminologyCapabilities extends CanonicalResource {
         this.url.setValue(value);
       }
       return this;
+    }
+
+    /**
+     * @return {@link #identifier} (A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.)
+     */
+    public List<Identifier> getIdentifier() { 
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      return this.identifier;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public TerminologyCapabilities setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
+      return this;
+    }
+
+    public boolean hasIdentifier() { 
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    public TerminologyCapabilities addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+     */
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
+      }
+      return getIdentifier().get(0);
     }
 
     /**
@@ -4296,44 +4356,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       return this;
     }
 
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getIdentifierMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #identifier} (A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.)
-     */
-    public List<Identifier> getIdentifier() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public TerminologyCapabilities setIdentifier(List<Identifier> theIdentifier) { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"identifier\"");
-    }
-    public boolean hasIdentifier() { 
-      return false;
-    }
-
-    public Identifier addIdentifier() { //3
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"identifier\"");
-    }
-    public TerminologyCapabilities addIdentifier(Identifier t) { //3
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"identifier\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {2}
-     */
-    public Identifier getIdentifierFirstRep() { 
-      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"identifier\"");
-    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url));
+        children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the terminology capabilities.", 0, 1, title));
@@ -4363,6 +4389,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the terminology capabilities.", 0, 1, title);
@@ -4395,6 +4422,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
@@ -4428,6 +4456,9 @@ public class TerminologyCapabilities extends CanonicalResource {
         switch (hash) {
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case -1618432855: // identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
@@ -4510,6 +4541,8 @@ public class TerminologyCapabilities extends CanonicalResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
@@ -4568,6 +4601,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
+        case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
@@ -4600,6 +4634,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
@@ -4632,6 +4667,9 @@ public class TerminologyCapabilities extends CanonicalResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.url");
+        }
+        else if (name.equals("identifier")) {
+          return addIdentifier();
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.version");
@@ -4726,6 +4764,11 @@ public class TerminologyCapabilities extends CanonicalResource {
       public void copyValues(TerminologyCapabilities dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
@@ -4778,10 +4821,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         if (!(other_ instanceof TerminologyCapabilities))
           return false;
         TerminologyCapabilities o = (TerminologyCapabilities) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
            && compareDeep(kind, o.kind, true) && compareDeep(software, o.software, true) && compareDeep(implementation, o.implementation, true)
            && compareDeep(lockedDate, o.lockedDate, true) && compareDeep(codeSystem, o.codeSystem, true) && compareDeep(expansion, o.expansion, true)
@@ -4804,10 +4847,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
-          , status, experimental, date, publisher, contact, description, useContext, jurisdiction
-          , purpose, copyright, kind, software, implementation, lockedDate, codeSystem, expansion
-          , codeSearch, validateCode, translation, closure);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
+          , name, title, status, experimental, date, publisher, contact, description, useContext
+          , jurisdiction, purpose, copyright, kind, software, implementation, lockedDate
+          , codeSystem, expansion, codeSearch, validateCode, translation, closure);
       }
 
   @Override
@@ -5178,6 +5221,44 @@ public class TerminologyCapabilities extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>jurisdiction</b>
