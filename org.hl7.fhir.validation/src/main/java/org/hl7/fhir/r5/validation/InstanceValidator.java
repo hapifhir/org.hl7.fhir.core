@@ -510,6 +510,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private XVerExtensionManager xverManager;
   private IValidationProfileUsageTracker tracker;
   private ValidatorHostServices validatorServices;
+  private boolean assumeValidRestReferences;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super();
@@ -581,6 +582,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
     this.hintAboutNonMustSupport = hintAboutNonMustSupport;
   }
+
+  public boolean isAssumeValidRestReferences() {
+    return this.assumeValidRestReferences;
+  }
+  
+  public void setAssumeValidRestReferences(boolean value) {
+    this.assumeValidRestReferences = value;
+  }
+  
 
   private boolean allowUnknownExtension(String url) {
     if (url.contains("example.org") || url.contains("acme.com") || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
@@ -2235,7 +2245,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     else
       ft = tryParse(ref);
 
-    if (reference.hasType()) {
+    if (reference.hasType()) { // R4 onwards...
       // the type has to match the specified
       String tu = isAbsolute(reference.getType()) ? reference.getType() : "http://hl7.org/fhir/StructureDefinition/"+reference.getType();
       TypeRefComponent containerType = container.getType("Reference");
@@ -5538,7 +5548,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     // this is a hack work around for past publication of wrong FHIRPath expressions
     // R4
     // waiting for 4.0.2
-    if ("(probability is decimal) implies ((probability as decimal) <= 100)".equals(expr)) {
+    if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
       return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
     }
 
