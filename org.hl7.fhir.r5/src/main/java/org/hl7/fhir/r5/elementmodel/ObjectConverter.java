@@ -153,6 +153,12 @@ public class ObjectConverter  {
     r.setDisplay(item.getNamedChildValue("display"));
     r.setReference(item.getNamedChildValue("reference"));
     r.setType(item.getNamedChildValue("type"));
+    if (!r.hasType()) {
+      Element ext = item.getExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-Reference.type");
+      if (ext != null) {
+        r.setType(ext.getChildValue("valueUri"));
+      }
+    }
     List<Element> identifier = item.getChildrenByName("identifier");
     if (identifier.isEmpty() == false) {
       r.setIdentifier(readAsIdentifier(identifier.get(0)));
