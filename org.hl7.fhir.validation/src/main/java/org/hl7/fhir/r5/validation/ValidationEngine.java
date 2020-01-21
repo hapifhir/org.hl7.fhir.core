@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -146,7 +147,6 @@ import org.hl7.fhir.r5.utils.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.r5.validation.ValidationEngine.ScanOutputItem;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.ValidationProfileSet;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -293,7 +293,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
 
   }
-	
+  
   private SimpleWorkerContext context;
 //  private FHIRPathEngine fpe;
   private Map<String, byte[]> binaries = new HashMap<String, byte[]>();
@@ -307,6 +307,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private PrintWriter mapLog;
   private boolean debug;
   private Set<String> loadedIgs = new HashSet<>();
+  private IValidatorResourceFetcher fetcher;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -753,7 +754,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return FhirFormat.TEXT;
 
     return checkIsResource(TextFile.fileToBytes(path), path);
-	}
+  }
 
   public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
     context.setTlogging(false);
@@ -769,7 +770,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           throw e;
       }
     }
-	}
+  }
 
   public void loadProfile(String src) throws Exception {
     if (context.hasResource(StructureDefinition.class, src))
@@ -808,10 +809,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           }
         }
       }
-		}
+    }
     if (canonical != null)
       grabNatives(source, canonical);
-	}
+  }
 
   public Resource loadFileWithErrorChecking(String version, Entry<String, byte[]> t, String fn) {
     if (debug)
@@ -875,7 +876,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new Exception("Unsupported format for "+fn);
       VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.IGR2ConvertorAdvisor5();
       r = new VersionConvertor_10_50(advisor ).convertResource(res);
-    } else if (version.equals(Constants.VERSION)) {
+    } else if (version.equals(Constants.VERSION) || "current".equals(version)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -907,10 +908,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       if (e.getKey().endsWith(".zip"))
         binaries.put(prefix+"#"+e.getKey(), e.getValue());
     }
-	}
+  }
 
   public void setQuestionnaires(List<String> questionnaires) {
-	}
+  }
 
   public void setNative(boolean doNative) {
     this.doNative = doNative;
@@ -946,8 +947,22 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws Exception {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     InstanceValidator validator = getValidator();
-    validator.validate(null, messages, stream, format, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, stream, format, asSdList(profiles));
     return messagesToOutcome(messages);
+  }
+
+  public List<StructureDefinition> asSdList(List<String> profiles) throws Error {
+    List<StructureDefinition> list = new ArrayList<>();
+    if (profiles != null) {
+      for (String p : profiles) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+        if (sd == null) {
+          throw new Error("Unable to resolve profile "+p);
+        }
+        list.add(sd);
+      }
+    }
+    return list;
   }
     
   public OperationOutcome validate(String source, List<String> profiles) throws Exception {
@@ -986,7 +1001,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
             try {
               System.out.println("Validate "+ref+" against "+ig.getUrl());
               messages.clear();
-              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(url, true));
+              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, url);
               res.add(new ScanOutputItem(ref, ig, null, messagesToOutcome(messages)));
             } catch (Exception ex) {
               res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
@@ -1000,7 +1015,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
                 try {
                   System.out.println("Validate "+ref+" against "+sd.getUrl());
                   messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, new ValidationProfileSet(sd.getUrl(), true));
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, asSdList(sd));
                   res.add(new ScanOutputItem(ref, ig, sd, messagesToOutcome(messages)));
                 } catch (Exception ex) {
                   res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
@@ -1014,6 +1029,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return res;
   }
   
+  private List<StructureDefinition> asSdList(StructureDefinition sd) {
+    List<StructureDefinition> res = new ArrayList<StructureDefinition>();
+    res.add(sd);
+    return res;
+  }
+
   private Resource resolve(Reference reference) {
     return null;
   }
@@ -1122,7 +1143,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         validateSHEX(location, messages);
     }
     InstanceValidator validator = getValidator();
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
   }
 
@@ -1140,19 +1161,19 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setResourceIdRule(resourceIdRule);
     validator.setBestPracticeWarningLevel(bpWarnings);
     validator.setCheckDisplay(displayOption);   
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, new ValidationProfileSet(profiles, true));
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
   }
   
   
   private void validateSHEX(String location, List<ValidationMessage> messages) {
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "SHEX Validation is not done yet", IssueSeverity.INFORMATION));
-	}
+  }
 
   private void validateXmlSchema(String location, List<ValidationMessage> messages) throws FileNotFoundException, IOException, SAXException {
     XmlValidator xml = new XmlValidator(messages, loadSchemas(), loadTransforms());
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "XML Schema Validation is not done yet", IssueSeverity.INFORMATION));
-	}
+  }
 
   private Map<String, byte[]> loadSchemas() throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
@@ -1176,7 +1197,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   private void validateJsonSchema(String location, List<ValidationMessage> messages) {
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "JSON Schema Validation is not done yet", IssueSeverity.INFORMATION));   
-	}
+  }
 
   private List<ValidationMessage> filterMessages(List<ValidationMessage> messages) {
     List<ValidationMessage> filteredValidation = new ArrayList<ValidationMessage>();
@@ -1208,7 +1229,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
     new NarrativeGenerator("", "", context).generate(null, op);
     return op;
-	}
+  }
   
   public static String issueSummary (OperationOutcomeIssueComponent issue) {
     String source = ToolingExtensions.readStringExtension(issue, ToolingExtensions.EXT_ISSUE_SOURCE);
@@ -1596,14 +1617,27 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   @Override
-  public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  public Element fetch(Object appContext, String url) throws FHIRException, IOException {
+    Resource resource = context.fetchResource(Resource.class, url);
+    if (resource != null) {
+      return new ObjectConverter(context).convert(resource);
+    }
+    if (fetcher != null) {
+      return fetcher.fetch(appContext, url);
+    } 
     return null;
   }
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+    Resource resource = context.fetchResource(StructureDefinition.class, url);
+    if (resource != null) {
+      return ReferenceValidationPolicy.CHECK_VALID;
+    }
     if (!url.startsWith("http://hl7.org/fhir")) {
       return ReferenceValidationPolicy.IGNORE;
+    } else if (fetcher != null) {
+      return fetcher.validationPolicy(appContext, path, url);
     } else {
       return ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE;      
     }
@@ -1615,11 +1649,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return true; // we don't bother with those.
     if (context.fetchResource(Resource.class, url) != null)
       return true;
-    if (Utilities.existsInList(url, "http://hl7.org/fhir/sid/us-ssn", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/us-npi",
+    if (Utilities.existsInList(url, "http://hl7.org/fhir/sid/us-ssn", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/us-npi", "http://hl7.org/fhir/sid/icd-10", 
        "http://hl7.org/fhir/sid/icd-10-vn", "http://hl7.org/fhir/sid/icd-10-cm", "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/w5", "http://hl7.org/fhir/fivews", 
        "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
       return true;
     }
+    if (fetcher != null) {
+      return fetcher.resolveURL(appContext, path, url);
+    };
     return false;
   }
 
@@ -1702,13 +1739,21 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else
         throw new Exception("Unsupported format for "+fn);
     } else
-      throw new Exception("Unsupported version "+version);
+      throw new Exception("Encounted unsupported configured version "+version+" loading "+fn);
 
     s.close();
   }
 
   public void setSnomedExtension(String sct) {
-    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|"+sct);
+    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/"+sct);
+  }
+
+  public IValidatorResourceFetcher getFetcher() {
+    return fetcher;
+  }
+
+  public void setFetcher(IValidatorResourceFetcher fetcher) {
+    this.fetcher = fetcher;
   }
 
 

@@ -82,7 +82,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 	static public void setUp() throws Exception {
 		if (context == null) {
 			PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
+      context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.1"));
 			jsonParser = new JsonParser();
 			jsonParser.setOutputStyle(OutputStyle.PRETTY);
 		}
@@ -93,7 +93,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 
 		InputStream fileSource = TestingUtilities.loadTestResourceStream("r5", "fml", source);
 		InputStream fileMap = TestingUtilities.loadTestResourceStream("r5", "fml", map);
-		String fileOutput = TestingUtilities.tempFile("fml", output);
+		String outputJson = TestingUtilities.loadTestResource("r5","fml", output);
 		String fileOutputRes = TestingUtilities.tempFile("fml", output)+".out";
 
 		outputs.clear();
@@ -117,9 +117,10 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 		if (ok) {
 			ByteArrayOutputStream boas = new ByteArrayOutputStream();
 			jsonParser.compose(boas, resource);
-			log(boas.toString());
+			String result = boas.toString();
+			log(result);
 			TextFile.bytesToFile(boas.toByteArray(), fileOutputRes);
-			msg = TestingUtilities.checkJsonIsSame(fileOutputRes,fileOutput);
+			msg = TestingUtilities.checkJsonSrcIsSame(result, outputJson);
 			assertTrue(msg, Utilities.noString(msg));
 		} else
 			assertTrue("Error, but proper output was expected (" + msg + ")", output.equals("$error"));

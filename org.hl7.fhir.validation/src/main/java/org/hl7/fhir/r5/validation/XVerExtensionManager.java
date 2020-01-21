@@ -37,12 +37,16 @@ public class XVerExtensionManager {
     this.context = context;
   }
 
-  public XVerExtensionStatus status(String url) throws IOException {
+  public XVerExtensionStatus status(String url) throws FHIRException {
     String v = url.substring(20, 23);
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
       if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
-        lists.put(v, JsonTrackingParser.parseJson(context.getBinaries().get("xver-paths-"+v+".json")));
+        try {
+          lists.put(v, JsonTrackingParser.parseJson(context.getBinaries().get("xver-paths-"+v+".json")));
+        } catch (IOException e1) {
+          throw new FHIRException(e);
+        }
       } else {
         return XVerExtensionStatus.BadVersion;
       }

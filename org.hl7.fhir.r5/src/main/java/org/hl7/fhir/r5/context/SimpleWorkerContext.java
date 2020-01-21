@@ -317,12 +317,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		loadFromStream(new CSFileInputStream(path), loader);
 	}
   
-  public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, ILoadFilter filter) throws FileNotFoundException, IOException, FHIRException {
+  public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, ILoadFilter filter) throws IOException  {
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
     for (String s : pi.listResources(loader.getTypes())) {
-       loadDefinitionItem(s, pi.load("package", s), loader, filter);
+       try {
+        loadDefinitionItem(s, pi.load("package", s), loader, filter);
+      } catch (FHIRException | IOException e) {
+        throw new FHIRException("Error reading "+s+" from package "+pi.name()+"#"+pi.version()+": "+e.getMessage(), e);
+      }
     }
     for (String s : pi.list("other")) {
       binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
@@ -658,7 +662,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setThrowException(false);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-        pu.sortDifferential(sd, p, p.getUrl(), errors);
+        pu.sortDifferential(sd, p, p.getUrl(), errors, true);
       }
       pu.setDebug(false);
       for (String err : errors)

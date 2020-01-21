@@ -248,11 +248,13 @@ public class FHIRPathEngine {
   public FHIRPathEngine(IWorkerContext worker) {
     super();
     this.worker = worker;
-    for (StructureDefinition sd : worker.allStructures()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
-        allTypes.put(sd.getName(), sd);
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
-        primitiveTypes.add(sd.getName());
+    if (this.worker!=null) {
+      for (StructureDefinition sd : worker.allStructures()) {
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
+          allTypes.put(sd.getName(), sd);
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+          primitiveTypes.add(sd.getName());
+        }
       }
     }
   }
@@ -1078,6 +1080,7 @@ public class FHIRPathEngine {
     case Lower: return checkParamCount(lexer, location, exp, 0);
     case Upper: return checkParamCount(lexer, location, exp, 0);
     case ToChars: return checkParamCount(lexer, location, exp, 0);
+    case IndexOf : return checkParamCount(lexer, location, exp, 1);
     case Substring: return checkParamCount(lexer, location, exp, 1, 2);
     case StartsWith: return checkParamCount(lexer, location, exp, 1);
     case EndsWith: return checkParamCount(lexer, location, exp, 1);

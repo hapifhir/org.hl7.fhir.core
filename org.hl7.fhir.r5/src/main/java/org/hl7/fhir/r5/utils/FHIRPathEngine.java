@@ -9,9 +9,6 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
@@ -1449,7 +1446,8 @@ public class FHIRPathEngine {
 
   private List<Base> opIs(List<Base> left, List<Base> right) {
     List<Base> result = new ArrayList<Base>();
-    if (left.size() != 1 || right.size() != 1) 
+    if (left.size() == 0 || right.size() == 0) {
+    } else if (left.size() != 1 || right.size() != 1) 
       result.add(new BooleanType(false).noExtensions());
     else {
       String tn = convertToString(right);
@@ -2861,7 +2859,26 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    throw new Error("not Implemented yet");
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    if (nl.size() != 1 || focus.size() != 1) {
+      return new ArrayList<Base>();
+    }
+    
+    String url = nl.get(0).primitiveValue();
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    if (vs == null) {
+      return new ArrayList<Base>();
+    }
+    Base l = focus.get(0);
+    if (l.fhirType().equals("code")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("Coding")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("CodeableConcept")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
+    } else {
+      return new ArrayList<Base>();
+    }
   }
 
 

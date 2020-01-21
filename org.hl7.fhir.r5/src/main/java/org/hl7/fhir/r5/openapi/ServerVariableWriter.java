@@ -40,7 +40,6 @@ public class ServerVariableWriter extends BaseWriter {
     return this;            
   }
   
-
   public ServerVariableWriter defaultValue(String value) {
     object.addProperty("default", value);
     return this;            

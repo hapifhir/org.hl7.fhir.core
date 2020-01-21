@@ -50,7 +50,7 @@ package org.hl7.fhir.r5.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, Jan 20, 2020 14:31+1100 for FHIR vcurrent
 
 
 
@@ -1386,7 +1386,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseMetaProperties(JsonObject json, Meta res) throws IOException, FHIRFormatError {
-    parseElementProperties(json, res);
+    parseDataTypeProperties(json, res);
     if (json.has("versionId"))
       res.setVersionIdElement(parseId(json.get("versionId").getAsString()));
     if (json.has("_versionId"))
@@ -26840,6 +26840,12 @@ public class JsonParser extends JsonParserBase {
       res.setUrlElement(parseUri(json.get("url").getAsString()));
     if (json.has("_url"))
       parseElementProperties(json.getAsJsonObject("_url"), res.getUrlElement());
+    if (json.has("identifier")) {
+      JsonArray array = json.getAsJsonArray("identifier");
+      for (int i = 0; i < array.size(); i++) {
+        res.getIdentifier().add(parseIdentifier(array.get(i).getAsJsonObject()));
+      }
+    };
     if (json.has("version"))
       res.setVersionElement(parseString(json.get("version").getAsString()));
     if (json.has("_version"))
@@ -31726,7 +31732,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeMetaProperties(Meta element) throws IOException {
-    composeElementProperties(element);
+    composeDataTypeProperties(element);
       if (element.hasVersionIdElement()) {
         composeIdCore("versionId", element.getVersionIdElement(), false);
         composeIdExtras("versionId", element.getVersionIdElement(), false);
@@ -58393,6 +58399,12 @@ public class JsonParser extends JsonParserBase {
         composeUriCore("url", element.getUrlElement(), false);
         composeUriExtras("url", element.getUrlElement(), false);
       }
+      if (element.hasIdentifier()) {
+        openArray("identifier");
+        for (Identifier e : element.getIdentifier()) 
+          composeIdentifier(null, e);
+        closeArray();
+      };
       if (element.hasVersionElement()) {
         composeStringCore("version", element.getVersionElement(), false);
         composeStringExtras("version", element.getVersionElement(), false);

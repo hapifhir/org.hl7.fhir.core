@@ -97,7 +97,7 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient102.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
-        System.out.println("    "+iss.getDetails().getText());
+        System.out.println("  "+iss.getSeverity().toCode()+": "+iss.getDetails().getText());
       }
     int e = errors(op);
     int w = warnings(op);

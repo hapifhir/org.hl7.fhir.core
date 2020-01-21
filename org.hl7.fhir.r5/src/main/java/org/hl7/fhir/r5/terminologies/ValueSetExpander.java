@@ -100,7 +100,7 @@ public interface ValueSetExpander {
 /**
  * 
  * @param source the value set definition to expand
- * @param profile a profile affecting the outcome. If you don't supply a profile, the default internal expansion profile will be used.
+ * @param profile a set of parameters affecting the outcome. If you don't supply parameters, the default internal parameters will be used.
  *  
  * @return
  * @throws ETooCostly
