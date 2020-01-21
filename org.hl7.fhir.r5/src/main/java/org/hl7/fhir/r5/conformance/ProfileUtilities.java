@@ -2424,7 +2424,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                       if (messages == null) {
                         throw new FHIRException("Error at "+purl+"#"+derived.getPath()+": The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")");
                       } else {
-                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "The target profile "+url+" is not a valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
+                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile "+u.getValue()+" is not a valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
                       }
                     }
                   }
