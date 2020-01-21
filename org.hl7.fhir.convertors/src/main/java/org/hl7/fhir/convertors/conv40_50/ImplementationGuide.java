@@ -60,7 +60,7 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 public class ImplementationGuide extends VersionConvertor_40_50 {
 
-  static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.definition.parameter";
+  static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
   
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
