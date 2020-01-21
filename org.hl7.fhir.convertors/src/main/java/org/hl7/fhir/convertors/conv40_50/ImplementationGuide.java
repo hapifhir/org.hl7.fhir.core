@@ -22,7 +22,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -60,6 +60,8 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 public class ImplementationGuide extends VersionConvertor_40_50 {
 
+  static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.definition.parameter";
+  
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
       return null;
@@ -929,6 +931,12 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter())
       tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
+    for (org.hl7.fhir.r4.model.Extension e: org.hl7.fhir.r4.utils.ToolingExtensions.getExtensions(src, EXT_IG_DEFINITION_PARAMETER)) {
+      org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
+      p.setCode(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e,"code"));
+      p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e,"Value"));
+      tgt.addParameter(p);
+    }
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
       tgt.addTemplate(convertImplementationGuideDefinitionTemplateComponent(t));
     return tgt;
@@ -945,8 +953,18 @@ public class ImplementationGuide extends VersionConvertor_40_50 {
       tgt.addResource(convertImplementationGuideDefinitionResourceComponent(t));
     if (src.hasPage())
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
-    for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter())
-      tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
+    for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter()) {
+      if (Utilities.existsInList(t.getCode(), "apply","path-resource","path-pages","path-tx-cache","expansion-parameter","rule-broken-links","generate-xml","generate-json","generate-turtle","html-template"))
+        tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
+      else {
+        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
+        org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.StringType(t.getCode()));
+        org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
+        e.addExtension(eCode);
+        e.addExtension(eValue);
+        tgt.addExtension(e);
+      }
+    }
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
       tgt.addTemplate(convertImplementationGuideDefinitionTemplateComponent(t));
     return tgt;
