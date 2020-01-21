@@ -209,7 +209,7 @@ public class TerminologyCache {
       return "11073";
     if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
       return "dicom";
-    return system.replace("/", "_").replace(":", "_");
+    return system.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X");
   }
 
   public NamedCache getNamedCache(CacheToken cacheToken) {
