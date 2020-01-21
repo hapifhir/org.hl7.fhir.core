@@ -175,6 +175,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } else {
       val.setDebug(false);
     }
+    if (content.has("examples")) {
+      val.setAllowExamples(content.get("examples").getAsBoolean());
+    } else {
+      val.setAllowExamples(true);      
+    }
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
@@ -412,7 +417,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
-    return true;
+    return !url.contains("example.org");
   }
 
   @Override

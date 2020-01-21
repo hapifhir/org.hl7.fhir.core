@@ -511,6 +511,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private IValidationProfileUsageTracker tracker;
   private ValidatorHostServices validatorServices;
   private boolean assumeValidRestReferences;
+  private boolean allowExamples;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super();
@@ -591,9 +592,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.assumeValidRestReferences = value;
   }
   
+  public boolean isAllowExamples() {
+    return this.allowExamples;
+  }
+  
+  public void setAllowExamples(boolean value) {
+    this.allowExamples = value;
+  }
+  
 
   private boolean allowUnknownExtension(String url) {
-    if (url.contains("example.org") || url.contains("acme.com") || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
+    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
       // Added structuredefinition-expression explicitly because it wasn't defined in the version of the spec it needs to be used with
       return true;
     for (String s : extensionDomains)
@@ -604,7 +613,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isKnownExtension(String url) {
     // Added structuredefinition-expression and following extensions explicitly because they weren't defined in the version of the spec they need to be used with
-    if (url.contains("example.org") || url.contains("acme.com") || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression") || url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION))
+    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression") || url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION))
       return true;
     for (String s : extensionDomains)
       if (url.startsWith(s))
@@ -1622,19 +1631,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = false;
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
     List<String> plist = new ArrayList<>();
+    plist.add(stripIndexes(stack.getLiteralPath()));
+    for (String s : stack.getLogicalPaths()) {
+      String p = stripIndexes(s);
+      // all extensions are always allowed in ElementDefinition.example.value, and in fixed and pattern values. TODO: determine the logical paths from the path stated in the element definition....
+      if (Utilities.existsInList(p, "ElementDefinition.example.value", "ElementDefinition.pattern", "ElementDefinition.fixed")) {
+        return true;
+      }
+      plist.add(p);
+      
+    }
     
     for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) { break; }
       if (ctxt.getType() == ExtensionContextType.ELEMENT) {
-        if (plist.isEmpty()) {
-          plist.add(stripIndexes(stack.getLiteralPath()));
-          for (String s : stack.getLogicalPaths()) {
-            plist.add(stripIndexes(s));
-          }
-        }
         String en = ctxt.getExpression();
         contexts.append("e:"+en);
-        if (en.equals("Element")) {
+        if ("Element".equals(en)) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
@@ -1898,22 +1911,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, "true".equals(e.primitiveValue()) || "false".equals(e.primitiveValue()), "boolean values must be 'true' or 'false'");
     }
     if (type.equals("uri") || type.equals("oid") || type.equals("uuid")  || type.equals("url") || type.equals("canonical")) {
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("oid:"), "URI values cannot start with oid:");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !e.primitiveValue().startsWith("uuid:"), "URI values cannot start with uuid:");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().equals(e.primitiveValue().trim().replace(" ", ""))
+      String url = e.primitiveValue();
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), "URI values cannot start with oid:");
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), "URI values cannot start with uuid:");
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
           // work around an old invalid example in a core package
-           && !"http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(e.primitiveValue()), "URI values cannot have whitespace('"+e.primitiveValue()+"')");
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  e.primitiveValue().length() <= context.getMaxLength(), "value is longer than permitted maximum length of " + context.getMaxLength());
+           && !"http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), "URI values cannot have whitespace('"+url+"')");
+      rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength()==0 ||  url.length() <= context.getMaxLength(), "value is longer than permitted maximum length of " + context.getMaxLength());
 
 
       if (type.equals("oid")) {
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().startsWith("urn:oid:"), "OIDs must start with urn:oid:"))
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(e.primitiveValue().substring(8)), "OIDs must be valid");
+        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), "OIDs must start with urn:oid:"))
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), "OIDs must be valid");
       }
       if (type.equals("uuid")) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().startsWith("urn:uuid:"), "UUIDs must start with urn:uuid:");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:uuid:"), "UUIDs must start with urn:uuid:");
         try {
-          UUID.fromString(e.primitiveValue().substring(8));
+          UUID.fromString(url.substring(8));
         } catch (Exception ex) {
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, "UUIDs must be valid ("+ex.getMessage()+")");
         }
@@ -1923,11 +1937,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (fetcher != null) {
         boolean found;
         try {
-          found = fetcher.resolveURL(appContext, path, e.primitiveValue());
+          found = (allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || fetcher.resolveURL(appContext, path, url);
         } catch (IOException e1) {
           found = false;
         }
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, "URL value '"+e.primitiveValue()+"' does not resolve");
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, "URL value '"+url+"' does not resolve");
       }
     }
     if (type.equals("id")) {
@@ -2236,7 +2250,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           we = ext == null ? null : makeExternalRef(ext, path);
         }
       }
-      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS, "Unable to resolve resource '"+ref+"'");
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (allowExamples && (ref.contains("example.org") || ref.contains("acme.com"))) || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS), "Unable to resolve resource '"+ref+"'");
     }
 
     String ft;
