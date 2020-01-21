@@ -458,7 +458,7 @@ public class SnapShotGenerationTests {
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
     pu.setIds(test.getSource(), false);
     List<String> errors = new ArrayList<String>();          
-    pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors);
+    pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml")));
@@ -490,7 +490,7 @@ public class SnapShotGenerationTests {
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();
-      pu.sortDifferential(base, output, test.getSource().getName(), errors);
+      pu.sortDifferential(base, output, test.getSource().getName(), errors, false);
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: "+errors.toString());
     }
@@ -537,7 +537,7 @@ public class SnapShotGenerationTests {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
       pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();          
-      pu.sortDifferential(base, sd, url, errors);
+      pu.sortDifferential(base, sd, url, errors, false);
       if (!errors.isEmpty())
         throw new FHIRException(errors.get(0));
       pu.setIds(sd, false);
