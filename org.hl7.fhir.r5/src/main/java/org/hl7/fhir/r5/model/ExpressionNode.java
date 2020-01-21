@@ -390,7 +390,9 @@ public class ExpressionNode {
 			b.append(")");
 		}
 		if (inner != null) {
-			b.append(".");
+			if (!((ExpressionNode.Kind.Function == inner.getKind()) && (ExpressionNode.Function.Item == inner.getFunction()))) {
+				b.append(".");
+			}
 			b.append(inner.toString());
 		}
 		if (operation != null) {
