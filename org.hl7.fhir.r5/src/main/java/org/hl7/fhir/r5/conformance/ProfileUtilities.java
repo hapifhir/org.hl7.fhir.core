@@ -2583,7 +2583,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
     }
-    sortDifferential(base, derived, derived.getName(), new ArrayList<String>());
+    sortDifferential(base, derived, derived.getName(), new ArrayList<String>(), false);
   }
 
   private void closeChildren(StructureDefinition base, ElementDefinition edb, StructureDefinition derived, ElementDefinition edm) {
@@ -4350,7 +4350,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public void sortDifferential(StructureDefinition base, StructureDefinition diff, String name, List<String> errors) throws FHIRException  {
+  public void sortDifferential(StructureDefinition base, StructureDefinition diff, String name, List<String> errors, boolean errorIfChanges) throws FHIRException  {
+    List<ElementDefinition> original = new ArrayList<>();
+    original.addAll(diff.getDifferential().getElement());
     final List<ElementDefinition> diffList = diff.getDifferential().getElement();
     int lastCount = diffList.size();
     // first, we move the differential elements into a tree
@@ -4390,12 +4392,33 @@ public class ProfileUtilities extends TranslatingUtilities {
     sortElements(edh, cmp, errors);
 
     // now, we serialise them back to a list
+    List<ElementDefinition> newDiff = new ArrayList<>();
+    writeElements(edh, newDiff);
+    if (errorIfChanges) {
+      compareDiffs(original, newDiff, errors);
+    }
     diffList.clear();
-    writeElements(edh, diffList);
+    diffList.addAll(newDiff);
     
     if (lastCount != diffList.size())
       errors.add("Sort failed: counts differ; at least one of the paths in the differential is illegal");
   }
+
+  private void compareDiffs(List<ElementDefinition> diffList, List<ElementDefinition> newDiff, List<String> errors) {
+    if (diffList.size() != newDiff.size()) {
+      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size());
+    } else {
+      for (int i = 0; i < Integer.min(diffList.size(), newDiff.size()); i++) {
+        ElementDefinition e = diffList.get(i);
+        ElementDefinition n = newDiff.get(i);
+        if (!n.getPath().equals(e.getPath())) {
+          errors.add("The element "+e.getPath()+" is out of order (and maybe others after it)");
+          return;
+        }   
+      }
+    }
+  }
+
 
   private int processElementsIntoTree(ElementDefinitionHolder edh, int i, List<ElementDefinition> list) {
     String path = edh.getSelf().getPath();

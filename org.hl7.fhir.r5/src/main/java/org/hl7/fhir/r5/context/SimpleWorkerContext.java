@@ -662,7 +662,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setThrowException(false);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-        pu.sortDifferential(sd, p, p.getUrl(), errors);
+        pu.sortDifferential(sd, p, p.getUrl(), errors, true);
       }
       pu.setDebug(false);
       for (String err : errors)
