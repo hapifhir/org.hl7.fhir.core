@@ -5701,7 +5701,7 @@ public class VersionConvertor_14_50 {
     for (org.hl7.fhir.dstu2016may.model.StringType t : src.getContext()) {
       org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent ec = tgt.addContext();
       ec.setType(convertExtensionContext(src.getContextType()));
-      ec.setExpression(convertToR4Expression(t.getValue()));
+      ec.setExpression("*".equals(t.getValue()) ? "Element" : t.getValue());
     }
     if (src.getDerivation() == org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.CONSTRAINT)
       tgt.setType(src.getBaseType());
@@ -5773,7 +5773,7 @@ public class VersionConvertor_14_50 {
     for (org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent  t : src.getContext()) {
       if (!tgt.hasContextType())
         tgt.setContextType(convertExtensionContext(t.getType(), t.getExpression()));
-      tgt.addContext(convertTo2016MayExpression(t.getExpression()));
+      tgt.addContext("Element".equals(t.getExpression()) ? "*" : t.getExpression());
     }
     if (src.hasBaseDefinition())
       tgt.setBaseDefinition(src.getBaseDefinition());

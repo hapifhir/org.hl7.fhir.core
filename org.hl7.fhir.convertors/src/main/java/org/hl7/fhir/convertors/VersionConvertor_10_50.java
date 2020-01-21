@@ -10387,7 +10387,7 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.dstu2.model.StringType t : src.getContext()) {
       org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent ec = tgt.addContext();
       ec.setType(convertExtensionContext(src.getContextType()));
-      ec.setExpression(t.getValue());
+      ec.setExpression("*".equals(t.getValue()) ? "Element" : t.getValue());
     }
     if (src.hasConstrainedType())
       tgt.setType(src.getConstrainedType());
@@ -10466,7 +10466,7 @@ public class VersionConvertor_10_50 {
     for (org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent  t : src.getContext()) {
       if (!tgt.hasContextType())
         tgt.setContextType(convertExtensionContext(t.getType(), t.getExpression()));
-      tgt.addContext(t.getExpression());
+      tgt.addContext("Element".equals(t.getExpression()) ? "*" : t.getExpression());
     }
     tgt.setConstrainedType(src.getType());
     tgt.setBase(src.getBaseDefinition());
