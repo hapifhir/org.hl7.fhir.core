@@ -1937,7 +1937,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (fetcher != null) {
         boolean found;
         try {
-          found = (allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || fetcher.resolveURL(appContext, path, url);
+          found = (allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
         } catch (IOException e1) {
           found = false;
         }
@@ -2376,7 +2376,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (we == null) {
       TypeRefComponent type = getReferenceTypeRef(container.getType());
-      rule(errors, IssueType.REQUIRED, -1, -1, path, !type.hasAggregation() || !type.hasAggregation(AggregationMode.REFERENCED), "Bundled or contained reference not found within the bundle/resource " + ref);
+      boolean okToRef = !type.hasAggregation() || type.hasAggregation(AggregationMode.REFERENCED);
+      rule(errors, IssueType.REQUIRED, -1, -1, path, okToRef, "Bundled or contained reference not found within the bundle/resource " + ref);
     }
     if (pol == ReferenceValidationPolicy.CHECK_VALID) {
       // todo....
