@@ -22,7 +22,10 @@ package org.hl7.fhir.convertors.conv40_50;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 
@@ -231,8 +234,16 @@ public class Communication extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent();
     copyElement(src, tgt);
-    if (src.hasContent())
-      tgt.setContent(convertType(src.getContent()));
+    if (src.hasContent()) {
+      if (src.getContent() instanceof StringType) {
+        CodeableConcept tgtc = new CodeableConcept();
+        copyElement(src.getContent(), tgtc);
+        tgtc.setText(src.getContentStringType().getValue());
+        tgt.setContent(tgtc);
+      } else {
+        tgt.setContent(convertType(src.getContent()));
+      }
+    }
     return tgt;
   }
 
@@ -241,8 +252,16 @@ public class Communication extends VersionConvertor_40_50 {
       return null;
     org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
     copyElement(src, tgt);
-    if (src.hasContent())
-      tgt.setContent(convertType(src.getContent()));
+    if (src.hasContent()) {
+      if (src.hasContentCodeableConcept()) {
+        StringType tgts = new StringType();
+        copyElement(src.getContent(), tgts);
+        tgts.setValue(src.getContentCodeableConcept().getText());
+        tgt.setContent(tgts);        
+      } else {
+        tgt.setContent(convertType(src.getContent()));
+      }
+    }
     return tgt;
   }
 
