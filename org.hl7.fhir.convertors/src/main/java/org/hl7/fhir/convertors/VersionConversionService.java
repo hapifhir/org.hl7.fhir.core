@@ -179,12 +179,12 @@ public class VersionConversionService {
     case DSTU2016May: throw new FHIRException("Conversion from DSTU2 to 2016May version is not supported");
     case R4:
       if (useJava && VersionConvertor_10_40.convertsResource(src.fhirType()))
-        return saveResource40(new VersionConvertor_10_40(null).convertResource(src), dstFormat, style); // todo: handle code system?
+        return saveResource40(VersionConvertor_10_40.convertResource(src), dstFormat, style); // todo: handle code system?
       else
         throw new FHIRException("Conversion from R4 to 2016May version is not supported for resources of type "+src.fhirType());
     case STU3:
       if (useJava && VersionConvertor_10_30.convertsResource(src.fhirType()))
-        return saveResource30(new VersionConvertor_10_30(null).convertResource(src), dstFormat, style); // todo: handle code system?
+        return saveResource30(VersionConvertor_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
       else
         throw new FHIRException("todo: use script based conversion....");
     default: throw new FHIRException("FHIR Version 'unknown' is not supported by the inter-version convertor");
@@ -215,7 +215,7 @@ public class VersionConversionService {
     case DSTU1: throw new FHIRException("FHIR Version #1 is not supported by the inter-version convertor");
     case DSTU2:
       if (useJava && VersionConvertor_10_30.convertsResource(src.fhirType()))
-        return saveResource10(new VersionConvertor_10_30(null).convertResource(src), dstFormat, style); // todo: handle code system?
+        return saveResource10(VersionConvertor_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
       else
         throw new FHIRException("todo: use script based conversion....");
     case DSTU2016May: 
@@ -238,7 +238,7 @@ public class VersionConversionService {
     case DSTU1: throw new FHIRException("FHIR Version #1 is not supported by the inter-version convertor");
     case DSTU2: 
       if (useJava && VersionConvertor_10_40.convertsResource(src.fhirType()))
-        return saveResource10(new VersionConvertor_10_40(null).convertResource(src), dstFormat, style); // todo: handle code system?
+        return saveResource10(VersionConvertor_10_40.convertResource(src), dstFormat, style); // todo: handle code system?
       else
         throw new FHIRException("Conversion from R4 to DSTU2 version is not supported for resources of type "+src.fhirType());
     case DSTU2016May: 
