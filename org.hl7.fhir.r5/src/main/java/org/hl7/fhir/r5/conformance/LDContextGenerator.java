@@ -7,6 +7,9 @@ import com.google.gson.stream.JsonWriter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.RDFTypeMap;
+
+import org.apache.jena.rdf.model.Resource;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -24,6 +27,7 @@ public class LDContextGenerator {
   private static final String ARRAY_OF_X = "[x]";
   private static final String BACKBONE_ELEMENT= "BackboneElement";
   private static final String CODE_TYPE = "code";
+  private static final String DOMAIN_RESOURCE = "DomainResource";
 
   private static boolean LOCAL_DEBUG = false;
 
@@ -34,6 +38,7 @@ public class LDContextGenerator {
    */
   private IWorkerContext context;
   private JsonWriter jsonWriter;
+  private boolean isResourceRoot = false;
 
   /**
    * Constructor
@@ -63,6 +68,8 @@ public class LDContextGenerator {
 
     final List<ElementDefinition> elementDefinitions = sd.getSnapshot().getElement();
 
+    isResourceRoot = isStructuredDefintionRoot(sd);
+
     elementDefinitions.forEach(elementDefinition -> {
       getNewContextObjects(elementDefinition);
     });
@@ -76,6 +83,10 @@ public class LDContextGenerator {
    * @param elementDefinition
    */
   private void getNewContextObjects(ElementDefinition elementDefinition) {
+
+    if (isResourceRoot) {
+      createNewContextObject("resourceType", "rdf:type", null, "@id", false);
+    }
 
     String coPrefix = "";
     String contextObject = elementDefinition.toString();
@@ -101,6 +112,9 @@ public class LDContextGenerator {
       idTrimmed = idStrings[0];
     }
 
+    Resource resource = RDFTypeMap.xsd_type_for(idTrimmed, false);
+    String resourceUri = resource != null ? resource.getURI() : null;
+
     String context = null;
     List<ElementDefinition.TypeRefComponent> type = elementDefinition.getType();
 
@@ -108,18 +122,19 @@ public class LDContextGenerator {
 
       context = type.get(0).getCode();
 
-      if (context.equals(CODE_TYPE)){
+      if (context.equals(CODE_TYPE)  &&
+              elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
         context = null;
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context);
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
       else if (context.equals(BACKBONE_ELEMENT)) {
 
         context = idTrimmed + "." + contextObject;
-        createNewContextObject(contextObject,context, context);
+        createNewContextObject(contextObject,context, context, resourceUri);
       }
       else {
         context = context.substring(context.lastIndexOf(".") + 1);
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context);
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context,resourceUri);
       }
     }
     else if (type!=null && type.size() > 1) {
@@ -129,33 +144,73 @@ public class LDContextGenerator {
 
         context = typeRefComponent.getCode();
         context = context.substring(context.lastIndexOf(".") + 1);
-        contextObject = coPrefix + context;
+        contextObject = coPrefix.length() > 0 ?
+          coPrefix + toUpperCaseFirstCharacter(context) :
+          context;
 
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context);
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
     }
   }
 
+  /**
+   * Determine if the StructuredDefinition is a root resource.
+   * @param sd
+   * @return true if this is a root resource, else false.
+   */
+  private boolean isStructuredDefintionRoot(StructureDefinition sd) {
+    boolean isResourceRoot = false;
+    String baseDef = sd.getBaseDefinition();
+
+    if (baseDef == null){
+      return isResourceRoot;
+    }
+
+    String[] paths = baseDef.split("/");
+
+    if (paths.length > 0) {
+      String defintionType =  paths[paths.length -1];
+      isResourceRoot = defintionType.equals(DOMAIN_RESOURCE);
+    }
+
+    return isResourceRoot;
+  }
 
   /**
    * Create a new context object and add it to the list.
    * @param contextObject
    * @param id
    * @param context
+   * @param resourceUri
    */
-  private void createNewContextObject(String contextObject, String id, String context) {
+  private void createNewContextObject(String contextObject, String id, String context, String resourceUri) {
+    createNewContextObject(contextObject, id, context, resourceUri, true);
+  }
 
-    // add the "fhir:" prefix
-    id = LDContextGenerator.PREFIX_FHIR + id;
+  /**
+   * Create a new context object and add it to the list.
+   * @param contextObject
+   * @param id
+   * @param context
+   * @param resourceUri
+   * @param addIdPrefix
+   */
+  private void createNewContextObject(String contextObject, String id, String context, String resourceUri, boolean addIdPrefix) {
+
+    if (addIdPrefix) {
+      // add the "fhir:" prefix
+      id = LDContextGenerator.PREFIX_FHIR + id;
+    }
 
     if (context != null) {
       // add ".context.jsonld" to the end of the string
       context = (context + LDContextGenerator.SUFFIX_CONTEXT).toLowerCase();
     }
 
-    LdContext ldContext = new LdContext(contextObject, id, context);
+    LdContext ldContext = new LdContext(contextObject, id, context, resourceUri);
     ldContextList.add(ldContext);
   }
+
 
   /**
    * Trim the context object.
@@ -178,6 +233,22 @@ public class LDContextGenerator {
     }
 
     return trimmedCo;
+  }
+
+  /**
+   * Convert the first character of a string to upper case.
+   * ex: "java" -> "Java"
+   * @param val
+   * @return
+   */
+  private String toUpperCaseFirstCharacter(String val) {
+    String retVal = "";
+
+    if (val != null && val.length() > 0) {
+      retVal = val.substring(0, 1).toUpperCase() + val.substring(1);
+    }
+
+    return retVal;
   }
 
   /**
@@ -229,17 +300,24 @@ public class LDContextGenerator {
             if (ldContext.getContextContext() != null) {
               System.out.println("context : " + ldContext.getContextContext());
             }
+            System.out.println("resourceUri : " + ldContext.getResourceUri());
           }
 
           writer.name(ldContext.getContextObjectName());
           writer.beginObject();
           writer.name("@id").value(ldContext.getContextId());
 
-          if (ldContext.getContextContext() != null) {
+
+          if(ldContext.getResourceUri() != null) {
+            writer.name("@type").value(ldContext.getResourceUri());
+          }
+          else if(ldContext.getContextContext() != null) {
             writer.name("@context").value(ldContext.getContextContext());
           }
           writer.endObject();
         }
+
+        renderStaticIndexObject(writer);
 
         // @context object end
         writer.endObject();
@@ -274,15 +352,19 @@ public class LDContextGenerator {
       writer.name("xsd").value("http://www.w3.org/2001/XMLSchema#");
       writer.name("fhir").value("http://hl7.org/fhir/");
       writer.name("rdf").value("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-      writer.name("resourceType");
+    }
 
-      // @resourceType object
+    /**
+     * Create a static "index" object
+     * @param writer
+     * @throws IOException
+     */
+    private void renderStaticIndexObject(JsonWriter writer) throws IOException {
+      writer.name("index");
       writer.beginObject();
-      writer.name("@id").value("rdf:type");
-      writer.name("@type").value("@id");
-      // @resourceType object end
+        writer.name("@id").value("fhir:index");
+        writer.name("@type").value("http://www.w3.org/2001/XMLSchema#integer");
       writer.endObject();
-
     }
   }
 
@@ -295,11 +377,13 @@ public class LDContextGenerator {
     private String contextObjectName;
     private String contextId;
     private String contextContext;
+    private String resourceUri;
 
-    public LdContext(String contextObjectName, String contextId, String contextContext) {
+    public LdContext(String contextObjectName, String contextId, String contextContext, String resourceUri) {
       this.contextObjectName = contextObjectName;
       this.contextId = contextId;
       this.contextContext = contextContext;
+      this.resourceUri = resourceUri;
     }
 
     public String getContextObjectName() {
@@ -310,6 +394,9 @@ public class LDContextGenerator {
     }
     public String getContextContext() {
       return contextContext;
+    }
+    public String getResourceUri() {
+      return resourceUri;
     }
   }
 

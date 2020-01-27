@@ -23,7 +23,7 @@ public class LDContextGeneratorTests {
       fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
 
     if(sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "was null");
+      throw new FHIRException("StructuredDefinition for " + name + " was null");
     }
     String outPath = basePath + name.toLowerCase() + ".context.jsonld";
 
@@ -51,34 +51,43 @@ public class LDContextGeneratorTests {
       }
   }
 
+  @Test
+  public void testAll() throws FHIRException, IOException, UcumException {
+    doTestAll();
+  }
+
 //  @Test
-//  public void testAll() throws FHIRException, IOException, UcumException {
-//    doTestAll();
+//  public void testAllergyIntolerance() throws FHIRException, IOException, UcumException {
+//    doTest("AllergyIntolerance");
 //  }
-
-  @Test
-  public void testAllergyIntolerance() throws FHIRException, IOException, UcumException {
-    doTest("AllergyIntolerance");
-  }
-
-  @Test
-  public void testAccount() throws FHIRException, IOException, UcumException {
-    doTest("Account");
-  }
-
-  @Test
-  public void testPatient() throws FHIRException, IOException, UcumException {
-    doTest("Patient");
-  }
-
-  @Test
-  public void testActivityDefinition() throws FHIRException, IOException, UcumException {
-    doTest("ActivityDefinition");
-  }
-
-  @Test
-  public void testMedicationRequest() throws FHIRException, IOException, UcumException {
-    doTest("MedicationRequest");
-  }
-
+//
+//  @Test
+//  public void testAccount() throws FHIRException, IOException, UcumException {
+//    doTest("Account");
+//  }
+//
+//  @Test
+//  public void testPatient() throws FHIRException, IOException, UcumException {
+//    doTest("Patient");
+//  }
+//
+//  @Test
+//  public void testActivityDefinition() throws FHIRException, IOException, UcumException {
+//    doTest("ActivityDefinition");
+//  }
+//
+//  @Test
+//  public void testMedicationRequest() throws FHIRException, IOException, UcumException {
+//    doTest("MedicationRequest");
+//  }
+//
+//  @Test
+//  public void testDateTime() throws FHIRException, IOException, UcumException {
+//    doTest("dateTime");
+//  }
+//
+//  @Test
+//  public void testAddress() throws FHIRException, IOException, UcumException {
+//    doTest("Address");
+//  }
 }
