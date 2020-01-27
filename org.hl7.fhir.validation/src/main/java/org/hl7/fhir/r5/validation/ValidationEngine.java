@@ -1310,7 +1310,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     StructureDefinition sd = (StructureDefinition) res;
     StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     
-    new ProfileUtilities(context, null, null).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+    new ProfileUtilities(context, null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
     return sd;
   }
 
@@ -1364,7 +1364,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     if (sdb != null) {
       makeSnapshot(sdb);
-      new ProfileUtilities(context, null, null).generateSnapshot(sdb, sd, sd.getUrl(), null, sd.getName());
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true).generateSnapshot(sdb, sd, sd.getUrl(), null, sd.getName());
     }
     
   }
