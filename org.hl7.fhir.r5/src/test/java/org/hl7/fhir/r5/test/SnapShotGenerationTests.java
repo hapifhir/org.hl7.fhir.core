@@ -346,7 +346,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) {
+    public Base resolveReference(Object appContext, String url, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }
@@ -468,14 +468,23 @@ public class SnapShotGenerationTests {
 
   private void testGen(boolean fail) throws Exception {
     if (!Utilities.noString(test.register)) {
-      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();          
+      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, null);
       pu.setNewSlicingProcessing(true);
-      List<String> errors = new ArrayList<String>();          
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
       pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
       if (!TestingUtilities.context().hasResource(StructureDefinition.class, test.included.getUrl()))
         TestingUtilities.context().cacheResource(test.included);
+      int ec = 0;
+      for (ValidationMessage vm : messages) {
+        if (vm.getLevel() == IssueSeverity.ERROR) {
+          System.out.println(vm.summary());
+          ec++;
+        }
+      }
+      if (ec > 0)
+        throw new FHIRException("register gen failed: "+messages.toString());
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
     if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
