@@ -380,7 +380,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url) {
+  public Base resolveReference(Object appContext, String url, Base refContext) {
     if (url.equals("Patient/test"))
       return new Patient();
     return null;
