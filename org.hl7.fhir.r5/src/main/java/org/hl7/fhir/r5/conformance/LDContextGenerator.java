@@ -122,7 +122,11 @@ public class LDContextGenerator {
 
       context = type.get(0).getCode();
 
-      if (context.equals(CODE_TYPE)  &&
+      if (resourceUri != null) {
+        context = context.substring(context.lastIndexOf(".") + 1);
+        createNewContextObject(contextObject, contextObject, context,resourceUri);
+      }
+      else if (context.equals(CODE_TYPE)  &&
               elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
         context = null;
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);

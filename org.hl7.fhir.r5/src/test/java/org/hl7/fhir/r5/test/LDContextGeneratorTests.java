@@ -16,7 +16,7 @@ import java.util.List;
 public class LDContextGeneratorTests {
 
   String basePath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir")).toString() + "/";
-  //String basePath = "/Users/m091864/TEMP/";
+//  String basePath = "/Users/m091864/TEMP/";
 
   private void doTest(String name) throws IOException, FHIRException {
     StructureDefinition sd = TestingUtilities.context().
@@ -43,12 +43,13 @@ public class LDContextGeneratorTests {
       if (sd == null ) {
         throw new FHIRException("StructuredDefinition was null");
       }
-      String name = sd.getName();
+      String name = sd.getId();
       String outPath = basePath + name.toLowerCase() + ".context.jsonld";
 
       LDContextGenerator ldContextGenerator = new LDContextGenerator(TestingUtilities.context());
       TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
-      }
+
+    }
   }
 
   @Test
@@ -89,5 +90,13 @@ public class LDContextGeneratorTests {
 //  @Test
 //  public void testAddress() throws FHIRException, IOException, UcumException {
 //    doTest("Address");
+//  }
+//  @Test
+//  public void testReference() throws FHIRException, IOException, UcumException {
+//    doTest("Reference");
+//  }
+//    @Test
+//    public void testString() throws FHIRException, IOException, UcumException {
+//      doTest("string");
 //  }
 }
