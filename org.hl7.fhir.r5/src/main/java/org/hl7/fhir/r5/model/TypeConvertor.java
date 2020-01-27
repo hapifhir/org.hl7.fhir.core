@@ -252,14 +252,21 @@ public class TypeConvertor {
       return (Coding) b;
     else if (b instanceof Element) {
       ICoding c = ((Element) b).getAsICoding();
-      if (c == null)
+      if (c != null) {
+        return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
+      } else if (b.isPrimitive()) {  
+        return new Coding().setCode(b.primitiveValue());
+      } else {
         throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Coding");
-      return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
+      }
     } else if (b instanceof ICoding) {
       ICoding c = (ICoding) b;
       return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
-    } else
+    } else if (b.isPrimitive()) {  
+      return new Coding().setCode(b.primitiveValue());
+    } else {
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Coding");
+    }
   }
   
   public static Quantity castToQuantity(Base b) throws FHIRException {
