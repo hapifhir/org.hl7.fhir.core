@@ -3080,7 +3080,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String i = parts[1];
         for (Element entry : entries) {
           String fu = entry.getNamedChildValue("fullUrl");
-          if (u != null && fu.equals(u))
+          if (fu != null && fu.equals(u))
             return entry;
           if (u == null) {
             Element resource = entry.getNamedChild("resource");
