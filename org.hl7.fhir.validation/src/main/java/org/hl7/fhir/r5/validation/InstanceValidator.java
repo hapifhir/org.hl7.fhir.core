@@ -41,11 +41,7 @@ import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.convertors.VersionConvertorConstants;
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -3726,7 +3722,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           case DSTU1: throw new FHIRException("Unsupported version R1");
           case DSTU2:
             org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
-            Resource r5 = new VersionConvertor_10_50(null).convertResource(r2);
+            Resource r5 = VersionConvertor_10_50.convertResource(r2);
             if (r5 instanceof Questionnaire)
               return (Questionnaire) r5;
             else 

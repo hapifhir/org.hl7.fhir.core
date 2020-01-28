@@ -413,7 +413,7 @@ public class ExtensionDefinitionGenerator {
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
       VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
-      org.hl7.fhir.dstu2.model.Resource res = new VersionConvertor_10_40(advisor ).convertResource(resource);
+      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_40.convertResource(resource, advisor);
       return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().composeBytes(resource);
@@ -431,7 +431,7 @@ public class ExtensionDefinitionGenerator {
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
       VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
-      return new VersionConvertor_10_40(advisor ).convertResource(res);
+      return VersionConvertor_10_40.convertResource(res, advisor);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().parse(inputStream);
     } else
