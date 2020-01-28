@@ -10,7 +10,9 @@ public class Basic30_50 {
             return null;
         org.hl7.fhir.r5.model.Basic tgt = new org.hl7.fhir.r5.model.Basic();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -27,7 +29,9 @@ public class Basic30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Basic tgt = new org.hl7.fhir.dstu3.model.Basic();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())

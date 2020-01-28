@@ -18,7 +18,9 @@ public class Medication30_50 {
             tgt.setManufacturer(VersionConvertor_30_50.convertReference(src.getManufacturer()));
         if (src.hasForm())
             tgt.setDoseForm(VersionConvertor_30_50.convertCodeableConcept(src.getForm()));
-        for (org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
+        if (src.hasIngredient()) {
+            for (org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
+        }
         if (src.hasPackage())
             tgt.setBatch(convertMedicationPackageBatchComponent(src.getPackage().getBatchFirstRep()));
         return tgt;
@@ -37,7 +39,9 @@ public class Medication30_50 {
             tgt.setManufacturer(VersionConvertor_30_50.convertReference(src.getManufacturer()));
         if (src.hasDoseForm())
             tgt.setForm(VersionConvertor_30_50.convertCodeableConcept(src.getDoseForm()));
-        for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
+        if (src.hasIngredient()) {
+            for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
+        }
         if (src.hasBatch())
             tgt.getPackage().addBatch(convertMedicationPackageBatchComponent(src.getBatch()));
         return tgt;

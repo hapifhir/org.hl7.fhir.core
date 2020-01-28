@@ -10,18 +10,42 @@ public class Location10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Location tgt = new org.hl7.fhir.dstu2.model.Location();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setStatus(convertLocationStatus(src.getStatus()));
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        tgt.setMode(convertLocationMode(src.getMode()));
-        tgt.setType(VersionConvertor_10_50.convertCodeableConcept(src.getTypeFirstRep()));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
-        tgt.setPhysicalType(VersionConvertor_10_50.convertCodeableConcept(src.getPhysicalType()));
-        tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
-        tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
-        tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertLocationStatus(src.getStatus()));
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasMode()) {
+            tgt.setMode(convertLocationMode(src.getMode()));
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_50.convertCodeableConcept(src.getTypeFirstRep()));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+        }
+        if (src.hasAddress()) {
+            tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
+        }
+        if (src.hasPhysicalType()) {
+            tgt.setPhysicalType(VersionConvertor_10_50.convertCodeableConcept(src.getPhysicalType()));
+        }
+        if (src.hasPosition()) {
+            tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
+        }
+        if (src.hasManagingOrganization()) {
+            tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
+        }
+        if (src.hasPartOf()) {
+            tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+        }
         return tgt;
     }
 
@@ -30,18 +54,42 @@ public class Location10_50 {
             return null;
         org.hl7.fhir.r5.model.Location tgt = new org.hl7.fhir.r5.model.Location();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setStatus(convertLocationStatus(src.getStatus()));
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        tgt.setMode(convertLocationMode(src.getMode()));
-        tgt.addType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
-        tgt.setPhysicalType(VersionConvertor_10_50.convertCodeableConcept(src.getPhysicalType()));
-        tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
-        tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
-        tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertLocationStatus(src.getStatus()));
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasMode()) {
+            tgt.setMode(convertLocationMode(src.getMode()));
+        }
+        if (src.hasType()) {
+            tgt.addType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+        }
+        if (src.hasAddress()) {
+            tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
+        }
+        if (src.hasPhysicalType()) {
+            tgt.setPhysicalType(VersionConvertor_10_50.convertCodeableConcept(src.getPhysicalType()));
+        }
+        if (src.hasPosition()) {
+            tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
+        }
+        if (src.hasManagingOrganization()) {
+            tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
+        }
+        if (src.hasPartOf()) {
+            tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+        }
         return tgt;
     }
 
@@ -76,9 +124,15 @@ public class Location10_50 {
             return null;
         org.hl7.fhir.r5.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.r5.model.Location.LocationPositionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setLongitude(src.getLongitude());
-        tgt.setLatitude(src.getLatitude());
-        tgt.setAltitude(src.getAltitude());
+        if (src.hasLongitude()) {
+            tgt.setLongitude(src.getLongitude());
+        }
+        if (src.hasLatitude()) {
+            tgt.setLatitude(src.getLatitude());
+        }
+        if (src.hasAltitude()) {
+            tgt.setAltitude(src.getAltitude());
+        }
         return tgt;
     }
 
@@ -87,9 +141,15 @@ public class Location10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu2.model.Location.LocationPositionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setLongitude(src.getLongitude());
-        tgt.setLatitude(src.getLatitude());
-        tgt.setAltitude(src.getAltitude());
+        if (src.hasLongitude()) {
+            tgt.setLongitude(src.getLongitude());
+        }
+        if (src.hasLatitude()) {
+            tgt.setLatitude(src.getLatitude());
+        }
+        if (src.hasAltitude()) {
+            tgt.setAltitude(src.getAltitude());
+        }
         return tgt;
     }
 

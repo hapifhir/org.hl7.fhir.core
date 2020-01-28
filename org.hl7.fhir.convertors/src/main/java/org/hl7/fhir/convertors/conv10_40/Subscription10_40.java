@@ -10,13 +10,27 @@ public class Subscription10_40 {
             return null;
         org.hl7.fhir.r4.model.Subscription tgt = new org.hl7.fhir.r4.model.Subscription();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        tgt.setCriteria(src.getCriteria());
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
-        tgt.setReason(src.getReason());
-        tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
-        tgt.setError(src.getError());
-        tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
-        tgt.setEnd(src.getEnd());
+        if (src.hasCriteria()) {
+            tgt.setCriteria(src.getCriteria());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
+        }
+        if (src.hasReason()) {
+            tgt.setReason(src.getReason());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
+        }
+        if (src.hasError()) {
+            tgt.setError(src.getError());
+        }
+        if (src.hasChannel()) {
+            tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
         return tgt;
     }
 
@@ -25,13 +39,27 @@ public class Subscription10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Subscription tgt = new org.hl7.fhir.dstu2.model.Subscription();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        tgt.setCriteria(src.getCriteria());
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
-        tgt.setReason(src.getReason());
-        tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
-        tgt.setError(src.getError());
-        tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
-        tgt.setEnd(src.getEnd());
+        if (src.hasCriteria()) {
+            tgt.setCriteria(src.getCriteria());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
+        }
+        if (src.hasReason()) {
+            tgt.setReason(src.getReason());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
+        }
+        if (src.hasError()) {
+            tgt.setError(src.getError());
+        }
+        if (src.hasChannel()) {
+            tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
         return tgt;
     }
 
@@ -40,10 +68,18 @@ public class Subscription10_40 {
             return null;
         org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setType(convertSubscriptionChannelType(src.getType()));
-        tgt.setEndpoint(src.getEndpoint());
-        tgt.setPayload(src.getPayload());
-        tgt.addHeader(src.getHeader());
+        if (src.hasType()) {
+            tgt.setType(convertSubscriptionChannelType(src.getType()));
+        }
+        if (src.hasEndpoint()) {
+            tgt.setEndpoint(src.getEndpoint());
+        }
+        if (src.hasPayload()) {
+            tgt.setPayload(src.getPayload());
+        }
+        if (src.hasHeader()) {
+            tgt.addHeader(src.getHeader());
+        }
         return tgt;
     }
 
@@ -52,9 +88,15 @@ public class Subscription10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setType(convertSubscriptionChannelType(src.getType()));
-        tgt.setEndpoint(src.getEndpoint());
-        tgt.setPayload(src.getPayload());
+        if (src.hasType()) {
+            tgt.setType(convertSubscriptionChannelType(src.getType()));
+        }
+        if (src.hasEndpoint()) {
+            tgt.setEndpoint(src.getEndpoint());
+        }
+        if (src.hasPayload()) {
+            tgt.setPayload(src.getPayload());
+        }
         if (src.hasHeader())
             tgt.setHeaderElement(VersionConvertor_10_40.convertString(src.getHeader().get(0)));
         return tgt;

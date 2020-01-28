@@ -10,7 +10,9 @@ public class List30_50 {
             return null;
         org.hl7.fhir.r5.model.ListResource tgt = new org.hl7.fhir.r5.model.ListResource();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertListStatus(src.getStatus()));
         if (src.hasMode())
@@ -29,8 +31,12 @@ public class List30_50 {
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasOrderedBy())
             tgt.setOrderedBy(VersionConvertor_30_50.convertCodeableConcept(src.getOrderedBy()));
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
-        for (org.hl7.fhir.dstu3.model.ListResource.ListEntryComponent t : src.getEntry()) tgt.addEntry(convertListEntryComponent(t));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.dstu3.model.ListResource.ListEntryComponent t : src.getEntry()) tgt.addEntry(convertListEntryComponent(t));
+        }
         if (src.hasEmptyReason())
             tgt.setEmptyReason(VersionConvertor_30_50.convertCodeableConcept(src.getEmptyReason()));
         return tgt;
@@ -41,7 +47,9 @@ public class List30_50 {
             return null;
         org.hl7.fhir.dstu3.model.ListResource tgt = new org.hl7.fhir.dstu3.model.ListResource();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertListStatus(src.getStatus()));
         if (src.hasMode())
@@ -60,8 +68,12 @@ public class List30_50 {
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasOrderedBy())
             tgt.setOrderedBy(VersionConvertor_30_50.convertCodeableConcept(src.getOrderedBy()));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
-        for (org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent t : src.getEntry()) tgt.addEntry(convertListEntryComponent(t));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent t : src.getEntry()) tgt.addEntry(convertListEntryComponent(t));
+        }
         if (src.hasEmptyReason())
             tgt.setEmptyReason(VersionConvertor_30_50.convertCodeableConcept(src.getEmptyReason()));
         return tgt;

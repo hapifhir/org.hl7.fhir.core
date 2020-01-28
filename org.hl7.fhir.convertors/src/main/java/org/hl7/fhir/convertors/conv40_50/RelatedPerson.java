@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,99 +50,108 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class RelatedPerson extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.RelatedPerson convertRelatedPerson(org.hl7.fhir.r4.model.RelatedPerson src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.RelatedPerson tgt = new org.hl7.fhir.r5.model.RelatedPerson();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRelationship())
-      tgt.addRelationship(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r4.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto())
-      tgt.addPhoto(convertAttachment(t));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent t : src.getCommunication())
-      tgt.addCommunication(convertRelatedPersonCommunicationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.RelatedPerson convertRelatedPerson(org.hl7.fhir.r4.model.RelatedPerson src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.RelatedPerson tgt = new org.hl7.fhir.r5.model.RelatedPerson();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasRelationship()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        }
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasCommunication()) {
+            for (org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertRelatedPersonCommunicationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.RelatedPerson convertRelatedPerson(org.hl7.fhir.r5.model.RelatedPerson src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.RelatedPerson tgt = new org.hl7.fhir.r4.model.RelatedPerson();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRelationship())
-      tgt.addRelationship(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r5.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto())
-      tgt.addPhoto(convertAttachment(t));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent t : src.getCommunication())
-      tgt.addCommunication(convertRelatedPersonCommunicationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.RelatedPerson convertRelatedPerson(org.hl7.fhir.r5.model.RelatedPerson src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.RelatedPerson tgt = new org.hl7.fhir.r4.model.RelatedPerson();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasRelationship()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        }
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasCommunication()) {
+            for (org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertRelatedPersonCommunicationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent convertRelatedPersonCommunicationComponent(org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    copyElement(src, tgt);
-    if (src.hasLanguage())
-      tgt.setLanguage(convertCodeableConcept(src.getLanguage()));
-    if (src.hasPreferred())
-      tgt.setPreferredElement(convertBoolean(src.getPreferredElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent convertRelatedPersonCommunicationComponent(org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent();
+        copyElement(src, tgt);
+        if (src.hasLanguage())
+            tgt.setLanguage(convertCodeableConcept(src.getLanguage()));
+        if (src.hasPreferred())
+            tgt.setPreferredElement(convertBoolean(src.getPreferredElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent convertRelatedPersonCommunicationComponent(org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    copyElement(src, tgt);
-    if (src.hasLanguage())
-      tgt.setLanguage(convertCodeableConcept(src.getLanguage()));
-    if (src.hasPreferred())
-      tgt.setPreferredElement(convertBoolean(src.getPreferredElement()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent convertRelatedPersonCommunicationComponent(org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent();
+        copyElement(src, tgt);
+        if (src.hasLanguage())
+            tgt.setLanguage(convertCodeableConcept(src.getLanguage()));
+        if (src.hasPreferred())
+            tgt.setPreferredElement(convertBoolean(src.getPreferredElement()));
+        return tgt;
+    }
 }

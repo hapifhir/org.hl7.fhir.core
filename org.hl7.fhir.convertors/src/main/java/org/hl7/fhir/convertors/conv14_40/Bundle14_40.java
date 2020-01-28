@@ -10,12 +10,20 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle tgt = new org.hl7.fhir.r4.model.Bundle();
         VersionConvertor_14_40.copyResource(src, tgt);
-        tgt.setType(convertBundleType(src.getType()));
+        if (src.hasType()) {
+            tgt.setType(convertBundleType(src.getType()));
+        }
         if (src.hasTotal())
             tgt.setTotal(src.getTotal());
-        for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        for (org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
-        tgt.setSignature(VersionConvertor_14_40.convertSignature(src.getSignature()));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        }
+        if (src.hasSignature()) {
+            tgt.setSignature(VersionConvertor_14_40.convertSignature(src.getSignature()));
+        }
         return tgt;
     }
 
@@ -24,12 +32,20 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle tgt = new org.hl7.fhir.dstu2016may.model.Bundle();
         VersionConvertor_14_40.copyResource(src, tgt);
-        tgt.setType(convertBundleType(src.getType()));
+        if (src.hasType()) {
+            tgt.setType(convertBundleType(src.getType()));
+        }
         if (src.hasTotal())
             tgt.setTotal(src.getTotal());
-        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
-        tgt.setSignature(VersionConvertor_14_40.convertSignature(src.getSignature()));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        }
+        if (src.hasSignature()) {
+            tgt.setSignature(VersionConvertor_14_40.convertSignature(src.getSignature()));
+        }
         return tgt;
     }
 
@@ -38,13 +54,23 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
         if (src.hasFullUrl())
             tgt.setFullUrl(src.getFullUrl());
-        tgt.setResource(VersionConvertor_14_40.convertResource(src.getResource()));
-        tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
-        tgt.setRequest(convertBundleEntryRequestComponent(src.getRequest()));
-        tgt.setResponse(convertBundleEntryResponseComponent(src.getResponse()));
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_14_40.convertResource(src.getResource()));
+        }
+        if (src.hasSearch()) {
+            tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
+        }
+        if (src.hasRequest()) {
+            tgt.setRequest(convertBundleEntryRequestComponent(src.getRequest()));
+        }
+        if (src.hasResponse()) {
+            tgt.setResponse(convertBundleEntryResponseComponent(src.getResponse()));
+        }
         return tgt;
     }
 
@@ -53,13 +79,23 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
         if (src.hasFullUrl())
             tgt.setFullUrl(src.getFullUrl());
-        tgt.setResource(VersionConvertor_14_40.convertResource(src.getResource()));
-        tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
-        tgt.setRequest(convertBundleEntryRequestComponent(src.getRequest()));
-        tgt.setResponse(convertBundleEntryResponseComponent(src.getResponse()));
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_14_40.convertResource(src.getResource()));
+        }
+        if (src.hasSearch()) {
+            tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
+        }
+        if (src.hasRequest()) {
+            tgt.setRequest(convertBundleEntryRequestComponent(src.getRequest()));
+        }
+        if (src.hasResponse()) {
+            tgt.setResponse(convertBundleEntryResponseComponent(src.getResponse()));
+        }
         return tgt;
     }
 
@@ -68,8 +104,12 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setMethod(convertHTTPVerb(src.getMethod()));
-        tgt.setUrl(src.getUrl());
+        if (src.hasMethod()) {
+            tgt.setMethod(convertHTTPVerb(src.getMethod()));
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         if (src.hasIfNoneMatch())
             tgt.setIfNoneMatch(src.getIfNoneMatch());
         if (src.hasIfModifiedSince())
@@ -86,8 +126,12 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryRequestComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setMethod(convertHTTPVerb(src.getMethod()));
-        tgt.setUrl(src.getUrl());
+        if (src.hasMethod()) {
+            tgt.setMethod(convertHTTPVerb(src.getMethod()));
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         if (src.hasIfNoneMatch())
             tgt.setIfNoneMatch(src.getIfNoneMatch());
         if (src.hasIfModifiedSince())
@@ -104,7 +148,9 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setStatus(src.getStatus());
+        if (src.hasStatus()) {
+            tgt.setStatus(src.getStatus());
+        }
         if (src.hasLocation())
             tgt.setLocation(src.getLocation());
         if (src.hasEtag())
@@ -119,7 +165,9 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setStatus(src.getStatus());
+        if (src.hasStatus()) {
+            tgt.setStatus(src.getStatus());
+        }
         if (src.hasLocation())
             tgt.setLocation(src.getLocation());
         if (src.hasEtag())
@@ -134,7 +182,9 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntrySearchComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setMode(convertSearchEntryMode(src.getMode()));
+        if (src.hasMode()) {
+            tgt.setMode(convertSearchEntryMode(src.getMode()));
+        }
         if (src.hasScore())
             tgt.setScore(src.getScore());
         return tgt;
@@ -145,7 +195,9 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setMode(convertSearchEntryMode(src.getMode()));
+        if (src.hasMode()) {
+            tgt.setMode(convertSearchEntryMode(src.getMode()));
+        }
         if (src.hasScore())
             tgt.setScore(src.getScore());
         return tgt;
@@ -156,8 +208,12 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setRelation(src.getRelation());
-        tgt.setUrl(src.getUrl());
+        if (src.hasRelation()) {
+            tgt.setRelation(src.getRelation());
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         return tgt;
     }
 
@@ -166,8 +222,12 @@ public class Bundle14_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleLinkComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setRelation(src.getRelation());
-        tgt.setUrl(src.getUrl());
+        if (src.hasRelation()) {
+            tgt.setRelation(src.getRelation());
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         return tgt;
     }
 

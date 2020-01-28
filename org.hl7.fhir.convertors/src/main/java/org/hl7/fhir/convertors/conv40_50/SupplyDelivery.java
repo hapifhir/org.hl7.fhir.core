@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,119 +50,132 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class SupplyDelivery extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r4.model.SupplyDelivery src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SupplyDelivery tgt = new org.hl7.fhir.r5.model.SupplyDelivery();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasSuppliedItem())
-      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    if (src.hasSupplier())
-      tgt.setSupplier(convertReference(src.getSupplier()));
-    if (src.hasDestination())
-      tgt.setDestination(convertReference(src.getDestination()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReceiver())
-      tgt.addReceiver(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r4.model.SupplyDelivery src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SupplyDelivery tgt = new org.hl7.fhir.r5.model.SupplyDelivery();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasSuppliedItem())
+            tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasSupplier())
+            tgt.setSupplier(convertReference(src.getSupplier()));
+        if (src.hasDestination())
+            tgt.setDestination(convertReference(src.getDestination()));
+        if (src.hasReceiver()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r5.model.SupplyDelivery src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasSuppliedItem())
-      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    if (src.hasSupplier())
-      tgt.setSupplier(convertReference(src.getSupplier()));
-    if (src.hasDestination())
-      tgt.setDestination(convertReference(src.getDestination()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getReceiver())
-      tgt.addReceiver(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r5.model.SupplyDelivery src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasSuppliedItem())
+            tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasSupplier())
+            tgt.setSupplier(convertReference(src.getSupplier()));
+        if (src.hasDestination())
+            tgt.setDestination(convertReference(src.getDestination()));
+        if (src.hasReceiver()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus convertSupplyDeliveryStatus(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case INPROGRESS: return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS;
-    case COMPLETED: return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED;
-    case ABANDONED: return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus convertSupplyDeliveryStatus(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case INPROGRESS:
+                return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS;
+            case COMPLETED:
+                return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED;
+            case ABANDONED:
+                return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus convertSupplyDeliveryStatus(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case INPROGRESS: return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS;
-    case COMPLETED: return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED;
-    case ABANDONED: return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus convertSupplyDeliveryStatus(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case INPROGRESS:
+                return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS;
+            case COMPLETED:
+                return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED;
+            case ABANDONED:
+                return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-    copyElement(src, tgt);
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasItem())
-      tgt.setItem(convertType(src.getItem()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
+        copyElement(src, tgt);
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasItem())
+            tgt.setItem(convertType(src.getItem()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-    copyElement(src, tgt);
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasItem())
-      tgt.setItem(convertType(src.getItem()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
+        copyElement(src, tgt);
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasItem())
+            tgt.setItem(convertType(src.getItem()));
+        return tgt;
+    }
 }

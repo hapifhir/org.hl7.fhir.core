@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,91 +50,90 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class SubstanceProtein extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.SubstanceProtein convertSubstanceProtein(org.hl7.fhir.r4.model.SubstanceProtein src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceProtein tgt = new org.hl7.fhir.r5.model.SubstanceProtein();
-    copyDomainResource(src, tgt);
-    if (src.hasSequenceType())
-      tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
-    if (src.hasNumberOfSubunits())
-      tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-    for (org.hl7.fhir.r4.model.StringType t : src.getDisulfideLinkage())
-      tgt.getDisulfideLinkage().add(convertString(t));
-    for (org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit())
-      tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceProtein convertSubstanceProtein(org.hl7.fhir.r4.model.SubstanceProtein src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceProtein tgt = new org.hl7.fhir.r5.model.SubstanceProtein();
+        copyDomainResource(src, tgt);
+        if (src.hasSequenceType())
+            tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
+        if (src.hasNumberOfSubunits())
+            tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
+        if (src.hasDisulfideLinkage()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
+        }
+        if (src.hasSubunit()) {
+            for (org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceProtein convertSubstanceProtein(org.hl7.fhir.r5.model.SubstanceProtein src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceProtein tgt = new org.hl7.fhir.r4.model.SubstanceProtein();
-    copyDomainResource(src, tgt);
-    if (src.hasSequenceType())
-      tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
-    if (src.hasNumberOfSubunits())
-      tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-    for (org.hl7.fhir.r5.model.StringType t : src.getDisulfideLinkage())
-      tgt.getDisulfideLinkage().add(convertString(t));
-    for (org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit())
-      tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.SubstanceProtein convertSubstanceProtein(org.hl7.fhir.r5.model.SubstanceProtein src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceProtein tgt = new org.hl7.fhir.r4.model.SubstanceProtein();
+        copyDomainResource(src, tgt);
+        if (src.hasSequenceType())
+            tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
+        if (src.hasNumberOfSubunits())
+            tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
+        if (src.hasDisulfideLinkage()) {
+            for (org.hl7.fhir.r5.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
+        }
+        if (src.hasSubunit()) {
+            for (org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent convertSubstanceProteinSubunitComponent(org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    copyElement(src, tgt);
-    if (src.hasSubunit())
-      tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
-    if (src.hasSequence())
-      tgt.setSequenceElement(convertString(src.getSequenceElement()));
-    if (src.hasLength())
-      tgt.setLengthElement(convertInteger(src.getLengthElement()));
-    if (src.hasSequenceAttachment())
-      tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
-    if (src.hasNTerminalModificationId())
-      tgt.setNTerminalModificationId(convertIdentifier(src.getNTerminalModificationId()));
-    if (src.hasNTerminalModification())
-      tgt.setNTerminalModificationElement(convertString(src.getNTerminalModificationElement()));
-    if (src.hasCTerminalModificationId())
-      tgt.setCTerminalModificationId(convertIdentifier(src.getCTerminalModificationId()));
-    if (src.hasCTerminalModification())
-      tgt.setCTerminalModificationElement(convertString(src.getCTerminalModificationElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent convertSubstanceProteinSubunitComponent(org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent();
+        copyElement(src, tgt);
+        if (src.hasSubunit())
+            tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
+        if (src.hasSequence())
+            tgt.setSequenceElement(convertString(src.getSequenceElement()));
+        if (src.hasLength())
+            tgt.setLengthElement(convertInteger(src.getLengthElement()));
+        if (src.hasSequenceAttachment())
+            tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
+        if (src.hasNTerminalModificationId())
+            tgt.setNTerminalModificationId(convertIdentifier(src.getNTerminalModificationId()));
+        if (src.hasNTerminalModification())
+            tgt.setNTerminalModificationElement(convertString(src.getNTerminalModificationElement()));
+        if (src.hasCTerminalModificationId())
+            tgt.setCTerminalModificationId(convertIdentifier(src.getCTerminalModificationId()));
+        if (src.hasCTerminalModification())
+            tgt.setCTerminalModificationElement(convertString(src.getCTerminalModificationElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent convertSubstanceProteinSubunitComponent(org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    copyElement(src, tgt);
-    if (src.hasSubunit())
-      tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
-    if (src.hasSequence())
-      tgt.setSequenceElement(convertString(src.getSequenceElement()));
-    if (src.hasLength())
-      tgt.setLengthElement(convertInteger(src.getLengthElement()));
-    if (src.hasSequenceAttachment())
-      tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
-    if (src.hasNTerminalModificationId())
-      tgt.setNTerminalModificationId(convertIdentifier(src.getNTerminalModificationId()));
-    if (src.hasNTerminalModification())
-      tgt.setNTerminalModificationElement(convertString(src.getNTerminalModificationElement()));
-    if (src.hasCTerminalModificationId())
-      tgt.setCTerminalModificationId(convertIdentifier(src.getCTerminalModificationId()));
-    if (src.hasCTerminalModification())
-      tgt.setCTerminalModificationElement(convertString(src.getCTerminalModificationElement()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent convertSubstanceProteinSubunitComponent(org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent();
+        copyElement(src, tgt);
+        if (src.hasSubunit())
+            tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
+        if (src.hasSequence())
+            tgt.setSequenceElement(convertString(src.getSequenceElement()));
+        if (src.hasLength())
+            tgt.setLengthElement(convertInteger(src.getLengthElement()));
+        if (src.hasSequenceAttachment())
+            tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
+        if (src.hasNTerminalModificationId())
+            tgt.setNTerminalModificationId(convertIdentifier(src.getNTerminalModificationId()));
+        if (src.hasNTerminalModification())
+            tgt.setNTerminalModificationElement(convertString(src.getNTerminalModificationElement()));
+        if (src.hasCTerminalModificationId())
+            tgt.setCTerminalModificationId(convertIdentifier(src.getCTerminalModificationId()));
+        if (src.hasCTerminalModification())
+            tgt.setCTerminalModificationElement(convertString(src.getCTerminalModificationElement()));
+        return tgt;
+    }
 }
