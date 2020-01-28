@@ -10,14 +10,26 @@ public class Slot10_50 {
             return null;
         org.hl7.fhir.r5.model.Slot tgt = new org.hl7.fhir.r5.model.Slot();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
         if (src.hasType())
             tgt.addServiceType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
-        tgt.setSchedule(VersionConvertor_10_50.convertReference(src.getSchedule()));
-        tgt.setStart(src.getStart());
-        tgt.setEnd(src.getEnd());
-        tgt.setOverbooked(src.getOverbooked());
-        tgt.setComment(src.getComment());
+        if (src.hasSchedule()) {
+            tgt.setSchedule(VersionConvertor_10_50.convertReference(src.getSchedule()));
+        }
+        if (src.hasStart()) {
+            tgt.setStart(src.getStart());
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
+        if (src.hasOverbooked()) {
+            tgt.setOverbooked(src.getOverbooked());
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
         return tgt;
     }
 
@@ -26,13 +38,27 @@ public class Slot10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Slot tgt = new org.hl7.fhir.dstu2.model.Slot();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_50.convertCodeableConcept(t));
-        tgt.setSchedule(VersionConvertor_10_50.convertReference(src.getSchedule()));
-        tgt.setStart(src.getStart());
-        tgt.setEnd(src.getEnd());
-        tgt.setOverbooked(src.getOverbooked());
-        tgt.setComment(src.getComment());
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasServiceType()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_50.convertCodeableConcept(t));
+        }
+        if (src.hasSchedule()) {
+            tgt.setSchedule(VersionConvertor_10_50.convertReference(src.getSchedule()));
+        }
+        if (src.hasStart()) {
+            tgt.setStart(src.getStart());
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
+        if (src.hasOverbooked()) {
+            tgt.setOverbooked(src.getOverbooked());
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
         return tgt;
     }
 }

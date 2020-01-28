@@ -10,23 +10,37 @@ public class EpisodeOfCare30_50 {
             return null;
         org.hl7.fhir.dstu3.model.EpisodeOfCare tgt = new org.hl7.fhir.dstu3.model.EpisodeOfCare();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertEpisodeOfCareStatus(src.getStatus()));
-        for (org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(VersionConvertor_30_50.convertDiagnosisComponent(t));
+        if (src.hasStatusHistory()) {
+            for (org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
+        }
+        if (src.hasType()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
+        if (src.hasDiagnosis()) {
+            for (org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(VersionConvertor_30_50.convertDiagnosisComponent(t));
+        }
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_30_50.convertReference(t));
+        if (src.hasReferralRequest()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_30_50.convertReference(t));
+        }
         if (src.hasCareManager())
             tgt.setCareManager(VersionConvertor_30_50.convertReference(src.getCareManager()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getTeam()) tgt.addTeam(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(VersionConvertor_30_50.convertReference(t));
+        if (src.hasTeam()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getTeam()) tgt.addTeam(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasAccount()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 
@@ -35,23 +49,37 @@ public class EpisodeOfCare30_50 {
             return null;
         org.hl7.fhir.r5.model.EpisodeOfCare tgt = new org.hl7.fhir.r5.model.EpisodeOfCare();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertEpisodeOfCareStatus(src.getStatus()));
-        for (org.hl7.fhir.dstu3.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(VersionConvertor_30_50.convertDiagnosisComponent(t));
+        if (src.hasStatusHistory()) {
+            for (org.hl7.fhir.dstu3.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
+        }
+        if (src.hasType()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
+        if (src.hasDiagnosis()) {
+            for (org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(VersionConvertor_30_50.convertDiagnosisComponent(t));
+        }
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_30_50.convertReference(t));
+        if (src.hasReferralRequest()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_30_50.convertReference(t));
+        }
         if (src.hasCareManager())
             tgt.setCareManager(VersionConvertor_30_50.convertReference(src.getCareManager()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getTeam()) tgt.addTeam(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getAccount()) tgt.addAccount(VersionConvertor_30_50.convertReference(t));
+        if (src.hasTeam()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getTeam()) tgt.addTeam(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasAccount()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getAccount()) tgt.addAccount(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 

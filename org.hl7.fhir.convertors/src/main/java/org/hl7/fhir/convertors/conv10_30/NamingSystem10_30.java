@@ -10,23 +10,45 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu3.model.NamingSystem tgt = new org.hl7.fhir.dstu3.model.NamingSystem();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
-        tgt.setKind(convertNamingSystemType(src.getKind()));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+        }
+        if (src.hasKind()) {
+            tgt.setKind(convertNamingSystemType(src.getKind()));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
-        tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemContactComponent t : src.getContact()) tgt.addContact(convertNamingSystemContactComponent(t));
-        tgt.setResponsible(src.getResponsible());
-        tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setDescription(src.getDescription());
+        if (src.hasPublisher()) {
+            tgt.setPublisher(src.getPublisher());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemContactComponent t : src.getContact()) tgt.addContact(convertNamingSystemContactComponent(t));
+        }
+        if (src.hasResponsible()) {
+            tgt.setResponsible(src.getResponsible());
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_30.isJurisdiction(t))
             tgt.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
         else
             tgt.addUseContext(VersionConvertor_10_30.convertCodeableConceptToUsageContext(t));
-        tgt.setUsage(src.getUsage());
-        for (org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
-        tgt.setReplacedBy(VersionConvertor_10_30.convertReference(src.getReplacedBy()));
+        if (src.hasUsage()) {
+            tgt.setUsage(src.getUsage());
+        }
+        if (src.hasUniqueId()) {
+            for (org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
+        }
+        if (src.hasReplacedBy()) {
+            tgt.setReplacedBy(VersionConvertor_10_30.convertReference(src.getReplacedBy()));
+        }
         return tgt;
     }
 
@@ -35,22 +57,46 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu2.model.NamingSystem tgt = new org.hl7.fhir.dstu2.model.NamingSystem();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
-        tgt.setKind(convertNamingSystemType(src.getKind()));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+        }
+        if (src.hasKind()) {
+            tgt.setKind(convertNamingSystemType(src.getKind()));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
-        tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(convertNamingSystemContactComponent(t));
-        tgt.setResponsible(src.getResponsible());
-        tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setDescription(src.getDescription());
+        if (src.hasPublisher()) {
+            tgt.setPublisher(src.getPublisher());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(convertNamingSystemContactComponent(t));
+        }
+        if (src.hasResponsible()) {
+            tgt.setResponsible(src.getResponsible());
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) if (t.hasValueCodeableConcept())
             tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t.getValueCodeableConcept()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setUsage(src.getUsage());
-        for (org.hl7.fhir.dstu3.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
-        tgt.setReplacedBy(VersionConvertor_10_30.convertReference(src.getReplacedBy()));
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasUsage()) {
+            tgt.setUsage(src.getUsage());
+        }
+        if (src.hasUniqueId()) {
+            for (org.hl7.fhir.dstu3.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
+        }
+        if (src.hasReplacedBy()) {
+            tgt.setReplacedBy(VersionConvertor_10_30.convertReference(src.getReplacedBy()));
+        }
         return tgt;
     }
 
@@ -59,8 +105,12 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemContactComponent tgt = new org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemContactComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -69,8 +119,12 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ContactDetail tgt = new org.hl7.fhir.dstu3.model.ContactDetail();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -143,10 +197,18 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu3.model.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.dstu3.model.NamingSystem.NamingSystemUniqueIdComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(convertNamingSystemIdentifierType(src.getType()));
-        tgt.setValue(src.getValue());
-        tgt.setPreferred(src.getPreferred());
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        if (src.hasType()) {
+            tgt.setType(convertNamingSystemIdentifierType(src.getType()));
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
+        if (src.hasPreferred()) {
+            tgt.setPreferred(src.getPreferred());
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
         return tgt;
     }
 
@@ -155,10 +217,18 @@ public class NamingSystem10_30 {
             return null;
         org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.dstu2.model.NamingSystem.NamingSystemUniqueIdComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(convertNamingSystemIdentifierType(src.getType()));
-        tgt.setValue(src.getValue());
-        tgt.setPreferred(src.getPreferred());
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        if (src.hasType()) {
+            tgt.setType(convertNamingSystemIdentifierType(src.getType()));
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
+        if (src.hasPreferred()) {
+            tgt.setPreferred(src.getPreferred());
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
         return tgt;
     }
 }

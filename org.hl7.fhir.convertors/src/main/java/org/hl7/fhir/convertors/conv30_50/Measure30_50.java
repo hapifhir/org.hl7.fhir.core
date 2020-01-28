@@ -15,7 +15,9 @@ public class Measure30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -27,16 +29,24 @@ public class Measure30_50 {
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
         if (src.hasType())
-            for (org.hl7.fhir.dstu3.model.CodeableConcept concept : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(concept));
+            if (src.hasType()) {
+                for (org.hl7.fhir.dstu3.model.CodeableConcept concept : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(concept));
+            }
         if (src.hasDate())
             tgt.setDate(src.getDate());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasUsage())
@@ -71,8 +81,12 @@ public class Measure30_50 {
                 else
                     tgt.addAuthor(new org.hl7.fhir.r5.model.ContactDetail().setName(t.getName()));
         }
-        for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
-        for (org.hl7.fhir.dstu3.model.Reference r : src.getLibrary()) tgt.addLibrary(r.getReference());
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
+        }
+        if (src.hasLibrary()) {
+            for (org.hl7.fhir.dstu3.model.Reference r : src.getLibrary()) tgt.addLibrary(r.getReference());
+        }
         if (src.hasDisclaimer())
             tgt.setDisclaimer(src.getDisclaimer());
         if (src.hasScoring())
@@ -95,10 +109,14 @@ public class Measure30_50 {
             else
                 tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().setText(src.getImprovementNotation()));
         }
-        for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+        if (src.hasDefinition()) {
+            for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+        }
         if (src.hasGuidance())
             tgt.setGuidance(src.getGuidance());
-        for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent g : src.getGroup()) tgt.addGroup(convertMeasureGroup(g));
+        if (src.hasGroup()) {
+            for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent g : src.getGroup()) tgt.addGroup(convertMeasureGroup(g));
+        }
         return tgt;
     }
 
@@ -109,7 +127,9 @@ public class Measure30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -121,16 +141,24 @@ public class Measure30_50 {
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
         if (src.hasType())
-            for (org.hl7.fhir.r5.model.CodeableConcept concept : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(concept));
+            if (src.hasType()) {
+                for (org.hl7.fhir.r5.model.CodeableConcept concept : src.getType()) tgt.addType(VersionConvertor_30_50.convertCodeableConcept(concept));
+            }
         if (src.hasDate())
             tgt.setDate(src.getDate());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasUsage())
@@ -175,8 +203,12 @@ public class Measure30_50 {
                     con.setName(cd.getName());
                 tgt.addContributor(con);
             }
-        for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
-        for (org.hl7.fhir.r5.model.CanonicalType r : src.getLibrary()) tgt.addLibrary(VersionConvertor_30_50.convertCanonicalToReference(r));
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
+        }
+        if (src.hasLibrary()) {
+            for (org.hl7.fhir.r5.model.CanonicalType r : src.getLibrary()) tgt.addLibrary(VersionConvertor_30_50.convertCanonicalToReference(r));
+        }
         if (src.hasDisclaimer())
             tgt.setDisclaimer(src.getDisclaimer());
         if (src.hasScoring())
@@ -198,10 +230,14 @@ public class Measure30_50 {
                 else if (cc.hasCode() && cc.getCode().equals("decrease"))
                     tgt.setImprovementNotation(cc.getCode());
             }
-        for (org.hl7.fhir.r5.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+        if (src.hasDefinition()) {
+            for (org.hl7.fhir.r5.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+        }
         if (src.hasGuidance())
             tgt.setGuidance(src.getGuidance());
-        for (org.hl7.fhir.r5.model.Measure.MeasureGroupComponent g : src.getGroup()) tgt.addGroup(convertMeasureGroup(g));
+        if (src.hasGroup()) {
+            for (org.hl7.fhir.r5.model.Measure.MeasureGroupComponent g : src.getGroup()) tgt.addGroup(convertMeasureGroup(g));
+        }
         return tgt;
     }
 
@@ -213,8 +249,12 @@ public class Measure30_50 {
             tgt.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setValue(src.getCode().getCodingFirstRep().getCode()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation()) tgt.addPopulation(convertMeasureGroupPopulation(p));
-        for (org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier()) tgt.addStratifier(convertMeasureGroupStratifier(s));
+        if (src.hasPopulation()) {
+            for (org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation()) tgt.addPopulation(convertMeasureGroupPopulation(p));
+        }
+        if (src.hasStratifier()) {
+            for (org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier()) tgt.addStratifier(convertMeasureGroupStratifier(s));
+        }
         return tgt;
     }
 
@@ -226,8 +266,12 @@ public class Measure30_50 {
             tgt.setCode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding().setCode(src.getIdentifier().getValue())));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation()) tgt.addPopulation(convertMeasureGroupPopulation(p));
-        for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier()) tgt.addStratifier(convertMeasureGroupStratifier(s));
+        if (src.hasPopulation()) {
+            for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupPopulationComponent p : src.getPopulation()) tgt.addPopulation(convertMeasureGroupPopulation(p));
+        }
+        if (src.hasStratifier()) {
+            for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupStratifierComponent s : src.getStratifier()) tgt.addStratifier(convertMeasureGroupStratifier(s));
+        }
         return tgt;
     }
 
@@ -242,7 +286,9 @@ public class Measure30_50 {
         if (src.hasCriteria() && src.getCriteria().hasExpression())
             tgt.setCriteria(src.getCriteria().getExpression());
         if (src.hasCriteria() && src.getCriteria().hasName()) {
-            tgt.setName(src.getCriteria().getName());
+            if (src.hasCriteria()) {
+                tgt.setName(src.getCriteria().getName());
+            }
         }
         return tgt;
     }

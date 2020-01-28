@@ -10,14 +10,30 @@ public class Flag10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Flag tgt = new org.hl7.fhir.dstu3.model.Flag();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
-        tgt.setStatus(convertFlagStatus(src.getStatus()));
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setEncounter(VersionConvertor_10_30.convertReference(src.getEncounter()));
-        tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
-        tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasCategory()) {
+            tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertFlagStatus(src.getStatus()));
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasEncounter()) {
+            tgt.setEncounter(VersionConvertor_10_30.convertReference(src.getEncounter()));
+        }
+        if (src.hasAuthor()) {
+            tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
+        }
         return tgt;
     }
 
@@ -26,14 +42,30 @@ public class Flag10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Flag tgt = new org.hl7.fhir.dstu2.model.Flag();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
-        tgt.setStatus(convertFlagStatus(src.getStatus()));
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setEncounter(VersionConvertor_10_30.convertReference(src.getEncounter()));
-        tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
-        tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasCategory()) {
+            tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertFlagStatus(src.getStatus()));
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasEncounter()) {
+            tgt.setEncounter(VersionConvertor_10_30.convertReference(src.getEncounter()));
+        }
+        if (src.hasAuthor()) {
+            tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
+        }
         return tgt;
     }
 

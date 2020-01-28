@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyProcedureComponent;
-
 import java.util.List;
 
 public class ImagingStudy30_50 {
@@ -181,31 +180,47 @@ public class ImagingStudy30_50 {
         org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasUid()) {
-            tgt.setUid(src.getUid());
+            if (src.hasUid()) {
+                tgt.setUid(src.getUid());
+            }
         }
         if (src.hasNumber()) {
-            tgt.setNumber(src.getNumber());
+            if (src.hasNumber()) {
+                tgt.setNumber(src.getNumber());
+            }
         }
         if (src.hasModality()) {
-            tgt.setModality(VersionConvertor_30_50.convertCoding(src.getModality()));
+            if (src.hasModality()) {
+                tgt.setModality(VersionConvertor_30_50.convertCoding(src.getModality()));
+            }
         }
         if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
+            if (src.hasDescription()) {
+                tgt.setDescription(src.getDescription());
+            }
         }
         if (src.hasNumberOfInstances()) {
-            tgt.setNumberOfInstances(src.getNumberOfInstances());
+            if (src.hasNumberOfInstances()) {
+                tgt.setNumberOfInstances(src.getNumberOfInstances());
+            }
         }
         for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) {
             tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
         }
         if (src.hasBodySite()) {
-            tgt.setBodySite(VersionConvertor_30_50.convertCoding(src.getBodySite()));
+            if (src.hasBodySite()) {
+                tgt.setBodySite(VersionConvertor_30_50.convertCoding(src.getBodySite()));
+            }
         }
         if (src.hasLaterality()) {
-            tgt.setLaterality(VersionConvertor_30_50.convertCoding(src.getLaterality()));
+            if (src.hasLaterality()) {
+                tgt.setLaterality(VersionConvertor_30_50.convertCoding(src.getLaterality()));
+            }
         }
         if (src.hasStarted()) {
-            tgt.setStartedElement(VersionConvertor_30_50.convertDateTime(src.getStartedElement()));
+            if (src.hasStartedElement()) {
+                tgt.setStartedElement(VersionConvertor_30_50.convertDateTime(src.getStartedElement()));
+            }
         }
         for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) {
             tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
@@ -219,31 +234,47 @@ public class ImagingStudy30_50 {
         org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasUid()) {
-            tgt.setUid(src.getUid());
+            if (src.hasUid()) {
+                tgt.setUid(src.getUid());
+            }
         }
         if (src.hasNumber()) {
-            tgt.setNumber(src.getNumber());
+            if (src.hasNumber()) {
+                tgt.setNumber(src.getNumber());
+            }
         }
         if (src.hasModality()) {
-            tgt.setModality(VersionConvertor_30_50.convertCoding(src.getModality()));
+            if (src.hasModality()) {
+                tgt.setModality(VersionConvertor_30_50.convertCoding(src.getModality()));
+            }
         }
         if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
+            if (src.hasDescription()) {
+                tgt.setDescription(src.getDescription());
+            }
         }
         if (src.hasNumberOfInstances()) {
-            tgt.setNumberOfInstances(src.getNumberOfInstances());
+            if (src.hasNumberOfInstances()) {
+                tgt.setNumberOfInstances(src.getNumberOfInstances());
+            }
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) {
             tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
         }
         if (src.hasBodySite()) {
-            tgt.setBodySite(VersionConvertor_30_50.convertCoding(src.getBodySite()));
+            if (src.hasBodySite()) {
+                tgt.setBodySite(VersionConvertor_30_50.convertCoding(src.getBodySite()));
+            }
         }
         if (src.hasLaterality()) {
-            tgt.setLaterality(VersionConvertor_30_50.convertCoding(src.getLaterality()));
+            if (src.hasLaterality()) {
+                tgt.setLaterality(VersionConvertor_30_50.convertCoding(src.getLaterality()));
+            }
         }
         if (src.hasStarted()) {
-            tgt.setStartedElement(VersionConvertor_30_50.convertDateTime(src.getStartedElement()));
+            if (src.hasStartedElement()) {
+                tgt.setStartedElement(VersionConvertor_30_50.convertDateTime(src.getStartedElement()));
+            }
         }
         for (org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) {
             tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
@@ -278,19 +309,27 @@ public class ImagingStudy30_50 {
         org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasUid()) {
-            tgt.setUid(src.getUid());
+            if (src.hasUid()) {
+                tgt.setUid(src.getUid());
+            }
         }
         if (src.hasSopClass()) {
             org.hl7.fhir.r5.model.Coding c = new org.hl7.fhir.r5.model.Coding();
             c.setSystem(URN_IETF_RFC_3986);
-            c.setCode(src.getSopClass());
+            if (src.hasSopClass()) {
+                c.setCode(src.getSopClass());
+            }
             tgt.setSopClass(c);
         }
         if (src.hasNumber()) {
-            tgt.setNumber(src.getNumber());
+            if (src.hasNumber()) {
+                tgt.setNumber(src.getNumber());
+            }
         }
         if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
+            if (src.hasTitle()) {
+                tgt.setTitle(src.getTitle());
+            }
         }
         return tgt;
     }

@@ -10,7 +10,9 @@ public class Binary10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Binary tgt = new org.hl7.fhir.dstu2.model.Binary();
         VersionConvertor_10_40.copyResource(src, tgt);
-        tgt.setContentType(src.getContentType());
+        if (src.hasContentType()) {
+            tgt.setContentType(src.getContentType());
+        }
         tgt.setContent(src.getContent());
         return tgt;
     }
@@ -20,8 +22,12 @@ public class Binary10_40 {
             return null;
         org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
         VersionConvertor_10_40.copyResource(src, tgt);
-        tgt.setContentType(src.getContentType());
-        tgt.setContent(src.getContent());
+        if (src.hasContentType()) {
+            tgt.setContentType(src.getContentType());
+        }
+        if (src.hasContent()) {
+            tgt.setContent(src.getContent());
+        }
         return tgt;
     }
 }

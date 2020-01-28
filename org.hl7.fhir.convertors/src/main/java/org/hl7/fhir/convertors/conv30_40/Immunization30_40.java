@@ -10,7 +10,9 @@ public class Immunization30_40 {
             return null;
         org.hl7.fhir.r4.model.Immunization tgt = new org.hl7.fhir.r4.model.Immunization();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasVaccineCode())
@@ -39,9 +41,15 @@ public class Immunization30_40 {
             tgt.setRoute(VersionConvertor_30_40.convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(VersionConvertor_30_40.convertSimpleQuantity(src.getDoseQuantity()));
-        for (org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent t : src.getPractitioner()) tgt.addPerformer(convertImmunizationPractitionerComponent(t));
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReason()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasPractitioner()) {
+            for (org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent t : src.getPractitioner()) tgt.addPerformer(convertImmunizationPractitionerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        }
+        if (src.hasExplanation()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReason()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         return tgt;
     }
 
@@ -50,7 +58,9 @@ public class Immunization30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Immunization tgt = new org.hl7.fhir.dstu3.model.Immunization();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasVaccineCode())
@@ -79,9 +89,15 @@ public class Immunization30_40 {
             tgt.setRoute(VersionConvertor_30_40.convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(VersionConvertor_30_40.convertSimpleQuantity(src.getDoseQuantity()));
-        for (org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPractitioner(convertImmunizationPractitionerComponent(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.getExplanation().addReason(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPractitioner(convertImmunizationPractitionerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        }
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.getExplanation().addReason(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         return tgt;
     }
 

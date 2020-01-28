@@ -29,7 +29,9 @@ public class ExpansionProfile30_40 {
                 tgt.addParameter("force-system-version", t.getSystem() + "|" + t.getVersion());
         }
         if (src.hasExcludedSystem()) {
-            tgt.addParameter("exclude-system", src.getExcludedSystem().getSystem() + "|" + src.getExcludedSystem().getVersion());
+            if (src.hasExcludedSystem()) {
+                tgt.addParameter("exclude-system", src.getExcludedSystem().getSystem() + "|" + src.getExcludedSystem().getVersion());
+            }
         }
         if (src.hasIncludeDesignations())
             tgt.addParameter("includeDesignations", src.getIncludeDesignations());

@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,115 +50,130 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Person extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Person convertPerson(org.hl7.fhir.r4.model.Person src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Person tgt = new org.hl7.fhir.r5.model.Person();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r4.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    if (src.hasPhoto())
-      tgt.setPhoto(convertAttachment(src.getPhoto()));
-    if (src.hasManagingOrganization())
-      tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.r4.model.Person.PersonLinkComponent t : src.getLink())
-      tgt.addLink(convertPersonLinkComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Person convertPerson(org.hl7.fhir.r4.model.Person src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Person tgt = new org.hl7.fhir.r5.model.Person();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasPhoto())
+            tgt.setPhoto(convertAttachment(src.getPhoto()));
+        if (src.hasManagingOrganization())
+            tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r4.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Person convertPerson(org.hl7.fhir.r5.model.Person src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Person tgt = new org.hl7.fhir.r4.model.Person();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r5.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    if (src.hasPhoto())
-      tgt.setPhoto(convertAttachment(src.getPhoto()));
-    if (src.hasManagingOrganization())
-      tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.r5.model.Person.PersonLinkComponent t : src.getLink())
-      tgt.addLink(convertPersonLinkComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Person convertPerson(org.hl7.fhir.r5.model.Person src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Person tgt = new org.hl7.fhir.r4.model.Person();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasPhoto())
+            tgt.setPhoto(convertAttachment(src.getPhoto()));
+        if (src.hasManagingOrganization())
+            tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r5.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Person.PersonLinkComponent convertPersonLinkComponent(org.hl7.fhir.r4.model.Person.PersonLinkComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r5.model.Person.PersonLinkComponent();
-    copyElement(src, tgt);
-    if (src.hasTarget())
-      tgt.setTarget(convertReference(src.getTarget()));
-    if (src.hasAssurance())
-      tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Person.PersonLinkComponent convertPersonLinkComponent(org.hl7.fhir.r4.model.Person.PersonLinkComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r5.model.Person.PersonLinkComponent();
+        copyElement(src, tgt);
+        if (src.hasTarget())
+            tgt.setTarget(convertReference(src.getTarget()));
+        if (src.hasAssurance())
+            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Person.PersonLinkComponent convertPersonLinkComponent(org.hl7.fhir.r5.model.Person.PersonLinkComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r4.model.Person.PersonLinkComponent();
-    copyElement(src, tgt);
-    if (src.hasTarget())
-      tgt.setTarget(convertReference(src.getTarget()));
-    if (src.hasAssurance())
-      tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Person.PersonLinkComponent convertPersonLinkComponent(org.hl7.fhir.r5.model.Person.PersonLinkComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r4.model.Person.PersonLinkComponent();
+        copyElement(src, tgt);
+        if (src.hasTarget())
+            tgt.setTarget(convertReference(src.getTarget()));
+        if (src.hasAssurance())
+            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case LEVEL1: return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL1;
-    case LEVEL2: return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL2;
-    case LEVEL3: return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL3;
-    case LEVEL4: return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL4;
-    default: return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case LEVEL1:
+                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL1;
+            case LEVEL2:
+                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL2;
+            case LEVEL3:
+                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL3;
+            case LEVEL4:
+                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL4;
+            default:
+                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case LEVEL1: return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL1;
-    case LEVEL2: return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL2;
-    case LEVEL3: return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL3;
-    case LEVEL4: return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL4;
-    default: return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case LEVEL1:
+                return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL1;
+            case LEVEL2:
+                return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL2;
+            case LEVEL3:
+                return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL3;
+            case LEVEL4:
+                return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL4;
+            default:
+                return org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.NULL;
+        }
+    }
 }

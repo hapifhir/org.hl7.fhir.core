@@ -178,7 +178,9 @@ public class OperationOutcome14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.OperationOutcome tgt = new org.hl7.fhir.dstu2016may.model.OperationOutcome();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -187,7 +189,9 @@ public class OperationOutcome14_40 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -196,13 +200,23 @@ public class OperationOutcome14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        tgt.setCode(convertIssueType(src.getCode()));
-        tgt.setDetails(VersionConvertor_14_40.convertCodeableConcept(src.getDetails()));
+        if (src.hasSeverity()) {
+            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(convertIssueType(src.getCode()));
+        }
+        if (src.hasDetails()) {
+            tgt.setDetails(VersionConvertor_14_40.convertCodeableConcept(src.getDetails()));
+        }
         if (src.hasDiagnostics())
             tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.addExpression(VersionConvertor_14_40.convertTo2016MayExpression(t.getValue()));
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
+        if (src.hasExpression()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.addExpression(VersionConvertor_14_40.convertTo2016MayExpression(t.getValue()));
+        }
         return tgt;
     }
 
@@ -211,13 +225,23 @@ public class OperationOutcome14_40 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        tgt.setCode(convertIssueType(src.getCode()));
-        tgt.setDetails(VersionConvertor_14_40.convertCodeableConcept(src.getDetails()));
+        if (src.hasSeverity()) {
+            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(convertIssueType(src.getCode()));
+        }
+        if (src.hasDetails()) {
+            tgt.setDetails(VersionConvertor_14_40.convertCodeableConcept(src.getDetails()));
+        }
         if (src.hasDiagnostics())
             tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.dstu2016may.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        for (org.hl7.fhir.dstu2016may.model.StringType t : src.getExpression()) tgt.addExpression(VersionConvertor_14_40.convertToR4Expression(t.getValue()));
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.dstu2016may.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
+        if (src.hasExpression()) {
+            for (org.hl7.fhir.dstu2016may.model.StringType t : src.getExpression()) tgt.addExpression(VersionConvertor_14_40.convertToR4Expression(t.getValue()));
+        }
         return tgt;
     }
 }
