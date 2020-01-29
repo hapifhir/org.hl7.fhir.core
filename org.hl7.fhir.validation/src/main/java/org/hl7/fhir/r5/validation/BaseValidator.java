@@ -145,8 +145,29 @@ public class BaseValidator {
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass) {
-		 addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION);
+     addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION);
+   }
+    return thePass;
+  }
+  
+  /**
+   * Test a rule and add a {@link IssueSeverity#INFORMATION} validation message if the validation fails. And mark it as a slicing hint for later recovery if appropriate
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
+    if (!thePass) {
+		 addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true);
 	 }
+    return thePass;
+  }
+  
+  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, String html) {
+    if (!thePass) {
+     addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true).setHtml(html);
+   }
     return thePass;
   }
   
@@ -168,8 +189,7 @@ public class BaseValidator {
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String message = formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine)
-			.setTxLink(txLink);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine).setTxLink(txLink);
     }
     return thePass;
   }
@@ -338,9 +358,9 @@ public class BaseValidator {
 
   }
 
-	protected void addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity) {
+	protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity) {
 		Source source = this.source;
-		addValidationMessage(errors, type, line, col, path, msg, theSeverity, source);
+		return addValidationMessage(errors, type, line, col, path, msg, theSeverity, source);
 	}
 
 	protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource) {

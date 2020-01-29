@@ -207,6 +207,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private Element rootResource;
     private StructureDefinition profile; // the profile that contains the content being validated
     private boolean checkSpecials = true;
+    private Map<String, List<ValidationMessage>> sliceRecords;
     
     public ValidatorHostContext(Object appContext) {
       this.appContext = appContext;
@@ -242,6 +243,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       res.rootResource = rootResource;
       res.container = container;
       res.profile = profile;
+      res.sliceRecords = sliceRecords != null ? sliceRecords :  new HashMap<String, List<ValidationMessage>>();
       return res;
     }
 
@@ -275,6 +277,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     public Base getResource() {
       return resource;
+    }
+
+    public void sliceNotes(String url, List<ValidationMessage> record) {
+      sliceRecords.put(url, record);
+    }
+
+    public ValidatorHostContext forSlicing() {
+      ValidatorHostContext res = new ValidatorHostContext(appContext);
+      res.resource = resource;
+      res.rootResource = resource;
+      res.container = resource;
+      res.profile = profile;
+      res.checkSpecials = false;
+      res.sliceRecords = new HashMap<String, List<ValidationMessage>>();
+      return res;
     }
     
     
@@ -405,8 +422,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else
         throw new NotImplementedException("Not done yet (ValidatorHostServices.conformsToProfile), when item is not an element");
       boolean ok = true;
-      for (ValidationMessage v : valerrors)
+      List<ValidationMessage> record = new ArrayList<>();
+      for (ValidationMessage v : valerrors) {
         ok = ok && !v.getLevel().isError();
+        if (v.getLevel().isError() || v.isSlicingHint()) {
+          record.add(v);
+        }
+      }
+      if (!ok && !record.isEmpty()) {
+        ctxt.sliceNotes(url, record);
+      }
       return ok;
     }
 
@@ -2353,7 +2378,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles), "Unable to find matching profile for "+ref+" among choices: " + asList(type.getTargetProfile()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummary(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummaryForSlicing(badProfiles.get(sd)), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size()==1, "Unable to find matching profile for "+ref+" among choices: " + asList(type.getTargetProfile()));
@@ -2369,7 +2394,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Found multiple matching profiles for "+ref+" among choices: " + asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummary(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummaryForSlicing(badProfiles.get(sd)), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Found multiple matching profiles for "+ref+" among choices: " + asListByUrl(goodProfiles.keySet()));
@@ -2434,14 +2459,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private String errorSummary(List<ValidationMessage> list) {
+  private String errorSummaryForSlicing(List<ValidationMessage> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ValidationMessage vm : list) {
-      if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL) {
+      if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL || vm.isSlicingHint()) {
         b.append(vm.getLocation()+": "+vm.getMessage());
       }
     }
     return b.toString();
+  }
+
+  private String errorSummaryForSlicingAsHtml(List<ValidationMessage> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ValidationMessage vm : list) {
+      if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL || vm.isSlicingHint()) {
+        b.append("<li>"+vm.getLocation()+": "+vm.getHtml()+"</li>");
+      }
+    }
+    return "<ul>"+b.toString()+"</ul>";
   }
 
   private TypeRefComponent getReferenceTypeRef(List<TypeRefComponent> types) {
@@ -3186,7 +3221,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @throws IOException
    * @throws FHIRException
    */
-  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, NodeStack stack) throws DefinitionException, FHIRException {
+  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack) throws DefinitionException, FHIRException {
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
@@ -3221,7 +3256,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else
               throw new DefinitionException("Discriminator (" + discriminator + ") is based on type, but slice " + ed.getId() + " in "+profile.getUrl()+" has no types");
             if (discriminator.isEmpty())
-              expression.append(" and this is " + type);
+              expression.append(" and $this is " + type);
             else
               expression.append(" and " + discriminator + " is " + type);
           } else if (s.getType() == DiscriminatorType.PROFILE) {
@@ -3281,7 +3316,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ed.setUserData("slice.expression.cache", n);
     }
 
-    return evaluateSlicingExpression(hostContext, element, path, profile, n);
+    ValidatorHostContext shc = hostContext.forSlicing();
+    boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
+    if (!pass) {
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Does not match slice'"+ed.getSliceName()+"' (discriminator = "+n.toString()+")");
+      for (String url : shc.sliceRecords.keySet()) {
+        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+url+" does not match for "+stack.getLiteralPath()+" because of the following profile issues: "+errorSummaryForSlicing(shc.sliceRecords.get(url)), 
+            "Profile "+url+" does not match for "+stack.getLiteralPath()+" because of the following profile issues: "+errorSummaryForSlicingAsHtml(shc.sliceRecords.get(url)));
+      }
+    }
+    return pass;
   }
 
   public boolean evaluateSlicingExpression(ValidatorHostContext hostContext, Element element, String path, StructureDefinition profile, ExpressionNode n)  throws FHIRException {
@@ -5018,7 +5062,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
 //      if (process) {
         for (ElementInfo ei : children) {
-          unsupportedSlicing = matchSlice(hostContext, errors, profile, stack, slicer, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei);
+          if (ei.sliceInfo == null) {
+            ei.sliceInfo = new ArrayList<>();
+          }
+          unsupportedSlicing = matchSlice(hostContext, errors, ei.sliceInfo, profile, stack, slicer, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei);
         }
 //      }
     }
@@ -5032,9 +5079,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
               ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            hint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " for the profile " + profile.getUrl()));
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicing(ei.sliceInfo)),
+                "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " for profile " + profile.getUrl() + " and slicing is CLOSED"));
+            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicing(ei.sliceInfo)),
+                "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
@@ -5081,16 +5130,16 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
      checkInvariants(hostContext, errors, stack.getLiteralPath(), profile, definition, null, null, resource, element, onlyNonInherited);
   }
 
-  public boolean matchSlice(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, NodeStack stack,
+  public boolean matchSlice(ValidatorHostContext hostContext, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, StructureDefinition profile, NodeStack stack,
       ElementDefinition slicer, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, ElementDefinition ed,
       boolean childUnsupportedSlicing, ElementInfo ei) {
     boolean match = false;
     if (slicer == null || slicer == ed) {
-      match = nameMatches(ei.name, tail(ed.getPath()));
+      match = nameMatches(ei.name, tail(ed.getPath()));      
     } else {
       if (nameMatches(ei.name, tail(ed.getPath())))
         try {
-          match = sliceMatches(hostContext, ei.element, ei.path, slicer, ed, profile, errors, stack);
+          match = sliceMatches(hostContext, ei.element, ei.path, slicer, ed, profile, errors, sliceInfo, stack);
           if (match) {
             ei.slice = slicer;
 
@@ -5557,6 +5606,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public class ElementInfo {
 
+    public List<ValidationMessage> sliceInfo;
     public int index; // order of definition in overall order. all slices get the index of the slicing definition
     public int sliceindex; // order of the definition in the slices (if slice != null)
     public int count;
