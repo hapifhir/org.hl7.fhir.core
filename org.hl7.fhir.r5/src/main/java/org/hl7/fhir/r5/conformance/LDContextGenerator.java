@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonWriter;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.RDFTypeMap;
@@ -14,7 +13,9 @@ import org.apache.jena.rdf.model.Resource;
 import java.io.*;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Given a StructureDefinition, iterate through its ElementDefinition and
@@ -30,87 +31,113 @@ public class LDContextGenerator {
   private static final String DOMAIN_RESOURCE = "DomainResource";
 
   private static boolean LOCAL_DEBUG = false;
-
+  private boolean isResourceRoot = false;
   private List<LdContext> ldContextList;
 
-  /**
-   * Internal metadata services - retrieving structure definitions, and value set expansion etc
-   */
-  private IWorkerContext context;
-  private JsonWriter jsonWriter;
-  private boolean isResourceRoot = false;
+  // Map for all ElementDefinition of a specific backbone element
+  private ConcurrentHashMap<String, List<ElementDefinition>> backboneList;
+  private ConcurrentHashMap<String, String> renderedJson;
 
   /**
    * Constructor
-   * @param context
    */
-  public LDContextGenerator(IWorkerContext context) {
+  public LDContextGenerator() {
     super();
-    this.context = context;
   }
 
   /**
    *
    * @param structure
-   * @return String representation of the context jsdonld
+   * @return HashMap<String, String> representation of the name of context and the context jsdonld
    */
-  public String generate(StructureDefinition structure) {
+  public synchronized ConcurrentHashMap<String, String> generate(StructureDefinition structure) {
     ldContextList = new ArrayList<LdContext>();
+    backboneList = new ConcurrentHashMap<String, List<ElementDefinition>>();
+    renderedJson = new ConcurrentHashMap<String, String>();
+
     return generateLDcontext(structure);
   }
 
   /**
    * For a StructureDefinition. get ElementDefinition generate a LD context.
+   * This may return multiple json strings, that will be collected in the HashMap.
+   * Multiple JSON renderings will be created if the may SturcturedDefinition contains
+   * BackboneElement.
    * @param sd
-   * @return String that represents the context jsonld.
+   * @return HashMap<String, String> key that represents the context jsonld and String the is the JSON.
    */
-  private String generateLDcontext(StructureDefinition sd) {
+  private synchronized ConcurrentHashMap<String, String> generateLDcontext(StructureDefinition sd) {
 
     final List<ElementDefinition> elementDefinitions = sd.getSnapshot().getElement();
 
     isResourceRoot = isStructuredDefintionRoot(sd);
 
     elementDefinitions.forEach(elementDefinition -> {
-      getNewContextObjects(elementDefinition);
+      getNewContextObjects(elementDefinition, false);
     });
 
     JsonRenderer jsonRenderer = new JsonRenderer(ldContextList);
-    return jsonRenderer.render();
+    String json = jsonRenderer.render();
+    renderedJson.put(sd.getId(), json);
+
+    // process any backbone elements
+    for (String bbKey : backboneList.keySet()) {
+      // clear the list after rendering the json for it.
+      ldContextList.clear();
+
+      List<ElementDefinition> bb = backboneList.get(bbKey);
+
+      //System.out.println("\nBB Element " + bbKey);
+      for (ElementDefinition bbElement : bb) {
+       // System.out.println(bbElement.toString());
+        getNewContextObjects(bbElement, true);
+      }
+
+      // generate the json for this backbone element
+      jsonRenderer = new JsonRenderer(ldContextList);
+      json = jsonRenderer.render();
+      renderedJson.put(bbKey, json);
+    }
+
+    return renderedJson;
   }
 
   /**
    * Given an ElementDefinition, create a context object from it.
    * @param elementDefinition
+   * @param isBBElement boolean to indicate if this is a backbone element
    */
-  private void getNewContextObjects(ElementDefinition elementDefinition) {
+  private synchronized void getNewContextObjects(ElementDefinition elementDefinition, boolean isBBElement) {
 
-    if (isResourceRoot) {
+    if (!isBBElement && isResourceRoot) {
       createNewContextObject("resourceType", "rdf:type", null, "@id", false);
     }
 
     String coPrefix = "";
     String contextObject = elementDefinition.toString();
 
-    String[] coStrings = contextObject.split("\\.");
-    if (coStrings != null && coStrings.length >2) {
-      // don't process these (ex.  AllergyIntolerance.reaction.id)
-      return;
+    if (contextObject.toLowerCase().equals("identifier")){
+      System.out.println("Identifer here");
     }
 
-    contextObject = trimContextObject(contextObject);
+    if (!isBBElement) {
+      String[] coStrings = contextObject.split("\\.");
+      if (coStrings != null && coStrings.length > 2) {
+        // (ex.  AllergyIntolerance.reaction.id)
+        addBackboneElement(elementDefinition);
+        return;
+      }
+    }
+
+    contextObject = trimContextObject(contextObject, isBBElement);
+//    System.out.println("contextObject: " + contextObject );
 
     if (elementDefinition.toString().contains(ARRAY_OF_X)){
       coPrefix = contextObject;
     }
 
     String id = elementDefinition.getBase().getPath();
-    String idTrimmed = "";
-
-    String[] idStrings = id.split("\\.");
-    // skip if there are 3 in the array
-    if (idStrings != null && idStrings.length > 0){
-      idTrimmed = idStrings[0];
-    }
+    String idTrimmed = getTrimmedId(id, isBBElement);
 
     Resource resource = RDFTypeMap.xsd_type_for(idTrimmed, false);
     String resourceUri = resource != null ? resource.getURI() : null;
@@ -132,9 +159,10 @@ public class LDContextGenerator {
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
       else if (context.equals(BACKBONE_ELEMENT)) {
-
         context = idTrimmed + "." + contextObject;
         createNewContextObject(contextObject,context, context, resourceUri);
+
+        addToBackboneList(context, elementDefinition);
       }
       else {
         context = context.substring(context.lastIndexOf(".") + 1);
@@ -154,6 +182,65 @@ public class LDContextGenerator {
 
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
+    }
+  }
+
+  private boolean isBackboneElement(ElementDefinition elementDefinition){
+    boolean isBackbone = false;
+
+    if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).toString().equals("BackboneElement")) {
+
+      isBackbone = true;
+    }
+    return isBackbone;
+  }
+
+  /**
+   * Add an elementDefinition to its backbone list.
+   * @param elementDefinition
+   */
+  private synchronized void addBackboneElement(ElementDefinition elementDefinition){
+
+    // ex. name=Patient.contact.id
+    String name = elementDefinition.toString();
+    String nameTrimmed = name.substring(0, name.lastIndexOf("."));
+
+    // if this is another backbone element, put it in the list for later and don't process.
+    boolean isBackboneElement = isBackboneElement(elementDefinition);
+    if (isBackboneElement) {
+      addToBackboneList(name, elementDefinition);
+      return;
+    }
+
+    ArrayList<ElementDefinition> bbList = (ArrayList)backboneList.get(nameTrimmed);
+    if (bbList != null) {
+      bbList.add(elementDefinition);
+    }
+    else {
+//      // This wasn't a defined backbone, try one last way make it work like a backbone element
+//      String[] nameSplit = name.split("\\.");
+//      if (nameSplit.length > 2) {
+//        nameTrimmed
+//
+//      }
+
+      System.out.println("**** could not find backbone element for " + name);
+    }
+  }
+
+  /**
+   * Add a new backbone list to track this new backbone
+   * @param context
+   * @param elementDefinition
+   */
+  private void addToBackboneList(String context, ElementDefinition elementDefinition){
+
+    ArrayList<ElementDefinition> bbList =  (ArrayList)backboneList.get(context);
+
+    if (bbList == null) {
+      bbList = new ArrayList<ElementDefinition>();
+      backboneList.put(context, bbList);
     }
   }
 
@@ -181,6 +268,26 @@ public class LDContextGenerator {
   }
 
   /**
+   * Trim the ID to have the correct length based on if its a backbone element.
+   * @param id
+   * @param isBBElement
+   * @return
+   */
+  private String getTrimmedId(String id, boolean isBBElement) {
+    String idTrimmed = "";
+    String[] idStrings = id.split("\\.");
+
+    // check if this a backbone element
+    if (idStrings != null && isBBElement && idStrings.length > 2){
+      idTrimmed = id.substring(0, id.lastIndexOf("."));
+    }
+    else if (idStrings != null && idStrings.length > 0){
+      idTrimmed = idStrings[0];
+    }
+    return idTrimmed;
+  }
+
+  /**
    * Create a new context object and add it to the list.
    * @param contextObject
    * @param id
@@ -199,7 +306,7 @@ public class LDContextGenerator {
    * @param resourceUri
    * @param addIdPrefix
    */
-  private void createNewContextObject(String contextObject, String id, String context, String resourceUri, boolean addIdPrefix) {
+  private synchronized void createNewContextObject(String contextObject, String id, String context, String resourceUri, boolean addIdPrefix) {
 
     if (addIdPrefix) {
       // add the "fhir:" prefix
@@ -220,9 +327,10 @@ public class LDContextGenerator {
    * Trim the context object.
    * Example: AllergyIntolerance.onset[x] would return onset
    * @param co
+   * @param isBBElement is this a backbone element
    * @return
    */
-  private String trimContextObject(String co) {
+  private String trimContextObject(String co, boolean isBBElement) {
     String trimmedCo = co;
 
     // remove [x] if present
@@ -233,7 +341,13 @@ public class LDContextGenerator {
     // remove the text up to the first "."
     String[] tempStrings = trimmedCo.split("\\.");
     if (tempStrings.length > 1) {
-      trimmedCo =  tempStrings[1];
+      if (!isBBElement) {
+        trimmedCo = tempStrings[1];
+      }
+      else {
+        int index = tempStrings.length -1;
+        trimmedCo = tempStrings[index];
+      }
     }
 
     return trimmedCo;
@@ -272,7 +386,7 @@ public class LDContextGenerator {
      * Create a JSON file that contains a static header and a dynamic list of contexts.
      * @return String representation of the JSON.
      */
-    protected String render() {
+    protected synchronized String render() {
 
       String filePath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir")).toString() + "/ldconext.json";
 //      String filePath = "/Users/m091864/TEMP/ldconext.json";
@@ -390,16 +504,16 @@ public class LDContextGenerator {
       this.resourceUri = resourceUri;
     }
 
-    public String getContextObjectName() {
+    public synchronized String getContextObjectName() {
       return contextObjectName;
     }
-    public String getContextId() {
+    public synchronized String getContextId() {
       return contextId;
     }
-    public String getContextContext() {
+    public synchronized String getContextContext() {
       return contextContext;
     }
-    public String getResourceUri() {
+    public synchronized String getResourceUri() {
       return resourceUri;
     }
   }
