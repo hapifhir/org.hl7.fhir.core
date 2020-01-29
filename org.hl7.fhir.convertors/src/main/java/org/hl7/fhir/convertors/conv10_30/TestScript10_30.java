@@ -186,24 +186,60 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.SetupActionAssertComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.SetupActionAssertComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setLabel(src.getLabel());
-        tgt.setDescription(src.getDescription());
-        tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
-        tgt.setCompareToSourceId(src.getCompareToSourceId());
-        tgt.setCompareToSourcePath(src.getCompareToSourcePath());
-        tgt.setContentType(convertContentType(src.getContentType()));
-        tgt.setHeaderField(src.getHeaderField());
-        tgt.setMinimumId(src.getMinimumId());
-        tgt.setNavigationLinks(src.getNavigationLinks());
-        tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
-        tgt.setPath(src.getPath());
-        tgt.setResource(src.getResource());
-        tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
-        tgt.setResponseCode(src.getResponseCode());
-        tgt.setSourceId(src.getSourceId());
-        tgt.setValidateProfileId(src.getValidateProfileId());
-        tgt.setValue(src.getValue());
-        tgt.setWarningOnly(src.getWarningOnly());
+        if (src.hasLabel()) {
+            tgt.setLabel(src.getLabel());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDirection()) {
+            tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
+        }
+        if (src.hasCompareToSourceId()) {
+            tgt.setCompareToSourceId(src.getCompareToSourceId());
+        }
+        if (src.hasCompareToSourcePath()) {
+            tgt.setCompareToSourcePath(src.getCompareToSourcePath());
+        }
+        if (src.hasContentType()) {
+            tgt.setContentType(convertContentType(src.getContentType()));
+        }
+        if (src.hasHeaderField()) {
+            tgt.setHeaderField(src.getHeaderField());
+        }
+        if (src.hasMinimumId()) {
+            tgt.setMinimumId(src.getMinimumId());
+        }
+        if (src.hasNavigationLinks()) {
+            tgt.setNavigationLinks(src.getNavigationLinks());
+        }
+        if (src.hasOperator()) {
+            tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
+        }
+        if (src.hasPath()) {
+            tgt.setPath(src.getPath());
+        }
+        if (src.hasResource()) {
+            tgt.setResource(src.getResource());
+        }
+        if (src.hasResponse()) {
+            tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
+        }
+        if (src.hasResponseCode()) {
+            tgt.setResponseCode(src.getResponseCode());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
+        if (src.hasValidateProfileId()) {
+            tgt.setValidateProfileId(src.getValidateProfileId());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
+        if (src.hasWarningOnly()) {
+            tgt.setWarningOnly(src.getWarningOnly());
+        }
         return tgt;
     }
 
@@ -212,24 +248,60 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionAssertComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionAssertComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setLabel(src.getLabel());
-        tgt.setDescription(src.getDescription());
-        tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
-        tgt.setCompareToSourceId(src.getCompareToSourceId());
-        tgt.setCompareToSourcePath(src.getCompareToSourcePath());
-        tgt.setContentType(convertContentType(src.getContentType()));
-        tgt.setHeaderField(src.getHeaderField());
-        tgt.setMinimumId(src.getMinimumId());
-        tgt.setNavigationLinks(src.getNavigationLinks());
-        tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
-        tgt.setPath(src.getPath());
-        tgt.setResource(src.getResource());
-        tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
-        tgt.setResponseCode(src.getResponseCode());
-        tgt.setSourceId(src.getSourceId());
-        tgt.setValidateProfileId(src.getValidateProfileId());
-        tgt.setValue(src.getValue());
-        tgt.setWarningOnly(src.getWarningOnly());
+        if (src.hasLabel()) {
+            tgt.setLabel(src.getLabel());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDirection()) {
+            tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
+        }
+        if (src.hasCompareToSourceId()) {
+            tgt.setCompareToSourceId(src.getCompareToSourceId());
+        }
+        if (src.hasCompareToSourcePath()) {
+            tgt.setCompareToSourcePath(src.getCompareToSourcePath());
+        }
+        if (src.hasContentType()) {
+            tgt.setContentType(convertContentType(src.getContentType()));
+        }
+        if (src.hasHeaderField()) {
+            tgt.setHeaderField(src.getHeaderField());
+        }
+        if (src.hasMinimumId()) {
+            tgt.setMinimumId(src.getMinimumId());
+        }
+        if (src.hasNavigationLinks()) {
+            tgt.setNavigationLinks(src.getNavigationLinks());
+        }
+        if (src.hasOperator()) {
+            tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
+        }
+        if (src.hasPath()) {
+            tgt.setPath(src.getPath());
+        }
+        if (src.hasResource()) {
+            tgt.setResource(src.getResource());
+        }
+        if (src.hasResponse()) {
+            tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
+        }
+        if (src.hasResponseCode()) {
+            tgt.setResponseCode(src.getResponseCode());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
+        if (src.hasValidateProfileId()) {
+            tgt.setValidateProfileId(src.getValidateProfileId());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
+        if (src.hasWarningOnly()) {
+            tgt.setWarningOnly(src.getWarningOnly());
+        }
         return tgt;
     }
 
@@ -238,8 +310,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.SetupActionComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.SetupActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
-        tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
+        if (src.hasAssert()) {
+            tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        }
         return tgt;
     }
 
@@ -248,8 +324,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
-        tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
+        if (src.hasAssert()) {
+            tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        }
         return tgt;
     }
 
@@ -258,20 +338,48 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
-        tgt.setResource(src.getResource());
-        tgt.setLabel(src.getLabel());
-        tgt.setDescription(src.getDescription());
-        tgt.setAccept(convertContentType(src.getAccept()));
-        tgt.setContentType(convertContentType(src.getContentType()));
-        tgt.setDestination(src.getDestination());
-        tgt.setEncodeRequestUrl(src.getEncodeRequestUrl());
-        tgt.setParams(src.getParams());
-        for (org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
-        tgt.setResponseId(src.getResponseId());
-        tgt.setSourceId(src.getSourceId());
-        tgt.setTargetId(src.getTargetId());
-        tgt.setUrl(src.getUrl());
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
+        }
+        if (src.hasResource()) {
+            tgt.setResource(src.getResource());
+        }
+        if (src.hasLabel()) {
+            tgt.setLabel(src.getLabel());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasAccept()) {
+            tgt.setAccept(convertContentType(src.getAccept()));
+        }
+        if (src.hasContentType()) {
+            tgt.setContentType(convertContentType(src.getContentType()));
+        }
+        if (src.hasDestination()) {
+            tgt.setDestination(src.getDestination());
+        }
+        if (src.hasEncodeRequestUrl()) {
+            tgt.setEncodeRequestUrl(src.getEncodeRequestUrl());
+        }
+        if (src.hasParams()) {
+            tgt.setParams(src.getParams());
+        }
+        if (src.hasRequestHeader()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
+        }
+        if (src.hasResponseId()) {
+            tgt.setResponseId(src.getResponseId());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
+        if (src.hasTargetId()) {
+            tgt.setTargetId(src.getTargetId());
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         return tgt;
     }
 
@@ -280,20 +388,48 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
-        tgt.setResource(src.getResource());
-        tgt.setLabel(src.getLabel());
-        tgt.setDescription(src.getDescription());
-        tgt.setAccept(convertContentType(src.getAccept()));
-        tgt.setContentType(convertContentType(src.getContentType()));
-        tgt.setDestination(src.getDestination());
-        tgt.setEncodeRequestUrl(src.getEncodeRequestUrl());
-        tgt.setParams(src.getParams());
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
-        tgt.setResponseId(src.getResponseId());
-        tgt.setSourceId(src.getSourceId());
-        tgt.setTargetId(src.getTargetId());
-        tgt.setUrl(src.getUrl());
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
+        }
+        if (src.hasResource()) {
+            tgt.setResource(src.getResource());
+        }
+        if (src.hasLabel()) {
+            tgt.setLabel(src.getLabel());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasAccept()) {
+            tgt.setAccept(convertContentType(src.getAccept()));
+        }
+        if (src.hasContentType()) {
+            tgt.setContentType(convertContentType(src.getContentType()));
+        }
+        if (src.hasDestination()) {
+            tgt.setDestination(src.getDestination());
+        }
+        if (src.hasEncodeRequestUrl()) {
+            tgt.setEncodeRequestUrl(src.getEncodeRequestUrl());
+        }
+        if (src.hasParams()) {
+            tgt.setParams(src.getParams());
+        }
+        if (src.hasRequestHeader()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
+        }
+        if (src.hasResponseId()) {
+            tgt.setResponseId(src.getResponseId());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
+        if (src.hasTargetId()) {
+            tgt.setTargetId(src.getTargetId());
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
         return tgt;
     }
 
@@ -302,8 +438,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationRequestHeaderComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationRequestHeaderComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setField(src.getField());
-        tgt.setValue(src.getValue());
+        if (src.hasField()) {
+            tgt.setField(src.getField());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
         return tgt;
     }
 
@@ -312,8 +452,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationRequestHeaderComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionOperationRequestHeaderComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setField(src.getField());
-        tgt.setValue(src.getValue());
+        if (src.hasField()) {
+            tgt.setField(src.getField());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
         return tgt;
     }
 
@@ -322,7 +466,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownActionComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
         return tgt;
     }
 
@@ -331,7 +477,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TeardownActionComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TeardownActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
         return tgt;
     }
 
@@ -340,8 +488,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestActionComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
-        tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
+        if (src.hasAssert()) {
+            tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        }
         return tgt;
     }
 
@@ -350,8 +502,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptTestActionComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptTestActionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
-        tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        if (src.hasOperation()) {
+            tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
+        }
+        if (src.hasAssert()) {
+            tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
+        }
         return tgt;
     }
 
@@ -360,30 +516,66 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript tgt = new org.hl7.fhir.dstu2.model.TestScript();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setVersion(src.getVersion());
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasVersion()) {
+            tgt.setVersion(src.getVersion());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+        }
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
-        tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(convertTestScriptContactComponent(t));
+        if (src.hasPublisher()) {
+            tgt.setPublisher(src.getPublisher());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(convertTestScriptContactComponent(t));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
-        tgt.setDescription(src.getDescription());
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) if (t.hasValueCodeableConcept())
             tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t.getValueCodeableConcept()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setRequirements(src.getPurpose());
-        tgt.setCopyright(src.getCopyright());
-        tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
-        for (org.hl7.fhir.dstu3.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getProfile()) tgt.addProfile(VersionConvertor_10_30.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
-        tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
-        for (org.hl7.fhir.dstu3.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
-        tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasPurpose()) {
+            tgt.setRequirements(src.getPurpose());
+        }
+        if (src.hasCopyright()) {
+            tgt.setCopyright(src.getCopyright());
+        }
+        if (src.hasMetadata()) {
+            tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
+        }
+        if (src.hasFixture()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
+        }
+        if (src.hasProfile()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getProfile()) tgt.addProfile(VersionConvertor_10_30.convertReference(t));
+        }
+        if (src.hasVariable()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
+        }
+        if (src.hasSetup()) {
+            tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
+        }
+        if (src.hasTest()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
+        }
+        if (src.hasTeardown()) {
+            tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+        }
         return tgt;
     }
 
@@ -392,31 +584,65 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript tgt = new org.hl7.fhir.dstu3.model.TestScript();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setVersion(src.getVersion());
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasVersion()) {
+            tgt.setVersion(src.getVersion());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+        }
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
-        tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptContactComponent t : src.getContact()) tgt.addContact(convertTestScriptContactComponent(t));
+        if (src.hasPublisher()) {
+            tgt.setPublisher(src.getPublisher());
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptContactComponent t : src.getContact()) tgt.addContact(convertTestScriptContactComponent(t));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
-        tgt.setDescription(src.getDescription());
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_30.isJurisdiction(t))
             tgt.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
         else
             tgt.addUseContext(VersionConvertor_10_30.convertCodeableConceptToUsageContext(t));
-        tgt.setPurpose(src.getRequirements());
-        tgt.setCopyright(src.getCopyright());
-        tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getProfile()) tgt.addProfile(VersionConvertor_10_30.convertReference(t));
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
-        tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
-        tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+        if (src.hasRequirements()) {
+            tgt.setPurpose(src.getRequirements());
+        }
+        if (src.hasCopyright()) {
+            tgt.setCopyright(src.getCopyright());
+        }
+        if (src.hasMetadata()) {
+            tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
+        }
+        if (src.hasFixture()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
+        }
+        if (src.hasProfile()) {
+            for (org.hl7.fhir.dstu2.model.Reference t : src.getProfile()) tgt.addProfile(VersionConvertor_10_30.convertReference(t));
+        }
+        if (src.hasVariable()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
+        }
+        if (src.hasSetup()) {
+            tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
+        }
+        if (src.hasTest()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
+        }
+        if (src.hasTeardown()) {
+            tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+        }
         return tgt;
     }
 
@@ -425,8 +651,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ContactDetail tgt = new org.hl7.fhir.dstu3.model.ContactDetail();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -435,8 +665,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptContactComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptContactComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -445,9 +679,15 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptFixtureComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptFixtureComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setAutocreate(src.getAutocreate());
-        tgt.setAutodelete(src.getAutodelete());
-        tgt.setResource(VersionConvertor_10_30.convertReference(src.getResource()));
+        if (src.hasAutocreate()) {
+            tgt.setAutocreate(src.getAutocreate());
+        }
+        if (src.hasAutodelete()) {
+            tgt.setAutodelete(src.getAutodelete());
+        }
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_10_30.convertReference(src.getResource()));
+        }
         return tgt;
     }
 
@@ -456,9 +696,15 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptFixtureComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptFixtureComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setAutocreate(src.getAutocreate());
-        tgt.setAutodelete(src.getAutodelete());
-        tgt.setResource(VersionConvertor_10_30.convertReference(src.getResource()));
+        if (src.hasAutocreate()) {
+            tgt.setAutocreate(src.getAutocreate());
+        }
+        if (src.hasAutodelete()) {
+            tgt.setAutodelete(src.getAutodelete());
+        }
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_10_30.convertReference(src.getResource()));
+        }
         return tgt;
     }
 
@@ -467,12 +713,24 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataCapabilityComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataCapabilityComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setRequired(src.getRequired());
-        tgt.setValidated(src.getValidated());
-        tgt.setDescription(src.getDescription());
-        tgt.setDestination(src.getDestination());
-        for (org.hl7.fhir.dstu3.model.UriType t : src.getLink()) tgt.addLink(t.getValue());
-        tgt.setConformance(VersionConvertor_10_30.convertReference(src.getCapabilities()));
+        if (src.hasRequired()) {
+            tgt.setRequired(src.getRequired());
+        }
+        if (src.hasValidated()) {
+            tgt.setValidated(src.getValidated());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDestination()) {
+            tgt.setDestination(src.getDestination());
+        }
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu3.model.UriType t : src.getLink()) tgt.addLink(t.getValue());
+        }
+        if (src.hasCapabilities()) {
+            tgt.setConformance(VersionConvertor_10_30.convertReference(src.getCapabilities()));
+        }
         return tgt;
     }
 
@@ -481,12 +739,24 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataCapabilityComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataCapabilityComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setRequired(src.getRequired());
-        tgt.setValidated(src.getValidated());
-        tgt.setDescription(src.getDescription());
-        tgt.setDestination(src.getDestination());
-        for (org.hl7.fhir.dstu2.model.UriType t : src.getLink()) tgt.addLink(t.getValue());
-        tgt.setCapabilities(VersionConvertor_10_30.convertReference(src.getConformance()));
+        if (src.hasRequired()) {
+            tgt.setRequired(src.getRequired());
+        }
+        if (src.hasValidated()) {
+            tgt.setValidated(src.getValidated());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDestination()) {
+            tgt.setDestination(src.getDestination());
+        }
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu2.model.UriType t : src.getLink()) tgt.addLink(t.getValue());
+        }
+        if (src.hasConformance()) {
+            tgt.setCapabilities(VersionConvertor_10_30.convertReference(src.getConformance()));
+        }
         return tgt;
     }
 
@@ -495,8 +765,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
+        }
+        if (src.hasCapability()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+        }
         return tgt;
     }
 
@@ -505,8 +779,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
-        for (org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
+        }
+        if (src.hasCapability()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
+        }
         return tgt;
     }
 
@@ -515,8 +793,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataLinkComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptMetadataLinkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setDescription(src.getDescription());
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         return tgt;
     }
 
@@ -525,8 +807,12 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataLinkComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptMetadataLinkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setDescription(src.getDescription());
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         return tgt;
     }
 
@@ -535,7 +821,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptSetupComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
+        }
         return tgt;
     }
 
@@ -544,7 +832,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptSetupComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
+        }
         return tgt;
     }
 
@@ -553,7 +843,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptTeardownComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
+        }
         return tgt;
     }
 
@@ -562,7 +854,9 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptTeardownComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
+        }
         return tgt;
     }
 
@@ -571,9 +865,15 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptTestComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptTestComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu2.model.TestScript.TestScriptTestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
+        }
         return tgt;
     }
 
@@ -582,9 +882,15 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptTestComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptTestComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
+        }
         return tgt;
     }
 
@@ -593,10 +899,18 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu3.model.TestScript.TestScriptVariableComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.TestScriptVariableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setHeaderField(src.getHeaderField());
-        tgt.setPath(src.getPath());
-        tgt.setSourceId(src.getSourceId());
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasHeaderField()) {
+            tgt.setHeaderField(src.getHeaderField());
+        }
+        if (src.hasPath()) {
+            tgt.setPath(src.getPath());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
         return tgt;
     }
 
@@ -605,10 +919,18 @@ public class TestScript10_30 {
             return null;
         org.hl7.fhir.dstu2.model.TestScript.TestScriptVariableComponent tgt = new org.hl7.fhir.dstu2.model.TestScript.TestScriptVariableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setHeaderField(src.getHeaderField());
-        tgt.setPath(src.getPath());
-        tgt.setSourceId(src.getSourceId());
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasHeaderField()) {
+            tgt.setHeaderField(src.getHeaderField());
+        }
+        if (src.hasPath()) {
+            tgt.setPath(src.getPath());
+        }
+        if (src.hasSourceId()) {
+            tgt.setSourceId(src.getSourceId());
+        }
         return tgt;
     }
 }

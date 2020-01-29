@@ -10,16 +10,36 @@ public class RelatedPerson10_30 {
             return null;
         org.hl7.fhir.dstu3.model.RelatedPerson tgt = new org.hl7.fhir.dstu3.model.RelatedPerson();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
-        tgt.addName(VersionConvertor_10_30.convertHumanName(src.getName()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        tgt.setBirthDate(src.getBirthDate());
-        for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
-        for (org.hl7.fhir.dstu2.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasPatient()) {
+            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
+        }
+        if (src.hasRelationship()) {
+            tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
+        }
+        if (src.hasName()) {
+            tgt.addName(VersionConvertor_10_30.convertHumanName(src.getName()));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasGender()) {
+            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+        }
+        if (src.hasBirthDate()) {
+            tgt.setBirthDate(src.getBirthDate());
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.dstu2.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
         return tgt;
     }
 
@@ -28,17 +48,35 @@ public class RelatedPerson10_30 {
             return null;
         org.hl7.fhir.dstu2.model.RelatedPerson tgt = new org.hl7.fhir.dstu2.model.RelatedPerson();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasPatient()) {
+            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
+        }
+        if (src.hasRelationship()) {
+            tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
+        }
         if (!src.getName().isEmpty())
             tgt.setName(VersionConvertor_10_30.convertHumanName(src.getName().get(0)));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        tgt.setBirthDate(src.getBirthDate());
-        for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
-        for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
-        tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasGender()) {
+            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+        }
+        if (src.hasBirthDate()) {
+            tgt.setBirthDate(src.getBirthDate());
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
+        }
+        if (src.hasPeriod()) {
+            tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
+        }
         return tgt;
     }
 }

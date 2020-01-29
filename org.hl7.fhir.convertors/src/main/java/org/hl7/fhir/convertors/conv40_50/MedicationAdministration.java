@@ -19,8 +19,6 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -28,7 +26,6 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes;
 import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,187 +55,204 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class MedicationAdministration extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.MedicationAdministration convertMedicationAdministration(org.hl7.fhir.r4.model.MedicationAdministration src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationAdministration tgt = new org.hl7.fhir.r5.model.MedicationAdministration();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates())
-      tgt.getInstantiatesUri().add(convertUri(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.addCategory(convertCodeableConcept(src.getCategory()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setEncounter(convertReference(src.getContext()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    if (src.hasEffective())
-      tgt.setOccurence(convertType(src.getEffective()));
-    for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
-      tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(convertReferenceToCodeableReference(t));
-    if (src.hasRequest())
-      tgt.setRequest(convertReference(src.getRequest()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getDevice())
-      tgt.addDevice(convertReference(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    if (src.hasDosage())
-      tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
-      tgt.addEventHistory(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationAdministration convertMedicationAdministration(org.hl7.fhir.r4.model.MedicationAdministration src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationAdministration tgt = new org.hl7.fhir.r5.model.MedicationAdministration();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasInstantiates()) {
+            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiatesUri().add(convertUri(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
+        if (src.hasStatusReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasCategory())
+            tgt.addCategory(convertCodeableConcept(src.getCategory()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasContext())
+            tgt.setEncounter(convertReference(src.getContext()));
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        if (src.hasEffective())
+            tgt.setOccurence(convertType(src.getEffective()));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
+        }
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        }
+        if (src.hasRequest())
+            tgt.setRequest(convertReference(src.getRequest()));
+        if (src.hasDevice()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getDevice()) tgt.addDevice(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosage())
+            tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
+        if (src.hasEventHistory()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory()) tgt.addEventHistory(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationAdministration convertMedicationAdministration(org.hl7.fhir.r5.model.MedicationAdministration src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationAdministration tgt = new org.hl7.fhir.r4.model.MedicationAdministration();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiates().add(convertUri(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setContext(convertReference(src.getEncounter()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    if (src.hasOccurence())
-      tgt.setEffective(convertType(src.getOccurence()));
-    for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
-      tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasReference())
-      tgt.addReasonReference(convertReference(t.getReference()));
-    if (src.hasRequest())
-      tgt.setRequest(convertReference(src.getRequest()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDevice())
-      tgt.addDevice(convertReference(t));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    if (src.hasDosage())
-      tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
-      tgt.addEventHistory(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationAdministration convertMedicationAdministration(org.hl7.fhir.r5.model.MedicationAdministration src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationAdministration tgt = new org.hl7.fhir.r4.model.MedicationAdministration();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasInstantiatesUri()) {
+            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiates().add(convertUri(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
+        if (src.hasStatusReason()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasCategory())
+            tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setContext(convertReference(src.getEncounter()));
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        if (src.hasOccurence())
+            tgt.setEffective(convertType(src.getOccurence()));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
+        }
+        for (CodeableReference t : src.getReason()) if (t.hasConcept())
+            tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+        for (CodeableReference t : src.getReason()) if (t.hasReference())
+            tgt.addReasonReference(convertReference(t.getReference()));
+        if (src.hasRequest())
+            tgt.setRequest(convertReference(src.getRequest()));
+        if (src.hasDevice()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getDevice()) tgt.addDevice(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosage())
+            tgt.setDosage(convertMedicationAdministrationDosageComponent(src.getDosage()));
+        if (src.hasEventHistory()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory()) tgt.addEventHistory(convertReference(t));
+        }
+        return tgt;
+    }
 
-  private static CodeType convertMedicationAdministrationStatus(Enumeration<MedicationAdministrationStatusCodes> src) {
-    if (src == null)
-      return null;
-    CodeType tgt = new CodeType();
-    copyElement(src, tgt);
-    tgt.setValue(src.getCode());
-    return tgt;
-  }
+    private static CodeType convertMedicationAdministrationStatus(Enumeration<MedicationAdministrationStatusCodes> src) {
+        if (src == null)
+            return null;
+        CodeType tgt = new CodeType();
+        copyElement(src, tgt);
+        if (src.hasCode()) {
+            tgt.setValue(src.getCode());
+        }
+        return tgt;
+    }
 
-  private static Enumeration<MedicationAdministrationStatusCodes> convertMedicationAdministrationStatus(CodeType src) {
-    if (src == null)
-      return null;
-    Enumeration<MedicationAdministrationStatusCodes> tgt = new Enumeration<MedicationAdministrationStatusCodes>();
-    copyElement(src, tgt);
-    tgt.setValue(MedicationAdministrationStatusCodes.fromCode(src.getCode()));
-    return tgt;
-  }
+    private static Enumeration<MedicationAdministrationStatusCodes> convertMedicationAdministrationStatus(CodeType src) {
+        if (src == null)
+            return null;
+        Enumeration<MedicationAdministrationStatusCodes> tgt = new Enumeration<MedicationAdministrationStatusCodes>();
+        copyElement(src, tgt);
+        if (src.hasCode()) {
+            tgt.setValue(MedicationAdministrationStatusCodes.fromCode(src.getCode()));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent convertMedicationAdministrationPerformerComponent(org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    copyElement(src, tgt);
-    if (src.hasFunction())
-      tgt.setFunction(convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent convertMedicationAdministrationPerformerComponent(org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
+        copyElement(src, tgt);
+        if (src.hasFunction())
+            tgt.setFunction(convertCodeableConcept(src.getFunction()));
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent convertMedicationAdministrationPerformerComponent(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    copyElement(src, tgt);
-    if (src.hasFunction())
-      tgt.setFunction(convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent convertMedicationAdministrationPerformerComponent(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
+        copyElement(src, tgt);
+        if (src.hasFunction())
+            tgt.setFunction(convertCodeableConcept(src.getFunction()));
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent convertMedicationAdministrationDosageComponent(org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    copyElement(src, tgt);
-    if (src.hasText())
-      tgt.setTextElement(convertString(src.getTextElement()));
-    if (src.hasSite())
-      tgt.setSite(convertCodeableConcept(src.getSite()));
-    if (src.hasRoute())
-      tgt.setRoute(convertCodeableConcept(src.getRoute()));
-    if (src.hasMethod())
-      tgt.setMethod(convertCodeableConcept(src.getMethod()));
-    if (src.hasDose())
-      tgt.setDose(convertSimpleQuantity(src.getDose()));
-    if (src.hasRate())
-      tgt.setRate(convertType(src.getRate()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent convertMedicationAdministrationDosageComponent(org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent();
+        copyElement(src, tgt);
+        if (src.hasText())
+            tgt.setTextElement(convertString(src.getTextElement()));
+        if (src.hasSite())
+            tgt.setSite(convertCodeableConcept(src.getSite()));
+        if (src.hasRoute())
+            tgt.setRoute(convertCodeableConcept(src.getRoute()));
+        if (src.hasMethod())
+            tgt.setMethod(convertCodeableConcept(src.getMethod()));
+        if (src.hasDose())
+            tgt.setDose(convertSimpleQuantity(src.getDose()));
+        if (src.hasRate())
+            tgt.setRate(convertType(src.getRate()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent convertMedicationAdministrationDosageComponent(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    copyElement(src, tgt);
-    if (src.hasText())
-      tgt.setTextElement(convertString(src.getTextElement()));
-    if (src.hasSite())
-      tgt.setSite(convertCodeableConcept(src.getSite()));
-    if (src.hasRoute())
-      tgt.setRoute(convertCodeableConcept(src.getRoute()));
-    if (src.hasMethod())
-      tgt.setMethod(convertCodeableConcept(src.getMethod()));
-    if (src.hasDose())
-      tgt.setDose(convertSimpleQuantity(src.getDose()));
-    if (src.hasRate())
-      tgt.setRate(convertType(src.getRate()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent convertMedicationAdministrationDosageComponent(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent();
+        copyElement(src, tgt);
+        if (src.hasText())
+            tgt.setTextElement(convertString(src.getTextElement()));
+        if (src.hasSite())
+            tgt.setSite(convertCodeableConcept(src.getSite()));
+        if (src.hasRoute())
+            tgt.setRoute(convertCodeableConcept(src.getRoute()));
+        if (src.hasMethod())
+            tgt.setMethod(convertCodeableConcept(src.getMethod()));
+        if (src.hasDose())
+            tgt.setDose(convertSimpleQuantity(src.getDose()));
+        if (src.hasRate())
+            tgt.setRate(convertType(src.getRate()));
+        return tgt;
+    }
 }

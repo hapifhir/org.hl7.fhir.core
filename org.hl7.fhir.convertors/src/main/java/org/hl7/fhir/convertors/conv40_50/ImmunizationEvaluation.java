@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,99 +50,104 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class ImmunizationEvaluation extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.ImmunizationEvaluation convertImmunizationEvaluation(org.hl7.fhir.r4.model.ImmunizationEvaluation src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r5.model.ImmunizationEvaluation();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasAuthority())
-      tgt.setAuthority(convertReference(src.getAuthority()));
-    if (src.hasTargetDisease())
-      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
-    if (src.hasImmunizationEvent())
-      tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
-    if (src.hasDoseStatus())
-      tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDoseStatusReason())
-      tgt.addDoseStatusReason(convertCodeableConcept(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-    if (src.hasSeries())
-      tgt.setSeriesElement(convertString(src.getSeriesElement()));
-    if (src.hasDoseNumber())
-      tgt.setDoseNumber(convertType(src.getDoseNumber()));
-    if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ImmunizationEvaluation convertImmunizationEvaluation(org.hl7.fhir.r4.model.ImmunizationEvaluation src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r5.model.ImmunizationEvaluation();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasAuthority())
+            tgt.setAuthority(convertReference(src.getAuthority()));
+        if (src.hasTargetDisease())
+            tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
+        if (src.hasImmunizationEvent())
+            tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
+        if (src.hasDoseStatus())
+            tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
+        if (src.hasDoseStatusReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+        if (src.hasSeries())
+            tgt.setSeriesElement(convertString(src.getSeriesElement()));
+        if (src.hasDoseNumber())
+            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+        if (src.hasSeriesDoses())
+            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ImmunizationEvaluation convertImmunizationEvaluation(org.hl7.fhir.r5.model.ImmunizationEvaluation src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r4.model.ImmunizationEvaluation();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasAuthority())
-      tgt.setAuthority(convertReference(src.getAuthority()));
-    if (src.hasTargetDisease())
-      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
-    if (src.hasImmunizationEvent())
-      tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
-    if (src.hasDoseStatus())
-      tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDoseStatusReason())
-      tgt.addDoseStatusReason(convertCodeableConcept(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-    if (src.hasSeries())
-      tgt.setSeriesElement(convertString(src.getSeriesElement()));
-    if (src.hasDoseNumber())
-      tgt.setDoseNumber(convertType(src.getDoseNumber()));
-    if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.ImmunizationEvaluation convertImmunizationEvaluation(org.hl7.fhir.r5.model.ImmunizationEvaluation src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r4.model.ImmunizationEvaluation();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasAuthority())
+            tgt.setAuthority(convertReference(src.getAuthority()));
+        if (src.hasTargetDisease())
+            tgt.setTargetDisease(convertCodeableConcept(src.getTargetDisease()));
+        if (src.hasImmunizationEvent())
+            tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
+        if (src.hasDoseStatus())
+            tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
+        if (src.hasDoseStatusReason()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+        if (src.hasSeries())
+            tgt.setSeriesElement(convertString(src.getSeriesElement()));
+        if (src.hasDoseNumber())
+            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+        if (src.hasSeriesDoses())
+            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes convertImmunizationEvaluationStatus(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case COMPLETED: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes convertImmunizationEvaluationStatus(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case COMPLETED:
+                return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus convertImmunizationEvaluationStatus(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case COMPLETED: return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus convertImmunizationEvaluationStatus(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case COMPLETED:
+                return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.NULL;
+        }
+    }
 }

@@ -178,7 +178,9 @@ public class OperationOutcome30_40 {
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome tgt = new org.hl7.fhir.dstu3.model.OperationOutcome();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -187,7 +189,9 @@ public class OperationOutcome30_40 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -204,8 +208,12 @@ public class OperationOutcome30_40 {
             tgt.setDetails(VersionConvertor_30_40.convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())
             tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
+        if (src.hasExpression()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
+        }
         return tgt;
     }
 
@@ -222,8 +230,12 @@ public class OperationOutcome30_40 {
             tgt.setDetails(VersionConvertor_30_40.convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())
             tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
+        if (src.hasExpression()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
+        }
         return tgt;
     }
 }

@@ -10,12 +10,24 @@ public class EnrollmentResponse10_40 {
             return null;
         org.hl7.fhir.r4.model.EnrollmentResponse tgt = new org.hl7.fhir.r4.model.EnrollmentResponse();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        tgt.setRequest(VersionConvertor_10_40.convertReference(src.getRequest()));
-        tgt.setDisposition(src.getDisposition());
-        tgt.setCreated(src.getCreated());
-        tgt.setOrganization(VersionConvertor_10_40.convertReference(src.getOrganization()));
-        tgt.setRequestProvider(VersionConvertor_10_40.convertReference(src.getRequestProvider()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        }
+        if (src.hasRequest()) {
+            tgt.setRequest(VersionConvertor_10_40.convertReference(src.getRequest()));
+        }
+        if (src.hasDisposition()) {
+            tgt.setDisposition(src.getDisposition());
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasOrganization()) {
+            tgt.setOrganization(VersionConvertor_10_40.convertReference(src.getOrganization()));
+        }
+        if (src.hasRequestProvider()) {
+            tgt.setRequestProvider(VersionConvertor_10_40.convertReference(src.getRequestProvider()));
+        }
         return tgt;
     }
 
@@ -24,9 +36,15 @@ public class EnrollmentResponse10_40 {
             return null;
         org.hl7.fhir.dstu2.model.EnrollmentResponse tgt = new org.hl7.fhir.dstu2.model.EnrollmentResponse();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        tgt.setDisposition(src.getDisposition());
-        tgt.setCreated(src.getCreated());
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        }
+        if (src.hasDisposition()) {
+            tgt.setDisposition(src.getDisposition());
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
         return tgt;
     }
 }

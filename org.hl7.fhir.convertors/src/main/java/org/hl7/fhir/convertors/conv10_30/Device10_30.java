@@ -10,23 +10,53 @@ public class Device10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Device tgt = new org.hl7.fhir.dstu2.model.Device();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
         if (src.hasUdi())
             tgt.setUdi(src.getUdi().getDeviceIdentifier());
-        tgt.setStatus(convertDeviceStatus(src.getStatus()));
-        tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setLotNumber(src.getLotNumber());
-        tgt.setManufacturer(src.getManufacturer());
-        tgt.setManufactureDate(src.getManufactureDate());
-        tgt.setExpiry(src.getExpirationDate());
-        tgt.setModel(src.getModel());
-        tgt.setVersion(src.getVersion());
-        tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
-        tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
+        if (src.hasStatus()) {
+            tgt.setStatus(convertDeviceStatus(src.getStatus()));
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasLotNumber()) {
+            tgt.setLotNumber(src.getLotNumber());
+        }
+        if (src.hasManufacturer()) {
+            tgt.setManufacturer(src.getManufacturer());
+        }
+        if (src.hasManufactureDate()) {
+            tgt.setManufactureDate(src.getManufactureDate());
+        }
+        if (src.hasExpirationDate()) {
+            tgt.setExpiry(src.getExpirationDate());
+        }
+        if (src.hasModel()) {
+            tgt.setModel(src.getModel());
+        }
+        if (src.hasVersion()) {
+            tgt.setVersion(src.getVersion());
+        }
+        if (src.hasPatient()) {
+            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
+        }
+        if (src.hasOwner()) {
+            tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasLocation()) {
+            tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
+        }
         return tgt;
     }
 
@@ -35,22 +65,54 @@ public class Device10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Device tgt = new org.hl7.fhir.dstu3.model.Device();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setUdi((new org.hl7.fhir.dstu3.model.Device.DeviceUdiComponent()).setDeviceIdentifier(src.getUdi()));
-        tgt.setStatus(convertDeviceStatus(src.getStatus()));
-        tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setLotNumber(src.getLotNumber());
-        tgt.setManufacturer(src.getManufacturer());
-        tgt.setManufactureDate(src.getManufactureDate());
-        tgt.setExpirationDate(src.getExpiry());
-        tgt.setModel(src.getModel());
-        tgt.setVersion(src.getVersion());
-        tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
-        tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.dstu2.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasUdi()) {
+            tgt.setUdi((new org.hl7.fhir.dstu3.model.Device.DeviceUdiComponent()).setDeviceIdentifier(src.getUdi()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertDeviceStatus(src.getStatus()));
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasLotNumber()) {
+            tgt.setLotNumber(src.getLotNumber());
+        }
+        if (src.hasManufacturer()) {
+            tgt.setManufacturer(src.getManufacturer());
+        }
+        if (src.hasManufactureDate()) {
+            tgt.setManufactureDate(src.getManufactureDate());
+        }
+        if (src.hasExpiry()) {
+            tgt.setExpirationDate(src.getExpiry());
+        }
+        if (src.hasModel()) {
+            tgt.setModel(src.getModel());
+        }
+        if (src.hasVersion()) {
+            tgt.setVersion(src.getVersion());
+        }
+        if (src.hasPatient()) {
+            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
+        }
+        if (src.hasOwner()) {
+            tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
+        }
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasLocation()) {
+            tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
+        }
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu2.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
+        }
         return tgt;
     }
 

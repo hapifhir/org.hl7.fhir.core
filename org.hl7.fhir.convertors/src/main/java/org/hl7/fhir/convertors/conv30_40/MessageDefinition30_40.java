@@ -28,27 +28,41 @@ public class MessageDefinition30_40 {
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         if (src.hasBase())
             tgt.setBase(VersionConvertor_30_40.convertCanonicalToReference(src.getBaseElement()));
-        for (org.hl7.fhir.r4.model.CanonicalType t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertCanonicalToReference(t));
-        for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.addReplaces(VersionConvertor_30_40.convertCanonicalToReference(t));
+        if (src.hasParent()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertCanonicalToReference(t));
+        }
+        if (src.hasReplaces()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.addReplaces(VersionConvertor_30_40.convertCanonicalToReference(t));
+        }
         if (src.hasEventCoding())
             tgt.setEvent(VersionConvertor_30_40.convertCoding(src.getEventCoding()));
         if (src.hasCategory())
             tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
-        for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
+        if (src.hasFocus()) {
+            for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
+        }
         if (src.hasResponseRequired())
             tgt.setResponseRequired(src.getResponseRequired() != org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
-        for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        if (src.hasAllowedResponse()) {
+            for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        }
         return tgt;
     }
 
@@ -75,27 +89,41 @@ public class MessageDefinition30_40 {
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         if (src.hasBase())
             tgt.setBaseElement(VersionConvertor_30_40.convertReferenceToCanonical(src.getBase()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.getParent().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getReplaces()) tgt.getReplaces().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
+        if (src.hasParent()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.getParent().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
+        }
+        if (src.hasReplaces()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getReplaces()) tgt.getReplaces().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
+        }
         if (src.hasEvent())
             tgt.setEvent(VersionConvertor_30_40.convertCoding(src.getEvent()));
         if (src.hasCategory())
             tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
-        for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
+        if (src.hasFocus()) {
+            for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
+        }
         if (src.hasResponseRequired())
             tgt.setResponseRequired(src.getResponseRequired() ? org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS : org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
-        for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        if (src.hasAllowedResponse()) {
+            for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        }
         return tgt;
     }
 

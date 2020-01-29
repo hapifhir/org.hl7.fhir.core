@@ -11,7 +11,9 @@ public class Immunization30_50 {
             return null;
         org.hl7.fhir.r5.model.Immunization tgt = new org.hl7.fhir.r5.model.Immunization();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasVaccineCode())
@@ -40,9 +42,15 @@ public class Immunization30_50 {
             tgt.setRoute(VersionConvertor_30_50.convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getDoseQuantity()));
-        for (org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent t : src.getPractitioner()) tgt.addPerformer(convertImmunizationPractitionerComponent(t));
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReason()) tgt.addReason(VersionConvertor_30_50.convertCodeableConceptToCodableReference(t));
+        if (src.hasPractitioner()) {
+            for (org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent t : src.getPractitioner()) tgt.addPerformer(convertImmunizationPractitionerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
+        }
+        if (src.hasExplanation()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getExplanation().getReason()) tgt.addReason(VersionConvertor_30_50.convertCodeableConceptToCodableReference(t));
+        }
         return tgt;
     }
 
@@ -51,7 +59,9 @@ public class Immunization30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Immunization tgt = new org.hl7.fhir.dstu3.model.Immunization();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasVaccineCode())
@@ -80,8 +90,12 @@ public class Immunization30_50 {
             tgt.setRoute(VersionConvertor_30_50.convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getDoseQuantity()));
-        for (org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPractitioner(convertImmunizationPractitionerComponent(t));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPractitioner(convertImmunizationPractitionerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
+        }
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.getExplanation().addReason(VersionConvertor_30_50.convertCodeableConcept(t.getConcept()));
         return tgt;
