@@ -4674,16 +4674,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     if (childDefinitions.isEmpty()) {
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
-      StructureDefinition dt = null;
-      if (isAbsolute(actualType)) 
-        dt = this.context.fetchResource(StructureDefinition.class, actualType);
-      else
-        dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
-      if (dt == null)
-        throw new DefinitionException("Unable to resolve actual type " + actualType);
-      trackUsage(dt, hostContext, element);
-
-      childDefinitions = ProfileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
+      childDefinitions = getActualTypeChildren(hostContext, element, actualType);
+    } else if (definition.getType().size() > 1) {
+      // this only happens when the profile constrains the abstract children but leaves th choice open. 
+      if (actualType == null)
+        return; // there'll be an error elsewhere in this case, and we're going to stop.
+      List<ElementDefinition> typeChildDefinitions = getActualTypeChildren(hostContext, element, actualType);
+      // what were going to do is merge them - the type is not allowed to constrain things that the child definitions already do (well, if it does, it'll be ignored)
+      mergeChildLists(childDefinitions, typeChildDefinitions, definition.getPath(), actualType);
     }
 
     List<ElementInfo> children = listChildren(element, stack);
@@ -4696,6 +4694,39 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     for (ElementInfo ei : children) {
       checkChild(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl);
     }
+  }
+
+  private void mergeChildLists(List<ElementDefinition> master, List<ElementDefinition> additional, String masterPath, String typePath) {
+    for (ElementDefinition ed : additional) {
+      boolean inMaster = false;
+      for (ElementDefinition t : master) {
+        String tp = masterPath + ed.getPath().substring(typePath.length());
+        if (t.getPath().equals(tp)) {
+          inMaster = true;
+        }
+      }
+      if (!inMaster) {
+        master.add(ed);
+      }
+    }
+    
+    
+  }
+
+  // todo: the element definition in context might assign a constrained profile for the type? 
+  public List<ElementDefinition> getActualTypeChildren(ValidatorHostContext hostContext, Element element, String actualType) {
+    List<ElementDefinition> childDefinitions;
+    StructureDefinition dt = null;
+    if (isAbsolute(actualType)) 
+      dt = this.context.fetchResource(StructureDefinition.class, actualType);
+    else
+      dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
+    if (dt == null)
+      throw new DefinitionException("Unable to resolve actual type " + actualType);
+    trackUsage(dt, hostContext, element);
+
+    childDefinitions = ProfileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
+    return childDefinitions;
   }
 
   public void checkChild(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
@@ -5079,7 +5110,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
               ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicing(ei.sliceInfo)),
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl())+": "+errorSummaryForSlicing(ei.sliceInfo),
                 "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
             rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicing(ei.sliceInfo)),
@@ -5088,7 +5119,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
           if (!profile.getAbstract())
-            hint(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.path, (ei.definition != null), "Could not verify slice for profile " + profile.getUrl());
+            rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.path, (ei.definition != null), "This element is not allowed by the profile "+profile.getUrl());
         }
       // TODO: Should get the order of elements correct when parsing elements that are XML attributes vs. elements
       boolean isXmlAttr = false;
