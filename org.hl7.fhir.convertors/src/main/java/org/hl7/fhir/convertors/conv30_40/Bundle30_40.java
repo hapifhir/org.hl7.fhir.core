@@ -16,8 +16,12 @@ public class Bundle30_40 {
             tgt.setType(convertBundleType(src.getType()));
         if (src.hasTotal())
             tgt.setTotal(src.getTotal());
-        for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        }
         if (src.hasSignature())
             tgt.setSignature(VersionConvertor_30_40.convertSignature(src.getSignature()));
         return tgt;
@@ -34,8 +38,12 @@ public class Bundle30_40 {
             tgt.setType(convertBundleType(src.getType()));
         if (src.hasTotal())
             tgt.setTotal(src.getTotal());
-        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
+        if (src.hasEntry()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
+        }
         if (src.hasSignature())
             tgt.setSignature(VersionConvertor_30_40.convertSignature(src.getSignature()));
         return tgt;
@@ -46,7 +54,9 @@ public class Bundle30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
         if (src.hasFullUrl())
             tgt.setFullUrl(src.getFullUrl());
         if (src.hasResource())
@@ -65,7 +75,9 @@ public class Bundle30_40 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        }
         if (src.hasFullUrl())
             tgt.setFullUrl(src.getFullUrl());
         if (src.hasResource())

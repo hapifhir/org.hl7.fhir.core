@@ -40,18 +40,42 @@ public class Media10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Media tgt = new org.hl7.fhir.dstu2.model.Media();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setType(convertDigitalMediaType(src.getType()));
-        tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
-        tgt.setView(VersionConvertor_10_30.convertCodeableConcept(src.getView()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setOperator(VersionConvertor_10_30.convertReference(src.getOperator()));
-        tgt.setDeviceName(src.getDevice().getDisplay());
-        tgt.setHeight(src.getHeight());
-        tgt.setWidth(src.getWidth());
-        tgt.setFrames(src.getFrames());
-        tgt.setDuration(src.getDuration());
-        tgt.setContent(VersionConvertor_10_30.convertAttachment(src.getContent()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasType()) {
+            tgt.setType(convertDigitalMediaType(src.getType()));
+        }
+        if (src.hasSubtype()) {
+            tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
+        }
+        if (src.hasView()) {
+            tgt.setView(VersionConvertor_10_30.convertCodeableConcept(src.getView()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasOperator()) {
+            tgt.setOperator(VersionConvertor_10_30.convertReference(src.getOperator()));
+        }
+        if (src.hasDevice()) {
+            tgt.setDeviceName(src.getDevice().getDisplay());
+        }
+        if (src.hasHeight()) {
+            tgt.setHeight(src.getHeight());
+        }
+        if (src.hasWidth()) {
+            tgt.setWidth(src.getWidth());
+        }
+        if (src.hasFrames()) {
+            tgt.setFrames(src.getFrames());
+        }
+        if (src.hasDuration()) {
+            tgt.setDuration(src.getDuration());
+        }
+        if (src.hasContent()) {
+            tgt.setContent(VersionConvertor_10_30.convertAttachment(src.getContent()));
+        }
         return tgt;
     }
 
@@ -60,18 +84,42 @@ public class Media10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Media tgt = new org.hl7.fhir.dstu3.model.Media();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setType(convertDigitalMediaType(src.getType()));
-        tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
-        tgt.setView(VersionConvertor_10_30.convertCodeableConcept(src.getView()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setOperator(VersionConvertor_10_30.convertReference(src.getOperator()));
-        tgt.getDevice().setDisplay(src.getDeviceName());
-        tgt.setHeight(src.getHeight());
-        tgt.setWidth(src.getWidth());
-        tgt.setFrames(src.getFrames());
-        tgt.setDuration(src.getDuration());
-        tgt.setContent(VersionConvertor_10_30.convertAttachment(src.getContent()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasType()) {
+            tgt.setType(convertDigitalMediaType(src.getType()));
+        }
+        if (src.hasSubtype()) {
+            tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
+        }
+        if (src.hasView()) {
+            tgt.setView(VersionConvertor_10_30.convertCodeableConcept(src.getView()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasOperator()) {
+            tgt.setOperator(VersionConvertor_10_30.convertReference(src.getOperator()));
+        }
+        if (src.hasDeviceName()) {
+            tgt.getDevice().setDisplay(src.getDeviceName());
+        }
+        if (src.hasHeight()) {
+            tgt.setHeight(src.getHeight());
+        }
+        if (src.hasWidth()) {
+            tgt.setWidth(src.getWidth());
+        }
+        if (src.hasFrames()) {
+            tgt.setFrames(src.getFrames());
+        }
+        if (src.hasDuration()) {
+            tgt.setDuration(src.getDuration());
+        }
+        if (src.hasContent()) {
+            tgt.setContent(VersionConvertor_10_30.convertAttachment(src.getContent()));
+        }
         return tgt;
     }
 }

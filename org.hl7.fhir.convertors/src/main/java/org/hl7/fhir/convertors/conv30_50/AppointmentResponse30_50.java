@@ -10,14 +10,18 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
         if (src.hasStart())
             tgt.setStart(src.getStart());
         if (src.hasEnd())
             tgt.setEnd(src.getEnd());
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasParticipantType()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasActor())
             tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())
@@ -32,14 +36,18 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.dstu3.model.AppointmentResponse tgt = new org.hl7.fhir.dstu3.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
         if (src.hasStart())
             tgt.setStart(src.getStart());
         if (src.hasEnd())
             tgt.setEnd(src.getEnd());
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasParticipantType()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasActor())
             tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())

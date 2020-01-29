@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,135 +50,146 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class ImmunizationRecommendation extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.ImmunizationRecommendation convertImmunizationRecommendation(org.hl7.fhir.r4.model.ImmunizationRecommendation src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasAuthority())
-      tgt.setAuthority(convertReference(src.getAuthority()));
-    for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation())
-      tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ImmunizationRecommendation convertImmunizationRecommendation(org.hl7.fhir.r4.model.ImmunizationRecommendation src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasAuthority())
+            tgt.setAuthority(convertReference(src.getAuthority()));
+        if (src.hasRecommendation()) {
+            for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ImmunizationRecommendation convertImmunizationRecommendation(org.hl7.fhir.r5.model.ImmunizationRecommendation src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasAuthority())
-      tgt.setAuthority(convertReference(src.getAuthority()));
-    for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation())
-      tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.ImmunizationRecommendation convertImmunizationRecommendation(org.hl7.fhir.r5.model.ImmunizationRecommendation src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasAuthority())
+            tgt.setAuthority(convertReference(src.getAuthority()));
+        if (src.hasRecommendation()) {
+            for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent convertImmunizationRecommendationRecommendationComponent(org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
-    copyElement(src, tgt);
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getVaccineCode())
-      tgt.addVaccineCode(convertCodeableConcept(t));
-    if (src.hasTargetDisease())
-      tgt.addTargetDisease(convertCodeableConcept(src.getTargetDisease()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getContraindicatedVaccineCode())
-      tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
-    if (src.hasForecastStatus())
-      tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getForecastReason())
-      tgt.addForecastReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion())
-      tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-    if (src.hasSeries())
-      tgt.setSeriesElement(convertString(src.getSeriesElement()));
-    if (src.hasDoseNumber())
-      tgt.setDoseNumber(convertType(src.getDoseNumber()));
-    if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingImmunization())
-      tgt.addSupportingImmunization(convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingPatientInformation())
-      tgt.addSupportingPatientInformation(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent convertImmunizationRecommendationRecommendationComponent(org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
+        copyElement(src, tgt);
+        if (src.hasVaccineCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
+        }
+        if (src.hasTargetDisease())
+            tgt.addTargetDisease(convertCodeableConcept(src.getTargetDisease()));
+        if (src.hasContraindicatedVaccineCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
+        }
+        if (src.hasForecastStatus())
+            tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
+        if (src.hasForecastReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
+        }
+        if (src.hasDateCriterion()) {
+            for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+        if (src.hasSeries())
+            tgt.setSeriesElement(convertString(src.getSeriesElement()));
+        if (src.hasDoseNumber())
+            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+        if (src.hasSeriesDoses())
+            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+        if (src.hasSupportingImmunization()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
+        }
+        if (src.hasSupportingPatientInformation()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent convertImmunizationRecommendationRecommendationComponent(org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
-    copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getVaccineCode())
-      tgt.addVaccineCode(convertCodeableConcept(t));
-    if (src.hasTargetDisease())
-      tgt.setTargetDisease(convertCodeableConcept(src.getTargetDiseaseFirstRep()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getContraindicatedVaccineCode())
-      tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
-    if (src.hasForecastStatus())
-      tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getForecastReason())
-      tgt.addForecastReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion())
-      tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-    if (src.hasSeries())
-      tgt.setSeriesElement(convertString(src.getSeriesElement()));
-    if (src.hasDoseNumber())
-      tgt.setDoseNumber(convertType(src.getDoseNumber()));
-    if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization())
-      tgt.addSupportingImmunization(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation())
-      tgt.addSupportingPatientInformation(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent convertImmunizationRecommendationRecommendationComponent(org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
+        copyElement(src, tgt);
+        if (src.hasVaccineCode()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
+        }
+        if (src.hasTargetDisease())
+            tgt.setTargetDisease(convertCodeableConcept(src.getTargetDiseaseFirstRep()));
+        if (src.hasContraindicatedVaccineCode()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
+        }
+        if (src.hasForecastStatus())
+            tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
+        if (src.hasForecastReason()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
+        }
+        if (src.hasDateCriterion()) {
+            for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+        if (src.hasSeries())
+            tgt.setSeriesElement(convertString(src.getSeriesElement()));
+        if (src.hasDoseNumber())
+            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+        if (src.hasSeriesDoses())
+            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+        if (src.hasSupportingImmunization()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
+        }
+        if (src.hasSupportingPatientInformation()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent convertImmunizationRecommendationRecommendationDateCriterionComponent(org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasValue())
-      tgt.setValueElement(convertDateTime(src.getValueElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent convertImmunizationRecommendationRecommendationDateCriterionComponent(org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent();
+        copyElement(src, tgt);
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasValue())
+            tgt.setValueElement(convertDateTime(src.getValueElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent convertImmunizationRecommendationRecommendationDateCriterionComponent(org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasValue())
-      tgt.setValueElement(convertDateTime(src.getValueElement()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent convertImmunizationRecommendationRecommendationDateCriterionComponent(org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent();
+        copyElement(src, tgt);
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasValue())
+            tgt.setValueElement(convertDateTime(src.getValueElement()));
+        return tgt;
+    }
 }

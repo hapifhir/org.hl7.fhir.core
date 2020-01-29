@@ -10,7 +10,9 @@ public class PaymentNotice30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PaymentNotice tgt = new org.hl7.fhir.dstu3.model.PaymentNotice();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
         if (src.hasRequest())
@@ -35,7 +37,9 @@ public class PaymentNotice30_50 {
             return null;
         org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
         if (src.hasRequest())

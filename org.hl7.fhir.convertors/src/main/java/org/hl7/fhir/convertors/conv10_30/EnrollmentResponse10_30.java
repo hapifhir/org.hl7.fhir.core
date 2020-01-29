@@ -10,13 +10,27 @@ public class EnrollmentResponse10_30 {
             return null;
         org.hl7.fhir.dstu3.model.EnrollmentResponse tgt = new org.hl7.fhir.dstu3.model.EnrollmentResponse();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setRequest(VersionConvertor_10_30.convertReference(src.getRequest()));
-        tgt.setDisposition(src.getDisposition());
-        tgt.setCreated(src.getCreated());
-        tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
-        tgt.setRequestProvider(VersionConvertor_10_30.convertReference(src.getRequestProvider()));
-        tgt.setRequestOrganization(VersionConvertor_10_30.convertReference(src.getRequestOrganization()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasRequest()) {
+            tgt.setRequest(VersionConvertor_10_30.convertReference(src.getRequest()));
+        }
+        if (src.hasDisposition()) {
+            tgt.setDisposition(src.getDisposition());
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasOrganization()) {
+            tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
+        }
+        if (src.hasRequestProvider()) {
+            tgt.setRequestProvider(VersionConvertor_10_30.convertReference(src.getRequestProvider()));
+        }
+        if (src.hasRequestOrganization()) {
+            tgt.setRequestOrganization(VersionConvertor_10_30.convertReference(src.getRequestOrganization()));
+        }
         return tgt;
     }
 
@@ -25,9 +39,15 @@ public class EnrollmentResponse10_30 {
             return null;
         org.hl7.fhir.dstu2.model.EnrollmentResponse tgt = new org.hl7.fhir.dstu2.model.EnrollmentResponse();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setDisposition(src.getDisposition());
-        tgt.setCreated(src.getCreated());
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasDisposition()) {
+            tgt.setDisposition(src.getDisposition());
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
         return tgt;
     }
 }

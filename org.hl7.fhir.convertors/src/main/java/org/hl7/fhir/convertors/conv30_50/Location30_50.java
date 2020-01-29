@@ -10,21 +10,27 @@ public class Location30_50 {
             return null;
         org.hl7.fhir.r5.model.Location tgt = new org.hl7.fhir.r5.model.Location();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_50.convertCoding(src.getOperationalStatus()));
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
+        if (src.hasAlias()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
         if (src.hasType())
             tgt.addType(VersionConvertor_30_50.convertCodeableConcept(src.getType()));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        }
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_30_50.convertAddress(src.getAddress()));
         if (src.hasPhysicalType())
@@ -35,7 +41,9 @@ public class Location30_50 {
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_30_50.convertReference(src.getPartOf()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
+        if (src.hasEndpoint()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 
@@ -44,21 +52,27 @@ public class Location30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Location tgt = new org.hl7.fhir.dstu3.model.Location();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_50.convertCoding(src.getOperationalStatus()));
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
+        if (src.hasAlias()) {
+            for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertCodeableConcept(src.getTypeFirstRep()));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        }
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_30_50.convertAddress(src.getAddress()));
         if (src.hasPhysicalType())
@@ -69,7 +83,9 @@ public class Location30_50 {
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_30_50.convertReference(src.getPartOf()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
+        if (src.hasEndpoint()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 

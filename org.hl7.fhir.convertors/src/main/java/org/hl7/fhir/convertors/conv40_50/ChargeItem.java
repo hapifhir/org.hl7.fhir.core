@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,185 +50,218 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class ChargeItem extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.ChargeItem convertChargeItem(org.hl7.fhir.r4.model.ChargeItem src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ChargeItem tgt = new org.hl7.fhir.r5.model.ChargeItem();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getDefinitionUri())
-      tgt.getDefinitionUri().add(convertUri(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getDefinitionCanonical())
-      tgt.getDefinitionCanonical().add(convertCanonical(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertChargeItemStatus(src.getStatus()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    for (org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
-      tgt.addPerformer(convertChargeItemPerformerComponent(t));
-    if (src.hasPerformingOrganization())
-      tgt.setPerformingOrganization(convertReference(src.getPerformingOrganization()));
-    if (src.hasRequestingOrganization())
-      tgt.setRequestingOrganization(convertReference(src.getRequestingOrganization()));
-    if (src.hasCostCenter())
-      tgt.setCostCenter(convertReference(src.getCostCenter()));
-    if (src.hasQuantity())
-      tgt.setQuantity(convertQuantity(src.getQuantity()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodysite())
-      tgt.addBodysite(convertCodeableConcept(t));
-    if (src.hasFactorOverride())
-      tgt.setFactorOverrideElement(convertDecimal(src.getFactorOverrideElement()));
-    if (src.hasPriceOverride())
-      tgt.setPriceOverride(convertMoney(src.getPriceOverride()));
-    if (src.hasOverrideReason())
-      tgt.setOverrideReasonElement(convertString(src.getOverrideReasonElement()));
-    if (src.hasEnterer())
-      tgt.setEnterer(convertReference(src.getEnterer()));
-    if (src.hasEnteredDate())
-      tgt.setEnteredDateElement(convertDateTime(src.getEnteredDateElement()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
-      tgt.addReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getService())
-      tgt.addService(convertReference(t));
-    if (src.hasProduct())
-      tgt.setProduct(convertType(src.getProduct()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getAccount())
-      tgt.addAccount(convertReference(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ChargeItem convertChargeItem(org.hl7.fhir.r4.model.ChargeItem src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ChargeItem tgt = new org.hl7.fhir.r5.model.ChargeItem();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasDefinitionUri()) {
+            for (org.hl7.fhir.r4.model.UriType t : src.getDefinitionUri()) tgt.getDefinitionUri().add(convertUri(t));
+        }
+        if (src.hasDefinitionCanonical()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getDefinitionCanonical()) tgt.getDefinitionCanonical().add(convertCanonical(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertChargeItemStatus(src.getStatus()));
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasContext())
+            tgt.setContext(convertReference(src.getContext()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertChargeItemPerformerComponent(t));
+        }
+        if (src.hasPerformingOrganization())
+            tgt.setPerformingOrganization(convertReference(src.getPerformingOrganization()));
+        if (src.hasRequestingOrganization())
+            tgt.setRequestingOrganization(convertReference(src.getRequestingOrganization()));
+        if (src.hasCostCenter())
+            tgt.setCostCenter(convertReference(src.getCostCenter()));
+        if (src.hasQuantity())
+            tgt.setQuantity(convertQuantity(src.getQuantity()));
+        if (src.hasBodysite()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodysite()) tgt.addBodysite(convertCodeableConcept(t));
+        }
+        if (src.hasFactorOverride())
+            tgt.setFactorOverrideElement(convertDecimal(src.getFactorOverrideElement()));
+        if (src.hasPriceOverride())
+            tgt.setPriceOverride(convertMoney(src.getPriceOverride()));
+        if (src.hasOverrideReason())
+            tgt.setOverrideReasonElement(convertString(src.getOverrideReasonElement()));
+        if (src.hasEnterer())
+            tgt.setEnterer(convertReference(src.getEnterer()));
+        if (src.hasEnteredDate())
+            tgt.setEnteredDateElement(convertDateTime(src.getEnteredDateElement()));
+        if (src.hasReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) tgt.addReason(convertCodeableConcept(t));
+        }
+        if (src.hasService()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getService()) tgt.addService(convertReference(t));
+        }
+        if (src.hasProduct())
+            tgt.setProduct(convertType(src.getProduct()));
+        if (src.hasAccount()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getAccount()) tgt.addAccount(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ChargeItem convertChargeItem(org.hl7.fhir.r5.model.ChargeItem src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ChargeItem tgt = new org.hl7.fhir.r4.model.ChargeItem();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getDefinitionUri())
-      tgt.getDefinitionUri().add(convertUri(t));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getDefinitionCanonical())
-      tgt.getDefinitionCanonical().add(convertCanonical(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertChargeItemStatus(src.getStatus()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(convertReference(src.getContext()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    for (org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
-      tgt.addPerformer(convertChargeItemPerformerComponent(t));
-    if (src.hasPerformingOrganization())
-      tgt.setPerformingOrganization(convertReference(src.getPerformingOrganization()));
-    if (src.hasRequestingOrganization())
-      tgt.setRequestingOrganization(convertReference(src.getRequestingOrganization()));
-    if (src.hasCostCenter())
-      tgt.setCostCenter(convertReference(src.getCostCenter()));
-    if (src.hasQuantity())
-      tgt.setQuantity(convertQuantity(src.getQuantity()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodysite())
-      tgt.addBodysite(convertCodeableConcept(t));
-    if (src.hasFactorOverride())
-      tgt.setFactorOverrideElement(convertDecimal(src.getFactorOverrideElement()));
-    if (src.hasPriceOverride())
-      tgt.setPriceOverride(convertMoney(src.getPriceOverride()));
-    if (src.hasOverrideReason())
-      tgt.setOverrideReasonElement(convertString(src.getOverrideReasonElement()));
-    if (src.hasEnterer())
-      tgt.setEnterer(convertReference(src.getEnterer()));
-    if (src.hasEnteredDate())
-      tgt.setEnteredDateElement(convertDateTime(src.getEnteredDateElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
-      tgt.addReason(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getService())
-      tgt.addService(convertReference(t));
-    if (src.hasProduct())
-      tgt.setProduct(convertType(src.getProduct()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getAccount())
-      tgt.addAccount(convertReference(t));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.ChargeItem convertChargeItem(org.hl7.fhir.r5.model.ChargeItem src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ChargeItem tgt = new org.hl7.fhir.r4.model.ChargeItem();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasDefinitionUri()) {
+            for (org.hl7.fhir.r5.model.UriType t : src.getDefinitionUri()) tgt.getDefinitionUri().add(convertUri(t));
+        }
+        if (src.hasDefinitionCanonical()) {
+            for (org.hl7.fhir.r5.model.CanonicalType t : src.getDefinitionCanonical()) tgt.getDefinitionCanonical().add(convertCanonical(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertChargeItemStatus(src.getStatus()));
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasContext())
+            tgt.setContext(convertReference(src.getContext()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasPerformer()) {
+            for (org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertChargeItemPerformerComponent(t));
+        }
+        if (src.hasPerformingOrganization())
+            tgt.setPerformingOrganization(convertReference(src.getPerformingOrganization()));
+        if (src.hasRequestingOrganization())
+            tgt.setRequestingOrganization(convertReference(src.getRequestingOrganization()));
+        if (src.hasCostCenter())
+            tgt.setCostCenter(convertReference(src.getCostCenter()));
+        if (src.hasQuantity())
+            tgt.setQuantity(convertQuantity(src.getQuantity()));
+        if (src.hasBodysite()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodysite()) tgt.addBodysite(convertCodeableConcept(t));
+        }
+        if (src.hasFactorOverride())
+            tgt.setFactorOverrideElement(convertDecimal(src.getFactorOverrideElement()));
+        if (src.hasPriceOverride())
+            tgt.setPriceOverride(convertMoney(src.getPriceOverride()));
+        if (src.hasOverrideReason())
+            tgt.setOverrideReasonElement(convertString(src.getOverrideReasonElement()));
+        if (src.hasEnterer())
+            tgt.setEnterer(convertReference(src.getEnterer()));
+        if (src.hasEnteredDate())
+            tgt.setEnteredDateElement(convertDateTime(src.getEnteredDateElement()));
+        if (src.hasReason()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason()) tgt.addReason(convertCodeableConcept(t));
+        }
+        if (src.hasService()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getService()) tgt.addService(convertReference(t));
+        }
+        if (src.hasProduct())
+            tgt.setProduct(convertType(src.getProduct()));
+        if (src.hasAccount()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PLANNED: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.PLANNED;
-    case BILLABLE: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLABLE;
-    case NOTBILLABLE: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
-    case ABORTED: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ABORTED;
-    case BILLED: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PLANNED:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.PLANNED;
+            case BILLABLE:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLABLE;
+            case NOTBILLABLE:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
+            case ABORTED:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ABORTED;
+            case BILLED:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
+            case UNKNOWN:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PLANNED: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.PLANNED;
-    case BILLABLE: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLABLE;
-    case NOTBILLABLE: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
-    case ABORTED: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ABORTED;
-    case BILLED: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.UNKNOWN;
-    default: return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PLANNED:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.PLANNED;
+            case BILLABLE:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLABLE;
+            case NOTBILLABLE:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
+            case ABORTED:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ABORTED;
+            case BILLED:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
+            case UNKNOWN:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent convertChargeItemPerformerComponent(org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent tgt = new org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent();
-    copyElement(src, tgt);
-    if (src.hasFunction())
-      tgt.setFunction(convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent convertChargeItemPerformerComponent(org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent tgt = new org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent();
+        copyElement(src, tgt);
+        if (src.hasFunction())
+            tgt.setFunction(convertCodeableConcept(src.getFunction()));
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent convertChargeItemPerformerComponent(org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent tgt = new org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent();
-    copyElement(src, tgt);
-    if (src.hasFunction())
-      tgt.setFunction(convertCodeableConcept(src.getFunction()));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent convertChargeItemPerformerComponent(org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent tgt = new org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent();
+        copyElement(src, tgt);
+        if (src.hasFunction())
+            tgt.setFunction(convertCodeableConcept(src.getFunction()));
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        return tgt;
+    }
 }

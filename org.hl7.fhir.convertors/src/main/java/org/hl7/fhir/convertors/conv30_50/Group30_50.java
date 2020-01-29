@@ -10,7 +10,9 @@ public class Group30_50 {
             return null;
         org.hl7.fhir.r5.model.Group tgt = new org.hl7.fhir.r5.model.Group();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasActive())
             tgt.setActive(src.getActive());
         if (src.hasType())
@@ -23,8 +25,12 @@ public class Group30_50 {
             tgt.setName(src.getName());
         if (src.hasQuantity())
             tgt.setQuantity(src.getQuantity());
-        for (org.hl7.fhir.dstu3.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
-        for (org.hl7.fhir.dstu3.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
+        if (src.hasCharacteristic()) {
+            for (org.hl7.fhir.dstu3.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
+        }
+        if (src.hasMember()) {
+            for (org.hl7.fhir.dstu3.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
+        }
         return tgt;
     }
 
@@ -33,7 +39,9 @@ public class Group30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Group tgt = new org.hl7.fhir.dstu3.model.Group();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasActive())
             tgt.setActive(src.getActive());
         if (src.hasType())
@@ -46,8 +54,12 @@ public class Group30_50 {
             tgt.setName(src.getName());
         if (src.hasQuantity())
             tgt.setQuantity(src.getQuantity());
-        for (org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
-        for (org.hl7.fhir.r5.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
+        if (src.hasCharacteristic()) {
+            for (org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
+        }
+        if (src.hasMember()) {
+            for (org.hl7.fhir.r5.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
+        }
         return tgt;
     }
 

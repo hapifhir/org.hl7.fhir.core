@@ -26,10 +26,14 @@ public class TestReport30_40 {
             tgt.setTester(src.getTester());
         if (src.hasIssued())
             tgt.setIssuedElement(VersionConvertor_30_40.convertDateTime(src.getIssuedElement()));
-        for (org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
+        }
         if (src.hasSetup())
             tgt.setSetup(convertTestReportSetupComponent(src.getSetup()));
-        for (org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
+        if (src.hasTest()) {
+            for (org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
+        }
         if (src.hasTeardown())
             tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
         return tgt;
@@ -56,10 +60,14 @@ public class TestReport30_40 {
             tgt.setTester(src.getTester());
         if (src.hasIssued())
             tgt.setIssuedElement(VersionConvertor_30_40.convertDateTime(src.getIssuedElement()));
-        for (org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
+        }
         if (src.hasSetup())
             tgt.setSetup(convertTestReportSetupComponent(src.getSetup()));
-        for (org.hl7.fhir.r4.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
+        if (src.hasTest()) {
+            for (org.hl7.fhir.r4.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
+        }
         if (src.hasTeardown())
             tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
         return tgt;
@@ -158,7 +166,9 @@ public class TestReport30_40 {
             return null;
         org.hl7.fhir.r4.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.r4.model.TestReport.TestReportSetupComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertSetupActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertSetupActionComponent(t));
+        }
         return tgt;
     }
 
@@ -167,7 +177,9 @@ public class TestReport30_40 {
             return null;
         org.hl7.fhir.dstu3.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportSetupComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertSetupActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.r4.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertSetupActionComponent(t));
+        }
         return tgt;
     }
 
@@ -214,7 +226,9 @@ public class TestReport30_40 {
             return null;
         org.hl7.fhir.r4.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.r4.model.TestReport.TestReportTeardownComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTeardownActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTeardownActionComponent(t));
+        }
         return tgt;
     }
 
@@ -223,7 +237,9 @@ public class TestReport30_40 {
             return null;
         org.hl7.fhir.dstu3.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportTeardownComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTeardownActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.r4.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTeardownActionComponent(t));
+        }
         return tgt;
     }
 
@@ -236,7 +252,9 @@ public class TestReport30_40 {
             tgt.setName(src.getName());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r4.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTestActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.r4.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTestActionComponent(t));
+        }
         return tgt;
     }
 
@@ -249,7 +267,9 @@ public class TestReport30_40 {
             tgt.setName(src.getName());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTestActionComponent(t));
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertTestActionComponent(t));
+        }
         return tgt;
     }
 }

@@ -178,7 +178,9 @@ public class OperationOutcome10_40 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -187,7 +189,9 @@ public class OperationOutcome10_40 {
             return null;
         org.hl7.fhir.dstu2.model.OperationOutcome tgt = new org.hl7.fhir.dstu2.model.OperationOutcome();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        if (src.hasIssue()) {
+            for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+        }
         return tgt;
     }
 
@@ -196,11 +200,21 @@ public class OperationOutcome10_40 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        tgt.setCode(convertIssueType(src.getCode()));
-        tgt.setDetails(VersionConvertor_10_40.convertCodeableConcept(src.getDetails()));
-        tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.dstu2.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        if (src.hasSeverity()) {
+            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(convertIssueType(src.getCode()));
+        }
+        if (src.hasDetails()) {
+            tgt.setDetails(VersionConvertor_10_40.convertCodeableConcept(src.getDetails()));
+        }
+        if (src.hasDiagnostics()) {
+            tgt.setDiagnostics(src.getDiagnostics());
+        }
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.dstu2.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
         return tgt;
     }
 
@@ -209,11 +223,21 @@ public class OperationOutcome10_40 {
             return null;
         org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        tgt.setCode(convertIssueType(src.getCode()));
-        tgt.setDetails(VersionConvertor_10_40.convertCodeableConcept(src.getDetails()));
-        tgt.setDiagnostics(src.getDiagnostics());
-        for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        if (src.hasSeverity()) {
+            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+        }
+        if (src.hasCode()) {
+            tgt.setCode(convertIssueType(src.getCode()));
+        }
+        if (src.hasDetails()) {
+            tgt.setDetails(VersionConvertor_10_40.convertCodeableConcept(src.getDetails()));
+        }
+        if (src.hasDiagnostics()) {
+            tgt.setDiagnostics(src.getDiagnostics());
+        }
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        }
         return tgt;
     }
 }

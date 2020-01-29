@@ -10,12 +10,16 @@ public class BodySite30_50 {
             return null;
         org.hl7.fhir.r5.model.BodyStructure tgt = new org.hl7.fhir.r5.model.BodyStructure();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasActive())
             tgt.setActive(src.getActive());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
+        if (src.hasImage()) {
+            for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
+        }
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
         return tgt;
@@ -26,12 +30,16 @@ public class BodySite30_50 {
             return null;
         org.hl7.fhir.dstu3.model.BodySite tgt = new org.hl7.fhir.dstu3.model.BodySite();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasActive())
             tgt.setActive(src.getActive());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
+        if (src.hasImage()) {
+            for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
+        }
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
         return tgt;

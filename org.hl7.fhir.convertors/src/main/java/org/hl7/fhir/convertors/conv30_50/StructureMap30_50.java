@@ -12,7 +12,9 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -27,18 +29,30 @@ public class StructureMap30_50 {
             tgt.setDate(src.getDate());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent t : src.getStructure()) tgt.addStructure(convertStructureMapStructureComponent(t));
-        for (org.hl7.fhir.dstu3.model.UriType t : src.getImport()) tgt.addImport(t.getValue());
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupComponent t : src.getGroup()) tgt.addGroup(convertStructureMapGroupComponent(t));
+        if (src.hasStructure()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent t : src.getStructure()) tgt.addStructure(convertStructureMapStructureComponent(t));
+        }
+        if (src.hasImport()) {
+            for (org.hl7.fhir.dstu3.model.UriType t : src.getImport()) tgt.addImport(t.getValue());
+        }
+        if (src.hasGroup()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupComponent t : src.getGroup()) tgt.addGroup(convertStructureMapGroupComponent(t));
+        }
         return tgt;
     }
 
@@ -49,7 +63,9 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -64,18 +80,30 @@ public class StructureMap30_50 {
             tgt.setDate(src.getDate());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent t : src.getStructure()) tgt.addStructure(convertStructureMapStructureComponent(t));
-        for (org.hl7.fhir.r5.model.UriType t : src.getImport()) tgt.addImport(t.getValue());
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent t : src.getGroup()) tgt.addGroup(convertStructureMapGroupComponent(t));
+        if (src.hasStructure()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent t : src.getStructure()) tgt.addStructure(convertStructureMapStructureComponent(t));
+        }
+        if (src.hasImport()) {
+            for (org.hl7.fhir.r5.model.UriType t : src.getImport()) tgt.addImport(t.getValue());
+        }
+        if (src.hasGroup()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent t : src.getGroup()) tgt.addGroup(convertStructureMapGroupComponent(t));
+        }
         return tgt;
     }
 
@@ -118,8 +146,12 @@ public class StructureMap30_50 {
             tgt.setTypeMode(convertStructureMapGroupTypeMode(src.getTypeMode()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupInputComponent t : src.getInput()) tgt.addInput(convertStructureMapGroupInputComponent(t));
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        if (src.hasInput()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupInputComponent t : src.getInput()) tgt.addInput(convertStructureMapGroupInputComponent(t));
+        }
+        if (src.hasRule()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        }
         return tgt;
     }
 
@@ -136,8 +168,12 @@ public class StructureMap30_50 {
             tgt.setTypeMode(convertStructureMapGroupTypeMode(src.getTypeMode()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent t : src.getInput()) tgt.addInput(convertStructureMapGroupInputComponent(t));
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        if (src.hasInput()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent t : src.getInput()) tgt.addInput(convertStructureMapGroupInputComponent(t));
+        }
+        if (src.hasRule()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        }
         return tgt;
     }
 
@@ -180,10 +216,18 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource()) tgt.addSource(convertStructureMapGroupRuleSourceComponent(t));
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent t : src.getTarget()) tgt.addTarget(convertStructureMapGroupRuleTargetComponent(t));
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent t : src.getDependent()) tgt.addDependent(convertStructureMapGroupRuleDependentComponent(t));
+        if (src.hasSource()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource()) tgt.addSource(convertStructureMapGroupRuleSourceComponent(t));
+        }
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent t : src.getTarget()) tgt.addTarget(convertStructureMapGroupRuleTargetComponent(t));
+        }
+        if (src.hasRule()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        }
+        if (src.hasDependent()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent t : src.getDependent()) tgt.addDependent(convertStructureMapGroupRuleDependentComponent(t));
+        }
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;
@@ -196,10 +240,18 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource()) tgt.addSource(convertStructureMapGroupRuleSourceComponent(t));
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetComponent t : src.getTarget()) tgt.addTarget(convertStructureMapGroupRuleTargetComponent(t));
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleDependentComponent t : src.getDependent()) tgt.addDependent(convertStructureMapGroupRuleDependentComponent(t));
+        if (src.hasSource()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource()) tgt.addSource(convertStructureMapGroupRuleSourceComponent(t));
+        }
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetComponent t : src.getTarget()) tgt.addTarget(convertStructureMapGroupRuleTargetComponent(t));
+        }
+        if (src.hasRule()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent t : src.getRule()) tgt.addRule(convertStructureMapGroupRuleComponent(t));
+        }
+        if (src.hasDependent()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleDependentComponent t : src.getDependent()) tgt.addDependent(convertStructureMapGroupRuleDependentComponent(t));
+        }
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;
@@ -212,7 +264,9 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+        if (src.hasVariable()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+        }
         return tgt;
     }
 
@@ -223,7 +277,9 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.r5.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+        if (src.hasVariable()) {
+            for (org.hl7.fhir.r5.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+        }
         return tgt;
     }
 
@@ -296,12 +352,16 @@ public class StructureMap30_50 {
             tgt.setElement(src.getElement());
         if (src.hasVariable())
             tgt.setVariable(src.getVariable());
-        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureMap.StructureMapTargetListMode> t : src.getListMode()) VersionConvertor_30_50.copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
+        if (src.hasListMode()) {
+            for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureMap.StructureMapTargetListMode> t : src.getListMode()) VersionConvertor_30_50.copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
+        }
         if (src.hasListRuleId())
             tgt.setListRuleId(src.getListRuleId());
         if (src.hasTransform())
             tgt.setTransform(convertStructureMapTransform(src.getTransform()));
-        for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -318,12 +378,16 @@ public class StructureMap30_50 {
             tgt.setElement(src.getElement());
         if (src.hasVariable())
             tgt.setVariable(src.getVariable());
-        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> t : src.getListMode()) VersionConvertor_30_50.copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
+        if (src.hasListMode()) {
+            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode> t : src.getListMode()) VersionConvertor_30_50.copyElement(t, tgt.addListModeElement().setValue(convertStructureMapTargetListMode(t.getValue())));
+        }
         if (src.hasListRuleId())
             tgt.setListRuleId(src.getListRuleId());
         if (src.hasTransform())
             tgt.setTransform(convertStructureMapTransform(src.getTransform()));
-        for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
+        }
         return tgt;
     }
 

@@ -12,8 +12,12 @@ public class SupplyDelivery30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_50.convertReference(t));
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_50.convertReference(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
         if (src.hasPatient())
@@ -28,7 +32,9 @@ public class SupplyDelivery30_50 {
             tgt.setSupplier(VersionConvertor_30_50.convertReference(src.getSupplier()));
         if (src.hasDestination())
             tgt.setDestination(VersionConvertor_30_50.convertReference(src.getDestination()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getReceiver()) tgt.addReceiver(VersionConvertor_30_50.convertReference(t));
+        if (src.hasReceiver()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getReceiver()) tgt.addReceiver(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 
@@ -39,8 +45,12 @@ public class SupplyDelivery30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifierFirstRep()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_50.convertReference(t));
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_50.convertReference(t));
+        }
         if (src.hasStatus())
             tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
         if (src.hasPatient())
@@ -55,7 +65,9 @@ public class SupplyDelivery30_50 {
             tgt.setSupplier(VersionConvertor_30_50.convertReference(src.getSupplier()));
         if (src.hasDestination())
             tgt.setDestination(VersionConvertor_30_50.convertReference(src.getDestination()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(VersionConvertor_30_50.convertReference(t));
+        if (src.hasReceiver()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(VersionConvertor_30_50.convertReference(t));
+        }
         return tgt;
     }
 

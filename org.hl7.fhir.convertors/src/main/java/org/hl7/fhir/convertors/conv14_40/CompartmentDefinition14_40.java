@@ -10,23 +10,37 @@ public class CompartmentDefinition14_40 {
             return null;
         org.hl7.fhir.r4.model.CompartmentDefinition tgt = new org.hl7.fhir.r4.model.CompartmentDefinition();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+        }
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionContactComponent t : src.getContact()) tgt.addContact(convertCompartmentDefinitionContactComponent(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionContactComponent t : src.getContact()) tgt.addContact(convertCompartmentDefinitionContactComponent(t));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasRequirements())
             tgt.setPurpose(src.getRequirements());
-        tgt.setCode(convertCompartmentType(src.getCode()));
-        tgt.setSearch(src.getSearch());
-        for (org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+        if (src.hasCode()) {
+            tgt.setCode(convertCompartmentType(src.getCode()));
+        }
+        if (src.hasSearch()) {
+            tgt.setSearch(src.getSearch());
+        }
+        if (src.hasResource()) {
+            for (org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+        }
         return tgt;
     }
 
@@ -35,23 +49,37 @@ public class CompartmentDefinition14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.CompartmentDefinition tgt = new org.hl7.fhir.dstu2016may.model.CompartmentDefinition();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
-        tgt.setUrl(src.getUrl());
-        tgt.setName(src.getName());
-        tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+        if (src.hasUrl()) {
+            tgt.setUrl(src.getUrl());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+        }
         if (src.hasExperimental())
             tgt.setExperimental(src.getExperimental());
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertCompartmentDefinitionContactComponent(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertCompartmentDefinitionContactComponent(t));
+        }
         if (src.hasDate())
             tgt.setDate(src.getDate());
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasPurpose())
             tgt.setRequirements(src.getPurpose());
-        tgt.setCode(convertCompartmentType(src.getCode()));
-        tgt.setSearch(src.getSearch());
-        for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+        if (src.hasCode()) {
+            tgt.setCode(convertCompartmentType(src.getCode()));
+        }
+        if (src.hasSearch()) {
+            tgt.setSearch(src.getSearch());
+        }
+        if (src.hasResource()) {
+            for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+        }
         return tgt;
     }
 
@@ -62,7 +90,9 @@ public class CompartmentDefinition14_40 {
         VersionConvertor_14_40.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -73,7 +103,9 @@ public class CompartmentDefinition14_40 {
         VersionConvertor_14_40.copyElement(src, tgt);
         if (src.hasName())
             tgt.setName(src.getName());
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+        }
         return tgt;
     }
 
@@ -82,8 +114,12 @@ public class CompartmentDefinition14_40 {
             return null;
         org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setCode(src.getCode());
-        for (org.hl7.fhir.dstu2016may.model.StringType t : src.getParam()) tgt.addParam(t.getValue());
+        if (src.hasCode()) {
+            tgt.setCode(src.getCode());
+        }
+        if (src.hasParam()) {
+            for (org.hl7.fhir.dstu2016may.model.StringType t : src.getParam()) tgt.addParam(t.getValue());
+        }
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;
@@ -94,8 +130,12 @@ public class CompartmentDefinition14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        tgt.setCode(src.getCode());
-        for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.addParam(t.getValue());
+        if (src.hasCode()) {
+            tgt.setCode(src.getCode());
+        }
+        if (src.hasParam()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.addParam(t.getValue());
+        }
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;

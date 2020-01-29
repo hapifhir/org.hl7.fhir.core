@@ -10,15 +10,33 @@ public class Account10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Account tgt = new org.hl7.fhir.dstu2.model.Account();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setName(src.getName());
-        tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setStatus(convertAccountStatus(src.getStatus()));
-        tgt.setActivePeriod(VersionConvertor_10_30.convertPeriod(src.getActive()));
-        tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        tgt.setDescription(src.getDescription());
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertAccountStatus(src.getStatus()));
+        }
+        if (src.hasActive()) {
+            tgt.setActivePeriod(VersionConvertor_10_30.convertPeriod(src.getActive()));
+        }
+        if (src.hasBalance()) {
+            tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasOwner()) {
+            tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         return tgt;
     }
 
@@ -27,17 +45,31 @@ public class Account10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Account tgt = new org.hl7.fhir.dstu3.model.Account();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
         if (src.hasName())
             tgt.setName(src.getName());
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        tgt.setStatus(convertAccountStatus(src.getStatus()));
-        tgt.setActive(VersionConvertor_10_30.convertPeriod(src.getActivePeriod()));
-        tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        tgt.setDescription(src.getDescription());
+        if (src.hasStatus()) {
+            tgt.setStatus(convertAccountStatus(src.getStatus()));
+        }
+        if (src.hasActivePeriod()) {
+            tgt.setActive(VersionConvertor_10_30.convertPeriod(src.getActivePeriod()));
+        }
+        if (src.hasBalance()) {
+            tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasOwner()) {
+            tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
         return tgt;
     }
 

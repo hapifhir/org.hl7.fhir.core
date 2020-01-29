@@ -12,7 +12,9 @@ public class Subscription30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasStatus())
             tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactPoint(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactPoint(t));
+        }
         if (src.hasEnd())
             tgt.setEnd(src.getEnd());
         if (src.hasReason())
@@ -33,7 +35,9 @@ public class Subscription30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasStatus())
             tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactPoint(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactPoint(t));
+        }
         if (src.hasEnd())
             tgt.setEnd(src.getEnd());
         if (src.hasReason())
@@ -58,7 +62,9 @@ public class Subscription30_40 {
             tgt.setEndpoint(src.getEndpoint());
         if (src.hasPayload())
             tgt.setPayload(src.getPayload());
-        for (org.hl7.fhir.r4.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
+        if (src.hasHeader()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
+        }
         return tgt;
     }
 
@@ -73,7 +79,9 @@ public class Subscription30_40 {
             tgt.setEndpoint(src.getEndpoint());
         if (src.hasPayload())
             tgt.setPayload(src.getPayload());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
+        if (src.hasHeader()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
+        }
         return tgt;
     }
 

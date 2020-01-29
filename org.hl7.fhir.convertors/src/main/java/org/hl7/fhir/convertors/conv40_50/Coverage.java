@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,199 +50,216 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Coverage extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Coverage convertCoverage(org.hl7.fhir.r4.model.Coverage src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Coverage tgt = new org.hl7.fhir.r5.model.Coverage();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertCoverageStatus(src.getStatus()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasPolicyHolder())
-      tgt.setPolicyHolder(convertReference(src.getPolicyHolder()));
-    if (src.hasSubscriber())
-      tgt.setSubscriber(convertReference(src.getSubscriber()));
-    if (src.hasSubscriberId())
-      tgt.getSubscriberId().setValueElement(convertString(src.getSubscriberIdElement()));
-    if (src.hasBeneficiary())
-      tgt.setBeneficiary(convertReference(src.getBeneficiary()));
-    if (src.hasDependent())
-      tgt.setDependentElement(convertString(src.getDependentElement()));
-    if (src.hasRelationship())
-      tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPayor())
-      tgt.addPayor(convertReference(t));
-    for (org.hl7.fhir.r4.model.Coverage.ClassComponent t : src.getClass_())
-      tgt.addClass_(convertClassComponent(t));
-    if (src.hasOrder())
-      tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
-    if (src.hasNetwork())
-      tgt.setNetworkElement(convertString(src.getNetworkElement()));
-    for (org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary())
-      tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
-    if (src.hasSubrogation())
-      tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getContract())
-      tgt.addContract(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Coverage convertCoverage(org.hl7.fhir.r4.model.Coverage src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Coverage tgt = new org.hl7.fhir.r5.model.Coverage();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertCoverageStatus(src.getStatus()));
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasPolicyHolder())
+            tgt.setPolicyHolder(convertReference(src.getPolicyHolder()));
+        if (src.hasSubscriber())
+            tgt.setSubscriber(convertReference(src.getSubscriber()));
+        if (src.hasSubscriberId())
+            tgt.getSubscriberId().setValueElement(convertString(src.getSubscriberIdElement()));
+        if (src.hasBeneficiary())
+            tgt.setBeneficiary(convertReference(src.getBeneficiary()));
+        if (src.hasDependent())
+            tgt.setDependentElement(convertString(src.getDependentElement()));
+        if (src.hasRelationship())
+            tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasPayor()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
+        }
+        if (src.hasClass_()) {
+            for (org.hl7.fhir.r4.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
+        }
+        if (src.hasOrder())
+            tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
+        if (src.hasNetwork())
+            tgt.setNetworkElement(convertString(src.getNetworkElement()));
+        if (src.hasCostToBeneficiary()) {
+            for (org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
+        }
+        if (src.hasSubrogation())
+            tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
+        if (src.hasContract()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Coverage convertCoverage(org.hl7.fhir.r5.model.Coverage src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Coverage tgt = new org.hl7.fhir.r4.model.Coverage();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertCoverageStatus(src.getStatus()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasPolicyHolder())
-      tgt.setPolicyHolder(convertReference(src.getPolicyHolder()));
-    if (src.hasSubscriber())
-      tgt.setSubscriber(convertReference(src.getSubscriber()));
-    if (src.hasSubscriberId())
-      tgt.setSubscriberIdElement(convertString(src.getSubscriberId().getValueElement()));
-    if (src.hasBeneficiary())
-      tgt.setBeneficiary(convertReference(src.getBeneficiary()));
-    if (src.hasDependent())
-      tgt.setDependentElement(convertString(src.getDependentElement()));
-    if (src.hasRelationship())
-      tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPayor())
-      tgt.addPayor(convertReference(t));
-    for (org.hl7.fhir.r5.model.Coverage.ClassComponent t : src.getClass_())
-      tgt.addClass_(convertClassComponent(t));
-    if (src.hasOrder())
-      tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
-    if (src.hasNetwork())
-      tgt.setNetworkElement(convertString(src.getNetworkElement()));
-    for (org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary())
-      tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
-    if (src.hasSubrogation())
-      tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getContract())
-      tgt.addContract(convertReference(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Coverage convertCoverage(org.hl7.fhir.r5.model.Coverage src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Coverage tgt = new org.hl7.fhir.r4.model.Coverage();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertCoverageStatus(src.getStatus()));
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasPolicyHolder())
+            tgt.setPolicyHolder(convertReference(src.getPolicyHolder()));
+        if (src.hasSubscriber())
+            tgt.setSubscriber(convertReference(src.getSubscriber()));
+        if (src.hasSubscriberId())
+            tgt.setSubscriberIdElement(convertString(src.getSubscriberId().getValueElement()));
+        if (src.hasBeneficiary())
+            tgt.setBeneficiary(convertReference(src.getBeneficiary()));
+        if (src.hasDependent())
+            tgt.setDependentElement(convertString(src.getDependentElement()));
+        if (src.hasRelationship())
+            tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasPayor()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
+        }
+        if (src.hasClass_()) {
+            for (org.hl7.fhir.r5.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
+        }
+        if (src.hasOrder())
+            tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
+        if (src.hasNetwork())
+            tgt.setNetworkElement(convertString(src.getNetworkElement()));
+        if (src.hasCostToBeneficiary()) {
+            for (org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
+        }
+        if (src.hasSubrogation())
+            tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
+        if (src.hasContract()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertCoverageStatus(org.hl7.fhir.r4.model.Coverage.CoverageStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertCoverageStatus(org.hl7.fhir.r4.model.Coverage.CoverageStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r4.model.Coverage.CoverageStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r4.model.Coverage.CoverageStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.Coverage.CoverageStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.Coverage.ClassComponent convertClassComponent(org.hl7.fhir.r4.model.Coverage.ClassComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r5.model.Coverage.ClassComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValueElement(convertString(src.getValueElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Coverage.ClassComponent convertClassComponent(org.hl7.fhir.r4.model.Coverage.ClassComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r5.model.Coverage.ClassComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasValue())
+            tgt.setValueElement(convertString(src.getValueElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Coverage.ClassComponent convertClassComponent(org.hl7.fhir.r5.model.Coverage.ClassComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r4.model.Coverage.ClassComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValueElement(convertString(src.getValueElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Coverage.ClassComponent convertClassComponent(org.hl7.fhir.r5.model.Coverage.ClassComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r4.model.Coverage.ClassComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasValue())
+            tgt.setValueElement(convertString(src.getValueElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent convertCostToBeneficiaryComponent(org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(convertType(src.getValue()));
-    for (org.hl7.fhir.r4.model.Coverage.ExemptionComponent t : src.getException())
-      tgt.addException(convertExemptionComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent convertCostToBeneficiaryComponent(org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasValue())
+            tgt.setValue(convertType(src.getValue()));
+        if (src.hasException()) {
+            for (org.hl7.fhir.r4.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent convertCostToBeneficiaryComponent(org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasValue())
-      tgt.setValue(convertType(src.getValue()));
-    for (org.hl7.fhir.r5.model.Coverage.ExemptionComponent t : src.getException())
-      tgt.addException(convertExemptionComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent convertCostToBeneficiaryComponent(org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasValue())
+            tgt.setValue(convertType(src.getValue()));
+        if (src.hasException()) {
+            for (org.hl7.fhir.r5.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Coverage.ExemptionComponent convertExemptionComponent(org.hl7.fhir.r4.model.Coverage.ExemptionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r5.model.Coverage.ExemptionComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Coverage.ExemptionComponent convertExemptionComponent(org.hl7.fhir.r4.model.Coverage.ExemptionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r5.model.Coverage.ExemptionComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Coverage.ExemptionComponent convertExemptionComponent(org.hl7.fhir.r5.model.Coverage.ExemptionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r4.model.Coverage.ExemptionComponent();
-    copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.Coverage.ExemptionComponent convertExemptionComponent(org.hl7.fhir.r5.model.Coverage.ExemptionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r4.model.Coverage.ExemptionComponent();
+        copyElement(src, tgt);
+        if (src.hasType())
+            tgt.setType(convertCodeableConcept(src.getType()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        return tgt;
+    }
 }

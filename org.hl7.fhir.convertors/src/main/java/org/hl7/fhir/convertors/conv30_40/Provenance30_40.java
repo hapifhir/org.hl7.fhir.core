@@ -32,20 +32,32 @@ public class Provenance30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Provenance tgt = new org.hl7.fhir.dstu3.model.Provenance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Reference t : src.getTarget()) tgt.addTarget(VersionConvertor_30_40.convertReference(t));
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getTarget()) tgt.addTarget(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasOccurredPeriod())
             tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getOccurredPeriod()));
         if (src.hasRecorded())
             tgt.setRecordedElement(VersionConvertor_30_40.convertInstant(src.getRecordedElement()));
-        for (org.hl7.fhir.r4.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        if (src.hasPolicy()) {
+            for (org.hl7.fhir.r4.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        }
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_40.convertReference(src.getLocation()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) for (org.hl7.fhir.r4.model.Coding tc : t.getCoding()) tgt.addReason(VersionConvertor_30_40.convertCoding(tc));
+        if (src.hasReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) for (org.hl7.fhir.r4.model.Coding tc : t.getCoding()) tgt.addReason(VersionConvertor_30_40.convertCoding(tc));
+        }
         if (src.hasActivity())
             tgt.setActivity(VersionConvertor_30_40.convertCoding(src.getActivity()));
-        for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
-        for (org.hl7.fhir.r4.model.Provenance.ProvenanceEntityComponent t : src.getEntity()) tgt.addEntity(convertProvenanceEntityComponent(t));
-        for (org.hl7.fhir.r4.model.Signature t : src.getSignature()) tgt.addSignature(VersionConvertor_30_40.convertSignature(t));
+        if (src.hasAgent()) {
+            for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
+        }
+        if (src.hasEntity()) {
+            for (org.hl7.fhir.r4.model.Provenance.ProvenanceEntityComponent t : src.getEntity()) tgt.addEntity(convertProvenanceEntityComponent(t));
+        }
+        if (src.hasSignature()) {
+            for (org.hl7.fhir.r4.model.Signature t : src.getSignature()) tgt.addSignature(VersionConvertor_30_40.convertSignature(t));
+        }
         return tgt;
     }
 
@@ -54,20 +66,32 @@ public class Provenance30_40 {
             return null;
         org.hl7.fhir.r4.model.Provenance tgt = new org.hl7.fhir.r4.model.Provenance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getTarget()) tgt.addTarget(VersionConvertor_30_40.convertReference(t));
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getTarget()) tgt.addTarget(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasPeriod())
             tgt.setOccurred(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
         if (src.hasRecorded())
             tgt.setRecordedElement(VersionConvertor_30_40.convertInstant(src.getRecordedElement()));
-        for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        if (src.hasPolicy()) {
+            for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        }
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_40.convertReference(src.getLocation()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getReason()) tgt.addReason(convertCodingToCodeableConcept(t));
+        if (src.hasReason()) {
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getReason()) tgt.addReason(convertCodingToCodeableConcept(t));
+        }
         if (src.hasActivity())
             tgt.setActivity(convertCodingToCodeableConcept(src.getActivity()));
-        for (org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
-        for (org.hl7.fhir.dstu3.model.Provenance.ProvenanceEntityComponent t : src.getEntity()) tgt.addEntity(convertProvenanceEntityComponent(t));
-        for (org.hl7.fhir.dstu3.model.Signature t : src.getSignature()) tgt.addSignature(VersionConvertor_30_40.convertSignature(t));
+        if (src.hasAgent()) {
+            for (org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
+        }
+        if (src.hasEntity()) {
+            for (org.hl7.fhir.dstu3.model.Provenance.ProvenanceEntityComponent t : src.getEntity()) tgt.addEntity(convertProvenanceEntityComponent(t));
+        }
+        if (src.hasSignature()) {
+            for (org.hl7.fhir.dstu3.model.Signature t : src.getSignature()) tgt.addSignature(VersionConvertor_30_40.convertSignature(t));
+        }
         return tgt;
     }
 
@@ -76,7 +100,9 @@ public class Provenance30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent tgt = new org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasRole()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         if (src.hasWho())
             tgt.setWho(VersionConvertor_30_40.convertType(src.getWho()));
         if (src.hasOnBehalfOf())
@@ -116,7 +142,9 @@ public class Provenance30_40 {
             tgt.setRole(convertProvenanceEntityRole(src.getRole()));
         if (src.hasWhat())
             tgt.setWhat(VersionConvertor_30_40.convertType(src.getWhat()));
-        for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
+        if (src.hasAgent()) {
+            for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent()) tgt.addAgent(convertProvenanceAgentComponent(t));
+        }
         return tgt;
     }
 

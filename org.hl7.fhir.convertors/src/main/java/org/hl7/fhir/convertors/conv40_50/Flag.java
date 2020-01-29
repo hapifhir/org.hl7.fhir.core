@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,81 +50,88 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Flag extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Flag convertFlag(org.hl7.fhir.r4.model.Flag src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Flag tgt = new org.hl7.fhir.r5.model.Flag();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertFlagStatus(src.getStatus()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasAuthor())
-      tgt.setAuthor(convertReference(src.getAuthor()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Flag convertFlag(org.hl7.fhir.r4.model.Flag src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Flag tgt = new org.hl7.fhir.r5.model.Flag();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertFlagStatus(src.getStatus()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasAuthor())
+            tgt.setAuthor(convertReference(src.getAuthor()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Flag convertFlag(org.hl7.fhir.r5.model.Flag src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Flag tgt = new org.hl7.fhir.r4.model.Flag();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertFlagStatus(src.getStatus()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasAuthor())
-      tgt.setAuthor(convertReference(src.getAuthor()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Flag convertFlag(org.hl7.fhir.r5.model.Flag src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Flag tgt = new org.hl7.fhir.r4.model.Flag();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertFlagStatus(src.getStatus()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasAuthor())
+            tgt.setAuthor(convertReference(src.getAuthor()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.r4.model.Flag.FlagStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE;
-    case INACTIVE: return org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Flag.FlagStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.r4.model.Flag.FlagStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE;
+            case INACTIVE:
+                return org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.Flag.FlagStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.r5.model.Flag.FlagStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.Flag.FlagStatus.ACTIVE;
-    case INACTIVE: return org.hl7.fhir.r4.model.Flag.FlagStatus.INACTIVE;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.Flag.FlagStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.Flag.FlagStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.r5.model.Flag.FlagStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.Flag.FlagStatus.ACTIVE;
+            case INACTIVE:
+                return org.hl7.fhir.r4.model.Flag.FlagStatus.INACTIVE;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.Flag.FlagStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.Flag.FlagStatus.NULL;
+        }
+    }
 }
