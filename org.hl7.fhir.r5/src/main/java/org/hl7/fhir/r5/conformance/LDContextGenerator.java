@@ -87,9 +87,7 @@ public class LDContextGenerator {
 
       List<ElementDefinition> bb = backboneList.get(bbKey);
 
-      //System.out.println("\nBB Element " + bbKey);
       for (ElementDefinition bbElement : bb) {
-       // System.out.println(bbElement.toString());
         getNewContextObjects(bbElement, true);
       }
 
@@ -115,10 +113,7 @@ public class LDContextGenerator {
 
     String coPrefix = "";
     String contextObject = elementDefinition.toString();
-
-    if (contextObject.toLowerCase().equals("identifier")){
-      System.out.println("Identifer here");
-    }
+//    System.out.println("contextObject: " + contextObject );
 
     if (!isBBElement) {
       String[] coStrings = contextObject.split("\\.");
@@ -130,7 +125,6 @@ public class LDContextGenerator {
     }
 
     contextObject = trimContextObject(contextObject, isBBElement);
-//    System.out.println("contextObject: " + contextObject );
 
     if (elementDefinition.toString().contains(ARRAY_OF_X)){
       coPrefix = contextObject;
@@ -158,10 +152,11 @@ public class LDContextGenerator {
         context = null;
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
-      else if (context.equals(BACKBONE_ELEMENT)) {
+
+      else if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
+
         context = idTrimmed + "." + contextObject;
         createNewContextObject(contextObject,context, context, resourceUri);
-
         addToBackboneList(context, elementDefinition);
       }
       else {
@@ -183,6 +178,17 @@ public class LDContextGenerator {
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
     }
+  }
+
+  private boolean isElement(ElementDefinition elementDefinition){
+    boolean isElement = false;
+
+    if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).toString().equals("Element")) {
+
+      isElement = true;
+    }
+    return isElement;
   }
 
   private boolean isBackboneElement(ElementDefinition elementDefinition){
@@ -207,8 +213,7 @@ public class LDContextGenerator {
     String nameTrimmed = name.substring(0, name.lastIndexOf("."));
 
     // if this is another backbone element, put it in the list for later and don't process.
-    boolean isBackboneElement = isBackboneElement(elementDefinition);
-    if (isBackboneElement) {
+    if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
       addToBackboneList(name, elementDefinition);
       return;
     }
@@ -218,13 +223,6 @@ public class LDContextGenerator {
       bbList.add(elementDefinition);
     }
     else {
-//      // This wasn't a defined backbone, try one last way make it work like a backbone element
-//      String[] nameSplit = name.split("\\.");
-//      if (nameSplit.length > 2) {
-//        nameTrimmed
-//
-//      }
-
       System.out.println("**** could not find backbone element for " + name);
     }
   }

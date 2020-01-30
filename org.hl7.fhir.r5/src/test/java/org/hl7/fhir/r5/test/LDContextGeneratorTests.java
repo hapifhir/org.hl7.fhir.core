@@ -59,7 +59,7 @@ public class LDContextGeneratorTests {
 
       synchronized(this) {
         LDContextGenerator ldContextGenerator = new LDContextGenerator();
-        
+
         renderedJson = ldContextGenerator.generate(sd);
 
         // write each json string to a file
@@ -71,12 +71,12 @@ public class LDContextGeneratorTests {
       }
     }
   }
-//
+
   @Test
   public void testAll() throws FHIRException, IOException, UcumException {
     doTestAll();
   }
-
+//
 //  @Test
 //  public void testIdentifier() throws FHIRException, IOException, UcumException {
 //    doTest("Identifier");
@@ -93,8 +93,23 @@ public class LDContextGeneratorTests {
 //  }
 
 //  @Test
+//  public void testDosage() throws FHIRException, IOException, UcumException {
+//    doTest("Dosage"); // No backbone element, but has element that needs to be its own context file
+//  }
+
+//  @Test
+//  public void testObservationDefinition() throws FHIRException, IOException, UcumException {
+//    doTest("ObservationDefinition");  // *** doesn't have backbone element, but is on fhir website... referenceRange type (need to check) ***
+//  }
+
+//  @Test
+//  public void testElementDefinition() throws FHIRException, IOException, UcumException {
+//    doTest("ElementDefinition");  // *** doesn't have backbone element, but is on fhir website... referenceRange type (need to check) ***
+//  }
+
+//  @Test
 //  public void testObservation() throws FHIRException, IOException, UcumException {
-//    doTest("Observation");  // *** doesn't have backbone element, but is on fhir website ***
+//    doTest("Observation");  // *** doesn't have backbone element, but is on fhir website... referenceRange type (need to check) ***
 //  }
 
 //  @Test
@@ -133,6 +148,11 @@ public class LDContextGeneratorTests {
 //  }
 //
 //  @Test
+//  public void testTiming() throws FHIRException, IOException, UcumException {
+//    doTest("Timing");
+//  }
+
+//  @Test
 //  public void testDateTime() throws FHIRException, IOException, UcumException {
 //    doTest("dateTime");
 //  }
@@ -149,4 +169,11 @@ public class LDContextGeneratorTests {
 //    public void testString() throws FHIRException, IOException, UcumException {
 //      doTest("string");
 //  }
+
+//  @Test
+//    public void testAdverseEvent() throws FHIRException, IOException, UcumException {
+//      doTest("AdverseEvent");
+//  }
+
+
 }
