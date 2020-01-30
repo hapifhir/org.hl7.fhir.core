@@ -4354,13 +4354,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     @Override
     public int compare(ElementDefinitionHolder o1, ElementDefinitionHolder o2) {
       if (o1.getBaseIndex() == 0)
-        o1.setBaseIndex(find(o1.getSelf().getPath()));
+        o1.setBaseIndex(find(o1.getSelf().getPath(), true));
       if (o2.getBaseIndex() == 0)
-        o2.setBaseIndex(find(o2.getSelf().getPath()));
+        o2.setBaseIndex(find(o2.getSelf().getPath(), true));
       return o1.getBaseIndex() - o2.getBaseIndex();
     }
 
-    private int find(String path) {
+    private int find(String path, boolean mandatory) {
       String op = path;
       int lc = 0;
       String actual = base+path.substring(prefixLength);
@@ -4392,10 +4392,12 @@ public class ProfileUtilities extends TranslatingUtilities {
             throw new Error("Internal recursion detection: find() loop path recursion > "+MAX_RECURSION_LIMIT+" - check paths are valid (for path "+path+"/"+op+")");
         }
       }
-      if (prefixLength == 0)
-        errors.add("Differential contains path "+path+" which is not found in the base");
-      else
-        errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+      if (mandatory) {
+        if (prefixLength == 0)
+          errors.add("Differential contains path "+path+" which is not found in the base");
+        else
+          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+      }
       return 0;
     }
 
@@ -4508,7 +4510,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private void sortElements(ElementDefinitionHolder edh, ElementDefinitionComparer cmp, List<String> errors) throws FHIRException {
     if (edh.getChildren().size() == 1)
       // special case - sort needsto allocate base numbers, but there'll be no sort if there's only 1 child. So in that case, we just go ahead and allocated base number directly
-      edh.getChildren().get(0).baseIndex = cmp.find(edh.getChildren().get(0).getSelf().getPath());
+      edh.getChildren().get(0).baseIndex = cmp.find(edh.getChildren().get(0).getSelf().getPath(), false);
     else
       Collections.sort(edh.getChildren(), cmp);
     cmp.checkForErrors(errors);
