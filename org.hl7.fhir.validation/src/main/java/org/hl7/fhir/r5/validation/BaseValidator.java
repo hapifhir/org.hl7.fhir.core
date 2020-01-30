@@ -157,16 +157,10 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
-    if (!thePass) {
-		 addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true);
-	 }
-    return thePass;
-  }
   
   protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
-     addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true).setHtml(html);
+     addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true).setSliceHtml(html);
    }
     return thePass;
   }
