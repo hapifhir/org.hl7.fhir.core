@@ -24,12 +24,16 @@ public class DetectedIssue30_40 {
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getIdentifiedDateTimeType()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
+        if (src.hasImplicated()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasDetail())
             tgt.setDetail(src.getDetail());
         if (src.hasReference())
             tgt.setReference(src.getReference());
-        for (org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
+        if (src.hasMitigation()) {
+            for (org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
+        }
         return tgt;
     }
 
@@ -52,12 +56,16 @@ public class DetectedIssue30_40 {
             tgt.setIdentified(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
+        if (src.hasImplicated()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasDetail())
             tgt.setDetail(src.getDetail());
         if (src.hasReference())
             tgt.setReference(src.getReference());
-        for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
+        if (src.hasMitigation()) {
+            for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
+        }
         return tgt;
     }
 

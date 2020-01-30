@@ -19,12 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,135 +51,155 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class CareTeam extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.CareTeam convertCareTeam(org.hl7.fhir.r4.model.CareTeam src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.CareTeam tgt = new org.hl7.fhir.r5.model.CareTeam();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertCareTeamStatus(src.getStatus()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
-      tgt.addParticipant(convertCareTeamParticipantComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getManagingOrganization())
-      tgt.addManagingOrganization(convertReference(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.CareTeam convertCareTeam(org.hl7.fhir.r4.model.CareTeam src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.CareTeam tgt = new org.hl7.fhir.r5.model.CareTeam();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertCareTeamStatus(src.getStatus()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertCareTeamParticipantComponent(t));
+        }
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        }
+        if (src.hasManagingOrganization()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getManagingOrganization()) tgt.addManagingOrganization(convertReference(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.CareTeam convertCareTeam(org.hl7.fhir.r5.model.CareTeam src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.CareTeam tgt = new org.hl7.fhir.r4.model.CareTeam();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertCareTeamStatus(src.getStatus()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant())
-      tgt.addParticipant(convertCareTeamParticipantComponent(t));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasReference())
-      tgt.addReasonReference(convertReference(t.getReference()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getManagingOrganization())
-      tgt.addManagingOrganization(convertReference(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.CareTeam convertCareTeam(org.hl7.fhir.r5.model.CareTeam src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.CareTeam tgt = new org.hl7.fhir.r4.model.CareTeam();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertCareTeamStatus(src.getStatus()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertCareTeamParticipantComponent(t));
+        }
+        for (CodeableReference t : src.getReason()) if (t.hasConcept())
+            tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+        for (CodeableReference t : src.getReason()) if (t.hasReference())
+            tgt.addReasonReference(convertReference(t.getReference()));
+        if (src.hasManagingOrganization()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getManagingOrganization()) tgt.addManagingOrganization(convertReference(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PROPOSED: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.PROPOSED;
-    case ACTIVE: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ACTIVE;
-    case SUSPENDED: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.SUSPENDED;
-    case INACTIVE: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.INACTIVE;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PROPOSED:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.PROPOSED;
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ACTIVE;
+            case SUSPENDED:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.SUSPENDED;
+            case INACTIVE:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.INACTIVE;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PROPOSED: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.PROPOSED;
-    case ACTIVE: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ACTIVE;
-    case SUSPENDED: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.SUSPENDED;
-    case INACTIVE: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.INACTIVE;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PROPOSED:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.PROPOSED;
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ACTIVE;
+            case SUSPENDED:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.SUSPENDED;
+            case INACTIVE:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.INACTIVE;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent convertCareTeamParticipantComponent(org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent();
-    copyElement(src, tgt);
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole())
-      tgt.setRole(convertCodeableConcept(t));
-    if (src.hasMember())
-      tgt.setMember(convertReference(src.getMember()));
-    if (src.hasOnBehalfOf())
-      tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
-    if (src.hasPeriod())
-      tgt.setCoverage(convertPeriod(src.getPeriod()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent convertCareTeamParticipantComponent(org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent();
+        copyElement(src, tgt);
+        if (src.hasRole()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole()) tgt.setRole(convertCodeableConcept(t));
+        }
+        if (src.hasMember())
+            tgt.setMember(convertReference(src.getMember()));
+        if (src.hasOnBehalfOf())
+            tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
+        if (src.hasPeriod())
+            tgt.setCoverage(convertPeriod(src.getPeriod()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent convertCareTeamParticipantComponent(org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent();
-    copyElement(src, tgt);
-    if (src.hasRole())
-      tgt.addRole(convertCodeableConcept(src.getRole()));
-    if (src.hasMember())
-      tgt.setMember(convertReference(src.getMember()));
-    if (src.hasOnBehalfOf())
-      tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
-    if (src.hasCoveragePeriod())
-      tgt.setPeriod(convertPeriod(src.getCoveragePeriod()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent convertCareTeamParticipantComponent(org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent();
+        copyElement(src, tgt);
+        if (src.hasRole())
+            tgt.addRole(convertCodeableConcept(src.getRole()));
+        if (src.hasMember())
+            tgt.setMember(convertReference(src.getMember()));
+        if (src.hasOnBehalfOf())
+            tgt.setOnBehalfOf(convertReference(src.getOnBehalfOf()));
+        if (src.hasCoveragePeriod())
+            tgt.setPeriod(convertPeriod(src.getCoveragePeriod()));
+        return tgt;
+    }
 }

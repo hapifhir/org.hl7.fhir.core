@@ -90,51 +90,79 @@ public class Media30_40 {
         if (src.hasType()) {
             org.hl7.fhir.r4.model.Coding coding = new org.hl7.fhir.r4.model.Coding();
             coding.setSystem(CODE_SYSTEM_MEDIA_TYPE);
-            coding.setCode(src.getType().toCode().replace("photo", "image"));
+            if (src.hasType()) {
+                coding.setCode(src.getType().toCode().replace("photo", "image"));
+            }
             CodeableConcept codeableConcept = new CodeableConcept(coding);
             tgt.setType(codeableConcept);
         }
         if (src.hasSubtype()) {
-            tgt.setModality(VersionConvertor_30_40.convertCodeableConcept(src.getSubtype()));
+            if (src.hasSubtype()) {
+                tgt.setModality(VersionConvertor_30_40.convertCodeableConcept(src.getSubtype()));
+            }
         }
         if (src.hasView()) {
-            tgt.setView(VersionConvertor_30_40.convertCodeableConcept(src.getView()));
+            if (src.hasView()) {
+                tgt.setView(VersionConvertor_30_40.convertCodeableConcept(src.getView()));
+            }
         }
         if (src.hasSubject()) {
-            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+            if (src.hasSubject()) {
+                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+            }
         }
         if (src.hasContext()) {
-            tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
+            if (src.hasContext()) {
+                tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
+            }
         }
         if (src.hasOccurrence()) {
-            tgt.setCreated(VersionConvertor_30_40.convertType(src.getOccurrence()));
+            if (src.hasOccurrence()) {
+                tgt.setCreated(VersionConvertor_30_40.convertType(src.getOccurrence()));
+            }
         }
         if (src.hasOperator()) {
-            tgt.setOperator(VersionConvertor_30_40.convertReference(src.getOperator()));
+            if (src.hasOperator()) {
+                tgt.setOperator(VersionConvertor_30_40.convertReference(src.getOperator()));
+            }
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
             tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
         }
         if (src.hasBodySite()) {
-            tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
+            if (src.hasBodySite()) {
+                tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
+            }
         }
         if (src.hasDevice()) {
-            tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
+            if (src.hasDevice()) {
+                tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
+            }
         }
         if (src.hasHeight()) {
-            tgt.setHeight(src.getHeight());
+            if (src.hasHeight()) {
+                tgt.setHeight(src.getHeight());
+            }
         }
         if (src.hasWidth()) {
-            tgt.setWidth(src.getWidth());
+            if (src.hasWidth()) {
+                tgt.setWidth(src.getWidth());
+            }
         }
         if (src.hasFrames()) {
-            tgt.setFrames(src.getFrames());
+            if (src.hasFrames()) {
+                tgt.setFrames(src.getFrames());
+            }
         }
         if (src.hasDuration()) {
-            tgt.setDuration(src.getDuration());
+            if (src.hasDuration()) {
+                tgt.setDuration(src.getDuration());
+            }
         }
         if (src.hasContent()) {
-            tgt.setContent(VersionConvertor_30_40.convertAttachment(src.getContent()));
+            if (src.hasContent()) {
+                tgt.setContent(VersionConvertor_30_40.convertAttachment(src.getContent()));
+            }
         }
         for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) {
             tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));

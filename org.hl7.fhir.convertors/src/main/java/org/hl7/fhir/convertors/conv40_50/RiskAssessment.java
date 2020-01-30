@@ -19,12 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,169 +51,190 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class RiskAssessment extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.RiskAssessment convertRiskAssessment(org.hl7.fhir.r4.model.RiskAssessment src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.RiskAssessment tgt = new org.hl7.fhir.r5.model.RiskAssessment();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasBasedOn())
-      tgt.setBasedOn(convertReference(src.getBasedOn()));
-    if (src.hasParent())
-      tgt.setParent(convertReference(src.getParent()));
-    if (src.hasStatus())
-      tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
-    if (src.hasMethod())
-      tgt.setMethod(convertCodeableConcept(src.getMethod()));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    if (src.hasCondition())
-      tgt.setCondition(convertReference(src.getCondition()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasis())
-      tgt.addBasis(convertReference(t));
-    for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction())
-      tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
-    if (src.hasMitigation())
-      tgt.setMitigationElement(convertString(src.getMitigationElement()));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.RiskAssessment convertRiskAssessment(org.hl7.fhir.r4.model.RiskAssessment src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.RiskAssessment tgt = new org.hl7.fhir.r5.model.RiskAssessment();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn())
+            tgt.setBasedOn(convertReference(src.getBasedOn()));
+        if (src.hasParent())
+            tgt.setParent(convertReference(src.getParent()));
+        if (src.hasStatus())
+            tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
+        if (src.hasMethod())
+            tgt.setMethod(convertCodeableConcept(src.getMethod()));
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasCondition())
+            tgt.setCondition(convertReference(src.getCondition()));
+        if (src.hasPerformer())
+            tgt.setPerformer(convertReference(src.getPerformer()));
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        }
+        if (src.hasBasis()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(convertReference(t));
+        }
+        if (src.hasPrediction()) {
+            for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        }
+        if (src.hasMitigation())
+            tgt.setMitigationElement(convertString(src.getMitigationElement()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.RiskAssessment convertRiskAssessment(org.hl7.fhir.r5.model.RiskAssessment src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.RiskAssessment tgt = new org.hl7.fhir.r4.model.RiskAssessment();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasBasedOn())
-      tgt.setBasedOn(convertReference(src.getBasedOn()));
-    if (src.hasParent())
-      tgt.setParent(convertReference(src.getParent()));
-    if (src.hasStatus())
-      tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
-    if (src.hasMethod())
-      tgt.setMethod(convertCodeableConcept(src.getMethod()));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasOccurrence())
-      tgt.setOccurrence(convertType(src.getOccurrence()));
-    if (src.hasCondition())
-      tgt.setCondition(convertReference(src.getCondition()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasReference())
-      tgt.addReasonReference(convertReference(t.getReference()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getBasis())
-      tgt.addBasis(convertReference(t));
-    for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction())
-      tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
-    if (src.hasMitigation())
-      tgt.setMitigationElement(convertString(src.getMitigationElement()));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.RiskAssessment convertRiskAssessment(org.hl7.fhir.r5.model.RiskAssessment src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.RiskAssessment tgt = new org.hl7.fhir.r4.model.RiskAssessment();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn())
+            tgt.setBasedOn(convertReference(src.getBasedOn()));
+        if (src.hasParent())
+            tgt.setParent(convertReference(src.getParent()));
+        if (src.hasStatus())
+            tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
+        if (src.hasMethod())
+            tgt.setMethod(convertCodeableConcept(src.getMethod()));
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasOccurrence())
+            tgt.setOccurrence(convertType(src.getOccurrence()));
+        if (src.hasCondition())
+            tgt.setCondition(convertReference(src.getCondition()));
+        if (src.hasPerformer())
+            tgt.setPerformer(convertReference(src.getPerformer()));
+        for (CodeableReference t : src.getReason()) if (t.hasConcept())
+            tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+        for (CodeableReference t : src.getReason()) if (t.hasReference())
+            tgt.addReasonReference(convertReference(t.getReference()));
+        if (src.hasBasis()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasis()) tgt.addBasis(convertReference(t));
+        }
+        if (src.hasPrediction()) {
+            for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        }
+        if (src.hasMitigation())
+            tgt.setMitigationElement(convertString(src.getMitigationElement()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertRiskAssessmentStatus(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case REGISTERED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
-    case PRELIMINARY: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
-    case CORRECTED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
-    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertRiskAssessmentStatus(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case REGISTERED:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
+            case PRELIMINARY:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
+            case FINAL:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
+            case AMENDED:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
+            case CORRECTED:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
+            case UNKNOWN:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case REGISTERED: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED;
-    case PRELIMINARY: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY;
-    case FINAL: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL;
-    case AMENDED: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED;
-    case CORRECTED: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED;
-    case CANCELLED: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR;
-    case UNKNOWN: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN;
-    default: return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case REGISTERED:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED;
+            case PRELIMINARY:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY;
+            case FINAL:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL;
+            case AMENDED:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED;
+            case CORRECTED:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR;
+            case UNKNOWN:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent convertRiskAssessmentPredictionComponent(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    copyElement(src, tgt);
-    if (src.hasOutcome())
-      tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
-    if (src.hasProbability())
-      tgt.setProbability(convertType(src.getProbability()));
-    if (src.hasQualitativeRisk())
-      tgt.setQualitativeRisk(convertCodeableConcept(src.getQualitativeRisk()));
-    if (src.hasRelativeRisk())
-      tgt.setRelativeRiskElement(convertDecimal(src.getRelativeRiskElement()));
-    if (src.hasWhen())
-      tgt.setWhen(convertType(src.getWhen()));
-    if (src.hasRationale())
-      tgt.setRationaleElement(convertString(src.getRationaleElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent convertRiskAssessmentPredictionComponent(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent();
+        copyElement(src, tgt);
+        if (src.hasOutcome())
+            tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
+        if (src.hasProbability())
+            tgt.setProbability(convertType(src.getProbability()));
+        if (src.hasQualitativeRisk())
+            tgt.setQualitativeRisk(convertCodeableConcept(src.getQualitativeRisk()));
+        if (src.hasRelativeRisk())
+            tgt.setRelativeRiskElement(convertDecimal(src.getRelativeRiskElement()));
+        if (src.hasWhen())
+            tgt.setWhen(convertType(src.getWhen()));
+        if (src.hasRationale())
+            tgt.setRationaleElement(convertString(src.getRationaleElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent convertRiskAssessmentPredictionComponent(org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    copyElement(src, tgt);
-    if (src.hasOutcome())
-      tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
-    if (src.hasProbability())
-      tgt.setProbability(convertType(src.getProbability()));
-    if (src.hasQualitativeRisk())
-      tgt.setQualitativeRisk(convertCodeableConcept(src.getQualitativeRisk()));
-    if (src.hasRelativeRisk())
-      tgt.setRelativeRiskElement(convertDecimal(src.getRelativeRiskElement()));
-    if (src.hasWhen())
-      tgt.setWhen(convertType(src.getWhen()));
-    if (src.hasRationale())
-      tgt.setRationaleElement(convertString(src.getRationaleElement()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent convertRiskAssessmentPredictionComponent(org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent();
+        copyElement(src, tgt);
+        if (src.hasOutcome())
+            tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
+        if (src.hasProbability())
+            tgt.setProbability(convertType(src.getProbability()));
+        if (src.hasQualitativeRisk())
+            tgt.setQualitativeRisk(convertCodeableConcept(src.getQualitativeRisk()));
+        if (src.hasRelativeRisk())
+            tgt.setRelativeRiskElement(convertDecimal(src.getRelativeRiskElement()));
+        if (src.hasWhen())
+            tgt.setWhen(convertType(src.getWhen()));
+        if (src.hasRationale())
+            tgt.setRationaleElement(convertString(src.getRationaleElement()));
+        return tgt;
+    }
 }

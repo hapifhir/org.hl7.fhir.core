@@ -282,7 +282,9 @@ public class PlanDefinition30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -311,9 +313,15 @@ public class PlanDefinition30_40 {
             tgt.setLastReviewDateElement(VersionConvertor_30_40.convertDate(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(VersionConvertor_30_40.convertPeriod(src.getEffectivePeriod()));
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getTopic()) tgt.addTopic(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasTopic()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getTopic()) tgt.addTopic(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         for (org.hl7.fhir.dstu3.model.Contributor t : src.getContributor()) {
             if (t.getType() == ContributorType.AUTHOR)
                 for (ContactDetail c : t.getContact()) tgt.addAuthor(VersionConvertor_30_40.convertContactDetail(c));
@@ -324,13 +332,23 @@ public class PlanDefinition30_40 {
             if (t.getType() == ContributorType.ENDORSER)
                 for (ContactDetail c : t.getContact()) tgt.addEndorser(VersionConvertor_30_40.convertContactDetail(c));
         }
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        }
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getLibrary()) tgt.getLibrary().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionGoalComponent t : src.getGoal()) tgt.addGoal(convertPlanDefinitionGoalComponent(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasLibrary()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getLibrary()) tgt.getLibrary().add(VersionConvertor_30_40.convertReferenceToCanonical(t));
+        }
+        if (src.hasGoal()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionGoalComponent t : src.getGoal()) tgt.addGoal(convertPlanDefinitionGoalComponent(t));
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        }
         return tgt;
     }
 
@@ -341,7 +359,9 @@ public class PlanDefinition30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasVersion())
             tgt.setVersion(src.getVersion());
         if (src.hasName())
@@ -370,9 +390,15 @@ public class PlanDefinition30_40 {
             tgt.setLastReviewDateElement(VersionConvertor_30_40.convertDate(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(VersionConvertor_30_40.convertPeriod(src.getEffectivePeriod()));
-        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTopic()) tgt.addTopic(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasTopic()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTopic()) tgt.addTopic(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         for (org.hl7.fhir.r4.model.ContactDetail t : src.getAuthor()) {
             org.hl7.fhir.dstu3.model.Contributor c = new org.hl7.fhir.dstu3.model.Contributor();
             c.setType(ContributorType.AUTHOR);
@@ -397,13 +423,23 @@ public class PlanDefinition30_40 {
             c.addContact(VersionConvertor_30_40.convertContactDetail(t));
             tgt.addContributor(c);
         }
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        }
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.r4.model.CanonicalType t : src.getLibrary()) tgt.addLibrary(VersionConvertor_30_40.convertCanonicalToReference(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionGoalComponent t : src.getGoal()) tgt.addGoal(convertPlanDefinitionGoalComponent(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasLibrary()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getLibrary()) tgt.addLibrary(VersionConvertor_30_40.convertCanonicalToReference(t));
+        }
+        if (src.hasGoal()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionGoalComponent t : src.getGoal()) tgt.addGoal(convertPlanDefinitionGoalComponent(t));
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        }
         return tgt;
     }
 
@@ -420,18 +456,38 @@ public class PlanDefinition30_40 {
             tgt.setDescription(src.getDescription());
         if (src.hasTextEquivalent())
             tgt.setTextEquivalent(src.getTextEquivalent());
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.dstu3.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
-        for (org.hl7.fhir.dstu3.model.TriggerDefinition t : src.getTriggerDefinition()) tgt.addTrigger(VersionConvertor_30_40.convertTriggerDefinition(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_40.convertDataRequirement(t));
-        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_40.convertDataRequirement(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
+        if (src.hasCode()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasReason()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasDocumentation()) {
+            for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasGoalId()) {
+            for (org.hl7.fhir.dstu3.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
+        }
+        if (src.hasTriggerDefinition()) {
+            for (org.hl7.fhir.dstu3.model.TriggerDefinition t : src.getTriggerDefinition()) tgt.addTrigger(VersionConvertor_30_40.convertTriggerDefinition(t));
+        }
+        if (src.hasCondition()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
+        }
+        if (src.hasInput()) {
+            for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_40.convertDataRequirement(t));
+        }
+        if (src.hasOutput()) {
+            for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_40.convertDataRequirement(t));
+        }
+        if (src.hasRelatedAction()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
+        }
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_40.convertType(src.getTiming()));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
+        }
         if (src.hasType())
             tgt.getType().addCoding(VersionConvertor_30_40.convertCoding(src.getType()));
         if (src.hasGroupingBehavior())
@@ -448,8 +504,12 @@ public class PlanDefinition30_40 {
             tgt.setDefinition(VersionConvertor_30_40.convertReferenceToCanonical(src.getDefinition()));
         if (src.hasTransform())
             tgt.setTransformElement(VersionConvertor_30_40.convertReferenceToCanonical(src.getTransform()));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValue()) tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        if (src.hasDynamicValue()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValue()) tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        }
         return tgt;
     }
 
@@ -466,18 +526,38 @@ public class PlanDefinition30_40 {
             tgt.setDescription(src.getDescription());
         if (src.hasTextEquivalent())
             tgt.setTextEquivalent(src.getTextEquivalent());
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.r4.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
-        for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger()) tgt.addTriggerDefinition(VersionConvertor_30_40.convertTriggerDefinition(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.r4.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_40.convertDataRequirement(t));
-        for (org.hl7.fhir.r4.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_40.convertDataRequirement(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
+        if (src.hasCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasDocumentation()) {
+            for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasGoalId()) {
+            for (org.hl7.fhir.r4.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
+        }
+        if (src.hasTrigger()) {
+            for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger()) tgt.addTriggerDefinition(VersionConvertor_30_40.convertTriggerDefinition(t));
+        }
+        if (src.hasCondition()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
+        }
+        if (src.hasInput()) {
+            for (org.hl7.fhir.r4.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_40.convertDataRequirement(t));
+        }
+        if (src.hasOutput()) {
+            for (org.hl7.fhir.r4.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_40.convertDataRequirement(t));
+        }
+        if (src.hasRelatedAction()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
+        }
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_40.convertType(src.getTiming()));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
+        }
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCoding(src.getType().getCodingFirstRep()));
         if (src.hasGroupingBehavior())
@@ -494,8 +574,12 @@ public class PlanDefinition30_40 {
             tgt.setDefinition(VersionConvertor_30_40.convertCanonicalToReference(src.getDefinitionCanonicalType()));
         if (src.hasTransform())
             tgt.setTransform(VersionConvertor_30_40.convertCanonicalToReference(src.getTransformElement()));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValue()) tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        if (src.hasDynamicValue()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionDynamicValueComponent t : src.getDynamicValue()) tgt.addDynamicValue(convertPlanDefinitionActionDynamicValueComponent(t));
+        }
+        if (src.hasAction()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent t : src.getAction()) tgt.addAction(convertPlanDefinitionActionComponent(t));
+        }
         return tgt;
     }
 
@@ -628,9 +712,15 @@ public class PlanDefinition30_40 {
             tgt.setPriority(VersionConvertor_30_40.convertCodeableConcept(src.getPriority()));
         if (src.hasStart())
             tgt.setStart(VersionConvertor_30_40.convertCodeableConcept(src.getStart()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTarget()) tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+        if (src.hasAddresses()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasDocumentation()) {
+            for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTarget()) tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+        }
         return tgt;
     }
 
@@ -647,9 +737,15 @@ public class PlanDefinition30_40 {
             tgt.setPriority(VersionConvertor_30_40.convertCodeableConcept(src.getPriority()));
         if (src.hasStart())
             tgt.setStart(VersionConvertor_30_40.convertCodeableConcept(src.getStart()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
-        for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTarget()) tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+        if (src.hasAddresses()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
+        if (src.hasDocumentation()) {
+            for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_40.convertRelatedArtifact(t));
+        }
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionGoalTargetComponent t : src.getTarget()) tgt.addTarget(convertPlanDefinitionGoalTargetComponent(t));
+        }
         return tgt;
     }
 

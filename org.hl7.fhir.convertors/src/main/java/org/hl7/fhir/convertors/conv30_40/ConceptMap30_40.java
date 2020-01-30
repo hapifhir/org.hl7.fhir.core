@@ -28,11 +28,17 @@ public class ConceptMap30_40 {
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisher(src.getPublisher());
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+        }
         if (src.hasPurpose())
             tgt.setPurpose(src.getPurpose());
         if (src.hasCopyright())
@@ -41,7 +47,9 @@ public class ConceptMap30_40 {
             tgt.setSource(VersionConvertor_30_40.convertType(src.getSource()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_40.convertType(src.getTarget()));
-        for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
+        if (src.hasGroup()) {
+            for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
+        }
         return tgt;
     }
 
@@ -160,7 +168,9 @@ public class ConceptMap30_40 {
             tgt.setTarget(src.getTarget());
         if (src.hasTargetVersion())
             tgt.setTargetVersion(src.getTargetVersion());
-        for (org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
+        if (src.hasElement()) {
+            for (org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
+        }
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
         return tgt;
@@ -179,7 +189,9 @@ public class ConceptMap30_40 {
             tgt.setTarget(src.getTarget());
         if (src.hasTargetVersion())
             tgt.setTargetVersion(src.getTargetVersion());
-        for (org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
+        if (src.hasElement()) {
+            for (org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
+        }
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
         return tgt;
@@ -288,7 +300,9 @@ public class ConceptMap30_40 {
             tgt.setCode(src.getCode());
         if (src.hasDisplay())
             tgt.setDisplay(src.getDisplay());
-        for (org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t : src.getTarget()) tgt.addTarget(convertTargetElementComponent(t));
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t : src.getTarget()) tgt.addTarget(convertTargetElementComponent(t));
+        }
         return tgt;
     }
 
@@ -301,7 +315,9 @@ public class ConceptMap30_40 {
             tgt.setCode(src.getCode());
         if (src.hasDisplay())
             tgt.setDisplay(src.getDisplay());
-        for (org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent t : src.getTarget()) tgt.addTarget(convertTargetElementComponent(t));
+        if (src.hasTarget()) {
+            for (org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent t : src.getTarget()) tgt.addTarget(convertTargetElementComponent(t));
+        }
         return tgt;
     }
 
@@ -318,8 +334,12 @@ public class ConceptMap30_40 {
             tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
         if (src.hasComment())
             tgt.setComment(src.getComment());
-        for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getDependsOn()) tgt.addDependsOn(convertOtherElementComponent(t));
-        for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getProduct()) tgt.addProduct(convertOtherElementComponent(t));
+        if (src.hasDependsOn()) {
+            for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getDependsOn()) tgt.addDependsOn(convertOtherElementComponent(t));
+        }
+        if (src.hasProduct()) {
+            for (org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent t : src.getProduct()) tgt.addProduct(convertOtherElementComponent(t));
+        }
         return tgt;
     }
 
@@ -336,8 +356,12 @@ public class ConceptMap30_40 {
             tgt.setEquivalence(convertConceptMapEquivalence(src.getEquivalence()));
         if (src.hasComment())
             tgt.setComment(src.getComment());
-        for (org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent t : src.getDependsOn()) tgt.addDependsOn(convertOtherElementComponent(t));
-        for (org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent t : src.getProduct()) tgt.addProduct(convertOtherElementComponent(t));
+        if (src.hasDependsOn()) {
+            for (org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent t : src.getDependsOn()) tgt.addDependsOn(convertOtherElementComponent(t));
+        }
+        if (src.hasProduct()) {
+            for (org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent t : src.getProduct()) tgt.addProduct(convertOtherElementComponent(t));
+        }
         return tgt;
     }
 }

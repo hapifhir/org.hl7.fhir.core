@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,62 +50,62 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Parameters extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Parameters convertParameters(org.hl7.fhir.r4.model.Parameters src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Parameters tgt = new org.hl7.fhir.r5.model.Parameters();
-    copyResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter())
-      tgt.addParameter(convertParametersParameterComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Parameters convertParameters(org.hl7.fhir.r4.model.Parameters src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Parameters tgt = new org.hl7.fhir.r5.model.Parameters();
+        copyResource(src, tgt);
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Parameters convertParameters(org.hl7.fhir.r5.model.Parameters src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
-    copyResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter())
-      tgt.addParameter(convertParametersParameterComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Parameters convertParameters(org.hl7.fhir.r5.model.Parameters src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
+        copyResource(src, tgt);
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
-    copyElement(src, tgt);
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(convertType(src.getValue()));
-    if (src.hasResource())
-      tgt.setResource(convertResource(src.getResource()));
-    for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart())
-      tgt.addPart(convertParametersParameterComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
+        copyElement(src, tgt);
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasValue())
+            tgt.setValue(convertType(src.getValue()));
+        if (src.hasResource())
+            tgt.setResource(convertResource(src.getResource()));
+        if (src.hasPart()) {
+            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
-    copyElement(src, tgt);
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasValue())
-      tgt.setValue(convertType(src.getValue()));
-    if (src.hasResource())
-      tgt.setResource(convertResource(src.getResource()));
-    for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart())
-      tgt.addPart(convertParametersParameterComponent(t));
-    return tgt;
-  }
-
+    public static org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
+        copyElement(src, tgt);
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasValue())
+            tgt.setValue(convertType(src.getValue()));
+        if (src.hasResource())
+            tgt.setResource(convertResource(src.getResource()));
+        if (src.hasPart()) {
+            for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
+        return tgt;
+    }
 }

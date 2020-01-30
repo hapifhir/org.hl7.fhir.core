@@ -10,7 +10,9 @@ public class Parameters14_50 {
             return null;
         org.hl7.fhir.dstu2016may.model.Parameters tgt = new org.hl7.fhir.dstu2016may.model.Parameters();
         VersionConvertor_14_50.copyResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -19,7 +21,9 @@ public class Parameters14_50 {
             return null;
         org.hl7.fhir.r5.model.Parameters tgt = new org.hl7.fhir.r5.model.Parameters();
         VersionConvertor_14_50.copyResource(src, tgt);
-        for (org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -28,10 +32,18 @@ public class Parameters14_50 {
             return null;
         org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
         VersionConvertor_14_50.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
-        tgt.setResource(VersionConvertor_14_50.convertResource(src.getResource()));
-        for (org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
+        }
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_14_50.convertResource(src.getResource()));
+        }
+        if (src.hasPart()) {
+            for (org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -40,10 +52,18 @@ public class Parameters14_50 {
             return null;
         org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent();
         VersionConvertor_14_50.copyElement(src, tgt);
-        tgt.setName(src.getName());
-        tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
-        tgt.setResource(VersionConvertor_14_50.convertResource(src.getResource()));
-        for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
+        }
+        if (src.hasResource()) {
+            tgt.setResource(VersionConvertor_14_50.convertResource(src.getResource()));
+        }
+        if (src.hasPart()) {
+            for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 }

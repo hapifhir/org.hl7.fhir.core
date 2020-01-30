@@ -10,12 +10,24 @@ public class EnrollmentRequest10_30 {
             return null;
         org.hl7.fhir.dstu3.model.EnrollmentRequest tgt = new org.hl7.fhir.dstu3.model.EnrollmentRequest();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setCreated(src.getCreated());
-        tgt.setProvider(VersionConvertor_10_30.convertReference(src.getProvider()));
-        tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setCoverage(VersionConvertor_10_30.convertReference(src.getCoverage()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasProvider()) {
+            tgt.setProvider(VersionConvertor_10_30.convertReference(src.getProvider()));
+        }
+        if (src.hasOrganization()) {
+            tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasCoverage()) {
+            tgt.setCoverage(VersionConvertor_10_30.convertReference(src.getCoverage()));
+        }
         return tgt;
     }
 
@@ -24,9 +36,15 @@ public class EnrollmentRequest10_30 {
             return null;
         org.hl7.fhir.dstu2.model.EnrollmentRequest tgt = new org.hl7.fhir.dstu2.model.EnrollmentRequest();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setCreated(src.getCreated());
-        tgt.setCoverage(VersionConvertor_10_30.convertReference(src.getCoverage()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasCoverage()) {
+            tgt.setCoverage(VersionConvertor_10_30.convertReference(src.getCoverage()));
+        }
         return tgt;
     }
 }

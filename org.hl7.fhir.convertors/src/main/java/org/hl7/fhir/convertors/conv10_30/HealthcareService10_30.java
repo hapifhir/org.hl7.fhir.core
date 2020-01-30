@@ -56,29 +56,65 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu2.model.HealthcareService tgt = new org.hl7.fhir.dstu2.model.HealthcareService();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setProvidedBy(VersionConvertor_10_30.convertReference(src.getProvidedBy()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasProvidedBy()) {
+            tgt.setProvidedBy(VersionConvertor_10_30.convertReference(src.getProvidedBy()));
+        }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty()) {
             if (!tgt.hasServiceType())
                 tgt.addServiceType();
             tgt.getServiceType().get(0).addSpecialty(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getLocation()) tgt.setLocation(VersionConvertor_10_30.convertReference(t));
-        tgt.setComment(src.getComment());
-        tgt.setExtraDetails(src.getExtraDetails());
-        tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getCoverageArea()) tgt.addCoverageArea(VersionConvertor_10_30.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceProvisionCode()) tgt.addServiceProvisionCode(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
-        tgt.setEligibilityNote(src.getEligibilityNote());
-        for (org.hl7.fhir.dstu3.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCharacteristic()) tgt.addCharacteristic(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setAppointmentRequired(src.getAppointmentRequired());
-        for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
-        for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
-        tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
+        if (src.hasLocation()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getLocation()) tgt.setLocation(VersionConvertor_10_30.convertReference(t));
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
+        if (src.hasExtraDetails()) {
+            tgt.setExtraDetails(src.getExtraDetails());
+        }
+        if (src.hasPhoto()) {
+            tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasCoverageArea()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getCoverageArea()) tgt.addCoverageArea(VersionConvertor_10_30.convertReference(t));
+        }
+        if (src.hasServiceProvisionCode()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceProvisionCode()) tgt.addServiceProvisionCode(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasEligibility()) {
+            tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
+        }
+        if (src.hasEligibilityNote()) {
+            tgt.setEligibilityNote(src.getEligibilityNote());
+        }
+        if (src.hasProgramName()) {
+            for (org.hl7.fhir.dstu3.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
+        }
+        if (src.hasCharacteristic()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCharacteristic()) tgt.addCharacteristic(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasReferralMethod()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasAppointmentRequired()) {
+            tgt.setAppointmentRequired(src.getAppointmentRequired());
+        }
+        if (src.hasAvailableTime()) {
+            for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
+        }
+        if (src.hasNotAvailable()) {
+            for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
+        }
+        if (src.hasAvailabilityExceptions()) {
+            tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
+        }
         return tgt;
     }
 
@@ -87,27 +123,63 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu3.model.HealthcareService tgt = new org.hl7.fhir.dstu3.model.HealthcareService();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        tgt.setProvidedBy(VersionConvertor_10_30.convertReference(src.getProvidedBy()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasProvidedBy()) {
+            tgt.setProvidedBy(VersionConvertor_10_30.convertReference(src.getProvidedBy()));
+        }
         for (org.hl7.fhir.dstu2.model.HealthcareService.ServiceTypeComponent t : src.getServiceType()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept tj : t.getSpecialty()) tgt.addSpecialty(VersionConvertor_10_30.convertCodeableConcept(tj));
         }
-        tgt.addLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        tgt.setComment(src.getComment());
-        tgt.setExtraDetails(src.getExtraDetails());
-        tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getCoverageArea()) tgt.addCoverageArea(VersionConvertor_10_30.convertReference(t));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getServiceProvisionCode()) tgt.addServiceProvisionCode(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
-        tgt.setEligibilityNote(src.getEligibilityNote());
-        for (org.hl7.fhir.dstu2.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCharacteristic()) tgt.addCharacteristic(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setAppointmentRequired(src.getAppointmentRequired());
-        for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
-        for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
-        tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
+        if (src.hasLocation()) {
+            tgt.addLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
+        if (src.hasExtraDetails()) {
+            tgt.setExtraDetails(src.getExtraDetails());
+        }
+        if (src.hasPhoto()) {
+            tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        }
+        if (src.hasCoverageArea()) {
+            for (org.hl7.fhir.dstu2.model.Reference t : src.getCoverageArea()) tgt.addCoverageArea(VersionConvertor_10_30.convertReference(t));
+        }
+        if (src.hasServiceProvisionCode()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getServiceProvisionCode()) tgt.addServiceProvisionCode(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasEligibility()) {
+            tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
+        }
+        if (src.hasEligibilityNote()) {
+            tgt.setEligibilityNote(src.getEligibilityNote());
+        }
+        if (src.hasProgramName()) {
+            for (org.hl7.fhir.dstu2.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
+        }
+        if (src.hasCharacteristic()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCharacteristic()) tgt.addCharacteristic(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasReferralMethod()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasAppointmentRequired()) {
+            tgt.setAppointmentRequired(src.getAppointmentRequired());
+        }
+        if (src.hasAvailableTime()) {
+            for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
+        }
+        if (src.hasNotAvailable()) {
+            for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
+        }
+        if (src.hasAvailabilityExceptions()) {
+            tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
+        }
         return tgt;
     }
 
@@ -116,10 +188,18 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
-        tgt.setAllDay(src.getAllDay());
-        tgt.setAvailableStartTime(src.getAvailableStartTime());
-        tgt.setAvailableEndTime(src.getAvailableEndTime());
+        if (src.hasDaysOfWeek()) {
+            for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
+        }
+        if (src.hasAllDay()) {
+            tgt.setAllDay(src.getAllDay());
+        }
+        if (src.hasAvailableStartTime()) {
+            tgt.setAvailableStartTime(src.getAvailableStartTime());
+        }
+        if (src.hasAvailableEndTime()) {
+            tgt.setAvailableEndTime(src.getAvailableEndTime());
+        }
         return tgt;
     }
 
@@ -128,10 +208,18 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
-        tgt.setAllDay(src.getAllDay());
-        tgt.setAvailableStartTime(src.getAvailableStartTime());
-        tgt.setAvailableEndTime(src.getAvailableEndTime());
+        if (src.hasDaysOfWeek()) {
+            for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
+        }
+        if (src.hasAllDay()) {
+            tgt.setAllDay(src.getAllDay());
+        }
+        if (src.hasAvailableStartTime()) {
+            tgt.setAvailableStartTime(src.getAvailableStartTime());
+        }
+        if (src.hasAvailableEndTime()) {
+            tgt.setAvailableEndTime(src.getAvailableEndTime());
+        }
         return tgt;
     }
 
@@ -140,8 +228,12 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setDescription(src.getDescription());
-        tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDuring()) {
+            tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
+        }
         return tgt;
     }
 
@@ -150,8 +242,12 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setDescription(src.getDescription());
-        tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasDuring()) {
+            tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
+        }
         return tgt;
     }
 }

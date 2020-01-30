@@ -38,8 +38,12 @@ public class RiskAssessment30_50 {
             else if (src.getReason() instanceof org.hl7.fhir.dstu3.model.Reference)
                 tgt.addReason(VersionConvertor_30_50.convertReferenceToCodableReference((org.hl7.fhir.dstu3.model.Reference) src.getReason()));
         }
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        if (src.hasBasis()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasPrediction()) {
+            for (org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        }
         if (src.hasMitigation())
             tgt.setMitigation(src.getMitigation());
         if (src.hasComment())
@@ -78,8 +82,12 @@ public class RiskAssessment30_50 {
             tgt.setReason(VersionConvertor_30_50.convertType(src.getReasonFirstRep().getConcept()));
         if (src.hasReason() && src.getReasonFirstRep().hasReference())
             tgt.setReason(VersionConvertor_30_50.convertType(src.getReasonFirstRep().getReference()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        if (src.hasBasis()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_50.convertReference(t));
+        }
+        if (src.hasPrediction()) {
+            for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        }
         if (src.hasMitigation())
             tgt.setMitigation(src.getMitigation());
         if (src.hasNote())

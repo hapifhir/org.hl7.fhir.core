@@ -10,18 +10,38 @@ public class Appointment10_40 {
             return null;
         org.hl7.fhir.r4.model.Appointment tgt = new org.hl7.fhir.r4.model.Appointment();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        tgt.setStatus(convertAppointmentStatus(src.getStatus()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertAppointmentStatus(src.getStatus()));
+        }
         if (src.hasType())
             tgt.addServiceType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
-        tgt.setPriority(src.getPriority());
-        tgt.setDescription(src.getDescription());
-        tgt.setStart(src.getStart());
-        tgt.setEnd(src.getEnd());
-        tgt.setMinutesDuration(src.getMinutesDuration());
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
-        tgt.setComment(src.getComment());
-        for (org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        if (src.hasPriority()) {
+            tgt.setPriority(src.getPriority());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasStart()) {
+            tgt.setStart(src.getStart());
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
+        if (src.hasMinutesDuration()) {
+            tgt.setMinutesDuration(src.getMinutesDuration());
+        }
+        if (src.hasSlot()) {
+            for (org.hl7.fhir.dstu2.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        }
         return tgt;
     }
 
@@ -30,17 +50,39 @@ public class Appointment10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Appointment tgt = new org.hl7.fhir.dstu2.model.Appointment();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        tgt.setStatus(convertAppointmentStatus(src.getStatus()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_40.convertCodeableConcept(t));
-        tgt.setPriority(src.getPriority());
-        tgt.setDescription(src.getDescription());
-        tgt.setStart(src.getStart());
-        tgt.setEnd(src.getEnd());
-        tgt.setMinutesDuration(src.getMinutesDuration());
-        for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
-        tgt.setComment(src.getComment());
-        for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertAppointmentStatus(src.getStatus()));
+        }
+        if (src.hasServiceType()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_40.convertCodeableConcept(t));
+        }
+        if (src.hasPriority()) {
+            tgt.setPriority(src.getPriority());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasStart()) {
+            tgt.setStart(src.getStart());
+        }
+        if (src.hasEnd()) {
+            tgt.setEnd(src.getEnd());
+        }
+        if (src.hasMinutesDuration()) {
+            tgt.setMinutesDuration(src.getMinutesDuration());
+        }
+        if (src.hasSlot()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
+        }
+        if (src.hasComment()) {
+            tgt.setComment(src.getComment());
+        }
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        }
         return tgt;
     }
 
@@ -49,10 +91,18 @@ public class Appointment10_40 {
             return null;
         org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
-        tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
-        tgt.setRequired(convertParticipantRequired(src.getRequired()));
-        tgt.setStatus(convertParticipationStatus(src.getStatus()));
+        if (src.hasType()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
+        }
+        if (src.hasActor()) {
+            tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
+        }
+        if (src.hasRequired()) {
+            tgt.setRequired(convertParticipantRequired(src.getRequired()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertParticipationStatus(src.getStatus()));
+        }
         return tgt;
     }
 
@@ -61,10 +111,18 @@ public class Appointment10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
-        tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
-        tgt.setRequired(convertParticipantRequired(src.getRequired()));
-        tgt.setStatus(convertParticipationStatus(src.getStatus()));
+        if (src.hasType()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
+        }
+        if (src.hasActor()) {
+            tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
+        }
+        if (src.hasRequired()) {
+            tgt.setRequired(convertParticipantRequired(src.getRequired()));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertParticipationStatus(src.getStatus()));
+        }
         return tgt;
     }
 
