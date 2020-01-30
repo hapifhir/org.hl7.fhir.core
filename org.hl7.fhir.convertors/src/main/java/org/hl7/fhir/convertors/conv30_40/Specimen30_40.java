@@ -10,7 +10,9 @@ public class Specimen30_40 {
             return null;
         org.hl7.fhir.r4.model.Specimen tgt = new org.hl7.fhir.r4.model.Specimen();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasAccessionIdentifier())
             tgt.setAccessionIdentifier(VersionConvertor_30_40.convertIdentifier(src.getAccessionIdentifier()));
         if (src.hasStatus())
@@ -21,13 +23,23 @@ public class Specimen30_40 {
             tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         if (src.hasReceivedTime())
             tgt.setReceivedTimeElement(VersionConvertor_30_40.convertDateTime(src.getReceivedTimeElement()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getRequest()) tgt.addRequest(VersionConvertor_30_40.convertReference(t));
+        if (src.hasParent()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertReference(t));
+        }
+        if (src.hasRequest()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getRequest()) tgt.addRequest(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasCollection())
             tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
-        for (org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
-        for (org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        if (src.hasProcessing()) {
+            for (org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
+        }
+        if (src.hasContainer()) {
+            for (org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        }
         return tgt;
     }
 
@@ -36,7 +48,9 @@ public class Specimen30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Specimen tgt = new org.hl7.fhir.dstu3.model.Specimen();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasAccessionIdentifier())
             tgt.setAccessionIdentifier(VersionConvertor_30_40.convertIdentifier(src.getAccessionIdentifier()));
         if (src.hasStatus())
@@ -47,13 +61,23 @@ public class Specimen30_40 {
             tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         if (src.hasReceivedTime())
             tgt.setReceivedTimeElement(VersionConvertor_30_40.convertDateTime(src.getReceivedTimeElement()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(VersionConvertor_30_40.convertReference(t));
+        if (src.hasParent()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_30_40.convertReference(t));
+        }
+        if (src.hasRequest()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasCollection())
             tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
-        for (org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
-        for (org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        if (src.hasProcessing()) {
+            for (org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
+        }
+        if (src.hasContainer()) {
+            for (org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        }
         return tgt;
     }
 
@@ -98,7 +122,9 @@ public class Specimen30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasType())
@@ -117,7 +143,9 @@ public class Specimen30_40 {
             return null;
         org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        }
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasType())
@@ -140,7 +168,9 @@ public class Specimen30_40 {
             tgt.setDescription(src.getDescription());
         if (src.hasProcedure())
             tgt.setProcedure(VersionConvertor_30_40.convertCodeableConcept(src.getProcedure()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_30_40.convertReference(t));
+        if (src.hasAdditive()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasTime())
             tgt.setTime(VersionConvertor_30_40.convertType(src.getTime()));
         return tgt;
@@ -155,7 +185,9 @@ public class Specimen30_40 {
             tgt.setDescription(src.getDescription());
         if (src.hasProcedure())
             tgt.setProcedure(VersionConvertor_30_40.convertCodeableConcept(src.getProcedure()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_30_40.convertReference(t));
+        if (src.hasAdditive()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_30_40.convertReference(t));
+        }
         if (src.hasTime())
             tgt.setTime(VersionConvertor_30_40.convertType(src.getTime()));
         return tgt;

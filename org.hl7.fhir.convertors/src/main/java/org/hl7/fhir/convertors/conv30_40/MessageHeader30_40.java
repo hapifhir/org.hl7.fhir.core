@@ -40,7 +40,9 @@ public class MessageHeader30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasEventCoding())
             tgt.setEvent(VersionConvertor_30_40.convertCoding(src.getEventCoding()));
-        for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
+        if (src.hasDestination()) {
+            for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
+        }
         if (src.hasSender())
             tgt.setSender(VersionConvertor_30_40.convertReference(src.getSender()));
         if (src.hasEnterer())
@@ -55,7 +57,9 @@ public class MessageHeader30_40 {
             tgt.setReason(VersionConvertor_30_40.convertCodeableConcept(src.getReason()));
         if (src.hasResponse())
             tgt.setResponse(convertMessageHeaderResponseComponent(src.getResponse()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getFocus()) tgt.addFocus(VersionConvertor_30_40.convertReference(t));
+        if (src.hasFocus()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getFocus()) tgt.addFocus(VersionConvertor_30_40.convertReference(t));
+        }
         return tgt;
     }
 
@@ -66,7 +70,9 @@ public class MessageHeader30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasEvent())
             tgt.setEvent(VersionConvertor_30_40.convertCoding(src.getEvent()));
-        for (org.hl7.fhir.dstu3.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
+        if (src.hasDestination()) {
+            for (org.hl7.fhir.dstu3.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
+        }
         if (src.hasSender())
             tgt.setSender(VersionConvertor_30_40.convertReference(src.getSender()));
         if (src.hasEnterer())
@@ -81,7 +87,9 @@ public class MessageHeader30_40 {
             tgt.setReason(VersionConvertor_30_40.convertCodeableConcept(src.getReason()));
         if (src.hasResponse())
             tgt.setResponse(convertMessageHeaderResponseComponent(src.getResponse()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getFocus()) tgt.addFocus(VersionConvertor_30_40.convertReference(t));
+        if (src.hasFocus()) {
+            for (org.hl7.fhir.dstu3.model.Reference t : src.getFocus()) tgt.addFocus(VersionConvertor_30_40.convertReference(t));
+        }
         return tgt;
     }
 

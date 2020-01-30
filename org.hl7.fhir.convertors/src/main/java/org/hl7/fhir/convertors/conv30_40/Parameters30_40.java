@@ -10,7 +10,9 @@ public class Parameters30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Parameters tgt = new org.hl7.fhir.dstu3.model.Parameters();
         VersionConvertor_30_40.copyResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -19,7 +21,9 @@ public class Parameters30_40 {
             return null;
         org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
         VersionConvertor_30_40.copyResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        if (src.hasParameter()) {
+            for (org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -34,7 +38,9 @@ public class Parameters30_40 {
             tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
         if (src.hasResource())
             tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
-        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        if (src.hasPart()) {
+            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 
@@ -49,7 +55,9 @@ public class Parameters30_40 {
             tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
         if (src.hasResource())
             tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
-        for (org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        if (src.hasPart()) {
+            for (org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
+        }
         return tgt;
     }
 }

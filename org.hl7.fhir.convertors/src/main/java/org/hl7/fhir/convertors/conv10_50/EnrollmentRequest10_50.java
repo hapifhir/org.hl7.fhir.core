@@ -10,11 +10,21 @@ public class EnrollmentRequest10_50 {
             return null;
         org.hl7.fhir.r5.model.EnrollmentRequest tgt = new org.hl7.fhir.r5.model.EnrollmentRequest();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setCreated(src.getCreated());
-        tgt.setProvider(VersionConvertor_10_50.convertReference(src.getProvider()));
-        tgt.setCandidate(VersionConvertor_10_50.convertReference(src.getSubject()));
-        tgt.setCoverage(VersionConvertor_10_50.convertReference(src.getCoverage()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasProvider()) {
+            tgt.setProvider(VersionConvertor_10_50.convertReference(src.getProvider()));
+        }
+        if (src.hasSubject()) {
+            tgt.setCandidate(VersionConvertor_10_50.convertReference(src.getSubject()));
+        }
+        if (src.hasCoverage()) {
+            tgt.setCoverage(VersionConvertor_10_50.convertReference(src.getCoverage()));
+        }
         return tgt;
     }
 
@@ -23,9 +33,15 @@ public class EnrollmentRequest10_50 {
             return null;
         org.hl7.fhir.dstu2.model.EnrollmentRequest tgt = new org.hl7.fhir.dstu2.model.EnrollmentRequest();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setCreated(src.getCreated());
-        tgt.setCoverage(VersionConvertor_10_50.convertReference(src.getCoverage()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasCreated()) {
+            tgt.setCreated(src.getCreated());
+        }
+        if (src.hasCoverage()) {
+            tgt.setCoverage(VersionConvertor_10_50.convertReference(src.getCoverage()));
+        }
         return tgt;
     }
 }

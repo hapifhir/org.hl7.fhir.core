@@ -11,15 +11,33 @@ public class DeviceUseStatement10_30 {
             return null;
         org.hl7.fhir.dstu2.model.DeviceUseStatement tgt = new org.hl7.fhir.dstu2.model.DeviceUseStatement();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.setBodySite(VersionConvertor_10_30.convertType(src.getBodySite()));
-        tgt.setWhenUsed(VersionConvertor_10_30.convertPeriod(src.getWhenUsed()));
-        tgt.setDevice(VersionConvertor_10_30.convertReference(src.getDevice()));
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addIndication(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (Annotation t : src.getNote()) tgt.addNotes(t.getText());
-        tgt.setRecordedOn(src.getRecordedOn());
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setTiming(VersionConvertor_10_30.convertType(src.getTiming()));
+        if (src.hasBodySite()) {
+            tgt.setBodySite(VersionConvertor_10_30.convertType(src.getBodySite()));
+        }
+        if (src.hasWhenUsed()) {
+            tgt.setWhenUsed(VersionConvertor_10_30.convertPeriod(src.getWhenUsed()));
+        }
+        if (src.hasDevice()) {
+            tgt.setDevice(VersionConvertor_10_30.convertReference(src.getDevice()));
+        }
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasIndication()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addIndication(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasNote()) {
+            for (Annotation t : src.getNote()) tgt.addNotes(t.getText());
+        }
+        if (src.hasRecordedOn()) {
+            tgt.setRecordedOn(src.getRecordedOn());
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasTiming()) {
+            tgt.setTiming(VersionConvertor_10_30.convertType(src.getTiming()));
+        }
         return tgt;
     }
 
@@ -30,14 +48,30 @@ public class DeviceUseStatement10_30 {
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasBodySiteCodeableConcept())
             tgt.setBodySite(VersionConvertor_10_30.convertCodeableConcept(src.getBodySiteCodeableConcept()));
-        tgt.setWhenUsed(VersionConvertor_10_30.convertPeriod(src.getWhenUsed()));
-        tgt.setDevice(VersionConvertor_10_30.convertReference(src.getDevice()));
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getIndication()) tgt.addIndication(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu2.model.StringType t : src.getNotes()) tgt.addNote().setText(t.getValue());
-        tgt.setRecordedOn(src.getRecordedOn());
-        tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        tgt.setTiming(VersionConvertor_10_30.convertType(src.getTiming()));
+        if (src.hasWhenUsed()) {
+            tgt.setWhenUsed(VersionConvertor_10_30.convertPeriod(src.getWhenUsed()));
+        }
+        if (src.hasDevice()) {
+            tgt.setDevice(VersionConvertor_10_30.convertReference(src.getDevice()));
+        }
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        }
+        if (src.hasIndication()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getIndication()) tgt.addIndication(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasNotes()) {
+            for (org.hl7.fhir.dstu2.model.StringType t : src.getNotes()) tgt.addNote().setText(t.getValue());
+        }
+        if (src.hasRecordedOn()) {
+            tgt.setRecordedOn(src.getRecordedOn());
+        }
+        if (src.hasSubject()) {
+            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
+        }
+        if (src.hasTiming()) {
+            tgt.setTiming(VersionConvertor_10_30.convertType(src.getTiming()));
+        }
         return tgt;
     }
 }

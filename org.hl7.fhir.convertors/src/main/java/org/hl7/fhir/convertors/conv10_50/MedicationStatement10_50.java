@@ -11,17 +11,35 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement tgt = new org.hl7.fhir.dstu2.model.MedicationStatement();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-        tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
-        tgt.setPatient(VersionConvertor_10_50.convertReference(src.getSubject()));
-        tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
-        tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_50.convertReference(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+        }
+        if (src.hasMedication()) {
+            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        }
+        if (src.hasSubject()) {
+            tgt.setPatient(VersionConvertor_10_50.convertReference(src.getSubject()));
+        }
+        if (src.hasEffective()) {
+            tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
+        }
+        if (src.hasInformationSource()) {
+            tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
+        }
+        if (src.hasDerivedFrom()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_50.convertReference(t));
+        }
         if (src.hasDateAsserted())
             tgt.setDateAsserted(src.getDateAsserted());
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
-        for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
+        }
+        if (src.hasDosage()) {
+            for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
+        }
         return tgt;
     }
 
@@ -30,18 +48,34 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.r5.model.MedicationUsage tgt = new org.hl7.fhir.r5.model.MedicationUsage();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-        tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
-        tgt.setSubject(VersionConvertor_10_50.convertReference(src.getPatient()));
-        tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
-        tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_50.convertReference(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasStatus()) {
+            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+        }
+        if (src.hasMedication()) {
+            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        }
+        if (src.hasPatient()) {
+            tgt.setSubject(VersionConvertor_10_50.convertReference(src.getPatient()));
+        }
+        if (src.hasEffective()) {
+            tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
+        }
+        if (src.hasInformationSource()) {
+            tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
+        }
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_50.convertReference(t));
+        }
         if (src.hasDateAsserted())
             tgt.setDateAsserted(src.getDateAsserted());
         if (src.hasNote())
             tgt.addNote().setText(src.getNote());
-        for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
+        if (src.hasDosage()) {
+            for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
+        }
         return tgt;
     }
 
@@ -50,19 +84,31 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.r5.model.Dosage tgt = new org.hl7.fhir.r5.model.Dosage();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setText(src.getText());
-        tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
-        tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
+        if (src.hasText()) {
+            tgt.setText(src.getText());
+        }
+        if (src.hasTiming()) {
+            tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
+        }
+        if (src.hasAsNeeded()) {
+            tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
+        }
         if (src.hasSiteCodeableConcept())
             tgt.setSite(VersionConvertor_10_50.convertCodeableConcept(src.getSiteCodeableConcept()));
-        tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
-        tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
+        if (src.hasRoute()) {
+            tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
+        }
+        if (src.hasMethod()) {
+            tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
+        }
         if (src.hasRate()) {
             DosageDoseAndRateComponent dr = tgt.addDoseAndRate();
             if (src.hasRate())
                 dr.setRate(VersionConvertor_10_50.convertType(src.getRate()));
         }
-        tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
+        if (src.hasMaxDosePerPeriod()) {
+            tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
+        }
         return tgt;
     }
 
@@ -71,15 +117,29 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent tgt = new org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setText(src.getText());
-        tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
-        tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
-        tgt.setSite(VersionConvertor_10_50.convertType(src.getSite()));
-        tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
-        tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
+        if (src.hasText()) {
+            tgt.setText(src.getText());
+        }
+        if (src.hasTiming()) {
+            tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
+        }
+        if (src.hasAsNeeded()) {
+            tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
+        }
+        if (src.hasSite()) {
+            tgt.setSite(VersionConvertor_10_50.convertType(src.getSite()));
+        }
+        if (src.hasRoute()) {
+            tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
+        }
+        if (src.hasMethod()) {
+            tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
+        }
         if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasRate())
             tgt.setRate(VersionConvertor_10_50.convertType(src.getDoseAndRate().get(0).getRate()));
-        tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
+        if (src.hasMaxDosePerPeriod()) {
+            tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
+        }
         return tgt;
     }
 

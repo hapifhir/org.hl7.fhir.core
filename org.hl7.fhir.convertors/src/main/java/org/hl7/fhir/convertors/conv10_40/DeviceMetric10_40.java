@@ -10,16 +10,36 @@ public class DeviceMetric10_40 {
             return null;
         org.hl7.fhir.r4.model.DeviceMetric tgt = new org.hl7.fhir.r4.model.DeviceMetric();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
-        tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifier()));
-        tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
-        tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
-        tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
-        tgt.setOperationalStatus(convertDeviceMetricOperationalStatus(src.getOperationalStatus()));
-        tgt.setColor(convertDeviceMetricColor(src.getColor()));
-        tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
-        tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
-        for (org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasIdentifier()) {
+            tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifier()));
+        }
+        if (src.hasUnit()) {
+            tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
+        }
+        if (src.hasSource()) {
+            tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
+        }
+        if (src.hasParent()) {
+            tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
+        }
+        if (src.hasOperationalStatus()) {
+            tgt.setOperationalStatus(convertDeviceMetricOperationalStatus(src.getOperationalStatus()));
+        }
+        if (src.hasColor()) {
+            tgt.setColor(convertDeviceMetricColor(src.getColor()));
+        }
+        if (src.hasCategory()) {
+            tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
+        }
+        if (src.hasMeasurementPeriod()) {
+            tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
+        }
+        if (src.hasCalibration()) {
+            for (org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
+        }
         return tgt;
     }
 
@@ -28,16 +48,36 @@ public class DeviceMetric10_40 {
             return null;
         org.hl7.fhir.dstu2.model.DeviceMetric tgt = new org.hl7.fhir.dstu2.model.DeviceMetric();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
-        tgt.setIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifierFirstRep()));
-        tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
-        tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
-        tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
-        tgt.setOperationalStatus(convertDeviceMetricOperationalStatus(src.getOperationalStatus()));
-        tgt.setColor(convertDeviceMetricColor(src.getColor()));
-        tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
-        tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
-        for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
+        }
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifierFirstRep()));
+        }
+        if (src.hasUnit()) {
+            tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
+        }
+        if (src.hasSource()) {
+            tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
+        }
+        if (src.hasParent()) {
+            tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
+        }
+        if (src.hasOperationalStatus()) {
+            tgt.setOperationalStatus(convertDeviceMetricOperationalStatus(src.getOperationalStatus()));
+        }
+        if (src.hasColor()) {
+            tgt.setColor(convertDeviceMetricColor(src.getColor()));
+        }
+        if (src.hasCategory()) {
+            tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
+        }
+        if (src.hasMeasurementPeriod()) {
+            tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
+        }
+        if (src.hasCalibration()) {
+            for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
+        }
         return tgt;
     }
 
@@ -46,9 +86,15 @@ public class DeviceMetric10_40 {
             return null;
         org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setType(convertDeviceMetricCalibrationType(src.getType()));
-        tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
-        tgt.setTime(src.getTime());
+        if (src.hasType()) {
+            tgt.setType(convertDeviceMetricCalibrationType(src.getType()));
+        }
+        if (src.hasState()) {
+            tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
+        }
+        if (src.hasTime()) {
+            tgt.setTime(src.getTime());
+        }
         return tgt;
     }
 
@@ -57,9 +103,15 @@ public class DeviceMetric10_40 {
             return null;
         org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        tgt.setType(convertDeviceMetricCalibrationType(src.getType()));
-        tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
-        tgt.setTime(src.getTime());
+        if (src.hasType()) {
+            tgt.setType(convertDeviceMetricCalibrationType(src.getType()));
+        }
+        if (src.hasState()) {
+            tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
+        }
+        if (src.hasTime()) {
+            tgt.setTime(src.getTime());
+        }
         return tgt;
     }
 

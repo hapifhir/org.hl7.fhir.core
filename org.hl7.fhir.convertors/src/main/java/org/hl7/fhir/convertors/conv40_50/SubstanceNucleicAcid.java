@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,155 +50,156 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class SubstanceNucleicAcid extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.SubstanceNucleicAcid convertSubstanceNucleicAcid(org.hl7.fhir.r4.model.SubstanceNucleicAcid src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid();
-    copyDomainResource(src, tgt);
-    if (src.hasSequenceType())
-      tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
-    if (src.hasNumberOfSubunits())
-      tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-    if (src.hasAreaOfHybridisation())
-      tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
-    if (src.hasOligoNucleotideType())
-      tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
-    for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit())
-      tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceNucleicAcid convertSubstanceNucleicAcid(org.hl7.fhir.r4.model.SubstanceNucleicAcid src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid();
+        copyDomainResource(src, tgt);
+        if (src.hasSequenceType())
+            tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
+        if (src.hasNumberOfSubunits())
+            tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
+        if (src.hasAreaOfHybridisation())
+            tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
+        if (src.hasOligoNucleotideType())
+            tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
+        if (src.hasSubunit()) {
+            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceNucleicAcid convertSubstanceNucleicAcid(org.hl7.fhir.r5.model.SubstanceNucleicAcid src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid();
-    copyDomainResource(src, tgt);
-    if (src.hasSequenceType())
-      tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
-    if (src.hasNumberOfSubunits())
-      tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-    if (src.hasAreaOfHybridisation())
-      tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
-    if (src.hasOligoNucleotideType())
-      tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
-    for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit())
-      tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.SubstanceNucleicAcid convertSubstanceNucleicAcid(org.hl7.fhir.r5.model.SubstanceNucleicAcid src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid();
+        copyDomainResource(src, tgt);
+        if (src.hasSequenceType())
+            tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
+        if (src.hasNumberOfSubunits())
+            tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
+        if (src.hasAreaOfHybridisation())
+            tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
+        if (src.hasOligoNucleotideType())
+            tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
+        if (src.hasSubunit()) {
+            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent convertSubstanceNucleicAcidSubunitComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
-    copyElement(src, tgt);
-    if (src.hasSubunit())
-      tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
-    if (src.hasSequence())
-      tgt.setSequenceElement(convertString(src.getSequenceElement()));
-    if (src.hasLength())
-      tgt.setLengthElement(convertInteger(src.getLengthElement()));
-    if (src.hasSequenceAttachment())
-      tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
-    if (src.hasFivePrime())
-      tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
-    if (src.hasThreePrime())
-      tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
-    for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage())
-      tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
-    for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar())
-      tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent convertSubstanceNucleicAcidSubunitComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
+        copyElement(src, tgt);
+        if (src.hasSubunit())
+            tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
+        if (src.hasSequence())
+            tgt.setSequenceElement(convertString(src.getSequenceElement()));
+        if (src.hasLength())
+            tgt.setLengthElement(convertInteger(src.getLengthElement()));
+        if (src.hasSequenceAttachment())
+            tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
+        if (src.hasFivePrime())
+            tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
+        if (src.hasThreePrime())
+            tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
+        if (src.hasLinkage()) {
+            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
+        }
+        if (src.hasSugar()) {
+            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent convertSubstanceNucleicAcidSubunitComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
-    copyElement(src, tgt);
-    if (src.hasSubunit())
-      tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
-    if (src.hasSequence())
-      tgt.setSequenceElement(convertString(src.getSequenceElement()));
-    if (src.hasLength())
-      tgt.setLengthElement(convertInteger(src.getLengthElement()));
-    if (src.hasSequenceAttachment())
-      tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
-    if (src.hasFivePrime())
-      tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
-    if (src.hasThreePrime())
-      tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
-    for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage())
-      tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
-    for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar())
-      tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent convertSubstanceNucleicAcidSubunitComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
+        copyElement(src, tgt);
+        if (src.hasSubunit())
+            tgt.setSubunitElement(convertInteger(src.getSubunitElement()));
+        if (src.hasSequence())
+            tgt.setSequenceElement(convertString(src.getSequenceElement()));
+        if (src.hasLength())
+            tgt.setLengthElement(convertInteger(src.getLengthElement()));
+        if (src.hasSequenceAttachment())
+            tgt.setSequenceAttachment(convertAttachment(src.getSequenceAttachment()));
+        if (src.hasFivePrime())
+            tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
+        if (src.hasThreePrime())
+            tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
+        if (src.hasLinkage()) {
+            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
+        }
+        if (src.hasSugar()) {
+            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent convertSubstanceNucleicAcidSubunitLinkageComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
-    copyElement(src, tgt);
-    if (src.hasConnectivity())
-      tgt.setConnectivityElement(convertString(src.getConnectivityElement()));
-    if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasResidueSite())
-      tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent convertSubstanceNucleicAcidSubunitLinkageComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
+        copyElement(src, tgt);
+        if (src.hasConnectivity())
+            tgt.setConnectivityElement(convertString(src.getConnectivityElement()));
+        if (src.hasIdentifier())
+            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasResidueSite())
+            tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent convertSubstanceNucleicAcidSubunitLinkageComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
-    copyElement(src, tgt);
-    if (src.hasConnectivity())
-      tgt.setConnectivityElement(convertString(src.getConnectivityElement()));
-    if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasResidueSite())
-      tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent convertSubstanceNucleicAcidSubunitLinkageComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
+        copyElement(src, tgt);
+        if (src.hasConnectivity())
+            tgt.setConnectivityElement(convertString(src.getConnectivityElement()));
+        if (src.hasIdentifier())
+            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasResidueSite())
+            tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent convertSubstanceNucleicAcidSubunitSugarComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
-    copyElement(src, tgt);
-    if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasResidueSite())
-      tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent convertSubstanceNucleicAcidSubunitSugarComponent(org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
+        copyElement(src, tgt);
+        if (src.hasIdentifier())
+            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasResidueSite())
+            tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent convertSubstanceNucleicAcidSubunitSugarComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
-    copyElement(src, tgt);
-    if (src.hasIdentifier())
-      tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasResidueSite())
-      tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent convertSubstanceNucleicAcidSubunitSugarComponent(org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
+        copyElement(src, tgt);
+        if (src.hasIdentifier())
+            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasResidueSite())
+            tgt.setResidueSiteElement(convertString(src.getResidueSiteElement()));
+        return tgt;
+    }
 }

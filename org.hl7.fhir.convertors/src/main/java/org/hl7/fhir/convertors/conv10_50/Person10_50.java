@@ -44,16 +44,36 @@ public class Person10_50 {
             return null;
         org.hl7.fhir.r5.model.Person tgt = new org.hl7.fhir.r5.model.Person();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        for (org.hl7.fhir.dstu2.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_50.convertHumanName(t));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
-        tgt.setBirthDate(src.getBirthDate());
-        for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
-        tgt.setPhoto(VersionConvertor_10_50.convertAttachment(src.getPhoto()));
-        tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
-        tgt.setActive(src.getActive());
-        for (org.hl7.fhir.dstu2.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.dstu2.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_50.convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+        }
+        if (src.hasGender()) {
+            tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
+        }
+        if (src.hasBirthDate()) {
+            tgt.setBirthDate(src.getBirthDate());
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            tgt.setPhoto(VersionConvertor_10_50.convertAttachment(src.getPhoto()));
+        }
+        if (src.hasManagingOrganization()) {
+            tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
+        }
+        if (src.hasActive()) {
+            tgt.setActive(src.getActive());
+        }
+        if (src.hasLink()) {
+            for (org.hl7.fhir.dstu2.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        }
         return tgt;
     }
 
@@ -62,16 +82,36 @@ public class Person10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Person tgt = new org.hl7.fhir.dstu2.model.Person();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_50.convertHumanName(t));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
-        tgt.setBirthDate(src.getBirthDate());
-        for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
-        tgt.setPhoto(VersionConvertor_10_50.convertAttachment(src.getPhoto()));
-        tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
-        tgt.setActive(src.getActive());
-        for (org.hl7.fhir.r5.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        }
+        if (src.hasName()) {
+            for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_50.convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+        }
+        if (src.hasGender()) {
+            tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
+        }
+        if (src.hasBirthDate()) {
+            tgt.setBirthDate(src.getBirthDate());
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
+        }
+        if (src.hasPhoto()) {
+            tgt.setPhoto(VersionConvertor_10_50.convertAttachment(src.getPhoto()));
+        }
+        if (src.hasManagingOrganization()) {
+            tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
+        }
+        if (src.hasActive()) {
+            tgt.setActive(src.getActive());
+        }
+        if (src.hasLink()) {
+            for (org.hl7.fhir.r5.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
+        }
         return tgt;
     }
 
@@ -80,8 +120,12 @@ public class Person10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.dstu2.model.Person.PersonLinkComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setTarget(VersionConvertor_10_50.convertReference(src.getTarget()));
-        tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        if (src.hasTarget()) {
+            tgt.setTarget(VersionConvertor_10_50.convertReference(src.getTarget()));
+        }
+        if (src.hasAssurance()) {
+            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        }
         return tgt;
     }
 
@@ -90,8 +134,12 @@ public class Person10_50 {
             return null;
         org.hl7.fhir.r5.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r5.model.Person.PersonLinkComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        tgt.setTarget(VersionConvertor_10_50.convertReference(src.getTarget()));
-        tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        if (src.hasTarget()) {
+            tgt.setTarget(VersionConvertor_10_50.convertReference(src.getTarget()));
+        }
+        if (src.hasAssurance()) {
+            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+        }
         return tgt;
     }
 }

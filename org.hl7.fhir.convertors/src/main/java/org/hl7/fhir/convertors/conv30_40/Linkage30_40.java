@@ -14,7 +14,9 @@ public class Linkage30_40 {
             tgt.setActive(src.getActive());
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        for (org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
+        if (src.hasItem()) {
+            for (org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
+        }
         return tgt;
     }
 
@@ -27,7 +29,9 @@ public class Linkage30_40 {
             tgt.setActive(src.getActive());
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
+        if (src.hasItem()) {
+            for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
+        }
         return tgt;
     }
 

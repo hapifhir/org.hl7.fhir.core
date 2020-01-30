@@ -10,16 +10,36 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent tgt = new org.hl7.fhir.dstu2.model.AuditEvent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        tgt.getEvent().setType(VersionConvertor_10_30.convertCoding(src.getType()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getSubtype()) tgt.getEvent().addSubtype(VersionConvertor_10_30.convertCoding(t));
-        tgt.getEvent().setAction(convertAuditEventAction(src.getAction()));
-        tgt.getEvent().setDateTime(src.getRecorded());
-        tgt.getEvent().setOutcome(convertAuditEventOutcome(src.getOutcome()));
-        tgt.getEvent().setOutcomeDesc(src.getOutcomeDesc());
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfEvent()) for (org.hl7.fhir.dstu3.model.Coding cc : t.getCoding()) tgt.getEvent().addPurposeOfEvent(VersionConvertor_10_30.convertCoding(cc));
-        for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addParticipant(convertAuditEventAgentComponent(t));
-        tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
-        for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent t : src.getEntity()) tgt.addObject(convertAuditEventEntityComponent(t));
+        if (src.hasType()) {
+            tgt.getEvent().setType(VersionConvertor_10_30.convertCoding(src.getType()));
+        }
+        if (src.hasSubtype()) {
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getSubtype()) tgt.getEvent().addSubtype(VersionConvertor_10_30.convertCoding(t));
+        }
+        if (src.hasAction()) {
+            tgt.getEvent().setAction(convertAuditEventAction(src.getAction()));
+        }
+        if (src.hasRecorded()) {
+            tgt.getEvent().setDateTime(src.getRecorded());
+        }
+        if (src.hasOutcome()) {
+            tgt.getEvent().setOutcome(convertAuditEventOutcome(src.getOutcome()));
+        }
+        if (src.hasOutcomeDesc()) {
+            tgt.getEvent().setOutcomeDesc(src.getOutcomeDesc());
+        }
+        if (src.hasPurposeOfEvent()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfEvent()) for (org.hl7.fhir.dstu3.model.Coding cc : t.getCoding()) tgt.getEvent().addPurposeOfEvent(VersionConvertor_10_30.convertCoding(cc));
+        }
+        if (src.hasAgent()) {
+            for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addParticipant(convertAuditEventAgentComponent(t));
+        }
+        if (src.hasSource()) {
+            tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
+        }
+        if (src.hasEntity()) {
+            for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent t : src.getEntity()) tgt.addObject(convertAuditEventEntityComponent(t));
+        }
         return tgt;
     }
 
@@ -29,17 +49,37 @@ public class AuditEvent10_30 {
         org.hl7.fhir.dstu3.model.AuditEvent tgt = new org.hl7.fhir.dstu3.model.AuditEvent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasEvent()) {
-            tgt.setType(VersionConvertor_10_30.convertCoding(src.getEvent().getType()));
-            for (org.hl7.fhir.dstu2.model.Coding t : src.getEvent().getSubtype()) tgt.addSubtype(VersionConvertor_10_30.convertCoding(t));
-            tgt.setAction(convertAuditEventAction(src.getEvent().getAction()));
-            tgt.setRecorded(src.getEvent().getDateTime());
-            tgt.setOutcome(convertAuditEventOutcome(src.getEvent().getOutcome()));
-            tgt.setOutcomeDesc(src.getEvent().getOutcomeDesc());
-            for (org.hl7.fhir.dstu2.model.Coding t : src.getEvent().getPurposeOfEvent()) tgt.addPurposeOfEvent().addCoding(VersionConvertor_10_30.convertCoding(t));
+            if (src.hasEvent()) {
+                tgt.setType(VersionConvertor_10_30.convertCoding(src.getEvent().getType()));
+            }
+            if (src.hasEvent()) {
+                for (org.hl7.fhir.dstu2.model.Coding t : src.getEvent().getSubtype()) tgt.addSubtype(VersionConvertor_10_30.convertCoding(t));
+            }
+            if (src.hasEvent()) {
+                tgt.setAction(convertAuditEventAction(src.getEvent().getAction()));
+            }
+            if (src.hasEvent()) {
+                tgt.setRecorded(src.getEvent().getDateTime());
+            }
+            if (src.hasEvent()) {
+                tgt.setOutcome(convertAuditEventOutcome(src.getEvent().getOutcome()));
+            }
+            if (src.hasEvent()) {
+                tgt.setOutcomeDesc(src.getEvent().getOutcomeDesc());
+            }
+            if (src.hasEvent()) {
+                for (org.hl7.fhir.dstu2.model.Coding t : src.getEvent().getPurposeOfEvent()) tgt.addPurposeOfEvent().addCoding(VersionConvertor_10_30.convertCoding(t));
+            }
         }
-        for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantComponent t : src.getParticipant()) tgt.addAgent(convertAuditEventAgentComponent(t));
-        tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
-        for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectComponent t : src.getObject()) tgt.addEntity(convertAuditEventEntityComponent(t));
+        if (src.hasParticipant()) {
+            for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantComponent t : src.getParticipant()) tgt.addAgent(convertAuditEventAgentComponent(t));
+        }
+        if (src.hasSource()) {
+            tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
+        }
+        if (src.hasObject()) {
+            for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectComponent t : src.getObject()) tgt.addEntity(convertAuditEventEntityComponent(t));
+        }
         return tgt;
     }
 
@@ -86,17 +126,39 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
-        tgt.setUserId(VersionConvertor_10_30.convertIdentifier(src.getUserId()));
-        tgt.setAltId(src.getAltId());
-        tgt.setName(src.getName());
-        tgt.setRequestor(src.getRequestor());
-        tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        for (org.hl7.fhir.dstu2.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
-        tgt.setMedia(VersionConvertor_10_30.convertCoding(src.getMedia()));
-        tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
-        for (org.hl7.fhir.dstu2.model.Coding t : src.getPurposeOfUse()) tgt.addPurposeOfUse().addCoding(VersionConvertor_10_30.convertCoding(t));
+        if (src.hasRole()) {
+            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasReference()) {
+            tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
+        }
+        if (src.hasUserId()) {
+            tgt.setUserId(VersionConvertor_10_30.convertIdentifier(src.getUserId()));
+        }
+        if (src.hasAltId()) {
+            tgt.setAltId(src.getAltId());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasRequestor()) {
+            tgt.setRequestor(src.getRequestor());
+        }
+        if (src.hasLocation()) {
+            tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
+        }
+        if (src.hasPolicy()) {
+            for (org.hl7.fhir.dstu2.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        }
+        if (src.hasMedia()) {
+            tgt.setMedia(VersionConvertor_10_30.convertCoding(src.getMedia()));
+        }
+        if (src.hasNetwork()) {
+            tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
+        }
+        if (src.hasPurposeOfUse()) {
+            for (org.hl7.fhir.dstu2.model.Coding t : src.getPurposeOfUse()) tgt.addPurposeOfUse().addCoding(VersionConvertor_10_30.convertCoding(t));
+        }
         return tgt;
     }
 
@@ -105,17 +167,39 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantComponent tgt = new org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_10_30.convertCodeableConcept(t));
-        tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
-        tgt.setUserId(VersionConvertor_10_30.convertIdentifier(src.getUserId()));
-        tgt.setAltId(src.getAltId());
-        tgt.setName(src.getName());
-        tgt.setRequestor(src.getRequestor());
-        tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
-        tgt.setMedia(VersionConvertor_10_30.convertCoding(src.getMedia()));
-        tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfUse()) for (org.hl7.fhir.dstu3.model.Coding cc : t.getCoding()) tgt.addPurposeOfUse(VersionConvertor_10_30.convertCoding(cc));
+        if (src.hasRole()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_10_30.convertCodeableConcept(t));
+        }
+        if (src.hasReference()) {
+            tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
+        }
+        if (src.hasUserId()) {
+            tgt.setUserId(VersionConvertor_10_30.convertIdentifier(src.getUserId()));
+        }
+        if (src.hasAltId()) {
+            tgt.setAltId(src.getAltId());
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasRequestor()) {
+            tgt.setRequestor(src.getRequestor());
+        }
+        if (src.hasLocation()) {
+            tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
+        }
+        if (src.hasPolicy()) {
+            for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
+        }
+        if (src.hasMedia()) {
+            tgt.setMedia(VersionConvertor_10_30.convertCoding(src.getMedia()));
+        }
+        if (src.hasNetwork()) {
+            tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
+        }
+        if (src.hasPurposeOfUse()) {
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfUse()) for (org.hl7.fhir.dstu3.model.Coding cc : t.getCoding()) tgt.addPurposeOfUse(VersionConvertor_10_30.convertCoding(cc));
+        }
         return tgt;
     }
 
@@ -124,8 +208,12 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantNetworkComponent tgt = new org.hl7.fhir.dstu2.model.AuditEvent.AuditEventParticipantNetworkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setAddress(src.getAddress());
-        tgt.setType(convertAuditEventParticipantNetworkType(src.getType()));
+        if (src.hasAddress()) {
+            tgt.setAddress(src.getAddress());
+        }
+        if (src.hasType()) {
+            tgt.setType(convertAuditEventParticipantNetworkType(src.getType()));
+        }
         return tgt;
     }
 
@@ -134,8 +222,12 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setAddress(src.getAddress());
-        tgt.setType(convertAuditEventParticipantNetworkType(src.getType()));
+        if (src.hasAddress()) {
+            tgt.setAddress(src.getAddress());
+        }
+        if (src.hasType()) {
+            tgt.setType(convertAuditEventParticipantNetworkType(src.getType()));
+        }
         return tgt;
     }
 
@@ -144,16 +236,36 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
-        tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
-        tgt.setRole(VersionConvertor_10_30.convertCoding(src.getRole()));
-        tgt.setLifecycle(VersionConvertor_10_30.convertCoding(src.getLifecycle()));
-        for (org.hl7.fhir.dstu2.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_10_30.convertCoding(t));
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        tgt.setQuery(src.getQuery());
-        for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
+        if (src.hasReference()) {
+            tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
+        }
+        if (src.hasRole()) {
+            tgt.setRole(VersionConvertor_10_30.convertCoding(src.getRole()));
+        }
+        if (src.hasLifecycle()) {
+            tgt.setLifecycle(VersionConvertor_10_30.convertCoding(src.getLifecycle()));
+        }
+        if (src.hasSecurityLabel()) {
+            for (org.hl7.fhir.dstu2.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_10_30.convertCoding(t));
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasQuery()) {
+            tgt.setQuery(src.getQuery());
+        }
+        if (src.hasDetail()) {
+            for (org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
+        }
         return tgt;
     }
 
@@ -162,16 +274,36 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectComponent tgt = new org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
-        tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
-        tgt.setRole(VersionConvertor_10_30.convertCoding(src.getRole()));
-        tgt.setLifecycle(VersionConvertor_10_30.convertCoding(src.getLifecycle()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_10_30.convertCoding(t));
-        tgt.setName(src.getName());
-        tgt.setDescription(src.getDescription());
-        tgt.setQuery(src.getQuery());
-        for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
+        if (src.hasReference()) {
+            tgt.setReference(VersionConvertor_10_30.convertReference(src.getReference()));
+        }
+        if (src.hasType()) {
+            tgt.setType(VersionConvertor_10_30.convertCoding(src.getType()));
+        }
+        if (src.hasRole()) {
+            tgt.setRole(VersionConvertor_10_30.convertCoding(src.getRole()));
+        }
+        if (src.hasLifecycle()) {
+            tgt.setLifecycle(VersionConvertor_10_30.convertCoding(src.getLifecycle()));
+        }
+        if (src.hasSecurityLabel()) {
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_10_30.convertCoding(t));
+        }
+        if (src.hasName()) {
+            tgt.setName(src.getName());
+        }
+        if (src.hasDescription()) {
+            tgt.setDescription(src.getDescription());
+        }
+        if (src.hasQuery()) {
+            tgt.setQuery(src.getQuery());
+        }
+        if (src.hasDetail()) {
+            for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
+        }
         return tgt;
     }
 
@@ -180,8 +312,12 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectDetailComponent tgt = new org.hl7.fhir.dstu2.model.AuditEvent.AuditEventObjectDetailComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(src.getType());
-        tgt.setValue(src.getValue());
+        if (src.hasType()) {
+            tgt.setType(src.getType());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
         return tgt;
     }
 
@@ -190,8 +326,12 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setType(src.getType());
-        tgt.setValue(src.getValue());
+        if (src.hasType()) {
+            tgt.setType(src.getType());
+        }
+        if (src.hasValue()) {
+            tgt.setValue(src.getValue());
+        }
         return tgt;
     }
 
@@ -272,9 +412,15 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.dstu2.model.AuditEvent.AuditEventSourceComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setSite(src.getSite());
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCoding(t));
+        if (src.hasSite()) {
+            tgt.setSite(src.getSite());
+        }
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
+        if (src.hasType()) {
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCoding(t));
+        }
         return tgt;
     }
 
@@ -283,9 +429,15 @@ public class AuditEvent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        tgt.setSite(src.getSite());
-        tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.dstu2.model.Coding t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCoding(t));
+        if (src.hasSite()) {
+            tgt.setSite(src.getSite());
+        }
+        if (src.hasIdentifier()) {
+            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+        }
+        if (src.hasType()) {
+            for (org.hl7.fhir.dstu2.model.Coding t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCoding(t));
+        }
         return tgt;
     }
 }

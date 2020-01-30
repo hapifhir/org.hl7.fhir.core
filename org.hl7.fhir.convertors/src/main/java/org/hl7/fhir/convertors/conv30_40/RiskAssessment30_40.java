@@ -36,8 +36,12 @@ public class RiskAssessment30_40 {
             tgt.setReason(VersionConvertor_30_40.convertType(src.getReasonCodeFirstRep()));
         if (src.hasReasonReference())
             tgt.setReason(VersionConvertor_30_40.convertType(src.getReasonReferenceFirstRep()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_40.convertReference(t));
-        for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        if (src.hasBasis()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_40.convertReference(t));
+        }
+        if (src.hasPrediction()) {
+            for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        }
         if (src.hasMitigation())
             tgt.setMitigation(src.getMitigation());
         if (src.hasNote())
