@@ -241,6 +241,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean debug;
   private Set<String> loadedIgs = new HashSet<>();
   private IValidatorResourceFetcher fetcher;
+  private boolean assumeValidRestReferences;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1270,6 +1271,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
+    validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setFetcher(this);
     return validator;
   }
@@ -1687,6 +1689,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setFetcher(IValidatorResourceFetcher fetcher) {
     this.fetcher = fetcher;
+  }
+
+  public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    this.assumeValidRestReferences = assumeValidRestReferences;
   }
 
 

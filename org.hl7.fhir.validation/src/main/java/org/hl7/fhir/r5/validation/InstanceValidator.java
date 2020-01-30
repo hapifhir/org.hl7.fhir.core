@@ -156,6 +156,9 @@ import ca.uhn.fhir.util.ObjectUtil;
  * Thinking of using this in a java program? Don't! 
  * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine
  * 
+ * Validation todo:
+ * - support @default slices
+ * 
  * @author Grahame Grieve
  *
  */
@@ -2433,6 +2436,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       TypeRefComponent type = getReferenceTypeRef(container.getType());
       boolean okToRef = !type.hasAggregation() || type.hasAggregation(AggregationMode.REFERENCED);
       rule(errors, IssueType.REQUIRED, -1, -1, path, okToRef, "Bundled or contained reference not found within the bundle/resource " + ref);
+    }
+    if (we == null && ft != null && assumeValidRestReferences) {
+      // if we == null, we inferred ft from the reference. if we are told to treat this as gospel  
+      TypeRefComponent type = getReferenceTypeRef(container.getType());
+      Set<String> types = new HashSet<>();
+      for (CanonicalType tp : type.getTargetProfile()) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue());
+        if (sd != null) {
+          types.add(sd.getType());
+        }
+      }
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || types.contains(ft), "The type '"+ft+"' implied by the reference URL "+ref+" is not a valid Target for this element (must be one of "+types+")");
+      
     }
     if (pol == ReferenceValidationPolicy.CHECK_VALID) {
       // todo....
