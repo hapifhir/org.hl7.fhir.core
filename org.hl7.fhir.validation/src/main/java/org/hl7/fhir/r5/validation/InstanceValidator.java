@@ -1622,9 +1622,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Set<String> allowedTypes = listExtensionTypes(ex);
       String actualType = getExtensionType(element);
       if (actualType == null)
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", allowedTypes.isEmpty(), "The Extension '" + url + "' definition is for a simple extension, so it must contain a value, not extensions");
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), "The Extension '" + url + "' definition is for a simple extension, so it must contain a value, not extensions");
       else
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", allowedTypes.contains(actualType), "The Extension '" + url + "' definition allows for the types "+allowedTypes.toString()+" but found type "+actualType);
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), "The Extension '" + url + "' definition allows for the types "+allowedTypes.toString()+" but found type "+actualType);
 
       // 3. is the content of the extension valid?
       validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true, url);
@@ -1984,7 +1984,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (fetcher != null) {
         boolean found;
         try {
-          found = (allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
+          found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
         } catch (IOException e1) {
           found = false;
         }
@@ -2145,6 +2145,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private boolean isDefinitionURL(String url) {
+    return Utilities.existsInList(url, "http://hl7.org/fhirpath/System.Boolean", "http://hl7.org/fhirpath/System.String", "http://hl7.org/fhirpath/System.Integer", 
+        "http://hl7.org/fhirpath/System.Decimal", "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity");
   }
 
   private void checkInnerNames(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
@@ -2378,7 +2383,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles), "Unable to find matching profile for "+ref+" among choices: " + asList(type.getTargetProfile()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummaryForSlicing(badProfiles.get(sd)), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for "+ref+" matching against Profile"+sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size()==1, "Unable to find matching profile for "+ref+" among choices: " + asList(type.getTargetProfile()));
@@ -2394,7 +2399,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Found multiple matching profiles for "+ref+" among choices: " + asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+sd.getUrl()+" does not match for "+ref+" because of the following errors: "+errorSummaryForSlicing(badProfiles.get(sd)), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for "+ref+" matching against Profile"+sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Found multiple matching profiles for "+ref+" among choices: " + asListByUrl(goodProfiles.keySet()));
@@ -2472,7 +2477,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String errorSummaryForSlicingAsHtml(List<ValidationMessage> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ValidationMessage vm : list) {
-      if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL || vm.isSlicingHint()) {
+      if (vm.isSlicingHint()) {
+        b.append("<li>"+vm.getLocation()+": "+vm.getSliceHtml()+"</li>");
+      } else if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL ) {
         b.append("<li>"+vm.getLocation()+": "+vm.getHtml()+"</li>");
       }
     }
@@ -3319,9 +3326,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Does not match slice'"+ed.getSliceName()+"' (discriminator = "+n.toString()+")");
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Does not match slice'"+ed.getSliceName(), "discriminator = "+Utilities.escapeXml(n.toString()));
       for (String url : shc.sliceRecords.keySet()) {
-        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Profile "+url+" does not match for "+stack.getLiteralPath()+" because of the following profile issues: "+errorSummaryForSlicing(shc.sliceRecords.get(url)), 
+        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for "+stack.getLiteralPath()+" against profile "+url, 
             "Profile "+url+" does not match for "+stack.getLiteralPath()+" because of the following profile issues: "+errorSummaryForSlicingAsHtml(shc.sliceRecords.get(url)));
       }
     }
@@ -5110,7 +5117,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
               ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl())+": "+errorSummaryForSlicing(ei.sliceInfo),
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
                 "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
             rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicing(ei.sliceInfo)),
