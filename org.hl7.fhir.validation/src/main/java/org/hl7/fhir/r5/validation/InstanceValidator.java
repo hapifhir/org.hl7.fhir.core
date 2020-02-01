@@ -108,6 +108,7 @@ import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
+import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
@@ -3585,19 +3586,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (checkSpecials) {
-      // specific known special validations
-      if (element.getType().equals("Bundle")) {
-        validateBundle(errors, element, stack);
-      } else if (element.getType().equals("Observation")) {
-        validateObservation(errors, element, stack);
-      } else if (element.getType().equals("Questionnaire")) {
-        validateQuestionannaire(errors, element, stack);
-      } else if (element.getType().equals("QuestionnaireResponse")) {
-        validateQuestionannaireResponse(hostContext, errors, element, stack);
-      } else if (element.getType().equals("CodeSystem")) {
-        validateCodeSystem(errors, element, stack);
-      }
+      checkSpecials(hostContext, errors, element, stack, checkSpecials);
       validateResourceRules(errors, element, stack);
+    }
+  }
+
+  public void checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials) {
+    // specific known special validations
+    if (element.getType().equals("Bundle")) {
+      validateBundle(errors, element, stack, checkSpecials);
+    } else if (element.getType().equals("Observation")) {
+      validateObservation(errors, element, stack);
+    } else if (element.getType().equals("Questionnaire")) {
+      validateQuestionannaire(errors, element, stack);
+    } else if (element.getType().equals("QuestionnaireResponse")) {
+      validateQuestionannaireResponse(hostContext, errors, element, stack);
+    } else if (element.getType().equals("CapabilityStatement")) {
+      validateCapabilityStatement(errors, element, stack);
+    } else if (element.getType().equals("CodeSystem")) {
+      validateCodeSystem(errors, element, stack);
     }
   }
 
@@ -3729,6 +3736,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private void validateCapabilityStatement(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+    int iRest = 0;
+    for (Element rest : cs.getChildrenByName("rest")) {
+      int iResource = 0;
+      for  (Element resource : rest.getChildrenByName("resource")) {
+        int iSP = 0;
+        for  (Element searchParam : resource.getChildrenByName("searchParam")) {
+          String ref = searchParam.getChildValue("definition");
+          String type = searchParam.getChildValue("type");
+          SearchParameter sp = context.fetchResource(SearchParameter.class, ref);
+          if (sp != null) {
+            rule(errors, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.literalPath+".rest["+iRest+"].resource["+iResource+"].searchParam["+iSP+"]", 
+                sp.getType().toCode().equals(type), "Type mismatch - SearchParameter '"+sp.getUrl()+"' type is "+sp.getType().toCode()+", but type here is "+type);
+          }
+          iSP++;
+        }
+        iResource++;
+      }
+      iRest++;
+    }
+  }
   private void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
     String url = cs.getNamedChildValue("url");
     String vsu = cs.getNamedChildValue("valueSet");
@@ -4314,7 +4342,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     return true;
   }
 
-  private void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack) {
+  private void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials) {
     List<Element> entries = new ArrayList<Element>();
     bundle.getNamedChildren("entry", entries);
     String type = bundle.getNamedChildValue("type");
@@ -4358,6 +4386,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry", ":0"), false, "The canonical URL ("+url+") cannot match the fullUrl ("+fullUrl+") unless the resource id ("+id+") also matches");
         rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry", ":0"), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild("resource").fhirType(), id))), "The canonical URL ("+url+") cannot match the fullUrl ("+fullUrl+") unless on the canonical server itself");
       }
+      // todo: check specials
     }
   }
 
