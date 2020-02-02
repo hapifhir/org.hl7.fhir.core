@@ -3745,10 +3745,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for  (Element searchParam : resource.getChildrenByName("searchParam")) {
           String ref = searchParam.getChildValue("definition");
           String type = searchParam.getChildValue("type");
-          SearchParameter sp = context.fetchResource(SearchParameter.class, ref);
-          if (sp != null) {
-            rule(errors, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.literalPath+".rest["+iRest+"].resource["+iResource+"].searchParam["+iSP+"]", 
-                sp.getType().toCode().equals(type), "Type mismatch - SearchParameter '"+sp.getUrl()+"' type is "+sp.getType().toCode()+", but type here is "+type);
+          if (!Utilities.noString(ref)) {
+            SearchParameter sp = context.fetchResource(SearchParameter.class, ref);
+            if (sp != null) {
+              rule(errors, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.literalPath+".rest["+iRest+"].resource["+iResource+"].searchParam["+iSP+"]", 
+                  sp.getType().toCode().equals(type), "Type mismatch - SearchParameter '"+sp.getUrl()+"' type is "+sp.getType().toCode()+", but type here is "+type);
+            }
           }
           iSP++;
         }
