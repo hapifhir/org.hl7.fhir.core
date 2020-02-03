@@ -149,7 +149,7 @@ public class LDContextGenerator {
       }
       else if (context.equals(CODE_TYPE)  &&
               elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
-        context = null;
+        context = "string";
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
 

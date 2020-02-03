@@ -32,6 +32,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.jena.rdf.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Constants;
@@ -42,6 +43,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.r5.utils.RDFTypeMap;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.stringtemplate.v4.ST;
 
@@ -183,6 +185,16 @@ public class ShExGenerator {
   // A value set definition
   private static String VALUE_SET_DEFINITION = "# $comment$\n$vsuri$$val_list$\n";
 
+  // Static value for now.
+  private static String PRIMITIVE_TYPE_INTEGER64 =
+      "\n# Primitive Type integer64" +
+      "\n<integer> CLOSED {" +
+      "\n    fhir:Element.id @<string>?;             # xml:id (or equivalent in JSON)" +
+      "\n    fhir:Element.extension @<Extension>*;   # Additional content defined by" +
+      "\n                                            # implementations" +
+      "\n    fhir:value xsd:integer?;                # Primitive value for integer" +
+      "\n    fhir:index xsd:integer?                 # Relative position in a list" +
+      "\n}";
 
   /**
    * this makes internal metadata services available to the generator - retrieving structure definitions, and value set expansion etc
@@ -280,7 +292,6 @@ public class ShExGenerator {
       }
     }
 
-
     for (StructureDefinition sd : uniq_structures) {
       shapeDefinitions.append(genShapeDefinition(sd, true));
     }
@@ -294,6 +305,9 @@ public class ShExGenerator {
         shapeDefinitions.append(emitInnerTypes());
       }
     }
+
+    // Add the static string for the primitive type integer64
+    shapeDefinitions.append(PRIMITIVE_TYPE_INTEGER64);
 
     shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
     for(String r: references) {
@@ -495,7 +509,23 @@ public class ShExGenerator {
     }
     else if (ed.getType().size() == 1) {
       // Single entry
-      defn = genTypeRef(sd, ed, id, ed.getType().get(0));
+      String edVal = ed.toString();
+      String[] edStrings = edVal.split("\\.");
+
+      // get the primitive type
+      if (edStrings.length==2 && edStrings[1].equals("value") &&
+              (RDFTypeMap.xsd_type_for(edStrings[0], false) != null)){
+        Resource resource = RDFTypeMap.xsd_type_for(edStrings[0], false);
+
+        // Map anyURI to string for now
+        String resourceStr = resource.getLocalName().equals("anyURI") ? "string" : resource.getLocalName();
+        //System.out.println(resourceStr);
+        defn = "xsd:" + resourceStr;
+      }
+      else {
+        defn = genTypeRef(sd, ed, id, ed.getType().get(0));
+      }
+
     } else if (ed.getContentReference() != null) {
       // Reference to another element
       String ref = ed.getContentReference();
@@ -615,7 +645,13 @@ public class ShExGenerator {
 
     } else if(typ.getWorkingCode().equals("xhtml")) {
       return tmplt(XHTML_TYPE_TEMPLATE).render();
-    } else {
+    }
+//    else if  (RDFTypeMap.xsd_type_for(typ.getWorkingCode(), false) != null) {
+//      String resourceUri = RDFTypeMap.xsd_type_for(typ.getWorkingCode(), false).getLocalName();
+//      datatypes.add(resourceUri);
+//      return simpleElement(sd, ed, resourceUri);
+//    }
+    else {
       datatypes.add(typ.getWorkingCode());
       return simpleElement(sd, ed, typ.getWorkingCode());
     }
