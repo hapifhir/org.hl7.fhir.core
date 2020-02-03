@@ -1,12 +1,11 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.dstu3.model.Specimen;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Specimen10_30 {
 
-    static public org.hl7.fhir.dstu2.model.Specimen convertSpecimen(Specimen src) {
+    static public org.hl7.fhir.dstu2.model.Specimen convertSpecimen(org.hl7.fhir.dstu3.model.Specimen src) {
         if (src == null) {
             return null;
         }
@@ -93,7 +92,7 @@ public class Specimen10_30 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2.model.Specimen.SpecimenStatus convertSpecimenStatus(Specimen.SpecimenStatus status) {
+    static public org.hl7.fhir.dstu2.model.Specimen.SpecimenStatus convertSpecimenStatus(org.hl7.fhir.dstu3.model.Specimen.SpecimenStatus status) {
         if (status == null) {
             return null;
         }
