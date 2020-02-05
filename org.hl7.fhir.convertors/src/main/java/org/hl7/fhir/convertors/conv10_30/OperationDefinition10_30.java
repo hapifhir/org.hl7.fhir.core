@@ -210,11 +210,10 @@ public class OperationDefinition10_30 {
             tgt.setDocumentation(src.getDocumentation());
         }
         if (src.hasSearchType()) {
-            if (src.hasSearchType()) {
-                tgt.setType(src.getSearchType().toCode());
-            }
-        } else
-            tgt.setType(src.getType());
+          tgt.setType(src.getSearchType().toCode());
+        } else {
+          tgt.setType(src.getType());
+        }
         if (src.hasProfile())
             tgt.setProfile(VersionConvertor_10_30.convertReference(src.getProfile()));
         if (src.hasBinding())

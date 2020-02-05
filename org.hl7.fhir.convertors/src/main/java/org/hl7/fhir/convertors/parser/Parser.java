@@ -4,14 +4,13 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.*;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.Comment;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier;
 import com.github.javaparser.ast.stmt.*;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.VarType;
 import com.github.javaparser.ast.visitor.ModifierVisitor;
@@ -25,6 +24,8 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import jdk.nashorn.internal.runtime.options.Option;
+import org.checkerframework.checker.nullness.Opt;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.MedicationAdministration;
 
@@ -51,6 +52,14 @@ public class Parser {
     "Enumeration", "Date", "DateType", "Decimal", "Id", "Instant", "Integer", "Integer64",
     "Markdown", "Oid", "PositiveInt", "String", "Time", "UnsignedInt", "Uri", "Url",
     "Uuid", "XhtmlNode");
+
+  private static final String ONE_TO_ONE = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement()));";
+  private static final String ONE_TO_MANY = "tgt.set%1$s(Collections.singletonList((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement())));";
+  private static final String MANY_TO_ONE = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$s().get(0)));";
+  private static final String MANY_TO_MANY = "tgt.set%1$s(src.get%1$s().stream()\n" +
+    ".map(toConvert -> (%3$s%4$s) VersionConvertor_%2$s.convertType(toConvert))\n" +
+    ".collect(Collectors.toList())\n" +
+    ");";
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes>
   convertMedicationAdministrationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationStatus> src) {
@@ -92,20 +101,20 @@ public class Parser {
 
 
 //    VERSION_FILES.forEach(version -> {
-//      //String version = "10_30";
-//      List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
-//      Collections.sort(filenames);
-//      filenames.forEach(name -> {
-//        try {
-//          modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
-//        } catch (FileNotFoundException e) {
-//          e.printStackTrace();
-//        }
-//      });
+      String version = "10_30";
+      List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
+      Collections.sort(filenames);
+      filenames.forEach(name -> {
+        try {
+          modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
+      });
 //    });
 //
     try {
-    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv40_50/", "Account40_50", ".java", listOfPrimitiveTypes, "10_30");
+//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv40_50/", "Account40_50", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "AuditEvent10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Binary10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Bundle10_30", ".java", listOfPrimitiveTypes, "10_30");
@@ -127,14 +136,15 @@ public class Parser {
     ClassOrInterfaceDeclaration classOrInterfaceDeclaration = initializeTypeSovlerAndParser(compilationUnit,
       projectDirectory, srcdirectory, filename);
 
-    MethodDeclaration declaration = null;
+    MethodDeclaration declaration;
 
-    try {
-      declaration = classOrInterfaceDeclaration.getMethods().stream()
-        .filter(md -> md.getNameAsString().equals("convert" + extractName(filename)))
-        .findFirst().get();
-    } catch (Exception e) {
-      System.out.println();
+    Optional<MethodDeclaration> declarationOption = classOrInterfaceDeclaration.getMethods().stream()
+      .filter(md -> md.getNameAsString().equals("convert" + extractName(filename)))
+      .findFirst();
+    if (!declarationOption.isPresent()) {
+      return;
+    } else {
+      declaration = declarationOption.get(); // Can't find
     }
 
     String lowerVersionTypeAbsPath = getLowerVersionAbsPathFromImportStatement(declaration.getTypeAsString(), declaration.getParameter(0).getTypeAsString(), version);
@@ -215,35 +225,13 @@ public class Parser {
           @Override
           public Visitable visit(IfStmt ifStmt, Void arg) {
             super.visit(ifStmt, arg);
-            Expression condition = ifStmt.getCondition();
-            Statement thenStmt = ifStmt.getThenStmt();
+            processIfStatement(ifStmt);
 
-            if (thenStmt instanceof ReturnStmt) {
-            } else if (thenStmt instanceof IfStmt) {
-            } else if (thenStmt instanceof ForEachStmt) {
-            } else if (thenStmt instanceof BlockStmt) {
-            } else if (thenStmt instanceof ExpressionStmt) {
-            } else if (thenStmt instanceof TryStmt) {
-            } else if (thenStmt instanceof ThrowStmt) {
-//              if (thenStmt instanceof ForEachStmt) {
-//                System.out.println();
-//              } else {
-//                thenStmt.accept(new VoidVisitorAdapter<Void>() {
-//                  @Override
-//                  public void visit(ExpressionStmt n, Void arg) {
-//                    super.visit(n, arg);
-//                    n.getExpression();
-//                    System.out.println();
-//                  }
-//                }, null);
-//              }
-            } else {
-              System.out.println("You haven't caught this then statement case yet.");
-              System.exit(0);
-            }
+
 
             return ifStmt;
           }
+
         }, null);
       }
 
@@ -252,9 +240,92 @@ public class Parser {
     }
   }
 
+  public static void processIfStatement(IfStmt ifStmt) {
+    Expression condition = ifStmt.getCondition();
+    Statement thenStmt = ifStmt.getThenStmt();
+    //Handle multiple big if blocks
+    if ((thenStmt instanceof BlockStmt) && (thenStmt.getChildNodes().size() > 1)) {
+      thenStmt.getChildNodes().forEach(n -> {
+        if (n instanceof IfStmt) {
+          processIfStatement((IfStmt) n);
+        } else {
+          System.out.println();
+        }
+      });
+    } else if (thenStmt instanceof IfStmt) {
+      processIfStatement((IfStmt) thenStmt);
+    } else {
+      Expression expression = processGetStatement(thenStmt);
+      if (expression != null && !expression.toString().contains("get")) {
+        System.out.println();
+      } else if (expression == null) {
+        System.out.println("Logger :: was not able to get a getStatement for if statement :: " + ifStmt.toString());
+      }
+    }
+  }
+
+  public static Expression processGetStatement(Node stmt) {
+
+    if ((stmt instanceof ReturnStmt) || (stmt instanceof ThrowStmt) || (stmt instanceof TryStmt)
+      || (stmt instanceof NameExpr) || (stmt instanceof FieldAccessExpr) || (stmt instanceof BooleanLiteralExpr)
+      || (stmt instanceof ConditionalExpr) || (stmt instanceof StringLiteralExpr)) {
+      // ignore
+    } else if (stmt instanceof IfStmt) {
+      System.out.println();
+    } else if (stmt instanceof ForEachStmt) {
+      return ((ForEachStmt) stmt).getIterable();
+    } else if (stmt instanceof BlockStmt) {
+      if (stmt.getChildNodes().size() > 1) {
+        System.out.println();
+      } else {
+        return processGetStatement(stmt.getChildNodes().get(0));
+      }
+    } else if (stmt instanceof ExpressionStmt) {
+      return processGetStatement(((ExpressionStmt) stmt).getExpression());
+    } else if (stmt instanceof MethodCallExpr) {
+      if (((MethodCallExpr) stmt).getArguments().size() > 0) {
+        return processGetStatement(((MethodCallExpr) stmt).getArgument(0));
+      } else {
+        return containsOrReturnNull((Expression) stmt, "get");
+      }
+    } else if (stmt instanceof AssignExpr) {
+      if (((AssignExpr) stmt).getOperator().equals(AssignExpr.Operator.ASSIGN)) {
+        return (processGetStatement(stmt.getChildNodes().get(1)));
+      } else {
+        System.out.println();
+      }
+    } else if (stmt instanceof UnaryExpr) {
+      return containsOrReturnNull((Expression) stmt, "get");
+    } else if (stmt instanceof BinaryExpr) {
+      if (((BinaryExpr) stmt).getLeft().toString().contains("get")) {
+        return processGetStatement(((BinaryExpr) stmt).getLeft());
+      } else {
+        return processGetStatement(((BinaryExpr) stmt).getRight());
+      }
+    } else if (stmt instanceof CastExpr) {
+      return processGetStatement(((CastExpr) stmt).getExpression());
+    } else if (stmt instanceof Expression) {
+      System.out.println();
+    } else {
+      System.out.println("You haven't caught this then statement case yet.");
+      System.exit(0);
+    }
+
+    return null;
+  }
+
+  public static Expression containsOrReturnNull(Expression e, String keyWord) {
+    if (e.toString().contains(keyWord)) {
+      return e;
+    } else {
+      return null;
+    }
+  }
+
   public static Type resolveInnerType(Type type) {
     Type toReturn = type;
-    if (type.toString().contains("List") && !type.toString().contains("List_") && !type.toString().contains("ListResource")) {
+    if (type.toString().contains("List") && !type.toString().contains("List_")
+      && !type.toString().contains("ListResource") && !type.toString().contains("ListMode")) {
       try {
         toReturn = (Type) type.getChildNodes().get(1);
       } catch (Exception e) {
