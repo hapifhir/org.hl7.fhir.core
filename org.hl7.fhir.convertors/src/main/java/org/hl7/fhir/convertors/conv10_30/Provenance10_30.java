@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Provenance10_30 {
 
@@ -16,9 +17,8 @@ public class Provenance10_30 {
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
         }
-        if (src.hasRecorded()) {
-            tgt.setRecorded(src.getRecorded());
-        }
+        if (src.hasRecordedElement())
+            tgt.setRecordedElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getRecordedElement()));
         if (src.hasReason()) {
             for (org.hl7.fhir.dstu3.model.Coding t : src.getReason()) tgt.addReason().addCoding(VersionConvertor_10_30.convertCoding(t));
         }
@@ -54,9 +54,8 @@ public class Provenance10_30 {
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
         }
-        if (src.hasRecorded()) {
-            tgt.setRecorded(src.getRecorded());
-        }
+        if (src.hasRecordedElement())
+            tgt.setRecordedElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getRecordedElement()));
         if (src.hasReason()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason()) for (org.hl7.fhir.dstu2.model.Coding tc : t.getCoding()) tgt.addReason(VersionConvertor_10_30.convertCoding(tc));
         }

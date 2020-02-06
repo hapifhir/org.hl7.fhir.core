@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Organization10_30 {
 
@@ -13,15 +15,14 @@ public class Organization10_30 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement()) {
+            tgt.setActiveElement((BooleanType) VersionConvertor_10_30.convertType(src.getActiveElement()));
         }
         if (src.hasType()) {
             tgt.addType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasTelecom()) {
             for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
         }
@@ -45,15 +46,14 @@ public class Organization10_30 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement()) {
+            tgt.setActiveElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_30.convertType(src.getActiveElement()));
         }
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getTypeFirstRep()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasTelecom()) {
             for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
         }

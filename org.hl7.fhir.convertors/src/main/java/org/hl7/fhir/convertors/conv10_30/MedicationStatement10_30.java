@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class MedicationStatement10_30 {
 
@@ -31,13 +33,13 @@ public class MedicationStatement10_30 {
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateAssertedElement()));
         if (src.hasReasonNotTaken()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonNotTaken()) tgt.addReasonNotTaken(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        if (src.hasNote())
-            tgt.addNote().setText(src.getNote());
+        if (src.hasNoteElement())
+            tgt.setNote(Collections.singletonList((org.hl7.fhir.dstu3.model.Annotation) VersionConvertor_10_30.convertType(src.getNoteElement())));
         if (src.hasDosage()) {
             for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
         }
@@ -70,8 +72,8 @@ public class MedicationStatement10_30 {
         if (src.hasDerivedFrom()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateAssertedElement()));
         if (src.hasReasonNotTaken()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonNotTaken()) tgt.addReasonNotTaken(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -89,8 +91,8 @@ public class MedicationStatement10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Dosage tgt = new org.hl7.fhir.dstu3.model.Dosage();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasText()) {
-            tgt.setText(src.getText());
+        if (src.hasTextElement()) {
+            tgt.setTextElement((StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         }
         if (src.hasTiming()) {
             tgt.setTiming(VersionConvertor_10_30.convertTiming(src.getTiming()));
@@ -120,8 +122,8 @@ public class MedicationStatement10_30 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent tgt = new org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasText()) {
-            tgt.setText(src.getText());
+        if (src.hasTextElement()) {
+            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         }
         if (src.hasTiming()) {
             tgt.setTiming(VersionConvertor_10_30.convertTiming(src.getTiming()));

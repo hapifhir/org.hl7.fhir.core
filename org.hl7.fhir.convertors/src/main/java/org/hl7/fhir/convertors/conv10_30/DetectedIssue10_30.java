@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DetectedIssue10_30 {
 
@@ -22,20 +23,18 @@ public class DetectedIssue10_30 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDetail()) {
-            tgt.setDetail(src.getDetail());
-        }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDetailElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
         }
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasReference()) {
-            tgt.setReference(src.getReference());
-        }
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_30.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -59,20 +58,18 @@ public class DetectedIssue10_30 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDetail()) {
-            tgt.setDetail(src.getDetail());
-        }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDetailElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
         }
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasReference()) {
-            tgt.setReference(src.getReference());
-        }
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_10_30.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -87,8 +84,8 @@ public class DetectedIssue10_30 {
         if (src.hasAction()) {
             tgt.setAction(VersionConvertor_10_30.convertCodeableConcept(src.getAction()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
         }
@@ -103,8 +100,8 @@ public class DetectedIssue10_30 {
         if (src.hasAction()) {
             tgt.setAction(VersionConvertor_10_30.convertCodeableConcept(src.getAction()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_30.convertReference(src.getAuthor()));
         }

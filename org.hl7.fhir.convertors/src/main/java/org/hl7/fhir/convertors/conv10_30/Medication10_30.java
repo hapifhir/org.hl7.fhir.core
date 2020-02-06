@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Medication10_30 {
 
@@ -13,8 +15,8 @@ public class Medication10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasIsBrand()) {
-            tgt.setIsBrand(src.getIsBrand());
+        if (src.hasIsBrandElement()) {
+            tgt.setIsBrandElement((BooleanType) VersionConvertor_10_30.convertType(src.getIsBrandElement()));
         }
         if (src.hasManufacturer()) {
             tgt.setManufacturer(VersionConvertor_10_30.convertReference(src.getManufacturer()));
@@ -33,8 +35,8 @@ public class Medication10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasIsBrand()) {
-            tgt.setIsBrand(src.getIsBrand());
+        if (src.hasIsBrandElement()) {
+            tgt.setIsBrandElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getIsBrandElement()));
         }
         if (src.hasManufacturer()) {
             tgt.setManufacturer(VersionConvertor_10_30.convertReference(src.getManufacturer()));
