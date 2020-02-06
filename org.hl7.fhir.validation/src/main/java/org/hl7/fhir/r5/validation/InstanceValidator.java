@@ -1720,7 +1720,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 ok = true;
                 break;
               }
-              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              if (sd.getBaseDefinition() != null) {
+                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              } else {
+                sd = null;
+              }
             }
           }
         } 
