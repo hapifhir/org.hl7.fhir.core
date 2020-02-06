@@ -568,11 +568,20 @@ public class Utilities {
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       String a = arg;
-      if ("[tmp]".equals(a)) {
-        if (hasCTempDir()) {
-          a = "c:\\temp";
-        } else {
-          a = System.getProperty("java.io.tmpdir");
+      if (s.length() == 0) {
+        if ("[tmp]".equals(a)) {
+          if (hasCTempDir()) {
+            a = "c:\\temp";
+          } else {
+            a = System.getProperty("java.io.tmpdir");
+          }
+        } else if ("[user]".equals(a)) {
+          a = System.getProperty("user.home");
+        } else if (a.startsWith("[") && a.endsWith("]")){
+          String ev = System.getenv(a.replace("[", "").replace("]", ""));
+          if (ev != null) {
+            a = ev;
+          }
         }
       }
       a = a.replace("\\", File.separator);
