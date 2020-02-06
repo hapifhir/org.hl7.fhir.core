@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.ReferralRequest.ReferralPriority;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class ReferralRequest10_30 {
 
@@ -77,9 +78,8 @@ public class ReferralRequest10_30 {
         if (src.hasReasonCode()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept cc : src.getReasonCode()) tgt.setReason(VersionConvertor_10_30.convertCodeableConcept(cc));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasServiceRequested()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -124,9 +124,8 @@ public class ReferralRequest10_30 {
         if (src.hasReason()) {
             tgt.addReasonCode(VersionConvertor_10_30.convertCodeableConcept(src.getReason()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasServiceRequested()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(VersionConvertor_10_30.convertCodeableConcept(t));
         }

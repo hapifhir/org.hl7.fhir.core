@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Condition10_30 {
 
@@ -22,8 +24,8 @@ public class Condition10_30 {
         if (src.hasAsserter()) {
             tgt.setAsserter(VersionConvertor_10_30.convertReference(src.getAsserter()));
         }
-        if (src.hasDateRecorded())
-            tgt.setAssertedDate(src.getDateRecorded());
+        if (src.hasDateRecordedElement())
+            tgt.setAssertedDateElement((DateTimeType) VersionConvertor_10_30.convertType(src.getDateRecordedElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }

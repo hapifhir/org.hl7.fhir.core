@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.DecimalType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class RiskAssessment10_30 {
 
@@ -34,9 +36,8 @@ public class RiskAssessment10_30 {
         if (src.hasPrediction()) {
             for (org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
         }
-        if (src.hasMitigation()) {
-            tgt.setMitigation(src.getMitigation());
-        }
+        if (src.hasMitigationElement())
+            tgt.setMitigationElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getMitigationElement()));
         return tgt;
     }
 
@@ -69,9 +70,8 @@ public class RiskAssessment10_30 {
         if (src.hasPrediction()) {
             for (org.hl7.fhir.dstu2.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
         }
-        if (src.hasMitigation()) {
-            tgt.setMitigation(src.getMitigation());
-        }
+        if (src.hasMitigationElement())
+            tgt.setMitigationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getMitigationElement()));
         return tgt;
     }
 
@@ -86,15 +86,14 @@ public class RiskAssessment10_30 {
         if (src.hasProbability()) {
             tgt.setProbability(VersionConvertor_10_30.convertType(src.getProbability()));
         }
-        if (src.hasRelativeRisk()) {
-            tgt.setRelativeRisk(src.getRelativeRisk());
+        if (src.hasRelativeRiskElement()) {
+            tgt.setRelativeRiskElement((DecimalType) VersionConvertor_10_30.convertType(src.getRelativeRiskElement()));
         }
         if (src.hasWhen()) {
             tgt.setWhen(VersionConvertor_10_30.convertType(src.getWhen()));
         }
-        if (src.hasRationale()) {
-            tgt.setRationale(src.getRationale());
-        }
+        if (src.hasRationaleElement())
+            tgt.setRationaleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getRationaleElement()));
         return tgt;
     }
 
@@ -109,15 +108,14 @@ public class RiskAssessment10_30 {
         if (src.hasProbability()) {
             tgt.setProbability(VersionConvertor_10_30.convertType(src.getProbability()));
         }
-        if (src.hasRelativeRisk()) {
-            tgt.setRelativeRisk(src.getRelativeRisk());
+        if (src.hasRelativeRiskElement()) {
+            tgt.setRelativeRiskElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getRelativeRiskElement()));
         }
         if (src.hasWhen()) {
             tgt.setWhen(VersionConvertor_10_30.convertType(src.getWhen()));
         }
-        if (src.hasRationale()) {
-            tgt.setRationale(src.getRationale());
-        }
+        if (src.hasRationaleElement())
+            tgt.setRationaleElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getRationaleElement()));
         return tgt;
     }
 }

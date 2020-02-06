@@ -4,13 +4,14 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.*;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.Comment;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier;
 import com.github.javaparser.ast.stmt.*;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.VarType;
 import com.github.javaparser.ast.visitor.ModifierVisitor;
@@ -24,8 +25,6 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
-import jdk.nashorn.internal.runtime.options.Option;
-import org.checkerframework.checker.nullness.Opt;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.MedicationAdministration;
 
@@ -53,29 +52,21 @@ public class Parser {
     "Markdown", "Oid", "PositiveInt", "String", "Time", "UnsignedInt", "Uri", "Url",
     "Uuid", "XhtmlNode");
 
-  private static final String ONE_TO_ONE = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement()));";
-  private static final String ONE_TO_MANY = "tgt.set%1$s(Collections.singletonList((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement())));";
-  private static final String MANY_TO_ONE = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$s().get(0)));";
-  private static final String MANY_TO_MANY = "tgt.set%1$s(src.get%1$s().stream()\n" +
-    ".map(toConvert -> (%3$s%4$s) VersionConvertor_%2$s.convertType(toConvert))\n" +
-    ".collect(Collectors.toList())\n" +
-    ");";
-
-  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes>
-  convertMedicationAdministrationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationStatus> src) {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes> tgt
-      = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes>();
-    copyElement(src, tgt);
-    tgt.setValue(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(src.getValueAsString()));
-    return tgt;
-  }
-
-  private static void copyElement(Enumeration<MedicationAdministration.MedicationAdministrationStatus> src,
-                                  org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes> tgt) {
-
-  }
+//  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes>
+//  convertMedicationAdministrationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationStatus> src) {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes> tgt
+//      = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes>();
+//    copyElement(src, tgt);
+//    tgt.setValue(org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(src.getValueAsString()));
+//    return tgt;
+//  }
+//
+//  private static void copyElement(java.util.Enumeration<MedicationAdministration.MedicationAdministrationStatus> src,
+//                                  org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes> tgt) {
+//
+//  }
 
 
   /**
@@ -101,20 +92,22 @@ public class Parser {
 
 
 //    VERSION_FILES.forEach(version -> {
-      String version = "10_30";
-      List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
-      Collections.sort(filenames);
-      filenames.forEach(name -> {
-        try {
-          modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
-        } catch (FileNotFoundException e) {
-          e.printStackTrace();
-        }
-      });
+    String version = "10_30";
+    List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
+    System.out.println("Checking the following files:");
+    Collections.sort(filenames);
+    filenames.forEach(System.out::println);
+    filenames.forEach(name -> {
+      try {
+        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    });
 //    });
 //
     try {
-//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv40_50/", "Account40_50", ".java", listOfPrimitiveTypes, "10_30");
+//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Subscription10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "AuditEvent10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Binary10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Bundle10_30", ".java", listOfPrimitiveTypes, "10_30");
@@ -130,92 +123,89 @@ public class Parser {
     System.out.println("File :: " + filename);
 
     String projectDirectory = new File("").getAbsolutePath();
+    String srcFilePathWithExtension = projectDirectory + srcdirectory + filename + extension;
     long start = System.currentTimeMillis();
 
     CompilationUnit compilationUnit = getCompilationUnit(projectDirectory + srcdirectory + filename + extension);
     ClassOrInterfaceDeclaration classOrInterfaceDeclaration = initializeTypeSovlerAndParser(compilationUnit,
       projectDirectory, srcdirectory, filename);
 
-    MethodDeclaration declaration;
+    Set<String> visited = new HashSet<>();
 
-    Optional<MethodDeclaration> declarationOption = classOrInterfaceDeclaration.getMethods().stream()
+    HashMap<IfStmt, ElementParserEntry> ifStatementToConditions = new HashMap<>();
+    HashMap<String, List<IfStmt>> keyWordToIfStatement = new HashMap<>();
+
+    final HashMap<MethodDeclaration, BlockStmt> generatedBlockStmt = new HashMap<>();
+
+    MethodDeclaration declaration = classOrInterfaceDeclaration.getMethods().stream()
       .filter(md -> md.getNameAsString().equals("convert" + extractName(filename)))
-      .findFirst();
-    if (!declarationOption.isPresent()) {
-      return;
-    } else {
-      declaration = declarationOption.get(); // Can't find
-    }
+      .findFirst().get();
 
     String lowerVersionTypeAbsPath = getLowerVersionAbsPathFromImportStatement(declaration.getTypeAsString(), declaration.getParameter(0).getTypeAsString(), version);
     String higherVersionTypeAbsPath = getHigherVersionAbsPath(declaration.getTypeAsString(), declaration.getParameter(0).getTypeAsString(), version);
 
     CompilationUnit lowerCU = StaticJavaParser.parse(new File(lowerVersionTypeAbsPath));
     CompilationUnit higherCU = StaticJavaParser.parse(new File(higherVersionTypeAbsPath));
+    System.out.println();
 
     List<MethodDeclaration> methods = classOrInterfaceDeclaration.getMethods();
-    for (MethodDeclaration md : methods) {
+    methods.forEach(md -> {
 
-      String type = resolveInnerType(md.getType()).asString();
-      String param = resolveInnerType(md.getParameter(0).getType()).asString();
-      if (type == "void") continue;
-      try {
-        type = !type.contains(".") ? resolveInnerType(md.getType()).resolve().asReferenceType().getQualifiedName() : type;
-      } catch (Exception e) {
-        System.out.println();
-      }
-
-      param = !param.contains(".") ? resolveInnerType(md.getParameter(0).getType()).resolve().asReferenceType().getQualifiedName() : param;
-
-      String absFilePathOfClassMethodIsConvertingTo = importStatementToAbsolutePath(type);
-      String absFilePathOfClassMethodIsConvertingFrom = importStatementToAbsolutePath(param);
-      String classNameMethodIsConvertingTo = absFilePathOfClassMethodIsConvertingTo.substring(absFilePathOfClassMethodIsConvertingTo.lastIndexOf('/') + 1, absFilePathOfClassMethodIsConvertingTo.lastIndexOf('.'));
-      String classNameMethodIsConvertingFrom = absFilePathOfClassMethodIsConvertingFrom.substring(absFilePathOfClassMethodIsConvertingFrom.lastIndexOf('/') + 1, absFilePathOfClassMethodIsConvertingFrom.lastIndexOf('.'));
+      String toType = importStatementToAbsolutePath(md.getType().asString());
+      String fromType = importStatementToAbsolutePath(md.getParameter(0).getType().asString());
 
       ClassOrInterfaceDeclaration toTypeClass = null;
       ClassOrInterfaceDeclaration fromTypeClass = null;
 
-      String highBackupModelDirectoryToSearch = higherVersionTypeAbsPath.substring(0, higherVersionTypeAbsPath.lastIndexOf('/') + 1);
-      String lowBackupModelDirectoryToSearch = lowerVersionTypeAbsPath.substring(0, lowerVersionTypeAbsPath.lastIndexOf('/') + 1);
+      String lowerVersionAbsPath = getLowerVersionAbsPathFromAbsPath(toType, fromType, version);
+      String toString = toType.substring(toType.lastIndexOf('/') + 1, toType.lastIndexOf('.'));
 
-      Node declaration1 = null;
-      Node declaration2 = null;
-      boolean isEnum = false;
+      String fromString = fromType.substring(fromType.lastIndexOf('/') + 1, fromType.lastIndexOf('.'));
+      if (toType.equals(lowerVersionAbsPath)) {
+        try {
+          if (toString.equals(extractName(filename))) {
+            toTypeClass = lowerCU.getClassByName(toString).get();
+            fromTypeClass = higherCU.getClassByName(fromString).get();
+          } else {
+            Node declaration1 = getDeclaration(lowerCU, filename, toString);
+            if (declaration1 instanceof ClassOrInterfaceDeclaration) {
+              toTypeClass = (ClassOrInterfaceDeclaration) declaration1;
+            } else if (declaration1 instanceof EnumDeclaration) {
+              System.out.println("Filename " + filename + " target String " + toString + ", is an EnumDeclaration");
+            }
 
-      try {
-        if (getVersionStringFromPath(lowerVersionTypeAbsPath).equals(getVersionStringFromPath(absFilePathOfClassMethodIsConvertingTo))) {
-          declaration1 = getDeclaration(lowerCU, classNameMethodIsConvertingTo, lowBackupModelDirectoryToSearch);
-        } else {
-          declaration1 = getDeclaration(higherCU, classNameMethodIsConvertingTo, highBackupModelDirectoryToSearch);
+            Node declaration2 = getDeclaration(higherCU, filename, fromString);
+            if (declaration2 instanceof ClassOrInterfaceDeclaration) {
+              fromTypeClass = (ClassOrInterfaceDeclaration) declaration2;
+            } else if (declaration2 instanceof EnumDeclaration) {
+              System.out.println("Filename " + filename + " target String " + toString + ", is an EnumDeclaration");
+            }
+          }
+        } catch (Exception e) {
+          System.out.println();
         }
-
-        if (getVersionStringFromPath(lowerVersionTypeAbsPath).equals(getVersionStringFromPath(absFilePathOfClassMethodIsConvertingFrom))) {
-          declaration2 = getDeclaration(lowerCU, classNameMethodIsConvertingFrom, lowBackupModelDirectoryToSearch);
-        } else {
-          declaration2 = getDeclaration(higherCU, classNameMethodIsConvertingFrom, highBackupModelDirectoryToSearch);
+      } else {
+        try {
+          if (toString.equals(extractName(filename))) {
+            toTypeClass = higherCU.getClassByName(toString).get();
+            fromTypeClass = lowerCU.getClassByName(fromString).get();
+          } else {
+            Node declaration1 = getDeclaration(higherCU, filename, toString);
+            if (declaration1 instanceof ClassOrInterfaceDeclaration) {
+              toTypeClass = (ClassOrInterfaceDeclaration) declaration1;
+            } else if (declaration1 instanceof EnumDeclaration) {
+              System.out.println("Filename " + filename + " target String " + toString + ", is an EnumDeclaration");
+            }
+            Node declaration2 = getDeclaration(lowerCU, filename, fromString);
+            if (declaration2 instanceof ClassOrInterfaceDeclaration) {
+              fromTypeClass = (ClassOrInterfaceDeclaration) declaration2;
+            } else if (declaration2 instanceof EnumDeclaration) {
+              System.out.println("Filename " + filename + " target String " + toString + ", is an EnumDeclaration");
+            }
+          }
+        } catch (Exception e) {
+          System.out.println();
         }
-      } catch (FileNotFoundException e) {
-        System.out.println(e.getMessage());
-      }
-
-      if (declaration1 instanceof ClassOrInterfaceDeclaration) {
-        toTypeClass = (ClassOrInterfaceDeclaration) declaration1;
-      } else if (declaration1 instanceof EnumDeclaration) {
-        isEnum = true;
-        System.out.println("Filename " + filename + " target String " + classNameMethodIsConvertingTo + ", is an EnumDeclaration");
-      }
-      if (declaration2 instanceof ClassOrInterfaceDeclaration) {
-        fromTypeClass = (ClassOrInterfaceDeclaration) declaration2;
-      } else if (declaration2 instanceof EnumDeclaration) {
-        isEnum = true;
-        System.out.println("Filename " + filename + " target String " + classNameMethodIsConvertingTo + ", is an EnumDeclaration");
-      }
-
-      if ((toTypeClass == null || fromTypeClass == null) && !isEnum) {
-        System.out.println();
-      } else if (!isEnum) {
-        System.out.println("FROM " + fromTypeClass.getNameAsString());
-        System.out.println("TO " + toTypeClass.getNameAsString());
       }
 
       if (toTypeClass != null && fromTypeClass != null) {
@@ -223,193 +213,193 @@ public class Parser {
         ClassOrInterfaceDeclaration finalToTypeClass = toTypeClass;
         md.accept(new ModifierVisitor<Void>() {
           @Override
-          public Visitable visit(IfStmt ifStmt, Void arg) {
-            super.visit(ifStmt, arg);
-            processIfStatement(ifStmt);
+          public Visitable visit(MethodCallExpr n, Void arg) {
+            super.visit(n, arg);
 
+            if (n.getNameAsString().contains("get") && !visited.contains(n.getNameAsString())) {
+              visited.add(n.getNameAsString());
 
+              Optional<MethodDeclaration> first = finalFromTypeClass.getMethods().stream()
+                .filter(md -> md.getNameAsString().equals(n.getNameAsString()))
+                .findFirst();
 
-            return ifStmt;
+              if (first.isPresent()) {
+
+                Node topLevelMethodExpr = getTopLevelMethodExpr(n);
+                Node topLevelIfStatement = getTopLevelIfStatement(n);
+
+                String type = first.get().getType().toString();
+
+                String baseString = n.getNameAsString().replace("get", "");
+
+                if (listOfPrimitiveTypes.contains(type)) {
+                  ElementParserEntry e = new ElementParserEntry();
+                  // do get
+                  Optional<MethodDeclaration> firstGetElementMethod = finalFromTypeClass.getMethods().stream()
+                    .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("get" + baseString + ELEMENT))
+                    .findFirst();
+                  if (firstGetElementMethod.isPresent()) {
+                    e.setGetType(firstGetElementMethod.get().getType().toString());
+                  } else {
+                    finalFromTypeClass.getMethods().stream()
+                      .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("get" + baseString))
+                      .findFirst().ifPresent(md -> e.setGetType(md.getType().toString()));
+                  }
+
+                  // do set and add
+                  Optional<MethodDeclaration> firstSetElementMethod = finalToTypeClass.getMethods().stream()
+                    .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("set" + baseString + ELEMENT))
+                    .findFirst();
+                  if (firstSetElementMethod.isPresent()) {
+                    e.setSetType(firstSetElementMethod.get().getParameter(0).getType().toString());
+                  } else {
+                    finalToTypeClass.getMethods().stream()
+                      .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("set" + baseString))
+                      .findFirst().ifPresent(md -> e.setSetType(md.getParameter(0).getType().toString()));
+                  }
+
+                  Optional<MethodDeclaration> firstAddElementMethod = finalToTypeClass.getMethods().stream()
+                    .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("add" + baseString + ELEMENT))
+                    .findFirst();
+                  if (firstAddElementMethod.isPresent()) {
+                    e.setAddType(firstAddElementMethod.get().getType().toString());
+                  } else {
+                    finalToTypeClass.getMethods().stream()
+                      .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals("add" + baseString + ELEMENT))
+                      .findFirst().ifPresent(md -> e.setAddType(md.getType().toString()));
+                  }
+
+                  // do check
+                  if (topLevelIfStatement != null && (((IfStmt) topLevelIfStatement).getCondition() instanceof MethodCallExpr)) {
+                    String nameAsString = ((MethodCallExpr) ((IfStmt) topLevelIfStatement).getCondition()).getNameAsString();
+                    String finalNameAsString = nameAsString;
+                    finalFromTypeClass.getMethods().stream()
+                      .filter(methodDeclaration -> methodDeclaration.getNameAsString().equals(finalNameAsString))
+                      .findFirst().ifPresent(methodDeclaration -> {
+                      e.setHasCheck(methodDeclaration.getType().toString());
+                    });
+                  }
+
+                  ifStatementToConditions.put((IfStmt) topLevelIfStatement, e);
+                  if (!keyWordToIfStatement.containsKey(baseString)) {
+                    keyWordToIfStatement.put(baseString, new ArrayList<>());
+                  }
+                  keyWordToIfStatement.get(baseString).add((IfStmt) topLevelIfStatement);
+                }
+              }
+            }
+
+            return n;
           }
-
         }, null);
+        visited.clear();
       }
 
-      //System.out.println("Execution time :: " + (System.currentTimeMillis() - start) / 1000);
-
-    }
-  }
-
-  public static void processIfStatement(IfStmt ifStmt) {
-    Expression condition = ifStmt.getCondition();
-    Statement thenStmt = ifStmt.getThenStmt();
-    //Handle multiple big if blocks
-    if ((thenStmt instanceof BlockStmt) && (thenStmt.getChildNodes().size() > 1)) {
-      thenStmt.getChildNodes().forEach(n -> {
-        if (n instanceof IfStmt) {
-          processIfStatement((IfStmt) n);
-        } else {
-          System.out.println();
-        }
-      });
-    } else if (thenStmt instanceof IfStmt) {
-      processIfStatement((IfStmt) thenStmt);
-    } else {
-      Expression expression = processGetStatement(thenStmt);
-      if (expression != null && !expression.toString().contains("get")) {
-        System.out.println();
-      } else if (expression == null) {
-        System.out.println("Logger :: was not able to get a getStatement for if statement :: " + ifStmt.toString());
-      }
-    }
-  }
-
-  public static Expression processGetStatement(Node stmt) {
-
-    if ((stmt instanceof ReturnStmt) || (stmt instanceof ThrowStmt) || (stmt instanceof TryStmt)
-      || (stmt instanceof NameExpr) || (stmt instanceof FieldAccessExpr) || (stmt instanceof BooleanLiteralExpr)
-      || (stmt instanceof ConditionalExpr) || (stmt instanceof StringLiteralExpr)) {
-      // ignore
-    } else if (stmt instanceof IfStmt) {
-      System.out.println();
-    } else if (stmt instanceof ForEachStmt) {
-      return ((ForEachStmt) stmt).getIterable();
-    } else if (stmt instanceof BlockStmt) {
-      if (stmt.getChildNodes().size() > 1) {
-        System.out.println();
-      } else {
-        return processGetStatement(stmt.getChildNodes().get(0));
-      }
-    } else if (stmt instanceof ExpressionStmt) {
-      return processGetStatement(((ExpressionStmt) stmt).getExpression());
-    } else if (stmt instanceof MethodCallExpr) {
-      if (((MethodCallExpr) stmt).getArguments().size() > 0) {
-        return processGetStatement(((MethodCallExpr) stmt).getArgument(0));
-      } else {
-        return containsOrReturnNull((Expression) stmt, "get");
-      }
-    } else if (stmt instanceof AssignExpr) {
-      if (((AssignExpr) stmt).getOperator().equals(AssignExpr.Operator.ASSIGN)) {
-        return (processGetStatement(stmt.getChildNodes().get(1)));
-      } else {
-        System.out.println();
-      }
-    } else if (stmt instanceof UnaryExpr) {
-      return containsOrReturnNull((Expression) stmt, "get");
-    } else if (stmt instanceof BinaryExpr) {
-      if (((BinaryExpr) stmt).getLeft().toString().contains("get")) {
-        return processGetStatement(((BinaryExpr) stmt).getLeft());
-      } else {
-        return processGetStatement(((BinaryExpr) stmt).getRight());
-      }
-    } else if (stmt instanceof CastExpr) {
-      return processGetStatement(((CastExpr) stmt).getExpression());
-    } else if (stmt instanceof Expression) {
-      System.out.println();
-    } else {
-      System.out.println("You haven't caught this then statement case yet.");
-      System.exit(0);
-    }
-
-    return null;
-  }
-
-  public static Expression containsOrReturnNull(Expression e, String keyWord) {
-    if (e.toString().contains(keyWord)) {
-      return e;
-    } else {
-      return null;
-    }
-  }
-
-  public static Type resolveInnerType(Type type) {
-    Type toReturn = type;
-    if (type.toString().contains("List") && !type.toString().contains("List_")
-      && !type.toString().contains("ListResource") && !type.toString().contains("ListMode")) {
+      String returnTypeDir = null;
       try {
-        toReturn = (Type) type.getChildNodes().get(1);
+        returnTypeDir = getDirectoryOfOppositeModel(md.getParameter(0).getTypeAsString(), version);
       } catch (Exception e) {
         System.out.println();
       }
-    }
-    return toReturn;
-  }
 
-  public static String removeListToGetTypeString(String type) {
-    if (type.contains("List")) {
-      type = type.replaceAll("List", "").replaceAll("<", "").replaceAll(">", "");
-    }
-    return type;
-  }
+      String condition = "src.has%1$sElement()";
+      String statementWithSet = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement()));";
 
-  public static boolean methodExistsInClass(ClassOrInterfaceDeclaration c, String methodName) {
-    Optional<MethodDeclaration> first = c.getMethods().stream()
-      .filter(md -> md.getNameAsString().equals(methodName))
-      .findAny();
-    return first.isPresent();
-  }
+      String oneToOne = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement()));";
+      String oneToMany = "tgt.set%1$s(Collections.singletonList((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$sElement())));";
+      String manyToOne = "tgt.set%1$sElement((%3$s%4$s) VersionConvertor_%2$s.convertType(src.get%1$s().get(0)));";
+      String manyToMany = "tgt.set%1$s(src.get%1$s().stream()\n" +
+        ".map(toConvert -> (%3$s%4$s) VersionConvertor_%2$s.convertType(toConvert))\n" +
+        ".collect(Collectors.toList())\n" +
+        ");";
 
-  public static MethodDeclaration getMethod(ClassOrInterfaceDeclaration c, String methodName) {
-    if (!methodExistsInClass(c, methodName)) {
-      throw new IllegalStateException("Cannot get a method " + methodName + " in class " + c.getNameAsString() + " doesn't exist in class.");
-    }
-    return c.getMethods().stream()
-      .filter(md -> md.getNameAsString().equals(methodName))
-      .findFirst().get();
-  }
+      if (returnTypeDir != null) {
+        for (String s : keyWordToIfStatement.keySet()) {
+          for (IfStmt ifState : keyWordToIfStatement.get(s)) {
+            ElementParserEntry e = ifStatementToConditions.get(ifState);
+            String finalReturnTypeDir = returnTypeDir;
+            if (e.hasAdd || e.hasSet) {
+              md.accept(new ModifierVisitor<Void>() {
+                @Override
+                public Visitable visit(IfStmt n, Void arg) {
+                  super.visit(n, arg);
+                  if (n.equals(ifState)) {
+                    String template = null;
+                    if (e.getType.contains("List") && getToType(e).contains("List")) {
+                      template = manyToMany;
+                    } else if (e.getType.contains("List") && !getToType(e).contains("List")) {
+                      template = manyToOne;
+                    } else if (!e.getType.contains("List") && getToType(e).contains("List")) {
+                      template = oneToMany;
+                    } else {
+                      template = oneToOne;
+                    }
 
-  public static TypeDeclaration getDeclaration(CompilationUnit cu, String targetNodeString, String backupModelDirectory) throws FileNotFoundException {
-    if (targetNodeString.contains(".")) {
-      return null;
-      // not handling this
-    }
+                    e.setType = e.setType.replaceAll("List", "").replaceAll("<", "").replaceAll(">", "");
+                    e.addType = e.setType.replaceAll("List", "").replaceAll("<", "").replaceAll(">", "");
 
-    if (cu.getClassByName(targetNodeString).isPresent()) {
-      return (TypeDeclaration) cu.getClassByName(targetNodeString).get();
-    }
+                    Expression conditionExp = e.hasCheck ? StaticJavaParser.parseExpression(String.format(condition, s)) : n.getCondition();
+                    Statement thenStatement = null;
+                    try {
+                      thenStatement = StaticJavaParser.parseStatement(String.format(template, s, version, finalReturnTypeDir, e.hasSet ? e.setType : e.addType));
+                      n = new IfStmt(conditionExp, thenStatement, null);
+                    } catch (Exception e1) {
+                      System.out.println();
+                    }
+                  }
+                  return n;
+                }
 
-    TypeDeclaration td = getClassOrEnumNodeThatExistsWithin(cu, targetNodeString);
-    if (td == null) {
-      File target = new File(backupModelDirectory + targetNodeString + ".java");
-      if (!target.exists()) {
-        target = new File(backupModelDirectory + "Enumerations" + ".java");
+                private String getToType(ElementParserEntry e) {
+                  if (e.hasSet) {
+                    return e.setType;
+                  } else {
+                    return "";
+                  }
+                }
+              }, null);
+            }
+          }
+        }
       }
-      cu = StaticJavaParser.parse(target);
-      td = getClassOrEnumNodeThatExistsWithin(cu, targetNodeString);
+    });
+
+    deleteFile(srcFilePathWithExtension);
+
+    try {
+      compilationUnit.addImport("java.util.Collections");
+      writeStringToFile(compilationUnit.toString(), srcFilePathWithExtension);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    if (td == null) {
-      System.out.println("No target with name " + targetNodeString + " found");
-    }
-    return td;
+
+    System.out.println("Execution time :: " + (System.currentTimeMillis() - start) / 1000);
+
   }
 
-  public static TypeDeclaration getClassOrEnumNodeThatExistsWithin(CompilationUnit cu, String targetName) {
-    List<TypeDeclaration> collect = cu.getChildNodes().stream()
-      .filter(node -> node instanceof TypeDeclaration)
-      .map(node -> (TypeDeclaration) node)
-      .collect(Collectors.toList());
-    for (TypeDeclaration td : collect) {
-      TypeDeclaration search = getClassOrEnumNodeThatExistsWithin(td, targetName);
-      if (search != null) {
-        return search;
-      }
-    }
-    return null;
-  }
+  public static Node getDeclaration(CompilationUnit cu, String filename, String targetNodeString) {
+    Optional<ClassOrInterfaceDeclaration> classByName = cu.getClassByName(extractName(filename));
+    Optional<Node> first = null;
+    if (classByName.isPresent()) {
 
-  public static TypeDeclaration getClassOrEnumNodeThatExistsWithin(TypeDeclaration c, String targetName) {
-    if (c.getNameAsString().equals(targetName)) return c;
-    List<TypeDeclaration> collect = c.getChildNodes().stream()
-      .filter(node -> node instanceof TypeDeclaration)
-      .map(node -> (TypeDeclaration) node)
-      .collect(Collectors.toList());
-    for (TypeDeclaration td : collect) {
-      TypeDeclaration search = getClassOrEnumNodeThatExistsWithin(td, targetName);
-      if (search != null) {
-        return search;
+      first = classByName.get().getChildNodes().stream()
+        .filter(node -> node instanceof ClassOrInterfaceDeclaration)
+        .filter(node -> ((ClassOrInterfaceDeclaration) node).getNameAsString().equals(targetNodeString))
+        .findFirst();
+
+      if (!first.isPresent()) {
+        first = classByName.get().getChildNodes().stream()
+          .filter(node -> node instanceof EnumDeclaration)
+          .filter(node -> ((EnumDeclaration) node).getNameAsString().equals(targetNodeString))
+          .findFirst();
       }
     }
-    return null;
+
+    if (first == null || !first.isPresent()) {
+      throw new IllegalStateException("No target with name " + targetNodeString + " found in file " + filename);
+    } else {
+      return first.get();
+    }
   }
 
   public static class ElementParserEntry {
@@ -684,8 +674,7 @@ public class Parser {
 
   }
 
-  private static List<ClassOrInterfaceDeclaration> getAdditionalClassDeclarations(ClassOrInterfaceDeclaration
-                                                                                    classOrInterfaceDeclaration) {
+  private static List<ClassOrInterfaceDeclaration> getAdditionalClassDeclarations(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
     List<ClassOrInterfaceDeclaration> collect = new ArrayList<>();
     classOrInterfaceDeclaration.accept(new VoidVisitorAdapter<Void>() {
       @Override
@@ -732,8 +721,7 @@ public class Parser {
     return classOrInterfaceDeclaration.get();
   }
 
-  private static HashMap<String, List<MethodDeclaration>> generateMapOfTopLevelMethods(ClassOrInterfaceDeclaration
-                                                                                         classOrInterfaceDeclaration) {
+  private static HashMap<String, List<MethodDeclaration>> generateMapOfTopLevelMethods(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
     System.out.println("==================== Generating List of Parsable Types ====================\n");
 
     HashMap<String, List<MethodDeclaration>> mapToReturn = new HashMap<>();
@@ -831,8 +819,7 @@ public class Parser {
     }
   }
 
-  public static void dealWithV2ExceptionCasesPreProcessing(CompilationUnit cu, ClassOrInterfaceDeclaration
-    classOrInterfaceDeclaration, String version) {
+  public static void dealWithV2ExceptionCasesPreProcessing(CompilationUnit cu, ClassOrInterfaceDeclaration classOrInterfaceDeclaration, String version) {
     String from = "2";//version.substring(0, version.indexOf('_'));
     String to = version.substring(version.indexOf('_') + 1, version.indexOf('_') + 2);
 
@@ -846,8 +833,7 @@ public class Parser {
 
   }
 
-  public static void dealWithV2ExceptionCasesPostProcessing(ClassOrInterfaceDeclaration
-                                                              classOrInterfaceDeclaration, String version) {
+  public static void dealWithV2ExceptionCasesPostProcessing(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, String version) {
     String from = "2";//version.substring(0, version.indexOf('_'));
     String to = version.substring(version.indexOf('_') + 1, version.indexOf('_') + 2);
 
@@ -921,8 +907,7 @@ public class Parser {
 
   }
 
-  public static MethodDeclaration getConvertResourceMethodForVersion(ClassOrInterfaceDeclaration
-                                                                       classOrInterfaceDeclaration,
+  public static MethodDeclaration getConvertResourceMethodForVersion(ClassOrInterfaceDeclaration classOrInterfaceDeclaration,
                                                                      String methodName,
                                                                      String modelType,
                                                                      String version) {
@@ -1268,8 +1253,7 @@ public class Parser {
    * @param classOrInterfaceDeclaration
    * @return
    */
-  protected static List<MethodCallExpr> getListOfParsableTypes(ClassOrInterfaceDeclaration
-                                                                 classOrInterfaceDeclaration) {
+  protected static List<MethodCallExpr> getListOfParsableTypes(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
     List<MethodDeclaration> listOfClassMethods = getListOfClassMethods(KEYWORD_GOD_METHOD, classOrInterfaceDeclaration);
     List<MethodCallExpr> calledMethods = new ArrayList<>();
     listOfClassMethods.forEach(md -> md.accept(new MethodCallVisitor(KEYWORD_CONVERT), calledMethods));
@@ -1284,8 +1268,7 @@ public class Parser {
    * @param method
    * @return List of all {@link MethodDeclaration}
    */
-  public static List<MethodDeclaration> getAllCalledMethods(ClassOrInterfaceDeclaration
-                                                              classOrInterfaceDeclaration, MethodDeclaration method) {
+  public static List<MethodDeclaration> getAllCalledMethods(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, MethodDeclaration method) {
     List<MethodDeclaration> result = new ArrayList<>();
 
     List<MethodCallExpr> methodCallExprs = new ArrayList<>();
@@ -1317,8 +1300,7 @@ public class Parser {
    * @param methodNames                 {@link List} of method names
    * @return {@link List <MethodDeclaration>} containing any of the keywords
    */
-  protected static List<MethodDeclaration> getTopLevelMethods(ClassOrInterfaceDeclaration
-                                                                classOrInterfaceDeclaration, List<String> methodNames) {
+  protected static List<MethodDeclaration> getTopLevelMethods(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, List<String> methodNames) {
     List<MethodDeclaration> toReturn = new ArrayList<>();
     methodNames.stream()
       .map(s -> getListOfClassMethods(s, classOrInterfaceDeclaration))
@@ -1480,8 +1462,7 @@ public class Parser {
    * @param classOrInterfaceDeclaration {@link ClassOrInterfaceDeclaration}
    * @return {@link List} of all {@link MethodDeclaration}
    */
-  protected static List<MethodDeclaration> getListOfClassMethods(ClassOrInterfaceDeclaration
-                                                                   classOrInterfaceDeclaration) {
+  protected static List<MethodDeclaration> getListOfClassMethods(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
     return getListOfClassMethods("", classOrInterfaceDeclaration);
   }
 
@@ -1492,8 +1473,7 @@ public class Parser {
    * @param classOrInterfaceDeclaration {@link ClassOrInterfaceDeclaration}
    * @return {@link List} of all matching {@link MethodDeclaration}
    */
-  protected static List<MethodDeclaration> getListOfClassMethods(String methodName, ClassOrInterfaceDeclaration
-    classOrInterfaceDeclaration) {
+  protected static List<MethodDeclaration> getListOfClassMethods(String methodName, ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
     List<MethodDeclaration> result = new ArrayList<>();
     classOrInterfaceDeclaration.getMethods().stream()
       .filter(method -> method.getName().toString().equals(methodName))
@@ -1687,16 +1667,6 @@ public class Parser {
   public static final String MODEL_ABSOLUTE_PATH = "/org.hl7.fhir.%1$s/src/main/java/org/hl7/fhir/%1$s/model/%2$s.java";
   public static final String MODEL_PATH_WITHOUT_IMPORT = "/org.hl7.fhir.%1$s/src/main/java/";
 
-  public static String getVersionStringFromPath(String path) {
-    if (path.contains("dstu2")) return "dstu2";
-    if (path.contains("dstu2016may")) return "dstu2016may";
-    if (path.contains("dstu3")) return "dstu3";
-    if (path.contains("r4")) return "r4";
-    if (path.contains("r5")) return "r5";
-
-    return null;
-  }
-
   public static String getVersionString(String version) {
     switch (version) {
       case ("10"):
@@ -1791,15 +1761,13 @@ public class Parser {
     }
   }
 
-  public static String getLowerVersionAbsPathFromImportStatement(String type1ImportStatement, String
-    type2ImportStatement, String version) {
+  public static String getLowerVersionAbsPathFromImportStatement(String type1ImportStatement, String type2ImportStatement, String version) {
     String type1Path = importStatementToAbsolutePath(type1ImportStatement);
     String type2Path = importStatementToAbsolutePath(type2ImportStatement);
     return getLowerVersionAbsPathFromAbsPath(type1Path, type2Path, version);
   }
 
-  public static String getHigherVersionAbsPath(String type1ImportStatement, String type2ImportStatement, String
-    version) {
+  public static String getHigherVersionAbsPath(String type1ImportStatement, String type2ImportStatement, String version) {
     String type1Path = importStatementToAbsolutePath(type1ImportStatement);
     String type2Path = importStatementToAbsolutePath(type2ImportStatement);
 

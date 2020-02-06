@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Observation10_30 {
 
@@ -31,9 +33,8 @@ public class Observation10_30 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_30.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_30.convertReference(t));
         }
@@ -46,8 +47,8 @@ public class Observation10_30 {
         if (src.hasInterpretation()) {
             tgt.setInterpretation(VersionConvertor_10_30.convertCodeableConcept(src.getInterpretation()));
         }
-        if (src.hasComments()) {
-            tgt.setComment(src.getComments());
+        if (src.hasCommentsElement()) {
+            tgt.setCommentElement((StringType) VersionConvertor_10_30.convertType(src.getCommentsElement()));
         }
         if (src.hasBodySite()) {
             tgt.setBodySite(VersionConvertor_10_30.convertCodeableConcept(src.getBodySite()));
@@ -99,9 +100,8 @@ public class Observation10_30 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_30.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_30.convertReference(t));
         }
@@ -114,8 +114,8 @@ public class Observation10_30 {
         if (src.hasInterpretation()) {
             tgt.setInterpretation(VersionConvertor_10_30.convertCodeableConcept(src.getInterpretation()));
         }
-        if (src.hasComment()) {
-            tgt.setComments(src.getComment());
+        if (src.hasCommentElement()) {
+            tgt.setCommentsElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
         }
         if (src.hasBodySite()) {
             tgt.setBodySite(VersionConvertor_10_30.convertCodeableConcept(src.getBodySite()));
@@ -198,9 +198,8 @@ public class Observation10_30 {
         if (src.hasAge()) {
             tgt.setAge(VersionConvertor_10_30.convertRange(src.getAge()));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         return tgt;
     }
 
@@ -221,9 +220,8 @@ public class Observation10_30 {
         if (src.hasAge()) {
             tgt.setAge(VersionConvertor_10_30.convertRange(src.getAge()));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         return tgt;
     }
 

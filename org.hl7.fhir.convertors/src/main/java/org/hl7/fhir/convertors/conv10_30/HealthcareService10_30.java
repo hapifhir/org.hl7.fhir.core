@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class HealthcareService10_30 {
 
@@ -70,12 +72,10 @@ public class HealthcareService10_30 {
         if (src.hasLocation()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getLocation()) tgt.setLocation(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
-        if (src.hasExtraDetails()) {
-            tgt.setExtraDetails(src.getExtraDetails());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
+        if (src.hasExtraDetailsElement())
+            tgt.setExtraDetailsElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getExtraDetailsElement()));
         if (src.hasPhoto()) {
             tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
         }
@@ -91,9 +91,8 @@ public class HealthcareService10_30 {
         if (src.hasEligibility()) {
             tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
         }
-        if (src.hasEligibilityNote()) {
-            tgt.setEligibilityNote(src.getEligibilityNote());
-        }
+        if (src.hasEligibilityNoteElement())
+            tgt.setEligibilityNoteElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getEligibilityNoteElement()));
         if (src.hasProgramName()) {
             for (org.hl7.fhir.dstu3.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
         }
@@ -103,8 +102,8 @@ public class HealthcareService10_30 {
         if (src.hasReferralMethod()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        if (src.hasAppointmentRequired()) {
-            tgt.setAppointmentRequired(src.getAppointmentRequired());
+        if (src.hasAppointmentRequiredElement()) {
+            tgt.setAppointmentRequiredElement((BooleanType) VersionConvertor_10_30.convertType(src.getAppointmentRequiredElement()));
         }
         if (src.hasAvailableTime()) {
             for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
@@ -112,9 +111,8 @@ public class HealthcareService10_30 {
         if (src.hasNotAvailable()) {
             for (org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
         }
-        if (src.hasAvailabilityExceptions()) {
-            tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
-        }
+        if (src.hasAvailabilityExceptionsElement())
+            tgt.setAvailabilityExceptionsElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getAvailabilityExceptionsElement()));
         return tgt;
     }
 
@@ -135,12 +133,10 @@ public class HealthcareService10_30 {
         if (src.hasLocation()) {
             tgt.addLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
-        if (src.hasExtraDetails()) {
-            tgt.setExtraDetails(src.getExtraDetails());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
+        if (src.hasExtraDetailsElement())
+            tgt.setExtraDetailsElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getExtraDetailsElement()));
         if (src.hasPhoto()) {
             tgt.setPhoto(VersionConvertor_10_30.convertAttachment(src.getPhoto()));
         }
@@ -156,9 +152,8 @@ public class HealthcareService10_30 {
         if (src.hasEligibility()) {
             tgt.setEligibility(VersionConvertor_10_30.convertCodeableConcept(src.getEligibility()));
         }
-        if (src.hasEligibilityNote()) {
-            tgt.setEligibilityNote(src.getEligibilityNote());
-        }
+        if (src.hasEligibilityNoteElement())
+            tgt.setEligibilityNoteElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getEligibilityNoteElement()));
         if (src.hasProgramName()) {
             for (org.hl7.fhir.dstu2.model.StringType t : src.getProgramName()) tgt.addProgramName(t.getValue());
         }
@@ -168,8 +163,8 @@ public class HealthcareService10_30 {
         if (src.hasReferralMethod()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReferralMethod()) tgt.addReferralMethod(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        if (src.hasAppointmentRequired()) {
-            tgt.setAppointmentRequired(src.getAppointmentRequired());
+        if (src.hasAppointmentRequiredElement()) {
+            tgt.setAppointmentRequiredElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getAppointmentRequiredElement()));
         }
         if (src.hasAvailableTime()) {
             for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertHealthcareServiceAvailableTimeComponent(t));
@@ -177,9 +172,8 @@ public class HealthcareService10_30 {
         if (src.hasNotAvailable()) {
             for (org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertHealthcareServiceNotAvailableComponent(t));
         }
-        if (src.hasAvailabilityExceptions()) {
-            tgt.setAvailabilityExceptions(src.getAvailabilityExceptions());
-        }
+        if (src.hasAvailabilityExceptionsElement())
+            tgt.setAvailabilityExceptionsElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getAvailabilityExceptionsElement()));
         return tgt;
     }
 
@@ -191,15 +185,13 @@ public class HealthcareService10_30 {
         if (src.hasDaysOfWeek()) {
             for (org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
         }
-        if (src.hasAllDay()) {
-            tgt.setAllDay(src.getAllDay());
+        if (src.hasAllDayElement()) {
+            tgt.setAllDayElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getAllDayElement()));
         }
-        if (src.hasAvailableStartTime()) {
-            tgt.setAvailableStartTime(src.getAvailableStartTime());
-        }
-        if (src.hasAvailableEndTime()) {
-            tgt.setAvailableEndTime(src.getAvailableEndTime());
-        }
+        if (src.hasAvailableStartTimeElement())
+            tgt.setAvailableStartTimeElement((org.hl7.fhir.dstu3.model.TimeType) VersionConvertor_10_30.convertType(src.getAvailableStartTimeElement()));
+        if (src.hasAvailableEndTimeElement())
+            tgt.setAvailableEndTimeElement((org.hl7.fhir.dstu3.model.TimeType) VersionConvertor_10_30.convertType(src.getAvailableEndTimeElement()));
         return tgt;
     }
 
@@ -211,15 +203,13 @@ public class HealthcareService10_30 {
         if (src.hasDaysOfWeek()) {
             for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_10_30.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek(t.getValue())));
         }
-        if (src.hasAllDay()) {
-            tgt.setAllDay(src.getAllDay());
+        if (src.hasAllDayElement()) {
+            tgt.setAllDayElement((BooleanType) VersionConvertor_10_30.convertType(src.getAllDayElement()));
         }
-        if (src.hasAvailableStartTime()) {
-            tgt.setAvailableStartTime(src.getAvailableStartTime());
-        }
-        if (src.hasAvailableEndTime()) {
-            tgt.setAvailableEndTime(src.getAvailableEndTime());
-        }
+        if (src.hasAvailableStartTimeElement())
+            tgt.setAvailableStartTimeElement((org.hl7.fhir.dstu2.model.TimeType) VersionConvertor_10_30.convertType(src.getAvailableStartTimeElement()));
+        if (src.hasAvailableEndTimeElement())
+            tgt.setAvailableEndTimeElement((org.hl7.fhir.dstu2.model.TimeType) VersionConvertor_10_30.convertType(src.getAvailableEndTimeElement()));
         return tgt;
     }
 
@@ -228,9 +218,8 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceNotAvailableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasDuring()) {
             tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
         }
@@ -242,9 +231,8 @@ public class HealthcareService10_30 {
             return null;
         org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasDuring()) {
             tgt.setDuring(VersionConvertor_10_30.convertPeriod(src.getDuring()));
         }

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DeviceComponent10_30 {
 
@@ -16,9 +17,8 @@ public class DeviceComponent10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasLastSystemChange()) {
-            tgt.setLastSystemChange(src.getLastSystemChange());
-        }
+        if (src.hasLastSystemChangeElement())
+            tgt.setLastSystemChangeElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getLastSystemChangeElement()));
         if (src.hasSource()) {
             tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
         }
@@ -54,9 +54,8 @@ public class DeviceComponent10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasLastSystemChange()) {
-            tgt.setLastSystemChange(src.getLastSystemChange());
-        }
+        if (src.hasLastSystemChangeElement())
+            tgt.setLastSystemChangeElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getLastSystemChangeElement()));
         if (src.hasSource()) {
             tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
         }
@@ -92,9 +91,8 @@ public class DeviceComponent10_30 {
         if (src.hasComponentId()) {
             tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
         }
-        if (src.hasProductionSpec()) {
-            tgt.setProductionSpec(src.getProductionSpec());
-        }
+        if (src.hasProductionSpecElement())
+            tgt.setProductionSpecElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getProductionSpecElement()));
         return tgt;
     }
 
@@ -109,9 +107,8 @@ public class DeviceComponent10_30 {
         if (src.hasComponentId()) {
             tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
         }
-        if (src.hasProductionSpec()) {
-            tgt.setProductionSpec(src.getProductionSpec());
-        }
+        if (src.hasProductionSpecElement())
+            tgt.setProductionSpecElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getProductionSpecElement()));
         return tgt;
     }
 
