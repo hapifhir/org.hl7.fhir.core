@@ -47,8 +47,8 @@ public class Parser {
   public static final String ELEMENT = "Element";
   private static final String RESOURCE_FILE_FORMAT = "_%s"; //TODO fix
   private static final List<String> VERSION_FILES = Arrays.asList("10_30", "10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
-  private static final List<String> BASE_TYPES = Arrays.asList("Base64Binary", "Boolean", "Canonical", "Code",
-    "Enumeration", "Date", "DateType", "Decimal", "Id", "Instant", "Integer", "Integer64",
+  private static final List<String> BASE_TYPES = Arrays.asList("Base64Binary", "Boolean", "boolean", "Canonical", "Code",
+    "Enumeration", "Date", "DateTime", "DateType", "Decimal", "BigDecimal", "Id", "Instant", "Integer", "int", "Integer64",
     "Markdown", "Oid", "PositiveInt", "String", "Time", "UnsignedInt", "Uri", "Url",
     "Uuid", "XhtmlNode");
 
@@ -92,22 +92,22 @@ public class Parser {
 
 
 //    VERSION_FILES.forEach(version -> {
-    String version = "10_30";
-    List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
-    System.out.println("Checking the following files:");
-    Collections.sort(filenames);
-    filenames.forEach(System.out::println);
-    filenames.forEach(name -> {
-      try {
-        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
-    });
+//    String version = "10_40";
+//    List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
+//    System.out.println("Checking the following files:");
+//    Collections.sort(filenames);
+//    filenames.forEach(System.out::println);
+//    filenames.forEach(name -> {
+//      try {
+//        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
+//      } catch (FileNotFoundException e) {
+//        e.printStackTrace();
+//      }
+//    });
 //    });
 //
     try {
-//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Subscription10_30", ".java", listOfPrimitiveTypes, "10_30");
+    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40/", "DataElement10_40", ".java", listOfPrimitiveTypes, "10_40");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "AuditEvent10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Binary10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Bundle10_30", ".java", listOfPrimitiveTypes, "10_30");
