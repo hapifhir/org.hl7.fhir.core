@@ -1,8 +1,12 @@
 package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.MarkdownType;
+
+import java.util.Collections;
 
 public class SearchParameter10_40 {
 
@@ -11,46 +15,40 @@ public class SearchParameter10_40 {
             return null;
         org.hl7.fhir.dstu2.model.SearchParameter tgt = new org.hl7.fhir.dstu2.model.SearchParameter();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_40.convertType(src.getUrlElement()));
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasStatus()) {
             tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
         }
-        if (src.hasExperimental())
-            tgt.setExperimental(src.getExperimental());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasPublisher()) {
-            tgt.setPublisher(src.getPublisher());
-        }
+        if (src.hasExperimentalElement())
+            tgt.setExperimentalElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_40.convertType(src.getExperimentalElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateElement()));
+        if (src.hasPublisherElement())
+            tgt.setPublisherElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getPublisherElement()));
         if (src.hasContact()) {
             for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         }
-        if (src.hasPurpose()) {
-            tgt.setRequirements(src.getPurpose());
+        if (src.hasPurposeElement()) {
+            tgt.setRequirementsElement((StringType) VersionConvertor_10_40.convertType(src.getPurposeElement()));
         }
-        if (src.hasCode()) {
-            tgt.setCode(src.getCode());
-        }
+        if (src.hasCodeElement())
+            tgt.setCodeElement((org.hl7.fhir.dstu2.model.CodeType) VersionConvertor_10_40.convertType(src.getCodeElement()));
         if (src.hasBase()) {
             for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.setBase(t.asStringValue());
         }
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_40.convertSearchParamType(src.getType()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getDescriptionElement()));
         if (src.hasExpression()) {
             org.hl7.fhir.dstu2.utils.ToolingExtensions.setStringExtension(tgt, ToolingExtensions.EXT_EXPRESSION, src.getExpression());
         }
-        if (src.hasXpath()) {
-            tgt.setXpath(src.getXpath());
-        }
+        if (src.hasXpathElement())
+            tgt.setXpathElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getXpathElement()));
         if (src.hasXpathUsage()) {
             tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
         }
@@ -65,44 +63,37 @@ public class SearchParameter10_40 {
             return null;
         org.hl7.fhir.r4.model.SearchParameter tgt = new org.hl7.fhir.r4.model.SearchParameter();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_10_40.convertType(src.getUrlElement()));
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasStatus()) {
             tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
         }
-        if (src.hasExperimental())
-            tgt.setExperimental(src.getExperimental());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasPublisher()) {
-            tgt.setPublisher(src.getPublisher());
-        }
+        if (src.hasExperimentalElement())
+            tgt.setExperimentalElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_10_40.convertType(src.getExperimentalElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r4.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateElement()));
+        if (src.hasPublisherElement())
+            tgt.setPublisherElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getPublisherElement()));
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu2.model.SearchParameter.SearchParameterContactComponent t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         }
-        if (src.hasRequirements()) {
-            tgt.setPurpose(src.getRequirements());
+        if (src.hasRequirementsElement()) {
+            tgt.setPurposeElement((MarkdownType) VersionConvertor_10_40.convertType(src.getRequirementsElement()));
         }
-        if (src.hasCode()) {
-            tgt.setCode(src.getCode());
-        }
-        if (src.hasBase()) {
-            tgt.addBase(src.getBase());
-        }
+        if (src.hasCodeElement())
+            tgt.setCodeElement((org.hl7.fhir.r4.model.CodeType) VersionConvertor_10_40.convertType(src.getCodeElement()));
+        if (src.hasBaseElement())
+            tgt.setBase(Collections.singletonList((org.hl7.fhir.r4.model.CodeType) VersionConvertor_10_40.convertType(src.getBaseElement())));
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_40.convertSearchParamType(src.getType()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r4.model.MarkdownType) VersionConvertor_10_40.convertType(src.getDescriptionElement()));
         tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
-        if (src.hasXpath()) {
-            tgt.setXpath(src.getXpath());
-        }
+        if (src.hasXpathElement())
+            tgt.setXpathElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getXpathElement()));
         if (src.hasXpathUsage()) {
             tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
         }
@@ -117,9 +108,8 @@ public class SearchParameter10_40 {
             return null;
         org.hl7.fhir.r4.model.ContactDetail tgt = new org.hl7.fhir.r4.model.ContactDetail();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasTelecom()) {
             for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(t));
         }
@@ -131,9 +121,8 @@ public class SearchParameter10_40 {
             return null;
         org.hl7.fhir.dstu2.model.SearchParameter.SearchParameterContactComponent tgt = new org.hl7.fhir.dstu2.model.SearchParameter.SearchParameterContactComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasTelecom()) {
             for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(t));
         }

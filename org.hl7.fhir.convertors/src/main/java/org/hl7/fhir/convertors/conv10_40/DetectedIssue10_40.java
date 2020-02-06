@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DetectedIssue10_40 {
 
@@ -22,9 +23,8 @@ public class DetectedIssue10_40 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasDetail()) {
-            tgt.setDetail(src.getDetail());
-        }
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getDetailElement()));
         if (src.hasIdentifiedDateTimeType())
             tgt.setDateElement(VersionConvertor_10_40.convertDateTime(src.getIdentifiedDateTimeType()));
         if (src.hasAuthor()) {
@@ -33,9 +33,8 @@ public class DetectedIssue10_40 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifierFirstRep()));
         }
-        if (src.hasReference()) {
-            tgt.setReference(src.getReference());
-        }
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_40.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -59,9 +58,8 @@ public class DetectedIssue10_40 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasDetail()) {
-            tgt.setDetail(src.getDetail());
-        }
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getDetailElement()));
         if (src.hasDate())
             tgt.setIdentified(VersionConvertor_10_40.convertDateTime(src.getDateElement()));
         if (src.hasAuthor()) {
@@ -70,9 +68,8 @@ public class DetectedIssue10_40 {
         if (src.hasIdentifier()) {
             tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasReference()) {
-            tgt.setReference(src.getReference());
-        }
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_10_40.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -87,8 +84,8 @@ public class DetectedIssue10_40 {
         if (src.hasAction()) {
             tgt.setAction(VersionConvertor_10_40.convertCodeableConcept(src.getAction()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r4.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
         }
@@ -103,8 +100,8 @@ public class DetectedIssue10_40 {
         if (src.hasAction()) {
             tgt.setAction(VersionConvertor_10_40.convertCodeableConcept(src.getAction()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateElement()));
         if (src.hasAuthor()) {
             tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
         }
