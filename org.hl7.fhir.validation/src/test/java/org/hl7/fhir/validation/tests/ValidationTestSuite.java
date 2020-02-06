@@ -7,10 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -24,8 +21,8 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
@@ -34,10 +31,8 @@ import org.hl7.fhir.r5.validation.ValidationEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +40,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -180,6 +177,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } else {
       val.setAllowExamples(true);      
     }
+    val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
@@ -202,7 +200,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, v, messages);
-      val.getContext().cacheResource(sd);      
+      val.getContext().cacheResource(sd);    
+      val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       if (name.endsWith(".json"))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
@@ -273,7 +272,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v) || "1.4".equals(v))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v) || "1.0".equals(v))
-          return new VersionConvertor_10_50(null).convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
+          return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v) || "4.0".equals(v))
           return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
         else
@@ -286,7 +285,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v) || "1.4".equals(v))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v) || "1.0".equals(v))
-          return new VersionConvertor_10_50(null).convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
+          return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v) || "4.0".equals(v))
           return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
         else
@@ -380,7 +379,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url) {
+  public Base resolveReference(Object appContext, String url, Base refContext) {
     if (url.equals("Patient/test"))
       return new Patient();
     return null;

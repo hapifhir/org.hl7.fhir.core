@@ -36,16 +36,14 @@ import org.hl7.fhir.r5.terminologies.TerminologyClient;
 public class TerminologyClientR2 implements TerminologyClient {
 
   private FHIRToolingClient client; // todo: use the R2 client
-  private VersionConvertor_10_50 conv;
-  
+
   public TerminologyClientR2(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
-    conv = new VersionConvertor_10_50(null);
   }
 
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return (TerminologyCapabilities) conv.convertTerminologyCapabilities(client.getTerminologyCapabilities());
+    return VersionConvertor_10_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
   }
 
   @Override
@@ -55,24 +53,24 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.dstu2.model.ValueSet vs2 = (org.hl7.fhir.dstu2.model.ValueSet) conv.convertResource(vs);
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) conv.convertResource(p);
+    org.hl7.fhir.dstu2.model.ValueSet vs2 = (org.hl7.fhir.dstu2.model.ValueSet) VersionConvertor_10_50.convertResource(vs);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(p);
     vs2 = client.expandValueset(vs2, p2, params);
-    return (ValueSet) conv.convertResource(vs2);
+    return (ValueSet) VersionConvertor_10_50.convertResource(vs2);
   }
 
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) conv.convertResource(pin);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) conv.convertResource(p2);
+    return (Parameters) VersionConvertor_10_50.convertResource(p2);
   }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) conv.convertResource(pin);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) conv.convertResource(p2);
+    return (Parameters) VersionConvertor_10_50.convertResource(p2);
   }
 
   @Override
@@ -87,11 +85,11 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) conv.convertResource(client.getConformanceStatementQuick());
+    return (CapabilityStatement) VersionConvertor_10_50.convertResource(client.getConformanceStatementQuick());
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) conv.convertResource(client.lookupCode(params));
+    return (Parameters) VersionConvertor_10_50.convertResource(client.lookupCode(params));
   }
 }

@@ -316,6 +316,9 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.core", "http://hl7.org/fhir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.pubpack", "http://fhir.org/packages/hl7.fhir.pubpack", ini) || save;
     save = checkIniHasMapping("hl7.fhir.xver-extensions", "http://fhir.org/packages/hl7.fhir.xver-extensions", ini) || save;
+    save = checkIniHasMapping("fhir.base.template", "http://fhir.org/templates/fhir.base.template", ini) || save;
+    save = checkIniHasMapping("hl7.base.template", "http://fhir.org/templates/hl7.base.template", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.template", "http://fhir.org/templates/hl7.fhir.template", ini) || save;
     
     save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
@@ -382,6 +385,9 @@ public class PackageCacheManager {
   public void recordMap(String url, String id) throws IOException {
     if (url == null)
       return;
+    if (url.contains("github.com")) {
+      return;
+    }
     
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
         throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #1");

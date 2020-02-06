@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,79 +50,86 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class EnrollmentRequest extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.EnrollmentRequest convertEnrollmentRequest(org.hl7.fhir.r4.model.EnrollmentRequest src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.EnrollmentRequest tgt = new org.hl7.fhir.r5.model.EnrollmentRequest();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasInsurer())
-      tgt.setInsurer(convertReference(src.getInsurer()));
-    if (src.hasProvider())
-      tgt.setProvider(convertReference(src.getProvider()));
-    if (src.hasCandidate())
-      tgt.setCandidate(convertReference(src.getCandidate()));
-    if (src.hasCoverage())
-      tgt.setCoverage(convertReference(src.getCoverage()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.EnrollmentRequest convertEnrollmentRequest(org.hl7.fhir.r4.model.EnrollmentRequest src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.EnrollmentRequest tgt = new org.hl7.fhir.r5.model.EnrollmentRequest();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasInsurer())
+            tgt.setInsurer(convertReference(src.getInsurer()));
+        if (src.hasProvider())
+            tgt.setProvider(convertReference(src.getProvider()));
+        if (src.hasCandidate())
+            tgt.setCandidate(convertReference(src.getCandidate()));
+        if (src.hasCoverage())
+            tgt.setCoverage(convertReference(src.getCoverage()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.EnrollmentRequest convertEnrollmentRequest(org.hl7.fhir.r5.model.EnrollmentRequest src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.EnrollmentRequest tgt = new org.hl7.fhir.r4.model.EnrollmentRequest();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasInsurer())
-      tgt.setInsurer(convertReference(src.getInsurer()));
-    if (src.hasProvider())
-      tgt.setProvider(convertReference(src.getProvider()));
-    if (src.hasCandidate())
-      tgt.setCandidate(convertReference(src.getCandidate()));
-    if (src.hasCoverage())
-      tgt.setCoverage(convertReference(src.getCoverage()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.EnrollmentRequest convertEnrollmentRequest(org.hl7.fhir.r5.model.EnrollmentRequest src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.EnrollmentRequest tgt = new org.hl7.fhir.r4.model.EnrollmentRequest();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasInsurer())
+            tgt.setInsurer(convertReference(src.getInsurer()));
+        if (src.hasProvider())
+            tgt.setProvider(convertReference(src.getProvider()));
+        if (src.hasCandidate())
+            tgt.setCandidate(convertReference(src.getCandidate()));
+        if (src.hasCoverage())
+            tgt.setCoverage(convertReference(src.getCoverage()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEnrollmentRequestStatus(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEnrollmentRequestStatus(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus convertEnrollmentRequestStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus convertEnrollmentRequestStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.NULL;
+        }
+    }
 }

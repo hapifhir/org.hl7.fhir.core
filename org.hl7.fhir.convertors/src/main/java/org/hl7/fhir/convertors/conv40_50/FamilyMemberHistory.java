@@ -19,12 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,161 +51,178 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class FamilyMemberHistory extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.FamilyMemberHistory convertFamilyMemberHistory(org.hl7.fhir.r4.model.FamilyMemberHistory src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.FamilyMemberHistory tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(convertCanonical(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(convertUri(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
-    if (src.hasDataAbsentReason())
-      tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasRelationship())
-      tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
-    if (src.hasSex())
-      tgt.setSex(convertCodeableConcept(src.getSex()));
-    if (src.hasBorn())
-      tgt.setBorn(convertType(src.getBorn()));
-    if (src.hasAge())
-      tgt.setAge(convertType(src.getAge()));
-    if (src.hasEstimatedAge())
-      tgt.setEstimatedAgeElement(convertBoolean(src.getEstimatedAgeElement()));
-    if (src.hasDeceased())
-      tgt.setDeceased(convertType(src.getDeceased()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
-      tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.FamilyMemberHistory convertFamilyMemberHistory(org.hl7.fhir.r4.model.FamilyMemberHistory src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.FamilyMemberHistory tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasInstantiatesCanonical()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        }
+        if (src.hasInstantiatesUri()) {
+            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
+        if (src.hasDataAbsentReason())
+            tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasRelationship())
+            tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
+        if (src.hasSex())
+            tgt.setSex(convertCodeableConcept(src.getSex()));
+        if (src.hasBorn())
+            tgt.setBorn(convertType(src.getBorn()));
+        if (src.hasAge())
+            tgt.setAge(convertType(src.getAge()));
+        if (src.hasEstimatedAge())
+            tgt.setEstimatedAgeElement(convertBoolean(src.getEstimatedAgeElement()));
+        if (src.hasDeceased())
+            tgt.setDeceased(convertType(src.getDeceased()));
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasCondition()) {
+            for (org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.FamilyMemberHistory convertFamilyMemberHistory(org.hl7.fhir.r5.model.FamilyMemberHistory src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.FamilyMemberHistory tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(convertCanonical(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(convertUri(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
-    if (src.hasDataAbsentReason())
-      tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasRelationship())
-      tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
-    if (src.hasSex())
-      tgt.setSex(convertCodeableConcept(src.getSex()));
-    if (src.hasBorn())
-      tgt.setBorn(convertType(src.getBorn()));
-    if (src.hasAge())
-      tgt.setAge(convertType(src.getAge()));
-    if (src.hasEstimatedAge())
-      tgt.setEstimatedAgeElement(convertBoolean(src.getEstimatedAgeElement()));
-    if (src.hasDeceased())
-      tgt.setDeceased(convertType(src.getDeceased()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasReference())
-      tgt.addReasonReference(convertReference(t.getReference()));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
-      tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.FamilyMemberHistory convertFamilyMemberHistory(org.hl7.fhir.r5.model.FamilyMemberHistory src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.FamilyMemberHistory tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasInstantiatesCanonical()) {
+            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        }
+        if (src.hasInstantiatesUri()) {
+            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
+        if (src.hasDataAbsentReason())
+            tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasRelationship())
+            tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
+        if (src.hasSex())
+            tgt.setSex(convertCodeableConcept(src.getSex()));
+        if (src.hasBorn())
+            tgt.setBorn(convertType(src.getBorn()));
+        if (src.hasAge())
+            tgt.setAge(convertType(src.getAge()));
+        if (src.hasEstimatedAge())
+            tgt.setEstimatedAgeElement(convertBoolean(src.getEstimatedAgeElement()));
+        if (src.hasDeceased())
+            tgt.setDeceased(convertType(src.getDeceased()));
+        for (CodeableReference t : src.getReason()) if (t.hasConcept())
+            tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+        for (CodeableReference t : src.getReason()) if (t.hasReference())
+            tgt.addReasonReference(convertReference(t.getReference()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasCondition()) {
+            for (org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PARTIAL: return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
-    case COMPLETED: return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
-    case HEALTHUNKNOWN: return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
-    default: return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PARTIAL:
+                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
+            case COMPLETED:
+                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
+            case HEALTHUNKNOWN:
+                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
+            default:
+                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PARTIAL: return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
-    case COMPLETED: return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
-    case HEALTHUNKNOWN: return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
-    default: return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PARTIAL:
+                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
+            case COMPLETED:
+                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
+            case HEALTHUNKNOWN:
+                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
+            default:
+                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasOutcome())
-      tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
-    if (src.hasContributedToDeath())
-      tgt.setContributedToDeathElement(convertBoolean(src.getContributedToDeathElement()));
-    if (src.hasOnset())
-      tgt.setOnset(convertType(src.getOnset()));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
+        copyElement(src, tgt);
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasOutcome())
+            tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
+        if (src.hasContributedToDeath())
+            tgt.setContributedToDeathElement(convertBoolean(src.getContributedToDeathElement()));
+        if (src.hasOnset())
+            tgt.setOnset(convertType(src.getOnset()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasOutcome())
-      tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
-    if (src.hasContributedToDeath())
-      tgt.setContributedToDeathElement(convertBoolean(src.getContributedToDeathElement()));
-    if (src.hasOnset())
-      tgt.setOnset(convertType(src.getOnset()));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
+        copyElement(src, tgt);
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasOutcome())
+            tgt.setOutcome(convertCodeableConcept(src.getOutcome()));
+        if (src.hasContributedToDeath())
+            tgt.setContributedToDeathElement(convertBoolean(src.getContributedToDeathElement()));
+        if (src.hasOnset())
+            tgt.setOnset(convertType(src.getOnset()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 }

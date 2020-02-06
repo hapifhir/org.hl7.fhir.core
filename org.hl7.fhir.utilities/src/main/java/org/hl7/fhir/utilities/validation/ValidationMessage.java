@@ -487,6 +487,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String html;
   private String locationLink;
   private String txLink;
+  public String sliceHtml;
+  private boolean slicingHint;
 
 
   /**
@@ -744,6 +746,23 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public void setHtml(String html) {
     this.html = html;
+  }
+
+  public boolean isSlicingHint() {
+    return slicingHint;
+  }
+
+  public ValidationMessage setSlicingHint(boolean slicingHint) {
+    this.slicingHint = slicingHint;
+    return this;
+  }
+
+  public String getSliceHtml() {
+    return sliceHtml;
+  }
+
+  public void setSliceHtml(String sliceHtml) {
+    this.sliceHtml = sliceHtml;
   }
 
   

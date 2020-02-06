@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,101 +50,126 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class ResearchSubject extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.ResearchSubject convertResearchSubject(org.hl7.fhir.r4.model.ResearchSubject src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ResearchSubject tgt = new org.hl7.fhir.r5.model.ResearchSubject();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasStudy())
-      tgt.setStudy(convertReference(src.getStudy()));
-    if (src.hasIndividual())
-      tgt.setIndividual(convertReference(src.getIndividual()));
-    if (src.hasAssignedArm())
-      tgt.setAssignedArmElement(convertString(src.getAssignedArmElement()));
-    if (src.hasActualArm())
-      tgt.setActualArmElement(convertString(src.getActualArmElement()));
-    if (src.hasConsent())
-      tgt.setConsent(convertReference(src.getConsent()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.ResearchSubject convertResearchSubject(org.hl7.fhir.r4.model.ResearchSubject src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.ResearchSubject tgt = new org.hl7.fhir.r5.model.ResearchSubject();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasStudy())
+            tgt.setStudy(convertReference(src.getStudy()));
+        if (src.hasIndividual())
+            tgt.setIndividual(convertReference(src.getIndividual()));
+        if (src.hasAssignedArm())
+            tgt.setAssignedArmElement(convertString(src.getAssignedArmElement()));
+        if (src.hasActualArm())
+            tgt.setActualArmElement(convertString(src.getActualArmElement()));
+        if (src.hasConsent())
+            tgt.setConsent(convertReference(src.getConsent()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.ResearchSubject convertResearchSubject(org.hl7.fhir.r5.model.ResearchSubject src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.ResearchSubject tgt = new org.hl7.fhir.r4.model.ResearchSubject();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasStudy())
-      tgt.setStudy(convertReference(src.getStudy()));
-    if (src.hasIndividual())
-      tgt.setIndividual(convertReference(src.getIndividual()));
-    if (src.hasAssignedArm())
-      tgt.setAssignedArmElement(convertString(src.getAssignedArmElement()));
-    if (src.hasActualArm())
-      tgt.setActualArmElement(convertString(src.getActualArmElement()));
-    if (src.hasConsent())
-      tgt.setConsent(convertReference(src.getConsent()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.ResearchSubject convertResearchSubject(org.hl7.fhir.r5.model.ResearchSubject src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.ResearchSubject tgt = new org.hl7.fhir.r4.model.ResearchSubject();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasStudy())
+            tgt.setStudy(convertReference(src.getStudy()));
+        if (src.hasIndividual())
+            tgt.setIndividual(convertReference(src.getIndividual()));
+        if (src.hasAssignedArm())
+            tgt.setAssignedArmElement(convertString(src.getAssignedArmElement()));
+        if (src.hasActualArm())
+            tgt.setActualArmElement(convertString(src.getActualArmElement()));
+        if (src.hasConsent())
+            tgt.setConsent(convertReference(src.getConsent()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case CANDIDATE: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
-    case ELIGIBLE: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
-    case FOLLOWUP: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
-    case INELIGIBLE: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
-    case NOTREGISTERED: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
-    case OFFSTUDY: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
-    case ONSTUDY: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
-    case ONSTUDYINTERVENTION: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
-    case ONSTUDYOBSERVATION: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
-    case PENDINGONSTUDY: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
-    case POTENTIALCANDIDATE: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
-    case SCREENING: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
-    case WITHDRAWN: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
-    default: return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case CANDIDATE:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
+            case ELIGIBLE:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
+            case FOLLOWUP:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
+            case INELIGIBLE:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
+            case NOTREGISTERED:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
+            case OFFSTUDY:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
+            case ONSTUDY:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
+            case ONSTUDYINTERVENTION:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
+            case ONSTUDYOBSERVATION:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
+            case PENDINGONSTUDY:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
+            case POTENTIALCANDIDATE:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
+            case SCREENING:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
+            case WITHDRAWN:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
+            default:
+                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case CANDIDATE: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
-    case ELIGIBLE: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
-    case FOLLOWUP: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
-    case INELIGIBLE: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
-    case NOTREGISTERED: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
-    case OFFSTUDY: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
-    case ONSTUDY: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
-    case ONSTUDYINTERVENTION: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
-    case ONSTUDYOBSERVATION: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
-    case PENDINGONSTUDY: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
-    case POTENTIALCANDIDATE: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
-    case SCREENING: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
-    case WITHDRAWN: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
-    default: return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case CANDIDATE:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
+            case ELIGIBLE:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
+            case FOLLOWUP:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
+            case INELIGIBLE:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
+            case NOTREGISTERED:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
+            case OFFSTUDY:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
+            case ONSTUDY:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
+            case ONSTUDYINTERVENTION:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
+            case ONSTUDYOBSERVATION:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
+            case PENDINGONSTUDY:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
+            case POTENTIALCANDIDATE:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
+            case SCREENING:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
+            case WITHDRAWN:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
+            default:
+                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NULL;
+        }
+    }
 }

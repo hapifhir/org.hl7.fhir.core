@@ -19,12 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,129 +51,156 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class MedicationStatement extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.MedicationUsage convertMedicationStatement(org.hl7.fhir.r4.model.MedicationStatement src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationUsage tgt = new org.hl7.fhir.r5.model.MedicationUsage();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.addCategory(convertCodeableConcept(src.getCategory()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setEncounter(convertReference(src.getContext()));
-    if (src.hasEffective())
-      tgt.setEffective(convertType(src.getEffective()));
-    if (src.hasDateAsserted())
-      tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
-    if (src.hasInformationSource())
-      tgt.setInformationSource(convertReference(src.getInformationSource()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom())
-      tgt.addDerivedFrom(convertReference(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason(convertCodeableConceptToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason(convertReferenceToCodeableReference(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.Dosage t : src.getDosage())
-      tgt.addDosage(convertDosage(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationUsage convertMedicationStatement(org.hl7.fhir.r4.model.MedicationStatement src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationUsage tgt = new org.hl7.fhir.r5.model.MedicationUsage();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+        if (src.hasStatusReason()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasCategory())
+            tgt.addCategory(convertCodeableConcept(src.getCategory()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasContext())
+            tgt.setEncounter(convertReference(src.getContext()));
+        if (src.hasEffective())
+            tgt.setEffective(convertType(src.getEffective()));
+        if (src.hasDateAsserted())
+            tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
+        if (src.hasInformationSource())
+            tgt.setInformationSource(convertReference(src.getInformationSource()));
+        if (src.hasDerivedFrom()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(convertReference(t));
+        }
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosage()) {
+            for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.addDosage(convertDosage(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationStatement convertMedicationStatement(org.hl7.fhir.r5.model.MedicationUsage src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationStatement tgt = new org.hl7.fhir.r4.model.MedicationStatement();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
-      tgt.addPartOf(convertReference(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(convertCodeableConcept(t));
-    if (src.hasCategory())
-      tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setContext(convertReference(src.getEncounter()));
-    if (src.hasEffective())
-      tgt.setEffective(convertType(src.getEffective()));
-    if (src.hasDateAsserted())
-      tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
-    if (src.hasInformationSource())
-      tgt.setInformationSource(convertReference(src.getInformationSource()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom())
-      tgt.addDerivedFrom(convertReference(t));
-    for (CodeableReference t : src.getReason())
-      if (t.hasConcept())
-      tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-    for (CodeableReference t : src.getReason())
-      if (t.hasReference())
-      tgt.addReasonReference(convertReference(t.getReference()));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Dosage t : src.getDosage())
-      tgt.addDosage(convertDosage(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationStatement convertMedicationStatement(org.hl7.fhir.r5.model.MedicationUsage src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationStatement tgt = new org.hl7.fhir.r4.model.MedicationStatement();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasPartOf()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+        if (src.hasStatusReason()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
+        }
+        if (src.hasCategory())
+            tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setContext(convertReference(src.getEncounter()));
+        if (src.hasEffective())
+            tgt.setEffective(convertType(src.getEffective()));
+        if (src.hasDateAsserted())
+            tgt.setDateAssertedElement(convertDateTime(src.getDateAssertedElement()));
+        if (src.hasInformationSource())
+            tgt.setInformationSource(convertReference(src.getInformationSource()));
+        if (src.hasDerivedFrom()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(convertReference(t));
+        }
+        for (CodeableReference t : src.getReason()) if (t.hasConcept())
+            tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+        for (CodeableReference t : src.getReason()) if (t.hasReference())
+            tgt.addReasonReference(convertReference(t.getReference()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosage()) {
+            for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(convertDosage(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ACTIVE;
-    case COMPLETED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ENTEREDINERROR;
-    case INTENDED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.INTENDED;
-    case STOPPED: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.STOPPED;
-    case ONHOLD: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ONHOLD;
-    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN;
-    case NOTTAKEN: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NOTTAKEN;
-    default: return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ACTIVE;
+            case COMPLETED:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ENTEREDINERROR;
+            case INTENDED:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.INTENDED;
+            case STOPPED:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.STOPPED;
+            case ONHOLD:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ONHOLD;
+            case UNKNOWN:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN;
+            case NOTTAKEN:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NOTTAKEN;
+            default:
+                return org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE;
-    case COMPLETED: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR;
-    case INTENDED: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.INTENDED;
-    case STOPPED: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.STOPPED;
-    case ONHOLD: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD;
-    case UNKNOWN: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.UNKNOWN;
-    case NOTTAKEN: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NOTTAKEN;
-    default: return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE;
+            case COMPLETED:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR;
+            case INTENDED:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.INTENDED;
+            case STOPPED:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.STOPPED;
+            case ONHOLD:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD;
+            case UNKNOWN:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.UNKNOWN;
+            case NOTTAKEN:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NOTTAKEN;
+            default:
+                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NULL;
+        }
+    }
 }

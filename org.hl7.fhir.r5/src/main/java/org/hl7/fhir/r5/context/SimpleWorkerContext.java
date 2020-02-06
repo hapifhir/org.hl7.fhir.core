@@ -660,6 +660,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
       List<String> errors = new ArrayList<String>();
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
+      pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
         pu.sortDifferential(sd, p, p.getUrl(), errors, true);
@@ -670,7 +671,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       pu.generateSnapshot(sd, p, p.getUrl(), Utilities.extractBaseUrl(sd.getUserString("path")), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
-          throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+"). Error generating snapshot: "+msg.getMessage());
+          throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+"), element "+msg.getLocation()+". Error generating snapshot: "+msg.getMessage());
       }
       if (!p.hasSnapshot())
         throw new FHIRException("Profile "+p.getName()+" ("+p.getUrl()+"). Error generating snapshot");

@@ -265,6 +265,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean newSlicingProcessing;
   private String defWebRoot;
+  private boolean autoFixSliceNames;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -281,9 +282,19 @@ public class ProfileUtilities extends TranslatingUtilities {
     return igmode;
   }
 
-
   public void setIgmode(boolean igmode) {
     this.igmode = igmode;
+  }
+
+  
+  
+  public boolean isAutoFixSliceNames() {
+    return autoFixSliceNames;
+  }
+
+  public ProfileUtilities setAutoFixSliceNames(boolean autoFixSliceNames) {
+    this.autoFixSliceNames = autoFixSliceNames;
+    return this;
   }
 
   public interface ProfileKnowledgeProvider {
@@ -479,6 +490,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
 
     try {
+      checkDifferential(derived.getDifferential().getElement(), derived.getType(), derived.getUrl());
+      
       // so we have two lists - the base list, and the differential list
       // the differential list is only allowed to include things that are in the base list, but
       // is allowed to include them multiple times - thereby slicing them
@@ -610,6 +623,54 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw e;
     }
   }
+
+  private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
+    boolean first = true;
+    for (ElementDefinition ed : elements) {
+      if (!ed.hasPath()) {
+        throw new FHIRException("No path on element in differential in "+url);
+      }
+      String p = ed.getPath();
+      if (p == null) {
+        throw new FHIRException("No path value on element in differential in "+url);        
+      }
+      if (!((first && type.equals(p)) || p.startsWith(type+"."))) {
+        throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": must start with "+type+"."+(first ? " (o be '"+type+"')" : ""));
+      }
+      if (p.contains(".")) {
+        // Element names (the parts of a path delineated by the '.' character) SHALL NOT contain whitespace (i.e. Unicode characters marked as whitespace)
+        // Element names SHALL NOT contain the characters ,:;'"/|?!@#$%^&*()[]{}
+        // Element names SHOULD not contain non-ASCII characters
+        // Element names SHALL NOT exceed 64 characters in length
+        String[] pl = p.split("\\.");
+        for (String pp : pl) {
+          if (pp.length() < 1) {
+            throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": name portion mising ('..')");
+          }
+          if (pp.length() > 64) {
+            throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": name portion exceeds 64 chars in length");
+          }
+          for (char ch : pp.toCharArray()) {
+            if (Character.isWhitespace(ch)) {
+              throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": no unicode whitespace");              
+            }
+            if (Utilities.existsInList(ch, ',', ':', ';', '\'', '"', '/', '|', '?', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '{', '}')) {
+              throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": illegal character '"+ch+"'");              
+            }
+            if (ch < ' ' || ch > 'z') {
+              throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": illegal character '"+ch+"'");
+            }
+          }
+          if (pp.contains("[") || pp.contains("]")) {
+            if (!pp.endsWith("[x]") || (pp.substring(0, pp.length()-3).contains("[") || (pp.substring(0, pp.length()-3).contains("]")))) {
+              throw new FHIRException("Illegal path '"+p+"' in differential in "+url+": illegal characters []");
+            }
+          }
+        }
+      }
+    }    
+  }
+
 
   private boolean isCompatibleType(String base, String type) {
     StructureDefinition sd = context.fetchTypeDefinition(type);
@@ -958,7 +1019,11 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!ts.defn.hasSliceName()) {
                 ts.defn.setSliceName(tn);
               } else if (!ts.defn.getSliceName().equals(tn)) {
-                throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice name must be '"+tn+"' but is '"+ts.defn.getSliceName()+"'"); 
+                if (autoFixSliceNames) {
+                  ts.defn.setSliceName(tn);
+                } else {
+                  throw new FHIRException("Error at path "+(!Utilities.noString(contextPathSrc) ? contextPathSrc : cpath)+": Slice name must be '"+tn+"' but is '"+ts.defn.getSliceName()+"'");
+                }
               } if (!ts.defn.hasType()) {
                 ts.defn.addType().setCode(ts.type);
               } else if (ts.defn.getType().size() > 1) {
@@ -2424,7 +2489,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                       if (messages == null) {
                         throw new FHIRException("Error at "+purl+"#"+derived.getPath()+": The target profile "+url+" is not  valid constraint on the base ("+td.getTargetProfile()+")");
                       } else {
-                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile "+u.getValue()+" is not a valid constraint on the base ("+td.getTargetProfile()+")", IssueSeverity.ERROR));
+                        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile "+u.getValue()+" is not a valid constraint on the base ("+td.getTargetProfile()+") at "+derived.getPath(), IssueSeverity.ERROR));
                       }
                     }
                   }
@@ -4289,13 +4354,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     @Override
     public int compare(ElementDefinitionHolder o1, ElementDefinitionHolder o2) {
       if (o1.getBaseIndex() == 0)
-        o1.setBaseIndex(find(o1.getSelf().getPath()));
+        o1.setBaseIndex(find(o1.getSelf().getPath(), true));
       if (o2.getBaseIndex() == 0)
-        o2.setBaseIndex(find(o2.getSelf().getPath()));
+        o2.setBaseIndex(find(o2.getSelf().getPath(), true));
       return o1.getBaseIndex() - o2.getBaseIndex();
     }
 
-    private int find(String path) {
+    private int find(String path, boolean mandatory) {
       String op = path;
       int lc = 0;
       String actual = base+path.substring(prefixLength);
@@ -4327,10 +4392,12 @@ public class ProfileUtilities extends TranslatingUtilities {
             throw new Error("Internal recursion detection: find() loop path recursion > "+MAX_RECURSION_LIMIT+" - check paths are valid (for path "+path+"/"+op+")");
         }
       }
-      if (prefixLength == 0)
-        errors.add("Differential contains path "+path+" which is not found in the base");
-      else
-        errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+      if (mandatory) {
+        if (prefixLength == 0)
+          errors.add("Differential contains path "+path+" which is not found in the base");
+        else
+          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+      }
       return 0;
     }
 
@@ -4443,7 +4510,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private void sortElements(ElementDefinitionHolder edh, ElementDefinitionComparer cmp, List<String> errors) throws FHIRException {
     if (edh.getChildren().size() == 1)
       // special case - sort needsto allocate base numbers, but there'll be no sort if there's only 1 child. So in that case, we just go ahead and allocated base number directly
-      edh.getChildren().get(0).baseIndex = cmp.find(edh.getChildren().get(0).getSelf().getPath());
+      edh.getChildren().get(0).baseIndex = cmp.find(edh.getChildren().get(0).getSelf().getPath(), false);
     else
       Collections.sort(edh.getChildren(), cmp);
     cmp.checkForErrors(errors);
