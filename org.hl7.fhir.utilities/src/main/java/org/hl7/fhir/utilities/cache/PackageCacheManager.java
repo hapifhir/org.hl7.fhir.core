@@ -437,7 +437,7 @@ public class PackageCacheManager {
         String u = o.get("url").getAsString();
         if (u.contains("/ImplementationGuide/"))
           u = u.substring(0, u.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), o.get("repo").getAsString(), readDate(o.get("date").getAsString())));
+        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), getRepo(o.get("repo").getAsString()), readDate(o.get("date").getAsString())));
       }
     }
     Collections.sort(builds, new BuildRecordSorter());
@@ -447,6 +447,11 @@ public class PackageCacheManager {
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/"+bld.getRepo());        
       }
     }
+  }
+
+  private String getRepo(String path) {
+    String[] p = path.split("\\/");
+    return p[0]+"/"+p[1];
   }
 
   private Date readDate(String s) throws ParseException {
@@ -665,33 +670,42 @@ public class PackageCacheManager {
     }
 
     String url = getPackageUrl(id);
-    if (url == null)
+    if (url == null) {
       throw new FHIRException("Unable to resolve the package '"+id+"'");
+    }
+    String aurl = null;
+    try {
     if (url.contains(".tgz")) {
+      aurl = url;
       InputStream stream = fetchFromUrlSpecific(url, true);
       if (stream != null)
         return addPackageToCache(id, v, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);      
     }
     if (v == null) {
+      aurl = Utilities.pathURL(url, "package.tgz");
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(url, "package.tgz"), true);
       if (stream == null && isBuildLoaded()) { 
+        aurl = Utilities.pathURL(buildPath(url), "package.tgz");
         stream = fetchFromUrlSpecific(Utilities.pathURL(buildPath(url), "package.tgz"), true);
       }
       if (stream != null)
         return addPackageToCache(id, null, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);
     } else if ("current".equals(v) && ciList.containsKey(id)){
+      aurl = Utilities.pathURL(buildPath(url), "package.tgz");
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), true);
       return addPackageToCache(id, v, stream, Utilities.pathURL(ciList.get(id), "package.tgz"));
     } else {
       String pu = Utilities.pathURL(url, "package-list.json");
+      aurl = pu;
       JsonObject json;
       try {
         json = fetchJson(pu);
       } catch (Exception e) {
         String pv = Utilities.pathURL(url, v, "package.tgz");
         try {
+          aurl = pv;
           InputStream stream = fetchFromUrlSpecific(pv, true);
           return addPackageToCache(id, v, stream, pv);
         } catch (Exception e1) {
@@ -703,6 +717,7 @@ public class PackageCacheManager {
       for (JsonElement e : json.getAsJsonArray("list")) {
         JsonObject vo = (JsonObject) e;
         if (v.equals(JSONUtil.str(vo, "version"))) {
+          aurl = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
           InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
           if (stream == null)
             throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"));
@@ -717,6 +732,9 @@ public class PackageCacheManager {
 //        return addPackageToCache(id, v, stream);
 //      }
       throw new FHIRException("Unable to resolve version "+v+" for package "+id);
+    }
+    } catch (Exception e) {
+      throw new FHIRException(e.getMessage()+(aurl == null ? "" : " (url = "+aurl+")"), e);
     }
   }
 
