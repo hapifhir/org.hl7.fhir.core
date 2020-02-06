@@ -1720,7 +1720,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 ok = true;
                 break;
               }
-              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              if (sd.getBaseDefinition() != null) {
+                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              } else {
+                sd = null;
+              }
             }
           }
         } 
@@ -4715,9 +4719,6 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
     //		time = System.nanoTime();
     // check type invariants
-    if (definition.getId().equals("Composition.section:sectionResults")) {
-      System.out.println("!");
-    }
     checkInvariants(hostContext, errors, profile, definition, resource, element, stack, false);
     if (definition.getFixed() != null)
       checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getUrl(), definition.getSliceName(), null);
