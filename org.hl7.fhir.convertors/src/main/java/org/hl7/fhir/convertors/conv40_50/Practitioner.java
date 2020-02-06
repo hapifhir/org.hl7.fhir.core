@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,99 +50,110 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Practitioner extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Practitioner convertPractitioner(org.hl7.fhir.r4.model.Practitioner src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Practitioner tgt = new org.hl7.fhir.r5.model.Practitioner();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.r4.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    for (org.hl7.fhir.r4.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto())
-      tgt.addPhoto(convertAttachment(t));
-    for (org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
-      tgt.addQualification(convertPractitionerQualificationComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunication())
-      tgt.addCommunication(convertCodeableConcept(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Practitioner convertPractitioner(org.hl7.fhir.r4.model.Practitioner src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Practitioner tgt = new org.hl7.fhir.r5.model.Practitioner();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasName()) {
+            for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        }
+        if (src.hasQualification()) {
+            for (org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent t : src.getQualification()) tgt.addQualification(convertPractitionerQualificationComponent(t));
+        }
+        if (src.hasCommunication()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunication()) tgt.addCommunication(convertCodeableConcept(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Practitioner convertPractitioner(org.hl7.fhir.r5.model.Practitioner src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Practitioner tgt = new org.hl7.fhir.r4.model.Practitioner();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasActive())
-      tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-    for (org.hl7.fhir.r5.model.HumanName t : src.getName())
-      tgt.addName(convertHumanName(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(convertContactPoint(t));
-    for (org.hl7.fhir.r5.model.Address t : src.getAddress())
-      tgt.addAddress(convertAddress(t));
-    if (src.hasGender())
-      tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
-    if (src.hasBirthDate())
-      tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
-    for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto())
-      tgt.addPhoto(convertAttachment(t));
-    for (org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent t : src.getQualification())
-      tgt.addQualification(convertPractitionerQualificationComponent(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCommunication())
-      tgt.addCommunication(convertCodeableConcept(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Practitioner convertPractitioner(org.hl7.fhir.r5.model.Practitioner src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Practitioner tgt = new org.hl7.fhir.r4.model.Practitioner();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasActive())
+            tgt.setActiveElement(convertBoolean(src.getActiveElement()));
+        if (src.hasName()) {
+            for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        }
+        if (src.hasTelecom()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        }
+        if (src.hasAddress()) {
+            for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
+        }
+        if (src.hasGender())
+            tgt.setGender(Enumerations.convertAdministrativeGender(src.getGender()));
+        if (src.hasBirthDate())
+            tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
+        if (src.hasPhoto()) {
+            for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        }
+        if (src.hasQualification()) {
+            for (org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent t : src.getQualification()) tgt.addQualification(convertPractitionerQualificationComponent(t));
+        }
+        if (src.hasCommunication()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCommunication()) tgt.addCommunication(convertCodeableConcept(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent convertPractitionerQualificationComponent(org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent();
-    copyElement(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasIssuer())
-      tgt.setIssuer(convertReference(src.getIssuer()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent convertPractitionerQualificationComponent(org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent();
+        copyElement(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasIssuer())
+            tgt.setIssuer(convertReference(src.getIssuer()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent convertPractitionerQualificationComponent(org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent();
-    copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasCode())
-      tgt.setCode(convertCodeableConcept(src.getCode()));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    if (src.hasIssuer())
-      tgt.setIssuer(convertReference(src.getIssuer()));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent convertPractitionerQualificationComponent(org.hl7.fhir.r5.model.Practitioner.PractitionerQualificationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent();
+        copyElement(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasCode())
+            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasIssuer())
+            tgt.setIssuer(convertReference(src.getIssuer()));
+        return tgt;
+    }
 }

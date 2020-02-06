@@ -60,7 +60,7 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = new VersionConvertor_10_50(this).convertResource(r2);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, this);
     Bundle b;
     if (r5 instanceof Bundle)
       b = (Bundle) r5;

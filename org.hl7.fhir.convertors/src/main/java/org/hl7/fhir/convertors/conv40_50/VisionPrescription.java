@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,223 +50,252 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class VisionPrescription extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.VisionPrescription convertVisionPrescription(org.hl7.fhir.r4.model.VisionPrescription src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.VisionPrescription tgt = new org.hl7.fhir.r5.model.VisionPrescription();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertVisionStatus(src.getStatus()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDateWritten())
-      tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
-    if (src.hasPrescriber())
-      tgt.setPrescriber(convertReference(src.getPrescriber()));
-    for (org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent t : src.getLensSpecification())
-      tgt.addLensSpecification(convertVisionPrescriptionLensSpecificationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.VisionPrescription convertVisionPrescription(org.hl7.fhir.r4.model.VisionPrescription src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.VisionPrescription tgt = new org.hl7.fhir.r5.model.VisionPrescription();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertVisionStatus(src.getStatus()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasDateWritten())
+            tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
+        if (src.hasPrescriber())
+            tgt.setPrescriber(convertReference(src.getPrescriber()));
+        if (src.hasLensSpecification()) {
+            for (org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent t : src.getLensSpecification()) tgt.addLensSpecification(convertVisionPrescriptionLensSpecificationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription convertVisionPrescription(org.hl7.fhir.r5.model.VisionPrescription src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.VisionPrescription tgt = new org.hl7.fhir.r4.model.VisionPrescription();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertVisionStatus(src.getStatus()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasPatient())
-      tgt.setPatient(convertReference(src.getPatient()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    if (src.hasDateWritten())
-      tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
-    if (src.hasPrescriber())
-      tgt.setPrescriber(convertReference(src.getPrescriber()));
-    for (org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent t : src.getLensSpecification())
-      tgt.addLensSpecification(convertVisionPrescriptionLensSpecificationComponent(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.VisionPrescription convertVisionPrescription(org.hl7.fhir.r5.model.VisionPrescription src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.VisionPrescription tgt = new org.hl7.fhir.r4.model.VisionPrescription();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertVisionStatus(src.getStatus()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasPatient())
+            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasDateWritten())
+            tgt.setDateWrittenElement(convertDateTime(src.getDateWrittenElement()));
+        if (src.hasPrescriber())
+            tgt.setPrescriber(convertReference(src.getPrescriber()));
+        if (src.hasLensSpecification()) {
+            for (org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent t : src.getLensSpecification()) tgt.addLensSpecification(convertVisionPrescriptionLensSpecificationComponent(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertVisionStatus(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertVisionStatus(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription.VisionStatus convertVisionStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.VisionPrescription.VisionStatus convertVisionStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent convertVisionPrescriptionLensSpecificationComponent(org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
-    copyElement(src, tgt);
-    if (src.hasProduct())
-      tgt.setProduct(convertCodeableConcept(src.getProduct()));
-    if (src.hasEye())
-      tgt.setEye(convertVisionEyes(src.getEye()));
-    if (src.hasSphere())
-      tgt.setSphereElement(convertDecimal(src.getSphereElement()));
-    if (src.hasCylinder())
-      tgt.setCylinderElement(convertDecimal(src.getCylinderElement()));
-    if (src.hasAxis())
-      tgt.setAxisElement(convertInteger(src.getAxisElement()));
-    for (org.hl7.fhir.r4.model.VisionPrescription.PrismComponent t : src.getPrism())
-      tgt.addPrism(convertPrismComponent(t));
-    if (src.hasAdd())
-      tgt.setAddElement(convertDecimal(src.getAddElement()));
-    if (src.hasPower())
-      tgt.setPowerElement(convertDecimal(src.getPowerElement()));
-    if (src.hasBackCurve())
-      tgt.setBackCurveElement(convertDecimal(src.getBackCurveElement()));
-    if (src.hasDiameter())
-      tgt.setDiameterElement(convertDecimal(src.getDiameterElement()));
-    if (src.hasDuration())
-      tgt.setDuration(convertSimpleQuantity(src.getDuration()));
-    if (src.hasColor())
-      tgt.setColorElement(convertString(src.getColorElement()));
-    if (src.hasBrand())
-      tgt.setBrandElement(convertString(src.getBrandElement()));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent convertVisionPrescriptionLensSpecificationComponent(org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
+        copyElement(src, tgt);
+        if (src.hasProduct())
+            tgt.setProduct(convertCodeableConcept(src.getProduct()));
+        if (src.hasEye())
+            tgt.setEye(convertVisionEyes(src.getEye()));
+        if (src.hasSphere())
+            tgt.setSphereElement(convertDecimal(src.getSphereElement()));
+        if (src.hasCylinder())
+            tgt.setCylinderElement(convertDecimal(src.getCylinderElement()));
+        if (src.hasAxis())
+            tgt.setAxisElement(convertInteger(src.getAxisElement()));
+        if (src.hasPrism()) {
+            for (org.hl7.fhir.r4.model.VisionPrescription.PrismComponent t : src.getPrism()) tgt.addPrism(convertPrismComponent(t));
+        }
+        if (src.hasAdd())
+            tgt.setAddElement(convertDecimal(src.getAddElement()));
+        if (src.hasPower())
+            tgt.setPowerElement(convertDecimal(src.getPowerElement()));
+        if (src.hasBackCurve())
+            tgt.setBackCurveElement(convertDecimal(src.getBackCurveElement()));
+        if (src.hasDiameter())
+            tgt.setDiameterElement(convertDecimal(src.getDiameterElement()));
+        if (src.hasDuration())
+            tgt.setDuration(convertSimpleQuantity(src.getDuration()));
+        if (src.hasColor())
+            tgt.setColorElement(convertString(src.getColorElement()));
+        if (src.hasBrand())
+            tgt.setBrandElement(convertString(src.getBrandElement()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent convertVisionPrescriptionLensSpecificationComponent(org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
-    copyElement(src, tgt);
-    if (src.hasProduct())
-      tgt.setProduct(convertCodeableConcept(src.getProduct()));
-    if (src.hasEye())
-      tgt.setEye(convertVisionEyes(src.getEye()));
-    if (src.hasSphere())
-      tgt.setSphereElement(convertDecimal(src.getSphereElement()));
-    if (src.hasCylinder())
-      tgt.setCylinderElement(convertDecimal(src.getCylinderElement()));
-    if (src.hasAxis())
-      tgt.setAxisElement(convertInteger(src.getAxisElement()));
-    for (org.hl7.fhir.r5.model.VisionPrescription.PrismComponent t : src.getPrism())
-      tgt.addPrism(convertPrismComponent(t));
-    if (src.hasAdd())
-      tgt.setAddElement(convertDecimal(src.getAddElement()));
-    if (src.hasPower())
-      tgt.setPowerElement(convertDecimal(src.getPowerElement()));
-    if (src.hasBackCurve())
-      tgt.setBackCurveElement(convertDecimal(src.getBackCurveElement()));
-    if (src.hasDiameter())
-      tgt.setDiameterElement(convertDecimal(src.getDiameterElement()));
-    if (src.hasDuration())
-      tgt.setDuration(convertSimpleQuantity(src.getDuration()));
-    if (src.hasColor())
-      tgt.setColorElement(convertString(src.getColorElement()));
-    if (src.hasBrand())
-      tgt.setBrandElement(convertString(src.getBrandElement()));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent convertVisionPrescriptionLensSpecificationComponent(org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
+        copyElement(src, tgt);
+        if (src.hasProduct())
+            tgt.setProduct(convertCodeableConcept(src.getProduct()));
+        if (src.hasEye())
+            tgt.setEye(convertVisionEyes(src.getEye()));
+        if (src.hasSphere())
+            tgt.setSphereElement(convertDecimal(src.getSphereElement()));
+        if (src.hasCylinder())
+            tgt.setCylinderElement(convertDecimal(src.getCylinderElement()));
+        if (src.hasAxis())
+            tgt.setAxisElement(convertInteger(src.getAxisElement()));
+        if (src.hasPrism()) {
+            for (org.hl7.fhir.r5.model.VisionPrescription.PrismComponent t : src.getPrism()) tgt.addPrism(convertPrismComponent(t));
+        }
+        if (src.hasAdd())
+            tgt.setAddElement(convertDecimal(src.getAddElement()));
+        if (src.hasPower())
+            tgt.setPowerElement(convertDecimal(src.getPowerElement()));
+        if (src.hasBackCurve())
+            tgt.setBackCurveElement(convertDecimal(src.getBackCurveElement()));
+        if (src.hasDiameter())
+            tgt.setDiameterElement(convertDecimal(src.getDiameterElement()));
+        if (src.hasDuration())
+            tgt.setDuration(convertSimpleQuantity(src.getDuration()));
+        if (src.hasColor())
+            tgt.setColorElement(convertString(src.getColorElement()));
+        if (src.hasBrand())
+            tgt.setBrandElement(convertString(src.getBrandElement()));
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case RIGHT: return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.RIGHT;
-    case LEFT: return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.LEFT;
-    default: return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case RIGHT:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.RIGHT;
+            case LEFT:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.LEFT;
+            default:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case RIGHT: return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.RIGHT;
-    case LEFT: return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.LEFT;
-    default: return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case RIGHT:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.RIGHT;
+            case LEFT:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.LEFT;
+            default:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.VisionPrescription.PrismComponent convertPrismComponent(org.hl7.fhir.r4.model.VisionPrescription.PrismComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.PrismComponent();
-    copyElement(src, tgt);
-    if (src.hasAmount())
-      tgt.setAmountElement(convertDecimal(src.getAmountElement()));
-    if (src.hasBase())
-      tgt.setBase(convertVisionBase(src.getBase()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.VisionPrescription.PrismComponent convertPrismComponent(org.hl7.fhir.r4.model.VisionPrescription.PrismComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.PrismComponent();
+        copyElement(src, tgt);
+        if (src.hasAmount())
+            tgt.setAmountElement(convertDecimal(src.getAmountElement()));
+        if (src.hasBase())
+            tgt.setBase(convertVisionBase(src.getBase()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription.PrismComponent convertPrismComponent(org.hl7.fhir.r5.model.VisionPrescription.PrismComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.PrismComponent();
-    copyElement(src, tgt);
-    if (src.hasAmount())
-      tgt.setAmountElement(convertDecimal(src.getAmountElement()));
-    if (src.hasBase())
-      tgt.setBase(convertVisionBase(src.getBase()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.VisionPrescription.PrismComponent convertPrismComponent(org.hl7.fhir.r5.model.VisionPrescription.PrismComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.PrismComponent();
+        copyElement(src, tgt);
+        if (src.hasAmount())
+            tgt.setAmountElement(convertDecimal(src.getAmountElement()));
+        if (src.hasBase())
+            tgt.setBase(convertVisionBase(src.getBase()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r4.model.VisionPrescription.VisionBase src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case UP: return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.UP;
-    case DOWN: return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.DOWN;
-    case IN: return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.IN;
-    case OUT: return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.OUT;
-    default: return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r4.model.VisionPrescription.VisionBase src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case UP:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.UP;
+            case DOWN:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.DOWN;
+            case IN:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.IN;
+            case OUT:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.OUT;
+            default:
+                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r5.model.VisionPrescription.VisionBase src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case UP: return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.UP;
-    case DOWN: return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.DOWN;
-    case IN: return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.IN;
-    case OUT: return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.OUT;
-    default: return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r5.model.VisionPrescription.VisionBase src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case UP:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.UP;
+            case DOWN:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.DOWN;
+            case IN:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.IN;
+            case OUT:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.OUT;
+            default:
+                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.NULL;
+        }
+    }
 }

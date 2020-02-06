@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,341 +50,406 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class MedicationRequest extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.r4.model.MedicationRequest src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationRequest tgt = new org.hl7.fhir.r5.model.MedicationRequest();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertMedicationRequestStatus(src.getStatus()));
-    if (src.hasStatusReason())
-      tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-    if (src.hasIntent())
-      tgt.setIntent(convertMedicationRequestIntent(src.getIntent()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasPriority())
-      tgt.setPriority(convertMedicationRequestPriority(src.getPriority()));
-    if (src.hasDoNotPerform())
-      tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasReportedBooleanType())
-      tgt.setReportedElement(convertBoolean(src.getReportedBooleanType()));
-    if (src.hasReportedReference())
-      tgt.setInformationSource(convertReference(src.getReportedReference()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    if (src.hasAuthoredOn())
-      tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
-    if (src.hasRequester())
-      tgt.setRequester(convertReference(src.getRequester()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
-    if (src.hasPerformerType())
-      tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
-    if (src.hasRecorder())
-      tgt.setRecorder(convertReference(src.getRecorder()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-      tgt.addReason().setConcept(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
-      tgt.addReason().setReference(convertReference(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(convertCanonical(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(convertUri(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    if (src.hasGroupIdentifier())
-      tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
-    if (src.hasCourseOfTherapyType())
-      tgt.setCourseOfTherapyType(convertCodeableConcept(src.getCourseOfTherapyType()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getInsurance())
-      tgt.addInsurance(convertReference(t));
-    for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.Dosage t : src.getDosageInstruction())
-      tgt.addDosageInstruction(convertDosage(t));
-    if (src.hasDispenseRequest())
-      tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
-    if (src.hasSubstitution())
-      tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
-    if (src.hasPriorPrescription())
-      tgt.setPriorPrescription(convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
-      tgt.addEventHistory(convertReference(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.r5.model.MedicationRequest src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationRequest tgt = new org.hl7.fhir.r4.model.MedicationRequest();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertMedicationRequestStatus(src.getStatus()));
-    if (src.hasStatusReason())
-      tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-    if (src.hasIntent())
-      tgt.setIntent(convertMedicationRequestIntent(src.getIntent()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
-      tgt.addCategory(convertCodeableConcept(t));
-    if (src.hasPriority())
-      tgt.setPriority(convertMedicationRequestPriority(src.getPriority()));
-    if (src.hasDoNotPerform())
-      tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
-    if (src.hasReported())
-      tgt.setReported(convertBoolean(src.getReportedElement()));
-    if (src.hasInformationSource())
-      tgt.setReported(convertReference(src.getInformationSource()));
-    if (src.hasMedication())
-      tgt.setMedication(convertType(src.getMedication()));
-    if (src.hasSubject())
-      tgt.setSubject(convertReference(src.getSubject()));
-    if (src.hasEncounter())
-      tgt.setEncounter(convertReference(src.getEncounter()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
-      tgt.addSupportingInformation(convertReference(t));
-    if (src.hasAuthoredOn())
-      tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
-    if (src.hasRequester())
-      tgt.setRequester(convertReference(src.getRequester()));
-    if (src.hasPerformer())
-      tgt.setPerformer(convertReference(src.getPerformer()));
-    if (src.hasPerformerType())
-      tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
-    if (src.hasRecorder())
-      tgt.setRecorder(convertReference(src.getRecorder()));
-    for (org.hl7.fhir.r5.model.CodeableReference t : src.getReason()) {
-      if (t.hasConcept())
-        tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
-      if (t.hasReference())
-        tgt.addReasonReference(convertReference(t.getReference()));
+    public static org.hl7.fhir.r5.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.r4.model.MedicationRequest src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationRequest tgt = new org.hl7.fhir.r5.model.MedicationRequest();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertMedicationRequestStatus(src.getStatus()));
+        if (src.hasStatusReason())
+            tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
+        if (src.hasIntent())
+            tgt.setIntent(convertMedicationRequestIntent(src.getIntent()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasPriority())
+            tgt.setPriority(convertMedicationRequestPriority(src.getPriority()));
+        if (src.hasDoNotPerform())
+            tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
+        if (src.hasReportedBooleanType())
+            tgt.setReportedElement(convertBoolean(src.getReportedBooleanType()));
+        if (src.hasReportedReference())
+            tgt.setInformationSource(convertReference(src.getReportedReference()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        if (src.hasAuthoredOn())
+            tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
+        if (src.hasRequester())
+            tgt.setRequester(convertReference(src.getRequester()));
+        if (src.hasPerformer())
+            tgt.setPerformer(convertReference(src.getPerformer()));
+        if (src.hasPerformerType())
+            tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
+        if (src.hasRecorder())
+            tgt.setRecorder(convertReference(src.getRecorder()));
+        if (src.hasReasonCode()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason().setConcept(convertCodeableConcept(t));
+        }
+        if (src.hasReasonReference()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason().setReference(convertReference(t));
+        }
+        if (src.hasInstantiatesCanonical()) {
+            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        }
+        if (src.hasInstantiatesUri()) {
+            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasGroupIdentifier())
+            tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
+        if (src.hasCourseOfTherapyType())
+            tgt.setCourseOfTherapyType(convertCodeableConcept(src.getCourseOfTherapyType()));
+        if (src.hasInsurance()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosageInstruction()) {
+            for (org.hl7.fhir.r4.model.Dosage t : src.getDosageInstruction()) tgt.addDosageInstruction(convertDosage(t));
+        }
+        if (src.hasDispenseRequest())
+            tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
+        if (src.hasSubstitution())
+            tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
+        if (src.hasPriorPrescription())
+            tgt.setPriorPrescription(convertReference(src.getPriorPrescription()));
+        if (src.hasDetectedIssue()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue()) tgt.addDetectedIssue(convertReference(t));
+        }
+        if (src.hasEventHistory()) {
+            for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory()) tgt.addEventHistory(convertReference(t));
+        }
+        return tgt;
     }
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(convertCanonical(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(convertUri(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
-      tgt.addBasedOn(convertReference(t));
-    if (src.hasGroupIdentifier())
-      tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
-    if (src.hasCourseOfTherapyType())
-      tgt.setCourseOfTherapyType(convertCodeableConcept(src.getCourseOfTherapyType()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getInsurance())
-      tgt.addInsurance(convertReference(t));
-    for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-      tgt.addNote(convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Dosage t : src.getDosageInstruction())
-      tgt.addDosageInstruction(convertDosage(t));
-    if (src.hasDispenseRequest())
-      tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
-    if (src.hasSubstitution())
-      tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
-    if (src.hasPriorPrescription())
-      tgt.setPriorPrescription(convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
-      tgt.addEventHistory(convertReference(t));
-    return tgt;
-  }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus convertMedicationRequestStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ONHOLD;
-    case CANCELLED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.CANCELLED;
-    case COMPLETED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR;
-    case STOPPED: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.STOPPED;
-    case DRAFT: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.DRAFT;
-    case UNKNOWN: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.MedicationRequest convertMedicationRequest(org.hl7.fhir.r5.model.MedicationRequest src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationRequest tgt = new org.hl7.fhir.r4.model.MedicationRequest();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertMedicationRequestStatus(src.getStatus()));
+        if (src.hasStatusReason())
+            tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
+        if (src.hasIntent())
+            tgt.setIntent(convertMedicationRequestIntent(src.getIntent()));
+        if (src.hasCategory()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
+        }
+        if (src.hasPriority())
+            tgt.setPriority(convertMedicationRequestPriority(src.getPriority()));
+        if (src.hasDoNotPerform())
+            tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
+        if (src.hasReported())
+            tgt.setReported(convertBoolean(src.getReportedElement()));
+        if (src.hasInformationSource())
+            tgt.setReported(convertReference(src.getInformationSource()));
+        if (src.hasMedication())
+            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasSubject())
+            tgt.setSubject(convertReference(src.getSubject()));
+        if (src.hasEncounter())
+            tgt.setEncounter(convertReference(src.getEncounter()));
+        if (src.hasSupportingInformation()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
+        }
+        if (src.hasAuthoredOn())
+            tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
+        if (src.hasRequester())
+            tgt.setRequester(convertReference(src.getRequester()));
+        if (src.hasPerformer())
+            tgt.setPerformer(convertReference(src.getPerformer()));
+        if (src.hasPerformerType())
+            tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
+        if (src.hasRecorder())
+            tgt.setRecorder(convertReference(src.getRecorder()));
+        for (org.hl7.fhir.r5.model.CodeableReference t : src.getReason()) {
+            if (t.hasConcept())
+                tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
+            if (t.hasReference())
+                tgt.addReasonReference(convertReference(t.getReference()));
+        }
+        if (src.hasInstantiatesCanonical()) {
+            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        }
+        if (src.hasInstantiatesUri()) {
+            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        }
+        if (src.hasBasedOn()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        }
+        if (src.hasGroupIdentifier())
+            tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
+        if (src.hasCourseOfTherapyType())
+            tgt.setCourseOfTherapyType(convertCodeableConcept(src.getCourseOfTherapyType()));
+        if (src.hasInsurance()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
+        }
+        if (src.hasNote()) {
+            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        }
+        if (src.hasDosageInstruction()) {
+            for (org.hl7.fhir.r5.model.Dosage t : src.getDosageInstruction()) tgt.addDosageInstruction(convertDosage(t));
+        }
+        if (src.hasDispenseRequest())
+            tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
+        if (src.hasSubstitution())
+            tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
+        if (src.hasPriorPrescription())
+            tgt.setPriorPrescription(convertReference(src.getPriorPrescription()));
+        if (src.hasDetectedIssue()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue()) tgt.addDetectedIssue(convertReference(t));
+        }
+        if (src.hasEventHistory()) {
+            for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory()) tgt.addEventHistory(convertReference(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus convertMedicationRequestStatus(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ACTIVE;
-    case ONHOLD: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ONHOLD;
-    case CANCELLED: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.CANCELLED;
-    case COMPLETED: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.COMPLETED;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ENTEREDINERROR;
-    case STOPPED: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.STOPPED;
-    case DRAFT: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.DRAFT;
-    case UNKNOWN: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.UNKNOWN;
-    default: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus convertMedicationRequestStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ACTIVE;
+            case ONHOLD:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ONHOLD;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.CANCELLED;
+            case COMPLETED:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR;
+            case STOPPED:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.STOPPED;
+            case DRAFT:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.DRAFT;
+            case UNKNOWN:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent convertMedicationRequestIntent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PLAN;
-    case ORDER: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.OPTION;
-    default: return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus convertMedicationRequestStatus(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ACTIVE;
+            case ONHOLD:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ONHOLD;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.CANCELLED;
+            case COMPLETED:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.COMPLETED;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.ENTEREDINERROR;
+            case STOPPED:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.STOPPED;
+            case DRAFT:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.DRAFT;
+            case UNKNOWN:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.UNKNOWN;
+            default:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent convertMedicationRequestIntent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case PROPOSAL: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.PROPOSAL;
-    case PLAN: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.PLAN;
-    case ORDER: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORDER;
-    case ORIGINALORDER: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER;
-    case REFLEXORDER: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER;
-    case FILLERORDER: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.FILLERORDER;
-    case INSTANCEORDER: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER;
-    case OPTION: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.OPTION;
-    default: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent convertMedicationRequestIntent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PROPOSAL:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PROPOSAL;
+            case PLAN:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PLAN;
+            case ORDER:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORDER;
+            case ORIGINALORDER:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER;
+            case REFLEXORDER:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER;
+            case FILLERORDER:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.FILLERORDER;
+            case INSTANCEORDER:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER;
+            case OPTION:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.OPTION;
+            default:
+                return org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertMedicationRequestPriority(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ROUTINE: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
-    default: return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
-  }
-}
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent convertMedicationRequestIntent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case PROPOSAL:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.PROPOSAL;
+            case PLAN:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.PLAN;
+            case ORDER:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORDER;
+            case ORIGINALORDER:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER;
+            case REFLEXORDER:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER;
+            case FILLERORDER:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.FILLERORDER;
+            case INSTANCEORDER:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER;
+            case OPTION:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.OPTION;
+            default:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority convertMedicationRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ROUTINE: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.ROUTINE;
-    case URGENT: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.URGENT;
-    case ASAP: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.ASAP;
-    case STAT: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.STAT;
-    default: return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertMedicationRequestPriority(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ROUTINE:
+                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+            case URGENT:
+                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+            case ASAP:
+                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+            case STAT:
+                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent convertMedicationRequestDispenseRequestComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    copyElement(src, tgt);
-    if (src.hasInitialFill())
-      tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
-    if (src.hasDispenseInterval())
-      tgt.setDispenseInterval(convertDuration(src.getDispenseInterval()));
-    if (src.hasValidityPeriod())
-      tgt.setValidityPeriod(convertPeriod(src.getValidityPeriod()));
-    if (src.hasNumberOfRepeatsAllowed())
-      tgt.setNumberOfRepeatsAllowedElement(convertUnsignedInt(src.getNumberOfRepeatsAllowedElement()));
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasExpectedSupplyDuration())
-      tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
-    if (src.hasPerformer())
-      tgt.setDispenser(convertReference(src.getPerformer()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority convertMedicationRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ROUTINE:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.ROUTINE;
+            case URGENT:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.URGENT;
+            case ASAP:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.ASAP;
+            case STAT:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.STAT;
+            default:
+                return org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestPriority.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent convertMedicationRequestDispenseRequestComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    copyElement(src, tgt);
-    if (src.hasInitialFill())
-      tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
-    if (src.hasDispenseInterval())
-      tgt.setDispenseInterval(convertDuration(src.getDispenseInterval()));
-    if (src.hasValidityPeriod())
-      tgt.setValidityPeriod(convertPeriod(src.getValidityPeriod()));
-    if (src.hasNumberOfRepeatsAllowed())
-      tgt.setNumberOfRepeatsAllowedElement(convertUnsignedInt(src.getNumberOfRepeatsAllowedElement()));
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasExpectedSupplyDuration())
-      tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
-    if (src.hasDispenser())
-      tgt.setPerformer(convertReference(src.getDispenser()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent convertMedicationRequestDispenseRequestComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
+        copyElement(src, tgt);
+        if (src.hasInitialFill())
+            tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
+        if (src.hasDispenseInterval())
+            tgt.setDispenseInterval(convertDuration(src.getDispenseInterval()));
+        if (src.hasValidityPeriod())
+            tgt.setValidityPeriod(convertPeriod(src.getValidityPeriod()));
+        if (src.hasNumberOfRepeatsAllowed())
+            tgt.setNumberOfRepeatsAllowedElement(convertUnsignedInt(src.getNumberOfRepeatsAllowedElement()));
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasExpectedSupplyDuration())
+            tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
+        if (src.hasPerformer())
+            tgt.setDispenser(convertReference(src.getPerformer()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent convertMedicationRequestDispenseRequestInitialFillComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent();
-    copyElement(src, tgt);
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasDuration())
-      tgt.setDuration(convertDuration(src.getDuration()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent convertMedicationRequestDispenseRequestComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
+        copyElement(src, tgt);
+        if (src.hasInitialFill())
+            tgt.setInitialFill(convertMedicationRequestDispenseRequestInitialFillComponent(src.getInitialFill()));
+        if (src.hasDispenseInterval())
+            tgt.setDispenseInterval(convertDuration(src.getDispenseInterval()));
+        if (src.hasValidityPeriod())
+            tgt.setValidityPeriod(convertPeriod(src.getValidityPeriod()));
+        if (src.hasNumberOfRepeatsAllowed())
+            tgt.setNumberOfRepeatsAllowedElement(convertUnsignedInt(src.getNumberOfRepeatsAllowedElement()));
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasExpectedSupplyDuration())
+            tgt.setExpectedSupplyDuration(convertDuration(src.getExpectedSupplyDuration()));
+        if (src.hasDispenser())
+            tgt.setPerformer(convertReference(src.getDispenser()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent convertMedicationRequestDispenseRequestInitialFillComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent();
-    copyElement(src, tgt);
-    if (src.hasQuantity())
-      tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-    if (src.hasDuration())
-      tgt.setDuration(convertDuration(src.getDuration()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent convertMedicationRequestDispenseRequestInitialFillComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent();
+        copyElement(src, tgt);
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasDuration())
+            tgt.setDuration(convertDuration(src.getDuration()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent convertMedicationRequestSubstitutionComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    copyElement(src, tgt);
-    if (src.hasAllowed())
-      tgt.setAllowed(convertType(src.getAllowed()));
-    if (src.hasReason())
-      tgt.setReason(convertCodeableConcept(src.getReason()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent convertMedicationRequestDispenseRequestInitialFillComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestInitialFillComponent();
+        copyElement(src, tgt);
+        if (src.hasQuantity())
+            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
+        if (src.hasDuration())
+            tgt.setDuration(convertDuration(src.getDuration()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent convertMedicationRequestSubstitutionComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    copyElement(src, tgt);
-    if (src.hasAllowed())
-      tgt.setAllowed(convertType(src.getAllowed()));
-    if (src.hasReason())
-      tgt.setReason(convertCodeableConcept(src.getReason()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent convertMedicationRequestSubstitutionComponent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent();
+        copyElement(src, tgt);
+        if (src.hasAllowed())
+            tgt.setAllowed(convertType(src.getAllowed()));
+        if (src.hasReason())
+            tgt.setReason(convertCodeableConcept(src.getReason()));
+        return tgt;
+    }
 
-
+    public static org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent convertMedicationRequestSubstitutionComponent(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent();
+        copyElement(src, tgt);
+        if (src.hasAllowed())
+            tgt.setAllowed(convertType(src.getAllowed()));
+        if (src.hasReason())
+            tgt.setReason(convertCodeableConcept(src.getReason()));
+        return tgt;
+    }
 }

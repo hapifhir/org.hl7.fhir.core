@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,83 +50,92 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class AppointmentResponse extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r4.model.AppointmentResponse src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasAppointment())
-      tgt.setAppointment(convertReference(src.getAppointment()));
-    if (src.hasStart())
-      tgt.setStartElement(convertInstant(src.getStartElement()));
-    if (src.hasEnd())
-      tgt.setEndElement(convertInstant(src.getEndElement()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType())
-      tgt.addParticipantType(convertCodeableConcept(t));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    if (src.hasParticipantStatus())
-      tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-    if (src.hasComment())
-      tgt.setCommentElement(convertString(src.getCommentElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r4.model.AppointmentResponse src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasAppointment())
+            tgt.setAppointment(convertReference(src.getAppointment()));
+        if (src.hasStart())
+            tgt.setStartElement(convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(convertInstant(src.getEndElement()));
+        if (src.hasParticipantType()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(convertCodeableConcept(t));
+        }
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        if (src.hasParticipantStatus())
+            tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
+        if (src.hasComment())
+            tgt.setCommentElement(convertString(src.getCommentElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r5.model.AppointmentResponse src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasAppointment())
-      tgt.setAppointment(convertReference(src.getAppointment()));
-    if (src.hasStart())
-      tgt.setStartElement(convertInstant(src.getStartElement()));
-    if (src.hasEnd())
-      tgt.setEndElement(convertInstant(src.getEndElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType())
-      tgt.addParticipantType(convertCodeableConcept(t));
-    if (src.hasActor())
-      tgt.setActor(convertReference(src.getActor()));
-    if (src.hasParticipantStatus())
-      tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-    if (src.hasComment())
-      tgt.setCommentElement(convertString(src.getCommentElement()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r5.model.AppointmentResponse src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasAppointment())
+            tgt.setAppointment(convertReference(src.getAppointment()));
+        if (src.hasStart())
+            tgt.setStartElement(convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(convertInstant(src.getEndElement()));
+        if (src.hasParticipantType()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(convertCodeableConcept(t));
+        }
+        if (src.hasActor())
+            tgt.setActor(convertReference(src.getActor()));
+        if (src.hasParticipantStatus())
+            tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
+        if (src.hasComment())
+            tgt.setCommentElement(convertString(src.getCommentElement()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.ParticipationStatus convertParticipantStatus(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACCEPTED: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED;
-    case DECLINED: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.DECLINED;
-    case TENTATIVE: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.TENTATIVE;
-    case NEEDSACTION: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NEEDSACTION;
-    default: return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.ParticipationStatus convertParticipantStatus(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACCEPTED:
+                return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED;
+            case DECLINED:
+                return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.DECLINED;
+            case TENTATIVE:
+                return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.TENTATIVE;
+            case NEEDSACTION:
+                return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NEEDSACTION;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus convertParticipantStatus(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACCEPTED: return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.ACCEPTED;
-    case DECLINED: return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.DECLINED;
-    case TENTATIVE: return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.TENTATIVE;
-    case NEEDSACTION: return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NEEDSACTION;
-    default: return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus convertParticipantStatus(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACCEPTED:
+                return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.ACCEPTED;
+            case DECLINED:
+                return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.DECLINED;
+            case TENTATIVE:
+                return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.TENTATIVE;
+            case NEEDSACTION:
+                return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NEEDSACTION;
+            default:
+                return org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NULL;
+        }
+    }
 }

@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,139 +50,156 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class EventDefinition extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.EventDefinition convertEventDefinition(org.hl7.fhir.r4.model.EventDefinition src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.EventDefinition tgt = new org.hl7.fhir.r5.model.EventDefinition();
-    copyDomainResource(src, tgt);
-    if (src.hasUrl())
-      tgt.setUrlElement(convertUri(src.getUrlElement()));
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasVersion())
-      tgt.setVersionElement(convertString(src.getVersionElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasTitle())
-      tgt.setTitleElement(convertString(src.getTitleElement()));
-    if (src.hasSubtitle())
-      tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
-    if (src.hasStatus())
-      tgt.setStatus(Enumerations.convertPublicationStatus(src.getStatus()));
-    if (src.hasExperimental())
-      tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(convertType(src.getSubject()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasPublisher())
-      tgt.setPublisherElement(convertString(src.getPublisherElement()));
-    for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
-      tgt.addContact(convertContactDetail(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-    for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext())
-      tgt.addUseContext(convertUsageContext(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction())
-      tgt.addJurisdiction(convertCodeableConcept(t));
-    if (src.hasPurpose())
-      tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
-    if (src.hasUsage())
-      tgt.setUsageElement(convertString(src.getUsageElement()));
-    if (src.hasCopyright())
-      tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
-    if (src.hasApprovalDate())
-      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
-    if (src.hasLastReviewDate())
-      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
-    if (src.hasEffectivePeriod())
-      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTopic())
-      tgt.addTopic(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.ContactDetail t : src.getAuthor())
-      tgt.addAuthor(convertContactDetail(t));
-    for (org.hl7.fhir.r4.model.ContactDetail t : src.getEditor())
-      tgt.addEditor(convertContactDetail(t));
-    for (org.hl7.fhir.r4.model.ContactDetail t : src.getReviewer())
-      tgt.addReviewer(convertContactDetail(t));
-    for (org.hl7.fhir.r4.model.ContactDetail t : src.getEndorser())
-      tgt.addEndorser(convertContactDetail(t));
-    for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getRelatedArtifact())
-      tgt.addRelatedArtifact(convertRelatedArtifact(t));
-    for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger())
-      tgt.addTrigger(convertTriggerDefinition(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.EventDefinition convertEventDefinition(org.hl7.fhir.r4.model.EventDefinition src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.EventDefinition tgt = new org.hl7.fhir.r5.model.EventDefinition();
+        copyDomainResource(src, tgt);
+        if (src.hasUrl())
+            tgt.setUrlElement(convertUri(src.getUrlElement()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasVersion())
+            tgt.setVersionElement(convertString(src.getVersionElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasTitle())
+            tgt.setTitleElement(convertString(src.getTitleElement()));
+        if (src.hasSubtitle())
+            tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
+        if (src.hasStatus())
+            tgt.setStatus(Enumerations.convertPublicationStatus(src.getStatus()));
+        if (src.hasExperimental())
+            tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
+        if (src.hasSubject())
+            tgt.setSubject(convertType(src.getSubject()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasPublisher())
+            tgt.setPublisherElement(convertString(src.getPublisherElement()));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
+        }
+        if (src.hasPurpose())
+            tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
+        if (src.hasUsage())
+            tgt.setUsageElement(convertString(src.getUsageElement()));
+        if (src.hasCopyright())
+            tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
+        if (src.hasApprovalDate())
+            tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
+        if (src.hasLastReviewDate())
+            tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
+        if (src.hasEffectivePeriod())
+            tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+        if (src.hasTopic()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTopic()) tgt.addTopic(convertCodeableConcept(t));
+        }
+        if (src.hasAuthor()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getAuthor()) tgt.addAuthor(convertContactDetail(t));
+        }
+        if (src.hasEditor()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getEditor()) tgt.addEditor(convertContactDetail(t));
+        }
+        if (src.hasReviewer()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getReviewer()) tgt.addReviewer(convertContactDetail(t));
+        }
+        if (src.hasEndorser()) {
+            for (org.hl7.fhir.r4.model.ContactDetail t : src.getEndorser()) tgt.addEndorser(convertContactDetail(t));
+        }
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(convertRelatedArtifact(t));
+        }
+        if (src.hasTrigger()) {
+            for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger()) tgt.addTrigger(convertTriggerDefinition(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.EventDefinition convertEventDefinition(org.hl7.fhir.r5.model.EventDefinition src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.EventDefinition tgt = new org.hl7.fhir.r4.model.EventDefinition();
-    copyDomainResource(src, tgt);
-    if (src.hasUrl())
-      tgt.setUrlElement(convertUri(src.getUrlElement()));
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasVersion())
-      tgt.setVersionElement(convertString(src.getVersionElement()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasTitle())
-      tgt.setTitleElement(convertString(src.getTitleElement()));
-    if (src.hasSubtitle())
-      tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
-    if (src.hasStatus())
-      tgt.setStatus(Enumerations.convertPublicationStatus(src.getStatus()));
-    if (src.hasExperimental())
-      tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
-    if (src.hasSubject())
-      tgt.setSubject(convertType(src.getSubject()));
-    if (src.hasDate())
-      tgt.setDateElement(convertDateTime(src.getDateElement()));
-    if (src.hasPublisher())
-      tgt.setPublisherElement(convertString(src.getPublisherElement()));
-    for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact())
-      tgt.addContact(convertContactDetail(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-    for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext())
-      tgt.addUseContext(convertUsageContext(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction())
-      tgt.addJurisdiction(convertCodeableConcept(t));
-    if (src.hasPurpose())
-      tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
-    if (src.hasUsage())
-      tgt.setUsageElement(convertString(src.getUsageElement()));
-    if (src.hasCopyright())
-      tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
-    if (src.hasApprovalDate())
-      tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
-    if (src.hasLastReviewDate())
-      tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
-    if (src.hasEffectivePeriod())
-      tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTopic())
-      tgt.addTopic(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.ContactDetail t : src.getAuthor())
-      tgt.addAuthor(convertContactDetail(t));
-    for (org.hl7.fhir.r5.model.ContactDetail t : src.getEditor())
-      tgt.addEditor(convertContactDetail(t));
-    for (org.hl7.fhir.r5.model.ContactDetail t : src.getReviewer())
-      tgt.addReviewer(convertContactDetail(t));
-    for (org.hl7.fhir.r5.model.ContactDetail t : src.getEndorser())
-      tgt.addEndorser(convertContactDetail(t));
-    for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact())
-      tgt.addRelatedArtifact(convertRelatedArtifact(t));
-    for (org.hl7.fhir.r5.model.TriggerDefinition t : src.getTrigger())
-      tgt.addTrigger(convertTriggerDefinition(t));
-    return tgt;
-  }
-
-
+    public static org.hl7.fhir.r4.model.EventDefinition convertEventDefinition(org.hl7.fhir.r5.model.EventDefinition src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.EventDefinition tgt = new org.hl7.fhir.r4.model.EventDefinition();
+        copyDomainResource(src, tgt);
+        if (src.hasUrl())
+            tgt.setUrlElement(convertUri(src.getUrlElement()));
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasVersion())
+            tgt.setVersionElement(convertString(src.getVersionElement()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasTitle())
+            tgt.setTitleElement(convertString(src.getTitleElement()));
+        if (src.hasSubtitle())
+            tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
+        if (src.hasStatus())
+            tgt.setStatus(Enumerations.convertPublicationStatus(src.getStatus()));
+        if (src.hasExperimental())
+            tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
+        if (src.hasSubject())
+            tgt.setSubject(convertType(src.getSubject()));
+        if (src.hasDate())
+            tgt.setDateElement(convertDateTime(src.getDateElement()));
+        if (src.hasPublisher())
+            tgt.setPublisherElement(convertString(src.getPublisherElement()));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
+        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
+        if (src.hasUseContext()) {
+            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        }
+        if (src.hasJurisdiction()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
+        }
+        if (src.hasPurpose())
+            tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
+        if (src.hasUsage())
+            tgt.setUsageElement(convertString(src.getUsageElement()));
+        if (src.hasCopyright())
+            tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
+        if (src.hasApprovalDate())
+            tgt.setApprovalDateElement(convertDate(src.getApprovalDateElement()));
+        if (src.hasLastReviewDate())
+            tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
+        if (src.hasEffectivePeriod())
+            tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
+        if (src.hasTopic()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTopic()) tgt.addTopic(convertCodeableConcept(t));
+        }
+        if (src.hasAuthor()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getAuthor()) tgt.addAuthor(convertContactDetail(t));
+        }
+        if (src.hasEditor()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getEditor()) tgt.addEditor(convertContactDetail(t));
+        }
+        if (src.hasReviewer()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getReviewer()) tgt.addReviewer(convertContactDetail(t));
+        }
+        if (src.hasEndorser()) {
+            for (org.hl7.fhir.r5.model.ContactDetail t : src.getEndorser()) tgt.addEndorser(convertContactDetail(t));
+        }
+        if (src.hasRelatedArtifact()) {
+            for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(convertRelatedArtifact(t));
+        }
+        if (src.hasTrigger()) {
+            for (org.hl7.fhir.r5.model.TriggerDefinition t : src.getTrigger()) tgt.addTrigger(convertTriggerDefinition(t));
+        }
+        return tgt;
+    }
 }

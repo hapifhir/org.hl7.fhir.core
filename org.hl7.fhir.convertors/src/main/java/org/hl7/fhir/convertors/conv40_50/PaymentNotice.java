@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,99 +50,106 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class PaymentNotice extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r4.model.PaymentNotice src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
-    if (src.hasRequest())
-      tgt.setRequest(convertReference(src.getRequest()));
-    if (src.hasResponse())
-      tgt.setResponse(convertReference(src.getResponse()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasProvider())
-      tgt.setProvider(convertReference(src.getProvider()));
-    if (src.hasPayment())
-      tgt.setPayment(convertReference(src.getPayment()));
-    if (src.hasPaymentDate())
-      tgt.setPaymentDateElement(convertDate(src.getPaymentDateElement()));
-    if (src.hasPayee())
-      tgt.setPayee(convertReference(src.getPayee()));
-    if (src.hasRecipient())
-      tgt.setRecipient(convertReference(src.getRecipient()));
-    if (src.hasAmount())
-      tgt.setAmount(convertMoney(src.getAmount()));
-    if (src.hasPaymentStatus())
-      tgt.setPaymentStatus(convertCodeableConcept(src.getPaymentStatus()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r4.model.PaymentNotice src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
+        if (src.hasRequest())
+            tgt.setRequest(convertReference(src.getRequest()));
+        if (src.hasResponse())
+            tgt.setResponse(convertReference(src.getResponse()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasProvider())
+            tgt.setProvider(convertReference(src.getProvider()));
+        if (src.hasPayment())
+            tgt.setPayment(convertReference(src.getPayment()));
+        if (src.hasPaymentDate())
+            tgt.setPaymentDateElement(convertDate(src.getPaymentDateElement()));
+        if (src.hasPayee())
+            tgt.setPayee(convertReference(src.getPayee()));
+        if (src.hasRecipient())
+            tgt.setRecipient(convertReference(src.getRecipient()));
+        if (src.hasAmount())
+            tgt.setAmount(convertMoney(src.getAmount()));
+        if (src.hasPaymentStatus())
+            tgt.setPaymentStatus(convertCodeableConcept(src.getPaymentStatus()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r5.model.PaymentNotice src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
-    if (src.hasRequest())
-      tgt.setRequest(convertReference(src.getRequest()));
-    if (src.hasResponse())
-      tgt.setResponse(convertReference(src.getResponse()));
-    if (src.hasCreated())
-      tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-    if (src.hasProvider())
-      tgt.setProvider(convertReference(src.getProvider()));
-    if (src.hasPayment())
-      tgt.setPayment(convertReference(src.getPayment()));
-    if (src.hasPaymentDate())
-      tgt.setPaymentDateElement(convertDate(src.getPaymentDateElement()));
-    if (src.hasPayee())
-      tgt.setPayee(convertReference(src.getPayee()));
-    if (src.hasRecipient())
-      tgt.setRecipient(convertReference(src.getRecipient()));
-    if (src.hasAmount())
-      tgt.setAmount(convertMoney(src.getAmount()));
-    if (src.hasPaymentStatus())
-      tgt.setPaymentStatus(convertCodeableConcept(src.getPaymentStatus()));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r5.model.PaymentNotice src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
+        if (src.hasRequest())
+            tgt.setRequest(convertReference(src.getRequest()));
+        if (src.hasResponse())
+            tgt.setResponse(convertReference(src.getResponse()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
+        if (src.hasProvider())
+            tgt.setProvider(convertReference(src.getProvider()));
+        if (src.hasPayment())
+            tgt.setPayment(convertReference(src.getPayment()));
+        if (src.hasPaymentDate())
+            tgt.setPaymentDateElement(convertDate(src.getPaymentDateElement()));
+        if (src.hasPayee())
+            tgt.setPayee(convertReference(src.getPayee()));
+        if (src.hasRecipient())
+            tgt.setRecipient(convertReference(src.getRecipient()));
+        if (src.hasAmount())
+            tgt.setAmount(convertMoney(src.getAmount()));
+        if (src.hasPaymentStatus())
+            tgt.setPaymentStatus(convertCodeableConcept(src.getPaymentStatus()));
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertPaymentNoticeStatus(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
-    default: return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertPaymentNoticeStatus(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus convertPaymentNoticeStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE;
-    case CANCELLED: return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.CANCELLED;
-    case DRAFT: return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.DRAFT;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR;
-    default: return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus convertPaymentNoticeStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE;
+            case CANCELLED:
+                return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.CANCELLED;
+            case DRAFT:
+                return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.DRAFT;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR;
+            default:
+                return org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.NULL;
+        }
+    }
 }

@@ -19,12 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-
-
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,99 +50,118 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-
-
 public class Endpoint extends VersionConvertor_40_50 {
 
-  public static org.hl7.fhir.r5.model.Endpoint convertEndpoint(org.hl7.fhir.r4.model.Endpoint src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Endpoint tgt = new org.hl7.fhir.r5.model.Endpoint();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertEndpointStatus(src.getStatus()));
-    if (src.hasConnectionType())
-      tgt.setConnectionType(convertCoding(src.getConnectionType()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasManagingOrganization())
-      tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact())
-      tgt.addContact(convertContactPoint(t));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(convertCodeableConcept(t));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getPayloadMimeType())
-      tgt.getPayloadMimeType().add(convertCode(t));
-    if (src.hasAddress())
-      tgt.setAddressElement(convertUrl(src.getAddressElement()));
-    for (org.hl7.fhir.r4.model.StringType t : src.getHeader())
-      tgt.getHeader().add(convertString(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r5.model.Endpoint convertEndpoint(org.hl7.fhir.r4.model.Endpoint src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Endpoint tgt = new org.hl7.fhir.r5.model.Endpoint();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertEndpointStatus(src.getStatus()));
+        if (src.hasConnectionType())
+            tgt.setConnectionType(convertCoding(src.getConnectionType()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasManagingOrganization())
+            tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
+        }
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasPayloadType()) {
+            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(convertCodeableConcept(t));
+        }
+        if (src.hasPayloadMimeType()) {
+            for (org.hl7.fhir.r4.model.CodeType t : src.getPayloadMimeType()) tgt.getPayloadMimeType().add(convertCode(t));
+        }
+        if (src.hasAddress())
+            tgt.setAddressElement(convertUrl(src.getAddressElement()));
+        if (src.hasHeader()) {
+            for (org.hl7.fhir.r4.model.StringType t : src.getHeader()) tgt.getHeader().add(convertString(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r4.model.Endpoint convertEndpoint(org.hl7.fhir.r5.model.Endpoint src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Endpoint tgt = new org.hl7.fhir.r4.model.Endpoint();
-    copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(convertIdentifier(t));
-    if (src.hasStatus())
-      tgt.setStatus(convertEndpointStatus(src.getStatus()));
-    if (src.hasConnectionType())
-      tgt.setConnectionType(convertCoding(src.getConnectionType()));
-    if (src.hasName())
-      tgt.setNameElement(convertString(src.getNameElement()));
-    if (src.hasManagingOrganization())
-      tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact())
-      tgt.addContact(convertContactPoint(t));
-    if (src.hasPeriod())
-      tgt.setPeriod(convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType())
-      tgt.addPayloadType(convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType())
-      tgt.getPayloadMimeType().add(convertCode(t));
-    if (src.hasAddress())
-      tgt.setAddressElement(convertUrl(src.getAddressElement()));
-    for (org.hl7.fhir.r5.model.StringType t : src.getHeader())
-      tgt.getHeader().add(convertString(t));
-    return tgt;
-  }
+    public static org.hl7.fhir.r4.model.Endpoint convertEndpoint(org.hl7.fhir.r5.model.Endpoint src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r4.model.Endpoint tgt = new org.hl7.fhir.r4.model.Endpoint();
+        copyDomainResource(src, tgt);
+        if (src.hasIdentifier()) {
+            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        }
+        if (src.hasStatus())
+            tgt.setStatus(convertEndpointStatus(src.getStatus()));
+        if (src.hasConnectionType())
+            tgt.setConnectionType(convertCoding(src.getConnectionType()));
+        if (src.hasName())
+            tgt.setNameElement(convertString(src.getNameElement()));
+        if (src.hasManagingOrganization())
+            tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
+        if (src.hasContact()) {
+            for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
+        }
+        if (src.hasPeriod())
+            tgt.setPeriod(convertPeriod(src.getPeriod()));
+        if (src.hasPayloadType()) {
+            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(convertCodeableConcept(t));
+        }
+        if (src.hasPayloadMimeType()) {
+            for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType()) tgt.getPayloadMimeType().add(convertCode(t));
+        }
+        if (src.hasAddress())
+            tgt.setAddressElement(convertUrl(src.getAddressElement()));
+        if (src.hasHeader()) {
+            for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.getHeader().add(convertString(t));
+        }
+        return tgt;
+    }
 
-  public static org.hl7.fhir.r5.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.r4.model.Endpoint.EndpointStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ACTIVE;
-    case SUSPENDED: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.SUSPENDED;
-    case ERROR: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ERROR;
-    case OFF: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.OFF;
-    case ENTEREDINERROR: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ENTEREDINERROR;
-    case TEST: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.TEST;
-    default: return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.NULL;
-  }
-}
+    public static org.hl7.fhir.r5.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.r4.model.Endpoint.EndpointStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ACTIVE;
+            case SUSPENDED:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.SUSPENDED;
+            case ERROR:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ERROR;
+            case OFF:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.OFF;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ENTEREDINERROR;
+            case TEST:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.TEST;
+            default:
+                return org.hl7.fhir.r5.model.Endpoint.EndpointStatus.NULL;
+        }
+    }
 
-  public static org.hl7.fhir.r4.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.r5.model.Endpoint.EndpointStatus src) throws FHIRException {
-    if (src == null)
-      return null;
-    switch (src) {
-    case ACTIVE: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ACTIVE;
-    case SUSPENDED: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.SUSPENDED;
-    case ERROR: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ERROR;
-    case OFF: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.OFF;
-    case ENTEREDINERROR: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ENTEREDINERROR;
-    case TEST: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.TEST;
-    default: return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.NULL;
-  }
-}
-
-
+    public static org.hl7.fhir.r4.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.r5.model.Endpoint.EndpointStatus src) throws FHIRException {
+        if (src == null)
+            return null;
+        switch(src) {
+            case ACTIVE:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ACTIVE;
+            case SUSPENDED:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.SUSPENDED;
+            case ERROR:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ERROR;
+            case OFF:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.OFF;
+            case ENTEREDINERROR:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ENTEREDINERROR;
+            case TEST:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.TEST;
+            default:
+                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.NULL;
+        }
+    }
 }

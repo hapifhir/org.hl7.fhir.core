@@ -756,5 +756,23 @@ public class NpmPackage {
     Collections.sort(res);
     return res ;
   }
+
+  public void clearFolder(String folderName) {
+    NpmPackageFolder folder = folders.get(folderName);
+    folder.content.clear();
+    folder.types.clear();    
+  }
+
+  public void deleteFolder(String folderName) {
+    folders.remove(folderName);
+  }
+
+  public void addFile(String folderName, String name, byte[] cnt, String type) {
+    NpmPackageFolder folder = folders.get(folderName);
+    folder.content.put(name, cnt);
+    if (!folder.types.containsKey(type))
+      folder.types.put(type, new ArrayList<>());
+    folder.types.get(type).add(name);
+  }
 }
 

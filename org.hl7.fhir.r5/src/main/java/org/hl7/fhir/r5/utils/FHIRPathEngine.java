@@ -232,7 +232,7 @@ public class FHIRPathEngine {
      * @return
      * @throws FHIRException 
      */
-    public Base resolveReference(Object appContext, String url) throws FHIRException;
+    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException;
     
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
     
@@ -1887,7 +1887,7 @@ public class FHIRPathEngine {
 	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
 	    for (Base l : left) {
-	      if (l.fhirType().equals("code")) {
+	      if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
           if (worker.validateCode(terminologyServiceOptions , TypeConvertor.castToCoding(l), vs).isOk())
             ans = true;
 	      } else if (l.fhirType().equals("Coding")) {
@@ -1896,6 +1896,8 @@ public class FHIRPathEngine {
 	      } else if (l.fhirType().equals("CodeableConcept")) {
 	        if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk())
 	          ans = true;
+	      } else {
+//	        System.out.println("unknown type in opMemberOf: "+l.fhirType());
 	      }
 	    }
 	  }
@@ -2870,13 +2872,14 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     Base l = focus.get(0);
-    if (l.fhirType().equals("code")) {
+    if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("Coding")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk());
     } else if (l.fhirType().equals("CodeableConcept")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
     } else {
+//      System.out.println("unknown type in funcMemberOf: "+l.fhirType());
       return new ArrayList<Base>();
     }
   }
@@ -3312,9 +3315,11 @@ public class FHIRPathEngine {
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    Base refContext = null;
     for (Base item : focus) {
       String s = convertToString(item);
       if (item.fhirType().equals("Reference")) {
+        refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues())
           s = convertToString(p.getValues().get(0));
@@ -3323,6 +3328,7 @@ public class FHIRPathEngine {
       }
       if (item.fhirType().equals("canonical")) {
         s = item.primitiveValue();
+        refContext = item;
       }
       if (s != null) {
         Base res = null;
@@ -3335,7 +3341,7 @@ public class FHIRPathEngine {
             }
           }
         } else if (hostServices != null) {
-          res = hostServices.resolveReference(context.appInfo, s);
+          res = hostServices.resolveReference(context.appInfo, s, refContext);
         }
         if (res != null)
           result.add(res);

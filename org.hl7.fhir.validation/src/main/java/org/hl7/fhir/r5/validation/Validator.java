@@ -217,6 +217,8 @@ public class Validator {
       System.out.println("     referenced implementation guides or profiles as errors.  (Default is to only raise information messages.)");
       System.out.println("-hintAboutNonMustSupport: If present, raise hints if the instance contains data elements that are not");
       System.out.println("     marked as mustSupport=true.  Useful to identify elements included that may be ignored by recipients");
+      System.out.println("-assumeValidRestReferences: If present, assume that URLs that reference resources follow the RESTful URI pattern");
+      System.out.println("     and it is safe to infer the type from the URL");      
       System.out.println("");
       System.out.println("The validator also supports the param -proxy=[address]:[port] for if you use a proxy");
       System.out.println("");
@@ -414,6 +416,7 @@ public class Validator {
       String fhirpath = null;
       String snomedCT = "900000000000207008";
       boolean doDebug = false;
+      boolean assumeValidRestReferences = false;
 
       // load the parameters - so order doesn't matter
       for (int i = 0; i < args.length; i++) {
@@ -447,6 +450,8 @@ public class Validator {
             questionnaires.add(args[++i]);
         } else if (args[i].equals("-native")) {
           doNative = true;          
+        } else if (args[i].equals("-assumeValidRestReferences")) {
+          assumeValidRestReferences = true;          
         } else if (args[i].equals("-debug")) {
           doDebug = true;
         } else if (args[i].equals("-sct")) {
@@ -577,6 +582,7 @@ public class Validator {
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
       validator.setLanguage(lang);
       validator.setSnomedExtension(snomedCT);
+      validator.setAssumeValidRestReferences(assumeValidRestReferences);
 
       IParser x;
       if (output != null && output.endsWith(".json"))

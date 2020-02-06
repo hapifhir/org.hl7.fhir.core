@@ -77,7 +77,7 @@ public class FHIRPathTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) throws FHIRException {
+    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference), when item is element");
     }
 
