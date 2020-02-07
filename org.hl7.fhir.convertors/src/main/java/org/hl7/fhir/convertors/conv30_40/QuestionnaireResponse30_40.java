@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class QuestionnaireResponse30_40 {
 
@@ -102,12 +103,12 @@ public class QuestionnaireResponse30_40 {
             return null;
         org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkId(src.getLinkId());
-        if (src.hasDefinition())
-            tgt.setDefinition(src.getDefinition());
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasLinkIdElement())
+            tgt.setLinkIdElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getLinkIdElement()));
+        if (src.hasDefinitionElement())
+            tgt.setDefinitionElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getDefinitionElement()));
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getTextElement()));
         if (src.hasAnswer()) {
             for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         }
@@ -122,12 +123,12 @@ public class QuestionnaireResponse30_40 {
             return null;
         org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkId(src.getLinkId());
-        if (src.hasDefinition())
-            tgt.setDefinition(src.getDefinition());
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasLinkIdElement())
+            tgt.setLinkIdElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getLinkIdElement()));
+        if (src.hasDefinitionElement())
+            tgt.setDefinitionElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getDefinitionElement()));
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getTextElement()));
         if (src.hasAnswer()) {
             for (org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         }

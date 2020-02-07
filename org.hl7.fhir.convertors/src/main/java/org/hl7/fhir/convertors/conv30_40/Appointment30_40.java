@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Appointment30_40 {
 
@@ -31,26 +32,26 @@ public class Appointment30_40 {
         if (src.hasIndication()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getIndication()) tgt.addReasonReference(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasPriority())
-            tgt.setPriority(src.getPriority());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasPriorityElement())
+            tgt.setPriorityElement((org.hl7.fhir.r4.model.UnsignedIntType) VersionConvertor_30_40.convertType(src.getPriorityElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasStart())
             tgt.setStartElement(VersionConvertor_30_40.convertInstant(src.getStartElement()));
-        if (src.hasEnd())
-            tgt.setEnd(src.getEnd());
-        if (src.hasMinutesDuration())
-            tgt.setMinutesDuration(src.getMinutesDuration());
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_30_40.convertType(src.getEndElement()));
+        if (src.hasMinutesDurationElement())
+            tgt.setMinutesDurationElement((org.hl7.fhir.r4.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getMinutesDurationElement()));
         if (src.hasSlot()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasCreated())
             tgt.setCreatedElement(VersionConvertor_30_40.convertDateTime(src.getCreatedElement()));
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         if (src.hasIncomingReferral()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getIncomingReferral()) tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
         }
@@ -89,26 +90,26 @@ public class Appointment30_40 {
         if (src.hasReasonReference()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addIndication(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasPriority())
-            tgt.setPriority(src.getPriority());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasPriorityElement())
+            tgt.setPriorityElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_30_40.convertType(src.getPriorityElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasStart())
             tgt.setStartElement(VersionConvertor_30_40.convertInstant(src.getStartElement()));
-        if (src.hasEnd())
-            tgt.setEnd(src.getEnd());
-        if (src.hasMinutesDuration())
-            tgt.setMinutesDuration(src.getMinutesDuration());
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_40.convertType(src.getEndElement()));
+        if (src.hasMinutesDurationElement())
+            tgt.setMinutesDurationElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getMinutesDurationElement()));
         if (src.hasSlot()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasCreated())
             tgt.setCreatedElement(VersionConvertor_30_40.convertDateTime(src.getCreatedElement()));
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         if (src.hasBasedOn()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addIncomingReferral(VersionConvertor_30_40.convertReference(t));
         }

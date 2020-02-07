@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Observation30_40 {
 
@@ -177,8 +178,8 @@ public class Observation30_40 {
         }
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_40.convertRange(src.getAge()));
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getTextElement()));
         return tgt;
     }
 
@@ -198,8 +199,8 @@ public class Observation30_40 {
         }
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_40.convertRange(src.getAge()));
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getTextElement()));
         return tgt;
     }
 

@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import java.util.Collections;
 
 public class Media30_40 {
 
@@ -55,18 +56,14 @@ public class Media30_40 {
         if (src.hasDevice()) {
             tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
         }
-        if (src.hasHeight()) {
-            tgt.setHeight(src.getHeight());
-        }
-        if (src.hasWidth()) {
-            tgt.setWidth(src.getWidth());
-        }
-        if (src.hasFrames()) {
-            tgt.setFrames(src.getFrames());
-        }
-        if (src.hasDuration()) {
-            tgt.setDuration(src.getDuration().intValue());
-        }
+        if (src.hasHeightElement())
+            tgt.setHeightElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getHeightElement()));
+        if (src.hasWidthElement())
+            tgt.setWidthElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getWidthElement()));
+        if (src.hasFramesElement())
+            tgt.setFramesElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getFramesElement()));
+        if (src.hasDurationElement())
+            tgt.setDurationElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_30_40.convertType(src.getDurationElement()));
         if (src.hasContent()) {
             tgt.setContent(VersionConvertor_30_40.convertAttachment(src.getContent()));
         }
@@ -97,72 +94,42 @@ public class Media30_40 {
             tgt.setType(codeableConcept);
         }
         if (src.hasSubtype()) {
-            if (src.hasSubtype()) {
-                tgt.setModality(VersionConvertor_30_40.convertCodeableConcept(src.getSubtype()));
-            }
+            tgt.setModality(VersionConvertor_30_40.convertCodeableConcept(src.getSubtype()));
         }
         if (src.hasView()) {
-            if (src.hasView()) {
-                tgt.setView(VersionConvertor_30_40.convertCodeableConcept(src.getView()));
-            }
+            tgt.setView(VersionConvertor_30_40.convertCodeableConcept(src.getView()));
         }
         if (src.hasSubject()) {
-            if (src.hasSubject()) {
-                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
-            }
+            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         }
         if (src.hasContext()) {
-            if (src.hasContext()) {
-                tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
-            }
+            tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
         }
         if (src.hasOccurrence()) {
-            if (src.hasOccurrence()) {
-                tgt.setCreated(VersionConvertor_30_40.convertType(src.getOccurrence()));
-            }
+            tgt.setCreated(VersionConvertor_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasOperator()) {
-            if (src.hasOperator()) {
-                tgt.setOperator(VersionConvertor_30_40.convertReference(src.getOperator()));
-            }
+            tgt.setOperator(VersionConvertor_30_40.convertReference(src.getOperator()));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
             tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
         }
         if (src.hasBodySite()) {
-            if (src.hasBodySite()) {
-                tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
-            }
+            tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
         }
         if (src.hasDevice()) {
-            if (src.hasDevice()) {
-                tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
-            }
+            tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
         }
-        if (src.hasHeight()) {
-            if (src.hasHeight()) {
-                tgt.setHeight(src.getHeight());
-            }
-        }
-        if (src.hasWidth()) {
-            if (src.hasWidth()) {
-                tgt.setWidth(src.getWidth());
-            }
-        }
-        if (src.hasFrames()) {
-            if (src.hasFrames()) {
-                tgt.setFrames(src.getFrames());
-            }
-        }
-        if (src.hasDuration()) {
-            if (src.hasDuration()) {
-                tgt.setDuration(src.getDuration());
-            }
-        }
+        if (src.hasHeightElement())
+            tgt.setHeightElement((org.hl7.fhir.r4.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getHeightElement()));
+        if (src.hasWidthElement())
+            tgt.setWidthElement((org.hl7.fhir.r4.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getWidthElement()));
+        if (src.hasFramesElement())
+            tgt.setFramesElement((org.hl7.fhir.r4.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getFramesElement()));
+        if (src.hasDurationElement())
+            tgt.setDurationElement((org.hl7.fhir.r4.model.DecimalType) VersionConvertor_30_40.convertType(src.getDurationElement()));
         if (src.hasContent()) {
-            if (src.hasContent()) {
-                tgt.setContent(VersionConvertor_30_40.convertAttachment(src.getContent()));
-            }
+            tgt.setContent(VersionConvertor_30_40.convertAttachment(src.getContent()));
         }
         for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) {
             tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));

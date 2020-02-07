@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class CareTeam30_40 {
 
@@ -18,8 +19,8 @@ public class CareTeam30_40 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         }
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -57,8 +58,8 @@ public class CareTeam30_40 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         }
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         if (src.hasContext())
