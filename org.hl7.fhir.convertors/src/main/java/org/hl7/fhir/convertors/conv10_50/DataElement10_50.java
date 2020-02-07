@@ -2,10 +2,16 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.UriType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class DataElement10_50 {
 
@@ -19,21 +25,21 @@ public class DataElement10_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         }
-        if (src.hasVersion()) {
-            tgt.setVersion(src.getVersion());
+        if (src.hasVersionElement()) {
+            tgt.setVersionElement((StringType) VersionConvertor_10_50.convertType(src.getVersionElement()));
         }
         if (src.hasStatus()) {
             tgt.setStatus(VersionConvertor_10_50.convertConformanceResourceStatus(src.getStatus()));
         }
-        if (src.hasExperimental())
-            tgt.setExperimental(src.getExperimental());
-        if (src.hasPublisher()) {
-            tgt.setPublisher(src.getPublisher());
+        if (src.hasExperimentalElement())
+            tgt.setExperimentalElement((BooleanType) VersionConvertor_10_50.convertType(src.getExperimentalElement()));
+        if (src.hasPublisherElement()) {
+            tgt.setPublisherElement((StringType) VersionConvertor_10_50.convertType(src.getPublisherElement()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasName()) {
-            tgt.setName(src.getName());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
+        if (src.hasNameElement()) {
+            tgt.setNameElement((StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
         }
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent t : src.getContact()) tgt.addContact(convertDataElementContactComponent(t));
@@ -69,8 +75,8 @@ public class DataElement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent tgt = new org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
+        if (src.hasNameElement()) {
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
         }
         if (src.hasTelecom()) {
             for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
@@ -83,8 +89,8 @@ public class DataElement10_50 {
             return null;
         org.hl7.fhir.r5.model.ContactDetail tgt = new org.hl7.fhir.r5.model.ContactDetail();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
+        if (src.hasNameElement()) {
+            tgt.setNameElement((StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
         }
         if (src.hasTelecom()) {
             for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
@@ -100,14 +106,14 @@ public class DataElement10_50 {
         if (src.hasIdentity()) {
             tgt.setIdentity(src.getIdentity());
         }
-        if (src.hasUri()) {
-            tgt.setUri(src.getUri());
+        if (src.hasUriElement()) {
+            tgt.setUriElement((UriType) VersionConvertor_10_50.convertType(src.getUriElement()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
+        if (src.hasNameElement()) {
+            tgt.setNameElement((StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
         }
-        if (src.hasComments()) {
-            tgt.setComment(src.getComments());
+        if (src.hasCommentsElement()) {
+            tgt.setCommentElement((StringType) VersionConvertor_10_50.convertType(src.getCommentsElement()));
         }
         return tgt;
     }

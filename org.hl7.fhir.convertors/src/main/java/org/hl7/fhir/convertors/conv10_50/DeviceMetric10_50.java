@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DeviceMetric10_50 {
 
@@ -92,9 +93,8 @@ public class DeviceMetric10_50 {
         if (src.hasState()) {
             tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
         }
-        if (src.hasTime()) {
-            tgt.setTime(src.getTime());
-        }
+        if (src.hasTimeElement())
+            tgt.setTimeElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_10_50.convertType(src.getTimeElement()));
         return tgt;
     }
 
@@ -109,9 +109,8 @@ public class DeviceMetric10_50 {
         if (src.hasState()) {
             tgt.setState(convertDeviceMetricCalibrationState(src.getState()));
         }
-        if (src.hasTime()) {
-            tgt.setTime(src.getTime());
-        }
+        if (src.hasTimeElement())
+            tgt.setTimeElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_50.convertType(src.getTimeElement()));
         return tgt;
     }
 

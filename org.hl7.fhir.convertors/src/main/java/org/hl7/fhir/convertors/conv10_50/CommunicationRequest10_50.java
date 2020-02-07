@@ -1,8 +1,10 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.dstu2.model.DateTimeType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class CommunicationRequest10_50 {
 
@@ -43,8 +45,8 @@ public class CommunicationRequest10_50 {
         }
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReason(VersionConvertor_10_50.convertCodeableConcept(t.getConcept()));
-        if (src.hasAuthoredOn()) {
-            tgt.setRequestedOn(src.getAuthoredOn());
+        if (src.hasAuthoredOnElement()) {
+            tgt.setRequestedOnElement((DateTimeType) VersionConvertor_10_50.convertType(src.getAuthoredOnElement()));
         }
         if (src.hasSubject()) {
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getSubject()));
@@ -93,8 +95,8 @@ public class CommunicationRequest10_50 {
         if (src.hasReason()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_50.convertCodeableConceptToCodableReference(t));
         }
-        if (src.hasRequestedOn()) {
-            tgt.setAuthoredOn(src.getRequestedOn());
+        if (src.hasRequestedOnElement()) {
+            tgt.setAuthoredOnElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getRequestedOnElement()));
         }
         if (src.hasSubject()) {
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getSubject()));

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Person10_50 {
 
@@ -56,9 +57,8 @@ public class Person10_50 {
         if (src.hasGender()) {
             tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
         }
-        if (src.hasBirthDate()) {
-            tgt.setBirthDate(src.getBirthDate());
-        }
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_10_50.convertType(src.getBirthDateElement()));
         if (src.hasAddress()) {
             for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
         }
@@ -68,9 +68,8 @@ public class Person10_50 {
         if (src.hasManagingOrganization()) {
             tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
         }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
-        }
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_10_50.convertType(src.getActiveElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu2.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
         }
@@ -94,9 +93,8 @@ public class Person10_50 {
         if (src.hasGender()) {
             tgt.setGender(VersionConvertor_10_50.convertAdministrativeGender(src.getGender()));
         }
-        if (src.hasBirthDate()) {
-            tgt.setBirthDate(src.getBirthDate());
-        }
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.dstu2.model.DateType) VersionConvertor_10_50.convertType(src.getBirthDateElement()));
         if (src.hasAddress()) {
             for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
         }
@@ -106,9 +104,8 @@ public class Person10_50 {
         if (src.hasManagingOrganization()) {
             tgt.setManagingOrganization(VersionConvertor_10_50.convertReference(src.getManagingOrganization()));
         }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
-        }
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_50.convertType(src.getActiveElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.r5.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
         }

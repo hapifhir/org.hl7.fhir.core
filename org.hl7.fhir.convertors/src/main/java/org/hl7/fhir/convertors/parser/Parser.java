@@ -92,22 +92,22 @@ public class Parser {
 
 
 //    VERSION_FILES.forEach(version -> {
-//    String version = "10_40";
-//    List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
-//    System.out.println("Checking the following files:");
-//    Collections.sort(filenames);
-//    filenames.forEach(System.out::println);
-//    filenames.forEach(name -> {
-//      try {
-//        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
-//      } catch (FileNotFoundException e) {
-//        e.printStackTrace();
-//      }
-//    });
+    String version = "10_50";
+    List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
+    System.out.println("Checking the following files:");
+    Collections.sort(filenames);
+    filenames.forEach(System.out::println);
+    filenames.forEach(name -> {
+      try {
+        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", listOfPrimitiveTypes, version);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    });
 //    });
 //
     try {
-    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40/", "DataElement10_40", ".java", listOfPrimitiveTypes, "10_40");
+//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40/", "DataElement10_40", ".java", listOfPrimitiveTypes, "10_40");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "AuditEvent10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Binary10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Bundle10_30", ".java", listOfPrimitiveTypes, "10_30");

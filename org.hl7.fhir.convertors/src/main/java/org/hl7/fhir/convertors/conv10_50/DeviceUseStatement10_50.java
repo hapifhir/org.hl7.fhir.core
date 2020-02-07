@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class DeviceUseStatement10_50 {
 
@@ -26,9 +27,8 @@ public class DeviceUseStatement10_50 {
         if (src.hasNotes()) {
             for (org.hl7.fhir.dstu2.model.StringType t : src.getNotes()) tgt.addNote().setText(t.getValue());
         }
-        if (src.hasRecordedOn()) {
-            tgt.setRecordedOn(src.getRecordedOn());
-        }
+        if (src.hasRecordedOnElement())
+            tgt.setRecordedOnElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getRecordedOnElement()));
         if (src.hasSubject()) {
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getSubject()));
         }
@@ -57,9 +57,8 @@ public class DeviceUseStatement10_50 {
         if (src.hasNote()) {
             for (Annotation t : src.getNote()) tgt.addNotes(t.getText());
         }
-        if (src.hasRecordedOn()) {
-            tgt.setRecordedOn(src.getRecordedOn());
-        }
+        if (src.hasRecordedOnElement())
+            tgt.setRecordedOnElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getRecordedOnElement()));
         if (src.hasSubject()) {
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getSubject()));
         }
