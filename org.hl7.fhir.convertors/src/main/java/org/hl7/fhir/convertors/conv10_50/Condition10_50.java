@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.dstu2.model.DateType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DateTimeType;
+
+import java.util.Collections;
 
 public class Condition10_50 {
 
@@ -22,8 +26,8 @@ public class Condition10_50 {
         if (src.hasAsserter()) {
             tgt.setAsserter(VersionConvertor_10_50.convertReference(src.getAsserter()));
         }
-        if (src.hasRecordedDate())
-            tgt.setDateRecorded(src.getRecordedDate());
+        if (src.hasRecordedDateElement())
+            tgt.setDateRecordedElement((DateType) VersionConvertor_10_50.convertType(src.getRecordedDateElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
         }
@@ -73,8 +77,8 @@ public class Condition10_50 {
         if (src.hasAsserter()) {
             tgt.setAsserter(VersionConvertor_10_50.convertReference(src.getAsserter()));
         }
-        if (src.hasDateRecorded())
-            tgt.setRecordedDate(src.getDateRecorded());
+        if (src.hasDateRecordedElement())
+            tgt.setRecordedDateElement((DateTimeType) VersionConvertor_10_50.convertType(src.getDateRecordedElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
         }

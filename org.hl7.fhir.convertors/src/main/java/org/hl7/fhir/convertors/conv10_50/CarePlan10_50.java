@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class CarePlan10_50 {
 
@@ -34,9 +35,8 @@ public class CarePlan10_50 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_10_50.convertCodeableConcept(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
         if (src.hasAddresses()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReferenceToCodableReference(t));
         }
@@ -77,9 +77,8 @@ public class CarePlan10_50 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_10_50.convertCodeableConcept(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
         for (CodeableReference t : src.getAddresses()) {
             if (t.hasReference()) {
                 tgt.addAddresses(VersionConvertor_10_50.convertReference(t.getReference()));
@@ -169,9 +168,8 @@ public class CarePlan10_50 {
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_50.convertSimpleQuantity(src.getQuantity()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
         return tgt;
     }
 
@@ -214,9 +212,8 @@ public class CarePlan10_50 {
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_50.convertSimpleQuantity(src.getQuantity()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
         return tgt;
     }
 
