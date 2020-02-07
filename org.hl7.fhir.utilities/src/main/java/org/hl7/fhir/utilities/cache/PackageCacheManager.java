@@ -319,6 +319,7 @@ public class PackageCacheManager {
     save = checkIniHasMapping("fhir.base.template", "http://fhir.org/templates/fhir.base.template", ini) || save;
     save = checkIniHasMapping("hl7.base.template", "http://fhir.org/templates/hl7.base.template", ini) || save;
     save = checkIniHasMapping("hl7.fhir.template", "http://fhir.org/templates/hl7.fhir.template", ini) || save;
+    save = checkIniHasMapping("ihe.fhir.template", "http://fhir.org/templates/ihe.fhir.template", ini) || save;
     
     save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
