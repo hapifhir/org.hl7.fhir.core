@@ -92,7 +92,7 @@ public class Parser {
 
 
 //    VERSION_FILES.forEach(version -> {
-    String version = "10_50";
+    String version = "14_30";
     List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
     System.out.println("Checking the following files:");
     Collections.sort(filenames);
@@ -107,7 +107,7 @@ public class Parser {
 //    });
 //
     try {
-//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40/", "DataElement10_40", ".java", listOfPrimitiveTypes, "10_40");
+//    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_30/", "DataElement14_30", ".java", listOfPrimitiveTypes, "14_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "AuditEvent10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Binary10_30", ".java", listOfPrimitiveTypes, "10_30");
 //    modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30/", "Bundle10_30", ".java", listOfPrimitiveTypes, "10_30");
@@ -1700,10 +1700,10 @@ public class Parser {
     String projectDirectory = new File("").getAbsolutePath();
 
     String placeholder = null;
-    if (importStatement.contains("dstu2")) {
-      placeholder = "dstu2";
-    } else if (importStatement.contains("dstu2016may")) {
+    if (importStatement.contains("dstu2016may")) {
       placeholder = "dstu2016may";
+    } else if (importStatement.contains("dstu2")) {
+      placeholder = "dstu2";
     } else if (importStatement.contains("dstu3")) {
       placeholder = "dstu3";
     } else if (importStatement.contains("r4")) {
