@@ -85,8 +85,8 @@ public class DataElement10_30 {
             tgt.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
         else
             tgt.addUseContext(VersionConvertor_10_30.convertCodeableConceptToUsageContext(t));
-        if (src.hasCopyrightElement())
-            tgt.setCopyrightElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_10_30.convertType(src.getCopyrightElement()));
+        if (src.hasCopyright())
+            tgt.setCopyright(src.getCopyright());
         if (src.hasStringency()) {
             tgt.setStringency(convertDataElementStringency(src.getStringency()));
         }
