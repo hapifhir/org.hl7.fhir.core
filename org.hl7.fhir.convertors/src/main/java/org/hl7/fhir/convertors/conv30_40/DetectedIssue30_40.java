@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DetectedIssue30_40 {
 
@@ -27,10 +28,10 @@ public class DetectedIssue30_40 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasDetail())
-            tgt.setDetail(src.getDetail());
-        if (src.hasReference())
-            tgt.setReference(src.getReference());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDetailElement()));
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -59,10 +60,10 @@ public class DetectedIssue30_40 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasDetail())
-            tgt.setDetail(src.getDetail());
-        if (src.hasReference())
-            tgt.setReference(src.getReference());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDetailElement()));
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }

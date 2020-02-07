@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Location30_40 {
 
@@ -17,13 +18,13 @@ public class Location30_40 {
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_40.convertCoding(src.getOperationalStatus()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasAlias()) {
             for (org.hl7.fhir.dstu3.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
         if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
         if (src.hasType())
@@ -59,13 +60,13 @@ public class Location30_40 {
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_40.convertCoding(src.getOperationalStatus()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasAlias()) {
             for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
         if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
         if (src.hasType())
@@ -120,12 +121,12 @@ public class Location30_40 {
             return null;
         org.hl7.fhir.r4.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.r4.model.Location.LocationPositionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLongitude())
-            tgt.setLongitude(src.getLongitude());
-        if (src.hasLatitude())
-            tgt.setLatitude(src.getLatitude());
-        if (src.hasAltitude())
-            tgt.setAltitude(src.getAltitude());
+        if (src.hasLongitudeElement())
+            tgt.setLongitudeElement((org.hl7.fhir.r4.model.DecimalType) VersionConvertor_30_40.convertType(src.getLongitudeElement()));
+        if (src.hasLatitudeElement())
+            tgt.setLatitudeElement((org.hl7.fhir.r4.model.DecimalType) VersionConvertor_30_40.convertType(src.getLatitudeElement()));
+        if (src.hasAltitudeElement())
+            tgt.setAltitudeElement((org.hl7.fhir.r4.model.DecimalType) VersionConvertor_30_40.convertType(src.getAltitudeElement()));
         return tgt;
     }
 
@@ -134,12 +135,12 @@ public class Location30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu3.model.Location.LocationPositionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLongitude())
-            tgt.setLongitude(src.getLongitude());
-        if (src.hasLatitude())
-            tgt.setLatitude(src.getLatitude());
-        if (src.hasAltitude())
-            tgt.setAltitude(src.getAltitude());
+        if (src.hasLongitudeElement())
+            tgt.setLongitudeElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_40.convertType(src.getLongitudeElement()));
+        if (src.hasLatitudeElement())
+            tgt.setLatitudeElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_40.convertType(src.getLatitudeElement()));
+        if (src.hasAltitudeElement())
+            tgt.setAltitudeElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_40.convertType(src.getAltitudeElement()));
         return tgt;
     }
 

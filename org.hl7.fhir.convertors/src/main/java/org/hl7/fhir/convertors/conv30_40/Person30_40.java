@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Person30_40 {
 
@@ -64,8 +65,8 @@ public class Person30_40 {
             tgt.setPhoto(VersionConvertor_30_40.convertAttachment(src.getPhoto()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_40.convertReference(src.getManagingOrganization()));
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu3.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
         }
@@ -97,8 +98,8 @@ public class Person30_40 {
             tgt.setPhoto(VersionConvertor_30_40.convertAttachment(src.getPhoto()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_40.convertReference(src.getManagingOrganization()));
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.r4.model.Person.PersonLinkComponent t : src.getLink()) tgt.addLink(convertPersonLinkComponent(t));
         }

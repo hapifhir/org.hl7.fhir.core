@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Immunization30_40 {
 
@@ -23,18 +24,18 @@ public class Immunization30_40 {
             tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getEncounter()));
         if (src.hasDateElement())
             tgt.setOccurrence(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
-        if (src.hasPrimarySource())
-            tgt.setPrimarySource(src.getPrimarySource());
+        if (src.hasPrimarySourceElement())
+            tgt.setPrimarySourceElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getPrimarySourceElement()));
         if (src.hasReportOrigin())
             tgt.setReportOrigin(VersionConvertor_30_40.convertCodeableConcept(src.getReportOrigin()));
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_40.convertReference(src.getLocation()));
         if (src.hasManufacturer())
             tgt.setManufacturer(VersionConvertor_30_40.convertReference(src.getManufacturer()));
-        if (src.hasLotNumber())
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getLotNumberElement()));
         if (src.hasExpirationDate())
-            tgt.setExpirationDateElement(VersionConvertor_30_40.convertDate(src.getExpirationDateElement()));
+          tgt.setExpirationDateElement(VersionConvertor_30_40.convertDate(src.getExpirationDateElement()));
         if (src.hasSite())
             tgt.setSite(VersionConvertor_30_40.convertCodeableConcept(src.getSite()));
         if (src.hasRoute())
@@ -71,18 +72,18 @@ public class Immunization30_40 {
             tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getEncounter()));
         if (src.hasOccurrenceDateTimeType())
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getOccurrenceDateTimeType()));
-        if (src.hasPrimarySource())
-            tgt.setPrimarySource(src.getPrimarySource());
+        if (src.hasPrimarySourceElement())
+            tgt.setPrimarySourceElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getPrimarySourceElement()));
         if (src.hasReportOrigin())
             tgt.setReportOrigin(VersionConvertor_30_40.convertCodeableConcept(src.getReportOrigin()));
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_40.convertReference(src.getLocation()));
         if (src.hasManufacturer())
             tgt.setManufacturer(VersionConvertor_30_40.convertReference(src.getManufacturer()));
-        if (src.hasLotNumber())
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getLotNumberElement()));
         if (src.hasExpirationDate())
-            tgt.setExpirationDateElement(VersionConvertor_30_40.convertDate(src.getExpirationDateElement()));
+          tgt.setExpirationDateElement(VersionConvertor_30_40.convertDate(src.getExpirationDateElement()));
         if (src.hasSite())
             tgt.setSite(VersionConvertor_30_40.convertCodeableConcept(src.getSite()));
         if (src.hasRoute())
