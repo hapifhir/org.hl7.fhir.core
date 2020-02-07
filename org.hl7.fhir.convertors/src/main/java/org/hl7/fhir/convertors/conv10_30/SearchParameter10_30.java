@@ -79,8 +79,8 @@ public class SearchParameter10_30 {
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu2.model.SearchParameter.SearchParameterContactComponent t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         }
-        if (src.hasRequirementsElement()) {
-            tgt.setPurposeElement((MarkdownType) VersionConvertor_10_30.convertType(src.getRequirementsElement()));
+        if (src.hasRequirements()) {
+            tgt.setPurpose(src.getRequirements());
         }
         if (src.hasCodeElement())
             tgt.setCodeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_10_30.convertType(src.getCodeElement()));
@@ -89,8 +89,8 @@ public class SearchParameter10_30 {
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_30.convertSearchParamType(src.getType()));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
         if (src.hasXpathElement())
             tgt.setXpathElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getXpathElement()));

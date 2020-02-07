@@ -206,8 +206,8 @@ public class ValueSet10_30 {
         }
         if (src.hasDateElement())
             tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_30.isJurisdiction(t))
             tgt.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
         else
@@ -215,11 +215,11 @@ public class ValueSet10_30 {
         if (src.hasImmutableElement()) {
             tgt.setImmutableElement((BooleanType) VersionConvertor_10_30.convertType(src.getImmutableElement()));
         }
-        if (src.hasRequirementsElement()) {
-            tgt.setPurposeElement((MarkdownType) VersionConvertor_10_30.convertType(src.getRequirementsElement()));
+        if (src.hasRequirements()) {
+            tgt.setPurpose(src.getRequirements());
         }
-        if (src.hasCopyrightElement())
-            tgt.setCopyrightElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_10_30.convertType(src.getCopyrightElement()));
+        if (src.hasCopyright())
+            tgt.setCopyright(src.getCopyright());
         if (src.hasExtensible()) {
             tgt.setExtensible(src.getExtensible());
         }
@@ -259,8 +259,8 @@ public class ValueSet10_30 {
             }
             if (src.hasDateElement())
                 tgtcs.setDateElement((DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
-            if (src.hasDescriptionElement()) {
-                tgtcs.setDescriptionElement((MarkdownType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+            if (src.hasDescription()) {
+                tgtcs.setDescription(src.getDescription());
             }
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_30.isJurisdiction(t))
                 tgtcs.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
@@ -269,8 +269,8 @@ public class ValueSet10_30 {
             if (src.hasRequirements()) {
                 tgtcs.setPurpose(src.getRequirements());
             }
-            if (src.hasCopyrightElement()) {
-                tgtcs.setCopyrightElement((MarkdownType) VersionConvertor_10_30.convertType(src.getCopyrightElement()));
+            if (src.hasCopyright()) {
+                tgtcs.setCopyright(src.getCopyright());
             }
             tgtcs.setContent(CodeSystemContentMode.COMPLETE);
             if (src.hasCodeSystem()) {

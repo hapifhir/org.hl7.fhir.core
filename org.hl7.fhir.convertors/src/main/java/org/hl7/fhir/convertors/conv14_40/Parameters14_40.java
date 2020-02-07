@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv14_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_14_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Parameters14_40 {
 
@@ -32,9 +33,8 @@ public class Parameters14_40 {
             return null;
         org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_14_40.convertType(src.getNameElement()));
         if (src.hasValue()) {
             tgt.setValue(VersionConvertor_14_40.convertType(src.getValue()));
         }
@@ -52,9 +52,8 @@ public class Parameters14_40 {
             return null;
         org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent();
         VersionConvertor_14_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_40.convertType(src.getNameElement()));
         if (src.hasValue()) {
             tgt.setValue(VersionConvertor_14_40.convertType(src.getValue()));
         }

@@ -95,10 +95,10 @@ public class OperationDefinition10_30 {
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionContactComponent t : src.getContact()) tgt.addContact(convertOperationDefinitionContactComponent(t));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
-        if (src.hasRequirementsElement()) {
-            tgt.setPurposeElement((MarkdownType) VersionConvertor_10_30.convertType(src.getRequirementsElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
+        if (src.hasRequirements()) {
+            tgt.setPurpose(src.getRequirements());
         }
         if (src.hasIdempotentElement())
             tgt.setIdempotentElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getIdempotentElement()));
