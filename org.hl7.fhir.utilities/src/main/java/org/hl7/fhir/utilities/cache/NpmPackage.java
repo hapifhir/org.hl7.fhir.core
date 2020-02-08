@@ -186,7 +186,8 @@ public class NpmPackage {
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
     res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
-
+    res.path = path;
+    
     File dir = new File(path);
     for (File f : dir.listFiles()) {
       if (!Utilities.existsInList(f.getName(), ".git", ".svn") && !Utilities.existsInList(f.getName(), exemptions)) {
@@ -622,6 +623,37 @@ public class NpmPackage {
     return folders;
   }
 
+  public void save(File directory) throws IOException {
+    File dir = new File(Utilities.path(directory.getAbsolutePath(), name()));
+    if (!dir.exists()) {
+      Utilities.createDirectory(dir.getAbsolutePath());
+    } else {
+      Utilities.clearDirectory(dir.getAbsolutePath());
+    }
+    
+    for (NpmPackageFolder folder : folders.values()) {
+      String n = folder.name;
+
+      File pd = new File(Utilities.path(dir.getAbsolutePath(), n));
+      if (!pd.exists()) {
+        Utilities.createDirectory(pd.getAbsolutePath());
+      }
+      NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+      indexer.start();
+      for (String s : folder.content.keySet()) {
+        byte[] b = folder.content.get(s);
+        indexer.seeFile(s, b);
+        if (!s.equals(".index.json") && !s.equals("package.json")) {
+          TextFile.bytesToFile(b, Utilities.path(dir.getAbsolutePath(), n, s));
+        }
+      }
+      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), n, ".index.json"));
+    }
+    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
+    TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), "package", "package.json"));
+  }
+  
   public void save(OutputStream stream) throws IOException {
     TarArchiveOutputStream tar;
     ByteArrayOutputStream OutputStream;
@@ -773,6 +805,18 @@ public class NpmPackage {
     if (!folder.types.containsKey(type))
       folder.types.put(type, new ArrayList<>());
     folder.types.get(type).add(name);
+  }
+
+  public void loadAllFiles() throws IOException {
+    for (String folder : folders.keySet()) {
+      NpmPackageFolder pf = folders.get(folder);
+      String p = Utilities.path(path, folder);
+      for (File f : new File(p).listFiles()) {
+        if (!f.isDirectory()) {
+          pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+        }
+      }
+    }
   }
 }
 

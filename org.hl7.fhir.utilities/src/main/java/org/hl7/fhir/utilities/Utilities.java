@@ -63,6 +63,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -590,11 +591,15 @@ public class Utilities {
         a = a.substring(File.separator.length());
       
       while (a.startsWith(".."+File.separator)) {
-        String p = s.toString().substring(0, s.length()-1);
-        if (!p.contains(File.separator)) {
-          s = new StringBuilder();
+        if (s.length() == 0) {
+          s = new StringBuilder(Paths.get(".").toAbsolutePath().normalize().toString());
         } else {
-          s = new StringBuilder(p.substring(0,  p.lastIndexOf(File.separator))+File.separator);
+          String p = s.toString().substring(0, s.length()-1);
+          if (!p.contains(File.separator)) {
+            s = new StringBuilder();
+          } else {
+            s = new StringBuilder(p.substring(0,  p.lastIndexOf(File.separator))+File.separator);
+          }
         }
         a = a.substring(3);
       }
@@ -608,6 +613,9 @@ public class Utilities {
   }
 
   private static boolean hasCTempDir() {
+    if (!System.getProperty("os.name").toLowerCase().contains("win")) {
+      return false;
+    }
     File tmp = new File("c:\\temp");
     return tmp.exists() && tmp.isDirectory();
   }
