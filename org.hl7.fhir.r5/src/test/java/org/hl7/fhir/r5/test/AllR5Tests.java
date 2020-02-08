@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ 
+    NpmPackageTests.class,
     SnomedExpressionsTests.class, 
     GraphQLParserTests.class,
     TurtleTests.class,
@@ -21,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BaseDateTimeTypeTest.class,
     OpenApiGeneratorTest.class,
     MetadataResourceManagerTester.class,
-    NpmPackageTests.class,
+    UtilitiesTests.class,
     SnapShotGenerationTests.class})
 
 public class AllR5Tests {

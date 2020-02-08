@@ -268,8 +268,10 @@ public class PackageCacheManager {
 
   private void clearCache() throws IOException {
     for (File f : new File(cacheFolder).listFiles()) {
-      if (f.isDirectory())
+      if (f.isDirectory()) {
+        Utilities.clearDirectory(f.getAbsolutePath());
         FileUtils.deleteDirectory(f);
+      }
       else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
     }    
@@ -552,6 +554,13 @@ public class PackageCacheManager {
    * @throws IOException
    */
   public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (version.startsWith("file:")) {
+      return loadPackageFromFile(id, version.substring(5));
+    }
+
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return p;
@@ -571,6 +580,7 @@ public class PackageCacheManager {
    * Add an already fetched package to the cache
    */
   public NpmPackage addPackageToCache(String id, String version, InputStream tgz, String sourceDesc) throws IOException {
+    checkValidVersionString(version, id);
     if (progress ) {
       System.out.println("Installing "+id+"#"+(version == null ? "?" : version)+" to the package cache");
       System.out.print("  Fetching:");
@@ -648,11 +658,31 @@ public class PackageCacheManager {
     return pck;
   }
 
+  private void checkValidVersionString(String version, String id) {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Cannot add package "+id+" to the package cache - a version must be provided");
+    }
+    if (version.startsWith("file:")) {
+      throw new FHIRException("Cannot add package "+id+" to the package cache - the version '"+version+"' is illegal in this context");
+    }
+    for (char ch : version.toCharArray()) {
+      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-')) {
+        throw new FHIRException("Cannot add package "+id+" to the package cache - the version '"+version+"' is illegal (ch '"+ch+"'");
+      }
+    }
+  }
+
   public NpmPackage loadPackage(String id) throws FHIRException, IOException {
     throw new Error("Not done yet");
   }
   
   public NpmPackage loadPackage(String id, String v) throws FHIRException, IOException {
+    if (Utilities.noString(v)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (v.startsWith("file:")) {
+      return loadPackageFromFile(id, v.substring(5));
+    }
     NpmPackage p = loadPackageFromCacheOnly(id, v);
     if (p != null) {
       if ("current".equals(v)) {
@@ -756,6 +786,16 @@ public class PackageCacheManager {
    * @return
    */
   public boolean hasPackage(String id, String version) {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (version.startsWith("file:")) {
+      try {
+        return loadPackageFromFile(id, version.substring(5)) != null;
+      } catch (IOException e) {
+        return false;
+      }
+    }
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return true;
@@ -771,6 +811,21 @@ public class PackageCacheManager {
       return false;
   }
 
+
+  private NpmPackage loadPackageFromFile(String id, String folder) throws IOException {
+    File f = new File(Utilities.path(folder, id));
+    if (!f.exists()) {
+      throw new FHIRException("Package '"+id+"  not found in folder "+folder);
+    }
+    if (!f.isDirectory()) {
+      throw new FHIRException("File for '"+id+"  found in folder "+folder+", not a folder");
+    }
+    File fp = new File(Utilities.path(folder, id, "package", "package.json"));
+    if (!fp.exists()) {
+      throw new FHIRException("Package '"+id+"  found in folder "+folder+", but does not contain a package.json file in /package");
+    }
+    return NpmPackage.fromFolder(f.getAbsolutePath());
+  }
 
   /**
    * List which versions of a package are available

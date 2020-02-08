@@ -433,7 +433,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         return fetchFromUrl(src+(v == null ? "" : "|"+v), explore);
     }
     
-    File f = new File(src);
+    File f = new File(Utilities.path(src));
     if (f.exists()) {
       if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
         return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));

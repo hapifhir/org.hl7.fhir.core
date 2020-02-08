@@ -23,6 +23,9 @@ IF %ERRORLEVEL% NEQ 0 (
   GOTO DONE
 )
 
+call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\latest-ig-publisher\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
+
+
 copy org.hl7.fhir.validation.cli\target\org.hl7.fhir.validation.cli-%newver%-SNAPSHOT.jar ..\latest-ig-publisher\org.hl7.fhir.validator.jar
 cd ..\latest-ig-publisher
 call git commit -a -m "Release new version %newver%-SNAPSHOT"
@@ -30,7 +33,11 @@ call git push origin master
 cd ..\org.hl7.fhir.core
 
 call python c:\tools\zulip-api\zulip\zulip\send.py --stream committers/notification --subject "java core" -m "New Java Core v%newver%-SNAPSHOT released. New Validator at https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar, and also deployed at https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar" --config-file zuliprc
-call python c:\tools\zulip-api\zulip\zulip\send.py --stream tooling/releases --subject "Validator" -m "New Validator @ https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar (v%newver%)" --config-file zuliprc
+call python c:\tools\zulip-api\zulip\zulip\send.py --stream tooling/releases --subject "Validator" --config-file zuliprc < C:\temp\current-release-notes-validator.md 
+
+del C:\temp\current-release-notes-validator.md 
+
+pause
 
 :DONE
 echo ===============================================================
