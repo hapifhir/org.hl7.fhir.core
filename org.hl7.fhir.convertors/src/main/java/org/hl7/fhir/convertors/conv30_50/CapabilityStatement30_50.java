@@ -538,8 +538,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
-        if (src.hasDefinitionElement())
-            tgt.setDefinitionElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
+        if (src.hasDefinition())
+            tgt.setDefinition(src.getDefinition());
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
         if (src.hasDocumentation())
@@ -554,8 +554,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
-        if (src.hasDefinitionElement())
-            tgt.setDefinitionElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
+        if (src.hasDefinition())
+            tgt.setDefinition(src.getDefinition());
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
         if (src.hasDocumentation())
