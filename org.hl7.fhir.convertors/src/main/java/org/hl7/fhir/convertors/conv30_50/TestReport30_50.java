@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class TestReport30_50 {
 
@@ -12,20 +13,20 @@ public class TestReport30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasStatus())
             tgt.setStatus(convertTestReportStatus(src.getStatus()));
         if (src.hasTestScript())
             tgt.setTestScript(VersionConvertor_30_50.convertReference(src.getTestScript()));
         if (src.hasResult())
             tgt.setResult(convertTestReportResult(src.getResult()));
-        if (src.hasScore())
-            tgt.setScore(src.getScore());
-        if (src.hasTester())
-            tgt.setTester(src.getTester());
-        if (src.hasIssued())
-            tgt.setIssued(src.getIssued());
+        if (src.hasScoreElement())
+            tgt.setScoreElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_50.convertType(src.getScoreElement()));
+        if (src.hasTesterElement())
+            tgt.setTesterElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTesterElement()));
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getIssuedElement()));
         if (src.hasParticipant()) {
             for (org.hl7.fhir.r5.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
         }
@@ -46,20 +47,20 @@ public class TestReport30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasStatus())
             tgt.setStatus(convertTestReportStatus(src.getStatus()));
         if (src.hasTestScript())
             tgt.setTestScript(VersionConvertor_30_50.convertReference(src.getTestScript()));
         if (src.hasResult())
             tgt.setResult(convertTestReportResult(src.getResult()));
-        if (src.hasScore())
-            tgt.setScore(src.getScore());
-        if (src.hasTester())
-            tgt.setTester(src.getTester());
-        if (src.hasIssued())
-            tgt.setIssued(src.getIssued());
+        if (src.hasScoreElement())
+            tgt.setScoreElement((org.hl7.fhir.r5.model.DecimalType) VersionConvertor_30_50.convertType(src.getScoreElement()));
+        if (src.hasTesterElement())
+            tgt.setTesterElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getTesterElement()));
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getIssuedElement()));
         if (src.hasParticipant()) {
             for (org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
         }
@@ -80,10 +81,10 @@ public class TestReport30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setType(convertTestReportParticipantType(src.getType()));
-        if (src.hasUri())
-            tgt.setUri(src.getUri());
-        if (src.hasDisplay())
-            tgt.setDisplay(src.getDisplay());
+        if (src.hasUriElement())
+            tgt.setUriElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUriElement()));
+        if (src.hasDisplayElement())
+            tgt.setDisplayElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDisplayElement()));
         return tgt;
     }
 
@@ -94,10 +95,10 @@ public class TestReport30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setType(convertTestReportParticipantType(src.getType()));
-        if (src.hasUri())
-            tgt.setUri(src.getUri());
-        if (src.hasDisplay())
-            tgt.setDisplay(src.getDisplay());
+        if (src.hasUriElement())
+            tgt.setUriElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_30_50.convertType(src.getUriElement()));
+        if (src.hasDisplayElement())
+            tgt.setDisplayElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDisplayElement()));
         return tgt;
     }
 
@@ -248,10 +249,10 @@ public class TestReport30_50 {
             return null;
         org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setName(src.getName());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasAction()) {
             for (org.hl7.fhir.r5.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_50.convertTestActionComponent(t));
         }
@@ -263,10 +264,10 @@ public class TestReport30_50 {
             return null;
         org.hl7.fhir.r5.model.TestReport.TestReportTestComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportTestComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setName(src.getName());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasAction()) {
             for (org.hl7.fhir.dstu3.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(VersionConvertor_30_50.convertTestActionComponent(t));
         }

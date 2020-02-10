@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class AllergyIntolerance30_50 {
 
@@ -36,8 +37,8 @@ public class AllergyIntolerance30_50 {
             tgt.setRecorder(VersionConvertor_30_50.convertReference(src.getRecorder()));
         if (src.hasAsserter())
             tgt.setAsserter(VersionConvertor_30_50.convertReference(src.getAsserter()));
-        if (src.hasLastOccurrence())
-            tgt.setLastOccurrence(src.getLastOccurrence());
+        if (src.hasLastOccurrenceElement())
+            tgt.setLastOccurrenceElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getLastOccurrenceElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         }
@@ -78,8 +79,8 @@ public class AllergyIntolerance30_50 {
             tgt.setRecorder(VersionConvertor_30_50.convertReference(src.getRecorder()));
         if (src.hasAsserter())
             tgt.setAsserter(VersionConvertor_30_50.convertReference(src.getAsserter()));
-        if (src.hasLastOccurrence())
-            tgt.setLastOccurrence(src.getLastOccurrence());
+        if (src.hasLastOccurrenceElement())
+            tgt.setLastOccurrenceElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getLastOccurrenceElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         }
@@ -190,10 +191,10 @@ public class AllergyIntolerance30_50 {
         if (src.hasManifestation()) {
             for (org.hl7.fhir.r5.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_50.convertCodeableConcept(t));
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
-        if (src.hasOnset())
-            tgt.setOnset(src.getOnset());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasOnsetElement())
+            tgt.setOnsetElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
         if (src.hasExposureRoute())
@@ -214,10 +215,10 @@ public class AllergyIntolerance30_50 {
         if (src.hasManifestation()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_50.convertCodeableConcept(t));
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
-        if (src.hasOnset())
-            tgt.setOnset(src.getOnset());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasOnsetElement())
+            tgt.setOnsetElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
         if (src.hasExposureRoute())

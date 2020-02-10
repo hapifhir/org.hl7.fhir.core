@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DetectedIssue30_50 {
 
@@ -27,10 +28,10 @@ public class DetectedIssue30_50 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.r5.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_50.convertReference(t));
         }
-        if (src.hasDetail())
-            tgt.setDetail(src.getDetail());
-        if (src.hasReference())
-            tgt.setReference(src.getReference());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDetailElement()));
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -59,10 +60,10 @@ public class DetectedIssue30_50 {
         if (src.hasImplicated()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_30_50.convertReference(t));
         }
-        if (src.hasDetail())
-            tgt.setDetail(src.getDetail());
-        if (src.hasReference())
-            tgt.setReference(src.getReference());
+        if (src.hasDetailElement())
+            tgt.setDetailElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDetailElement()));
+        if (src.hasReferenceElement())
+            tgt.setReferenceElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_30_50.convertType(src.getReferenceElement()));
         if (src.hasMitigation()) {
             for (org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         }
@@ -76,8 +77,8 @@ public class DetectedIssue30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasAction())
             tgt.setAction(VersionConvertor_30_50.convertCodeableConcept(src.getAction()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         return tgt;
@@ -90,8 +91,8 @@ public class DetectedIssue30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasAction())
             tgt.setAction(VersionConvertor_30_50.convertCodeableConcept(src.getAction()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         return tgt;

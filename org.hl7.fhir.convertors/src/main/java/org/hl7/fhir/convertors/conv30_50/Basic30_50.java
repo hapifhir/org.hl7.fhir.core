@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Basic30_50 {
 
@@ -17,8 +18,8 @@ public class Basic30_50 {
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
-        if (src.hasCreated())
-            tgt.setCreated(src.getCreated());
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         return tgt;
@@ -36,8 +37,8 @@ public class Basic30_50 {
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
-        if (src.hasCreated())
-            tgt.setCreated(src.getCreated());
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         return tgt;

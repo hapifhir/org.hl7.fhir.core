@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Linkage30_50 {
 
@@ -10,8 +11,8 @@ public class Linkage30_50 {
             return null;
         org.hl7.fhir.r5.model.Linkage tgt = new org.hl7.fhir.r5.model.Linkage();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         if (src.hasItem()) {
@@ -25,8 +26,8 @@ public class Linkage30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Linkage tgt = new org.hl7.fhir.dstu3.model.Linkage();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         if (src.hasItem()) {

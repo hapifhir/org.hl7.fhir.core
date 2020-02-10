@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class MedicationAdministration30_50 {
 
@@ -117,8 +118,8 @@ public class MedicationAdministration30_50 {
             return null;
         org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationDosageComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         if (src.hasSite())
             tgt.setSite(VersionConvertor_30_50.convertCodeableConcept(src.getSite()));
         if (src.hasRoute())
@@ -137,8 +138,8 @@ public class MedicationAdministration30_50 {
             return null;
         org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         if (src.hasSite())
             tgt.setSite(VersionConvertor_30_50.convertCodeableConcept(src.getSite()));
         if (src.hasRoute())

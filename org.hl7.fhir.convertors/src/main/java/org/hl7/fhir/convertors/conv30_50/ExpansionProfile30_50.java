@@ -5,6 +5,7 @@ import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationCo
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DataType;
+import java.util.Collections;
 
 public class ExpansionProfile30_50 {
 
