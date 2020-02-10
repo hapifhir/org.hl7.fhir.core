@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class QuestionnaireResponse30_50 {
 
@@ -26,8 +27,8 @@ public class QuestionnaireResponse30_50 {
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasContext())
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getContext()));
-        if (src.hasAuthored())
-            tgt.setAuthored(src.getAuthored());
+        if (src.hasAuthoredElement())
+            tgt.setAuthoredElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getAuthoredElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         if (src.hasSource())
@@ -59,8 +60,8 @@ public class QuestionnaireResponse30_50 {
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setContext(VersionConvertor_30_50.convertReference(src.getEncounter()));
-        if (src.hasAuthored())
-            tgt.setAuthored(src.getAuthored());
+        if (src.hasAuthoredElement())
+            tgt.setAuthoredElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getAuthoredElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_50.convertReference(src.getAuthor()));
         if (src.hasSource())
@@ -102,12 +103,12 @@ public class QuestionnaireResponse30_50 {
             return null;
         org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkId(src.getLinkId());
-        if (src.hasDefinition())
-            tgt.setDefinition(src.getDefinition());
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasLinkIdElement())
+            tgt.setLinkIdElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getLinkIdElement()));
+        if (src.hasDefinitionElement())
+            tgt.setDefinitionElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         if (src.hasAnswer()) {
             for (org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         }
@@ -122,12 +123,12 @@ public class QuestionnaireResponse30_50 {
             return null;
         org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkId(src.getLinkId());
-        if (src.hasDefinition())
-            tgt.setDefinition(src.getDefinition());
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasLinkIdElement())
+            tgt.setLinkIdElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getLinkIdElement()));
+        if (src.hasDefinitionElement())
+            tgt.setDefinitionElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         if (src.hasAnswer()) {
             for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         }

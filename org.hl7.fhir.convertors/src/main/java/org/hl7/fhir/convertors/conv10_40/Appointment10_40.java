@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Appointment10_40 {
 
@@ -18,27 +19,21 @@ public class Appointment10_40 {
         }
         if (src.hasType())
             tgt.addServiceType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
-        if (src.hasPriority()) {
-            tgt.setPriority(src.getPriority());
-        }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
-        if (src.hasStart()) {
-            tgt.setStart(src.getStart());
-        }
-        if (src.hasEnd()) {
-            tgt.setEnd(src.getEnd());
-        }
-        if (src.hasMinutesDuration()) {
-            tgt.setMinutesDuration(src.getMinutesDuration());
-        }
+        if (src.hasPriorityElement())
+            tgt.setPriorityElement((org.hl7.fhir.r4.model.UnsignedIntType) VersionConvertor_10_40.convertType(src.getPriorityElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getDescriptionElement()));
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_10_40.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_10_40.convertType(src.getEndElement()));
+        if (src.hasMinutesDurationElement())
+            tgt.setMinutesDurationElement((org.hl7.fhir.r4.model.PositiveIntType) VersionConvertor_10_40.convertType(src.getMinutesDurationElement()));
         if (src.hasSlot()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
         if (src.hasParticipant()) {
             for (org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
         }
@@ -59,27 +54,21 @@ public class Appointment10_40 {
         if (src.hasServiceType()) {
             for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_40.convertCodeableConcept(t));
         }
-        if (src.hasPriority()) {
-            tgt.setPriority(src.getPriority());
-        }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
-        if (src.hasStart()) {
-            tgt.setStart(src.getStart());
-        }
-        if (src.hasEnd()) {
-            tgt.setEnd(src.getEnd());
-        }
-        if (src.hasMinutesDuration()) {
-            tgt.setMinutesDuration(src.getMinutesDuration());
-        }
+        if (src.hasPriorityElement())
+            tgt.setPriorityElement((org.hl7.fhir.dstu2.model.UnsignedIntType) VersionConvertor_10_40.convertType(src.getPriorityElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getDescriptionElement()));
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_40.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_40.convertType(src.getEndElement()));
+        if (src.hasMinutesDurationElement())
+            tgt.setMinutesDurationElement((org.hl7.fhir.dstu2.model.PositiveIntType) VersionConvertor_10_40.convertType(src.getMinutesDurationElement()));
         if (src.hasSlot()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
         if (src.hasParticipant()) {
             for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
         }

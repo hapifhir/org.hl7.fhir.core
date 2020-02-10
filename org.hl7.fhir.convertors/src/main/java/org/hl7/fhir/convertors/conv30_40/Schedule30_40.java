@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Schedule30_40 {
 
@@ -13,8 +14,8 @@ public class Schedule30_40 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasServiceCategory())
             tgt.setServiceCategory(VersionConvertor_30_40.convertCodeableConcept(src.getServiceCategoryFirstRep()));
         if (src.hasServiceType()) {
@@ -28,8 +29,8 @@ public class Schedule30_40 {
         }
         if (src.hasPlanningHorizon())
             tgt.setPlanningHorizon(VersionConvertor_30_40.convertPeriod(src.getPlanningHorizon()));
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         return tgt;
     }
 
@@ -41,8 +42,8 @@ public class Schedule30_40 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasServiceCategory())
             tgt.addServiceCategory(VersionConvertor_30_40.convertCodeableConcept(src.getServiceCategory()));
         if (src.hasServiceType()) {
@@ -56,8 +57,8 @@ public class Schedule30_40 {
         }
         if (src.hasPlanningHorizon())
             tgt.setPlanningHorizon(VersionConvertor_30_40.convertPeriod(src.getPlanningHorizon()));
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         return tgt;
     }
 }

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class RiskAssessment30_50 {
 
@@ -44,8 +45,8 @@ public class RiskAssessment30_50 {
         if (src.hasPrediction()) {
             for (org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
         }
-        if (src.hasMitigation())
-            tgt.setMitigation(src.getMitigation());
+        if (src.hasMitigationElement())
+            tgt.setMitigationElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getMitigationElement()));
         if (src.hasComment())
             tgt.addNote().setText(src.getComment());
         return tgt;
@@ -88,8 +89,8 @@ public class RiskAssessment30_50 {
         if (src.hasPrediction()) {
             for (org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
         }
-        if (src.hasMitigation())
-            tgt.setMitigation(src.getMitigation());
+        if (src.hasMitigationElement())
+            tgt.setMitigationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getMitigationElement()));
         if (src.hasNote())
             tgt.setComment(src.getNoteFirstRep().getText());
         return tgt;
@@ -106,12 +107,12 @@ public class RiskAssessment30_50 {
             tgt.setProbability(VersionConvertor_30_50.convertType(src.getProbability()));
         if (src.hasQualitativeRisk())
             tgt.setQualitativeRisk(VersionConvertor_30_50.convertCodeableConcept(src.getQualitativeRisk()));
-        if (src.hasRelativeRisk())
-            tgt.setRelativeRisk(src.getRelativeRisk());
+        if (src.hasRelativeRiskElement())
+            tgt.setRelativeRiskElement((org.hl7.fhir.r5.model.DecimalType) VersionConvertor_30_50.convertType(src.getRelativeRiskElement()));
         if (src.hasWhen())
             tgt.setWhen(VersionConvertor_30_50.convertType(src.getWhen()));
-        if (src.hasRationale())
-            tgt.setRationale(src.getRationale());
+        if (src.hasRationaleElement())
+            tgt.setRationaleElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getRationaleElement()));
         return tgt;
     }
 
@@ -126,12 +127,12 @@ public class RiskAssessment30_50 {
             tgt.setProbability(VersionConvertor_30_50.convertType(src.getProbability()));
         if (src.hasQualitativeRisk())
             tgt.setQualitativeRisk(VersionConvertor_30_50.convertCodeableConcept(src.getQualitativeRisk()));
-        if (src.hasRelativeRisk())
-            tgt.setRelativeRisk(src.getRelativeRisk());
+        if (src.hasRelativeRiskElement())
+            tgt.setRelativeRiskElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_50.convertType(src.getRelativeRiskElement()));
         if (src.hasWhen())
             tgt.setWhen(VersionConvertor_30_50.convertType(src.getWhen()));
-        if (src.hasRationale())
-            tgt.setRationale(src.getRationale());
+        if (src.hasRationaleElement())
+            tgt.setRationaleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getRationaleElement()));
         return tgt;
     }
 

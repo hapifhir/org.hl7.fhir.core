@@ -2,10 +2,9 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Type;
-import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.r4.model.*;
+
+import java.util.Collections;
 
 public class Provenance30_40 {
 
@@ -14,16 +13,16 @@ public class Provenance30_40 {
             return null;
         org.hl7.fhir.r4.model.CodeableConcept tgt = new org.hl7.fhir.r4.model.CodeableConcept();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasSystem())
-            tgt.getCodingFirstRep().setSystem(src.getSystem());
-        if (src.hasVersion())
-            tgt.getCodingFirstRep().setVersion(src.getVersion());
-        if (src.hasCode())
-            tgt.getCodingFirstRep().setCode(src.getCode());
-        if (src.hasDisplay())
-            tgt.getCodingFirstRep().setDisplay(src.getDisplay());
-        if (src.hasUserSelected())
-            tgt.getCodingFirstRep().setUserSelected(src.getUserSelected());
+        if (src.hasSystemElement())
+            tgt.getCodingFirstRep().setSystemElement((UriType) VersionConvertor_30_40.convertType(src.getSystemElement()));
+        if (src.hasVersionElement())
+            tgt.getCodingFirstRep().setVersionElement((StringType) VersionConvertor_30_40.convertType(src.getVersionElement()));
+        if (src.hasCodeElement())
+            tgt.getCodingFirstRep().setCodeElement((CodeType) VersionConvertor_30_40.convertType(src.getCodeElement()));
+        if (src.hasDisplayElement())
+            tgt.getCodingFirstRep().setDisplayElement((StringType) VersionConvertor_30_40.convertType(src.getDisplayElement()));
+        if (src.hasUserSelectedElement())
+            tgt.getCodingFirstRep().setUserSelectedElement((BooleanType) VersionConvertor_30_40.convertType(src.getUserSelectedElement()));
         return tgt;
     }
 

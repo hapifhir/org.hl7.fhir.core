@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.UnsignedIntType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class ImagingStudy10_30 {
 
@@ -10,9 +12,8 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy tgt = new org.hl7.fhir.dstu3.model.ImagingStudy();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
-        }
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu3.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
         if (src.hasAccession()) {
             tgt.setAccession(VersionConvertor_10_30.convertIdentifier(src.getAccession()));
         }
@@ -28,27 +29,25 @@ public class ImagingStudy10_30 {
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasStarted()) {
-            tgt.setStarted(src.getStarted());
-        }
+        if (src.hasStartedElement())
+            tgt.setStartedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getStartedElement()));
         if (src.hasReferrer()) {
             tgt.setReferrer(VersionConvertor_10_30.convertReference(src.getReferrer()));
         }
         if (src.hasInterpreter()) {
             tgt.addInterpreter(VersionConvertor_10_30.convertReference(src.getInterpreter()));
         }
-        if (src.hasNumberOfSeries()) {
-            tgt.setNumberOfSeries(src.getNumberOfSeries());
+        if (src.hasNumberOfSeriesElement()) {
+            tgt.setNumberOfSeriesElement((UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberOfSeriesElement()));
         }
-        if (src.hasNumberOfInstances()) {
-            tgt.setNumberOfInstances(src.getNumberOfInstances());
+        if (src.hasNumberOfInstancesElement()) {
+            tgt.setNumberOfInstancesElement((UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberOfInstancesElement()));
         }
         if (src.hasProcedure()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getProcedure()) tgt.addProcedureReference(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasSeries()) {
             for (org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
         }
@@ -60,9 +59,8 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu2.model.ImagingStudy tgt = new org.hl7.fhir.dstu2.model.ImagingStudy();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
-        }
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu2.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
         if (src.hasAccession()) {
             tgt.setAccession(VersionConvertor_10_30.convertIdentifier(src.getAccession()));
         }
@@ -78,27 +76,25 @@ public class ImagingStudy10_30 {
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasStarted()) {
-            tgt.setStarted(src.getStarted());
-        }
+        if (src.hasStartedElement())
+            tgt.setStartedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getStartedElement()));
         if (src.hasReferrer()) {
             tgt.setReferrer(VersionConvertor_10_30.convertReference(src.getReferrer()));
         }
         if (src.hasInterpreter()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getInterpreter()) tgt.setInterpreter(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasNumberOfSeries()) {
-            tgt.setNumberOfSeries(src.getNumberOfSeries());
+        if (src.hasNumberOfSeriesElement()) {
+            tgt.setNumberOfSeriesElement((org.hl7.fhir.dstu2.model.UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberOfSeriesElement()));
         }
-        if (src.hasNumberOfInstances()) {
-            tgt.setNumberOfInstances(src.getNumberOfInstances());
+        if (src.hasNumberOfInstancesElement()) {
+            tgt.setNumberOfInstancesElement((org.hl7.fhir.dstu2.model.UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberOfInstancesElement()));
         }
         if (src.hasProcedureReference()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getProcedureReference()) tgt.addProcedure(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasSeries()) {
             for (org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
         }
@@ -110,18 +106,16 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
-        }
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu2.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
         if (src.hasNumber()) {
             tgt.setNumber(src.getNumber());
         }
         if (src.hasModality()) {
             tgt.setModality(VersionConvertor_10_30.convertCoding(src.getModality()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasNumberOfInstances()) {
             tgt.setNumberOfInstances(src.getNumberOfInstances());
         }
@@ -134,9 +128,8 @@ public class ImagingStudy10_30 {
         if (src.hasLaterality()) {
             tgt.setLaterality(VersionConvertor_10_30.convertCoding(src.getLaterality()));
         }
-        if (src.hasStarted()) {
-            tgt.setStarted(src.getStarted());
-        }
+        if (src.hasStartedElement())
+            tgt.setStartedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getStartedElement()));
         if (src.hasInstance()) {
             for (org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
         }
@@ -148,18 +141,16 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
-        }
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu3.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
         if (src.hasNumber()) {
             tgt.setNumber(src.getNumber());
         }
         if (src.hasModality()) {
             tgt.setModality(VersionConvertor_10_30.convertCoding(src.getModality()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasNumberOfInstances()) {
             tgt.setNumberOfInstances(src.getNumberOfInstances());
         }
@@ -172,9 +163,8 @@ public class ImagingStudy10_30 {
         if (src.hasLaterality()) {
             tgt.setLaterality(VersionConvertor_10_30.convertCoding(src.getLaterality()));
         }
-        if (src.hasStarted()) {
-            tgt.setStarted(src.getStarted());
-        }
+        if (src.hasStartedElement())
+            tgt.setStartedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getStartedElement()));
         if (src.hasInstance()) {
             for (org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
         }
@@ -186,18 +176,15 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu3.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
+        if (src.hasNumberElement()) {
+            tgt.setNumberElement((UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberElement()));
         }
-        if (src.hasNumber()) {
-            tgt.setNumber(src.getNumber());
-        }
-        if (src.hasSopClass()) {
-            tgt.setSopClass(src.getSopClass());
-        }
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasSopClassElement())
+            tgt.setSopClassElement((org.hl7.fhir.dstu3.model.OidType) VersionConvertor_10_30.convertType(src.getSopClassElement()));
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getTitleElement()));
         return tgt;
     }
 
@@ -206,18 +193,15 @@ public class ImagingStudy10_30 {
             return null;
         org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.dstu2.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasUid()) {
-            tgt.setUid(src.getUid());
+        if (src.hasUidElement())
+            tgt.setUidElement((org.hl7.fhir.dstu2.model.OidType) VersionConvertor_10_30.convertType(src.getUidElement()));
+        if (src.hasNumberElement()) {
+            tgt.setNumberElement((org.hl7.fhir.dstu2.model.UnsignedIntType) VersionConvertor_10_30.convertType(src.getNumberElement()));
         }
-        if (src.hasNumber()) {
-            tgt.setNumber(src.getNumber());
-        }
-        if (src.hasSopClass()) {
-            tgt.setSopClass(src.getSopClass());
-        }
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasSopClassElement())
+            tgt.setSopClassElement((org.hl7.fhir.dstu2.model.OidType) VersionConvertor_10_30.convertType(src.getSopClassElement()));
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getTitleElement()));
         return tgt;
     }
 

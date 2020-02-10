@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv10_50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class Communication10_50 {
 
@@ -35,12 +36,10 @@ public class Communication10_50 {
         if (src.hasEncounter()) {
             tgt.setEncounter(VersionConvertor_10_50.convertReference(src.getEncounter()));
         }
-        if (src.hasSent()) {
-            tgt.setSent(src.getSent());
-        }
-        if (src.hasReceived()) {
-            tgt.setReceived(src.getReceived());
-        }
+        if (src.hasSentElement())
+            tgt.setSentElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getSentElement()));
+        if (src.hasReceivedElement())
+            tgt.setReceivedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getReceivedElement()));
         if (src.hasReason()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_50.convertCodeableConceptToCodableReference(t));
         }
@@ -79,12 +78,10 @@ public class Communication10_50 {
         if (src.hasEncounter()) {
             tgt.setEncounter(VersionConvertor_10_50.convertReference(src.getEncounter()));
         }
-        if (src.hasSent()) {
-            tgt.setSent(src.getSent());
-        }
-        if (src.hasReceived()) {
-            tgt.setReceived(src.getReceived());
-        }
+        if (src.hasSentElement())
+            tgt.setSentElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getSentElement()));
+        if (src.hasReceivedElement())
+            tgt.setReceivedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getReceivedElement()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReason(VersionConvertor_10_50.convertCodeableConcept(t.getConcept()));
         if (src.hasSubject()) {

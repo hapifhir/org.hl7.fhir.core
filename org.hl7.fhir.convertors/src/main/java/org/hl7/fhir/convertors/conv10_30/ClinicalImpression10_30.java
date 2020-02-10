@@ -1,8 +1,10 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class ClinicalImpression10_30 {
 
@@ -20,28 +22,25 @@ public class ClinicalImpression10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasPrevious()) {
             tgt.setPrevious(VersionConvertor_10_30.convertReference(src.getPrevious()));
         }
         if (src.hasProblem()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getProblem()) tgt.addProblem(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasProtocol()) {
-            tgt.addProtocol(src.getProtocol());
-        }
-        if (src.hasSummary()) {
-            tgt.setSummary(src.getSummary());
-        }
+        if (src.hasProtocolElement())
+            tgt.setProtocol(Collections.singletonList((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_10_30.convertType(src.getProtocolElement())));
+        if (src.hasSummaryElement())
+            tgt.setSummaryElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getSummaryElement()));
         if (src.hasFinding()) {
             for (org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
         }
-        if (src.hasPrognosis())
-            tgt.addPrognosisCodeableConcept().setText(src.getPrognosis());
+        if (src.hasPrognosisElement())
+            tgt.addPrognosisCodeableConcept().setTextElement((StringType) VersionConvertor_10_30.convertType(src.getPrognosisElement()));
         if (src.hasAction()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getAction()) tgt.addAction(VersionConvertor_10_30.convertReference(t));
         }
@@ -62,11 +61,10 @@ public class ClinicalImpression10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasPrevious()) {
             tgt.setPrevious(VersionConvertor_10_30.convertReference(src.getPrevious()));
         }
@@ -76,9 +74,8 @@ public class ClinicalImpression10_30 {
         if (src.hasProtocol()) {
             for (UriType t : src.getProtocol()) tgt.setProtocol(t.asStringValue());
         }
-        if (src.hasSummary()) {
-            tgt.setSummary(src.getSummary());
-        }
+        if (src.hasSummaryElement())
+            tgt.setSummaryElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getSummaryElement()));
         if (src.hasFinding()) {
             for (org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
         }

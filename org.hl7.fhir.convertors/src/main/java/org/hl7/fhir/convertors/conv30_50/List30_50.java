@@ -2,6 +2,11 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.StringType;
+
+import java.util.Collections;
 
 public class List30_50 {
 
@@ -17,16 +22,16 @@ public class List30_50 {
             tgt.setStatus(convertListStatus(src.getStatus()));
         if (src.hasMode())
             tgt.setMode(convertListMode(src.getMode()));
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((StringType) VersionConvertor_30_50.convertType(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getEncounter()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasSource())
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasOrderedBy())
@@ -54,16 +59,16 @@ public class List30_50 {
             tgt.setStatus(convertListStatus(src.getStatus()));
         if (src.hasMode())
             tgt.setMode(convertListMode(src.getMode()));
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getEncounter()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasSource())
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasOrderedBy())
@@ -86,10 +91,10 @@ public class List30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasFlag())
             tgt.setFlag(VersionConvertor_30_50.convertCodeableConcept(src.getFlag()));
-        if (src.hasDeleted())
-            tgt.setDeleted(src.getDeleted());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDeletedElement())
+            tgt.setDeletedElement((BooleanType) VersionConvertor_30_50.convertType(src.getDeletedElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasItem())
             tgt.setItem(VersionConvertor_30_50.convertReference(src.getItem()));
         return tgt;
@@ -102,10 +107,10 @@ public class List30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasFlag())
             tgt.setFlag(VersionConvertor_30_50.convertCodeableConcept(src.getFlag()));
-        if (src.hasDeleted())
-            tgt.setDeleted(src.getDeleted());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDeletedElement())
+            tgt.setDeletedElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getDeletedElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasItem())
             tgt.setItem(VersionConvertor_30_50.convertReference(src.getItem()));
         return tgt;

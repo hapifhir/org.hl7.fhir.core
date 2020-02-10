@@ -2,6 +2,10 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.StringType;
+
+import java.util.Collections;
 
 public class BodySite30_50 {
 
@@ -13,10 +17,10 @@ public class BodySite30_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasImage()) {
             for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
         }
@@ -33,10 +37,10 @@ public class BodySite30_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasImage()) {
             for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_50.convertAttachment(t));
         }

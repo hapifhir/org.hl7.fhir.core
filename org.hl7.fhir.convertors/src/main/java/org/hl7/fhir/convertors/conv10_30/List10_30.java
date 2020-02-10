@@ -1,7 +1,10 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.DateTimeType;
+import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class List10_30 {
 
@@ -31,8 +34,8 @@ public class List10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertListStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasOrderedBy()) {
             tgt.setOrderedBy(VersionConvertor_10_30.convertCodeableConcept(src.getOrderedBy()));
         }
@@ -74,8 +77,8 @@ public class List10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertListStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasOrderedBy()) {
             tgt.setOrderedBy(VersionConvertor_10_30.convertCodeableConcept(src.getOrderedBy()));
         }
@@ -98,11 +101,11 @@ public class List10_30 {
         if (src.hasFlag()) {
             tgt.setFlag(VersionConvertor_10_30.convertCodeableConcept(src.getFlag()));
         }
-        if (src.hasDeleted()) {
-            tgt.setDeleted(src.getDeleted());
+        if (src.hasDeletedElement()) {
+            tgt.setDeletedElement((BooleanType) VersionConvertor_10_30.convertType(src.getDeletedElement()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasItem()) {
             tgt.setItem(VersionConvertor_10_30.convertReference(src.getItem()));
         }
@@ -117,11 +120,11 @@ public class List10_30 {
         if (src.hasFlag()) {
             tgt.setFlag(VersionConvertor_10_30.convertCodeableConcept(src.getFlag()));
         }
-        if (src.hasDeleted()) {
-            tgt.setDeleted(src.getDeleted());
+        if (src.hasDeletedElement()) {
+            tgt.setDeletedElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_30.convertType(src.getDeletedElement()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasItem()) {
             tgt.setItem(VersionConvertor_10_30.convertReference(src.getItem()));
         }

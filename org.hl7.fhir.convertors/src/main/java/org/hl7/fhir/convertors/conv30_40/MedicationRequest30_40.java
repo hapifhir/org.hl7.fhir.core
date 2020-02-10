@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class MedicationRequest30_40 {
 
@@ -130,8 +131,8 @@ public class MedicationRequest30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasValidityPeriod())
             tgt.setValidityPeriod(VersionConvertor_30_40.convertPeriod(src.getValidityPeriod()));
-        if (src.hasNumberOfRepeatsAllowed())
-            tgt.setNumberOfRepeatsAllowed(src.getNumberOfRepeatsAllowed());
+        if (src.hasNumberOfRepeatsAllowedElement())
+            tgt.setNumberOfRepeatsAllowedElement((org.hl7.fhir.r4.model.UnsignedIntType) VersionConvertor_30_40.convertType(src.getNumberOfRepeatsAllowedElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_40.convertSimpleQuantity(src.getQuantity()));
         if (src.hasExpectedSupplyDuration())
@@ -148,8 +149,8 @@ public class MedicationRequest30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasValidityPeriod())
             tgt.setValidityPeriod(VersionConvertor_30_40.convertPeriod(src.getValidityPeriod()));
-        if (src.hasNumberOfRepeatsAllowed())
-            tgt.setNumberOfRepeatsAllowed(src.getNumberOfRepeatsAllowed());
+        if (src.hasNumberOfRepeatsAllowedElement())
+            tgt.setNumberOfRepeatsAllowedElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_40.convertType(src.getNumberOfRepeatsAllowedElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_40.convertSimpleQuantity(src.getQuantity()));
         if (src.hasExpectedSupplyDuration())
