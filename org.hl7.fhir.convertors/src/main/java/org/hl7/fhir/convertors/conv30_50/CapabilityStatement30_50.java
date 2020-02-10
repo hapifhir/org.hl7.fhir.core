@@ -370,8 +370,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.setMode(convertRestfulCapabilityMode(src.getMode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         if (src.hasSecurity())
             tgt.setSecurity(convertCapabilityStatementRestSecurityComponent(src.getSecurity()));
         if (src.hasResource()) {
@@ -399,8 +399,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.setMode(convertRestfulCapabilityMode(src.getMode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         if (src.hasSecurity())
             tgt.setSecurity(convertCapabilityStatementRestSecurityComponent(src.getSecurity()));
         if (src.hasResource()) {
