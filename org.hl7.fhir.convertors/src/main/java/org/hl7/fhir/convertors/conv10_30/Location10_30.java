@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.DecimalType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Location10_30 {
 
@@ -16,12 +18,10 @@ public class Location10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasMode()) {
             tgt.setMode(convertLocationMode(src.getMode()));
         }
@@ -60,12 +60,10 @@ public class Location10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertLocationStatus(src.getStatus()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasMode()) {
             tgt.setMode(convertLocationMode(src.getMode()));
         }
@@ -124,14 +122,14 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu3.model.Location.LocationPositionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLongitude()) {
-            tgt.setLongitude(src.getLongitude());
+        if (src.hasLongitudeElement()) {
+            tgt.setLongitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getLongitudeElement()));
         }
-        if (src.hasLatitude()) {
-            tgt.setLatitude(src.getLatitude());
+        if (src.hasLatitudeElement()) {
+            tgt.setLatitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getLatitudeElement()));
         }
-        if (src.hasAltitude()) {
-            tgt.setAltitude(src.getAltitude());
+        if (src.hasAltitudeElement()) {
+            tgt.setAltitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getAltitudeElement()));
         }
         return tgt;
     }
@@ -141,14 +139,14 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu2.model.Location.LocationPositionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLongitude()) {
-            tgt.setLongitude(src.getLongitude());
+        if (src.hasLongitudeElement()) {
+            tgt.setLongitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getLongitudeElement()));
         }
-        if (src.hasLatitude()) {
-            tgt.setLatitude(src.getLatitude());
+        if (src.hasLatitudeElement()) {
+            tgt.setLatitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getLatitudeElement()));
         }
-        if (src.hasAltitude()) {
-            tgt.setAltitude(src.getAltitude());
+        if (src.hasAltitudeElement()) {
+            tgt.setAltitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getAltitudeElement()));
         }
         return tgt;
     }

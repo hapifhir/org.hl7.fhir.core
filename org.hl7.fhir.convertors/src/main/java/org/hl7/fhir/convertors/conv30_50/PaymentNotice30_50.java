@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class PaymentNotice30_50 {
 
@@ -21,8 +22,8 @@ public class PaymentNotice30_50 {
             tgt.setResponse(VersionConvertor_30_50.convertReference(src.getResponse()));
         if (src.hasPaymentDate())
             tgt.setStatusDate(src.getPaymentDate());
-        if (src.hasCreated())
-            tgt.setCreated(src.getCreated());
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
         if (src.hasRecipient())
             tgt.setTarget(VersionConvertor_30_50.convertReference(src.getRecipient()));
         if (src.hasProvider())
@@ -48,8 +49,8 @@ public class PaymentNotice30_50 {
             tgt.setResponse(VersionConvertor_30_50.convertReference(src.getResponse()));
         if (src.hasStatusDate())
             tgt.setPaymentDate(src.getStatusDate());
-        if (src.hasCreated())
-            tgt.setCreated(src.getCreated());
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
         if (src.hasTarget())
             tgt.setRecipient(VersionConvertor_30_50.convertReference(src.getTarget()));
         if (src.hasProvider())

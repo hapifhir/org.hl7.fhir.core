@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class EnrollmentResponse10_40 {
 
@@ -16,12 +17,10 @@ public class EnrollmentResponse10_40 {
         if (src.hasRequest()) {
             tgt.setRequest(VersionConvertor_10_40.convertReference(src.getRequest()));
         }
-        if (src.hasDisposition()) {
-            tgt.setDisposition(src.getDisposition());
-        }
-        if (src.hasCreated()) {
-            tgt.setCreated(src.getCreated());
-        }
+        if (src.hasDispositionElement())
+            tgt.setDispositionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getDispositionElement()));
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.r4.model.DateTimeType) VersionConvertor_10_40.convertType(src.getCreatedElement()));
         if (src.hasOrganization()) {
             tgt.setOrganization(VersionConvertor_10_40.convertReference(src.getOrganization()));
         }
@@ -39,12 +38,10 @@ public class EnrollmentResponse10_40 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
         }
-        if (src.hasDisposition()) {
-            tgt.setDisposition(src.getDisposition());
-        }
-        if (src.hasCreated()) {
-            tgt.setCreated(src.getCreated());
-        }
+        if (src.hasDispositionElement())
+            tgt.setDispositionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getDispositionElement()));
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_40.convertType(src.getCreatedElement()));
         return tgt;
     }
 }

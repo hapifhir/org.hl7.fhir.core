@@ -13,9 +13,8 @@ public class Account10_30 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         }
@@ -34,9 +33,8 @@ public class Account10_30 {
         if (src.hasOwner()) {
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         return tgt;
     }
 
@@ -48,8 +46,8 @@ public class Account10_30 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         }
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         if (src.hasStatus()) {
@@ -67,9 +65,8 @@ public class Account10_30 {
         if (src.hasOwner()) {
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         return tgt;
     }
 

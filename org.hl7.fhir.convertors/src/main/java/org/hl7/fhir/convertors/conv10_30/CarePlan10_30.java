@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class CarePlan10_30 {
 
@@ -31,9 +33,8 @@ public class CarePlan10_30 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAddresses()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getAddresses()) tgt.addAddresses(VersionConvertor_10_30.convertReference(t));
         }
@@ -72,9 +73,8 @@ public class CarePlan10_30 {
         if (src.hasCategory()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_10_30.convertCodeableConcept(t));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAddresses()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getAddresses()) tgt.addAddresses(VersionConvertor_10_30.convertReference(t));
         }
@@ -144,8 +144,8 @@ public class CarePlan10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
         }
-        if (src.hasProhibited()) {
-            tgt.setProhibited(src.getProhibited());
+        if (src.hasProhibitedElement()) {
+            tgt.setProhibitedElement((BooleanType) VersionConvertor_10_30.convertType(src.getProhibitedElement()));
         }
         if (src.hasScheduled()) {
             tgt.setScheduled(VersionConvertor_10_30.convertType(src.getScheduled()));
@@ -165,9 +165,8 @@ public class CarePlan10_30 {
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         return tgt;
     }
 
@@ -194,8 +193,8 @@ public class CarePlan10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
         }
-        if (src.hasProhibited()) {
-            tgt.setProhibited(src.getProhibited());
+        if (src.hasProhibitedElement()) {
+            tgt.setProhibitedElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_30.convertType(src.getProhibitedElement()));
         }
         if (src.hasScheduled()) {
             tgt.setScheduled(VersionConvertor_10_30.convertType(src.getScheduled()));
@@ -215,9 +214,8 @@ public class CarePlan10_30 {
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         return tgt;
     }
 

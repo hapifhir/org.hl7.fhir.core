@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.dstu2.model.BooleanType;
+import org.hl7.fhir.dstu2.model.DateTimeType;
+import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class List10_50 {
 
@@ -13,8 +17,8 @@ public class List10_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         }
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement()) {
+            tgt.setTitleElement((StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         }
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
@@ -31,8 +35,8 @@ public class List10_50 {
         if (src.hasStatus()) {
             tgt.setStatus(convertListStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasOrderedBy()) {
             tgt.setOrderedBy(VersionConvertor_10_50.convertCodeableConcept(src.getOrderedBy()));
         }
@@ -56,8 +60,8 @@ public class List10_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         }
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement()) {
+            tgt.setTitleElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         }
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
@@ -74,8 +78,8 @@ public class List10_50 {
         if (src.hasStatus()) {
             tgt.setStatus(convertListStatus(src.getStatus()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasOrderedBy()) {
             tgt.setOrderedBy(VersionConvertor_10_50.convertCodeableConcept(src.getOrderedBy()));
         }
@@ -98,11 +102,11 @@ public class List10_50 {
         if (src.hasFlag()) {
             tgt.setFlag(VersionConvertor_10_50.convertCodeableConcept(src.getFlag()));
         }
-        if (src.hasDeleted()) {
-            tgt.setDeleted(src.getDeleted());
+        if (src.hasDeletedElement()) {
+            tgt.setDeletedElement((BooleanType) VersionConvertor_10_50.convertType(src.getDeletedElement()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasItem()) {
             tgt.setItem(VersionConvertor_10_50.convertReference(src.getItem()));
         }
@@ -117,11 +121,11 @@ public class List10_50 {
         if (src.hasFlag()) {
             tgt.setFlag(VersionConvertor_10_50.convertCodeableConcept(src.getFlag()));
         }
-        if (src.hasDeleted()) {
-            tgt.setDeleted(src.getDeleted());
+        if (src.hasDeletedElement()) {
+            tgt.setDeletedElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_10_50.convertType(src.getDeletedElement()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasItem()) {
             tgt.setItem(VersionConvertor_10_50.convertReference(src.getItem()));
         }

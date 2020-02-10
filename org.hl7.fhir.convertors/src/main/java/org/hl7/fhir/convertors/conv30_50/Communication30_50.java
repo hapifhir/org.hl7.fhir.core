@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class Communication30_50 {
 
@@ -43,10 +44,10 @@ public class Communication30_50 {
         }
         if (src.hasEncounter())
             tgt.setContext(VersionConvertor_30_50.convertReference(src.getEncounter()));
-        if (src.hasSent())
-            tgt.setSent(src.getSent());
-        if (src.hasReceived())
-            tgt.setReceived(src.getReceived());
+        if (src.hasSentElement())
+            tgt.setSentElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getSentElement()));
+        if (src.hasReceivedElement())
+            tgt.setReceivedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getReceivedElement()));
         if (src.hasSender())
             tgt.setSender(VersionConvertor_30_50.convertReference(src.getSender()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
@@ -98,10 +99,10 @@ public class Communication30_50 {
         }
         if (src.hasContext())
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getContext()));
-        if (src.hasSent())
-            tgt.setSent(src.getSent());
-        if (src.hasReceived())
-            tgt.setReceived(src.getReceived());
+        if (src.hasSentElement())
+            tgt.setSentElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getSentElement()));
+        if (src.hasReceivedElement())
+            tgt.setReceivedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getReceivedElement()));
         if (src.hasSender())
             tgt.setSender(VersionConvertor_30_50.convertReference(src.getSender()));
         if (src.hasReasonCode()) {

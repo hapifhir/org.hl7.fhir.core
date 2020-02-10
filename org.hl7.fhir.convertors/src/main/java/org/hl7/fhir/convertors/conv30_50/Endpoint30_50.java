@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Endpoint30_50 {
 
@@ -17,8 +18,8 @@ public class Endpoint30_50 {
             tgt.setStatus(convertEndpointStatus(src.getStatus()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_50.convertCoding(src.getConnectionType()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasContact()) {
@@ -32,8 +33,8 @@ public class Endpoint30_50 {
         if (src.hasPayloadMimeType()) {
             for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
         }
-        if (src.hasAddress())
-            tgt.setAddress(src.getAddress());
+        if (src.hasAddressElement())
+            tgt.setAddressElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getAddressElement()));
         if (src.hasHeader()) {
             for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
         }
@@ -52,8 +53,8 @@ public class Endpoint30_50 {
             tgt.setStatus(convertEndpointStatus(src.getStatus()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_50.convertCoding(src.getConnectionType()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
         if (src.hasContact()) {
@@ -67,8 +68,8 @@ public class Endpoint30_50 {
         if (src.hasPayloadMimeType()) {
             for (org.hl7.fhir.dstu3.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
         }
-        if (src.hasAddress())
-            tgt.setAddress(src.getAddress());
+        if (src.hasAddressElement())
+            tgt.setAddressElement((org.hl7.fhir.r5.model.UrlType) VersionConvertor_30_50.convertType(src.getAddressElement()));
         if (src.hasHeader()) {
             for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
         }

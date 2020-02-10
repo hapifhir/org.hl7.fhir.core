@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Parameters30_50 {
 
@@ -32,8 +33,8 @@ public class Parameters30_50 {
             return null;
         org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasValue())
             tgt.setValue(VersionConvertor_30_50.convertType(src.getValue()));
         if (src.hasResource())
@@ -49,8 +50,8 @@ public class Parameters30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
         if (src.hasValue())
             tgt.setValue(VersionConvertor_30_50.convertType(src.getValue()));
         if (src.hasResource())

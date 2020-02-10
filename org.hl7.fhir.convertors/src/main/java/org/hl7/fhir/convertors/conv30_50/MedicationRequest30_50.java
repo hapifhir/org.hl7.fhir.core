@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class MedicationRequest30_50 {
 
@@ -34,8 +35,8 @@ public class MedicationRequest30_50 {
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(VersionConvertor_30_50.convertReference(t));
         }
-        if (src.hasAuthoredOn())
-            tgt.setAuthoredOn(src.getAuthoredOn());
+        if (src.hasAuthoredOnElement())
+            tgt.setAuthoredOnElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getAuthoredOnElement()));
         if (src.hasRecorder())
             tgt.setRecorder(VersionConvertor_30_50.convertReference(src.getRecorder()));
         for (CodeableReference t : src.getReason()) {
@@ -95,8 +96,8 @@ public class MedicationRequest30_50 {
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(VersionConvertor_30_50.convertReference(t));
         }
-        if (src.hasAuthoredOn())
-            tgt.setAuthoredOn(src.getAuthoredOn());
+        if (src.hasAuthoredOnElement())
+            tgt.setAuthoredOnElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getAuthoredOnElement()));
         if (src.hasRecorder())
             tgt.setRecorder(VersionConvertor_30_50.convertReference(src.getRecorder()));
         if (src.hasReasonCode()) {
@@ -133,8 +134,8 @@ public class MedicationRequest30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasValidityPeriod())
             tgt.setValidityPeriod(VersionConvertor_30_50.convertPeriod(src.getValidityPeriod()));
-        if (src.hasNumberOfRepeatsAllowed())
-            tgt.setNumberOfRepeatsAllowed(src.getNumberOfRepeatsAllowed());
+        if (src.hasNumberOfRepeatsAllowedElement())
+            tgt.setNumberOfRepeatsAllowedElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getNumberOfRepeatsAllowedElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         if (src.hasExpectedSupplyDuration())
@@ -151,8 +152,8 @@ public class MedicationRequest30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasValidityPeriod())
             tgt.setValidityPeriod(VersionConvertor_30_50.convertPeriod(src.getValidityPeriod()));
-        if (src.hasNumberOfRepeatsAllowed())
-            tgt.setNumberOfRepeatsAllowed(src.getNumberOfRepeatsAllowed());
+        if (src.hasNumberOfRepeatsAllowedElement())
+            tgt.setNumberOfRepeatsAllowedElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_30_50.convertType(src.getNumberOfRepeatsAllowedElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         if (src.hasExpectedSupplyDuration())

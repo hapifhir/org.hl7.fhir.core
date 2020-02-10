@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class FamilyMemberHistory10_30 {
 
@@ -50,14 +51,13 @@ public class FamilyMemberHistory10_30 {
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasStatus()) {
             tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasRelationship()) {
             tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
         }
@@ -90,14 +90,13 @@ public class FamilyMemberHistory10_30 {
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasStatus()) {
             tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
         if (src.hasRelationship()) {
             tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
         }

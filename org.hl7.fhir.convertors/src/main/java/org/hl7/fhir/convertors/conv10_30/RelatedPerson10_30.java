@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class RelatedPerson10_30 {
 
@@ -28,9 +29,8 @@ public class RelatedPerson10_30 {
         if (src.hasGender()) {
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
         }
-        if (src.hasBirthDate()) {
-            tgt.setBirthDate(src.getBirthDate());
-        }
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_10_30.convertType(src.getBirthDateElement()));
         if (src.hasAddress()) {
             for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
         }
@@ -65,9 +65,8 @@ public class RelatedPerson10_30 {
         if (src.hasGender()) {
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
         }
-        if (src.hasBirthDate()) {
-            tgt.setBirthDate(src.getBirthDate());
-        }
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.dstu2.model.DateType) VersionConvertor_10_30.convertType(src.getBirthDateElement()));
         if (src.hasAddress()) {
             for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
         }
