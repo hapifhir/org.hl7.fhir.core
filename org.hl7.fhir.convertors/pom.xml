@@ -59,13 +59,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JAVA PARSER -->
-        <dependency>
-            <groupId>com.github.javaparser</groupId>
-            <artifactId>javaparser-symbol-solver-core</artifactId>
-            <version>3.15.9</version>
-        </dependency>
-
     </dependencies>
 
     <build>
