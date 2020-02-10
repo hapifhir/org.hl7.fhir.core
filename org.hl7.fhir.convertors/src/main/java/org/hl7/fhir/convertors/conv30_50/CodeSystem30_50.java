@@ -48,8 +48,8 @@ public class CodeSystem30_50 {
             tgt.setCopyrightElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_30_50.convertType(src.getCopyrightElement()));
         if (src.hasCaseSensitiveElement())
             tgt.setCaseSensitiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getCaseSensitiveElement()));
-        if (src.hasValueSetElement())
-            tgt.setValueSetElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getValueSetElement()));
+        if (src.hasValueSet())
+            tgt.setValueSet(src.getValueSet());
         if (src.hasHierarchyMeaning())
             tgt.setHierarchyMeaning(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaning()));
         if (src.hasCompositionalElement())
@@ -112,8 +112,8 @@ public class CodeSystem30_50 {
             tgt.setCopyrightElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getCopyrightElement()));
         if (src.hasCaseSensitiveElement())
             tgt.setCaseSensitiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getCaseSensitiveElement()));
-        if (src.hasValueSetElement())
-            tgt.setValueSetElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getValueSetElement()));
+        if (src.hasValueSet())
+            tgt.setValueSet(src.getValueSet());
         if (src.hasHierarchyMeaning())
             tgt.setHierarchyMeaning(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaning()));
         if (src.hasCompositionalElement())
