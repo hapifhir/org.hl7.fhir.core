@@ -155,8 +155,8 @@ public class SearchParameter30_50 {
         }
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
-        if (src.hasDerivedFromElement())
-            tgt.setDerivedFromElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getDerivedFromElement()));
+        if (src.hasDerivedFrom())
+            tgt.setDerivedFrom(src.getDerivedFrom());
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasExpressionElement())
@@ -220,8 +220,8 @@ public class SearchParameter30_50 {
         }
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
-        if (src.hasDerivedFromElement())
-            tgt.setDerivedFromElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getDerivedFromElement()));
+        if (src.hasDerivedFrom())
+            tgt.setDerivedFrom(src.getDerivedFrom());
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasExpressionElement())
