@@ -3,6 +3,9 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.DateTimeType;
+
+import java.util.Collections;
 
 public class MedicationStatement30_50 {
 
@@ -30,8 +33,8 @@ public class MedicationStatement30_50 {
             tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((DateTimeType) VersionConvertor_30_50.convertType(src.getDateAssertedElement()));
         if (src.hasInformationSource())
             tgt.setInformationSource(VersionConvertor_30_50.convertReference(src.getInformationSource()));
         if (src.hasSubject())
@@ -78,8 +81,8 @@ public class MedicationStatement30_50 {
             tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateAssertedElement()));
         if (src.hasInformationSource())
             tgt.setInformationSource(VersionConvertor_30_50.convertReference(src.getInformationSource()));
         if (src.hasSubject())

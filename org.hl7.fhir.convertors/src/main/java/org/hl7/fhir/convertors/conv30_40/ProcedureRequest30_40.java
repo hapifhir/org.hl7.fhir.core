@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.util.List;
+import java.util.Collections;
 
 public class ProcedureRequest30_40 {
 
@@ -118,9 +119,8 @@ public class ProcedureRequest30_40 {
         if (src.hasPriority()) {
             tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
         }
-        if (src.hasDoNotPerform()) {
-            tgt.setDoNotPerform(src.getDoNotPerform());
-        }
+        if (src.hasDoNotPerformElement())
+            tgt.setDoNotPerformElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getDoNotPerformElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) {
             tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         }

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Group10_40 {
 
@@ -16,18 +17,15 @@ public class Group10_40 {
         if (src.hasType()) {
             tgt.setType(convertGroupType(src.getType()));
         }
-        if (src.hasActual()) {
-            tgt.setActual(src.getActual());
-        }
+        if (src.hasActualElement())
+            tgt.setActualElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_10_40.convertType(src.getActualElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasQuantity()) {
-            tgt.setQuantity(src.getQuantity());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
+        if (src.hasQuantityElement())
+            tgt.setQuantityElement((org.hl7.fhir.r4.model.UnsignedIntType) VersionConvertor_10_40.convertType(src.getQuantityElement()));
         if (src.hasCharacteristic()) {
             for (org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
         }
@@ -48,18 +46,15 @@ public class Group10_40 {
         if (src.hasType()) {
             tgt.setType(convertGroupType(src.getType()));
         }
-        if (src.hasActual()) {
-            tgt.setActual(src.getActual());
-        }
+        if (src.hasActualElement())
+            tgt.setActualElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_40.convertType(src.getActualElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasQuantity()) {
-            tgt.setQuantity(src.getQuantity());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
+        if (src.hasQuantityElement())
+            tgt.setQuantityElement((org.hl7.fhir.dstu2.model.UnsignedIntType) VersionConvertor_10_40.convertType(src.getQuantityElement()));
         if (src.hasCharacteristic()) {
             for (org.hl7.fhir.r4.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
         }
@@ -80,9 +75,8 @@ public class Group10_40 {
         if (src.hasValue()) {
             tgt.setValue(VersionConvertor_10_40.convertType(src.getValue()));
         }
-        if (src.hasExclude()) {
-            tgt.setExclude(src.getExclude());
-        }
+        if (src.hasExcludeElement())
+            tgt.setExcludeElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_10_40.convertType(src.getExcludeElement()));
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
         }
@@ -100,9 +94,8 @@ public class Group10_40 {
         if (src.hasValue()) {
             tgt.setValue(VersionConvertor_10_40.convertType(src.getValue()));
         }
-        if (src.hasExclude()) {
-            tgt.setExclude(src.getExclude());
-        }
+        if (src.hasExcludeElement())
+            tgt.setExcludeElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_40.convertType(src.getExcludeElement()));
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
         }
@@ -120,9 +113,8 @@ public class Group10_40 {
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
         }
-        if (src.hasInactive()) {
-            tgt.setInactive(src.getInactive());
-        }
+        if (src.hasInactiveElement())
+            tgt.setInactiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_10_40.convertType(src.getInactiveElement()));
         return tgt;
     }
 
@@ -137,9 +129,8 @@ public class Group10_40 {
         if (src.hasPeriod()) {
             tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
         }
-        if (src.hasInactive()) {
-            tgt.setInactive(src.getInactive());
-        }
+        if (src.hasInactiveElement())
+            tgt.setInactiveElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_40.convertType(src.getInactiveElement()));
         return tgt;
     }
 

@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Procedure10_30 {
 
@@ -25,8 +27,8 @@ public class Procedure10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasNotDone()) {
-            tgt.setNotPerformed(src.getNotDone());
+        if (src.hasNotDoneElement()) {
+            tgt.setNotPerformedElement((BooleanType) VersionConvertor_10_30.convertType(src.getNotDoneElement()));
         }
         if (src.hasNotDoneReason()) {
             tgt.addReasonNotPerformed(VersionConvertor_10_30.convertCodeableConcept(src.getNotDoneReason()));
@@ -90,8 +92,8 @@ public class Procedure10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasNotPerformed()) {
-            tgt.setNotDone(src.getNotPerformed());
+        if (src.hasNotPerformedElement()) {
+            tgt.setNotDoneElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getNotPerformedElement()));
         }
         if (src.hasReasonNotPerformed())
             tgt.setNotDoneReason(VersionConvertor_10_30.convertCodeableConcept(src.getReasonNotPerformed().get(0)));

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DiagnosticReport10_30 {
 
@@ -31,9 +32,8 @@ public class DiagnosticReport10_30 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_30.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasBasedOn()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addRequest(VersionConvertor_10_30.convertReference(t));
         }
@@ -49,9 +49,8 @@ public class DiagnosticReport10_30 {
         if (src.hasImage()) {
             for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage()) tgt.addImage(convertDiagnosticReportImageComponent(t));
         }
-        if (src.hasConclusion()) {
-            tgt.setConclusion(src.getConclusion());
-        }
+        if (src.hasConclusionElement())
+            tgt.setConclusionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getConclusionElement()));
         if (src.hasCodedDiagnosis()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCodedDiagnosis()) tgt.addCodedDiagnosis(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -87,9 +86,8 @@ public class DiagnosticReport10_30 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_30.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasRequest()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getRequest()) tgt.addBasedOn(VersionConvertor_10_30.convertReference(t));
         }
@@ -105,9 +103,8 @@ public class DiagnosticReport10_30 {
         if (src.hasImage()) {
             for (org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage()) tgt.addImage(convertDiagnosticReportImageComponent(t));
         }
-        if (src.hasConclusion()) {
-            tgt.setConclusion(src.getConclusion());
-        }
+        if (src.hasConclusionElement())
+            tgt.setConclusionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getConclusionElement()));
         if (src.hasCodedDiagnosis()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCodedDiagnosis()) tgt.addCodedDiagnosis(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -122,9 +119,8 @@ public class DiagnosticReport10_30 {
             return null;
         org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
         if (src.hasLink()) {
             tgt.setLink(VersionConvertor_10_30.convertReference(src.getLink()));
         }
@@ -136,9 +132,8 @@ public class DiagnosticReport10_30 {
             return null;
         org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
         if (src.hasLink()) {
             tgt.setLink(VersionConvertor_10_30.convertReference(src.getLink()));
         }

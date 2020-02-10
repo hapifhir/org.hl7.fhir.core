@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Observation10_40 {
 
@@ -31,9 +32,8 @@ public class Observation10_40 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_40.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_40.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_40.convertReference(t));
         }
@@ -101,9 +101,8 @@ public class Observation10_40 {
         if (src.hasEffective()) {
             tgt.setEffective(VersionConvertor_10_40.convertType(src.getEffective()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_10_40.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_40.convertReference(t));
         }
@@ -201,9 +200,8 @@ public class Observation10_40 {
         if (src.hasAge()) {
             tgt.setAge(VersionConvertor_10_40.convertRange(src.getAge()));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getTextElement()));
         return tgt;
     }
 
@@ -224,9 +222,8 @@ public class Observation10_40 {
         if (src.hasAge()) {
             tgt.setAge(VersionConvertor_10_40.convertRange(src.getAge()));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getTextElement()));
         return tgt;
     }
 

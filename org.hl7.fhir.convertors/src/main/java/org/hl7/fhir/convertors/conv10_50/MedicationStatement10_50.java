@@ -3,6 +3,9 @@ package org.hl7.fhir.convertors.conv10_50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
+import org.hl7.fhir.r5.model.StringType;
+
+import java.util.Collections;
 
 public class MedicationStatement10_50 {
 
@@ -32,8 +35,8 @@ public class MedicationStatement10_50 {
         if (src.hasDerivedFrom()) {
             for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_50.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateAssertedElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
         }
@@ -69,8 +72,8 @@ public class MedicationStatement10_50 {
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_50.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+          tgt.setDateAssertedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateAssertedElement()));
         if (src.hasNote())
             tgt.addNote().setText(src.getNote());
         if (src.hasDosage()) {
@@ -84,8 +87,8 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.r5.model.Dosage tgt = new org.hl7.fhir.r5.model.Dosage();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasText()) {
-            tgt.setText(src.getText());
+        if (src.hasTextElement()) {
+            tgt.setTextElement((StringType) VersionConvertor_10_50.convertType(src.getTextElement()));
         }
         if (src.hasTiming()) {
             tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
@@ -117,8 +120,8 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent tgt = new org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasText()) {
-            tgt.setText(src.getText());
+        if (src.hasTextElement()) {
+            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getTextElement()));
         }
         if (src.hasTiming()) {
             tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));

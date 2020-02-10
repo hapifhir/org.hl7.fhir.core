@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import java.util.List;
+import java.util.Collections;
 
 public class Consent30_40 {
 
@@ -21,7 +22,7 @@ public class Consent30_40 {
         }
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
-        if (src.hasDateTime())
+        if (src.hasDateTimeElement())
             tgt.setDateTimeElement(VersionConvertor_30_40.convertDateTime(src.getDateTimeElement()));
         if (src.hasConsentingParty()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getConsentingParty()) tgt.addPerformer(VersionConvertor_30_40.convertReference(t));
@@ -87,7 +88,7 @@ public class Consent30_40 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
-        if (src.hasDateTime())
+        if (src.hasDateTimeElement())
             tgt.setDateTimeElement(VersionConvertor_30_40.convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addConsentingParty(VersionConvertor_30_40.convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(VersionConvertor_30_40.convertReference(t));
@@ -231,10 +232,10 @@ public class Consent30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasAuthority())
-            tgt.setAuthority(src.getAuthority());
-        if (src.hasUri())
-            tgt.setUri(src.getUri());
+        if (src.hasAuthorityElement())
+            tgt.setAuthorityElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getAuthorityElement()));
+        if (src.hasUriElement())
+            tgt.setUriElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getUriElement()));
         return tgt;
     }
 
@@ -243,10 +244,10 @@ public class Consent30_40 {
             return null;
         org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasAuthority())
-            tgt.setAuthority(src.getAuthority());
-        if (src.hasUri())
-            tgt.setUri(src.getUri());
+        if (src.hasAuthorityElement())
+            tgt.setAuthorityElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getAuthorityElement()));
+        if (src.hasUriElement())
+            tgt.setUriElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getUriElement()));
         return tgt;
     }
 

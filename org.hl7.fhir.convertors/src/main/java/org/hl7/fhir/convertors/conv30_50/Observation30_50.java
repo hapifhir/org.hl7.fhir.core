@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Observation30_50 {
 
@@ -29,8 +30,8 @@ public class Observation30_50 {
             tgt.setContext(VersionConvertor_30_50.convertReference(src.getEncounter()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasIssued())
-            tgt.setIssued(src.getIssued());
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_30_50.convertReference(t));
         }
@@ -89,8 +90,8 @@ public class Observation30_50 {
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getContext()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasIssued())
-            tgt.setIssued(src.getIssued());
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getIssuedElement()));
         if (src.hasPerformer()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_30_50.convertReference(t));
         }
@@ -177,8 +178,8 @@ public class Observation30_50 {
         }
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_50.convertRange(src.getAge()));
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         return tgt;
     }
 
@@ -198,8 +199,8 @@ public class Observation30_50 {
         }
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_50.convertRange(src.getAge()));
-        if (src.hasText())
-            tgt.setText(src.getText());
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTextElement()));
         return tgt;
     }
 

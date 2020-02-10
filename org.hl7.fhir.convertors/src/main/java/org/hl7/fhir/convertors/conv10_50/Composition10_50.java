@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.dstu2.model.CodeType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Composition10_50 {
 
@@ -13,17 +15,16 @@ public class Composition10_50 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
         }
         if (src.hasClass_()) {
             tgt.addCategory(VersionConvertor_10_50.convertCodeableConcept(src.getClass_()));
         }
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         if (src.hasStatus()) {
             tgt.setStatus(convertCompositionStatus(src.getStatus()));
         }
@@ -66,16 +67,15 @@ public class Composition10_50 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
         }
         if (src.hasCategory())
             tgt.setClass_(VersionConvertor_10_50.convertCodeableConcept(src.getCategoryFirstRep()));
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         if (src.hasStatus()) {
             tgt.setStatus(convertCompositionStatus(src.getStatus()));
         }
@@ -147,9 +147,8 @@ public class Composition10_50 {
         VersionConvertor_10_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.addMode(convertCompositionAttestationMode(src.getMode()));
-        if (src.hasTime()) {
-            tgt.setTime(src.getTime());
-        }
+        if (src.hasTimeElement())
+            tgt.setTimeElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getTimeElement()));
         if (src.hasParty()) {
             tgt.setParty(VersionConvertor_10_50.convertReference(src.getParty()));
         }
@@ -163,9 +162,8 @@ public class Composition10_50 {
         VersionConvertor_10_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.setMode(convertCompositionAttestationMode(src.getMode().get(0).getValue()));
-        if (src.hasTime()) {
-            tgt.setTime(src.getTime());
-        }
+        if (src.hasTimeElement())
+            tgt.setTimeElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getTimeElement()));
         if (src.hasParty()) {
             tgt.setParty(VersionConvertor_10_50.convertReference(src.getParty()));
         }
@@ -245,17 +243,16 @@ public class Composition10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Composition.SectionComponent tgt = new org.hl7.fhir.dstu2.model.Composition.SectionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
         }
         if (src.hasText()) {
             tgt.setText(VersionConvertor_10_50.convertNarrative(src.getText()));
         }
-        if (src.hasMode()) {
-            tgt.setMode(src.getMode().toCode());
+        if (src.hasModeElement()) {
+            tgt.setModeElement((CodeType) VersionConvertor_10_50.convertType(src.getModeElement()));
         }
         if (src.hasOrderedBy()) {
             tgt.setOrderedBy(VersionConvertor_10_50.convertCodeableConcept(src.getOrderedBy()));
@@ -277,9 +274,8 @@ public class Composition10_50 {
             return null;
         org.hl7.fhir.r5.model.Composition.SectionComponent tgt = new org.hl7.fhir.r5.model.Composition.SectionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasTitle()) {
-            tgt.setTitle(src.getTitle());
-        }
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getTitleElement()));
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
         }

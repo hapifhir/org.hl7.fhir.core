@@ -1,10 +1,12 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.util.List;
+import java.util.Collections;
 
 public class Immunization10_30 {
 
@@ -19,16 +21,16 @@ public class Immunization10_30 {
         if (src.hasStatus()) {
             tgt.setStatus(src.getStatus().toCode());
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasVaccineCode()) {
             tgt.setVaccineCode(VersionConvertor_10_30.convertCodeableConcept(src.getVaccineCode()));
         }
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasNotGiven()) {
-            tgt.setWasNotGiven(src.getNotGiven());
+        if (src.hasNotGivenElement()) {
+            tgt.setWasNotGivenElement((BooleanType) VersionConvertor_10_30.convertType(src.getNotGivenElement()));
         }
         if (src.hasPrimarySource()) {
             tgt.setReported(!src.getPrimarySource());
@@ -48,12 +50,10 @@ public class Immunization10_30 {
         if (src.hasLocation()) {
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
         }
-        if (src.hasLotNumber()) {
-            tgt.setLotNumber(src.getLotNumber());
-        }
-        if (src.hasExpirationDate()) {
-            tgt.setExpirationDate(src.getExpirationDate());
-        }
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+        if (src.hasExpirationDateElement())
+            tgt.setExpirationDateElement((org.hl7.fhir.dstu2.model.DateType) VersionConvertor_10_30.convertType(src.getExpirationDateElement()));
         if (src.hasSite()) {
             tgt.setSite(VersionConvertor_10_30.convertCodeableConcept(src.getSite()));
         }
@@ -93,16 +93,16 @@ public class Immunization10_30 {
         } catch (org.hl7.fhir.exceptions.FHIRException e) {
             throw new FHIRException(e);
         }
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasVaccineCode()) {
             tgt.setVaccineCode(VersionConvertor_10_30.convertCodeableConcept(src.getVaccineCode()));
         }
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
-        if (src.hasWasNotGiven()) {
-            tgt.setNotGiven(src.getWasNotGiven());
+        if (src.hasWasNotGivenElement()) {
+            tgt.setNotGivenElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getWasNotGivenElement()));
         }
         if (src.hasReported()) {
             tgt.setPrimarySource(!src.getReported());
@@ -120,12 +120,10 @@ public class Immunization10_30 {
         if (src.hasLocation()) {
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
         }
-        if (src.hasLotNumber()) {
-            tgt.setLotNumber(src.getLotNumber());
-        }
-        if (src.hasExpirationDate()) {
-            tgt.setExpirationDate(src.getExpirationDate());
-        }
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+        if (src.hasExpirationDateElement())
+            tgt.setExpirationDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_10_30.convertType(src.getExpirationDateElement()));
         if (src.hasSite()) {
             tgt.setSite(VersionConvertor_10_30.convertCodeableConcept(src.getSite()));
         }
@@ -183,13 +181,13 @@ public class Immunization10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationReactionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasDetail()) {
             tgt.setDetail(VersionConvertor_10_30.convertReference(src.getDetail()));
         }
-        if (src.hasReported()) {
-            tgt.setReported(src.getReported());
+        if (src.hasReportedElement()) {
+            tgt.setReportedElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_10_30.convertType(src.getReportedElement()));
         }
         return tgt;
     }
@@ -199,13 +197,13 @@ public class Immunization10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.dstu2.model.Immunization.ImmunizationReactionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasDetail()) {
             tgt.setDetail(VersionConvertor_10_30.convertReference(src.getDetail()));
         }
-        if (src.hasReported()) {
-            tgt.setReported(src.getReported());
+        if (src.hasReportedElement()) {
+            tgt.setReportedElement((BooleanType) VersionConvertor_10_30.convertType(src.getReportedElement()));
         }
         return tgt;
     }
@@ -218,15 +216,13 @@ public class Immunization10_30 {
         if (src.hasDoseSequence()) {
             tgt.setDoseSequence(src.getDoseSequence());
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAuthority()) {
             tgt.setAuthority(VersionConvertor_10_30.convertReference(src.getAuthority()));
         }
-        if (src.hasSeries()) {
-            tgt.setSeries(src.getSeries());
-        }
+        if (src.hasSeriesElement())
+            tgt.setSeriesElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getSeriesElement()));
         if (src.hasSeriesDoses()) {
             tgt.setSeriesDoses(src.getSeriesDoses());
         }
@@ -250,15 +246,13 @@ public class Immunization10_30 {
         if (src.hasDoseSequence()) {
             tgt.setDoseSequence(src.getDoseSequence());
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAuthority()) {
             tgt.setAuthority(VersionConvertor_10_30.convertReference(src.getAuthority()));
         }
-        if (src.hasSeries()) {
-            tgt.setSeries(src.getSeries());
-        }
+        if (src.hasSeriesElement())
+            tgt.setSeriesElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getSeriesElement()));
         if (src.hasSeriesDoses()) {
             tgt.setSeriesDoses(src.getSeriesDoses());
         }

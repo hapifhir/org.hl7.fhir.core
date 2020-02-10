@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv10_40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent;
+import java.util.Collections;
 
 public class MedicationStatement10_40 {
 
@@ -32,8 +33,8 @@ public class MedicationStatement10_40 {
         if (src.hasDerivedFrom()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateAssertedElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
         }
@@ -69,10 +70,10 @@ public class MedicationStatement10_40 {
         if (src.hasSupportingInformation()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_40.convertReference(t));
         }
-        if (src.hasDateAsserted())
-            tgt.setDateAsserted(src.getDateAsserted());
-        if (src.hasNote())
-            tgt.addNote().setText(src.getNote());
+        if (src.hasDateAssertedElement())
+            tgt.setDateAssertedElement((org.hl7.fhir.r4.model.DateTimeType) VersionConvertor_10_40.convertType(src.getDateAssertedElement()));
+        if (src.hasNoteElement())
+            tgt.setNote(Collections.singletonList((org.hl7.fhir.r4.model.Annotation) VersionConvertor_10_40.convertType(src.getNoteElement())));
         if (src.hasDosage()) {
             for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
         }

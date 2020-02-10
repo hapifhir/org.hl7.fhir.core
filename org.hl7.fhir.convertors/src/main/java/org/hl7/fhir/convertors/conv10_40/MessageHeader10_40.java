@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class MessageHeader10_40 {
 
@@ -10,15 +11,13 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.dstu2.model.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageDestinationComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasTarget()) {
             tgt.setTarget(VersionConvertor_10_40.convertReference(src.getTarget()));
         }
-        if (src.hasEndpoint()) {
-            tgt.setEndpoint(src.getEndpoint());
-        }
+        if (src.hasEndpointElement())
+            tgt.setEndpointElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_40.convertType(src.getEndpointElement()));
         return tgt;
     }
 
@@ -27,15 +26,13 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
         if (src.hasTarget()) {
             tgt.setTarget(VersionConvertor_10_40.convertReference(src.getTarget()));
         }
-        if (src.hasEndpoint()) {
-            tgt.setEndpoint(src.getEndpoint());
-        }
+        if (src.hasEndpointElement())
+            tgt.setEndpointElement((org.hl7.fhir.r4.model.UrlType) VersionConvertor_10_40.convertType(src.getEndpointElement()));
         return tgt;
     }
 
@@ -113,9 +110,8 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.dstu2.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageHeaderResponseComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasIdentifier()) {
-            tgt.setIdentifier(src.getIdentifier());
-        }
+        if (src.hasIdentifierElement())
+            tgt.setIdentifierElement((org.hl7.fhir.dstu2.model.IdType) VersionConvertor_10_40.convertType(src.getIdentifierElement()));
         if (src.hasCode()) {
             tgt.setCode(convertResponseType(src.getCode()));
         }
@@ -130,9 +126,8 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasIdentifier()) {
-            tgt.setIdentifier(src.getIdentifier());
-        }
+        if (src.hasIdentifierElement())
+            tgt.setIdentifierElement((org.hl7.fhir.r4.model.IdType) VersionConvertor_10_40.convertType(src.getIdentifierElement()));
         if (src.hasCode()) {
             tgt.setCode(convertResponseType(src.getCode()));
         }
@@ -147,21 +142,17 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.r4.model.MessageHeader.MessageSourceComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageSourceComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasSoftware()) {
-            tgt.setSoftware(src.getSoftware());
-        }
-        if (src.hasVersion()) {
-            tgt.setVersion(src.getVersion());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
+        if (src.hasSoftwareElement())
+            tgt.setSoftwareElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getSoftwareElement()));
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getVersionElement()));
         if (src.hasContact()) {
             tgt.setContact(VersionConvertor_10_40.convertContactPoint(src.getContact()));
         }
-        if (src.hasEndpoint()) {
-            tgt.setEndpoint(src.getEndpoint());
-        }
+        if (src.hasEndpointElement())
+            tgt.setEndpointElement((org.hl7.fhir.r4.model.UrlType) VersionConvertor_10_40.convertType(src.getEndpointElement()));
         return tgt;
     }
 
@@ -170,21 +161,17 @@ public class MessageHeader10_40 {
             return null;
         org.hl7.fhir.dstu2.model.MessageHeader.MessageSourceComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageSourceComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
-        if (src.hasName()) {
-            tgt.setName(src.getName());
-        }
-        if (src.hasSoftware()) {
-            tgt.setSoftware(src.getSoftware());
-        }
-        if (src.hasVersion()) {
-            tgt.setVersion(src.getVersion());
-        }
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
+        if (src.hasSoftwareElement())
+            tgt.setSoftwareElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getSoftwareElement()));
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getVersionElement()));
         if (src.hasContact()) {
             tgt.setContact(VersionConvertor_10_40.convertContactPoint(src.getContact()));
         }
-        if (src.hasEndpoint()) {
-            tgt.setEndpoint(src.getEndpoint());
-        }
+        if (src.hasEndpointElement())
+            tgt.setEndpointElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_40.convertType(src.getEndpointElement()));
         return tgt;
     }
 

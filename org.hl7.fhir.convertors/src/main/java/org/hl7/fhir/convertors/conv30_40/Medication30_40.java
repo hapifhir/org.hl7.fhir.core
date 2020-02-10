@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Medication30_40 {
 
@@ -54,8 +55,8 @@ public class Medication30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasItem())
             tgt.setItem(VersionConvertor_30_40.convertType(src.getItem()));
-        if (src.hasIsActive())
-            tgt.setIsActive(src.getIsActive());
+        if (src.hasIsActiveElement())
+            tgt.setIsActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getIsActiveElement()));
         if (src.hasStrength())
             tgt.setAmount(VersionConvertor_30_40.convertRatio(src.getStrength()));
         return tgt;
@@ -68,8 +69,8 @@ public class Medication30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasItem())
             tgt.setItem(VersionConvertor_30_40.convertType(src.getItem()));
-        if (src.hasIsActive())
-            tgt.setIsActive(src.getIsActive());
+        if (src.hasIsActiveElement())
+            tgt.setIsActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getIsActiveElement()));
         if (src.hasAmount())
             tgt.setStrength(VersionConvertor_30_40.convertRatio(src.getAmount()));
         return tgt;
@@ -80,8 +81,8 @@ public class Medication30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Medication.MedicationPackageBatchComponent tgt = new org.hl7.fhir.dstu3.model.Medication.MedicationPackageBatchComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLotNumber())
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getLotNumberElement()));
         if (src.hasExpirationDate())
             tgt.setExpirationDateElement(VersionConvertor_30_40.convertDateTime(src.getExpirationDateElement()));
         return tgt;
@@ -92,8 +93,8 @@ public class Medication30_40 {
             return null;
         org.hl7.fhir.r4.model.Medication.MedicationBatchComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationBatchComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasLotNumber())
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getLotNumberElement()));
         if (src.hasExpirationDate())
             tgt.setExpirationDateElement(VersionConvertor_30_40.convertDateTime(src.getExpirationDateElement()));
         return tgt;

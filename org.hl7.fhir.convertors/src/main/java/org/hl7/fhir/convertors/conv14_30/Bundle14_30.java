@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv14_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_14_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Bundle14_30 {
 
@@ -13,8 +14,8 @@ public class Bundle14_30 {
         if (src.hasType()) {
             tgt.setType(convertBundleType(src.getType()));
         }
-        if (src.hasTotal())
-            tgt.setTotal(src.getTotal());
+        if (src.hasTotalElement())
+            tgt.setTotalElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_14_30.convertType(src.getTotalElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         }
@@ -35,8 +36,8 @@ public class Bundle14_30 {
         if (src.hasType()) {
             tgt.setType(convertBundleType(src.getType()));
         }
-        if (src.hasTotal())
-            tgt.setTotal(src.getTotal());
+        if (src.hasTotalElement())
+            tgt.setTotalElement((org.hl7.fhir.dstu2016may.model.UnsignedIntType) VersionConvertor_14_30.convertType(src.getTotalElement()));
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         }
@@ -57,8 +58,8 @@ public class Bundle14_30 {
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         }
-        if (src.hasFullUrl())
-            tgt.setFullUrl(src.getFullUrl());
+        if (src.hasFullUrlElement())
+            tgt.setFullUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_14_30.convertType(src.getFullUrlElement()));
         if (src.hasResource()) {
             tgt.setResource(VersionConvertor_14_30.convertResource(src.getResource()));
         }
@@ -82,8 +83,8 @@ public class Bundle14_30 {
         if (src.hasLink()) {
             for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         }
-        if (src.hasFullUrl())
-            tgt.setFullUrl(src.getFullUrl());
+        if (src.hasFullUrlElement())
+            tgt.setFullUrlElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_30.convertType(src.getFullUrlElement()));
         if (src.hasResource()) {
             tgt.setResource(VersionConvertor_14_30.convertResource(src.getResource()));
         }
@@ -107,17 +108,16 @@ public class Bundle14_30 {
         if (src.hasMethod()) {
             tgt.setMethod(convertHTTPVerb(src.getMethod()));
         }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
-        if (src.hasIfNoneMatch())
-            tgt.setIfNoneMatch(src.getIfNoneMatch());
-        if (src.hasIfModifiedSince())
-            tgt.setIfModifiedSince(src.getIfModifiedSince());
-        if (src.hasIfMatch())
-            tgt.setIfMatch(src.getIfMatch());
-        if (src.hasIfNoneExist())
-            tgt.setIfNoneExist(src.getIfNoneExist());
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
+        if (src.hasIfNoneMatchElement())
+            tgt.setIfNoneMatchElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getIfNoneMatchElement()));
+        if (src.hasIfModifiedSinceElement())
+            tgt.setIfModifiedSinceElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_14_30.convertType(src.getIfModifiedSinceElement()));
+        if (src.hasIfMatchElement())
+            tgt.setIfMatchElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getIfMatchElement()));
+        if (src.hasIfNoneExistElement())
+            tgt.setIfNoneExistElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getIfNoneExistElement()));
         return tgt;
     }
 
@@ -129,17 +129,16 @@ public class Bundle14_30 {
         if (src.hasMethod()) {
             tgt.setMethod(convertHTTPVerb(src.getMethod()));
         }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
-        if (src.hasIfNoneMatch())
-            tgt.setIfNoneMatch(src.getIfNoneMatch());
-        if (src.hasIfModifiedSince())
-            tgt.setIfModifiedSince(src.getIfModifiedSince());
-        if (src.hasIfMatch())
-            tgt.setIfMatch(src.getIfMatch());
-        if (src.hasIfNoneExist())
-            tgt.setIfNoneExist(src.getIfNoneExist());
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
+        if (src.hasIfNoneMatchElement())
+            tgt.setIfNoneMatchElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getIfNoneMatchElement()));
+        if (src.hasIfModifiedSinceElement())
+            tgt.setIfModifiedSinceElement((org.hl7.fhir.dstu2016may.model.InstantType) VersionConvertor_14_30.convertType(src.getIfModifiedSinceElement()));
+        if (src.hasIfMatchElement())
+            tgt.setIfMatchElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getIfMatchElement()));
+        if (src.hasIfNoneExistElement())
+            tgt.setIfNoneExistElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getIfNoneExistElement()));
         return tgt;
     }
 
@@ -148,15 +147,14 @@ public class Bundle14_30 {
             return null;
         org.hl7.fhir.dstu3.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu3.model.Bundle.BundleEntryResponseComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasStatus()) {
-            tgt.setStatus(src.getStatus());
-        }
-        if (src.hasLocation())
-            tgt.setLocation(src.getLocation());
-        if (src.hasEtag())
-            tgt.setEtag(src.getEtag());
-        if (src.hasLastModified())
-            tgt.setLastModified(src.getLastModified());
+        if (src.hasStatusElement())
+            tgt.setStatusElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getStatusElement()));
+        if (src.hasLocationElement())
+            tgt.setLocationElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_14_30.convertType(src.getLocationElement()));
+        if (src.hasEtagElement())
+            tgt.setEtagElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getEtagElement()));
+        if (src.hasLastModifiedElement())
+            tgt.setLastModifiedElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_14_30.convertType(src.getLastModifiedElement()));
         return tgt;
     }
 
@@ -165,15 +163,14 @@ public class Bundle14_30 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasStatus()) {
-            tgt.setStatus(src.getStatus());
-        }
-        if (src.hasLocation())
-            tgt.setLocation(src.getLocation());
-        if (src.hasEtag())
-            tgt.setEtag(src.getEtag());
-        if (src.hasLastModified())
-            tgt.setLastModified(src.getLastModified());
+        if (src.hasStatusElement())
+            tgt.setStatusElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getStatusElement()));
+        if (src.hasLocationElement())
+            tgt.setLocationElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_30.convertType(src.getLocationElement()));
+        if (src.hasEtagElement())
+            tgt.setEtagElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getEtagElement()));
+        if (src.hasLastModifiedElement())
+            tgt.setLastModifiedElement((org.hl7.fhir.dstu2016may.model.InstantType) VersionConvertor_14_30.convertType(src.getLastModifiedElement()));
         return tgt;
     }
 
@@ -185,8 +182,8 @@ public class Bundle14_30 {
         if (src.hasMode()) {
             tgt.setMode(convertSearchEntryMode(src.getMode()));
         }
-        if (src.hasScore())
-            tgt.setScore(src.getScore());
+        if (src.hasScoreElement())
+            tgt.setScoreElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_14_30.convertType(src.getScoreElement()));
         return tgt;
     }
 
@@ -198,8 +195,8 @@ public class Bundle14_30 {
         if (src.hasMode()) {
             tgt.setMode(convertSearchEntryMode(src.getMode()));
         }
-        if (src.hasScore())
-            tgt.setScore(src.getScore());
+        if (src.hasScoreElement())
+            tgt.setScoreElement((org.hl7.fhir.dstu2016may.model.DecimalType) VersionConvertor_14_30.convertType(src.getScoreElement()));
         return tgt;
     }
 
@@ -208,12 +205,10 @@ public class Bundle14_30 {
             return null;
         org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasRelation()) {
-            tgt.setRelation(src.getRelation());
-        }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
+        if (src.hasRelationElement())
+            tgt.setRelationElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getRelationElement()));
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
         return tgt;
     }
 
@@ -222,12 +217,10 @@ public class Bundle14_30 {
             return null;
         org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasRelation()) {
-            tgt.setRelation(src.getRelation());
-        }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
+        if (src.hasRelationElement())
+            tgt.setRelationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getRelationElement()));
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
         return tgt;
     }
 

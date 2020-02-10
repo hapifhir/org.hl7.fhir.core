@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class DiagnosticReport30_40 {
 
@@ -42,8 +43,8 @@ public class DiagnosticReport30_40 {
         if (src.hasImage()) {
             for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage()) tgt.addMedia(convertDiagnosticReportImageComponent(t));
         }
-        if (src.hasConclusion())
-            tgt.setConclusion(src.getConclusion());
+        if (src.hasConclusionElement())
+            tgt.setConclusionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getConclusionElement()));
         if (src.hasCodedDiagnosis()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCodedDiagnosis()) tgt.addConclusionCode(VersionConvertor_30_40.convertCodeableConcept(t));
         }
@@ -90,8 +91,8 @@ public class DiagnosticReport30_40 {
         if (src.hasMedia()) {
             for (org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia()) tgt.addImage(convertDiagnosticReportImageComponent(t));
         }
-        if (src.hasConclusion())
-            tgt.setConclusion(src.getConclusion());
+        if (src.hasConclusionElement())
+            tgt.setConclusionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getConclusionElement()));
         if (src.hasConclusionCode()) {
             for (org.hl7.fhir.r4.model.CodeableConcept t : src.getConclusionCode()) tgt.addCodedDiagnosis(VersionConvertor_30_40.convertCodeableConcept(t));
         }
@@ -106,8 +107,8 @@ public class DiagnosticReport30_40 {
             return null;
         org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent tgt = new org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         if (src.hasLink())
             tgt.setLink(VersionConvertor_30_40.convertReference(src.getLink()));
         return tgt;
@@ -118,8 +119,8 @@ public class DiagnosticReport30_40 {
             return null;
         org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getCommentElement()));
         if (src.hasLink())
             tgt.setLink(VersionConvertor_30_40.convertReference(src.getLink()));
         return tgt;

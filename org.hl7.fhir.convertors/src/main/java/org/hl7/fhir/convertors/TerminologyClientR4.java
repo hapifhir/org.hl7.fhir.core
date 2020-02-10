@@ -24,6 +24,7 @@ package org.hl7.fhir.convertors;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
@@ -43,7 +44,7 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return (TerminologyCapabilities) org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities.convertTerminologyCapabilities(client.getTerminologyCapabilities());
+    return (TerminologyCapabilities) TerminologyCapabilities40_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
   }
 
   @Override

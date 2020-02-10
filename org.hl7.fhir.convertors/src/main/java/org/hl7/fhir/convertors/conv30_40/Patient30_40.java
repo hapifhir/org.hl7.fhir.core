@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Patient30_40 {
 
@@ -124,8 +125,8 @@ public class Patient30_40 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasName()) {
             for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         }
@@ -175,8 +176,8 @@ public class Patient30_40 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
         if (src.hasName()) {
             for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         }
@@ -225,8 +226,8 @@ public class Patient30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasLanguage())
             tgt.setLanguage(VersionConvertor_30_40.convertCodeableConcept(src.getLanguage()));
-        if (src.hasPreferred())
-            tgt.setPreferred(src.getPreferred());
+        if (src.hasPreferredElement())
+            tgt.setPreferredElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getPreferredElement()));
         return tgt;
     }
 
@@ -237,8 +238,8 @@ public class Patient30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasLanguage())
             tgt.setLanguage(VersionConvertor_30_40.convertCodeableConcept(src.getLanguage()));
-        if (src.hasPreferred())
-            tgt.setPreferred(src.getPreferred());
+        if (src.hasPreferredElement())
+            tgt.setPreferredElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getPreferredElement()));
         return tgt;
     }
 

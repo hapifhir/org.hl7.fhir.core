@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class AppointmentResponse10_30 {
 
@@ -16,12 +17,10 @@ public class AppointmentResponse10_30 {
         if (src.hasAppointment()) {
             tgt.setAppointment(VersionConvertor_10_30.convertReference(src.getAppointment()));
         }
-        if (src.hasStart()) {
-            tgt.setStart(src.getStart());
-        }
-        if (src.hasEnd()) {
-            tgt.setEnd(src.getEnd());
-        }
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getEndElement()));
         if (src.hasParticipantType()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -31,9 +30,8 @@ public class AppointmentResponse10_30 {
         if (src.hasParticipantStatus()) {
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
         return tgt;
     }
 
@@ -48,12 +46,10 @@ public class AppointmentResponse10_30 {
         if (src.hasAppointment()) {
             tgt.setAppointment(VersionConvertor_10_30.convertReference(src.getAppointment()));
         }
-        if (src.hasStart()) {
-            tgt.setStart(src.getStart());
-        }
-        if (src.hasEnd()) {
-            tgt.setEnd(src.getEnd());
-        }
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getEndElement()));
         if (src.hasParticipantType()) {
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_30.convertCodeableConcept(t));
         }
@@ -63,9 +59,8 @@ public class AppointmentResponse10_30 {
         if (src.hasParticipantStatus()) {
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getCommentElement()));
         return tgt;
     }
 

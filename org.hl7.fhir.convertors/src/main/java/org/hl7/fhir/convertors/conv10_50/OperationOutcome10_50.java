@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class OperationOutcome10_50 {
 
@@ -209,9 +210,8 @@ public class OperationOutcome10_50 {
         if (src.hasDetails()) {
             tgt.setDetails(VersionConvertor_10_50.convertCodeableConcept(src.getDetails()));
         }
-        if (src.hasDiagnostics()) {
-            tgt.setDiagnostics(src.getDiagnostics());
-        }
+        if (src.hasDiagnosticsElement())
+            tgt.setDiagnosticsElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getDiagnosticsElement()));
         if (src.hasLocation()) {
             for (org.hl7.fhir.dstu2.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
         }
@@ -232,9 +232,8 @@ public class OperationOutcome10_50 {
         if (src.hasDetails()) {
             tgt.setDetails(VersionConvertor_10_50.convertCodeableConcept(src.getDetails()));
         }
-        if (src.hasDiagnostics()) {
-            tgt.setDiagnostics(src.getDiagnostics());
-        }
+        if (src.hasDiagnosticsElement())
+            tgt.setDiagnosticsElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getDiagnosticsElement()));
         if (src.hasLocation()) {
             for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
         }

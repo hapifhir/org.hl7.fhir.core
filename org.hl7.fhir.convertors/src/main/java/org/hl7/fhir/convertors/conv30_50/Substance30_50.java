@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Substance30_50 {
 
@@ -50,8 +51,8 @@ public class Substance30_50 {
         }
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasInstance()) {
             for (org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
         }
@@ -76,8 +77,8 @@ public class Substance30_50 {
         }
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasInstance()) {
             for (org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
         }
@@ -118,8 +119,8 @@ public class Substance30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        if (src.hasExpiry())
-            tgt.setExpiry(src.getExpiry());
+        if (src.hasExpiryElement())
+            tgt.setExpiryElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getExpiryElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         return tgt;
@@ -132,8 +133,8 @@ public class Substance30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        if (src.hasExpiry())
-            tgt.setExpiry(src.getExpiry());
+        if (src.hasExpiryElement())
+            tgt.setExpiryElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getExpiryElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         return tgt;
