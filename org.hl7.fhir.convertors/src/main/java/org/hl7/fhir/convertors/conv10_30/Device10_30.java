@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.DateTimeType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Device10_30 {
 
@@ -21,24 +23,19 @@ public class Device10_30 {
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         }
-        if (src.hasLotNumber()) {
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+        if (src.hasManufacturerElement())
+            tgt.setManufacturerElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getManufacturerElement()));
+        if (src.hasManufactureDateElement())
+            tgt.setManufactureDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getManufactureDateElement()));
+        if (src.hasExpirationDateElement()) {
+            tgt.setExpiryElement((DateTimeType) VersionConvertor_10_30.convertType(src.getExpirationDateElement()));
         }
-        if (src.hasManufacturer()) {
-            tgt.setManufacturer(src.getManufacturer());
-        }
-        if (src.hasManufactureDate()) {
-            tgt.setManufactureDate(src.getManufactureDate());
-        }
-        if (src.hasExpirationDate()) {
-            tgt.setExpiry(src.getExpirationDate());
-        }
-        if (src.hasModel()) {
-            tgt.setModel(src.getModel());
-        }
-        if (src.hasVersion()) {
-            tgt.setVersion(src.getVersion());
-        }
+        if (src.hasModelElement())
+            tgt.setModelElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getModelElement()));
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getVersionElement()));
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
@@ -51,9 +48,8 @@ public class Device10_30 {
         if (src.hasLocation()) {
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
         }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_30.convertType(src.getUrlElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
         }
@@ -77,24 +73,19 @@ public class Device10_30 {
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         }
-        if (src.hasLotNumber()) {
-            tgt.setLotNumber(src.getLotNumber());
+        if (src.hasLotNumberElement())
+            tgt.setLotNumberElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+        if (src.hasManufacturerElement())
+            tgt.setManufacturerElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getManufacturerElement()));
+        if (src.hasManufactureDateElement())
+            tgt.setManufactureDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getManufactureDateElement()));
+        if (src.hasExpiryElement()) {
+            tgt.setExpirationDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getExpiryElement()));
         }
-        if (src.hasManufacturer()) {
-            tgt.setManufacturer(src.getManufacturer());
-        }
-        if (src.hasManufactureDate()) {
-            tgt.setManufactureDate(src.getManufactureDate());
-        }
-        if (src.hasExpiry()) {
-            tgt.setExpirationDate(src.getExpiry());
-        }
-        if (src.hasModel()) {
-            tgt.setModel(src.getModel());
-        }
-        if (src.hasVersion()) {
-            tgt.setVersion(src.getVersion());
-        }
+        if (src.hasModelElement())
+            tgt.setModelElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getModelElement()));
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getVersionElement()));
         if (src.hasPatient()) {
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
         }
@@ -107,9 +98,8 @@ public class Device10_30 {
         if (src.hasLocation()) {
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
         }
-        if (src.hasUrl()) {
-            tgt.setUrl(src.getUrl());
-        }
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_10_30.convertType(src.getUrlElement()));
         if (src.hasNote()) {
             for (org.hl7.fhir.dstu2.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
         }

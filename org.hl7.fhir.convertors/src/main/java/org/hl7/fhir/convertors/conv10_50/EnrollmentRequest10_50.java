@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class EnrollmentRequest10_50 {
 
@@ -13,9 +14,8 @@ public class EnrollmentRequest10_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         }
-        if (src.hasCreated()) {
-            tgt.setCreated(src.getCreated());
-        }
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getCreatedElement()));
         if (src.hasProvider()) {
             tgt.setProvider(VersionConvertor_10_50.convertReference(src.getProvider()));
         }
@@ -36,9 +36,8 @@ public class EnrollmentRequest10_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         }
-        if (src.hasCreated()) {
-            tgt.setCreated(src.getCreated());
-        }
+        if (src.hasCreatedElement())
+            tgt.setCreatedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getCreatedElement()));
         if (src.hasCoverage()) {
             tgt.setCoverage(VersionConvertor_10_50.convertReference(src.getCoverage()));
         }

@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Consent30_50 {
 

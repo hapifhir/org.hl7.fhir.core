@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Goal30_40 {
 
@@ -29,9 +30,9 @@ public class Goal30_40 {
         if (src.hasTarget())
             tgt.setTarget(convertGoalTargetComponent(src.getTargetFirstRep()));
         if (src.hasStatusDate())
-            tgt.setStatusDateElement(VersionConvertor_30_40.convertDate(src.getStatusDateElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(src.getStatusReason());
+          tgt.setStatusDateElement(VersionConvertor_30_40.convertDate(src.getStatusDateElement()));
+        if (src.hasStatusReasonElement())
+            tgt.setStatusReasonElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getStatusReasonElement()));
         if (src.hasExpressedBy())
             tgt.setExpressedBy(VersionConvertor_30_40.convertReference(src.getExpressedBy()));
         if (src.hasAddresses()) {
@@ -73,9 +74,9 @@ public class Goal30_40 {
         if (src.hasTarget())
             tgt.addTarget(convertGoalTargetComponent(src.getTarget()));
         if (src.hasStatusDate())
-            tgt.setStatusDateElement(VersionConvertor_30_40.convertDate(src.getStatusDateElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(src.getStatusReason());
+          tgt.setStatusDateElement(VersionConvertor_30_40.convertDate(src.getStatusDateElement()));
+        if (src.hasStatusReasonElement())
+            tgt.setStatusReasonElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getStatusReasonElement()));
         if (src.hasExpressedBy())
             tgt.setExpressedBy(VersionConvertor_30_40.convertReference(src.getExpressedBy()));
         if (src.hasAddresses()) {

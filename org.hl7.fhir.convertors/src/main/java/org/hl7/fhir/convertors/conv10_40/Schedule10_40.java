@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Schedule10_40 {
 
@@ -22,9 +23,8 @@ public class Schedule10_40 {
         if (src.hasPlanningHorizon()) {
             tgt.setPlanningHorizon(VersionConvertor_10_40.convertPeriod(src.getPlanningHorizon()));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
         return tgt;
     }
 
@@ -45,9 +45,8 @@ public class Schedule10_40 {
         if (src.hasPlanningHorizon()) {
             tgt.setPlanningHorizon(VersionConvertor_10_40.convertPeriod(src.getPlanningHorizon()));
         }
-        if (src.hasComment()) {
-            tgt.setComment(src.getComment());
-        }
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
         return tgt;
     }
 }

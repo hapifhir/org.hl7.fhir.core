@@ -2,7 +2,9 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.DecimalType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Contract10_30 {
 
@@ -64,9 +66,8 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasApplies()) {
             tgt.setApplies(VersionConvertor_10_30.convertPeriod(src.getApplies()));
         }
@@ -126,9 +127,8 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasApplies()) {
             tgt.setApplies(VersionConvertor_10_30.convertPeriod(src.getApplies()));
         }
@@ -293,9 +293,8 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasApplies()) {
             tgt.setApplies(VersionConvertor_10_30.convertPeriod(src.getApplies()));
         }
@@ -314,9 +313,8 @@ public class Contract10_30 {
         if (src.hasActor()) {
             for (org.hl7.fhir.dstu2.model.Contract.TermActorComponent t : src.getActor()) tgt.addAgent(convertTermAgentComponent(t));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         if (src.hasValuedItem()) {
             for (org.hl7.fhir.dstu2.model.Contract.TermValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertTermValuedItemComponent(t));
         }
@@ -334,9 +332,8 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasIssued()) {
-            tgt.setIssued(src.getIssued());
-        }
+        if (src.hasIssuedElement())
+            tgt.setIssuedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getIssuedElement()));
         if (src.hasApplies()) {
             tgt.setApplies(VersionConvertor_10_30.convertPeriod(src.getApplies()));
         }
@@ -355,9 +352,8 @@ public class Contract10_30 {
         if (src.hasAgent()) {
             for (org.hl7.fhir.dstu3.model.Contract.TermAgentComponent t : src.getAgent()) tgt.addActor(convertTermAgentComponent(t));
         }
-        if (src.hasText()) {
-            tgt.setText(src.getText());
-        }
+        if (src.hasTextElement())
+            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getTextElement()));
         if (src.hasValuedItem()) {
             for (org.hl7.fhir.dstu3.model.Contract.TermValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertTermValuedItemComponent(t));
         }
@@ -378,20 +374,19 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasEffectiveTime()) {
-            tgt.setEffectiveTime(src.getEffectiveTime());
-        }
+        if (src.hasEffectiveTimeElement())
+            tgt.setEffectiveTimeElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getEffectiveTimeElement()));
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
         if (src.hasUnitPrice()) {
             tgt.setUnitPrice(VersionConvertor_10_30.convertMoney(src.getUnitPrice()));
         }
-        if (src.hasFactor()) {
-            tgt.setFactor(src.getFactor());
+        if (src.hasFactorElement()) {
+            tgt.setFactorElement((DecimalType) VersionConvertor_10_30.convertType(src.getFactorElement()));
         }
-        if (src.hasPoints()) {
-            tgt.setPoints(src.getPoints());
+        if (src.hasPointsElement()) {
+            tgt.setPointsElement((DecimalType) VersionConvertor_10_30.convertType(src.getPointsElement()));
         }
         if (src.hasNet()) {
             tgt.setNet(VersionConvertor_10_30.convertMoney(src.getNet()));
@@ -410,20 +405,19 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasEffectiveTime()) {
-            tgt.setEffectiveTime(src.getEffectiveTime());
-        }
+        if (src.hasEffectiveTimeElement())
+            tgt.setEffectiveTimeElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getEffectiveTimeElement()));
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
         if (src.hasUnitPrice()) {
             tgt.setUnitPrice(VersionConvertor_10_30.convertMoney(src.getUnitPrice()));
         }
-        if (src.hasFactor()) {
-            tgt.setFactor(src.getFactor());
+        if (src.hasFactorElement()) {
+            tgt.setFactorElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_10_30.convertType(src.getFactorElement()));
         }
-        if (src.hasPoints()) {
-            tgt.setPoints(src.getPoints());
+        if (src.hasPointsElement()) {
+            tgt.setPointsElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_10_30.convertType(src.getPointsElement()));
         }
         if (src.hasNet()) {
             tgt.setNet(VersionConvertor_10_30.convertMoney(src.getNet()));
@@ -442,20 +436,19 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasEffectiveTime()) {
-            tgt.setEffectiveTime(src.getEffectiveTime());
-        }
+        if (src.hasEffectiveTimeElement())
+            tgt.setEffectiveTimeElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getEffectiveTimeElement()));
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
         if (src.hasUnitPrice()) {
             tgt.setUnitPrice(VersionConvertor_10_30.convertMoney(src.getUnitPrice()));
         }
-        if (src.hasFactor()) {
-            tgt.setFactor(src.getFactor());
+        if (src.hasFactorElement()) {
+            tgt.setFactorElement((DecimalType) VersionConvertor_10_30.convertType(src.getFactorElement()));
         }
-        if (src.hasPoints()) {
-            tgt.setPoints(src.getPoints());
+        if (src.hasPointsElement()) {
+            tgt.setPointsElement((DecimalType) VersionConvertor_10_30.convertType(src.getPointsElement()));
         }
         if (src.hasNet()) {
             tgt.setNet(VersionConvertor_10_30.convertMoney(src.getNet()));
@@ -474,20 +467,19 @@ public class Contract10_30 {
         if (src.hasIdentifier()) {
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
         }
-        if (src.hasEffectiveTime()) {
-            tgt.setEffectiveTime(src.getEffectiveTime());
-        }
+        if (src.hasEffectiveTimeElement())
+            tgt.setEffectiveTimeElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getEffectiveTimeElement()));
         if (src.hasQuantity()) {
             tgt.setQuantity(VersionConvertor_10_30.convertSimpleQuantity(src.getQuantity()));
         }
         if (src.hasUnitPrice()) {
             tgt.setUnitPrice(VersionConvertor_10_30.convertMoney(src.getUnitPrice()));
         }
-        if (src.hasFactor()) {
-            tgt.setFactor(src.getFactor());
+        if (src.hasFactorElement()) {
+            tgt.setFactorElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_10_30.convertType(src.getFactorElement()));
         }
-        if (src.hasPoints()) {
-            tgt.setPoints(src.getPoints());
+        if (src.hasPointsElement()) {
+            tgt.setPointsElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_10_30.convertType(src.getPointsElement()));
         }
         if (src.hasNet()) {
             tgt.setNet(VersionConvertor_10_30.convertMoney(src.getNet()));

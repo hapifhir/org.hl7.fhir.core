@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Composition30_40 {
 
@@ -27,8 +28,8 @@ public class Composition30_40 {
         if (src.hasAuthor()) {
             for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getTitleElement()));
         if (src.hasConfidentiality())
             tgt.setConfidentiality(convertDocumentConfidentiality(src.getConfidentiality()));
         if (src.hasAttester()) {
@@ -70,8 +71,8 @@ public class Composition30_40 {
         if (src.hasAuthor()) {
             for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor()) tgt.addAuthor(VersionConvertor_30_40.convertReference(t));
         }
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getTitleElement()));
         if (src.hasConfidentiality())
             tgt.setConfidentiality(convertDocumentConfidentiality(src.getConfidentiality()));
         if (src.hasAttester()) {
@@ -290,8 +291,8 @@ public class Composition30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Composition.SectionComponent tgt = new org.hl7.fhir.dstu3.model.Composition.SectionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         if (src.hasText())
@@ -316,8 +317,8 @@ public class Composition30_40 {
             return null;
         org.hl7.fhir.r4.model.Composition.SectionComponent tgt = new org.hl7.fhir.r4.model.Composition.SectionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         if (src.hasText())

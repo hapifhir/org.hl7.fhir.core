@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class FamilyMemberHistory30_40 {
 
@@ -58,16 +59,16 @@ public class FamilyMemberHistory30_40 {
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
         if (src.hasDateElement())
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_30_40.convertCodeableConcept(src.getRelationship()));
         if (src.hasBorn())
             tgt.setBorn(VersionConvertor_30_40.convertType(src.getBorn()));
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_40.convertType(src.getAge()));
-        if (src.hasEstimatedAge())
-            tgt.setEstimatedAge(src.getEstimatedAge());
+        if (src.hasEstimatedAgeElement())
+            tgt.setEstimatedAgeElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getEstimatedAgeElement()));
         if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_30_40.convertType(src.getDeceased()));
         if (src.hasReasonCode()) {
@@ -104,16 +105,16 @@ public class FamilyMemberHistory30_40 {
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
         if (src.hasDateElement())
             tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
-        if (src.hasName())
-            tgt.setName(src.getName());
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getNameElement()));
         if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_30_40.convertCodeableConcept(src.getRelationship()));
         if (src.hasBorn())
             tgt.setBorn(VersionConvertor_30_40.convertType(src.getBorn()));
         if (src.hasAge())
             tgt.setAge(VersionConvertor_30_40.convertType(src.getAge()));
-        if (src.hasEstimatedAge())
-            tgt.setEstimatedAge(src.getEstimatedAge());
+        if (src.hasEstimatedAgeElement())
+            tgt.setEstimatedAgeElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getEstimatedAgeElement()));
         if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_30_40.convertType(src.getDeceased()));
         if (src.hasReasonCode()) {

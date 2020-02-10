@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu2.model.PositiveIntType;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class ImmunizationRecommendation10_30 {
 
@@ -44,13 +46,13 @@ public class ImmunizationRecommendation10_30 {
             return null;
         org.hl7.fhir.dstu2.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.dstu2.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasVaccineCode()) {
             tgt.setVaccineCode(VersionConvertor_10_30.convertCodeableConcept(src.getVaccineCode()));
         }
-        if (src.hasDoseNumber()) {
-            tgt.setDoseNumber(src.getDoseNumber());
+        if (src.hasDoseNumberElement()) {
+            tgt.setDoseNumberElement((PositiveIntType) VersionConvertor_10_30.convertType(src.getDoseNumberElement()));
         }
         if (src.hasForecastStatus()) {
             tgt.setForecastStatus(VersionConvertor_10_30.convertCodeableConcept(src.getForecastStatus()));
@@ -75,13 +77,13 @@ public class ImmunizationRecommendation10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.dstu3.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getDateElement()));
         if (src.hasVaccineCode()) {
             tgt.setVaccineCode(VersionConvertor_10_30.convertCodeableConcept(src.getVaccineCode()));
         }
-        if (src.hasDoseNumber()) {
-            tgt.setDoseNumber(src.getDoseNumber());
+        if (src.hasDoseNumberElement()) {
+            tgt.setDoseNumberElement((org.hl7.fhir.dstu3.model.PositiveIntType) VersionConvertor_10_30.convertType(src.getDoseNumberElement()));
         }
         if (src.hasForecastStatus()) {
             tgt.setForecastStatus(VersionConvertor_10_30.convertCodeableConcept(src.getForecastStatus()));
@@ -109,9 +111,8 @@ public class ImmunizationRecommendation10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasValue()) {
-            tgt.setValue(src.getValue());
-        }
+        if (src.hasValueElement())
+            tgt.setValueElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getValueElement()));
         return tgt;
     }
 
@@ -123,9 +124,8 @@ public class ImmunizationRecommendation10_30 {
         if (src.hasCode()) {
             tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getCode()));
         }
-        if (src.hasValue()) {
-            tgt.setValue(src.getValue());
-        }
+        if (src.hasValueElement())
+            tgt.setValueElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getValueElement()));
         return tgt;
     }
 
@@ -137,15 +137,13 @@ public class ImmunizationRecommendation10_30 {
         if (src.hasDoseSequence()) {
             tgt.setDoseSequence(src.getDoseSequence());
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAuthority()) {
             tgt.setAuthority(VersionConvertor_10_30.convertReference(src.getAuthority()));
         }
-        if (src.hasSeries()) {
-            tgt.setSeries(src.getSeries());
-        }
+        if (src.hasSeriesElement())
+            tgt.setSeriesElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getSeriesElement()));
         return tgt;
     }
 
@@ -157,15 +155,13 @@ public class ImmunizationRecommendation10_30 {
         if (src.hasDoseSequence()) {
             tgt.setDoseSequence(src.getDoseSequence());
         }
-        if (src.hasDescription()) {
-            tgt.setDescription(src.getDescription());
-        }
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
         if (src.hasAuthority()) {
             tgt.setAuthority(VersionConvertor_10_30.convertReference(src.getAuthority()));
         }
-        if (src.hasSeries()) {
-            tgt.setSeries(src.getSeries());
-        }
+        if (src.hasSeriesElement())
+            tgt.setSeriesElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getSeriesElement()));
         return tgt;
     }
 }

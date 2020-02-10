@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv10_30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu3.model.Dosage;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class MedicationDispense10_30 {
 
@@ -35,20 +36,18 @@ public class MedicationDispense10_30 {
         if (src.hasDaysSupply()) {
             tgt.setDaysSupply(VersionConvertor_10_30.convertSimpleQuantity(src.getDaysSupply()));
         }
-        if (src.hasWhenPrepared()) {
-            tgt.setWhenPrepared(src.getWhenPrepared());
-        }
-        if (src.hasWhenHandedOver()) {
-            tgt.setWhenHandedOver(src.getWhenHandedOver());
-        }
+        if (src.hasWhenPreparedElement())
+            tgt.setWhenPreparedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getWhenPreparedElement()));
+        if (src.hasWhenHandedOverElement())
+            tgt.setWhenHandedOverElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getWhenHandedOverElement()));
         if (src.hasDestination()) {
             tgt.setDestination(VersionConvertor_10_30.convertReference(src.getDestination()));
         }
         if (src.hasReceiver()) {
             for (org.hl7.fhir.dstu2.model.Reference t : src.getReceiver()) tgt.addReceiver(VersionConvertor_10_30.convertReference(t));
         }
-        if (src.hasNote())
-            tgt.addNote().setText(src.getNote());
+        if (src.hasNoteElement())
+            tgt.setNote(Collections.singletonList((org.hl7.fhir.dstu3.model.Annotation) VersionConvertor_10_30.convertType(src.getNoteElement())));
         if (src.hasDosageInstruction()) {
             for (org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseDosageInstructionComponent t : src.getDosageInstruction()) tgt.addDosageInstruction(convertMedicationDispenseDosageInstructionComponent(t));
         }
@@ -87,12 +86,10 @@ public class MedicationDispense10_30 {
         if (src.hasDaysSupply()) {
             tgt.setDaysSupply(VersionConvertor_10_30.convertSimpleQuantity(src.getDaysSupply()));
         }
-        if (src.hasWhenPrepared()) {
-            tgt.setWhenPrepared(src.getWhenPrepared());
-        }
-        if (src.hasWhenHandedOver()) {
-            tgt.setWhenHandedOver(src.getWhenHandedOver());
-        }
+        if (src.hasWhenPreparedElement())
+            tgt.setWhenPreparedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getWhenPreparedElement()));
+        if (src.hasWhenHandedOverElement())
+            tgt.setWhenHandedOverElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getWhenHandedOverElement()));
         if (src.hasDestination()) {
             tgt.setDestination(VersionConvertor_10_30.convertReference(src.getDestination()));
         }
