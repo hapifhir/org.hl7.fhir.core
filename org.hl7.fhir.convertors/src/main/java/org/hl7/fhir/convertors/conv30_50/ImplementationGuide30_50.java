@@ -119,8 +119,8 @@ public class ImplementationGuide30_50 {
         org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideDependencyComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideDependencyComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         tgt.setType(org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType.REFERENCE);
-        if (src.hasUriElement())
-            tgt.setUriElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUriElement()));
+        if (src.hasUri())
+            tgt.setUri(src.getUri());
         if (src.hasPackageId())
             tgt.addExtension(new org.hl7.fhir.dstu3.model.Extension(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION, new org.hl7.fhir.dstu3.model.IdType(src.getPackageId())));
         if (src.hasVersion())
@@ -133,8 +133,8 @@ public class ImplementationGuide30_50 {
             return null;
         org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasUriElement())
-            tgt.setUriElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getUriElement()));
+        if (src.hasUri())
+            tgt.setUri(src.getUri());
         if (org.hl7.fhir.dstu3.utils.ToolingExtensions.hasExtension(src, VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION)) {
             tgt.setPackageId(org.hl7.fhir.dstu3.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION));
         }
