@@ -191,8 +191,8 @@ public class CapabilityStatement30_50 {
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         if (src.hasUrlElement())
             tgt.setUrlElement((org.hl7.fhir.r5.model.UrlType) VersionConvertor_30_50.convertType(src.getUrlElement()));
         return tgt;
@@ -203,8 +203,8 @@ public class CapabilityStatement30_50 {
             return null;
         org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementImplementationComponent tgt = new org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementImplementationComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         if (src.hasUrlElement())
             tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
         return tgt;
@@ -573,8 +573,8 @@ public class CapabilityStatement30_50 {
         if (src.hasService()) {
             for (org.hl7.fhir.r5.model.CodeableConcept t : src.getService()) tgt.addService(VersionConvertor_30_50.convertCodeableConcept(t));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         return tgt;
     }
 
@@ -588,8 +588,8 @@ public class CapabilityStatement30_50 {
         if (src.hasService()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getService()) tgt.addService(VersionConvertor_30_50.convertCodeableConcept(t));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         return tgt;
     }
 
