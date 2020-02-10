@@ -250,8 +250,8 @@ public class CapabilityStatement30_50 {
         }
         if (src.hasReliableCacheElement())
             tgt.setReliableCacheElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getReliableCacheElement()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         if (src.hasSupportedMessage()) {
             for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
         }
@@ -287,8 +287,8 @@ public class CapabilityStatement30_50 {
         }
         if (src.hasReliableCacheElement())
             tgt.setReliableCacheElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getReliableCacheElement()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         if (src.hasSupportedMessage()) {
             for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
         }
@@ -542,8 +542,8 @@ public class CapabilityStatement30_50 {
             tgt.setDefinitionElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
@@ -558,8 +558,8 @@ public class CapabilityStatement30_50 {
             tgt.setDefinitionElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getDefinitionElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
@@ -782,8 +782,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertTypeRestfulInteraction(src.getCode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
@@ -794,8 +794,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertTypeRestfulInteraction(src.getCode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
@@ -862,8 +862,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertSystemRestfulInteraction(src.getCode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
@@ -874,8 +874,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertSystemRestfulInteraction(src.getCode()));
-        if (src.hasDocumentationElement())
-            tgt.setDocumentationElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDocumentationElement()));
+        if (src.hasDocumentation())
+            tgt.setDocumentation(src.getDocumentation());
         return tgt;
     }
 
