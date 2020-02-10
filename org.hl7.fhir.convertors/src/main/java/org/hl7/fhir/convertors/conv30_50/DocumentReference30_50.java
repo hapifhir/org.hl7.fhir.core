@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.InstantType;
+
+import java.util.Collections;
 
 public class DocumentReference30_50 {
 
@@ -25,8 +29,8 @@ public class DocumentReference30_50 {
             tgt.addCategory(VersionConvertor_30_50.convertCodeableConcept(src.getClass_()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
-        if (src.hasCreated())
-            tgt.setDate(src.getCreated());
+        if (src.hasCreatedElement())
+            tgt.setDateElement((InstantType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
         if (src.hasAuthenticator())
             tgt.setAuthenticator(VersionConvertor_30_50.convertReference(src.getAuthenticator()));
         if (src.hasCustodian())
@@ -34,8 +38,8 @@ public class DocumentReference30_50 {
         if (src.hasRelatesTo()) {
             for (org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasSecurityLabel()) {
             for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_50.convertCodeableConcept(t));
         }
@@ -67,8 +71,8 @@ public class DocumentReference30_50 {
             tgt.setClass_(VersionConvertor_30_50.convertCodeableConcept(src.getCategoryFirstRep()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
-        if (src.hasDate())
-            tgt.setCreated(src.getDate());
+        if (src.hasDateElement())
+            tgt.setCreatedElement((DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasAuthenticator())
             tgt.setAuthenticator(VersionConvertor_30_50.convertReference(src.getAuthenticator()));
         if (src.hasCustodian())
@@ -76,8 +80,8 @@ public class DocumentReference30_50 {
         if (src.hasRelatesTo()) {
             for (org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));
         }
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasSecurityLabel()) {
             for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_50.convertCodeableConcept(t));
         }

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class MedicationDispense30_50 {
 
@@ -41,10 +42,10 @@ public class MedicationDispense30_50 {
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         if (src.hasDaysSupply())
             tgt.setDaysSupply(VersionConvertor_30_50.convertSimpleQuantity(src.getDaysSupply()));
-        if (src.hasWhenPrepared())
-            tgt.setWhenPrepared(src.getWhenPrepared());
-        if (src.hasWhenHandedOver())
-            tgt.setWhenHandedOver(src.getWhenHandedOver());
+        if (src.hasWhenPreparedElement())
+            tgt.setWhenPreparedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getWhenPreparedElement()));
+        if (src.hasWhenHandedOverElement())
+            tgt.setWhenHandedOverElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getWhenHandedOverElement()));
         if (src.hasDestination())
             tgt.setDestination(VersionConvertor_30_50.convertReference(src.getDestination()));
         if (src.hasReceiver()) {
@@ -103,10 +104,10 @@ public class MedicationDispense30_50 {
             tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
         if (src.hasDaysSupply())
             tgt.setDaysSupply(VersionConvertor_30_50.convertSimpleQuantity(src.getDaysSupply()));
-        if (src.hasWhenPrepared())
-            tgt.setWhenPrepared(src.getWhenPrepared());
-        if (src.hasWhenHandedOver())
-            tgt.setWhenHandedOver(src.getWhenHandedOver());
+        if (src.hasWhenPreparedElement())
+            tgt.setWhenPreparedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getWhenPreparedElement()));
+        if (src.hasWhenHandedOverElement())
+            tgt.setWhenHandedOverElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getWhenHandedOverElement()));
         if (src.hasDestination())
             tgt.setDestination(VersionConvertor_30_50.convertReference(src.getDestination()));
         if (src.hasReceiver()) {
@@ -219,8 +220,8 @@ public class MedicationDispense30_50 {
             return null;
         org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasWasSubstituted())
-            tgt.setWasSubstituted(src.getWasSubstituted());
+        if (src.hasWasSubstitutedElement())
+            tgt.setWasSubstitutedElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getWasSubstitutedElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertCodeableConcept(src.getType()));
         if (src.hasReason()) {
@@ -237,8 +238,8 @@ public class MedicationDispense30_50 {
             return null;
         org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasWasSubstituted())
-            tgt.setWasSubstituted(src.getWasSubstituted());
+        if (src.hasWasSubstitutedElement())
+            tgt.setWasSubstitutedElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getWasSubstitutedElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_50.convertCodeableConcept(src.getType()));
         if (src.hasReason()) {

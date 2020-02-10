@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Slot30_50 {
 
@@ -27,14 +28,14 @@ public class Slot30_50 {
             tgt.setSchedule(VersionConvertor_30_50.convertReference(src.getSchedule()));
         if (src.hasStatus())
             tgt.setStatus(convertSlotStatus(src.getStatus()));
-        if (src.hasStart())
-            tgt.setStart(src.getStart());
-        if (src.hasEnd())
-            tgt.setEnd(src.getEnd());
-        if (src.hasOverbooked())
-            tgt.setOverbooked(src.getOverbooked());
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
+        if (src.hasOverbookedElement())
+            tgt.setOverbookedElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getOverbookedElement()));
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
         return tgt;
     }
 
@@ -60,14 +61,14 @@ public class Slot30_50 {
             tgt.setSchedule(VersionConvertor_30_50.convertReference(src.getSchedule()));
         if (src.hasStatus())
             tgt.setStatus(convertSlotStatus(src.getStatus()));
-        if (src.hasStart())
-            tgt.setStart(src.getStart());
-        if (src.hasEnd())
-            tgt.setEnd(src.getEnd());
-        if (src.hasOverbooked())
-            tgt.setOverbooked(src.getOverbooked());
-        if (src.hasComment())
-            tgt.setComment(src.getComment());
+        if (src.hasStartElement())
+            tgt.setStartElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
+        if (src.hasEndElement())
+            tgt.setEndElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
+        if (src.hasOverbookedElement())
+            tgt.setOverbookedElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getOverbookedElement()));
+        if (src.hasCommentElement())
+            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
         return tgt;
     }
 

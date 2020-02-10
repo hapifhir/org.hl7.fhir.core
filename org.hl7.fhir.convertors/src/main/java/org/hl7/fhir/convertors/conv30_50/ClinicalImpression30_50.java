@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class ClinicalImpression30_50 {
 
@@ -15,16 +16,16 @@ public class ClinicalImpression30_50 {
         }
         if (src.hasStatus())
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setContext(VersionConvertor_30_50.convertReference(src.getEncounter()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasPerformer())
             tgt.setAssessor(VersionConvertor_30_50.convertReference(src.getPerformer()));
         if (src.hasPrevious())
@@ -35,8 +36,8 @@ public class ClinicalImpression30_50 {
         if (src.hasProtocol()) {
             for (org.hl7.fhir.r5.model.UriType t : src.getProtocol()) tgt.addProtocol(t.getValue());
         }
-        if (src.hasSummary())
-            tgt.setSummary(src.getSummary());
+        if (src.hasSummaryElement())
+            tgt.setSummaryElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getSummaryElement()));
         if (src.hasFinding()) {
             for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
         }
@@ -62,16 +63,16 @@ public class ClinicalImpression30_50 {
         }
         if (src.hasStatus())
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasContext())
             tgt.setEncounter(VersionConvertor_30_50.convertReference(src.getContext()));
         if (src.hasEffective())
             tgt.setEffective(VersionConvertor_30_50.convertType(src.getEffective()));
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
         if (src.hasAssessor())
             tgt.setPerformer(VersionConvertor_30_50.convertReference(src.getAssessor()));
         if (src.hasPrevious())
@@ -82,8 +83,8 @@ public class ClinicalImpression30_50 {
         if (src.hasProtocol()) {
             for (org.hl7.fhir.dstu3.model.UriType t : src.getProtocol()) tgt.addProtocol(t.getValue());
         }
-        if (src.hasSummary())
-            tgt.setSummary(src.getSummary());
+        if (src.hasSummaryElement())
+            tgt.setSummaryElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getSummaryElement()));
         if (src.hasFinding()) {
             for (org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
         }
@@ -108,8 +109,8 @@ public class ClinicalImpression30_50 {
             tgt.setItem(VersionConvertor_30_50.convertType(src.getItem().getConcept()));
         else if (src.hasItem() && src.getItem().hasReference())
             tgt.setItem(VersionConvertor_30_50.convertType(src.getItem().getReference()));
-        if (src.hasBasis())
-            tgt.setBasis(src.getBasis());
+        if (src.hasBasisElement())
+            tgt.setBasisElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getBasisElement()));
         return tgt;
     }
 
@@ -122,8 +123,8 @@ public class ClinicalImpression30_50 {
             tgt.setItem(VersionConvertor_30_50.convertCodeableConceptToCodableReference(src.getItemCodeableConcept()));
         if (src.hasItemReference())
             tgt.setItem(VersionConvertor_30_50.convertReferenceToCodableReference(src.getItemReference()));
-        if (src.hasBasis())
-            tgt.setBasis(src.getBasis());
+        if (src.hasBasisElement())
+            tgt.setBasisElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getBasisElement()));
         return tgt;
     }
 

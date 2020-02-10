@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import java.util.Collections;
 
 public class Practitioner30_50 {
 
@@ -13,8 +14,8 @@ public class Practitioner30_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
         if (src.hasName()) {
             for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_50.convertHumanName(t));
         }
@@ -26,8 +27,8 @@ public class Practitioner30_50 {
         }
         if (src.hasGender())
             tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
-        if (src.hasBirthDate())
-            tgt.setBirthDate(src.getBirthDate());
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_30_50.convertType(src.getBirthDateElement()));
         if (src.hasPhoto()) {
             for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_30_50.convertAttachment(t));
         }
@@ -48,8 +49,8 @@ public class Practitioner30_50 {
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasActive())
-            tgt.setActive(src.getActive());
+        if (src.hasActiveElement())
+            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
         if (src.hasName()) {
             for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_50.convertHumanName(t));
         }
@@ -61,8 +62,8 @@ public class Practitioner30_50 {
         }
         if (src.hasGender())
             tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
-        if (src.hasBirthDate())
-            tgt.setBirthDate(src.getBirthDate());
+        if (src.hasBirthDateElement())
+            tgt.setBirthDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_30_50.convertType(src.getBirthDateElement()));
         if (src.hasPhoto()) {
             for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_30_50.convertAttachment(t));
         }

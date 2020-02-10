@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import java.util.Collections;
 
 public class Goal30_50 {
 
@@ -29,10 +30,10 @@ public class Goal30_50 {
             tgt.setStart(VersionConvertor_30_50.convertType(src.getStart()));
         if (src.hasTarget())
             tgt.setTarget(convertGoalTargetComponent(src.getTargetFirstRep()));
-        if (src.hasStatusDate())
-            tgt.setStatusDate(src.getStatusDate());
-        if (src.hasStatusReason())
-            tgt.setStatusReason(src.getStatusReason());
+        if (src.hasStatusDateElement())
+            tgt.setStatusDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_30_50.convertType(src.getStatusDateElement()));
+        if (src.hasStatusReasonElement())
+            tgt.setStatusReasonElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getStatusReasonElement()));
         if (src.hasExpressedBy())
             tgt.setExpressedBy(VersionConvertor_30_50.convertReference(src.getExpressedBy()));
         if (src.hasAddresses()) {
@@ -71,10 +72,10 @@ public class Goal30_50 {
             tgt.setStart(VersionConvertor_30_50.convertType(src.getStart()));
         if (src.hasTarget())
             tgt.addTarget(convertGoalTargetComponent(src.getTarget()));
-        if (src.hasStatusDate())
-            tgt.setStatusDate(src.getStatusDate());
-        if (src.hasStatusReason())
-            tgt.setStatusReason(src.getStatusReason());
+        if (src.hasStatusDateElement())
+            tgt.setStatusDateElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_30_50.convertType(src.getStatusDateElement()));
+        if (src.hasStatusReasonElement())
+            tgt.setStatusReasonElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getStatusReasonElement()));
         if (src.hasExpressedBy())
             tgt.setExpressedBy(VersionConvertor_30_50.convertReference(src.getExpressedBy()));
         if (src.hasAddresses()) {

@@ -4,6 +4,10 @@ import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.StringType;
+
+import java.util.Collections;
 
 public class ActivityDefinition30_50 {
 
@@ -12,35 +16,35 @@ public class ActivityDefinition30_50 {
             return null;
         org.hl7.fhir.r5.model.ActivityDefinition tgt = new org.hl7.fhir.r5.model.ActivityDefinition();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasUrl())
-            tgt.setUrl(src.getUrl());
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasVersion())
-            tgt.setVersion(src.getVersion());
-        if (src.hasName())
-            tgt.setName(src.getName());
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getVersionElement()));
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getTitleElement()));
         if (src.hasStatus())
             tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
-        if (src.hasExperimental())
-            tgt.setExperimental(src.getExperimental());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasPublisher())
-            tgt.setPublisher(src.getPublisher());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
-        if (src.hasPurpose())
-            tgt.setPurpose(src.getPurpose());
-        if (src.hasUsage())
-            tgt.setUsage(src.getUsage());
-        if (src.hasApprovalDate())
-            tgt.setApprovalDate(src.getApprovalDate());
-        if (src.hasLastReviewDate())
-            tgt.setLastReviewDate(src.getLastReviewDate());
+        if (src.hasExperimentalElement())
+            tgt.setExperimentalElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getExperimentalElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
+        if (src.hasPublisherElement())
+            tgt.setPublisherElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getPublisherElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasPurposeElement())
+            tgt.setPurposeElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getPurposeElement()));
+        if (src.hasUsageElement())
+            tgt.setUsageElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getUsageElement()));
+        if (src.hasApprovalDateElement())
+            tgt.setApprovalDateElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_30_50.convertType(src.getApprovalDateElement()));
+        if (src.hasLastReviewDateElement())
+            tgt.setLastReviewDateElement((org.hl7.fhir.r5.model.DateType) VersionConvertor_30_50.convertType(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(VersionConvertor_30_50.convertPeriod(src.getEffectivePeriod()));
         if (src.hasUseContext()) {
@@ -65,8 +69,8 @@ public class ActivityDefinition30_50 {
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
         }
-        if (src.hasCopyright())
-            tgt.setCopyright(src.getCopyright());
+        if (src.hasCopyrightElement())
+            tgt.setCopyrightElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getCopyrightElement()));
         if (src.hasRelatedArtifact()) {
             for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
         }
@@ -107,35 +111,35 @@ public class ActivityDefinition30_50 {
             return null;
         org.hl7.fhir.dstu3.model.ActivityDefinition tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasUrl())
-            tgt.setUrl(src.getUrl());
+        if (src.hasUrlElement())
+            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
         if (src.hasIdentifier()) {
             for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         }
-        if (src.hasVersion())
-            tgt.setVersion(src.getVersion());
-        if (src.hasName())
-            tgt.setName(src.getName());
-        if (src.hasTitle())
-            tgt.setTitle(src.getTitle());
+        if (src.hasVersionElement())
+            tgt.setVersionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getVersionElement()));
+        if (src.hasNameElement())
+            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasTitleElement())
+            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getTitleElement()));
         if (src.hasStatus())
             tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
-        if (src.hasExperimental())
-            tgt.setExperimental(src.getExperimental());
-        if (src.hasDate())
-            tgt.setDate(src.getDate());
-        if (src.hasPublisher())
-            tgt.setPublisher(src.getPublisher());
-        if (src.hasDescription())
-            tgt.setDescription(src.getDescription());
-        if (src.hasPurpose())
-            tgt.setPurpose(src.getPurpose());
-        if (src.hasUsage())
-            tgt.setUsage(src.getUsage());
-        if (src.hasApprovalDate())
-            tgt.setApprovalDate(src.getApprovalDate());
-        if (src.hasLastReviewDate())
-            tgt.setLastReviewDate(src.getLastReviewDate());
+        if (src.hasExperimentalElement())
+            tgt.setExperimentalElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getExperimentalElement()));
+        if (src.hasDateElement())
+            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getDateElement()));
+        if (src.hasPublisherElement())
+            tgt.setPublisherElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getPublisherElement()));
+        if (src.hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasPurposeElement())
+            tgt.setPurposeElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_30_50.convertType(src.getPurposeElement()));
+        if (src.hasUsageElement())
+            tgt.setUsageElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getUsageElement()));
+        if (src.hasApprovalDateElement())
+            tgt.setApprovalDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_30_50.convertType(src.getApprovalDateElement()));
+        if (src.hasLastReviewDateElement())
+            tgt.setLastReviewDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_30_50.convertType(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(VersionConvertor_30_50.convertPeriod(src.getEffectivePeriod()));
         if (src.hasUseContext()) {
@@ -174,8 +178,8 @@ public class ActivityDefinition30_50 {
         if (src.hasContact()) {
             for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
         }
-        if (src.hasCopyright())
-            tgt.setCopyright(src.getCopyright());
+        if (src.hasCopyrightElement())
+            tgt.setCopyrightElement((org.hl7.fhir.dstu3.model.MarkdownType) VersionConvertor_30_50.convertType(src.getCopyrightElement()));
         if (src.hasRelatedArtifact()) {
             for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(VersionConvertor_30_50.convertRelatedArtifact(t));
         }
@@ -216,14 +220,14 @@ public class ActivityDefinition30_50 {
             return null;
         org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDescription())
-            tgt.getExpression().setDescription(src.getDescription());
-        if (src.hasPath())
-            tgt.setPath(src.getPath());
-        if (src.hasLanguage())
-            tgt.getExpression().setLanguage(src.getLanguage());
-        if (src.hasExpression())
-            tgt.getExpression().setExpression(src.getExpression());
+        if (src.hasDescriptionElement())
+          tgt.getExpression().setDescriptionElement((StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasPathElement())
+            tgt.setPathElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getPathElement()));
+        if (src.hasLanguageElement())
+            tgt.getExpression().setLanguageElement((CodeType) VersionConvertor_30_50.convertType(src.getLanguageElement()));
+        if (src.hasExpressionElement())
+            tgt.getExpression().setExpressionElement((StringType) VersionConvertor_30_50.convertType(src.getExpressionElement()));
         return tgt;
     }
 
@@ -232,14 +236,14 @@ public class ActivityDefinition30_50 {
             return null;
         org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasPath())
-            tgt.setPath(src.getPath());
-        if (src.getExpression().hasDescription())
-            tgt.setDescription(src.getExpression().getDescription());
-        if (src.getExpression().hasLanguage())
-            tgt.setLanguage(src.getExpression().getLanguage());
-        if (src.getExpression().hasExpression())
-            tgt.setExpression(src.getExpression().getExpression());
+        if (src.hasPathElement())
+            tgt.setPathElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getPathElement()));
+        if (src.getExpression().hasDescriptionElement())
+            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getExpression().getDescriptionElement()));
+        if (src.getExpression().hasLanguageElement())
+            tgt.setLanguageElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getExpression().getLanguageElement()));
+        if (src.getExpression().hasExpressionElement())
+            tgt.setExpressionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getExpression().getExpressionElement()));
         return tgt;
     }
 
