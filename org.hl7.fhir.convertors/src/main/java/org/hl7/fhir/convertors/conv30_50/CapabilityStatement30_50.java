@@ -322,8 +322,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasProtocol())
             tgt.setProtocol(VersionConvertor_30_50.convertCoding(src.getProtocol()));
-        if (src.hasAddressElement())
-            tgt.setAddressElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getAddressElement()));
+        if (src.hasAddress())
+            tgt.setAddress(src.getAddress());
         return tgt;
     }
 
@@ -334,8 +334,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasProtocol())
             tgt.setProtocol(VersionConvertor_30_50.convertCoding(src.getProtocol()));
-        if (src.hasAddressElement())
-            tgt.setAddressElement((org.hl7.fhir.r5.model.UrlType) VersionConvertor_30_50.convertType(src.getAddressElement()));
+        if (src.hasAddress())
+            tgt.setAddress(src.getAddress());
         return tgt;
     }
 
