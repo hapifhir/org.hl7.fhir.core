@@ -178,8 +178,8 @@ public class ConceptMap10_50 {
         if (src.hasPropertyElement()) {
             tgt.setElementElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_50.convertType(src.getPropertyElement()));
         }
-        if (src.hasSystemElement()) {
-            tgt.setCodeSystemElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_50.convertType(src.getSystemElement()));
+        if (src.hasSystem()) {
+            tgt.setCodeSystem(src.getSystem());
         }
         if (src.hasValueElement()) {
             tgt.setCodeElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getValueElement()));
@@ -195,8 +195,8 @@ public class ConceptMap10_50 {
         if (src.hasElementElement()) {
             tgt.setPropertyElement((UriType) VersionConvertor_10_50.convertType(src.getElementElement()));
         }
-        if (src.hasCodeSystemElement()) {
-            tgt.setSystemElement((CanonicalType) VersionConvertor_10_50.convertType(src.getCodeSystemElement()));
+        if (src.hasCodeSystem()) {
+            tgt.setSystem(src.getCodeSystem());
         }
         if (src.hasCodeElement()) {
             tgt.setValueElement((StringType) VersionConvertor_10_50.convertType(src.getCodeElement()));

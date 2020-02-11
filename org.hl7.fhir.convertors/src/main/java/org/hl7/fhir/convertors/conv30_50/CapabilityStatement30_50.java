@@ -193,8 +193,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.r5.model.UrlType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         return tgt;
     }
 
@@ -205,8 +205,8 @@ public class CapabilityStatement30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         return tgt;
     }
 
@@ -248,8 +248,8 @@ public class CapabilityStatement30_50 {
         if (src.hasEndpoint()) {
             for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
         }
-        if (src.hasReliableCacheElement())
-            tgt.setReliableCacheElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getReliableCacheElement()));
+        if (src.hasReliableCache())
+            tgt.setReliableCache(src.getReliableCache());
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         if (src.hasSupportedMessage()) {
@@ -285,8 +285,8 @@ public class CapabilityStatement30_50 {
         if (src.hasEndpoint()) {
             for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
         }
-        if (src.hasReliableCacheElement())
-            tgt.setReliableCacheElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getReliableCacheElement()));
+        if (src.hasReliableCache())
+            tgt.setReliableCache(src.getReliableCache());
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         if (src.hasSupportedMessage()) {

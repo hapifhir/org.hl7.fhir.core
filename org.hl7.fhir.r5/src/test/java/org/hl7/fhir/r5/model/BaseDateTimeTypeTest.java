@@ -2,6 +2,9 @@ package org.hl7.fhir.r5.model;
 
 import org.junit.Test;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import static org.junit.Assert.*;
 
 public class BaseDateTimeTypeTest {
@@ -33,6 +36,8 @@ public class BaseDateTimeTypeTest {
     
     @Test
     public void equalsUsingFhirPathRulesOther() {
+
+
         // Exact same - Same timezone
         assertTrue( compareDateTimes("2001-01-02T11:22:33.444Z", "2001-01-02T11:22:33.444Z"));
         // Exact same - Different timezone
