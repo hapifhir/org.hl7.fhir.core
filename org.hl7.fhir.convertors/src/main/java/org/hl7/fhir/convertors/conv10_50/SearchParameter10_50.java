@@ -32,8 +32,8 @@ public class SearchParameter10_50 {
         if (src.hasContact()) {
             for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         }
-        if (src.hasPurposeElement()) {
-            tgt.setRequirementsElement((StringType) VersionConvertor_10_50.convertType(src.getPurposeElement()));
+        if (src.hasPurpose()) {
+            tgt.setRequirements(src.getPurpose());
         }
         if (src.hasCodeElement())
             tgt.setCodeElement((org.hl7.fhir.dstu2.model.CodeType) VersionConvertor_10_50.convertType(src.getCodeElement()));
@@ -43,8 +43,8 @@ public class SearchParameter10_50 {
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_50.convertSearchParamType(src.getType()));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         if (src.hasExpression()) {
             org.hl7.fhir.dstu2.utils.ToolingExtensions.setStringExtension(tgt, ToolingExtensions.EXT_EXPRESSION, src.getExpression());
         }
@@ -80,8 +80,8 @@ public class SearchParameter10_50 {
         if (src.hasContact()) {
             for (org.hl7.fhir.dstu2.model.SearchParameter.SearchParameterContactComponent t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         }
-        if (src.hasRequirementsElement()) {
-            tgt.setPurposeElement((MarkdownType) VersionConvertor_10_50.convertType(src.getRequirementsElement()));
+        if (src.hasRequirements()) {
+            tgt.setPurpose(src.getRequirements());
         }
         if (src.hasCodeElement())
             tgt.setCodeElement((org.hl7.fhir.r5.model.CodeType) VersionConvertor_10_50.convertType(src.getCodeElement()));
@@ -90,8 +90,8 @@ public class SearchParameter10_50 {
         if (src.hasType()) {
             tgt.setType(VersionConvertor_10_50.convertSearchParamType(src.getType()));
         }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
         if (src.hasXpathElement())
             tgt.setXpathElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getXpathElement()));
