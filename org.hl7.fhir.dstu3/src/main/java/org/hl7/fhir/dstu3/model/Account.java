@@ -978,7 +978,7 @@ This period may be different to the coveragePeriod which is the duration of time
       return this.name != null && !this.name.isEmpty();
     }
 
-    public boolean hasName() { 
+    public boolean hasName() {
       return this.name != null && !this.name.isEmpty();
     }
 

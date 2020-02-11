@@ -332,8 +332,8 @@ public class Conformance10_50 {
         if (src.hasProtocol()) {
             tgt.setProtocol(VersionConvertor_10_50.convertCoding(src.getProtocol()));
         }
-        if (src.hasAddressElement()) {
-            tgt.setAddressElement((UrlType) VersionConvertor_10_50.convertType(src.getAddressElement()));
+        if (src.hasAddress()) {
+            tgt.setAddress(src.getAddress());
         }
         return tgt;
     }
@@ -346,8 +346,8 @@ public class Conformance10_50 {
         if (src.hasProtocol()) {
             tgt.setProtocol(VersionConvertor_10_50.convertCoding(src.getProtocol()));
         }
-        if (src.hasAddressElement()) {
-            tgt.setAddressElement((UriType) VersionConvertor_10_50.convertType(src.getAddressElement()));
+        if (src.hasAddress()) {
+            tgt.setAddress(src.getAddress());
         }
         return tgt;
     }

@@ -58,8 +58,8 @@ public class CodeSystem30_50 {
             tgt.setVersionNeededElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getVersionNeededElement()));
         if (src.hasContent())
             tgt.setContent(convertCodeSystemContentMode(src.getContent()));
-        if (src.hasCountElement())
-            tgt.setCountElement((org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getCountElement()));
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasFilter()) {
             for (org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent t : src.getFilter()) tgt.addFilter(convertCodeSystemFilterComponent(t));
         }
@@ -122,8 +122,8 @@ public class CodeSystem30_50 {
             tgt.setVersionNeededElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getVersionNeededElement()));
         if (src.hasContent())
             tgt.setContent(convertCodeSystemContentMode(src.getContent()));
-        if (src.hasCountElement())
-            tgt.setCountElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_30_50.convertType(src.getCountElement()));
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasFilter()) {
             for (org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemFilterComponent t : src.getFilter()) tgt.addFilter(convertCodeSystemFilterComponent(t));
         }
