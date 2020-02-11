@@ -545,8 +545,8 @@ public class StructureMap30_50 {
             return null;
         org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         if (src.hasMode())
             tgt.setMode(convertStructureMapModelMode(src.getMode()));
         if (src.hasAliasElement())
@@ -561,8 +561,8 @@ public class StructureMap30_50 {
             return null;
         org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         if (src.hasMode())
             tgt.setMode(convertStructureMapModelMode(src.getMode()));
         if (src.hasAliasElement())

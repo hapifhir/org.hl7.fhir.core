@@ -1,8 +1,10 @@
 package org.hl7.fhir.convertors.conv14_50;
 
+import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.dstu2016may.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.Utilities;
@@ -102,8 +104,8 @@ public class StructureDefinition14_50 {
                 tgt.setContextType(convertExtensionContext(t.getType(), t.getExpression()));
             tgt.addContext("Element".equals(t.getExpression()) ? "*" : t.getExpression());
         }
-        if (src.hasBaseDefinitionElement())
-            tgt.setBaseDefinitionElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_50.convertType(src.getBaseDefinitionElement()));
+        if (src.hasBaseDefinition())
+            tgt.setBaseDefinition(src.getBaseDefinition());
         if (src.hasType() && src.getDerivation() == org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule.CONSTRAINT)
             tgt.setBaseType(src.getType());
         if (src.hasDerivation()) {
@@ -179,8 +181,8 @@ public class StructureDefinition14_50 {
             tgt.setType(src.getBaseType());
         else
             tgt.setType(src.getId());
-        if (src.hasBaseDefinitionElement())
-            tgt.setBaseDefinitionElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_14_50.convertType(src.getBaseDefinitionElement()));
+        if (src.hasBaseDefinition())
+            tgt.setBaseDefinition(src.getBaseDefinition());
         if (src.hasDerivation()) {
             tgt.setDerivation(convertTypeDerivationRule(src.getDerivation()));
         }
