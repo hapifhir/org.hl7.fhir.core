@@ -241,8 +241,8 @@ public class Conformance14_50 {
         if (src.hasDescription()) {
             tgt.setDescription(src.getDescription());
         }
-        if (src.hasUrlElement())
-            tgt.setUrlElement((UrlType) VersionConvertor_14_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         return tgt;
     }
 
@@ -301,8 +301,8 @@ public class Conformance14_50 {
         if (src.hasEndpoint()) {
             for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertConformanceMessagingEndpointComponent(t));
         }
-        if (src.hasReliableCacheElement())
-            tgt.setReliableCacheElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_14_50.convertType(src.getReliableCacheElement()));
+        if (src.hasReliableCache())
+            tgt.setReliableCache(src.getReliableCache());
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEventComponent t : src.getEvent()) {
@@ -350,8 +350,8 @@ public class Conformance14_50 {
         if (src.hasProtocol()) {
             tgt.setProtocol(VersionConvertor_14_50.convertCoding(src.getProtocol()));
         }
-        if (src.hasAddressElement()) {
-            tgt.setAddressElement((UrlType) VersionConvertor_14_50.convertType(src.getAddressElement()));
+        if (src.hasAddress()) {
+            tgt.setAddress(src.getAddress());
         }
         return tgt;
     }

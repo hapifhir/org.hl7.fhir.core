@@ -208,8 +208,8 @@ public class ConceptMap14_50 {
         if (src.hasElementElement()) {
             tgt.setPropertyElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_14_50.convertType(src.getElementElement()));
         }
-        if (src.hasSystemElement())
-            tgt.setSystemElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_14_50.convertType(src.getSystemElement()));
+        if (src.hasSystem())
+            tgt.setSystem(src.getSystem());
         if (src.hasCodeElement()) {
             tgt.setValueElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_14_50.convertType(src.getCodeElement()));
         }

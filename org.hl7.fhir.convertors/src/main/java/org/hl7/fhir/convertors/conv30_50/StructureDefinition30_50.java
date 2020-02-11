@@ -105,8 +105,8 @@ public class StructureDefinition30_50 {
         }
         if (src.hasType())
           tgt.setType(src.getType());
-        if (src.hasBaseDefinitionElement())
-            tgt.setBaseDefinitionElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getBaseDefinitionElement()));
+        if (src.hasBaseDefinition())
+            tgt.setBaseDefinition(src.getBaseDefinition());
         if (src.hasDerivation())
             tgt.setDerivation(convertTypeDerivationRule(src.getDerivation()));
         if (src.hasSnapshot())
@@ -184,8 +184,8 @@ public class StructureDefinition30_50 {
         }
         if (src.hasType())
           tgt.setType(src.getType());
-        if (src.hasBaseDefinitionElement())
-            tgt.setBaseDefinitionElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getBaseDefinitionElement()));
+        if (src.hasBaseDefinition())
+            tgt.setBaseDefinition(src.getBaseDefinition());
         if (src.hasDerivation())
             tgt.setDerivation(convertTypeDerivationRule(src.getDerivation()));
         if (src.hasSnapshot())

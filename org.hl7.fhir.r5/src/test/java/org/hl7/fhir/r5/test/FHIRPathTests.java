@@ -3,10 +3,7 @@ package org.hl7.fhir.r5.test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -150,6 +147,7 @@ public class FHIRPathTests {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
+
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilities.context());
     fp.setHostServices(new FHIRPathTestEvaluationServices());

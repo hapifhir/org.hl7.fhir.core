@@ -50,8 +50,8 @@ public class CodeSystem14_50 {
             tgt.setCopyrightElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_50.convertType(src.getCopyrightElement()));
         if (src.hasCaseSensitiveElement())
             tgt.setCaseSensitiveElement((org.hl7.fhir.dstu2016may.model.BooleanType) VersionConvertor_14_50.convertType(src.getCaseSensitiveElement()));
-        if (src.hasValueSetElement())
-            tgt.setValueSetElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_50.convertType(src.getValueSetElement()));
+        if (src.hasValueSet())
+            tgt.setValueSet(src.getValueSet());
         if (src.hasCompositionalElement())
             tgt.setCompositionalElement((org.hl7.fhir.dstu2016may.model.BooleanType) VersionConvertor_14_50.convertType(src.getCompositionalElement()));
         if (src.hasVersionNeededElement())
@@ -110,8 +110,8 @@ public class CodeSystem14_50 {
             tgt.setCopyright(src.getCopyright());
         if (src.hasCaseSensitiveElement())
             tgt.setCaseSensitiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_14_50.convertType(src.getCaseSensitiveElement()));
-        if (src.hasValueSetElement())
-            tgt.setValueSetElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_14_50.convertType(src.getValueSetElement()));
+        if (src.hasValueSet())
+            tgt.setValueSet(src.getValueSet());
         if (src.hasCompositionalElement())
             tgt.setCompositionalElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_14_50.convertType(src.getCompositionalElement()));
         if (src.hasVersionNeededElement())
@@ -119,8 +119,8 @@ public class CodeSystem14_50 {
         if (src.hasContent()) {
             tgt.setContent(convertCodeSystemContentMode(src.getContent()));
         }
-        if (src.hasCountElement())
-            tgt.setCountElement((org.hl7.fhir.r5.model.UnsignedIntType) VersionConvertor_14_50.convertType(src.getCountElement()));
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasFilter()) {
             for (org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemFilterComponent t : src.getFilter()) tgt.addFilter(convertCodeSystemFilterComponent(t));
         }
