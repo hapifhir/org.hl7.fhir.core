@@ -172,8 +172,8 @@ public class ConceptMap30_50 {
             tgt.setCodeElement((org.hl7.fhir.r5.model.CodeType) VersionConvertor_30_50.convertType(src.getCodeElement()));
         if (src.hasDisplayElement())
             tgt.setDisplayElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDisplayElement()));
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         return tgt;
     }
 
@@ -188,8 +188,8 @@ public class ConceptMap30_50 {
             tgt.setCodeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertType(src.getCodeElement()));
         if (src.hasDisplayElement())
             tgt.setDisplayElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDisplayElement()));
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getUrlElement()));
+        if (src.hasUrl())
+            tgt.setUrl(src.getUrl());
         return tgt;
     }
 
@@ -259,8 +259,8 @@ public class ConceptMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasPropertyElement())
             tgt.setPropertyElement((org.hl7.fhir.r5.model.UriType) VersionConvertor_30_50.convertType(src.getPropertyElement()));
-        if (src.hasSystemElement())
-            tgt.setSystemElement((org.hl7.fhir.r5.model.CanonicalType) VersionConvertor_30_50.convertType(src.getSystemElement()));
+        if (src.hasSystem())
+            tgt.setSystem(src.getSystem());
         if (src.hasCodeElement())
             tgt.setValueElement((StringType) VersionConvertor_30_50.convertType(src.getCodeElement()));
         if (src.hasDisplayElement())
@@ -275,8 +275,8 @@ public class ConceptMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasPropertyElement())
             tgt.setPropertyElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getPropertyElement()));
-        if (src.hasSystemElement())
-            tgt.setSystemElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getSystemElement()));
+        if (src.hasSystem())
+            tgt.setSystem(src.getSystem());
         if (src.hasValueElement())
             tgt.setCodeElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getValueElement()));
         if (src.hasDisplayElement())

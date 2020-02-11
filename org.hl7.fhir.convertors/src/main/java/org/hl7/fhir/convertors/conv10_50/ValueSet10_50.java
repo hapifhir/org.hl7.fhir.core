@@ -256,8 +256,8 @@ public class ValueSet10_50 {
         }
         if (src.hasDateElement())
             tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescription(src.getDescription());
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_50.isJurisdiction(t))
             tgt.addJurisdiction(VersionConvertor_10_50.convertCodeableConcept(t));
         else
@@ -267,8 +267,8 @@ public class ValueSet10_50 {
         if (src.hasRequirements()) {
             tgt.setPurpose(src.getRequirements());
         }
-        if (src.hasCopyrightElement())
-            tgt.setCopyrightElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_10_50.convertType(src.getCopyrightElement()));
+        if (src.hasCopyright())
+            tgt.setCopyright(src.getCopyright());
         if (src.hasExtensible())
             tgt.addExtension("http://hl7.org/fhir/StructureDefinition/valueset-extensible", new BooleanType(src.getExtensible()));
         if (src.hasCompose()) {
@@ -307,8 +307,8 @@ public class ValueSet10_50 {
             }
             if (src.hasDateElement())
                 tgtcs.setDateElement((DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
-            if (src.hasDescriptionElement()) {
-                tgtcs.setDescriptionElement((MarkdownType) VersionConvertor_10_50.convertType(src.getDescriptionElement()));
+            if (src.hasDescription()) {
+                tgtcs.setDescription(src.getDescription());
             }
             for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_50.isJurisdiction(t))
                 tgtcs.addJurisdiction(VersionConvertor_10_50.convertCodeableConcept(t));
