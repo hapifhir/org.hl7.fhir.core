@@ -36,7 +36,9 @@ public class BaseDateTimeTypeTest {
     
     @Test
     public void equalsUsingFhirPathRulesOther() {
-
+        // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
+        // all my time based tests failing locally...
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100")); // "Grahame Time"
 
         // Exact same - Same timezone
         assertTrue( compareDateTimes("2001-01-02T11:22:33.444Z", "2001-01-02T11:22:33.444Z"));
