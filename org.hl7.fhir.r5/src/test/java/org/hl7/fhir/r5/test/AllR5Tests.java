@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ 
     NpmPackageTests.class,
+    PackageClientTests.class,
     SnomedExpressionsTests.class, 
     GraphQLParserTests.class,
     TurtleTests.class,
