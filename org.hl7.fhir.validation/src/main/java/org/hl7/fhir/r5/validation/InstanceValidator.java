@@ -3602,7 +3602,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("Observation")) {
       validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      validateQuestionannaire(errors, element, stack);
+      ArrayList<Element> parents = new ArrayList<>();
+      parents.add(element);
+      validateQuestionannaireItem(errors, element, element, stack, parents);
     } else if (element.getType().equals("QuestionnaireResponse")) {
       validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
@@ -3621,32 +3623,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return res;
   }
 
-  private void validateQuestionannaire(List<ValidationMessage> errors, Element element, NodeStack stack) {
+  private void validateQuestionannaireItem(List<ValidationMessage> errors, Element element, Element questionnaire, NodeStack stack, List<Element> parents) {
     List<Element> list = getItems(element);
     for (int i = 0; i < list.size(); i++) {
       Element e = list.get(i);
-      NodeStack ns = stack.push(element, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
-      validateQuestionnaireElement(errors, ns, element, e, new ArrayList<>());
+      NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
+      validateQuestionnaireElement(errors, ns, questionnaire, e, parents);
+      validateQuestionannaireItem(errors, e, questionnaire, ns, list);
     }
-    
   }
 
   private void validateQuestionnaireElement(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, List<Element> parents) {
     // R4+
     if (FHIRVersion.isR4Plus(context.getVersion())) {
-      if (item.hasChild("enableWhen")) {
-        Element ew = item.getNamedChild("enableWhen");
-        String ql = ew.getNamedChildValue("question");
-        if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, ql != null, "Questions with an enableWhen must have a value for the question link")) {
-          Element tgt = getQuestionById(item, ql);
-          if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt == null, "Questions with an enableWhen cannot refer to an inner question for it's enableWhen condition")) {
-            tgt = getQuestionById(questionnaire, ql);
-            if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find "+ql+" target for this question enableWhen")) {
-              if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
-                warning(errors, IssueType.BUSINESSRULE, ns.literalPath, isBefore(item, tgt, parents), "The target of this enableWhen rule ("+ql+") comes after the question itself");
+      if (item.hasChildren("enableWhen")) {
+        List<Element> ewl = item.getChildren("enableWhen");
+        for (Element ew : ewl) {
+//          Element ew = item.getNamedChild("enableWhen");
+          String ql = ew.getNamedChildValue("question");
+          if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, ql != null, "Questions with an enableWhen must have a value for the question link")) {
+            Element tgt = getQuestionById(item, ql);
+            if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt == null, "Questions with an enableWhen cannot refer to an inner question for it's enableWhen condition")) {
+              tgt = getQuestionById(questionnaire, ql);
+              if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find target '"+ql+"' for this question enableWhen")) {
+                if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
+                  warning(errors, IssueType.BUSINESSRULE, ns.literalPath, isBefore(item, tgt, parents), "The target of this enableWhen rule ("+ql+") comes after the question itself");
+                }
               }
-            }
-          }  
+            }  
+          }
         }
       }
     }
@@ -3677,7 +3682,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (Element e : element.getChildren()) {
       if (e == descendant)
         return true;
-      if (isChild(element, descendant))
+      if (isChild(e, descendant))
         return true;
     }
     return false;
