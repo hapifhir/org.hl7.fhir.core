@@ -117,7 +117,7 @@ public class ValueSet30_50 {
         if (src.hasOp())
             tgt.setOp(convertFilterOperator2(src.getOp()));
         if (src.hasValueElement())
-            tgt.setValueElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertType(src.getValueElement()));
+            tgt.setValueElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertStringToCode(src.getValueElement()));
         return tgt;
     }
 
@@ -131,7 +131,7 @@ public class ValueSet30_50 {
         if (src.hasOp())
             tgt.setOp(VersionConvertor_30_50.convertFilterOperator(src.getOp()));
         if (src.hasValueElement())
-            tgt.setValueElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getValueElement()));
+            tgt.setValueElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertCodeToString(src.getValueElement()));
         return tgt;
     }
 
