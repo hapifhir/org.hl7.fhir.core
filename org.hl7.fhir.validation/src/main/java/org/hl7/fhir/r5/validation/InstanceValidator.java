@@ -3289,14 +3289,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               expression.append(" and " + discriminator + " is " + type);
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0) {
-              throw new DefinitionException("Profile based discriminators must have a type ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have a type ("+criteriaElement.getId()+" in profile "+profile.getUrl()+")");
             }
             if (criteriaElement.getType().size() != 1) {
-              throw new DefinitionException("Profile based discriminators must have only one type ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have only one type ("+criteriaElement.getId()+" in profile "+profile.getUrl()+")");
             }
             List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0) {
-              throw new DefinitionException("Profile based discriminators must have a type with a profile ("+criteriaElement.getId()+")");
+              throw new DefinitionException("Profile based discriminators must have a type with a profile ("+criteriaElement.getId()+" in profile "+profile.getUrl()+")");
             } else if (list.size() > 1) {
               CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" or ");
               for (CanonicalType c : list) {
