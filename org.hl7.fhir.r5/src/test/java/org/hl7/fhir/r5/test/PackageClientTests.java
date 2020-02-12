@@ -71,7 +71,6 @@ public class PackageClientTests {
     }
     Assert.assertTrue(matches.size() > 0);
   }
-  
 
   @Test
   public void testSearchNoMatches2() throws IOException {
