@@ -154,8 +154,32 @@ public class VersionConvertor_30_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.CodeType convertStringToCode(org.hl7.fhir.dstu3.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.dstu3.model.StringType convertCodeToString(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.StringType tgt = new org.hl7.fhir.dstu3.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.dstu3.model.CodeType convertStringToCode(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.CodeType tgt = new org.hl7.fhir.dstu3.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.r5.model.StringType convertCodeToString(org.hl7.fhir.dstu3.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.r5.model.StringType tgt = new org.hl7.fhir.r5.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
     public static org.hl7.fhir.r5.model.DateType convertDate(org.hl7.fhir.dstu3.model.DateType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
+      org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
         copyElement(src, tgt);
         return tgt;
     }
