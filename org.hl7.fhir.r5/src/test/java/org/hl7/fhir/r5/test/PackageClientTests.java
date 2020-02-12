@@ -87,6 +87,16 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
+    Assert.assertTrue(matches.size() == 0);
+  }
+  
+  @Test
+  public void testVersions2A() throws IOException {
+    PackageClient client = new PackageClient("http://local.fhir.org:960/packages");
+    List<PackageInfo> matches = client.getVersions("hl7.fhir.us.core");
+    for (PackageInfo pi : matches) {
+      System.out.println(pi.toString());
+    }
     Assert.assertTrue(matches.size() > 0);
   }
   
