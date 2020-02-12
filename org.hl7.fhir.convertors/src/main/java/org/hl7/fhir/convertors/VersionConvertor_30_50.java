@@ -328,6 +328,18 @@ public class VersionConvertor_30_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.UriType convertCodeToUri(org.hl7.fhir.dstu3.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.r5.model.UriType tgt = new org.hl7.fhir.r5.model.UriType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.CodeType convertUriToCode(org.hl7.fhir.r5.model.UriType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.CodeType tgt = new org.hl7.fhir.dstu3.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
     public static org.hl7.fhir.r5.model.UuidType convertUuid(org.hl7.fhir.dstu3.model.UuidType src) throws FHIRException {
         org.hl7.fhir.r5.model.UuidType tgt = new org.hl7.fhir.r5.model.UuidType(src.getValue());
         copyElement(src, tgt);
