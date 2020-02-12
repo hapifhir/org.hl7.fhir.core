@@ -2515,6 +2515,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
     if (r.hasLanguage()) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", r.getLanguage());
       x.setAttribute("xml:lang", r.getLanguage());
     }
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
@@ -2919,6 +2921,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private ConceptMapRenderInstructions findByTarget(DataType source) {
+    if (source == null) {
+      return null;
+    }
     String src = source.primitiveValue();
     if (src != null)
       for (ConceptMapRenderInstructions t : renderingMaps) {
