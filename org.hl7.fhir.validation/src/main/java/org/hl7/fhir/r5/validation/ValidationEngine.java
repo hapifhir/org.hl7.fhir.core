@@ -761,8 +761,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         System.out.print("* load file: "+fn);
       }
       System.out.println(" - ignored due to error: "+(e.getMessage() == null ? " (null - NPE)" :  e.getMessage()));
-      if (debug)
+      if (debug || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
         e.printStackTrace();
+      }
     }
     return r;
   }
