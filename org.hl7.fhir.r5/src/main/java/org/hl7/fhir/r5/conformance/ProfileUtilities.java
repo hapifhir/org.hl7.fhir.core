@@ -463,6 +463,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (derived == null) {
       throw new DefinitionException("no derived structure provided");
     }
+    checkNotGenerating(base, "Base for generating a snapshot for the profile "+derived.getUrl());
+    checkNotGenerating(derived, "Focus for generating a snapshot");
+    derived.setUserData("profileutils.snapshot.generating", true);
 
     if (!base.hasType()) {
       throw new DefinitionException("Base profile "+base.getUrl()+" has no type");
@@ -622,6 +625,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.setSnapshot(null);
       throw e;
     }
+    derived.clearUserData("profileutils.snapshot.generating");
   }
 
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
@@ -853,10 +857,12 @@ public class ProfileUtilities extends TranslatingUtilities {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
             if (sd != null) {
+              checkNotGenerating(sd, "an extension definition");
               if (!sd.hasSnapshot()) {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
                   throw new DefinitionException("Unable to find base "+sd.getBaseDefinition()+" for "+sd.getUrl());
+                checkNotGenerating(sdb, "an extension base");
                 generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, sd.getName());
               }
               ElementDefinition src;
@@ -1424,7 +1430,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             outcome.setSlicing(null);
             if (!outcome.getPath().startsWith(resultPathBase))
               throw new DefinitionException("Adding wrong path");
-            if (diffpos < diffMatches.size() && diffMatches.get(diffpos).getSliceName().equals(outcome.getSliceName())) {
+            if (diffpos < diffMatches.size() && diffMatches.get(diffpos).hasSliceName() && diffMatches.get(diffpos).getSliceName().equals(outcome.getSliceName())) {
               // if there's a diff, we update the outcome with diff
               // no? updateFromDefinition(outcome, diffMatches.get(diffpos), profileName, closed, url);
               //then process any children
@@ -1539,6 +1545,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+
+  private void checkNotGenerating(StructureDefinition sd, String role) {
+    if (sd.hasUserData("profileutils.snapshot.generating")) {
+      throw new FHIRException("Attempt to use a snapshot on profile '"+sd.getUrl()+"' as "+role+" before it is generated");
+    }
+  }
 
   private boolean isBaseResource(List<TypeRefComponent> types) {
     if (types.isEmpty())
@@ -2566,7 +2578,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           String url = u.getValue();
           boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
           while (url != null && !tgtOk) {
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+            StructureDefinition sd = context.fetchRawProfile(url);
             if (sd == null) {
               if (messages != null) {
                 messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Connect check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));

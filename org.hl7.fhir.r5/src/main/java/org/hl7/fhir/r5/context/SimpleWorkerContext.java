@@ -641,6 +641,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
   
   @Override
+  public StructureDefinition fetchRawProfile(String uri) {
+    StructureDefinition r = super.fetchResource(StructureDefinition.class, uri);
+    return r;
+  }
+  
+  @Override
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
     generateSnapshot(p, false);
   }
