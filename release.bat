@@ -37,8 +37,6 @@ call python c:\tools\zulip-api\zulip\zulip\send.py --stream tooling/releases --s
 
 del C:\temp\current-release-notes-validator.md 
 
-pause
-
 :DONE
 echo ===============================================================
 echo all done
