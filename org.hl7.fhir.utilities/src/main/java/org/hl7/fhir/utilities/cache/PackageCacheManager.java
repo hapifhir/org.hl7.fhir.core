@@ -268,8 +268,10 @@ public class PackageCacheManager {
 
   private void clearCache() throws IOException {
     for (File f : new File(cacheFolder).listFiles()) {
-      if (f.isDirectory())
+      if (f.isDirectory()) {
+        Utilities.clearDirectory(f.getAbsolutePath());
         FileUtils.deleteDirectory(f);
+      }
       else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
     }    
@@ -316,6 +318,10 @@ public class PackageCacheManager {
     save = checkIniHasMapping("hl7.fhir.core", "http://hl7.org/fhir", ini) || save;
     save = checkIniHasMapping("hl7.fhir.pubpack", "http://fhir.org/packages/hl7.fhir.pubpack", ini) || save;
     save = checkIniHasMapping("hl7.fhir.xver-extensions", "http://fhir.org/packages/hl7.fhir.xver-extensions", ini) || save;
+    save = checkIniHasMapping("fhir.base.template", "http://fhir.org/templates/fhir.base.template", ini) || save;
+    save = checkIniHasMapping("hl7.base.template", "http://fhir.org/templates/hl7.base.template", ini) || save;
+    save = checkIniHasMapping("hl7.fhir.template", "http://fhir.org/templates/hl7.fhir.template", ini) || save;
+    save = checkIniHasMapping("ihe.fhir.template", "http://fhir.org/templates/ihe.fhir.template", ini) || save;
     
     save = checkIniHasMapping("hl7.fhir.r2.core", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.core.tgz", ini) || save;
     save = checkIniHasMapping("hl7.fhir.r2.examples", "http://hl7.org/fhir/DSTU2/hl7.fhir.r2.examples.tgz", ini) || save;
@@ -382,6 +388,9 @@ public class PackageCacheManager {
   public void recordMap(String url, String id) throws IOException {
     if (url == null)
       return;
+    if (url.contains("github.com")) {
+      return;
+    }
     
     if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
         throw new Error("File "+Utilities.path(cacheFolder, "packages.ini")+" not found #1");
@@ -431,7 +440,7 @@ public class PackageCacheManager {
         String u = o.get("url").getAsString();
         if (u.contains("/ImplementationGuide/"))
           u = u.substring(0, u.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), o.get("repo").getAsString(), readDate(o.get("date").getAsString())));
+        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), getRepo(o.get("repo").getAsString()), readDate(o.get("date").getAsString())));
       }
     }
     Collections.sort(builds, new BuildRecordSorter());
@@ -441,6 +450,11 @@ public class PackageCacheManager {
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/"+bld.getRepo());        
       }
     }
+  }
+
+  private String getRepo(String path) {
+    String[] p = path.split("\\/");
+    return p[0]+"/"+p[1];
   }
 
   private Date readDate(String s) throws ParseException {
@@ -540,6 +554,13 @@ public class PackageCacheManager {
    * @throws IOException
    */
   public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (version.startsWith("file:")) {
+      return loadPackageFromFile(id, version.substring(5));
+    }
+
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return p;
@@ -559,6 +580,7 @@ public class PackageCacheManager {
    * Add an already fetched package to the cache
    */
   public NpmPackage addPackageToCache(String id, String version, InputStream tgz, String sourceDesc) throws IOException {
+    checkValidVersionString(version, id);
     if (progress ) {
       System.out.println("Installing "+id+"#"+(version == null ? "?" : version)+" to the package cache");
       System.out.print("  Fetching:");
@@ -636,11 +658,31 @@ public class PackageCacheManager {
     return pck;
   }
 
+  private void checkValidVersionString(String version, String id) {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Cannot add package "+id+" to the package cache - a version must be provided");
+    }
+    if (version.startsWith("file:")) {
+      throw new FHIRException("Cannot add package "+id+" to the package cache - the version '"+version+"' is illegal in this context");
+    }
+    for (char ch : version.toCharArray()) {
+      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-')) {
+        throw new FHIRException("Cannot add package "+id+" to the package cache - the version '"+version+"' is illegal (ch '"+ch+"'");
+      }
+    }
+  }
+
   public NpmPackage loadPackage(String id) throws FHIRException, IOException {
     throw new Error("Not done yet");
   }
   
   public NpmPackage loadPackage(String id, String v) throws FHIRException, IOException {
+    if (Utilities.noString(v)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (v.startsWith("file:")) {
+      return loadPackageFromFile(id, v.substring(5));
+    }
     NpmPackage p = loadPackageFromCacheOnly(id, v);
     if (p != null) {
       if ("current".equals(v)) {
@@ -659,33 +701,42 @@ public class PackageCacheManager {
     }
 
     String url = getPackageUrl(id);
-    if (url == null)
+    if (url == null) {
       throw new FHIRException("Unable to resolve the package '"+id+"'");
+    }
+    String aurl = null;
+    try {
     if (url.contains(".tgz")) {
+      aurl = url;
       InputStream stream = fetchFromUrlSpecific(url, true);
       if (stream != null)
         return addPackageToCache(id, v, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);      
     }
     if (v == null) {
+      aurl = Utilities.pathURL(url, "package.tgz");
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(url, "package.tgz"), true);
       if (stream == null && isBuildLoaded()) { 
+        aurl = Utilities.pathURL(buildPath(url), "package.tgz");
         stream = fetchFromUrlSpecific(Utilities.pathURL(buildPath(url), "package.tgz"), true);
       }
       if (stream != null)
         return addPackageToCache(id, null, stream, url);
       throw new FHIRException("Unable to find the package source for '"+id+"' at "+url);
     } else if ("current".equals(v) && ciList.containsKey(id)){
+      aurl = Utilities.pathURL(buildPath(url), "package.tgz");
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), true);
       return addPackageToCache(id, v, stream, Utilities.pathURL(ciList.get(id), "package.tgz"));
     } else {
       String pu = Utilities.pathURL(url, "package-list.json");
+      aurl = pu;
       JsonObject json;
       try {
         json = fetchJson(pu);
       } catch (Exception e) {
         String pv = Utilities.pathURL(url, v, "package.tgz");
         try {
+          aurl = pv;
           InputStream stream = fetchFromUrlSpecific(pv, true);
           return addPackageToCache(id, v, stream, pv);
         } catch (Exception e1) {
@@ -697,6 +748,7 @@ public class PackageCacheManager {
       for (JsonElement e : json.getAsJsonArray("list")) {
         JsonObject vo = (JsonObject) e;
         if (v.equals(JSONUtil.str(vo, "version"))) {
+          aurl = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
           InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
           if (stream == null)
             throw new FHIRException("Unable to find the package source for '"+id+"#"+v+"' at "+Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"));
@@ -711,6 +763,9 @@ public class PackageCacheManager {
 //        return addPackageToCache(id, v, stream);
 //      }
       throw new FHIRException("Unable to resolve version "+v+" for package "+id);
+    }
+    } catch (Exception e) {
+      throw new FHIRException(e.getMessage()+(aurl == null ? "" : " (url = "+aurl+")"), e);
     }
   }
 
@@ -731,6 +786,16 @@ public class PackageCacheManager {
    * @return
    */
   public boolean hasPackage(String id, String version) {
+    if (Utilities.noString(version)) {
+      throw new FHIRException("Invalid version - ''");
+    }
+    if (version.startsWith("file:")) {
+      try {
+        return loadPackageFromFile(id, version.substring(5)) != null;
+      } catch (IOException e) {
+        return false;
+      }
+    }
     for (NpmPackage p : temporaryPackages) {
       if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version)))
         return true;
@@ -746,6 +811,21 @@ public class PackageCacheManager {
       return false;
   }
 
+
+  private NpmPackage loadPackageFromFile(String id, String folder) throws IOException {
+    File f = new File(Utilities.path(folder, id));
+    if (!f.exists()) {
+      throw new FHIRException("Package '"+id+"  not found in folder "+folder);
+    }
+    if (!f.isDirectory()) {
+      throw new FHIRException("File for '"+id+"  found in folder "+folder+", not a folder");
+    }
+    File fp = new File(Utilities.path(folder, id, "package", "package.json"));
+    if (!fp.exists()) {
+      throw new FHIRException("Package '"+id+"  found in folder "+folder+", but does not contain a package.json file in /package");
+    }
+    return NpmPackage.fromFolder(f.getAbsolutePath());
+  }
 
   /**
    * List which versions of a package are available

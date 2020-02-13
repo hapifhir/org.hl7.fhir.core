@@ -177,6 +177,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } else {
       val.setAllowExamples(true);      
     }
+    val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
@@ -199,7 +200,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
       v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, v, messages);
-      val.getContext().cacheResource(sd);      
+      val.getContext().cacheResource(sd);    
+      val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       if (name.endsWith(".json"))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
