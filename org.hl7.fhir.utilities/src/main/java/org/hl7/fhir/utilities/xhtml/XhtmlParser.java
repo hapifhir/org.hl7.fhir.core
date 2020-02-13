@@ -370,8 +370,11 @@ public enum ParserSecurityPolicy {
     res.setName(xpp.getName());
     
     for (int i = 0; i < xpp.getAttributeCount(); i++) {
-      if (attributeIsOk(xpp.getName(), xpp.getAttributeName(i), xpp.getAttributeValue(i)))
-      res.getAttributes().put(xpp.getAttributeName(i), xpp.getAttributeValue(i));
+      String an = "xml".equals(xpp.getAttributePrefix(i)) ? "xml:"+xpp.getAttributeName(i) : xpp.getAttributeName(i);
+      String av = xpp.getAttributeValue(i);
+      if (attributeIsOk(xpp.getName(), an, av)) {
+        res.getAttributes().put(an, av);
+      }
     }
     int eventType = xpp.next();
     while (eventType != XmlPullParser.END_TAG) {
