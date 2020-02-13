@@ -3629,7 +3629,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Element e = list.get(i);
       NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
       validateQuestionnaireElement(errors, ns, questionnaire, e, parents);
-      validateQuestionannaireItem(errors, e, questionnaire, ns, list);
+      List<Element> np = new ArrayList<Element>();
+      np.add(e);
+      np.addAll(parents);
+      validateQuestionannaireItem(errors, e, questionnaire, ns, np);
     }
   }
 
@@ -3647,7 +3650,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               tgt = getQuestionById(questionnaire, ql);
               if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find target '"+ql+"' for this question enableWhen")) {
                 if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
-                  warning(errors, IssueType.BUSINESSRULE, ns.literalPath, isBefore(item, tgt, parents), "The target of this enableWhen rule ("+ql+") comes after the question itself");
+                  if (!isBefore(item, tgt, parents)) {
+                    warning(errors, IssueType.BUSINESSRULE, ns.literalPath, false, "The target of this enableWhen rule ("+ql+") comes after the question itself");
+                  }
                 }
               }
             }  
@@ -3659,6 +3664,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isBefore(Element item, Element tgt, List<Element> parents) {
     // we work up the list, looking for tgt in the children of the parents 
+    if (parents.contains(tgt)) {
+      // actually, if the target is a parent, that's automatically ok
+      return true;
+    }
     for (Element p : parents) {
       int i = findIndex(p, item);
       int t = findIndex(p, tgt);
