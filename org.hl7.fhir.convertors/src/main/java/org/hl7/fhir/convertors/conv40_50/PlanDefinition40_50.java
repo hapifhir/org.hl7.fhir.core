@@ -358,8 +358,8 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
         if (src.hasCardinalityBehavior())
             tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
-        // if (src.hasDefinition())
-        // tgt.setDefinitionElement(convertType(src.getDefinitionElement()));
+        if (src.hasDefinition())
+          tgt.setDefinition(convertType(src.getDefinition()));
         if (src.hasTransform())
             tgt.setTransformElement(convertCanonical(src.getTransformElement()));
         if (src.hasDynamicValue()) {
@@ -432,8 +432,8 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
         if (src.hasCardinalityBehavior())
             tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
-        // if (src.hasDefinition())
-        // tgt.setDefinitionElement(convertType(src.getDefinitionElement()));
+        if (src.hasDefinition())
+          tgt.setDefinition(convertType(src.getDefinition()));
         if (src.hasTransform())
             tgt.setTransformElement(convertCanonical(src.getTransformElement()));
         if (src.hasDynamicValue()) {
