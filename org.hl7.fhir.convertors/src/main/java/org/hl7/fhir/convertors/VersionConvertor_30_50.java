@@ -316,6 +316,18 @@ public class VersionConvertor_30_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.MarkdownType convertStringToMarkdown(org.hl7.fhir.dstu3.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.MarkdownType tgt = new org.hl7.fhir.r5.model.MarkdownType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.StringType convertMarkdownToString(org.hl7.fhir.r5.model.MarkdownType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.StringType tgt = new org.hl7.fhir.dstu3.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
     public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu3.model.TimeType src) throws FHIRException {
         org.hl7.fhir.r5.model.TimeType tgt = new org.hl7.fhir.r5.model.TimeType(src.getValue());
         copyElement(src, tgt);
