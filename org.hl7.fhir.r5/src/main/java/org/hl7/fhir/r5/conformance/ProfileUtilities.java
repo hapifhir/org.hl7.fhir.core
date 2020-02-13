@@ -5311,14 +5311,18 @@ public class ProfileUtilities extends TranslatingUtilities {
   private String getCardinality(ElementDefinition ed, List<ElementDefinition> list) {
     int min = ed.getMin();
     int max = !ed.hasMax() || ed.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(ed.getMax());
-    while (ed != null && ed.getPath().contains(".")) {
-      ed = findParent(ed, list);
-      if (ed.getMax().equals("0"))
-        max = 0;
-      else if (!ed.getMax().equals("1") && !ed.hasSlicing())
-        max = Integer.MAX_VALUE;
-      if (ed.getMin() == 0)
-        min = 0;
+    ElementDefinition ned = ed;
+    while (ned != null && ned.getPath().contains(".")) {
+      ned = findParent(ned, list);
+      if (ned != null) { // todo: this can happen if we've walked into a resoruce. Not sure what to about that? 
+        if ("0".equals(ned.getMax()))
+          max = 0;
+        else if (!ned.getMax().equals("1") && !ned.hasSlicing())
+          max = Integer.MAX_VALUE;
+        if (ned.getMin() == 0) {
+          min = 0;
+        }
+      }
     }
     return Integer.toString(min)+".."+(max == Integer.MAX_VALUE ? "*" : Integer.toString(max));
   }
