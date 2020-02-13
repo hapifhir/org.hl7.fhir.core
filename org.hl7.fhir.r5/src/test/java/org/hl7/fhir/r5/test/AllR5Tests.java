@@ -23,6 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BaseDateTimeTypeTest.class,
     OpenApiGeneratorTest.class,
     MetadataResourceManagerTester.class,
+    MetaTest.class,
     UtilitiesTests.class,
     SnapShotGenerationTests.class})
 
