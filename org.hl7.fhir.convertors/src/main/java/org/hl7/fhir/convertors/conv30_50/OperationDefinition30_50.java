@@ -49,7 +49,7 @@ public class OperationDefinition30_50 {
         if (src.hasCodeElement())
             tgt.setCodeElement((org.hl7.fhir.r5.model.CodeType) VersionConvertor_30_50.convertType(src.getCodeElement()));
         if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.r5.model.MarkdownType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+            tgt.setCommentElement(VersionConvertor_30_50.convertStringToMarkdown(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBaseElement(VersionConvertor_30_50.convertReferenceToCanonical(src.getBase()));
         if (src.hasResource()) {
@@ -109,7 +109,7 @@ public class OperationDefinition30_50 {
         if (src.hasCodeElement())
             tgt.setCodeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertType(src.getCodeElement()));
         if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+            tgt.setCommentElement(VersionConvertor_30_50.convertMarkdownToString(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBase(VersionConvertor_30_50.convertCanonicalToReference(src.getBaseElement()));
         if (src.hasResource()) {
