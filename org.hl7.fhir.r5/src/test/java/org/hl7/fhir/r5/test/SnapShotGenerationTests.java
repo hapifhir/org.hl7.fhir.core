@@ -473,7 +473,9 @@ public class SnapShotGenerationTests {
       pu.setNewSlicingProcessing(true);
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
-      pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
+      if (base != null) {
+        pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
+      }
       if (!TestingUtilities.context().hasResource(StructureDefinition.class, test.included.getUrl()))
         TestingUtilities.context().cacheResource(test.included);
       int ec = 0;

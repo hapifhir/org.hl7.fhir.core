@@ -175,8 +175,9 @@ public class StructureDefinition30_50 {
         if (src.hasAbstractElement())
             tgt.setAbstractElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getAbstractElement()));
         for (org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent t : src.getContext()) {
-            if (!tgt.hasContextType())
-                tgt.setTypeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertType(src.getTypeElement()));
+            if (!tgt.hasContextType()) {
+               tgt.setTypeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_50.convertUriToCode(src.getTypeElement()));
+            }
             tgt.addContext("Element".equals(t.getExpression()) ? "*" : t.getExpression());
         }
         if (src.hasContextInvariant()) {

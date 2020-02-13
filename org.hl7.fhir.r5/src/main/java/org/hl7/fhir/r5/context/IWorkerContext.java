@@ -539,7 +539,8 @@ public interface IWorkerContext {
   public void setOverrideVersionNs(String value);
 
   public StructureDefinition fetchTypeDefinition(String typeName);
-
+  public StructureDefinition fetchRawProfile(String url);
+  
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);

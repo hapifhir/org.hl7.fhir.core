@@ -99,7 +99,7 @@ public class FHIRPathTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    Document dom = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fhirpath", "tests-fhir-r4.xml"));
+    Document dom = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fhirpath", "tests-fhir-r5.xml"));
 
     List<Element> list = new ArrayList<Element>();
     List<Element> groups = new ArrayList<Element>();

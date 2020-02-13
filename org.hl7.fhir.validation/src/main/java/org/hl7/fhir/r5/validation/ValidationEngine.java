@@ -241,6 +241,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean debug;
   private Set<String> loadedIgs = new HashSet<>();
   private IValidatorResourceFetcher fetcher;
+  private boolean assumeValidRestReferences;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -432,7 +433,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         return fetchFromUrl(src+(v == null ? "" : "|"+v), explore);
     }
     
-    File f = new File(src);
+    File f = new File(Utilities.path(src));
     if (f.exists()) {
       if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
         return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));
@@ -760,8 +761,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         System.out.print("* load file: "+fn);
       }
       System.out.println(" - ignored due to error: "+(e.getMessage() == null ? " (null - NPE)" :  e.getMessage()));
-      if (debug)
+      if (debug || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
         e.printStackTrace();
+      }
     }
     return r;
   }
@@ -1270,6 +1272,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
+    validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setFetcher(this);
     return validator;
   }
@@ -1687,6 +1690,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setFetcher(IValidatorResourceFetcher fetcher) {
     this.fetcher = fetcher;
+  }
+
+  public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    this.assumeValidRestReferences = assumeValidRestReferences;
   }
 
 

@@ -1620,6 +1620,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return false;
     } else if (e instanceof ElementDefinition) {
       return false;
+    } else if (e instanceof Base64BinaryType) {
+      return false;
     } else if (!(e instanceof Attachment))
       throw new NotImplementedException("type "+e.getClass().getName()+" not handled yet");
     return false;
@@ -2515,6 +2517,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
     if (r.hasLanguage()) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", r.getLanguage());
       x.setAttribute("xml:lang", r.getLanguage());
     }
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
@@ -2539,6 +2543,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void inject(Element er, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    Element le = XMLUtil.getNamedChild(er, "language");
+    String l = le == null ? null : le.getAttribute("value");
+    if (!Utilities.noString(l)) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", l);
+      x.setAttribute("xml:lang", l);
+    }
     Element txt = XMLUtil.getNamedChild(er, "text");
     if (txt == null) {
       txt = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "text");
@@ -2574,6 +2585,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status) throws IOException, FHIRException {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    String l = er.getChildValue("language");
+    if (!Utilities.noString(l)) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", l);
+      x.setAttribute("xml:lang", l);
+    }
     org.hl7.fhir.r5.elementmodel.Element txt = er.getNamedChild("text");
     if (txt == null) {
       txt = new org.hl7.fhir.r5.elementmodel.Element("text", er.getProperty().getChild(null, "text"));
@@ -2919,6 +2936,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private ConceptMapRenderInstructions findByTarget(DataType source) {
+    if (source == null) {
+      return null;
+    }
     String src = source.primitiveValue();
     if (src != null)
       for (ConceptMapRenderInstructions t : renderingMaps) {

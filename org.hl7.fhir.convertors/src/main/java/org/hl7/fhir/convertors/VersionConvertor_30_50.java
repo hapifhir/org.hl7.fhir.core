@@ -152,8 +152,32 @@ public class VersionConvertor_30_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.CodeType convertStringToCode(org.hl7.fhir.dstu3.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.dstu3.model.StringType convertCodeToString(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.StringType tgt = new org.hl7.fhir.dstu3.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.dstu3.model.CodeType convertStringToCode(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.CodeType tgt = new org.hl7.fhir.dstu3.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
+    public static org.hl7.fhir.r5.model.StringType convertCodeToString(org.hl7.fhir.dstu3.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.r5.model.StringType tgt = new org.hl7.fhir.r5.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+    }
+
     public static org.hl7.fhir.r5.model.DateType convertDate(org.hl7.fhir.dstu3.model.DateType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
+      org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
         copyElement(src, tgt);
         return tgt;
     }
@@ -290,6 +314,18 @@ public class VersionConvertor_30_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.MarkdownType convertStringToMarkdown(org.hl7.fhir.dstu3.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.MarkdownType tgt = new org.hl7.fhir.r5.model.MarkdownType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.StringType convertMarkdownToString(org.hl7.fhir.r5.model.MarkdownType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.StringType tgt = new org.hl7.fhir.dstu3.model.StringType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
     public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu3.model.TimeType src) throws FHIRException {
         org.hl7.fhir.r5.model.TimeType tgt = new org.hl7.fhir.r5.model.TimeType(src.getValue());
         copyElement(src, tgt);
@@ -325,6 +361,18 @@ public class VersionConvertor_30_50 {
         copyElement(src, tgt);
         return tgt;
     }
+
+    public static org.hl7.fhir.r5.model.UriType convertCodeToUri(org.hl7.fhir.dstu3.model.CodeType src) throws FHIRException {
+      org.hl7.fhir.r5.model.UriType tgt = new org.hl7.fhir.r5.model.UriType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
+
+  public static org.hl7.fhir.dstu3.model.CodeType convertUriToCode(org.hl7.fhir.r5.model.UriType src) throws FHIRException {
+      org.hl7.fhir.dstu3.model.CodeType tgt = new org.hl7.fhir.dstu3.model.CodeType(src.getValue());
+      copyElement(src, tgt);
+      return tgt;
+  }
 
     public static org.hl7.fhir.r5.model.UuidType convertUuid(org.hl7.fhir.dstu3.model.UuidType src) throws FHIRException {
         org.hl7.fhir.r5.model.UuidType tgt = new org.hl7.fhir.r5.model.UuidType(src.getValue());
