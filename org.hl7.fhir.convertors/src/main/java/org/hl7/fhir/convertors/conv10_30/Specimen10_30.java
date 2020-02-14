@@ -1,20 +1,18 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.dstu3.model.Specimen;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Specimen10_30 {
 
-    static public org.hl7.fhir.dstu2.model.Specimen convertSpecimen(org.hl7.fhir.dstu3.model.Specimen src) {
+    static public org.hl7.fhir.dstu2.model.Specimen convertSpecimen(Specimen src) {
         if (src == null) {
             return null;
         }
         org.hl7.fhir.dstu2.model.Specimen tgt = new org.hl7.fhir.dstu2.model.Specimen();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         if (src.hasAccessionIdentifier())
             tgt.setAccessionIdentifier(VersionConvertor_10_30.convertIdentifier(src.getAccessionIdentifier()));
         if (src.hasStatus())
@@ -23,19 +21,13 @@ public class Specimen10_30 {
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        if (src.hasReceivedTimeElement())
-            tgt.setReceivedTimeElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getReceivedTimeElement()));
-        if (src.hasParent()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_10_30.convertReference(t));
-        }
+        if (src.hasReceivedTime())
+            tgt.setReceivedTime(src.getReceivedTime());
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.addParent(VersionConvertor_10_30.convertReference(t));
         if (src.hasCollection())
             tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
-        if (src.hasProcessing()) {
-            for (org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addTreatment(convertSpecimenProcessingComponent(t));
-        }
-        if (src.hasContainer()) {
-            for (org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addTreatment(convertSpecimenProcessingComponent(t));
+        for (org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
         return tgt;
     }
 
@@ -62,11 +54,9 @@ public class Specimen10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.dstu2.model.Specimen.SpecimenContainerComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         if (src.hasCapacity())
@@ -83,17 +73,15 @@ public class Specimen10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Specimen.SpecimenTreatmentComponent tgt = new org.hl7.fhir.dstu2.model.Specimen.SpecimenTreatmentComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         if (src.hasProcedure())
             tgt.setProcedure(VersionConvertor_10_30.convertCodeableConcept(src.getProcedure()));
-        if (src.hasAdditive()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_10_30.convertReference(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(VersionConvertor_10_30.convertReference(t));
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2.model.Specimen.SpecimenStatus convertSpecimenStatus(org.hl7.fhir.dstu3.model.Specimen.SpecimenStatus status) {
+    static public org.hl7.fhir.dstu2.model.Specimen.SpecimenStatus convertSpecimenStatus(Specimen.SpecimenStatus status) {
         if (status == null) {
             return null;
         }

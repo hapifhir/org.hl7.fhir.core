@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class FamilyMemberHistory10_50 {
 
@@ -45,34 +44,24 @@ public class FamilyMemberHistory10_50 {
             return null;
         org.hl7.fhir.r5.model.FamilyMemberHistory tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        }
-        if (src.hasPatient()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        if (src.hasPatient())
             tgt.setPatient(VersionConvertor_10_50.convertReference(src.getPatient()));
-        }
-        if (src.hasDateElement())
-            tgt.setDateElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
-        if (src.hasStatus()) {
+        if (src.hasDate())
+            tgt.setDateElement(VersionConvertor_10_50.convertDateTime(src.getDateElement()));
+        if (src.hasStatus())
             tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
-        }
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
-        if (src.hasRelationship()) {
+            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+        if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_10_50.convertCodeableConcept(src.getRelationship()));
-        }
-        if (src.hasBorn()) {
+        if (src.hasBorn())
             tgt.setBorn(VersionConvertor_10_50.convertType(src.getBorn()));
-        }
-        if (src.hasAge()) {
+        if (src.hasAge())
             tgt.setAge(VersionConvertor_10_50.convertType(src.getAge()));
-        }
-        if (src.hasDeceased()) {
+        if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_10_50.convertType(src.getDeceased()));
-        }
-        if (src.hasCondition()) {
-            for (org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
         return tgt;
     }
 
@@ -81,34 +70,24 @@ public class FamilyMemberHistory10_50 {
             return null;
         org.hl7.fhir.dstu2.model.FamilyMemberHistory tgt = new org.hl7.fhir.dstu2.model.FamilyMemberHistory();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        }
-        if (src.hasPatient()) {
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        if (src.hasPatient())
             tgt.setPatient(VersionConvertor_10_50.convertReference(src.getPatient()));
-        }
-        if (src.hasDateElement())
-            tgt.setDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateElement()));
-        if (src.hasStatus()) {
+        if (src.hasDate())
+            tgt.setDateElement(VersionConvertor_10_50.convertDateTime(src.getDateElement()));
+        if (src.hasStatus())
             tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
-        }
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getNameElement()));
-        if (src.hasRelationship()) {
+            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+        if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_10_50.convertCodeableConcept(src.getRelationship()));
-        }
-        if (src.hasBorn()) {
+        if (src.hasBorn())
             tgt.setBorn(VersionConvertor_10_50.convertType(src.getBorn()));
-        }
-        if (src.hasAge()) {
+        if (src.hasAge())
             tgt.setAge(VersionConvertor_10_50.convertType(src.getAge()));
-        }
-        if (src.hasDeceased()) {
+        if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_10_50.convertType(src.getDeceased()));
-        }
-        if (src.hasCondition()) {
-            for (org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition()) tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
         return tgt;
     }
 
@@ -117,15 +96,12 @@ public class FamilyMemberHistory10_50 {
             return null;
         org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasCode()) {
+        if (src.hasCode())
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
-        }
-        if (src.hasOutcome()) {
+        if (src.hasOutcome())
             tgt.setOutcome(VersionConvertor_10_50.convertCodeableConcept(src.getOutcome()));
-        }
-        if (src.hasOnset()) {
+        if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_50.convertType(src.getOnset()));
-        }
         return tgt;
     }
 
@@ -134,15 +110,12 @@ public class FamilyMemberHistory10_50 {
             return null;
         org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasCode()) {
+        if (src.hasCode())
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
-        }
-        if (src.hasOutcome()) {
+        if (src.hasOutcome())
             tgt.setOutcome(VersionConvertor_10_50.convertCodeableConcept(src.getOutcome()));
-        }
-        if (src.hasOnset()) {
+        if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_50.convertType(src.getOnset()));
-        }
         return tgt;
     }
 }

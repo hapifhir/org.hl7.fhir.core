@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Parameters10_40 {
 
@@ -11,9 +10,7 @@ public class Parameters10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Parameters tgt = new org.hl7.fhir.dstu2.model.Parameters();
         VersionConvertor_10_40.copyResource(src, tgt);
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
         return tgt;
     }
 
@@ -22,9 +19,7 @@ public class Parameters10_40 {
             return null;
         org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
         VersionConvertor_10_40.copyResource(src, tgt);
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
         return tgt;
     }
 
@@ -34,16 +29,12 @@ public class Parameters10_40 {
         org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
-        if (src.hasValue()) {
+            tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
+        if (src.hasValue())
             tgt.setValue(VersionConvertor_10_40.convertType(src.getValue()));
-        }
-        if (src.hasResource()) {
+        if (src.hasResource())
             tgt.setResource(VersionConvertor_10_40.convertResource(src.getResource()));
-        }
-        if (src.hasPart()) {
-            for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
         return tgt;
     }
 
@@ -53,16 +44,12 @@ public class Parameters10_40 {
         org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getNameElement()));
-        if (src.hasValue()) {
+            tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
+        if (src.hasValue())
             tgt.setValue(VersionConvertor_10_40.convertType(src.getValue()));
-        }
-        if (src.hasResource()) {
+        if (src.hasResource())
             tgt.setResource(VersionConvertor_10_40.convertResource(src.getResource()));
-        }
-        if (src.hasPart()) {
-            for (org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
         return tgt;
     }
 }

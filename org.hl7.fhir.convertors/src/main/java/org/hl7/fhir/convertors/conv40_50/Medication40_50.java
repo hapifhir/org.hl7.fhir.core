@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Medication tgt = new org.hl7.fhir.r5.model.Medication();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
@@ -71,9 +69,7 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             tgt.setDoseForm(convertCodeableConcept(src.getForm()));
         if (src.hasAmount())
             tgt.setAmount(convertRatio(src.getAmount()));
-        if (src.hasIngredient()) {
-            for (org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
         if (src.hasBatch())
             tgt.setBatch(convertMedicationBatchComponent(src.getBatch()));
         return tgt;
@@ -84,9 +80,7 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Medication tgt = new org.hl7.fhir.r4.model.Medication();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
@@ -97,9 +91,7 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             tgt.setForm(convertCodeableConcept(src.getDoseForm()));
         if (src.hasAmount())
             tgt.setAmount(convertRatio(src.getAmount()));
-        if (src.hasIngredient()) {
-            for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertMedicationIngredientComponent(t));
         if (src.hasBatch())
             tgt.setBatch(convertMedicationBatchComponent(src.getBatch()));
         return tgt;

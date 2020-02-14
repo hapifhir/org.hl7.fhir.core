@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -66,9 +66,7 @@ public class SubstanceNucleicAcid40_50 extends VersionConvertor_40_50 {
             tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
         if (src.hasOligoNucleotideType())
             tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
-        if (src.hasSubunit()) {
-            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
         return tgt;
     }
 
@@ -85,9 +83,7 @@ public class SubstanceNucleicAcid40_50 extends VersionConvertor_40_50 {
             tgt.setAreaOfHybridisationElement(convertString(src.getAreaOfHybridisationElement()));
         if (src.hasOligoNucleotideType())
             tgt.setOligoNucleotideType(convertCodeableConcept(src.getOligoNucleotideType()));
-        if (src.hasSubunit()) {
-            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceNucleicAcidSubunitComponent(t));
         return tgt;
     }
 
@@ -108,12 +104,8 @@ public class SubstanceNucleicAcid40_50 extends VersionConvertor_40_50 {
             tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
         if (src.hasThreePrime())
             tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
-        if (src.hasLinkage()) {
-            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
-        }
-        if (src.hasSugar()) {
-            for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
+        for (org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
         return tgt;
     }
 
@@ -134,12 +126,8 @@ public class SubstanceNucleicAcid40_50 extends VersionConvertor_40_50 {
             tgt.setFivePrime(convertCodeableConcept(src.getFivePrime()));
         if (src.hasThreePrime())
             tgt.setThreePrime(convertCodeableConcept(src.getThreePrime()));
-        if (src.hasLinkage()) {
-            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
-        }
-        if (src.hasSugar()) {
-            for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent t : src.getLinkage()) tgt.addLinkage(convertSubstanceNucleicAcidSubunitLinkageComponent(t));
+        for (org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent t : src.getSugar()) tgt.addSugar(convertSubstanceNucleicAcidSubunitSugarComponent(t));
         return tgt;
     }
 

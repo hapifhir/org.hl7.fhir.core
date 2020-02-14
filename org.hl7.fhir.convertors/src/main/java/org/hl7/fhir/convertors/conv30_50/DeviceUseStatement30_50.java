@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv30_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import java.util.Collections;
 
 public class DeviceUseStatement30_50 {
 
@@ -12,17 +11,15 @@ public class DeviceUseStatement30_50 {
             return null;
         org.hl7.fhir.dstu3.model.DeviceUseStatement tgt = new org.hl7.fhir.dstu3.model.DeviceUseStatement();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertDeviceUseStatementStatus(src.getStatus()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
-        if (src.hasRecordedOnElement())
-            tgt.setRecordedOnElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getRecordedOnElement()));
+        if (src.hasRecordedOn())
+            tgt.setRecordedOnElement(VersionConvertor_30_50.convertDateTime(src.getRecordedOnElement()));
         if (src.hasSource())
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasDevice())
@@ -31,9 +28,7 @@ public class DeviceUseStatement30_50 {
             tgt.addIndication(VersionConvertor_30_50.convertCodeableConcept(t.getConcept()));
         if (src.hasBodySite())
             tgt.setBodySite(VersionConvertor_30_50.convertCodeableConcept(src.getBodySite()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         return tgt;
     }
 
@@ -42,29 +37,23 @@ public class DeviceUseStatement30_50 {
             return null;
         org.hl7.fhir.r5.model.DeviceUseStatement tgt = new org.hl7.fhir.r5.model.DeviceUseStatement();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertDeviceUseStatementStatus(src.getStatus()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
-        if (src.hasRecordedOnElement())
-            tgt.setRecordedOnElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getRecordedOnElement()));
+        if (src.hasRecordedOn())
+            tgt.setRecordedOnElement(VersionConvertor_30_50.convertDateTime(src.getRecordedOnElement()));
         if (src.hasSource())
             tgt.setSource(VersionConvertor_30_50.convertReference(src.getSource()));
         if (src.hasDevice())
             tgt.setDevice(VersionConvertor_30_50.convertReference(src.getDevice()));
-        if (src.hasIndication()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addReason(VersionConvertor_30_50.convertCodeableConceptToCodableReference(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addReason(VersionConvertor_30_50.convertCodeableConceptToCodableReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(VersionConvertor_30_50.convertCodeableConcept(src.getBodySite()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         return tgt;
     }
 

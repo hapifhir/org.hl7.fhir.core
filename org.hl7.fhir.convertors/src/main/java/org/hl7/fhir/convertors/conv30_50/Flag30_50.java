@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Flag30_50 {
 
@@ -11,9 +10,7 @@ public class Flag30_50 {
             return null;
         org.hl7.fhir.r5.model.Flag tgt = new org.hl7.fhir.r5.model.Flag();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertFlagStatus(src.getStatus()));
         if (src.hasCategory())
@@ -36,9 +33,7 @@ public class Flag30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Flag tgt = new org.hl7.fhir.dstu3.model.Flag();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertFlagStatus(src.getStatus()));
         if (src.hasCategory())

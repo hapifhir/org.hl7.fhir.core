@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,15 +58,9 @@ public class SupplyDelivery40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.SupplyDelivery tgt = new org.hl7.fhir.r5.model.SupplyDelivery();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
         if (src.hasPatient())
@@ -81,9 +75,7 @@ public class SupplyDelivery40_50 extends VersionConvertor_40_50 {
             tgt.setSupplier(convertReference(src.getSupplier()));
         if (src.hasDestination())
             tgt.setDestination(convertReference(src.getDestination()));
-        if (src.hasReceiver()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
         return tgt;
     }
 
@@ -92,15 +84,9 @@ public class SupplyDelivery40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertSupplyDeliveryStatus(src.getStatus()));
         if (src.hasPatient())
@@ -115,9 +101,7 @@ public class SupplyDelivery40_50 extends VersionConvertor_40_50 {
             tgt.setSupplier(convertReference(src.getSupplier()));
         if (src.hasDestination())
             tgt.setDestination(convertReference(src.getDestination()));
-        if (src.hasReceiver()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(convertReference(t));
         return tgt;
     }
 

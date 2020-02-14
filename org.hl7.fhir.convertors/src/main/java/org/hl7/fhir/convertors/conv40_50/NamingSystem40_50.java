@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -68,26 +68,18 @@ public class NamingSystem40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasResponsible())
             tgt.setResponsibleElement(convertString(src.getResponsibleElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasUsage())
             tgt.setUsageElement(convertString(src.getUsageElement()));
-        if (src.hasUniqueId()) {
-            for (org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
         return tgt;
     }
 
@@ -106,26 +98,18 @@ public class NamingSystem40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasResponsible())
             tgt.setResponsibleElement(convertString(src.getResponsibleElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasUsage())
             tgt.setUsageElement(convertString(src.getUsageElement()));
-        if (src.hasUniqueId()) {
-            for (org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent t : src.getUniqueId()) tgt.addUniqueId(convertNamingSystemUniqueIdComponent(t));
         return tgt;
     }
 

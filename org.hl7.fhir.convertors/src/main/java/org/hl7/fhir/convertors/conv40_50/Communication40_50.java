@@ -19,12 +19,11 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,66 +61,38 @@ public class Communication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Communication tgt = new org.hl7.fhir.r5.model.Communication();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
-        if (src.hasInResponseTo()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getInResponseTo()) tgt.addInResponseTo(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getInResponseTo()) tgt.addInResponseTo(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCommunicationStatus(src.getStatus()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(convertCommunicationPriority(src.getPriority()));
-        if (src.hasMedium()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium()) tgt.addMedium(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium()) tgt.addMedium(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasTopic())
             tgt.setTopic(convertCodeableConcept(src.getTopic()));
-        if (src.hasAbout()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAbout()) tgt.addAbout(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAbout()) tgt.addAbout(convertReference(t));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasSent())
             tgt.setSentElement(convertDateTime(src.getSentElement()));
         if (src.hasReceived())
             tgt.setReceivedElement(convertDateTime(src.getReceivedElement()));
-        if (src.hasRecipient()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
         if (src.hasSender())
             tgt.setSender(convertReference(src.getSender()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasPayload()) {
-            for (org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -130,64 +101,40 @@ public class Communication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Communication tgt = new org.hl7.fhir.r4.model.Communication();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
-        if (src.hasInResponseTo()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getInResponseTo()) tgt.addInResponseTo(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getInResponseTo()) tgt.addInResponseTo(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCommunicationStatus(src.getStatus()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(convertCommunicationPriority(src.getPriority()));
-        if (src.hasMedium()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getMedium()) tgt.addMedium(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getMedium()) tgt.addMedium(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasTopic())
             tgt.setTopic(convertCodeableConcept(src.getTopic()));
-        if (src.hasAbout()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAbout()) tgt.addAbout(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAbout()) tgt.addAbout(convertReference(t));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasSent())
             tgt.setSentElement(convertDateTime(src.getSentElement()));
         if (src.hasReceived())
             tgt.setReceivedElement(convertDateTime(src.getReceivedElement()));
-        if (src.hasRecipient()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
         if (src.hasSender())
             tgt.setSender(convertReference(src.getSender()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasPayload()) {
-            for (org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -283,17 +230,12 @@ public class Communication40_50 extends VersionConvertor_40_50 {
         if (src.hasContent()) {
             if (src.getContent() instanceof StringType) {
                 CodeableConcept tgtc = new CodeableConcept();
-                if (src.hasContent()) {
-                    copyElement(src.getContent(), tgtc);
-                }
-                if (src.hasContentStringType()) {
-                    tgtc.setText(src.getContentStringType().getValue());
-                }
+                copyElement(src.getContent(), tgtc);
+                tgtc.setText(src.getContentStringType().getValue());
                 tgt.setContent(tgtc);
             } else {
-                if (src.hasContent()) {
+                if (src.hasContent())
                     tgt.setContent(convertType(src.getContent()));
-                }
             }
         }
         return tgt;
@@ -307,17 +249,12 @@ public class Communication40_50 extends VersionConvertor_40_50 {
         if (src.hasContent()) {
             if (src.hasContentCodeableConcept()) {
                 StringType tgts = new StringType();
-                if (src.hasContent()) {
-                    copyElement(src.getContent(), tgts);
-                }
-                if (src.hasContentCodeableConcept()) {
-                    tgts.setValue(src.getContentCodeableConcept().getText());
-                }
+                copyElement(src.getContent(), tgts);
+                tgts.setValue(src.getContentCodeableConcept().getText());
                 tgt.setContent(tgts);
             } else {
-                if (src.hasContent()) {
+                if (src.hasContent())
                     tgt.setContent(convertType(src.getContent()));
-                }
             }
         }
         return tgt;

@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Substance30_40 {
 
@@ -41,24 +40,16 @@ public class Substance30_40 {
             return null;
         org.hl7.fhir.r4.model.Substance tgt = new org.hl7.fhir.r4.model.Substance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertFHIRSubstanceStatus(src.getStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
-        }
-        if (src.hasIngredient()) {
-            for (org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
-        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
+        for (org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
         return tgt;
     }
 
@@ -67,24 +58,16 @@ public class Substance30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Substance tgt = new org.hl7.fhir.dstu3.model.Substance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertFHIRSubstanceStatus(src.getStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
-        }
-        if (src.hasIngredient()) {
-            for (org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
-        }
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
+        for (org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
         return tgt;
     }
 

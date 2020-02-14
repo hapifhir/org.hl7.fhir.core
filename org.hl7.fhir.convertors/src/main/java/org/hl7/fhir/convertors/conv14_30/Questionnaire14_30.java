@@ -1,11 +1,9 @@
 package org.hl7.fhir.convertors.conv14_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_14_30;
-import org.hl7.fhir.dstu2016may.model.BooleanType;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.UsageContext;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Questionnaire14_30 {
 
@@ -14,40 +12,25 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu2016may.model.Questionnaire tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire();
         VersionConvertor_14_30.copyDomainResource(src, tgt);
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu2016may.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_14_30.convertIdentifier(t));
-        }
-        if (src.hasVersionElement())
-            tgt.setVersionElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getVersionElement()));
-        if (src.hasStatus()) {
+        if (src.hasUrl())
+            tgt.setUrlElement(VersionConvertor_14_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_14_30.convertIdentifier(t));
+        if (src.hasVersion())
+            tgt.setVersionElement(VersionConvertor_14_30.convertString(src.getVersionElement()));
+        if (src.hasStatus())
             tgt.setStatus(convertQuestionnaireStatus(src.getStatus()));
-        }
-        if (src.hasDateElement())
-            tgt.setDateElement((org.hl7.fhir.dstu2016may.model.DateTimeType) VersionConvertor_14_30.convertType(src.getDateElement()));
-        if (src.hasPublisherElement())
-            tgt.setPublisherElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (ContactDetail t : src.getContact()) for (org.hl7.fhir.dstu3.model.ContactPoint t1 : t.getTelecom()) tgt.addTelecom(VersionConvertor_14_30.convertContactPoint(t1));
-        }
-        if (src.hasUseContext()) {
-            for (UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_14_30.convertCodeableConcept(t.getValueCodeableConcept()));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_14_30.convertCodeableConcept(t));
-        }
-        if (src.hasTitleElement())
-            tgt.setTitleElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getTitleElement()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_14_30.convertCoding(t));
-        }
-        if (src.hasSubjectType()) {
-            for (org.hl7.fhir.dstu3.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        if (src.hasDate())
+            tgt.setDateElement(VersionConvertor_14_30.convertDateTime(src.getDateElement()));
+        if (src.hasPublisher())
+            tgt.setPublisherElement(VersionConvertor_14_30.convertString(src.getPublisherElement()));
+        for (ContactDetail t : src.getContact()) for (org.hl7.fhir.dstu3.model.ContactPoint t1 : t.getTelecom()) tgt.addTelecom(VersionConvertor_14_30.convertContactPoint(t1));
+        for (UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_14_30.convertCodeableConcept(t.getValueCodeableConcept()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_14_30.convertCodeableConcept(t));
+        if (src.hasTitle())
+            tgt.setTitleElement(VersionConvertor_14_30.convertString(src.getTitleElement()));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_14_30.convertCoding(t));
+        for (org.hl7.fhir.dstu3.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
+        for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -56,38 +39,27 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu3.model.Questionnaire tgt = new org.hl7.fhir.dstu3.model.Questionnaire();
         VersionConvertor_14_30.copyDomainResource(src, tgt);
-        if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_14_30.convertType(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2016may.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_14_30.convertIdentifier(t));
-        }
-        if (src.hasVersionElement())
-            tgt.setVersionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getVersionElement()));
-        if (src.hasStatus()) {
+        if (src.hasUrl())
+            tgt.setUrlElement(VersionConvertor_14_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu2016may.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_14_30.convertIdentifier(t));
+        if (src.hasVersion())
+            tgt.setVersionElement(VersionConvertor_14_30.convertString(src.getVersionElement()));
+        if (src.hasStatus())
             tgt.setStatus(convertQuestionnaireStatus(src.getStatus()));
-        }
-        if (src.hasDateElement())
-            tgt.setDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_14_30.convertType(src.getDateElement()));
-        if (src.hasPublisherElement())
-            tgt.setPublisherElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getPublisherElement()));
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addContact(convertQuestionnaireContactComponent(t));
-        }
+        if (src.hasDate())
+            tgt.setDateElement(VersionConvertor_14_30.convertDateTime(src.getDateElement()));
+        if (src.hasPublisher())
+            tgt.setPublisherElement(VersionConvertor_14_30.convertString(src.getPublisherElement()));
+        for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addContact(convertQuestionnaireContactComponent(t));
         for (org.hl7.fhir.dstu2016may.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_14_30.isJurisdiction(t))
             tgt.addJurisdiction(VersionConvertor_14_30.convertCodeableConcept(t));
         else
             tgt.addUseContext(VersionConvertor_14_30.convertCodeableConceptToUsageContext(t));
-        if (src.hasTitleElement())
-            tgt.setTitleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getTitleElement()));
-        if (src.hasConcept()) {
-            for (org.hl7.fhir.dstu2016may.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_14_30.convertCoding(t));
-        }
-        if (src.hasSubjectType()) {
-            for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        if (src.hasTitle())
+            tgt.setTitleElement(VersionConvertor_14_30.convertString(src.getTitleElement()));
+        for (org.hl7.fhir.dstu2016may.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_14_30.convertCoding(t));
+        for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
+        for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -105,41 +77,30 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasLinkIdElement())
-            tgt.setLinkIdElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getLinkIdElement()));
-        if (src.hasConcept()) {
-            for (org.hl7.fhir.dstu2016may.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_14_30.convertCoding(t));
-        }
-        if (src.hasPrefixElement())
-            tgt.setPrefixElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getPrefixElement()));
-        if (src.hasTextElement())
-            tgt.setTextElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getTextElement()));
-        if (src.hasType()) {
+        if (src.hasLinkId())
+            tgt.setLinkIdElement(VersionConvertor_14_30.convertString(src.getLinkIdElement()));
+        for (org.hl7.fhir.dstu2016may.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_14_30.convertCoding(t));
+        if (src.hasPrefix())
+            tgt.setPrefixElement(VersionConvertor_14_30.convertString(src.getPrefixElement()));
+        if (src.hasText())
+            tgt.setTextElement(VersionConvertor_14_30.convertString(src.getTextElement()));
+        if (src.hasType())
             tgt.setType(convertQuestionnaireItemType(src.getType()));
-        }
-        if (src.hasEnableWhen()) {
-            for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
-        }
-        if (src.hasRequiredElement())
-            tgt.setRequiredElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_14_30.convertType(src.getRequiredElement()));
-        if (src.hasRepeatsElement())
-            tgt.setRepeatsElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_14_30.convertType(src.getRepeatsElement()));
-        if (src.hasReadOnlyElement())
-            tgt.setReadOnlyElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_14_30.convertType(src.getReadOnlyElement()));
-        if (src.hasMaxLengthElement())
-            tgt.setMaxLengthElement((org.hl7.fhir.dstu3.model.IntegerType) VersionConvertor_14_30.convertType(src.getMaxLengthElement()));
-        if (src.hasOptions()) {
+        for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
+        if (src.hasRequired())
+            tgt.setRequiredElement(VersionConvertor_14_30.convertBoolean(src.getRequiredElement()));
+        if (src.hasRepeats())
+            tgt.setRepeatsElement(VersionConvertor_14_30.convertBoolean(src.getRepeatsElement()));
+        if (src.hasReadOnly())
+            tgt.setReadOnlyElement(VersionConvertor_14_30.convertBoolean(src.getReadOnlyElement()));
+        if (src.hasMaxLength())
+            tgt.setMaxLengthElement(VersionConvertor_14_30.convertInteger(src.getMaxLengthElement()));
+        if (src.hasOptions())
             tgt.setOptions(VersionConvertor_14_30.convertReference(src.getOptions()));
-        }
-        if (src.hasOption()) {
-            for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent t : src.getOption()) tgt.addOption(convertQuestionnaireItemOptionComponent(t));
-        }
-        if (src.hasInitial()) {
+        for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent t : src.getOption()) tgt.addOption(convertQuestionnaireItemOptionComponent(t));
+        if (src.hasInitial())
             tgt.setInitial(VersionConvertor_14_30.convertType(src.getInitial()));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -148,41 +109,30 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasLinkIdElement())
-            tgt.setLinkIdElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getLinkIdElement()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_14_30.convertCoding(t));
-        }
-        if (src.hasPrefixElement())
-            tgt.setPrefixElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getPrefixElement()));
-        if (src.hasTextElement())
-            tgt.setTextElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getTextElement()));
-        if (src.hasType()) {
+        if (src.hasLinkId())
+            tgt.setLinkIdElement(VersionConvertor_14_30.convertString(src.getLinkIdElement()));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_14_30.convertCoding(t));
+        if (src.hasPrefix())
+            tgt.setPrefixElement(VersionConvertor_14_30.convertString(src.getPrefixElement()));
+        if (src.hasText())
+            tgt.setTextElement(VersionConvertor_14_30.convertString(src.getTextElement()));
+        if (src.hasType())
             tgt.setType(convertQuestionnaireItemType(src.getType()));
-        }
-        if (src.hasEnableWhen()) {
-            for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
-        }
-        if (src.hasRequiredElement())
-            tgt.setRequiredElement((org.hl7.fhir.dstu2016may.model.BooleanType) VersionConvertor_14_30.convertType(src.getRequiredElement()));
-        if (src.hasRepeatsElement())
-            tgt.setRepeatsElement((org.hl7.fhir.dstu2016may.model.BooleanType) VersionConvertor_14_30.convertType(src.getRepeatsElement()));
-        if (src.hasReadOnlyElement())
-            tgt.setReadOnlyElement((org.hl7.fhir.dstu2016may.model.BooleanType) VersionConvertor_14_30.convertType(src.getReadOnlyElement()));
-        if (src.hasMaxLengthElement())
-            tgt.setMaxLengthElement((org.hl7.fhir.dstu2016may.model.IntegerType) VersionConvertor_14_30.convertType(src.getMaxLengthElement()));
-        if (src.hasOptions()) {
+        for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
+        if (src.hasRequired())
+            tgt.setRequiredElement(VersionConvertor_14_30.convertBoolean(src.getRequiredElement()));
+        if (src.hasRepeats())
+            tgt.setRepeatsElement(VersionConvertor_14_30.convertBoolean(src.getRepeatsElement()));
+        if (src.hasReadOnly())
+            tgt.setReadOnlyElement(VersionConvertor_14_30.convertBoolean(src.getReadOnlyElement()));
+        if (src.hasMaxLength())
+            tgt.setMaxLengthElement(VersionConvertor_14_30.convertInteger(src.getMaxLengthElement()));
+        if (src.hasOptions())
             tgt.setOptions(VersionConvertor_14_30.convertReference(src.getOptions()));
-        }
-        if (src.hasOption()) {
-            for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent t : src.getOption()) tgt.addOption(convertQuestionnaireItemOptionComponent(t));
-        }
-        if (src.hasInitial()) {
+        for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent t : src.getOption()) tgt.addOption(convertQuestionnaireItemOptionComponent(t));
+        if (src.hasInitial())
             tgt.setInitial(VersionConvertor_14_30.convertType(src.getInitial()));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -192,12 +142,11 @@ public class Questionnaire14_30 {
         org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
         if (src.hasQuestionElement())
-            tgt.setQuestionElement((org.hl7.fhir.dstu2016may.model.StringType) VersionConvertor_14_30.convertType(src.getQuestionElement()));
-        if (src.hasHasAnswerElement())
-            tgt.setAnsweredElement((BooleanType) VersionConvertor_14_30.convertType(src.getHasAnswerElement()));
-        if (src.hasAnswer()) {
+            tgt.setQuestionElement(VersionConvertor_14_30.convertString(src.getQuestionElement()));
+        if (src.hasHasAnswer())
+            tgt.setAnsweredElement(VersionConvertor_14_30.convertBoolean(src.getHasAnswerElement()));
+        if (src.hasAnswer())
             tgt.setAnswer(VersionConvertor_14_30.convertType(src.getAnswer()));
-        }
         return tgt;
     }
 
@@ -207,12 +156,11 @@ public class Questionnaire14_30 {
         org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
         if (src.hasQuestionElement())
-            tgt.setQuestionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_14_30.convertType(src.getQuestionElement()));
-        if (src.hasAnsweredElement())
-            tgt.setHasAnswerElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_14_30.convertType(src.getAnsweredElement()));
-        if (src.hasAnswer()) {
+            tgt.setQuestionElement(VersionConvertor_14_30.convertString(src.getQuestionElement()));
+        if (src.hasAnswered())
+            tgt.setHasAnswerElement(VersionConvertor_14_30.convertBoolean(src.getAnsweredElement()));
+        if (src.hasAnswer())
             tgt.setAnswer(VersionConvertor_14_30.convertType(src.getAnswer()));
-        }
         return tgt;
     }
 
@@ -221,9 +169,8 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasValue()) {
+        if (src.hasValue())
             tgt.setValue(VersionConvertor_14_30.convertType(src.getValue()));
-        }
         return tgt;
     }
 
@@ -232,9 +179,8 @@ public class Questionnaire14_30 {
             return null;
         org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
-        if (src.hasValue()) {
+        if (src.hasValue())
             tgt.setValue(VersionConvertor_14_30.convertType(src.getValue()));
-        }
         return tgt;
     }
 

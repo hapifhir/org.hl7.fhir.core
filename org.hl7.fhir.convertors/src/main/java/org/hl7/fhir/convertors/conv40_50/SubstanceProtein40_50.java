@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,12 +62,8 @@ public class SubstanceProtein40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
         if (src.hasNumberOfSubunits())
             tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-        if (src.hasDisulfideLinkage()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
-        }
-        if (src.hasSubunit()) {
-            for (org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
+        for (org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
         return tgt;
     }
 
@@ -80,12 +76,8 @@ public class SubstanceProtein40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceType(convertCodeableConcept(src.getSequenceType()));
         if (src.hasNumberOfSubunits())
             tgt.setNumberOfSubunitsElement(convertInteger(src.getNumberOfSubunitsElement()));
-        if (src.hasDisulfideLinkage()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
-        }
-        if (src.hasSubunit()) {
-            for (org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getDisulfideLinkage()) tgt.getDisulfideLinkage().add(convertString(t));
+        for (org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent t : src.getSubunit()) tgt.addSubunit(convertSubstanceProteinSubunitComponent(t));
         return tgt;
     }
 

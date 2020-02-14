@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r5.model.ImmunizationEvaluation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
         if (src.hasPatient())
@@ -75,9 +73,7 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
             tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
         if (src.hasDoseStatus())
             tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
-        if (src.hasDoseStatusReason()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasSeries())
@@ -94,9 +90,7 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ImmunizationEvaluation tgt = new org.hl7.fhir.r4.model.ImmunizationEvaluation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationEvaluationStatus(src.getStatus()));
         if (src.hasPatient())
@@ -111,9 +105,7 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
             tgt.setImmunizationEvent(convertReference(src.getImmunizationEvent()));
         if (src.hasDoseStatus())
             tgt.setDoseStatus(convertCodeableConcept(src.getDoseStatus()));
-        if (src.hasDoseStatusReason()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDoseStatusReason()) tgt.addDoseStatusReason(convertCodeableConcept(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasSeries())

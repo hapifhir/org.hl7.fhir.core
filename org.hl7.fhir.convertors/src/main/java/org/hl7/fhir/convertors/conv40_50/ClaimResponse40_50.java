@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ClaimResponse tgt = new org.hl7.fhir.r5.model.ClaimResponse();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClaimResponseStatus(src.getStatus()));
         if (src.hasType())
@@ -89,18 +87,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setPreAuthPeriod(convertPeriod(src.getPreAuthPeriod()));
         if (src.hasPayeeType())
             tgt.setPayeeType(convertCodeableConcept(src.getPayeeType()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
-        if (src.hasAddItem()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasTotal()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ClaimResponse.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
         if (src.hasPayment())
             tgt.setPayment(convertPaymentComponent(src.getPayment()));
         if (src.hasFundsReserve())
@@ -109,18 +99,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
         if (src.hasForm())
             tgt.setForm(convertAttachment(src.getForm()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
-        }
-        if (src.hasCommunicationRequest()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getCommunicationRequest()) tgt.addCommunicationRequest(convertReference(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
-        if (src.hasError()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent t : src.getError()) tgt.addError(convertErrorComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ClaimResponse.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getCommunicationRequest()) tgt.addCommunicationRequest(convertReference(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent t : src.getError()) tgt.addError(convertErrorComponent(t));
         return tgt;
     }
 
@@ -129,9 +111,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ClaimResponse tgt = new org.hl7.fhir.r4.model.ClaimResponse();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClaimResponseStatus(src.getStatus()));
         if (src.hasType())
@@ -160,18 +140,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setPreAuthPeriod(convertPeriod(src.getPreAuthPeriod()));
         if (src.hasPayeeType())
             tgt.setPayeeType(convertCodeableConcept(src.getPayeeType()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
-        if (src.hasAddItem()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasTotal()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ClaimResponse.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
         if (src.hasPayment())
             tgt.setPayment(convertPaymentComponent(src.getPayment()));
         if (src.hasFundsReserve())
@@ -180,18 +152,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
         if (src.hasForm())
             tgt.setForm(convertAttachment(src.getForm()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
-        }
-        if (src.hasCommunicationRequest()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getCommunicationRequest()) tgt.addCommunicationRequest(convertReference(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
-        if (src.hasError()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.ErrorComponent t : src.getError()) tgt.addError(convertErrorComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ClaimResponse.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getCommunicationRequest()) tgt.addCommunicationRequest(convertReference(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.ErrorComponent t : src.getError()) tgt.addError(convertErrorComponent(t));
         return tgt;
     }
 
@@ -300,15 +264,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasItemSequence())
             tgt.setItemSequenceElement(convertPositiveInt(src.getItemSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent t : src.getDetail()) tgt.addDetail(convertItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent t : src.getDetail()) tgt.addDetail(convertItemDetailComponent(t));
         return tgt;
     }
 
@@ -319,15 +277,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasItemSequence())
             tgt.setItemSequenceElement(convertPositiveInt(src.getItemSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.ItemDetailComponent t : src.getDetail()) tgt.addDetail(convertItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.ItemDetailComponent t : src.getDetail()) tgt.addDetail(convertItemDetailComponent(t));
         return tgt;
     }
 
@@ -370,15 +322,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasDetailSequence())
             tgt.setDetailSequenceElement(convertPositiveInt(src.getDetailSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -389,15 +335,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasDetailSequence())
             tgt.setDetailSequenceElement(convertPositiveInt(src.getDetailSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -408,12 +348,8 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSubDetailSequence())
             tgt.setSubDetailSequenceElement(convertPositiveInt(src.getSubDetailSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -424,12 +360,8 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSubDetailSequence())
             tgt.setSubDetailSequenceElement(convertPositiveInt(src.getSubDetailSequenceElement()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -438,26 +370,14 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent();
         copyElement(src, tgt);
-        if (src.hasItemSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDetailSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasSubdetailSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSubdetailSequence()) tgt.getSubdetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProvider()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSubdetailSequence()) tgt.getSubdetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -472,18 +392,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setNet(convertMoney(src.getNet()));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
         return tgt;
     }
 
@@ -492,26 +404,14 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent();
         copyElement(src, tgt);
-        if (src.hasItemSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDetailSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasSubdetailSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSubdetailSequence()) tgt.getSubdetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProvider()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSubdetailSequence()) tgt.getSubdetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -526,18 +426,10 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setNet(convertMoney(src.getNet()));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
         return tgt;
     }
 
@@ -548,9 +440,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -559,15 +449,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemSubDetailComponent(t));
         return tgt;
     }
 
@@ -578,9 +462,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -589,15 +471,9 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AddedItemSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemSubDetailComponent(t));
         return tgt;
     }
 
@@ -608,9 +484,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -619,12 +493,8 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -635,9 +505,7 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -646,12 +514,8 @@ public class ClaimResponse40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 

@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,18 +58,10 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.NutritionOrder tgt = new org.hl7.fhir.r5.model.NutritionOrder();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasInstantiates()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
         if (src.hasStatus())
             tgt.setStatus(convertNutritionOrderStatus(src.getStatus()));
         if (src.hasIntent())
@@ -82,25 +74,15 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         if (src.hasOrderer())
             tgt.setOrderer(convertReference(src.getOrderer()));
-        if (src.hasAllergyIntolerance()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAllergyIntolerance()) tgt.addAllergyIntolerance(convertReference(t));
-        }
-        if (src.hasFoodPreferenceModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFoodPreferenceModifier()) tgt.addFoodPreferenceModifier(convertCodeableConcept(t));
-        }
-        if (src.hasExcludeFoodModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getExcludeFoodModifier()) tgt.addExcludeFoodModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAllergyIntolerance()) tgt.addAllergyIntolerance(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFoodPreferenceModifier()) tgt.addFoodPreferenceModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getExcludeFoodModifier()) tgt.addExcludeFoodModifier(convertCodeableConcept(t));
         if (src.hasOralDiet())
             tgt.setOralDiet(convertNutritionOrderOralDietComponent(src.getOralDiet()));
-        if (src.hasSupplement()) {
-            for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderSupplementComponent t : src.getSupplement()) tgt.addSupplement(convertNutritionOrderSupplementComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderSupplementComponent t : src.getSupplement()) tgt.addSupplement(convertNutritionOrderSupplementComponent(t));
         if (src.hasEnteralFormula())
             tgt.setEnteralFormula(convertNutritionOrderEnteralFormulaComponent(src.getEnteralFormula()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -109,18 +91,10 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.NutritionOrder tgt = new org.hl7.fhir.r4.model.NutritionOrder();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasInstantiates()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
         if (src.hasStatus())
             tgt.setStatus(convertNutritionOrderStatus(src.getStatus()));
         if (src.hasIntent())
@@ -133,25 +107,15 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         if (src.hasOrderer())
             tgt.setOrderer(convertReference(src.getOrderer()));
-        if (src.hasAllergyIntolerance()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAllergyIntolerance()) tgt.addAllergyIntolerance(convertReference(t));
-        }
-        if (src.hasFoodPreferenceModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getFoodPreferenceModifier()) tgt.addFoodPreferenceModifier(convertCodeableConcept(t));
-        }
-        if (src.hasExcludeFoodModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getExcludeFoodModifier()) tgt.addExcludeFoodModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAllergyIntolerance()) tgt.addAllergyIntolerance(convertReference(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getFoodPreferenceModifier()) tgt.addFoodPreferenceModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getExcludeFoodModifier()) tgt.addExcludeFoodModifier(convertCodeableConcept(t));
         if (src.hasOralDiet())
             tgt.setOralDiet(convertNutritionOrderOralDietComponent(src.getOralDiet()));
-        if (src.hasSupplement()) {
-            for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderSupplementComponent t : src.getSupplement()) tgt.addSupplement(convertNutritionOrderSupplementComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderSupplementComponent t : src.getSupplement()) tgt.addSupplement(convertNutritionOrderSupplementComponent(t));
         if (src.hasEnteralFormula())
             tgt.setEnteralFormula(convertNutritionOrderEnteralFormulaComponent(src.getEnteralFormula()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -260,21 +224,11 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietComponent tgt = new org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietComponent();
         copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasSchedule()) {
-            for (org.hl7.fhir.r4.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
-        }
-        if (src.hasNutrient()) {
-            for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient()) tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
-        }
-        if (src.hasTexture()) {
-            for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture()) tgt.addTexture(convertNutritionOrderOralDietTextureComponent(t));
-        }
-        if (src.hasFluidConsistencyType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFluidConsistencyType()) tgt.addFluidConsistencyType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
+        for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient()) tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
+        for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture()) tgt.addTexture(convertNutritionOrderOralDietTextureComponent(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFluidConsistencyType()) tgt.addFluidConsistencyType(convertCodeableConcept(t));
         if (src.hasInstruction())
             tgt.setInstructionElement(convertString(src.getInstructionElement()));
         return tgt;
@@ -285,21 +239,11 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietComponent tgt = new org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietComponent();
         copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasSchedule()) {
-            for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
-        }
-        if (src.hasNutrient()) {
-            for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient()) tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
-        }
-        if (src.hasTexture()) {
-            for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture()) tgt.addTexture(convertNutritionOrderOralDietTextureComponent(t));
-        }
-        if (src.hasFluidConsistencyType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getFluidConsistencyType()) tgt.addFluidConsistencyType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
+        for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient()) tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
+        for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture()) tgt.addTexture(convertNutritionOrderOralDietTextureComponent(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getFluidConsistencyType()) tgt.addFluidConsistencyType(convertCodeableConcept(t));
         if (src.hasInstruction())
             tgt.setInstructionElement(convertString(src.getInstructionElement()));
         return tgt;
@@ -362,9 +306,7 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasProductName())
             tgt.setProductNameElement(convertString(src.getProductNameElement()));
-        if (src.hasSchedule()) {
-            for (org.hl7.fhir.r4.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
-        }
+        for (org.hl7.fhir.r4.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasInstruction())
@@ -381,9 +323,7 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasProductName())
             tgt.setProductNameElement(convertString(src.getProductNameElement()));
-        if (src.hasSchedule()) {
-            for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
-        }
+        for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(convertTiming(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasInstruction())
@@ -408,9 +348,7 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setCaloricDensity(convertSimpleQuantity(src.getCaloricDensity()));
         if (src.hasRouteofAdministration())
             tgt.setRouteofAdministration(convertCodeableConcept(src.getRouteofAdministration()));
-        if (src.hasAdministration()) {
-            for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration()) tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration()) tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
         if (src.hasMaxVolumeToDeliver())
             tgt.setMaxVolumeToDeliver(convertSimpleQuantity(src.getMaxVolumeToDeliver()));
         if (src.hasAdministrationInstruction())
@@ -435,9 +373,7 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
             tgt.setCaloricDensity(convertSimpleQuantity(src.getCaloricDensity()));
         if (src.hasRouteofAdministration())
             tgt.setRouteofAdministration(convertCodeableConcept(src.getRouteofAdministration()));
-        if (src.hasAdministration()) {
-            for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration()) tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration()) tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
         if (src.hasMaxVolumeToDeliver())
             tgt.setMaxVolumeToDeliver(convertSimpleQuantity(src.getMaxVolumeToDeliver()));
         if (src.hasAdministrationInstruction())

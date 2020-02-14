@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class DeviceMetric40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.DeviceMetric tgt = new org.hl7.fhir.r5.model.DeviceMetric();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasUnit())
@@ -77,9 +75,7 @@ public class DeviceMetric40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
         if (src.hasMeasurementPeriod())
             tgt.setMeasurementPeriod(convertTiming(src.getMeasurementPeriod()));
-        if (src.hasCalibration()) {
-            for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
         return tgt;
     }
 
@@ -88,9 +84,7 @@ public class DeviceMetric40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.DeviceMetric tgt = new org.hl7.fhir.r4.model.DeviceMetric();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasUnit())
@@ -107,9 +101,7 @@ public class DeviceMetric40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertDeviceMetricCategory(src.getCategory()));
         if (src.hasMeasurementPeriod())
             tgt.setMeasurementPeriod(convertTiming(src.getMeasurementPeriod()));
-        if (src.hasCalibration()) {
-            for (org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
         return tgt;
     }
 

@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -75,24 +75,16 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCodeElement(convertCode(src.getCodeElement()));
-        if (src.hasBase()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
         if (src.hasType())
             tgt.setType(Enumerations40_50.convertSearchParamType(src.getType()));
         if (src.hasExpression())
@@ -101,25 +93,15 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setXpathElement(convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
-        if (src.hasTarget()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
         if (src.hasMultipleOr())
             tgt.setMultipleOrElement(convertBoolean(src.getMultipleOrElement()));
         if (src.hasMultipleAnd())
             tgt.setMultipleAndElement(convertBoolean(src.getMultipleAndElement()));
-        if (src.hasComparator()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchComparator> t : src.getComparator()) copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
-        }
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> t : src.getModifier()) copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
-        }
-        if (src.hasChain()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getChain()) tgt.getChain().add(convertString(t));
-        }
-        if (src.hasComponent()) {
-            for (org.hl7.fhir.r4.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent()) tgt.addComponent(convertSearchParameterComponentComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchComparator> t : src.getComparator()) copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.SearchModifierCode> t : src.getModifier()) copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
+        for (org.hl7.fhir.r4.model.StringType t : src.getChain()) tgt.getChain().add(convertString(t));
+        for (org.hl7.fhir.r4.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent()) tgt.addComponent(convertSearchParameterComponentComponent(t));
         return tgt;
     }
 
@@ -144,24 +126,16 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCodeElement(convertCode(src.getCodeElement()));
-        if (src.hasBase()) {
-            for (CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
-        }
+        for (CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
         if (src.hasType())
             tgt.setType(Enumerations40_50.convertSearchParamType(src.getType()));
         if (src.hasExpression())
@@ -170,25 +144,15 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setXpathElement(convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
-        if (src.hasTarget()) {
-            for (CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
-        }
+        for (CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
         if (src.hasMultipleOr())
             tgt.setMultipleOrElement(convertBoolean(src.getMultipleOrElement()));
         if (src.hasMultipleAnd())
             tgt.setMultipleAndElement(convertBoolean(src.getMultipleAndElement()));
-        if (src.hasComparator()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> t : src.getComparator()) copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
-        }
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> t : src.getModifier()) copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
-        }
-        if (src.hasChain()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getChain()) tgt.getChain().add(convertString(t));
-        }
-        if (src.hasComponent()) {
-            for (org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent()) tgt.addComponent(convertSearchParameterComponentComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchComparator> t : src.getComparator()) copyElement(t, tgt.addComparatorElement().setValue(convertSearchComparator(t.getValue())));
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchModifierCode> t : src.getModifier()) copyElement(t, tgt.addModifierElement().setValue(convertSearchModifierCode(t.getValue())));
+        for (org.hl7.fhir.r5.model.StringType t : src.getChain()) tgt.getChain().add(convertString(t));
+        for (org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent t : src.getComponent()) tgt.addComponent(convertSearchParameterComponentComponent(t));
         return tgt;
     }
 

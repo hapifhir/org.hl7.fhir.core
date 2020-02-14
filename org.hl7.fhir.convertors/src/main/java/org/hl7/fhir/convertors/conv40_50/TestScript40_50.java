@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -76,43 +76,25 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
-        if (src.hasOrigin()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent t : src.getOrigin()) tgt.addOrigin(convertTestScriptOriginComponent(t));
-        }
-        if (src.hasDestination()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptDestinationComponent t : src.getDestination()) tgt.addDestination(convertTestScriptDestinationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent t : src.getOrigin()) tgt.addOrigin(convertTestScriptOriginComponent(t));
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptDestinationComponent t : src.getDestination()) tgt.addDestination(convertTestScriptDestinationComponent(t));
         if (src.hasMetadata())
             tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
-        if (src.hasFixture()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
-        }
-        if (src.hasProfile()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getProfile()) tgt.addProfile(convertReference(t));
-        }
-        if (src.hasVariable()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getProfile()) tgt.addProfile(convertReference(t));
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
         if (src.hasSetup())
             tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
-        if (src.hasTest()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
         if (src.hasTeardown())
             tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
         return tgt;
@@ -141,43 +123,25 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
-        if (src.hasOrigin()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptOriginComponent t : src.getOrigin()) tgt.addOrigin(convertTestScriptOriginComponent(t));
-        }
-        if (src.hasDestination()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptDestinationComponent t : src.getDestination()) tgt.addDestination(convertTestScriptDestinationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptOriginComponent t : src.getOrigin()) tgt.addOrigin(convertTestScriptOriginComponent(t));
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptDestinationComponent t : src.getDestination()) tgt.addDestination(convertTestScriptDestinationComponent(t));
         if (src.hasMetadata())
             tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
-        if (src.hasFixture()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
-        }
-        if (src.hasProfile()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getProfile()) tgt.addProfile(convertReference(t));
-        }
-        if (src.hasVariable()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent t : src.getFixture()) tgt.addFixture(convertTestScriptFixtureComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getProfile()) tgt.addProfile(convertReference(t));
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptVariableComponent t : src.getVariable()) tgt.addVariable(convertTestScriptVariableComponent(t));
         if (src.hasSetup())
             tgt.setSetup(convertTestScriptSetupComponent(src.getSetup()));
-        if (src.hasTest()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent t : src.getTest()) tgt.addTest(convertTestScriptTestComponent(t));
         if (src.hasTeardown())
             tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
         return tgt;
@@ -236,12 +200,8 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptMetadataComponent();
         copyElement(src, tgt);
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
-        }
-        if (src.hasCapability()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
+        for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
         return tgt;
     }
 
@@ -250,12 +210,8 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptMetadataComponent();
         copyElement(src, tgt);
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
-        }
-        if (src.hasCapability()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink()) tgt.addLink(convertTestScriptMetadataLinkComponent(t));
+        for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability()) tgt.addCapability(convertTestScriptMetadataCapabilityComponent(t));
         return tgt;
     }
 
@@ -294,14 +250,10 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setValidatedElement(convertBoolean(src.getValidatedElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasOrigin()) {
-            for (org.hl7.fhir.r4.model.IntegerType t : src.getOrigin()) tgt.getOrigin().add(convertInteger(t));
-        }
+        for (org.hl7.fhir.r4.model.IntegerType t : src.getOrigin()) tgt.getOrigin().add(convertInteger(t));
         if (src.hasDestination())
             tgt.setDestinationElement(convertInteger(src.getDestinationElement()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getLink()) tgt.getLink().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r4.model.UriType t : src.getLink()) tgt.getLink().add(convertUri(t));
         if (src.hasCapabilities())
             tgt.setCapabilitiesElement(convertCanonical(src.getCapabilitiesElement()));
         return tgt;
@@ -318,14 +270,10 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setValidatedElement(convertBoolean(src.getValidatedElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasOrigin()) {
-            for (org.hl7.fhir.r5.model.IntegerType t : src.getOrigin()) tgt.getOrigin().add(convertInteger(t));
-        }
+        for (org.hl7.fhir.r5.model.IntegerType t : src.getOrigin()) tgt.getOrigin().add(convertInteger(t));
         if (src.hasDestination())
             tgt.setDestinationElement(convertInteger(src.getDestinationElement()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getLink()) tgt.getLink().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r5.model.UriType t : src.getLink()) tgt.getLink().add(convertUri(t));
         if (src.hasCapabilities())
             tgt.setCapabilitiesElement(convertCanonical(src.getCapabilitiesElement()));
         return tgt;
@@ -412,9 +360,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptSetupComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
         return tgt;
     }
 
@@ -423,9 +369,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptSetupComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
         return tgt;
     }
 
@@ -480,9 +424,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setOriginElement(convertInteger(src.getOriginElement()));
         if (src.hasParams())
             tgt.setParamsElement(convertString(src.getParamsElement()));
-        if (src.hasRequestHeader()) {
-            for (org.hl7.fhir.r4.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
         if (src.hasRequestId())
             tgt.setRequestIdElement(convertId(src.getRequestIdElement()));
         if (src.hasResponseId())
@@ -523,9 +465,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setOriginElement(convertInteger(src.getOriginElement()));
         if (src.hasParams())
             tgt.setParamsElement(convertString(src.getParamsElement()));
-        if (src.hasRequestHeader()) {
-            for (org.hl7.fhir.r5.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.SetupActionOperationRequestHeaderComponent t : src.getRequestHeader()) tgt.addRequestHeader(convertSetupActionOperationRequestHeaderComponent(t));
         if (src.hasRequestId())
             tgt.setRequestIdElement(convertId(src.getRequestIdElement()));
         if (src.hasResponseId())
@@ -876,9 +816,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
         return tgt;
     }
 
@@ -891,9 +829,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
         return tgt;
     }
 
@@ -926,9 +862,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptTeardownComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
         return tgt;
     }
 
@@ -937,9 +871,7 @@ public class TestScript40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptTeardownComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestScript.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
         return tgt;
     }
 

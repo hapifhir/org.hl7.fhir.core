@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class DeviceUseStatement30_40 {
 
@@ -11,9 +10,7 @@ public class DeviceUseStatement30_40 {
             return null;
         org.hl7.fhir.r4.model.DeviceUseStatement tgt = new org.hl7.fhir.r4.model.DeviceUseStatement();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertDeviceUseStatementStatus(src.getStatus()));
         if (src.hasSubject())
@@ -26,14 +23,10 @@ public class DeviceUseStatement30_40 {
             tgt.setSource(VersionConvertor_30_40.convertReference(src.getSource()));
         if (src.hasDevice())
             tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
-        if (src.hasIndication()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getIndication()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasBodySite())
             tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
         return tgt;
     }
 
@@ -42,9 +35,7 @@ public class DeviceUseStatement30_40 {
             return null;
         org.hl7.fhir.dstu3.model.DeviceUseStatement tgt = new org.hl7.fhir.dstu3.model.DeviceUseStatement();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertDeviceUseStatementStatus(src.getStatus()));
         if (src.hasSubject())
@@ -57,14 +48,10 @@ public class DeviceUseStatement30_40 {
             tgt.setSource(VersionConvertor_30_40.convertReference(src.getSource()));
         if (src.hasDevice())
             tgt.setDevice(VersionConvertor_30_40.convertReference(src.getDevice()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addIndication(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addIndication(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasBodySite())
             tgt.setBodySite(VersionConvertor_30_40.convertCodeableConcept(src.getBodySite()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
         return tgt;
     }
 

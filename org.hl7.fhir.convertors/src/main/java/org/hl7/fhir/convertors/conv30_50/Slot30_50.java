@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Slot30_50 {
 
@@ -11,31 +10,25 @@ public class Slot30_50 {
             return null;
         org.hl7.fhir.r5.model.Slot tgt = new org.hl7.fhir.r5.model.Slot();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasServiceCategory())
             tgt.addServiceCategory(VersionConvertor_30_50.convertCodeableConcept(src.getServiceCategory()));
-        if (src.hasServiceType()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
         if (src.hasAppointmentType())
             tgt.setAppointmentType(VersionConvertor_30_50.convertCodeableConcept(src.getAppointmentType()));
         if (src.hasSchedule())
             tgt.setSchedule(VersionConvertor_30_50.convertReference(src.getSchedule()));
         if (src.hasStatus())
             tgt.setStatus(convertSlotStatus(src.getStatus()));
-        if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
-        if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
-        if (src.hasOverbookedElement())
-            tgt.setOverbookedElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getOverbookedElement()));
-        if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+        if (src.hasStart())
+            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
+        if (src.hasOverbooked())
+            tgt.setOverbookedElement(VersionConvertor_30_50.convertBoolean(src.getOverbookedElement()));
+        if (src.hasComment())
+            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -44,31 +37,25 @@ public class Slot30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Slot tgt = new org.hl7.fhir.dstu3.model.Slot();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasServiceCategory())
             tgt.setServiceCategory(VersionConvertor_30_50.convertCodeableConcept(src.getServiceCategoryFirstRep()));
-        if (src.hasServiceType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
         if (src.hasAppointmentType())
             tgt.setAppointmentType(VersionConvertor_30_50.convertCodeableConcept(src.getAppointmentType()));
         if (src.hasSchedule())
             tgt.setSchedule(VersionConvertor_30_50.convertReference(src.getSchedule()));
         if (src.hasStatus())
             tgt.setStatus(convertSlotStatus(src.getStatus()));
-        if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
-        if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
-        if (src.hasOverbookedElement())
-            tgt.setOverbookedElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getOverbookedElement()));
-        if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+        if (src.hasStart())
+            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
+        if (src.hasOverbooked())
+            tgt.setOverbookedElement(VersionConvertor_30_50.convertBoolean(src.getOverbookedElement()));
+        if (src.hasComment())
+            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 

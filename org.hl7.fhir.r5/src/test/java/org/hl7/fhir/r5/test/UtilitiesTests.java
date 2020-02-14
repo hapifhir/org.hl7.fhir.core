@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 
-public class UtilitiesTests {
+public classUtilitiesTests {
 
   @Test
   public void testPath() throws IOException {

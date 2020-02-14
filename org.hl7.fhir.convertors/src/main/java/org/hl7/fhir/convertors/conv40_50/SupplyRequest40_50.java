@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,9 +59,7 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.SupplyRequest tgt = new org.hl7.fhir.r5.model.SupplyRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertSupplyRequestStatus(src.getStatus()));
         if (src.hasCategory())
@@ -72,24 +70,16 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             tgt.setItem(convertType(src.getItem()));
         if (src.hasQuantity())
             tgt.setQuantity(convertQuantity(src.getQuantity()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));
         if (src.hasOccurrence())
             tgt.setOccurrence(convertType(src.getOccurrence()));
         if (src.hasAuthoredOn())
             tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
         if (src.hasRequester())
             tgt.setRequester(convertReference(src.getRequester()));
-        if (src.hasSupplier()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupplier()) tgt.addSupplier(convertReference(t));
-        }
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupplier()) tgt.addSupplier(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasDeliverFrom())
             tgt.setDeliverFrom(convertReference(src.getDeliverFrom()));
         if (src.hasDeliverTo())
@@ -102,9 +92,7 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SupplyRequest tgt = new org.hl7.fhir.r4.model.SupplyRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertSupplyRequestStatus(src.getStatus()));
         if (src.hasCategory())
@@ -115,18 +103,14 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             tgt.setItem(convertType(src.getItem()));
         if (src.hasQuantity())
             tgt.setQuantity(convertQuantity(src.getQuantity()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));
         if (src.hasOccurrence())
             tgt.setOccurrence(convertType(src.getOccurrence()));
         if (src.hasAuthoredOn())
             tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
         if (src.hasRequester())
             tgt.setRequester(convertReference(src.getRequester()));
-        if (src.hasSupplier()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupplier()) tgt.addSupplier(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupplier()) tgt.addSupplier(convertReference(t));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())

@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,9 +59,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Immunization tgt = new org.hl7.fhir.r5.model.Immunization();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -94,37 +92,19 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setRoute(convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(convertSimpleQuantity(src.getDoseQuantity()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImmunizationPerformerComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImmunizationPerformerComponent(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasIsSubpotent())
             tgt.setIsSubpotentElement(convertBoolean(src.getIsSubpotentElement()));
-        if (src.hasSubpotentReason()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubpotentReason()) tgt.addSubpotentReason(convertCodeableConcept(t));
-        }
-        if (src.hasEducation()) {
-            for (org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent t : src.getEducation()) tgt.addEducation(convertImmunizationEducationComponent(t));
-        }
-        if (src.hasProgramEligibility()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramEligibility()) tgt.addProgramEligibility(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubpotentReason()) tgt.addSubpotentReason(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent t : src.getEducation()) tgt.addEducation(convertImmunizationEducationComponent(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramEligibility()) tgt.addProgramEligibility(convertCodeableConcept(t));
         if (src.hasFundingSource())
             tgt.setFundingSource(convertCodeableConcept(src.getFundingSource()));
-        if (src.hasReaction()) {
-            for (org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent t : src.getReaction()) tgt.addReaction(convertImmunizationReactionComponent(t));
-        }
-        if (src.hasProtocolApplied()) {
-            for (org.hl7.fhir.r4.model.Immunization.ImmunizationProtocolAppliedComponent t : src.getProtocolApplied()) tgt.addProtocolApplied(convertImmunizationProtocolAppliedComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent t : src.getReaction()) tgt.addReaction(convertImmunizationReactionComponent(t));
+        for (org.hl7.fhir.r4.model.Immunization.ImmunizationProtocolAppliedComponent t : src.getProtocolApplied()) tgt.addProtocolApplied(convertImmunizationProtocolAppliedComponent(t));
         return tgt;
     }
 
@@ -133,9 +113,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Immunization tgt = new org.hl7.fhir.r4.model.Immunization();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImmunizationStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -168,35 +146,21 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setRoute(convertCodeableConcept(src.getRoute()));
         if (src.hasDoseQuantity())
             tgt.setDoseQuantity(convertSimpleQuantity(src.getDoseQuantity()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImmunizationPerformerComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImmunizationPerformerComponent(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
         if (src.hasIsSubpotent())
             tgt.setIsSubpotentElement(convertBoolean(src.getIsSubpotentElement()));
-        if (src.hasSubpotentReason()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubpotentReason()) tgt.addSubpotentReason(convertCodeableConcept(t));
-        }
-        if (src.hasEducation()) {
-            for (org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent t : src.getEducation()) tgt.addEducation(convertImmunizationEducationComponent(t));
-        }
-        if (src.hasProgramEligibility()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramEligibility()) tgt.addProgramEligibility(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubpotentReason()) tgt.addSubpotentReason(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent t : src.getEducation()) tgt.addEducation(convertImmunizationEducationComponent(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramEligibility()) tgt.addProgramEligibility(convertCodeableConcept(t));
         if (src.hasFundingSource())
             tgt.setFundingSource(convertCodeableConcept(src.getFundingSource()));
-        if (src.hasReaction()) {
-            for (org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent t : src.getReaction()) tgt.addReaction(convertImmunizationReactionComponent(t));
-        }
-        if (src.hasProtocolApplied()) {
-            for (org.hl7.fhir.r5.model.Immunization.ImmunizationProtocolAppliedComponent t : src.getProtocolApplied()) tgt.addProtocolApplied(convertImmunizationProtocolAppliedComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent t : src.getReaction()) tgt.addReaction(convertImmunizationReactionComponent(t));
+        for (org.hl7.fhir.r5.model.Immunization.ImmunizationProtocolAppliedComponent t : src.getProtocolApplied()) tgt.addProtocolApplied(convertImmunizationProtocolAppliedComponent(t));
         return tgt;
     }
 
@@ -323,9 +287,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setSeriesElement(convertString(src.getSeriesElement()));
         if (src.hasAuthority())
             tgt.setAuthority(convertReference(src.getAuthority()));
-        if (src.hasTargetDisease()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
         if (src.hasDoseNumber())
             tgt.setDoseNumber(convertType(src.getDoseNumber()));
         if (src.hasSeriesDoses())
@@ -342,9 +304,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setSeriesElement(convertString(src.getSeriesElement()));
         if (src.hasAuthority())
             tgt.setAuthority(convertReference(src.getAuthority()));
-        if (src.hasTargetDisease()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
         if (src.hasDoseNumber())
             tgt.setDoseNumber(convertType(src.getDoseNumber()));
         if (src.hasSeriesDoses())

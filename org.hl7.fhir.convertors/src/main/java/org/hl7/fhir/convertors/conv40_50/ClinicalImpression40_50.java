@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ClinicalImpression tgt = new org.hl7.fhir.r5.model.ClinicalImpression();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -81,29 +79,15 @@ public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
             tgt.setPerformer(convertReference(src.getAssessor()));
         if (src.hasPrevious())
             tgt.setPrevious(convertReference(src.getPrevious()));
-        if (src.hasProblem()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getProblem()) tgt.addProblem(convertReference(t));
-        }
-        if (src.hasProtocol()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getProtocol()) tgt.getProtocol().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getProblem()) tgt.addProblem(convertReference(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getProtocol()) tgt.getProtocol().add(convertUri(t));
         if (src.hasSummary())
             tgt.setSummaryElement(convertString(src.getSummaryElement()));
-        if (src.hasFinding()) {
-            for (org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
-        }
-        if (src.hasPrognosisCodeableConcept()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(convertCodeableConcept(t));
-        }
-        if (src.hasPrognosisReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(convertReference(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -112,9 +96,7 @@ public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ClinicalImpression tgt = new org.hl7.fhir.r4.model.ClinicalImpression();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -135,29 +117,15 @@ public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
             tgt.setAssessor(convertReference(src.getPerformer()));
         if (src.hasPrevious())
             tgt.setPrevious(convertReference(src.getPrevious()));
-        if (src.hasProblem()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getProblem()) tgt.addProblem(convertReference(t));
-        }
-        if (src.hasProtocol()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getProtocol()) tgt.getProtocol().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getProblem()) tgt.addProblem(convertReference(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getProtocol()) tgt.getProtocol().add(convertUri(t));
         if (src.hasSummary())
             tgt.setSummaryElement(convertString(src.getSummaryElement()));
-        if (src.hasFinding()) {
-            for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
-        }
-        if (src.hasPrognosisCodeableConcept()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(convertCodeableConcept(t));
-        }
-        if (src.hasPrognosisReference()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(convertReference(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 

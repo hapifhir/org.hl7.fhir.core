@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,30 +58,22 @@ public class Account40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Account tgt = new org.hl7.fhir.r5.model.Account();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertAccountStatus(src.getStatus()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
         if (src.hasServicePeriod())
             tgt.setServicePeriod(convertPeriod(src.getServicePeriod()));
-        if (src.hasCoverage()) {
-            for (org.hl7.fhir.r4.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
         if (src.hasOwner())
             tgt.setOwner(convertReference(src.getOwner()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasGuarantor()) {
-            for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
         if (src.hasPartOf())
             tgt.setPartOf(convertReference(src.getPartOf()));
         return tgt;
@@ -92,30 +84,22 @@ public class Account40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertAccountStatus(src.getStatus()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
         if (src.hasServicePeriod())
             tgt.setServicePeriod(convertPeriod(src.getServicePeriod()));
-        if (src.hasCoverage()) {
-            for (org.hl7.fhir.r5.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
         if (src.hasOwner())
             tgt.setOwner(convertReference(src.getOwner()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasGuarantor()) {
-            for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
         if (src.hasPartOf())
             tgt.setPartOf(convertReference(src.getPartOf()));
         return tgt;

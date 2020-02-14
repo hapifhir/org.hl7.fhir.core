@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class Basic40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Basic tgt = new org.hl7.fhir.r5.model.Basic();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -77,9 +75,7 @@ public class Basic40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())

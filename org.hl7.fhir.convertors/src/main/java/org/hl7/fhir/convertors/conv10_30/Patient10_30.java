@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Patient10_30 {
 
@@ -12,15 +10,12 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Patient.AnimalComponent tgt = new org.hl7.fhir.dstu3.model.Patient.AnimalComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSpecies()) {
+        if (src.hasSpecies())
             tgt.setSpecies(VersionConvertor_10_30.convertCodeableConcept(src.getSpecies()));
-        }
-        if (src.hasBreed()) {
+        if (src.hasBreed())
             tgt.setBreed(VersionConvertor_10_30.convertCodeableConcept(src.getBreed()));
-        }
-        if (src.hasGenderStatus()) {
+        if (src.hasGenderStatus())
             tgt.setGenderStatus(VersionConvertor_10_30.convertCodeableConcept(src.getGenderStatus()));
-        }
         return tgt;
     }
 
@@ -29,15 +24,12 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Patient.AnimalComponent tgt = new org.hl7.fhir.dstu2.model.Patient.AnimalComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSpecies()) {
+        if (src.hasSpecies())
             tgt.setSpecies(VersionConvertor_10_30.convertCodeableConcept(src.getSpecies()));
-        }
-        if (src.hasBreed()) {
+        if (src.hasBreed())
             tgt.setBreed(VersionConvertor_10_30.convertCodeableConcept(src.getBreed()));
-        }
-        if (src.hasGenderStatus()) {
+        if (src.hasGenderStatus())
             tgt.setGenderStatus(VersionConvertor_10_30.convertCodeableConcept(src.getGenderStatus()));
-        }
         return tgt;
     }
 
@@ -46,27 +38,18 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Patient.ContactComponent tgt = new org.hl7.fhir.dstu3.model.Patient.ContactComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasRelationship()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasName()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasName())
             tgt.setName(VersionConvertor_10_30.convertHumanName(src.getName()));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasAddress()) {
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
-        }
-        if (src.hasGender()) {
+        if (src.hasGender())
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        }
-        if (src.hasOrganization()) {
+        if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
         return tgt;
     }
 
@@ -75,27 +58,18 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Patient.ContactComponent tgt = new org.hl7.fhir.dstu2.model.Patient.ContactComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasRelationship()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasName()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasName())
             tgt.setName(VersionConvertor_10_30.convertHumanName(src.getName()));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasAddress()) {
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
-        }
-        if (src.hasGender()) {
+        if (src.hasGender())
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        }
-        if (src.hasOrganization()) {
+        if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
         return tgt;
     }
 
@@ -136,56 +110,31 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Patient tgt = new org.hl7.fhir.dstu3.model.Patient();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
-        }
-        if (src.hasName()) {
-            for (org.hl7.fhir.dstu2.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasGender()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasActiveElement())
+            tgt.setActiveElement(VersionConvertor_10_30.convertBoolean(src.getActiveElement()));
+        for (org.hl7.fhir.dstu2.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasGender())
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        }
         if (src.hasBirthDateElement())
-            tgt.setBirthDateElement((org.hl7.fhir.dstu3.model.DateType) VersionConvertor_10_30.convertType(src.getBirthDateElement()));
-        if (src.hasDeceased()) {
+            tgt.setBirthDateElement(VersionConvertor_10_30.convertDate(src.getBirthDateElement()));
+        if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_10_30.convertType(src.getDeceased()));
-        }
-        if (src.hasAddress()) {
-            for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
-        }
-        if (src.hasMaritalStatus()) {
+        for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
+        if (src.hasMaritalStatus())
             tgt.setMaritalStatus(VersionConvertor_10_30.convertCodeableConcept(src.getMaritalStatus()));
-        }
-        if (src.hasMultipleBirth()) {
+        if (src.hasMultipleBirth())
             tgt.setMultipleBirth(VersionConvertor_10_30.convertType(src.getMultipleBirth()));
-        }
-        if (src.hasPhoto()) {
-            for (org.hl7.fhir.dstu2.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.dstu2.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
-        }
-        if (src.hasAnimal()) {
+        for (org.hl7.fhir.dstu2.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
+        for (org.hl7.fhir.dstu2.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
+        if (src.hasAnimal())
             tgt.setAnimal(convertAnimalComponent(src.getAnimal()));
-        }
-        if (src.hasCommunication()) {
-            for (org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
-        }
-        if (src.hasCareProvider()) {
-            for (org.hl7.fhir.dstu2.model.Reference t : src.getCareProvider()) tgt.addGeneralPractitioner(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasManagingOrganization()) {
+        for (org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getCareProvider()) tgt.addGeneralPractitioner(VersionConvertor_10_30.convertReference(t));
+        if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_10_30.convertReference(src.getManagingOrganization()));
-        }
-        if (src.hasLink()) {
-            for (org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
         return tgt;
     }
 
@@ -194,56 +143,31 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Patient tgt = new org.hl7.fhir.dstu2.model.Patient();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasActive()) {
-            tgt.setActive(src.getActive());
-        }
-        if (src.hasName()) {
-            for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasGender()) {
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasActiveElement())
+            tgt.setActiveElement(VersionConvertor_10_30.convertBoolean(src.getActiveElement()));
+        for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasGender())
             tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
-        }
         if (src.hasBirthDateElement())
-            tgt.setBirthDateElement((org.hl7.fhir.dstu2.model.DateType) VersionConvertor_10_30.convertType(src.getBirthDateElement()));
-        if (src.hasDeceased()) {
+            tgt.setBirthDateElement(VersionConvertor_10_30.convertDate(src.getBirthDateElement()));
+        if (src.hasDeceased())
             tgt.setDeceased(VersionConvertor_10_30.convertType(src.getDeceased()));
-        }
-        if (src.hasAddress()) {
-            for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
-        }
-        if (src.hasMaritalStatus()) {
+        for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_30.convertAddress(t));
+        if (src.hasMaritalStatus())
             tgt.setMaritalStatus(VersionConvertor_10_30.convertCodeableConcept(src.getMaritalStatus()));
-        }
-        if (src.hasMultipleBirth()) {
+        if (src.hasMultipleBirth())
             tgt.setMultipleBirth(VersionConvertor_10_30.convertType(src.getMultipleBirth()));
-        }
-        if (src.hasPhoto()) {
-            for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.dstu3.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
-        }
-        if (src.hasAnimal()) {
+        for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(VersionConvertor_10_30.convertAttachment(t));
+        for (org.hl7.fhir.dstu3.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
+        if (src.hasAnimal())
             tgt.setAnimal(convertAnimalComponent(src.getAnimal()));
-        }
-        if (src.hasCommunication()) {
-            for (org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
-        }
-        if (src.hasGeneralPractitioner()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getGeneralPractitioner()) tgt.addCareProvider(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasManagingOrganization()) {
+        for (org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getGeneralPractitioner()) tgt.addCareProvider(VersionConvertor_10_30.convertReference(t));
+        if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_10_30.convertReference(src.getManagingOrganization()));
-        }
-        if (src.hasLink()) {
-            for (org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
         return tgt;
     }
 
@@ -252,12 +176,10 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLanguage()) {
+        if (src.hasLanguage())
             tgt.setLanguage(VersionConvertor_10_30.convertCodeableConcept(src.getLanguage()));
-        }
-        if (src.hasPreferredElement()) {
-            tgt.setPreferredElement((BooleanType) VersionConvertor_10_30.convertType(src.getPreferredElement()));
-        }
+        if (src.hasPreferredElement())
+            tgt.setPreferredElement(VersionConvertor_10_30.convertBoolean(src.getPreferredElement()));
         return tgt;
     }
 
@@ -266,12 +188,10 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLanguage()) {
+        if (src.hasLanguage())
             tgt.setLanguage(VersionConvertor_10_30.convertCodeableConcept(src.getLanguage()));
-        }
-        if (src.hasPreferredElement()) {
-            tgt.setPreferredElement((org.hl7.fhir.dstu2.model.BooleanType) VersionConvertor_10_30.convertType(src.getPreferredElement()));
-        }
+        if (src.hasPreferredElement())
+            tgt.setPreferredElement(VersionConvertor_10_30.convertBoolean(src.getPreferredElement()));
         return tgt;
     }
 
@@ -280,12 +200,10 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasOther()) {
+        if (src.hasOther())
             tgt.setOther(VersionConvertor_10_30.convertReference(src.getOther()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(convertLinkType(src.getType()));
-        }
         return tgt;
     }
 
@@ -294,12 +212,10 @@ public class Patient10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasOther()) {
+        if (src.hasOther())
             tgt.setOther(VersionConvertor_10_30.convertReference(src.getOther()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(convertLinkType(src.getType()));
-        }
         return tgt;
     }
 }

@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -74,14 +74,10 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             tgt.setTesterElement(convertString(src.getTesterElement()));
         if (src.hasIssued())
             tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
         if (src.hasSetup())
             tgt.setSetup(convertTestReportSetupComponent(src.getSetup()));
-        if (src.hasTest()) {
-            for (org.hl7.fhir.r4.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
         if (src.hasTeardown())
             tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
         return tgt;
@@ -108,14 +104,10 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             tgt.setTesterElement(convertString(src.getTesterElement()));
         if (src.hasIssued())
             tgt.setIssuedElement(convertDateTime(src.getIssuedElement()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r5.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestReport.TestReportParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertTestReportParticipantComponent(t));
         if (src.hasSetup())
             tgt.setSetup(convertTestReportSetupComponent(src.getSetup()));
-        if (src.hasTest()) {
-            for (org.hl7.fhir.r5.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestReport.TestReportTestComponent t : src.getTest()) tgt.addTest(convertTestReportTestComponent(t));
         if (src.hasTeardown())
             tgt.setTeardown(convertTestReportTeardownComponent(src.getTeardown()));
         return tgt;
@@ -252,9 +244,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportSetupComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
         return tgt;
     }
 
@@ -263,9 +253,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.r4.model.TestReport.TestReportSetupComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestReport.SetupActionComponent t : src.getAction()) tgt.addAction(convertSetupActionComponent(t));
         return tgt;
     }
 
@@ -396,9 +384,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
         return tgt;
     }
 
@@ -411,9 +397,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestReport.TestActionComponent t : src.getAction()) tgt.addAction(convertTestActionComponent(t));
         return tgt;
     }
 
@@ -446,9 +430,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportTeardownComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
         return tgt;
     }
 
@@ -457,9 +439,7 @@ public class TestReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.r4.model.TestReport.TestReportTeardownComponent();
         copyElement(src, tgt);
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TestReport.TeardownActionComponent t : src.getAction()) tgt.addAction(convertTeardownActionComponent(t));
         return tgt;
     }
 

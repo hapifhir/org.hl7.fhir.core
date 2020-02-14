@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,16 +58,12 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CoverageEligibilityRequest tgt = new org.hl7.fhir.r5.model.CoverageEligibilityRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEligibilityRequestStatus(src.getStatus()));
         if (src.hasPriority())
             tgt.setPriority(convertCodeableConcept(src.getPriority()));
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
-        }
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasServiced())
@@ -82,15 +78,9 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             tgt.setInsurer(convertReference(src.getInsurer()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.DetailsComponent t : src.getItem()) tgt.addItem(convertDetailsComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
+        for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.DetailsComponent t : src.getItem()) tgt.addItem(convertDetailsComponent(t));
         return tgt;
     }
 
@@ -99,16 +89,12 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CoverageEligibilityRequest tgt = new org.hl7.fhir.r4.model.CoverageEligibilityRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEligibilityRequestStatus(src.getStatus()));
         if (src.hasPriority())
             tgt.setPriority(convertCodeableConcept(src.getPriority()));
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
-        }
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityRequestPurpose(t.getValue())));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasServiced())
@@ -123,15 +109,9 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             tgt.setInsurer(convertReference(src.getInsurer()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.DetailsComponent t : src.getItem()) tgt.addItem(convertDetailsComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
+        for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.DetailsComponent t : src.getItem()) tgt.addItem(convertDetailsComponent(t));
         return tgt;
     }
 
@@ -264,16 +244,12 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CoverageEligibilityRequest.DetailsComponent tgt = new org.hl7.fhir.r5.model.CoverageEligibilityRequest.DetailsComponent();
         copyElement(src, tgt);
-        if (src.hasSupportingInfoSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSupportingInfoSequence()) tgt.getSupportingInfoSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSupportingInfoSequence()) tgt.getSupportingInfoSequence().add(convertPositiveInt(t));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasProvider())
             tgt.setProvider(convertReference(src.getProvider()));
         if (src.hasQuantity())
@@ -282,12 +258,8 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             tgt.setUnitPrice(convertMoney(src.getUnitPrice()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 
@@ -296,16 +268,12 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CoverageEligibilityRequest.DetailsComponent tgt = new org.hl7.fhir.r4.model.CoverageEligibilityRequest.DetailsComponent();
         copyElement(src, tgt);
-        if (src.hasSupportingInfoSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSupportingInfoSequence()) tgt.getSupportingInfoSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSupportingInfoSequence()) tgt.getSupportingInfoSequence().add(convertPositiveInt(t));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasProvider())
             tgt.setProvider(convertReference(src.getProvider()));
         if (src.hasQuantity())
@@ -314,12 +282,8 @@ public class CoverageEligibilityRequest40_50 extends VersionConvertor_40_50 {
             tgt.setUnitPrice(convertMoney(src.getUnitPrice()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityRequest.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 

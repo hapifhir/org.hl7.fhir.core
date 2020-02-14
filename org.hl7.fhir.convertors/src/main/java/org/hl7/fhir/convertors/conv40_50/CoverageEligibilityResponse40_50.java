@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,14 +58,10 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CoverageEligibilityResponse tgt = new org.hl7.fhir.r5.model.CoverageEligibilityResponse();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEligibilityResponseStatus(src.getStatus()));
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
-        }
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasServiced())
@@ -82,16 +78,12 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasInsurer())
             tgt.setInsurer(convertReference(src.getInsurer()));
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasPreAuthRef())
             tgt.setPreAuthRefElement(convertString(src.getPreAuthRefElement()));
         if (src.hasForm())
             tgt.setForm(convertCodeableConcept(src.getForm()));
-        if (src.hasError()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.ErrorsComponent t : src.getError()) tgt.addError(convertErrorsComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.ErrorsComponent t : src.getError()) tgt.addError(convertErrorsComponent(t));
         return tgt;
     }
 
@@ -100,14 +92,10 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CoverageEligibilityResponse tgt = new org.hl7.fhir.r4.model.CoverageEligibilityResponse();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEligibilityResponseStatus(src.getStatus()));
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
-        }
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityResponse.EligibilityResponsePurpose> t : src.getPurpose()) copyElement(t, tgt.addPurposeElement().setValue(convertEligibilityResponsePurpose(t.getValue())));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasServiced())
@@ -124,16 +112,12 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasInsurer())
             tgt.setInsurer(convertReference(src.getInsurer()));
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasPreAuthRef())
             tgt.setPreAuthRefElement(convertString(src.getPreAuthRefElement()));
         if (src.hasForm())
             tgt.setForm(convertCodeableConcept(src.getForm()));
-        if (src.hasError()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.ErrorsComponent t : src.getError()) tgt.addError(convertErrorsComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.ErrorsComponent t : src.getError()) tgt.addError(convertErrorsComponent(t));
         return tgt;
     }
 
@@ -250,9 +234,7 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setInforceElement(convertBoolean(src.getInforceElement()));
         if (src.hasBenefitPeriod())
             tgt.setBenefitPeriod(convertPeriod(src.getBenefitPeriod()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.ItemsComponent t : src.getItem()) tgt.addItem(convertItemsComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.ItemsComponent t : src.getItem()) tgt.addItem(convertItemsComponent(t));
         return tgt;
     }
 
@@ -267,9 +249,7 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setInforceElement(convertBoolean(src.getInforceElement()));
         if (src.hasBenefitPeriod())
             tgt.setBenefitPeriod(convertPeriod(src.getBenefitPeriod()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.ItemsComponent t : src.getItem()) tgt.addItem(convertItemsComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.ItemsComponent t : src.getItem()) tgt.addItem(convertItemsComponent(t));
         return tgt;
     }
 
@@ -282,9 +262,7 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasProvider())
             tgt.setProvider(convertReference(src.getProvider()));
         if (src.hasExcluded())
@@ -299,14 +277,10 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setUnit(convertCodeableConcept(src.getUnit()));
         if (src.hasTerm())
             tgt.setTerm(convertCodeableConcept(src.getTerm()));
-        if (src.hasBenefit()) {
-            for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.BenefitComponent t : src.getBenefit()) tgt.addBenefit(convertBenefitComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CoverageEligibilityResponse.BenefitComponent t : src.getBenefit()) tgt.addBenefit(convertBenefitComponent(t));
         if (src.hasAuthorizationRequired())
             tgt.setAuthorizationRequiredElement(convertBoolean(src.getAuthorizationRequiredElement()));
-        if (src.hasAuthorizationSupporting()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAuthorizationSupporting()) tgt.addAuthorizationSupporting(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAuthorizationSupporting()) tgt.addAuthorizationSupporting(convertCodeableConcept(t));
         if (src.hasAuthorizationUrl())
             tgt.setAuthorizationUrlElement(convertUri(src.getAuthorizationUrlElement()));
         return tgt;
@@ -321,9 +295,7 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasProvider())
             tgt.setProvider(convertReference(src.getProvider()));
         if (src.hasExcluded())
@@ -338,14 +310,10 @@ public class CoverageEligibilityResponse40_50 extends VersionConvertor_40_50 {
             tgt.setUnit(convertCodeableConcept(src.getUnit()));
         if (src.hasTerm())
             tgt.setTerm(convertCodeableConcept(src.getTerm()));
-        if (src.hasBenefit()) {
-            for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.BenefitComponent t : src.getBenefit()) tgt.addBenefit(convertBenefitComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CoverageEligibilityResponse.BenefitComponent t : src.getBenefit()) tgt.addBenefit(convertBenefitComponent(t));
         if (src.hasAuthorizationRequired())
             tgt.setAuthorizationRequiredElement(convertBoolean(src.getAuthorizationRequiredElement()));
-        if (src.hasAuthorizationSupporting()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAuthorizationSupporting()) tgt.addAuthorizationSupporting(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAuthorizationSupporting()) tgt.addAuthorizationSupporting(convertCodeableConcept(t));
         if (src.hasAuthorizationUrl())
             tgt.setAuthorizationUrlElement(convertUri(src.getAuthorizationUrlElement()));
         return tgt;

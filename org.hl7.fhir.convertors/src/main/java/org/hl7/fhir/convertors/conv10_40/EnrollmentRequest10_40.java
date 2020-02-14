@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class EnrollmentRequest10_40 {
 
@@ -11,20 +10,15 @@ public class EnrollmentRequest10_40 {
             return null;
         org.hl7.fhir.r4.model.EnrollmentRequest tgt = new org.hl7.fhir.r4.model.EnrollmentRequest();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
         if (src.hasCreatedElement())
-            tgt.setCreatedElement((org.hl7.fhir.r4.model.DateTimeType) VersionConvertor_10_40.convertType(src.getCreatedElement()));
-        if (src.hasProvider()) {
+            tgt.setCreatedElement(VersionConvertor_10_40.convertDateTime(src.getCreatedElement()));
+        if (src.hasProvider())
             tgt.setProvider(VersionConvertor_10_40.convertReference(src.getProvider()));
-        }
-        if (src.hasSubject()) {
+        if (src.hasSubject())
             tgt.setCandidate(VersionConvertor_10_40.convertReference(src.getSubject()));
-        }
-        if (src.hasCoverage()) {
+        if (src.hasCoverage())
             tgt.setCoverage(VersionConvertor_10_40.convertReference(src.getCoverage()));
-        }
         return tgt;
     }
 
@@ -33,14 +27,11 @@ public class EnrollmentRequest10_40 {
             return null;
         org.hl7.fhir.dstu2.model.EnrollmentRequest tgt = new org.hl7.fhir.dstu2.model.EnrollmentRequest();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
         if (src.hasCreatedElement())
-            tgt.setCreatedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_40.convertType(src.getCreatedElement()));
-        if (src.hasCoverage()) {
+            tgt.setCreatedElement(VersionConvertor_10_40.convertDateTime(src.getCreatedElement()));
+        if (src.hasCoverage())
             tgt.setCoverage(VersionConvertor_10_40.convertReference(src.getCoverage()));
-        }
         return tgt;
     }
 }
