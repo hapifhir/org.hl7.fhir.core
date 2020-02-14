@@ -147,6 +147,9 @@ public class FHIRPathTests {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
+    // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
+    // all my time based tests failing locally...
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
 
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilities.context());
