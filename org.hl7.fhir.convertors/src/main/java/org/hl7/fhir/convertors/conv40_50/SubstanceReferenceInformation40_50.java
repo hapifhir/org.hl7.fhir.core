@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,18 +60,10 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
-        if (src.hasGene()) {
-            for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneComponent t : src.getGene()) tgt.addGene(convertSubstanceReferenceInformationGeneComponent(t));
-        }
-        if (src.hasGeneElement()) {
-            for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneElementComponent t : src.getGeneElement()) tgt.addGeneElement(convertSubstanceReferenceInformationGeneElementComponent(t));
-        }
-        if (src.hasClassification()) {
-            for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationClassificationComponent t : src.getClassification()) tgt.addClassification(convertSubstanceReferenceInformationClassificationComponent(t));
-        }
-        if (src.hasTarget()) {
-            for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationTargetComponent t : src.getTarget()) tgt.addTarget(convertSubstanceReferenceInformationTargetComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneComponent t : src.getGene()) tgt.addGene(convertSubstanceReferenceInformationGeneComponent(t));
+        for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneElementComponent t : src.getGeneElement()) tgt.addGeneElement(convertSubstanceReferenceInformationGeneElementComponent(t));
+        for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationClassificationComponent t : src.getClassification()) tgt.addClassification(convertSubstanceReferenceInformationClassificationComponent(t));
+        for (org.hl7.fhir.r4.model.SubstanceReferenceInformation.SubstanceReferenceInformationTargetComponent t : src.getTarget()) tgt.addTarget(convertSubstanceReferenceInformationTargetComponent(t));
         return tgt;
     }
 
@@ -82,18 +74,10 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
-        if (src.hasGene()) {
-            for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneComponent t : src.getGene()) tgt.addGene(convertSubstanceReferenceInformationGeneComponent(t));
-        }
-        if (src.hasGeneElement()) {
-            for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneElementComponent t : src.getGeneElement()) tgt.addGeneElement(convertSubstanceReferenceInformationGeneElementComponent(t));
-        }
-        if (src.hasClassification()) {
-            for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationClassificationComponent t : src.getClassification()) tgt.addClassification(convertSubstanceReferenceInformationClassificationComponent(t));
-        }
-        if (src.hasTarget()) {
-            for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationTargetComponent t : src.getTarget()) tgt.addTarget(convertSubstanceReferenceInformationTargetComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneComponent t : src.getGene()) tgt.addGene(convertSubstanceReferenceInformationGeneComponent(t));
+        for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationGeneElementComponent t : src.getGeneElement()) tgt.addGeneElement(convertSubstanceReferenceInformationGeneElementComponent(t));
+        for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationClassificationComponent t : src.getClassification()) tgt.addClassification(convertSubstanceReferenceInformationClassificationComponent(t));
+        for (org.hl7.fhir.r5.model.SubstanceReferenceInformation.SubstanceReferenceInformationTargetComponent t : src.getTarget()) tgt.addTarget(convertSubstanceReferenceInformationTargetComponent(t));
         return tgt;
     }
 
@@ -106,9 +90,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setGeneSequenceOrigin(convertCodeableConcept(src.getGeneSequenceOrigin()));
         if (src.hasGene())
             tgt.setGene(convertCodeableConcept(src.getGene()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -121,9 +103,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setGeneSequenceOrigin(convertCodeableConcept(src.getGeneSequenceOrigin()));
         if (src.hasGene())
             tgt.setGene(convertCodeableConcept(src.getGene()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -136,9 +116,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasElement())
             tgt.setElement(convertIdentifier(src.getElement()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -151,9 +129,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasElement())
             tgt.setElement(convertIdentifier(src.getElement()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -166,12 +142,8 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setDomain(convertCodeableConcept(src.getDomain()));
         if (src.hasClassification())
             tgt.setClassification(convertCodeableConcept(src.getClassification()));
-        if (src.hasSubtype()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
-        }
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -184,12 +156,8 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setDomain(convertCodeableConcept(src.getDomain()));
         if (src.hasClassification())
             tgt.setClassification(convertCodeableConcept(src.getClassification()));
-        if (src.hasSubtype()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
-        }
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -212,9 +180,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setAmount(convertType(src.getAmount()));
         if (src.hasAmountType())
             tgt.setAmountType(convertCodeableConcept(src.getAmountType()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 
@@ -237,9 +203,7 @@ public class SubstanceReferenceInformation40_50 extends VersionConvertor_40_50 {
             tgt.setAmount(convertType(src.getAmount()));
         if (src.hasAmountType())
             tgt.setAmountType(convertCodeableConcept(src.getAmountType()));
-        if (src.hasSource()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(convertReference(t));
         return tgt;
     }
 }

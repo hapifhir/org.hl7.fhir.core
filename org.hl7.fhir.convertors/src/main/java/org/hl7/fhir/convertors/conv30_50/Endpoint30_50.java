@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Endpoint30_50 {
 
@@ -11,33 +10,23 @@ public class Endpoint30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Endpoint tgt = new org.hl7.fhir.dstu3.model.Endpoint();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEndpointStatus(src.getStatus()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_50.convertCoding(src.getConnectionType()));
-        if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasName())
+            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactPoint(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactPoint(t));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
-        if (src.hasPayloadType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasPayloadMimeType()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
-        }
-        if (src.hasAddressElement())
-            tgt.setAddressElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_50.convertType(src.getAddressElement()));
-        if (src.hasHeader()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
+        if (src.hasAddress())
+            tgt.setAddress(src.getAddress());
+        for (org.hl7.fhir.r5.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
         return tgt;
     }
 
@@ -46,33 +35,23 @@ public class Endpoint30_50 {
             return null;
         org.hl7.fhir.r5.model.Endpoint tgt = new org.hl7.fhir.r5.model.Endpoint();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertEndpointStatus(src.getStatus()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_50.convertCoding(src.getConnectionType()));
-        if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getNameElement()));
+        if (src.hasName())
+            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_30_50.convertReference(src.getManagingOrganization()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactPoint(t));
-        }
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactPoint(t));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
-        if (src.hasPayloadType()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasPayloadMimeType()) {
-            for (org.hl7.fhir.dstu3.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
-        }
-        if (src.hasAddressElement())
-            tgt.setAddressElement((org.hl7.fhir.r5.model.UrlType) VersionConvertor_30_50.convertType(src.getAddressElement()));
-        if (src.hasHeader()) {
-            for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPayloadType()) tgt.addPayloadType(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeType t : src.getPayloadMimeType()) tgt.addPayloadMimeType(t.getValue());
+        if (src.hasAddress())
+            tgt.setAddress(src.getAddress());
+        for (org.hl7.fhir.dstu3.model.StringType t : src.getHeader()) tgt.addHeader(t.getValue());
         return tgt;
     }
 

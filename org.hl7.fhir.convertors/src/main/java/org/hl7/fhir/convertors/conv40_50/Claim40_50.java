@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Claim tgt = new org.hl7.fhir.r5.model.Claim();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClaimStatus(src.getStatus()));
         if (src.hasType())
@@ -85,9 +83,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setPriority(convertCodeableConcept(src.getPriority()));
         if (src.hasFundsReserve())
             tgt.setFundsReserve(convertCodeableConcept(src.getFundsReserve()));
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r4.model.Claim.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Claim.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
         if (src.hasPrescription())
             tgt.setPrescription(convertReference(src.getPrescription()));
         if (src.hasOriginalPrescription())
@@ -98,26 +94,14 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setReferral(convertReference(src.getReferral()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r4.model.Claim.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.Claim.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r4.model.Claim.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasProcedure()) {
-            for (org.hl7.fhir.r4.model.Claim.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.Claim.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Claim.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
+        for (org.hl7.fhir.r4.model.Claim.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r4.model.Claim.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r4.model.Claim.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
+        for (org.hl7.fhir.r4.model.Claim.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasAccident())
             tgt.setAccident(convertAccidentComponent(src.getAccident()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.Claim.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Claim.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
         if (src.hasTotal())
             tgt.setTotal(convertMoney(src.getTotal()));
         return tgt;
@@ -128,9 +112,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Claim tgt = new org.hl7.fhir.r4.model.Claim();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertClaimStatus(src.getStatus()));
         if (src.hasType())
@@ -155,9 +137,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setPriority(convertCodeableConcept(src.getPriority()));
         if (src.hasFundsReserve())
             tgt.setFundsReserve(convertCodeableConcept(src.getFundsReserve()));
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r5.model.Claim.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Claim.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
         if (src.hasPrescription())
             tgt.setPrescription(convertReference(src.getPrescription()));
         if (src.hasOriginalPrescription())
@@ -168,26 +148,14 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setReferral(convertReference(src.getReferral()));
         if (src.hasFacility())
             tgt.setFacility(convertReference(src.getFacility()));
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r5.model.Claim.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.Claim.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r5.model.Claim.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasProcedure()) {
-            for (org.hl7.fhir.r5.model.Claim.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.Claim.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Claim.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
+        for (org.hl7.fhir.r5.model.Claim.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r5.model.Claim.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r5.model.Claim.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
+        for (org.hl7.fhir.r5.model.Claim.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasAccident())
             tgt.setAccident(convertAccidentComponent(src.getAccident()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.Claim.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Claim.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
         if (src.hasTotal())
             tgt.setTotal(convertMoney(src.getTotal()));
         return tgt;
@@ -394,9 +362,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasDiagnosis())
             tgt.setDiagnosis(convertType(src.getDiagnosis()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasOnAdmission())
             tgt.setOnAdmission(convertCodeableConcept(src.getOnAdmission()));
         if (src.hasPackageCode())
@@ -413,9 +379,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasDiagnosis())
             tgt.setDiagnosis(convertType(src.getDiagnosis()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasOnAdmission())
             tgt.setOnAdmission(convertCodeableConcept(src.getOnAdmission()));
         if (src.hasPackageCode())
@@ -430,16 +394,12 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasProcedure())
             tgt.setProcedure(convertType(src.getProcedure()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 
@@ -450,16 +410,12 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasProcedure())
             tgt.setProcedure(convertType(src.getProcedure()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 
@@ -478,9 +434,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCoverage(convertReference(src.getCoverage()));
         if (src.hasBusinessArrangement())
             tgt.setBusinessArrangementElement(convertString(src.getBusinessArrangementElement()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
         if (src.hasClaimResponse())
             tgt.setClaimResponse(convertReference(src.getClaimResponse()));
         return tgt;
@@ -501,9 +455,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCoverage(convertReference(src.getCoverage()));
         if (src.hasBusinessArrangement())
             tgt.setBusinessArrangementElement(convertString(src.getBusinessArrangementElement()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
         if (src.hasClaimResponse())
             tgt.setClaimResponse(convertReference(src.getClaimResponse()));
         return tgt;
@@ -544,30 +496,18 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasCareTeamSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDiagnosisSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProcedureSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasInformationSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
         if (src.hasRevenue())
             tgt.setRevenue(convertCodeableConcept(src.getRevenue()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -580,20 +520,12 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasEncounter()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
+        for (org.hl7.fhir.r4.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
         return tgt;
     }
 
@@ -604,30 +536,18 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasCareTeamSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDiagnosisSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProcedureSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasInformationSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
         if (src.hasRevenue())
             tgt.setRevenue(convertCodeableConcept(src.getRevenue()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -640,20 +560,12 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasEncounter()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
+        for (org.hl7.fhir.r5.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
         return tgt;
     }
 
@@ -670,12 +582,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -684,12 +592,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r4.model.Claim.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r4.model.Claim.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -706,12 +610,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -720,12 +620,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r5.model.Claim.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r5.model.Claim.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -742,12 +638,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -756,9 +648,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 
@@ -775,12 +665,8 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -789,9 +675,7 @@ public class Claim40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 }

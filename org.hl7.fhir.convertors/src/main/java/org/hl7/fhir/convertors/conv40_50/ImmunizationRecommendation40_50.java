@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,18 +58,14 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasAuthority())
             tgt.setAuthority(convertReference(src.getAuthority()));
-        if (src.hasRecommendation()) {
-            for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
         return tgt;
     }
 
@@ -78,18 +74,14 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ImmunizationRecommendation tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasAuthority())
             tgt.setAuthority(convertReference(src.getAuthority()));
-        if (src.hasRecommendation()) {
-            for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent t : src.getRecommendation()) tgt.addRecommendation(convertImmunizationRecommendationRecommendationComponent(t));
         return tgt;
     }
 
@@ -98,22 +90,14 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
         copyElement(src, tgt);
-        if (src.hasVaccineCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
         if (src.hasTargetDisease())
             tgt.addTargetDisease(convertCodeableConcept(src.getTargetDisease()));
-        if (src.hasContraindicatedVaccineCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
         if (src.hasForecastStatus())
             tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
-        if (src.hasForecastReason()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
-        }
-        if (src.hasDateCriterion()) {
-            for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasSeries())
@@ -122,12 +106,8 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             tgt.setDoseNumber(convertType(src.getDoseNumber()));
         if (src.hasSeriesDoses())
             tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-        if (src.hasSupportingImmunization()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
-        }
-        if (src.hasSupportingPatientInformation()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
         return tgt;
     }
 
@@ -136,22 +116,14 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent tgt = new org.hl7.fhir.r4.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationComponent();
         copyElement(src, tgt);
-        if (src.hasVaccineCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getVaccineCode()) tgt.addVaccineCode(convertCodeableConcept(t));
         if (src.hasTargetDisease())
             tgt.setTargetDisease(convertCodeableConcept(src.getTargetDiseaseFirstRep()));
-        if (src.hasContraindicatedVaccineCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getContraindicatedVaccineCode()) tgt.addContraindicatedVaccineCode(convertCodeableConcept(t));
         if (src.hasForecastStatus())
             tgt.setForecastStatus(convertCodeableConcept(src.getForecastStatus()));
-        if (src.hasForecastReason()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
-        }
-        if (src.hasDateCriterion()) {
-            for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getForecastReason()) tgt.addForecastReason(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.ImmunizationRecommendation.ImmunizationRecommendationRecommendationDateCriterionComponent t : src.getDateCriterion()) tgt.addDateCriterion(convertImmunizationRecommendationRecommendationDateCriterionComponent(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasSeries())
@@ -160,12 +132,8 @@ public class ImmunizationRecommendation40_50 extends VersionConvertor_40_50 {
             tgt.setDoseNumber(convertType(src.getDoseNumber()));
         if (src.hasSeriesDoses())
             tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
-        if (src.hasSupportingImmunization()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
-        }
-        if (src.hasSupportingPatientInformation()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization()) tgt.addSupportingImmunization(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation()) tgt.addSupportingPatientInformation(convertReference(t));
         return tgt;
     }
 

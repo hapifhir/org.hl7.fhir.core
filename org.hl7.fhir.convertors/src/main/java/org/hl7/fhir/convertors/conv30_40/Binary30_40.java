@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
-import org.hl7.fhir.dstu3.model.Base64BinaryType;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Binary30_40 {
 
@@ -12,12 +10,12 @@ public class Binary30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Binary tgt = new org.hl7.fhir.dstu3.model.Binary();
         VersionConvertor_30_40.copyResource(src, tgt);
-        if (src.hasContentTypeElement())
-            tgt.setContentTypeElement((org.hl7.fhir.dstu3.model.CodeType) VersionConvertor_30_40.convertType(src.getContentTypeElement()));
+        if (src.hasContentType())
+            tgt.setContentTypeElement(VersionConvertor_30_40.convertCode(src.getContentTypeElement()));
         if (src.hasSecurityContext())
             tgt.setSecurityContext(VersionConvertor_30_40.convertReference(src.getSecurityContext()));
-        if (src.hasDataElement())
-            tgt.setContentElement((Base64BinaryType) VersionConvertor_30_40.convertType(src.getDataElement()));
+        if (src.hasData())
+            tgt.setContentElement(VersionConvertor_30_40.convertBase64Binary(src.getDataElement()));
         return tgt;
     }
 
@@ -26,12 +24,12 @@ public class Binary30_40 {
             return null;
         org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
         VersionConvertor_30_40.copyResource(src, tgt);
-        if (src.hasContentTypeElement())
-            tgt.setContentTypeElement((org.hl7.fhir.r4.model.CodeType) VersionConvertor_30_40.convertType(src.getContentTypeElement()));
+        if (src.hasContentType())
+            tgt.setContentTypeElement(VersionConvertor_30_40.convertCode(src.getContentTypeElement()));
         if (src.hasSecurityContext())
             tgt.setSecurityContext(VersionConvertor_30_40.convertReference(src.getSecurityContext()));
-        if (src.hasContentElement())
-            tgt.setDataElement((org.hl7.fhir.r4.model.Base64BinaryType) VersionConvertor_30_40.convertType(src.getContentElement()));
+        if (src.hasContent())
+            tgt.setDataElement(VersionConvertor_30_40.convertBase64Binary(src.getContentElement()));
         return tgt;
     }
 }

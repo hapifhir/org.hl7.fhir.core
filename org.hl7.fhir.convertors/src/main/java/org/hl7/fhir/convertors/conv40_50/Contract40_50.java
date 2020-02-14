@@ -19,10 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,9 +59,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Contract tgt = new org.hl7.fhir.r5.model.Contract();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasVersion())
@@ -83,27 +80,17 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setApplies(convertPeriod(src.getApplies()));
         if (src.hasExpirationType())
             tgt.setExpirationType(convertCodeableConcept(src.getExpirationType()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
-        }
-        if (src.hasAuthority()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAuthority()) tgt.addAuthority(convertReference(t));
-        }
-        if (src.hasDomain()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getDomain()) tgt.addDomain(convertReference(t));
-        }
-        if (src.hasSite()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSite()) tgt.addSite(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getAuthority()) tgt.addAuthority(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getDomain()) tgt.addDomain(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSite()) tgt.addSite(convertReference(t));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
-        if (src.hasAlias()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.getAlias().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.getAlias().add(convertString(t));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
         if (src.hasScope())
@@ -112,32 +99,16 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setTopic(convertType(src.getTopic()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasSubType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubType()) tgt.addSubType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubType()) tgt.addSubType(convertCodeableConcept(t));
         if (src.hasContentDefinition())
             tgt.setContentDefinition(convertContentDefinitionComponent(src.getContentDefinition()));
-        if (src.hasTerm()) {
-            for (org.hl7.fhir.r4.model.Contract.TermComponent t : src.getTerm()) tgt.addTerm(convertTermComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasRelevantHistory()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
-        }
-        if (src.hasSigner()) {
-            for (org.hl7.fhir.r4.model.Contract.SignatoryComponent t : src.getSigner()) tgt.addSigner(convertSignatoryComponent(t));
-        }
-        if (src.hasFriendly()) {
-            for (org.hl7.fhir.r4.model.Contract.FriendlyLanguageComponent t : src.getFriendly()) tgt.addFriendly(convertFriendlyLanguageComponent(t));
-        }
-        if (src.hasLegal()) {
-            for (org.hl7.fhir.r4.model.Contract.LegalLanguageComponent t : src.getLegal()) tgt.addLegal(convertLegalLanguageComponent(t));
-        }
-        if (src.hasRule()) {
-            for (org.hl7.fhir.r4.model.Contract.ComputableLanguageComponent t : src.getRule()) tgt.addRule(convertComputableLanguageComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Contract.TermComponent t : src.getTerm()) tgt.addTerm(convertTermComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
+        for (org.hl7.fhir.r4.model.Contract.SignatoryComponent t : src.getSigner()) tgt.addSigner(convertSignatoryComponent(t));
+        for (org.hl7.fhir.r4.model.Contract.FriendlyLanguageComponent t : src.getFriendly()) tgt.addFriendly(convertFriendlyLanguageComponent(t));
+        for (org.hl7.fhir.r4.model.Contract.LegalLanguageComponent t : src.getLegal()) tgt.addLegal(convertLegalLanguageComponent(t));
+        for (org.hl7.fhir.r4.model.Contract.ComputableLanguageComponent t : src.getRule()) tgt.addRule(convertComputableLanguageComponent(t));
         if (src.hasLegallyBinding())
             tgt.setLegallyBinding(convertType(src.getLegallyBinding()));
         return tgt;
@@ -148,9 +119,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Contract tgt = new org.hl7.fhir.r4.model.Contract();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasVersion())
@@ -171,27 +140,17 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setApplies(convertPeriod(src.getApplies()));
         if (src.hasExpirationType())
             tgt.setExpirationType(convertCodeableConcept(src.getExpirationType()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
-        }
-        if (src.hasAuthority()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAuthority()) tgt.addAuthority(convertReference(t));
-        }
-        if (src.hasDomain()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getDomain()) tgt.addDomain(convertReference(t));
-        }
-        if (src.hasSite()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSite()) tgt.addSite(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getAuthority()) tgt.addAuthority(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getDomain()) tgt.addDomain(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSite()) tgt.addSite(convertReference(t));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
-        if (src.hasAlias()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.getAlias().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.getAlias().add(convertString(t));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
         if (src.hasScope())
@@ -200,32 +159,16 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setTopic(convertType(src.getTopic()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasSubType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubType()) tgt.addSubType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubType()) tgt.addSubType(convertCodeableConcept(t));
         if (src.hasContentDefinition())
             tgt.setContentDefinition(convertContentDefinitionComponent(src.getContentDefinition()));
-        if (src.hasTerm()) {
-            for (org.hl7.fhir.r5.model.Contract.TermComponent t : src.getTerm()) tgt.addTerm(convertTermComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasRelevantHistory()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
-        }
-        if (src.hasSigner()) {
-            for (org.hl7.fhir.r5.model.Contract.SignatoryComponent t : src.getSigner()) tgt.addSigner(convertSignatoryComponent(t));
-        }
-        if (src.hasFriendly()) {
-            for (org.hl7.fhir.r5.model.Contract.FriendlyLanguageComponent t : src.getFriendly()) tgt.addFriendly(convertFriendlyLanguageComponent(t));
-        }
-        if (src.hasLegal()) {
-            for (org.hl7.fhir.r5.model.Contract.LegalLanguageComponent t : src.getLegal()) tgt.addLegal(convertLegalLanguageComponent(t));
-        }
-        if (src.hasRule()) {
-            for (org.hl7.fhir.r5.model.Contract.ComputableLanguageComponent t : src.getRule()) tgt.addRule(convertComputableLanguageComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Contract.TermComponent t : src.getTerm()) tgt.addTerm(convertTermComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
+        for (org.hl7.fhir.r5.model.Contract.SignatoryComponent t : src.getSigner()) tgt.addSigner(convertSignatoryComponent(t));
+        for (org.hl7.fhir.r5.model.Contract.FriendlyLanguageComponent t : src.getFriendly()) tgt.addFriendly(convertFriendlyLanguageComponent(t));
+        for (org.hl7.fhir.r5.model.Contract.LegalLanguageComponent t : src.getLegal()) tgt.addLegal(convertLegalLanguageComponent(t));
+        for (org.hl7.fhir.r5.model.Contract.ComputableLanguageComponent t : src.getRule()) tgt.addRule(convertComputableLanguageComponent(t));
         if (src.hasLegallyBinding())
             tgt.setLegallyBinding(convertType(src.getLegallyBinding()));
         return tgt;
@@ -446,20 +389,12 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.r4.model.Contract.SecurityLabelComponent t : src.getSecurityLabel()) tgt.addSecurityLabel(convertSecurityLabelComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Contract.SecurityLabelComponent t : src.getSecurityLabel()) tgt.addSecurityLabel(convertSecurityLabelComponent(t));
         if (src.hasOffer())
             tgt.setOffer(convertContractOfferComponent(src.getOffer()));
-        if (src.hasAsset()) {
-            for (org.hl7.fhir.r4.model.Contract.ContractAssetComponent t : src.getAsset()) tgt.addAsset(convertContractAssetComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.Contract.ActionComponent t : src.getAction()) tgt.addAction(convertActionComponent(t));
-        }
-        if (src.hasGroup()) {
-            for (org.hl7.fhir.r4.model.Contract.TermComponent t : src.getGroup()) tgt.addGroup(convertTermComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Contract.ContractAssetComponent t : src.getAsset()) tgt.addAsset(convertContractAssetComponent(t));
+        for (org.hl7.fhir.r4.model.Contract.ActionComponent t : src.getAction()) tgt.addAction(convertActionComponent(t));
+        for (org.hl7.fhir.r4.model.Contract.TermComponent t : src.getGroup()) tgt.addGroup(convertTermComponent(t));
         return tgt;
     }
 
@@ -482,20 +417,12 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.r5.model.Contract.SecurityLabelComponent t : src.getSecurityLabel()) tgt.addSecurityLabel(convertSecurityLabelComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Contract.SecurityLabelComponent t : src.getSecurityLabel()) tgt.addSecurityLabel(convertSecurityLabelComponent(t));
         if (src.hasOffer())
             tgt.setOffer(convertContractOfferComponent(src.getOffer()));
-        if (src.hasAsset()) {
-            for (org.hl7.fhir.r5.model.Contract.ContractAssetComponent t : src.getAsset()) tgt.addAsset(convertContractAssetComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.Contract.ActionComponent t : src.getAction()) tgt.addAction(convertActionComponent(t));
-        }
-        if (src.hasGroup()) {
-            for (org.hl7.fhir.r5.model.Contract.TermComponent t : src.getGroup()) tgt.addGroup(convertTermComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Contract.ContractAssetComponent t : src.getAsset()) tgt.addAsset(convertContractAssetComponent(t));
+        for (org.hl7.fhir.r5.model.Contract.ActionComponent t : src.getAction()) tgt.addAction(convertActionComponent(t));
+        for (org.hl7.fhir.r5.model.Contract.TermComponent t : src.getGroup()) tgt.addGroup(convertTermComponent(t));
         return tgt;
     }
 
@@ -504,17 +431,11 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Contract.SecurityLabelComponent tgt = new org.hl7.fhir.r5.model.Contract.SecurityLabelComponent();
         copyElement(src, tgt);
-        if (src.hasNumber()) {
-            for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getNumber()) tgt.getNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getNumber()) tgt.getNumber().add(convertUnsignedInt(t));
         if (src.hasClassification())
             tgt.setClassification(convertCoding(src.getClassification()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getCategory()) tgt.addCategory(convertCoding(t));
-        }
-        if (src.hasControl()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getControl()) tgt.addControl(convertCoding(t));
-        }
+        for (org.hl7.fhir.r4.model.Coding t : src.getCategory()) tgt.addCategory(convertCoding(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getControl()) tgt.addControl(convertCoding(t));
         return tgt;
     }
 
@@ -523,17 +444,11 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Contract.SecurityLabelComponent tgt = new org.hl7.fhir.r4.model.Contract.SecurityLabelComponent();
         copyElement(src, tgt);
-        if (src.hasNumber()) {
-            for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getNumber()) tgt.getNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getNumber()) tgt.getNumber().add(convertUnsignedInt(t));
         if (src.hasClassification())
             tgt.setClassification(convertCoding(src.getClassification()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getCategory()) tgt.addCategory(convertCoding(t));
-        }
-        if (src.hasControl()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getControl()) tgt.addControl(convertCoding(t));
-        }
+        for (org.hl7.fhir.r5.model.Coding t : src.getCategory()) tgt.addCategory(convertCoding(t));
+        for (org.hl7.fhir.r5.model.Coding t : src.getControl()) tgt.addControl(convertCoding(t));
         return tgt;
     }
 
@@ -542,32 +457,20 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Contract.ContractOfferComponent tgt = new org.hl7.fhir.r5.model.Contract.ContractOfferComponent();
         copyElement(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasParty()) {
-            for (org.hl7.fhir.r4.model.Contract.ContractPartyComponent t : src.getParty()) tgt.addParty(convertContractPartyComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Contract.ContractPartyComponent t : src.getParty()) tgt.addParty(convertContractPartyComponent(t));
         if (src.hasTopic())
             tgt.setTopic(convertReference(src.getTopic()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasDecision())
             tgt.setDecision(convertCodeableConcept(src.getDecision()));
-        if (src.hasDecisionMode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDecisionMode()) tgt.addDecisionMode(convertCodeableConcept(t));
-        }
-        if (src.hasAnswer()) {
-            for (org.hl7.fhir.r4.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDecisionMode()) tgt.addDecisionMode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -576,32 +479,20 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Contract.ContractOfferComponent tgt = new org.hl7.fhir.r4.model.Contract.ContractOfferComponent();
         copyElement(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasParty()) {
-            for (org.hl7.fhir.r5.model.Contract.ContractPartyComponent t : src.getParty()) tgt.addParty(convertContractPartyComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Contract.ContractPartyComponent t : src.getParty()) tgt.addParty(convertContractPartyComponent(t));
         if (src.hasTopic())
             tgt.setTopic(convertReference(src.getTopic()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasDecision())
             tgt.setDecision(convertCodeableConcept(src.getDecision()));
-        if (src.hasDecisionMode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDecisionMode()) tgt.addDecisionMode(convertCodeableConcept(t));
-        }
-        if (src.hasAnswer()) {
-            for (org.hl7.fhir.r5.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDecisionMode()) tgt.addDecisionMode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -610,9 +501,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Contract.ContractPartyComponent tgt = new org.hl7.fhir.r5.model.Contract.ContractPartyComponent();
         copyElement(src, tgt);
-        if (src.hasReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
@@ -623,9 +512,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Contract.ContractPartyComponent tgt = new org.hl7.fhir.r4.model.Contract.ContractPartyComponent();
         copyElement(src, tgt);
-        if (src.hasReference()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
@@ -658,45 +545,23 @@ public class Contract40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasScope())
             tgt.setScope(convertCodeableConcept(src.getScope()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasTypeReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getTypeReference()) tgt.addTypeReference(convertReference(t));
-        }
-        if (src.hasSubtype()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getTypeReference()) tgt.addTypeReference(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
         if (src.hasRelationship())
             tgt.setRelationship(convertCoding(src.getRelationship()));
-        if (src.hasContext()) {
-            for (org.hl7.fhir.r4.model.Contract.AssetContextComponent t : src.getContext()) tgt.addContext(convertAssetContextComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Contract.AssetContextComponent t : src.getContext()) tgt.addContext(convertAssetContextComponent(t));
         if (src.hasCondition())
             tgt.setConditionElement(convertString(src.getConditionElement()));
-        if (src.hasPeriodType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPeriodType()) tgt.addPeriodType(convertCodeableConcept(t));
-        }
-        if (src.hasPeriod()) {
-            for (org.hl7.fhir.r4.model.Period t : src.getPeriod()) tgt.addPeriod(convertPeriod(t));
-        }
-        if (src.hasUsePeriod()) {
-            for (org.hl7.fhir.r4.model.Period t : src.getUsePeriod()) tgt.addUsePeriod(convertPeriod(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPeriodType()) tgt.addPeriodType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Period t : src.getPeriod()) tgt.addPeriod(convertPeriod(t));
+        for (org.hl7.fhir.r4.model.Period t : src.getUsePeriod()) tgt.addUsePeriod(convertPeriod(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasAnswer()) {
-            for (org.hl7.fhir.r4.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
-        if (src.hasValuedItem()) {
-            for (org.hl7.fhir.r4.model.Contract.ValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertValuedItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
+        for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
+        for (org.hl7.fhir.r4.model.Contract.ValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertValuedItemComponent(t));
         return tgt;
     }
 
@@ -707,45 +572,23 @@ public class Contract40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasScope())
             tgt.setScope(convertCodeableConcept(src.getScope()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasTypeReference()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getTypeReference()) tgt.addTypeReference(convertReference(t));
-        }
-        if (src.hasSubtype()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getTypeReference()) tgt.addTypeReference(convertReference(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubtype()) tgt.addSubtype(convertCodeableConcept(t));
         if (src.hasRelationship())
             tgt.setRelationship(convertCoding(src.getRelationship()));
-        if (src.hasContext()) {
-            for (org.hl7.fhir.r5.model.Contract.AssetContextComponent t : src.getContext()) tgt.addContext(convertAssetContextComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Contract.AssetContextComponent t : src.getContext()) tgt.addContext(convertAssetContextComponent(t));
         if (src.hasCondition())
             tgt.setConditionElement(convertString(src.getConditionElement()));
-        if (src.hasPeriodType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPeriodType()) tgt.addPeriodType(convertCodeableConcept(t));
-        }
-        if (src.hasPeriod()) {
-            for (org.hl7.fhir.r5.model.Period t : src.getPeriod()) tgt.addPeriod(convertPeriod(t));
-        }
-        if (src.hasUsePeriod()) {
-            for (org.hl7.fhir.r5.model.Period t : src.getUsePeriod()) tgt.addUsePeriod(convertPeriod(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPeriodType()) tgt.addPeriodType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Period t : src.getPeriod()) tgt.addPeriod(convertPeriod(t));
+        for (org.hl7.fhir.r5.model.Period t : src.getUsePeriod()) tgt.addUsePeriod(convertPeriod(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasAnswer()) {
-            for (org.hl7.fhir.r5.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
-        if (src.hasValuedItem()) {
-            for (org.hl7.fhir.r5.model.Contract.ValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertValuedItemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r5.model.Contract.AnswerComponent t : src.getAnswer()) tgt.addAnswer(convertAnswerComponent(t));
+        for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
+        for (org.hl7.fhir.r5.model.Contract.ValuedItemComponent t : src.getValuedItem()) tgt.addValuedItem(convertValuedItemComponent(t));
         return tgt;
     }
 
@@ -756,9 +599,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         return tgt;
@@ -771,9 +612,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         return tgt;
@@ -808,12 +647,8 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setResponsible(convertReference(src.getResponsible()));
         if (src.hasRecipient())
             tgt.setRecipient(convertReference(src.getRecipient()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -846,12 +681,8 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setResponsible(convertReference(src.getResponsible()));
         if (src.hasRecipient())
             tgt.setRecipient(convertReference(src.getRecipient()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
+        for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -864,54 +695,30 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r4.model.Contract.ActionSubjectComponent t : src.getSubject()) tgt.addSubject(convertActionSubjectComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Contract.ActionSubjectComponent t : src.getSubject()) tgt.addSubject(convertActionSubjectComponent(t));
         if (src.hasIntent())
             tgt.setIntent(convertCodeableConcept(src.getIntent()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
         if (src.hasStatus())
             tgt.setStatus(convertCodeableConcept(src.getStatus()));
         if (src.hasContext())
             tgt.setContext(convertReference(src.getContext()));
-        if (src.hasContextLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getContextLinkId()) tgt.getContextLinkId().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getContextLinkId()) tgt.getContextLinkId().add(convertString(t));
         if (src.hasOccurrence())
             tgt.setOccurrence(convertType(src.getOccurrence()));
-        if (src.hasRequester()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRequester()) tgt.addRequester(convertReference(t));
-        }
-        if (src.hasRequesterLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getRequesterLinkId()) tgt.getRequesterLinkId().add(convertString(t));
-        }
-        if (src.hasPerformerType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPerformerType()) tgt.addPerformerType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getRequester()) tgt.addRequester(convertReference(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getRequesterLinkId()) tgt.getRequesterLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPerformerType()) tgt.addPerformerType(convertCodeableConcept(t));
         if (src.hasPerformerRole())
             tgt.setPerformerRole(convertCodeableConcept(src.getPerformerRole()));
         if (src.hasPerformer())
             tgt.setPerformer(convertReference(src.getPerformer()));
-        if (src.hasPerformerLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getPerformerLinkId()) tgt.getPerformerLinkId().add(convertString(t));
-        }
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasReasonLinkId()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getReasonLinkId()) tgt.getReasonLinkId().add(convertString(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getPerformerLinkId()) tgt.getPerformerLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getReasonLinkId()) tgt.getReasonLinkId().add(convertString(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -924,55 +731,33 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasSubject()) {
-            for (org.hl7.fhir.r5.model.Contract.ActionSubjectComponent t : src.getSubject()) tgt.addSubject(convertActionSubjectComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Contract.ActionSubjectComponent t : src.getSubject()) tgt.addSubject(convertActionSubjectComponent(t));
         if (src.hasIntent())
             tgt.setIntent(convertCodeableConcept(src.getIntent()));
-        if (src.hasLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getLinkId()) tgt.getLinkId().add(convertString(t));
         if (src.hasStatus())
             tgt.setStatus(convertCodeableConcept(src.getStatus()));
         if (src.hasContext())
             tgt.setContext(convertReference(src.getContext()));
-        if (src.hasContextLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getContextLinkId()) tgt.getContextLinkId().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getContextLinkId()) tgt.getContextLinkId().add(convertString(t));
         if (src.hasOccurrence())
             tgt.setOccurrence(convertType(src.getOccurrence()));
-        if (src.hasRequester()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRequester()) tgt.addRequester(convertReference(t));
-        }
-        if (src.hasRequesterLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getRequesterLinkId()) tgt.getRequesterLinkId().add(convertString(t));
-        }
-        if (src.hasPerformerType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPerformerType()) tgt.addPerformerType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getRequester()) tgt.addRequester(convertReference(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getRequesterLinkId()) tgt.getRequesterLinkId().add(convertString(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPerformerType()) tgt.addPerformerType(convertCodeableConcept(t));
         if (src.hasPerformerRole())
             tgt.setPerformerRole(convertCodeableConcept(src.getPerformerRole()));
         if (src.hasPerformer())
             tgt.setPerformer(convertReference(src.getPerformer()));
-        if (src.hasPerformerLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getPerformerLinkId()) tgt.getPerformerLinkId().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getPerformerLinkId()) tgt.getPerformerLinkId().add(convertString(t));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasReasonLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getReasonLinkId()) tgt.getReason().add(convertString(t));
-        }
-        if (src.hasReasonLinkId()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getReasonLinkId()) tgt.getReasonLinkId().add(convertString(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
-        if (src.hasSecurityLabelNumber()) {
-            for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getReasonLinkId()) tgt.getReason().add(convertString(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getReasonLinkId()) tgt.getReasonLinkId().add(convertString(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getSecurityLabelNumber()) tgt.getSecurityLabelNumber().add(convertUnsignedInt(t));
         return tgt;
     }
 
@@ -981,9 +766,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Contract.ActionSubjectComponent tgt = new org.hl7.fhir.r5.model.Contract.ActionSubjectComponent();
         copyElement(src, tgt);
-        if (src.hasReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
@@ -994,9 +777,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Contract.ActionSubjectComponent tgt = new org.hl7.fhir.r4.model.Contract.ActionSubjectComponent();
         copyElement(src, tgt);
-        if (src.hasReference()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(convertReference(t));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
@@ -1011,9 +792,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCoding(src.getType()));
         if (src.hasParty())
             tgt.setParty(convertReference(src.getParty()));
-        if (src.hasSignature()) {
-            for (org.hl7.fhir.r4.model.Signature t : src.getSignature()) tgt.addSignature(convertSignature(t));
-        }
+        for (org.hl7.fhir.r4.model.Signature t : src.getSignature()) tgt.addSignature(convertSignature(t));
         return tgt;
     }
 
@@ -1026,9 +805,7 @@ public class Contract40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCoding(src.getType()));
         if (src.hasParty())
             tgt.setParty(convertReference(src.getParty()));
-        if (src.hasSignature()) {
-            for (org.hl7.fhir.r5.model.Signature t : src.getSignature()) tgt.addSignature(convertSignature(t));
-        }
+        for (org.hl7.fhir.r5.model.Signature t : src.getSignature()) tgt.addSignature(convertSignature(t));
         return tgt;
     }
 

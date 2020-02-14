@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -66,12 +66,8 @@ public class Bundle40_50 extends VersionConvertor_40_50 {
             tgt.setTimestampElement(convertInstant(src.getTimestampElement()));
         if (src.hasTotal())
             tgt.setTotalElement(convertUnsignedInt(src.getTotalElement()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        }
-        if (src.hasEntry()) {
-            for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
         if (src.hasSignature())
             tgt.setSignature(convertSignature(src.getSignature()));
         return tgt;
@@ -90,12 +86,8 @@ public class Bundle40_50 extends VersionConvertor_40_50 {
             tgt.setTimestampElement(convertInstant(src.getTimestampElement()));
         if (src.hasTotal())
             tgt.setTotalElement(convertUnsignedInt(src.getTotalElement()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        }
-        if (src.hasEntry()) {
-            for (org.hl7.fhir.r5.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
+        for (org.hl7.fhir.r5.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
         if (src.hasSignature())
             tgt.setSignature(convertSignature(src.getSignature()));
         return tgt;
@@ -184,9 +176,7 @@ public class Bundle40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent();
         copyElement(src, tgt);
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         if (src.hasFullUrl())
             tgt.setFullUrlElement(convertUri(src.getFullUrlElement()));
         if (src.hasResource())
@@ -205,9 +195,7 @@ public class Bundle40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryComponent();
         copyElement(src, tgt);
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         if (src.hasFullUrl())
             tgt.setFullUrlElement(convertUri(src.getFullUrlElement()));
         if (src.hasResource())

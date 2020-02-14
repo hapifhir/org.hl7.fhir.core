@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -74,53 +74,31 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasKind())
             tgt.setKind(convertCapabilityStatementKind(src.getKind()));
-        if (src.hasInstantiates()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiates()) tgt.getInstantiates().add(convertCanonical(t));
-        }
-        if (src.hasImports()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getImports()) tgt.getImports().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiates()) tgt.getInstantiates().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getImports()) tgt.getImports().add(convertCanonical(t));
         if (src.hasSoftware())
             tgt.setSoftware(convertCapabilityStatementSoftwareComponent(src.getSoftware()));
         if (src.hasImplementation())
             tgt.setImplementation(convertCapabilityStatementImplementationComponent(src.getImplementation()));
         if (src.hasFhirVersion())
             tgt.setFhirVersion(Enumerations40_50.convertFHIRVersion(src.getFhirVersion()));
-        if (src.hasFormat()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getFormat()) tgt.getFormat().add(convertCode(t));
-        }
-        if (src.hasPatchFormat()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getPatchFormat()) tgt.getPatchFormat().add(convertCode(t));
-        }
-        if (src.hasImplementationGuide()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getImplementationGuide()) tgt.getImplementationGuide().add(convertCanonical(t));
-        }
-        if (src.hasRest()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest()) tgt.addRest(convertCapabilityStatementRestComponent(t));
-        }
-        if (src.hasMessaging()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging()) tgt.addMessaging(convertCapabilityStatementMessagingComponent(t));
-        }
-        if (src.hasDocument()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument()) tgt.addDocument(convertCapabilityStatementDocumentComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getFormat()) tgt.getFormat().add(convertCode(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getPatchFormat()) tgt.getPatchFormat().add(convertCode(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getImplementationGuide()) tgt.getImplementationGuide().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest()) tgt.addRest(convertCapabilityStatementRestComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging()) tgt.addMessaging(convertCapabilityStatementMessagingComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument()) tgt.addDocument(convertCapabilityStatementDocumentComponent(t));
         return tgt;
     }
 
@@ -145,53 +123,31 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasKind())
             tgt.setKind(convertCapabilityStatementKind(src.getKind()));
-        if (src.hasInstantiates()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiates()) tgt.getInstantiates().add(convertCanonical(t));
-        }
-        if (src.hasImports()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getImports()) tgt.getImports().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiates()) tgt.getInstantiates().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getImports()) tgt.getImports().add(convertCanonical(t));
         if (src.hasSoftware())
             tgt.setSoftware(convertCapabilityStatementSoftwareComponent(src.getSoftware()));
         if (src.hasImplementation())
             tgt.setImplementation(convertCapabilityStatementImplementationComponent(src.getImplementation()));
         if (src.hasFhirVersion())
             tgt.setFhirVersion(Enumerations40_50.convertFHIRVersion(src.getFhirVersion()));
-        if (src.hasFormat()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getFormat()) tgt.getFormat().add(convertCode(t));
-        }
-        if (src.hasPatchFormat()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getPatchFormat()) tgt.getPatchFormat().add(convertCode(t));
-        }
-        if (src.hasImplementationGuide()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getImplementationGuide()) tgt.getImplementationGuide().add(convertCanonical(t));
-        }
-        if (src.hasRest()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest()) tgt.addRest(convertCapabilityStatementRestComponent(t));
-        }
-        if (src.hasMessaging()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging()) tgt.addMessaging(convertCapabilityStatementMessagingComponent(t));
-        }
-        if (src.hasDocument()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument()) tgt.addDocument(convertCapabilityStatementDocumentComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeType t : src.getFormat()) tgt.getFormat().add(convertCode(t));
+        for (org.hl7.fhir.r5.model.CodeType t : src.getPatchFormat()) tgt.getPatchFormat().add(convertCode(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getImplementationGuide()) tgt.getImplementationGuide().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent t : src.getRest()) tgt.addRest(convertCapabilityStatementRestComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent t : src.getMessaging()) tgt.addMessaging(convertCapabilityStatementMessagingComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument()) tgt.addDocument(convertCapabilityStatementDocumentComponent(t));
         return tgt;
     }
 
@@ -292,21 +248,11 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
         if (src.hasSecurity())
             tgt.setSecurity(convertCapabilityStatementRestSecurityComponent(src.getSecurity()));
-        if (src.hasResource()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent t : src.getResource()) tgt.addResource(convertCapabilityStatementRestResourceComponent(t));
-        }
-        if (src.hasInteraction()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertSystemInteractionComponent(t));
-        }
-        if (src.hasSearchParam()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
-        }
-        if (src.hasOperation()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
-        }
-        if (src.hasCompartment()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getCompartment()) tgt.getCompartment().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent t : src.getResource()) tgt.addResource(convertCapabilityStatementRestResourceComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertSystemInteractionComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getCompartment()) tgt.getCompartment().add(convertCanonical(t));
         return tgt;
     }
 
@@ -321,21 +267,11 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
         if (src.hasSecurity())
             tgt.setSecurity(convertCapabilityStatementRestSecurityComponent(src.getSecurity()));
-        if (src.hasResource()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent t : src.getResource()) tgt.addResource(convertCapabilityStatementRestResourceComponent(t));
-        }
-        if (src.hasInteraction()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertSystemInteractionComponent(t));
-        }
-        if (src.hasSearchParam()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
-        }
-        if (src.hasOperation()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
-        }
-        if (src.hasCompartment()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getCompartment()) tgt.getCompartment().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent t : src.getResource()) tgt.addResource(convertCapabilityStatementRestResourceComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertSystemInteractionComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getCompartment()) tgt.getCompartment().add(convertCanonical(t));
         return tgt;
     }
 
@@ -372,9 +308,7 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCors())
             tgt.setCorsElement(convertBoolean(src.getCorsElement()));
-        if (src.hasService()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getService()) tgt.addService(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getService()) tgt.addService(convertCodeableConcept(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
         return tgt;
@@ -387,9 +321,7 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCors())
             tgt.setCorsElement(convertBoolean(src.getCorsElement()));
-        if (src.hasService()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getService()) tgt.addService(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getService()) tgt.addService(convertCodeableConcept(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
         return tgt;
@@ -404,14 +336,10 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(convertCanonical(src.getProfileElement()));
-        if (src.hasSupportedProfile()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(convertCanonical(t));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
-        if (src.hasInteraction()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertResourceInteractionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertResourceInteractionComponent(t));
         if (src.hasVersioning())
             tgt.setVersioning(convertResourceVersionPolicy(src.getVersioning()));
         if (src.hasReadHistory())
@@ -426,21 +354,11 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setConditionalUpdateElement(convertBoolean(src.getConditionalUpdateElement()));
         if (src.hasConditionalDelete())
             tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
-        if (src.hasReferencePolicy()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy()) copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
-        }
-        if (src.hasSearchInclude()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getSearchInclude()) tgt.getSearchInclude().add(convertString(t));
-        }
-        if (src.hasSearchRevInclude()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getSearchRevInclude()) tgt.getSearchRevInclude().add(convertString(t));
-        }
-        if (src.hasSearchParam()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
-        }
-        if (src.hasOperation()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy()) copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
+        for (org.hl7.fhir.r4.model.StringType t : src.getSearchInclude()) tgt.getSearchInclude().add(convertString(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getSearchRevInclude()) tgt.getSearchRevInclude().add(convertString(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
         return tgt;
     }
 
@@ -453,14 +371,10 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(convertCanonical(src.getProfileElement()));
-        if (src.hasSupportedProfile()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(convertCanonical(t));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
-        if (src.hasInteraction()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertResourceInteractionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent t : src.getInteraction()) tgt.addInteraction(convertResourceInteractionComponent(t));
         if (src.hasVersioning())
             tgt.setVersioning(convertResourceVersionPolicy(src.getVersioning()));
         if (src.hasReadHistory())
@@ -475,21 +389,11 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             tgt.setConditionalUpdateElement(convertBoolean(src.getConditionalUpdateElement()));
         if (src.hasConditionalDelete())
             tgt.setConditionalDelete(convertConditionalDeleteStatus(src.getConditionalDelete()));
-        if (src.hasReferencePolicy()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy()) copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
-        }
-        if (src.hasSearchInclude()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getSearchInclude()) tgt.getSearchInclude().add(convertString(t));
-        }
-        if (src.hasSearchRevInclude()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getSearchRevInclude()) tgt.getSearchRevInclude().add(convertString(t));
-        }
-        if (src.hasSearchParam()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
-        }
-        if (src.hasOperation()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy> t : src.getReferencePolicy()) copyElement(t, tgt.addReferencePolicyElement().setValue(convertReferenceHandlingPolicy(t.getValue())));
+        for (org.hl7.fhir.r5.model.StringType t : src.getSearchInclude()) tgt.getSearchInclude().add(convertString(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getSearchRevInclude()) tgt.getSearchRevInclude().add(convertString(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent t : src.getSearchParam()) tgt.addSearchParam(convertCapabilityStatementRestResourceSearchParamComponent(t));
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent t : src.getOperation()) tgt.addOperation(convertCapabilityStatementRestResourceOperationComponent(t));
         return tgt;
     }
 
@@ -826,16 +730,12 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent();
         copyElement(src, tgt);
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
         if (src.hasReliableCache())
             tgt.setReliableCacheElement(convertUnsignedInt(src.getReliableCacheElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
-        if (src.hasSupportedMessage()) {
-            for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
         return tgt;
     }
 
@@ -844,16 +744,12 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent();
         copyElement(src, tgt);
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertCapabilityStatementMessagingEndpointComponent(t));
         if (src.hasReliableCache())
             tgt.setReliableCacheElement(convertUnsignedInt(src.getReliableCacheElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertMarkdown(src.getDocumentationElement()));
-        if (src.hasSupportedMessage()) {
-            for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent t : src.getSupportedMessage()) tgt.addSupportedMessage(convertCapabilityStatementMessagingSupportedMessageComponent(t));
         return tgt;
     }
 

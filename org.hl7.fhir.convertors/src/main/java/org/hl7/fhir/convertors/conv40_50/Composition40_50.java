@@ -19,9 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -65,36 +64,24 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setStatus(convertCompositionStatus(src.getStatus()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasConfidentiality())
             tgt.setConfidentiality(convertDocumentConfidentiality(src.getConfidentiality()));
-        if (src.hasAttester()) {
-            for (org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent t : src.getAttester()) tgt.addAttester(convertCompositionAttesterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent t : src.getAttester()) tgt.addAttester(convertCompositionAttesterComponent(t));
         if (src.hasCustodian())
             tgt.setCustodian(convertReference(src.getCustodian()));
-        if (src.hasRelatesTo()) {
-            for (org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertCompositionRelatesToComponent(t));
-        }
-        if (src.hasEvent()) {
-            for (org.hl7.fhir.r4.model.Composition.CompositionEventComponent t : src.getEvent()) tgt.addEvent(convertCompositionEventComponent(t));
-        }
-        if (src.hasSection()) {
-            for (org.hl7.fhir.r4.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertCompositionRelatesToComponent(t));
+        for (org.hl7.fhir.r4.model.Composition.CompositionEventComponent t : src.getEvent()) tgt.addEvent(convertCompositionEventComponent(t));
+        for (org.hl7.fhir.r4.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
         return tgt;
     }
 
@@ -109,36 +96,24 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setStatus(convertCompositionStatus(src.getStatus()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasConfidentiality())
             tgt.setConfidentiality(convertDocumentConfidentiality(src.getConfidentiality()));
-        if (src.hasAttester()) {
-            for (org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent t : src.getAttester()) tgt.addAttester(convertCompositionAttesterComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent t : src.getAttester()) tgt.addAttester(convertCompositionAttesterComponent(t));
         if (src.hasCustodian())
             tgt.setCustodian(convertReference(src.getCustodian()));
-        if (src.hasRelatesTo()) {
-            for (org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertCompositionRelatesToComponent(t));
-        }
-        if (src.hasEvent()) {
-            for (org.hl7.fhir.r5.model.Composition.CompositionEventComponent t : src.getEvent()) tgt.addEvent(convertCompositionEventComponent(t));
-        }
-        if (src.hasSection()) {
-            for (org.hl7.fhir.r5.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertCompositionRelatesToComponent(t));
+        for (org.hl7.fhir.r5.model.Composition.CompositionEventComponent t : src.getEvent()) tgt.addEvent(convertCompositionEventComponent(t));
+        for (org.hl7.fhir.r5.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
         return tgt;
     }
 
@@ -343,14 +318,10 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionEventComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 
@@ -359,14 +330,10 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionEventComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 
@@ -379,9 +346,7 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
         if (src.hasFocus())
             tgt.setFocus(convertReference(src.getFocus()));
         if (src.hasText())
@@ -390,14 +355,10 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setMode(convertSectionMode(src.getMode()));
         if (src.hasOrderedBy())
             tgt.setOrderedBy(convertCodeableConcept(src.getOrderedBy()));
-        if (src.hasEntry()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEntry()) tgt.addEntry(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getEntry()) tgt.addEntry(convertReference(t));
         if (src.hasEmptyReason())
             tgt.setEmptyReason(convertCodeableConcept(src.getEmptyReason()));
-        if (src.hasSection()) {
-            for (org.hl7.fhir.r4.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
         return tgt;
     }
 
@@ -410,9 +371,7 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
         if (src.hasFocus())
             tgt.setFocus(convertReference(src.getFocus()));
         if (src.hasText())
@@ -421,14 +380,10 @@ public class Composition40_50 extends VersionConvertor_40_50 {
             tgt.setMode(convertSectionMode(src.getMode()));
         if (src.hasOrderedBy())
             tgt.setOrderedBy(convertCodeableConcept(src.getOrderedBy()));
-        if (src.hasEntry()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEntry()) tgt.addEntry(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getEntry()) tgt.addEntry(convertReference(t));
         if (src.hasEmptyReason())
             tgt.setEmptyReason(convertCodeableConcept(src.getEmptyReason()));
-        if (src.hasSection()) {
-            for (org.hl7.fhir.r5.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Composition.SectionComponent t : src.getSection()) tgt.addSection(convertSectionComponent(t));
         return tgt;
     }
 

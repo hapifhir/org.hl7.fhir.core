@@ -19,10 +19,10 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyProcedureComponent;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,56 +60,36 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ImagingStudy tgt = new org.hl7.fhir.r5.model.ImagingStudy();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImagingStudyStatus(src.getStatus()));
-        if (src.hasModality()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getModality()) tgt.addModality(convertCoding(t));
-        }
+        for (org.hl7.fhir.r4.model.Coding t : src.getModality()) tgt.addModality(convertCoding(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasStarted())
             tgt.setStartedElement(convertDateTime(src.getStartedElement()));
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
         if (src.hasReferrer())
             tgt.setReferrer(convertReference(src.getReferrer()));
-        if (src.hasInterpreter()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getInterpreter()) tgt.addInterpreter(convertReference(t));
-        }
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getInterpreter()) tgt.addInterpreter(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         if (src.hasNumberOfSeries())
             tgt.setNumberOfSeriesElement(convertUnsignedInt(src.getNumberOfSeriesElement()));
         if (src.hasNumberOfInstances())
             tgt.setNumberOfInstancesElement(convertUnsignedInt(src.getNumberOfInstancesElement()));
         if (src.hasProcedureReference())
             tgt.addProcedure().setValue(convertReference(src.getProcedureReference()));
-        if (src.hasProcedureCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProcedureCode()) tgt.addProcedure().setValue(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProcedureCode()) tgt.addProcedure().setValue(convertCodeableConcept(t));
         if (src.hasLocation())
             tgt.setLocation(convertReference(src.getLocation()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasSeries()) {
-            for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
         return tgt;
     }
 
@@ -118,31 +98,21 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ImagingStudy tgt = new org.hl7.fhir.r4.model.ImagingStudy();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertImagingStudyStatus(src.getStatus()));
-        if (src.hasModality()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getModality()) tgt.addModality(convertCoding(t));
-        }
+        for (org.hl7.fhir.r5.model.Coding t : src.getModality()) tgt.addModality(convertCoding(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
             tgt.setEncounter(convertReference(src.getEncounter()));
         if (src.hasStarted())
             tgt.setStartedElement(convertDateTime(src.getStartedElement()));
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
         if (src.hasReferrer())
             tgt.setReferrer(convertReference(src.getReferrer()));
-        if (src.hasInterpreter()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter()) tgt.addInterpreter(convertReference(t));
-        }
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getInterpreter()) tgt.addInterpreter(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         if (src.hasNumberOfSeries())
             tgt.setNumberOfSeriesElement(convertUnsignedInt(src.getNumberOfSeriesElement()));
         if (src.hasNumberOfInstances())
@@ -160,14 +130,10 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasSeries()) {
-            for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent t : src.getSeries()) tgt.addSeries(convertImagingStudySeriesComponent(t));
         return tgt;
     }
 
@@ -224,24 +190,16 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasNumberOfInstances())
             tgt.setNumberOfInstancesElement(convertUnsignedInt(src.getNumberOfInstancesElement()));
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCoding(src.getBodySite()));
         if (src.hasLaterality())
             tgt.setLaterality(convertCoding(src.getLaterality()));
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
         if (src.hasStarted())
             tgt.setStartedElement(convertDateTime(src.getStartedElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImagingStudySeriesPerformerComponent(t));
-        }
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImagingStudySeriesPerformerComponent(t));
+        for (org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
         return tgt;
     }
 
@@ -260,24 +218,16 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasNumberOfInstances())
             tgt.setNumberOfInstancesElement(convertUnsignedInt(src.getNumberOfInstancesElement()));
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCoding(src.getBodySite()));
         if (src.hasLaterality())
             tgt.setLaterality(convertCoding(src.getLaterality()));
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
         if (src.hasStarted())
             tgt.setStartedElement(convertDateTime(src.getStartedElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImagingStudySeriesPerformerComponent(t));
-        }
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImagingStudySeriesPerformerComponent(t));
+        for (org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent t : src.getInstance()) tgt.addInstance(convertImagingStudySeriesInstanceComponent(t));
         return tgt;
     }
 

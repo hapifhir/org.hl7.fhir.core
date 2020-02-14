@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,61 +59,39 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Appointment tgt = new org.hl7.fhir.r5.model.Appointment();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertAppointmentStatus(src.getStatus()));
         if (src.hasCancelationReason())
             tgt.setCancelationReason(convertCodeableConcept(src.getCancelationReason()));
-        if (src.hasServiceCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(convertCodeableConcept(t));
-        }
-        if (src.hasServiceType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
         if (src.hasAppointmentType())
             tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasPriority())
             tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasSupportingInformation()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
         if (src.hasStart())
             tgt.setStartElement(convertInstant(src.getStartElement()));
         if (src.hasEnd())
             tgt.setEndElement(convertInstant(src.getEndElement()));
         if (src.hasMinutesDuration())
             tgt.setMinutesDurationElement(convertPositiveInt(src.getMinutesDurationElement()));
-        if (src.hasSlot()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getSlot()) tgt.addSlot(convertReference(t));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
         if (src.hasPatientInstruction())
             tgt.setPatientInstructionElement(convertString(src.getPatientInstructionElement()));
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
-        }
-        if (src.hasRequestedPeriod()) {
-            for (org.hl7.fhir.r4.model.Period t : src.getRequestedPeriod()) tgt.addRequestedPeriod(convertPeriod(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        for (org.hl7.fhir.r4.model.Period t : src.getRequestedPeriod()) tgt.addRequestedPeriod(convertPeriod(t));
         return tgt;
     }
 
@@ -122,22 +100,14 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Appointment tgt = new org.hl7.fhir.r4.model.Appointment();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertAppointmentStatus(src.getStatus()));
         if (src.hasCancelationReason())
             tgt.setCancelationReason(convertCodeableConcept(src.getCancelationReason()));
-        if (src.hasServiceCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(convertCodeableConcept(t));
-        }
-        if (src.hasServiceType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
         if (src.hasAppointmentType())
             tgt.setAppointmentType(convertCodeableConcept(src.getAppointmentType()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
@@ -148,33 +118,23 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
             tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasSupportingInformation()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
         if (src.hasStart())
             tgt.setStartElement(convertInstant(src.getStartElement()));
         if (src.hasEnd())
             tgt.setEndElement(convertInstant(src.getEndElement()));
         if (src.hasMinutesDuration())
             tgt.setMinutesDurationElement(convertPositiveInt(src.getMinutesDurationElement()));
-        if (src.hasSlot()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSlot()) tgt.addSlot(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSlot()) tgt.addSlot(convertReference(t));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
         if (src.hasPatientInstruction())
             tgt.setPatientInstructionElement(convertString(src.getPatientInstructionElement()));
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
-        }
-        if (src.hasRequestedPeriod()) {
-            for (org.hl7.fhir.r5.model.Period t : src.getRequestedPeriod()) tgt.addRequestedPeriod(convertPeriod(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
+        for (org.hl7.fhir.r5.model.Period t : src.getRequestedPeriod()) tgt.addRequestedPeriod(convertPeriod(t));
         return tgt;
     }
 
@@ -241,9 +201,7 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent();
         copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasActor())
             tgt.setActor(convertReference(src.getActor()));
         if (src.hasRequired())
@@ -260,9 +218,7 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent();
         copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasActor())
             tgt.setActor(convertReference(src.getActor()));
         if (src.hasRequired())

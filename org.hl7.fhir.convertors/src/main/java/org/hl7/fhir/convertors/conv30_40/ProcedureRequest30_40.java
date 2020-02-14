@@ -2,8 +2,8 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Reference;
 import java.util.List;
-import java.util.Collections;
 
 public class ProcedureRequest30_40 {
 
@@ -22,40 +22,51 @@ public class ProcedureRequest30_40 {
             tgt.addReplaces(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasRequisition()) {
-            tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
+            if (src.hasRequisition())
+                tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
         }
         if (src.hasStatus()) {
-            tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
+            if (src.hasStatus())
+                tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
         }
         if (src.hasIntent()) {
-            tgt.setIntent(convertProcedureRequestIntent(src.getIntent()));
+            if (src.hasIntent())
+                tgt.setIntent(convertProcedureRequestIntent(src.getIntent()));
         }
         if (src.hasPriority()) {
-            tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
+            if (src.hasPriority())
+                tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
         }
         if (src.hasDoNotPerform()) {
-            tgt.setDoNotPerform(src.getDoNotPerform());
+            if (src.hasDoNotPerformElement())
+                tgt.setDoNotPerformElement(VersionConvertor_30_40.convertBoolean(src.getDoNotPerformElement()));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) {
             tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         }
         if (src.hasCode()) {
-            tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
+            if (src.hasCode())
+                tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         }
         if (src.hasSubject()) {
-            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+            if (src.hasSubject())
+                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         }
         if (src.hasContext()) {
-            tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
+            if (src.hasContext())
+                tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
         }
         if (src.hasOccurrence()) {
-            tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
+            if (src.hasOccurrence())
+                tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
-            tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
+            if (src.hasAsNeeded())
+                tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
-            tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
+            if (src.hasAuthoredOnElement())
+                tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
         }
         if (src.hasRequester()) {
             org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestRequesterComponent requester = src.getRequester();
@@ -64,10 +75,12 @@ public class ProcedureRequest30_40 {
             }
         }
         if (src.hasPerformerType()) {
-            tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
+            if (src.hasPerformerType())
+                tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
         }
         if (src.hasPerformer()) {
-            tgt.addPerformer(VersionConvertor_30_40.convertReference(src.getPerformer()));
+            if (src.hasPerformer())
+                tgt.addPerformer(VersionConvertor_30_40.convertReference(src.getPerformer()));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
             tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
@@ -108,47 +121,60 @@ public class ProcedureRequest30_40 {
             tgt.addReplaces(VersionConvertor_30_40.convertReference(t));
         }
         if (src.hasRequisition()) {
-            tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
+            if (src.hasRequisition())
+                tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
         }
         if (src.hasStatus()) {
-            tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
+            if (src.hasStatus())
+                tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
         }
         if (src.hasIntent()) {
-            tgt.setIntent(convertProcedureRequestIntent(src.getIntent()));
+            if (src.hasIntent())
+                tgt.setIntent(convertProcedureRequestIntent(src.getIntent()));
         }
         if (src.hasPriority()) {
-            tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
+            if (src.hasPriority())
+                tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
         }
-        if (src.hasDoNotPerformElement())
-            tgt.setDoNotPerformElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getDoNotPerformElement()));
+        if (src.hasDoNotPerform()) {
+            if (src.hasDoNotPerformElement())
+                tgt.setDoNotPerformElement(VersionConvertor_30_40.convertBoolean(src.getDoNotPerformElement()));
+        }
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) {
             tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         }
         if (src.hasCode()) {
-            tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
+            if (src.hasCode())
+                tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         }
         if (src.hasSubject()) {
-            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+            if (src.hasSubject())
+                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
         }
         if (src.hasEncounter()) {
-            tgt.setContext(VersionConvertor_30_40.convertReference(src.getEncounter()));
+            if (src.hasEncounter())
+                tgt.setContext(VersionConvertor_30_40.convertReference(src.getEncounter()));
         }
         if (src.hasOccurrence()) {
-            tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
+            if (src.hasOccurrence())
+                tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
-            tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
+            if (src.hasAsNeeded())
+                tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
-            tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
+            if (src.hasAuthoredOnElement())
+                tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
         }
         if (src.hasRequester()) {
             tgt.setRequester(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestRequesterComponent(VersionConvertor_30_40.convertReference(src.getRequester())));
         }
         if (src.hasPerformerType()) {
-            tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
+            if (src.hasPerformerType())
+                tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
         }
-        List<org.hl7.fhir.r4.model.Reference> performers = src.getPerformer();
+        List<Reference> performers = src.getPerformer();
         if (performers.size() > 0) {
             tgt.setPerformer(VersionConvertor_30_40.convertReference(performers.get(0)));
             if (performers.size() > 1) {

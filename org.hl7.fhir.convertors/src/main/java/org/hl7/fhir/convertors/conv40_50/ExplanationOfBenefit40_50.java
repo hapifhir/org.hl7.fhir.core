@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ExplanationOfBenefit tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertExplanationOfBenefitStatus(src.getStatus()));
         if (src.hasType())
@@ -87,9 +85,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFundsReserveRequested(convertCodeableConcept(src.getFundsReserveRequested()));
         if (src.hasFundsReserve())
             tgt.setFundsReserve(convertCodeableConcept(src.getFundsReserve()));
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
         if (src.hasPrescription())
             tgt.setPrescription(convertReference(src.getPrescription()));
         if (src.hasOriginalPrescription())
@@ -108,57 +104,31 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
-        if (src.hasPreAuthRefPeriod()) {
-            for (org.hl7.fhir.r4.model.Period t : src.getPreAuthRefPeriod()) tgt.addPreAuthRefPeriod(convertPeriod(t));
-        }
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasProcedure()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
+        for (org.hl7.fhir.r4.model.Period t : src.getPreAuthRefPeriod()) tgt.addPreAuthRefPeriod(convertPeriod(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
         if (src.hasPrecedence())
             tgt.setPrecedenceElement(convertPositiveInt(src.getPrecedenceElement()));
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasAccident())
             tgt.setAccident(convertAccidentComponent(src.getAccident()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
-        if (src.hasAddItem()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasTotal()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
         if (src.hasPayment())
             tgt.setPayment(convertPaymentComponent(src.getPayment()));
         if (src.hasFormCode())
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
         if (src.hasForm())
             tgt.setForm(convertAttachment(src.getForm()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
         if (src.hasBenefitPeriod())
             tgt.setBenefitPeriod(convertPeriod(src.getBenefitPeriod()));
-        if (src.hasBenefitBalance()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitBalanceComponent t : src.getBenefitBalance()) tgt.addBenefitBalance(convertBenefitBalanceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitBalanceComponent t : src.getBenefitBalance()) tgt.addBenefitBalance(convertBenefitBalanceComponent(t));
         return tgt;
     }
 
@@ -167,9 +137,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ExplanationOfBenefit tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertExplanationOfBenefitStatus(src.getStatus()));
         if (src.hasType())
@@ -196,9 +164,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFundsReserveRequested(convertCodeableConcept(src.getFundsReserveRequested()));
         if (src.hasFundsReserve())
             tgt.setFundsReserve(convertCodeableConcept(src.getFundsReserve()));
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.RelatedClaimComponent t : src.getRelated()) tgt.addRelated(convertRelatedClaimComponent(t));
         if (src.hasPrescription())
             tgt.setPrescription(convertReference(src.getPrescription()));
         if (src.hasOriginalPrescription())
@@ -217,57 +183,31 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
-        if (src.hasPreAuthRefPeriod()) {
-            for (org.hl7.fhir.r5.model.Period t : src.getPreAuthRefPeriod()) tgt.addPreAuthRefPeriod(convertPeriod(t));
-        }
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
-        }
-        if (src.hasDiagnosis()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
-        }
-        if (src.hasProcedure()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
+        for (org.hl7.fhir.r5.model.Period t : src.getPreAuthRefPeriod()) tgt.addPreAuthRefPeriod(convertPeriod(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.CareTeamComponent t : src.getCareTeam()) tgt.addCareTeam(convertCareTeamComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.SupportingInformationComponent t : src.getSupportingInfo()) tgt.addSupportingInfo(convertSupportingInformationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.DiagnosisComponent t : src.getDiagnosis()) tgt.addDiagnosis(convertDiagnosisComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.ProcedureComponent t : src.getProcedure()) tgt.addProcedure(convertProcedureComponent(t));
         if (src.hasPrecedence())
             tgt.setPrecedenceElement(convertPositiveInt(src.getPrecedenceElement()));
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.InsuranceComponent t : src.getInsurance()) tgt.addInsurance(convertInsuranceComponent(t));
         if (src.hasAccident())
             tgt.setAccident(convertAccidentComponent(src.getAccident()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
-        }
-        if (src.hasAddItem()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasTotal()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.ItemComponent t : src.getItem()) tgt.addItem(convertItemComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent t : src.getAddItem()) tgt.addAddItem(convertAddedItemComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.TotalComponent t : src.getTotal()) tgt.addTotal(convertTotalComponent(t));
         if (src.hasPayment())
             tgt.setPayment(convertPaymentComponent(src.getPayment()));
         if (src.hasFormCode())
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
         if (src.hasForm())
             tgt.setForm(convertAttachment(src.getForm()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.NoteComponent t : src.getProcessNote()) tgt.addProcessNote(convertNoteComponent(t));
         if (src.hasBenefitPeriod())
             tgt.setBenefitPeriod(convertPeriod(src.getBenefitPeriod()));
-        if (src.hasBenefitBalance()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitBalanceComponent t : src.getBenefitBalance()) tgt.addBenefitBalance(convertBenefitBalanceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitBalanceComponent t : src.getBenefitBalance()) tgt.addBenefitBalance(convertBenefitBalanceComponent(t));
         return tgt;
     }
 
@@ -506,9 +446,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasDiagnosis())
             tgt.setDiagnosis(convertType(src.getDiagnosis()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasOnAdmission())
             tgt.setOnAdmission(convertCodeableConcept(src.getOnAdmission()));
         if (src.hasPackageCode())
@@ -525,9 +463,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasDiagnosis())
             tgt.setDiagnosis(convertType(src.getDiagnosis()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasOnAdmission())
             tgt.setOnAdmission(convertCodeableConcept(src.getOnAdmission()));
         if (src.hasPackageCode())
@@ -542,16 +478,12 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasProcedure())
             tgt.setProcedure(convertType(src.getProcedure()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 
@@ -562,16 +494,12 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasProcedure())
             tgt.setProcedure(convertType(src.getProcedure()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         return tgt;
     }
 
@@ -584,9 +512,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFocalElement(convertBoolean(src.getFocalElement()));
         if (src.hasCoverage())
             tgt.setCoverage(convertReference(src.getCoverage()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
         return tgt;
     }
 
@@ -599,9 +525,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFocalElement(convertBoolean(src.getFocalElement()));
         if (src.hasCoverage())
             tgt.setCoverage(convertReference(src.getCoverage()));
-        if (src.hasPreAuthRef()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
         return tgt;
     }
 
@@ -640,30 +564,18 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasCareTeamSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDiagnosisSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProcedureSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasInformationSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
         if (src.hasRevenue())
             tgt.setRevenue(convertCodeableConcept(src.getRevenue()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -676,26 +588,14 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasEncounter()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
         return tgt;
     }
 
@@ -706,30 +606,18 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSequence())
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
-        if (src.hasCareTeamSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDiagnosisSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProcedureSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasInformationSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getCareTeamSequence()) tgt.getCareTeamSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDiagnosisSequence()) tgt.getDiagnosisSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getProcedureSequence()) tgt.getProcedureSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getInformationSequence()) tgt.getInformationSequence().add(convertPositiveInt(t));
         if (src.hasRevenue())
             tgt.setRevenue(convertCodeableConcept(src.getRevenue()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -742,26 +630,14 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasEncounter()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEncounter()) tgt.addEncounter(convertReference(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
         return tgt;
     }
 
@@ -810,12 +686,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -824,18 +696,10 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -852,12 +716,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -866,18 +726,10 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.SubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertSubDetailComponent(t));
         return tgt;
     }
 
@@ -894,12 +746,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -908,15 +756,9 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -933,12 +775,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -947,15 +785,9 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasUdi()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(convertReference(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -964,26 +796,14 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent();
         copyElement(src, tgt);
-        if (src.hasItemSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDetailSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasSubDetailSequence()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSubDetailSequence()) tgt.getSubDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProvider()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getSubDetailSequence()) tgt.getSubDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -998,18 +818,10 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setNet(convertMoney(src.getNet()));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
         return tgt;
     }
 
@@ -1018,26 +830,14 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent();
         copyElement(src, tgt);
-        if (src.hasItemSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasDetailSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasSubDetailSequence()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSubDetailSequence()) tgt.getSubDetailSequence().add(convertPositiveInt(t));
-        }
-        if (src.hasProvider()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence()) tgt.getItemSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence()) tgt.getDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getSubDetailSequence()) tgt.getSubDetailSequence().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getProvider()) tgt.addProvider(convertReference(t));
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
-        if (src.hasProgramCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode()) tgt.addProgramCode(convertCodeableConcept(t));
         if (src.hasServiced())
             tgt.setServiced(convertType(src.getServiced()));
         if (src.hasLocation())
@@ -1052,18 +852,10 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setNet(convertMoney(src.getNet()));
         if (src.hasBodySite())
             tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        if (src.hasSubSite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
-        }
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite()) tgt.addSubSite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailComponent t : src.getDetail()) tgt.addDetail(convertAddedItemDetailComponent(t));
         return tgt;
     }
 
@@ -1074,9 +866,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -1085,15 +875,9 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemDetailSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemDetailSubDetailComponent(t));
         return tgt;
     }
 
@@ -1104,9 +888,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -1115,15 +897,9 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
-        if (src.hasSubDetail()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemDetailSubDetailComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent t : src.getSubDetail()) tgt.addSubDetail(convertAddedItemDetailSubDetailComponent(t));
         return tgt;
     }
 
@@ -1134,9 +910,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -1145,12 +919,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -1161,9 +931,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasProductOrService())
             tgt.setProductOrService(convertCodeableConcept(src.getProductOrService()));
-        if (src.hasModifier()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier()) tgt.addModifier(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
         if (src.hasUnitPrice())
@@ -1172,12 +940,8 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setFactorElement(convertDecimal(src.getFactorElement()));
         if (src.hasNet())
             tgt.setNet(convertMoney(src.getNet()));
-        if (src.hasNoteNumber()) {
-            for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
-        }
-        if (src.hasAdjudication()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber()) tgt.getNoteNumber().add(convertPositiveInt(t));
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent t : src.getAdjudication()) tgt.addAdjudication(convertAdjudicationComponent(t));
         return tgt;
     }
 
@@ -1296,9 +1060,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setUnit(convertCodeableConcept(src.getUnit()));
         if (src.hasTerm())
             tgt.setTerm(convertCodeableConcept(src.getTerm()));
-        if (src.hasFinancial()) {
-            for (org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitComponent t : src.getFinancial()) tgt.addFinancial(convertBenefitComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitComponent t : src.getFinancial()) tgt.addFinancial(convertBenefitComponent(t));
         return tgt;
     }
 
@@ -1321,9 +1083,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
             tgt.setUnit(convertCodeableConcept(src.getUnit()));
         if (src.hasTerm())
             tgt.setTerm(convertCodeableConcept(src.getTerm()));
-        if (src.hasFinancial()) {
-            for (org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitComponent t : src.getFinancial()) tgt.addFinancial(convertBenefitComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitComponent t : src.getFinancial()) tgt.addFinancial(convertBenefitComponent(t));
         return tgt;
     }
 

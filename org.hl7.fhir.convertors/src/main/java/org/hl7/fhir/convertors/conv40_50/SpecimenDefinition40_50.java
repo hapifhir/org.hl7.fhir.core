@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,17 +62,11 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
         if (src.hasTypeCollected())
             tgt.setTypeCollected(convertCodeableConcept(src.getTypeCollected()));
-        if (src.hasPatientPreparation()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPatientPreparation()) tgt.addPatientPreparation(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPatientPreparation()) tgt.addPatientPreparation(convertCodeableConcept(t));
         if (src.hasTimeAspect())
             tgt.setTimeAspectElement(convertString(src.getTimeAspectElement()));
-        if (src.hasCollection()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCollection()) tgt.addCollection(convertCodeableConcept(t));
-        }
-        if (src.hasTypeTested()) {
-            for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent t : src.getTypeTested()) tgt.addTypeTested(convertSpecimenDefinitionTypeTestedComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCollection()) tgt.addCollection(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent t : src.getTypeTested()) tgt.addTypeTested(convertSpecimenDefinitionTypeTestedComponent(t));
         return tgt;
     }
 
@@ -85,17 +79,11 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
         if (src.hasTypeCollected())
             tgt.setTypeCollected(convertCodeableConcept(src.getTypeCollected()));
-        if (src.hasPatientPreparation()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPatientPreparation()) tgt.addPatientPreparation(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPatientPreparation()) tgt.addPatientPreparation(convertCodeableConcept(t));
         if (src.hasTimeAspect())
             tgt.setTimeAspectElement(convertString(src.getTimeAspectElement()));
-        if (src.hasCollection()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCollection()) tgt.addCollection(convertCodeableConcept(t));
-        }
-        if (src.hasTypeTested()) {
-            for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent t : src.getTypeTested()) tgt.addTypeTested(convertSpecimenDefinitionTypeTestedComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCollection()) tgt.addCollection(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent t : src.getTypeTested()) tgt.addTypeTested(convertSpecimenDefinitionTypeTestedComponent(t));
         return tgt;
     }
 
@@ -116,12 +104,8 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setRequirementElement(convertString(src.getRequirementElement()));
         if (src.hasRetentionTime())
             tgt.setRetentionTime(convertDuration(src.getRetentionTime()));
-        if (src.hasRejectionCriterion()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRejectionCriterion()) tgt.addRejectionCriterion(convertCodeableConcept(t));
-        }
-        if (src.hasHandling()) {
-            for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent t : src.getHandling()) tgt.addHandling(convertSpecimenDefinitionTypeTestedHandlingComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRejectionCriterion()) tgt.addRejectionCriterion(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent t : src.getHandling()) tgt.addHandling(convertSpecimenDefinitionTypeTestedHandlingComponent(t));
         return tgt;
     }
 
@@ -142,12 +126,8 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setRequirementElement(convertString(src.getRequirementElement()));
         if (src.hasRetentionTime())
             tgt.setRetentionTime(convertDuration(src.getRetentionTime()));
-        if (src.hasRejectionCriterion()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRejectionCriterion()) tgt.addRejectionCriterion(convertCodeableConcept(t));
-        }
-        if (src.hasHandling()) {
-            for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent t : src.getHandling()) tgt.addHandling(convertSpecimenDefinitionTypeTestedHandlingComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRejectionCriterion()) tgt.addRejectionCriterion(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent t : src.getHandling()) tgt.addHandling(convertSpecimenDefinitionTypeTestedHandlingComponent(t));
         return tgt;
     }
 
@@ -194,9 +174,7 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCapacity(convertSimpleQuantity(src.getCapacity()));
         if (src.hasMinimumVolume())
             tgt.setMinimumVolume(convertType(src.getMinimumVolume()));
-        if (src.hasAdditive()) {
-            for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive()) tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive()) tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
         if (src.hasPreparation())
             tgt.setPreparationElement(convertString(src.getPreparationElement()));
         return tgt;
@@ -219,9 +197,7 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCapacity(convertSimpleQuantity(src.getCapacity()));
         if (src.hasMinimumVolume())
             tgt.setMinimumVolume(convertType(src.getMinimumVolume()));
-        if (src.hasAdditive()) {
-            for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive()) tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive()) tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
         if (src.hasPreparation())
             tgt.setPreparationElement(convertString(src.getPreparationElement()));
         return tgt;

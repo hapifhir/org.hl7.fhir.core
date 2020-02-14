@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class AllergyIntolerance30_40 {
 
@@ -11,18 +10,14 @@ public class AllergyIntolerance30_40 {
             return null;
         org.hl7.fhir.dstu3.model.AllergyIntolerance tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertAllergyIntoleranceClinicalStatus(src.getClinicalStatus()));
         if (src.hasVerificationStatus())
             tgt.setVerificationStatus(convertAllergyIntoleranceVerificationStatus(src.getVerificationStatus()));
         if (src.hasType())
             tgt.setType(convertAllergyIntoleranceType(src.getType()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory()) VersionConvertor_30_40.copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
-        }
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory()) VersionConvertor_30_40.copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
         if (src.hasCriticality())
             tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
         if (src.hasCode())
@@ -32,19 +27,15 @@ public class AllergyIntolerance30_40 {
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_30_40.convertType(src.getOnset()));
         if (src.hasRecordedDate())
-            tgt.setAssertedDate(src.getRecordedDate());
+            tgt.setAssertedDateElement(VersionConvertor_30_40.convertDateTime(src.getRecordedDateElement()));
         if (src.hasRecorder())
             tgt.setRecorder(VersionConvertor_30_40.convertReference(src.getRecorder()));
         if (src.hasAsserter())
             tgt.setAsserter(VersionConvertor_30_40.convertReference(src.getAsserter()));
         if (src.hasLastOccurrence())
             tgt.setLastOccurrenceElement(VersionConvertor_30_40.convertDateTime(src.getLastOccurrenceElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
-        if (src.hasReaction()) {
-            for (org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction()) tgt.addReaction(convertAllergyIntoleranceReactionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        for (org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction()) tgt.addReaction(convertAllergyIntoleranceReactionComponent(t));
         return tgt;
     }
 
@@ -53,18 +44,14 @@ public class AllergyIntolerance30_40 {
             return null;
         org.hl7.fhir.r4.model.AllergyIntolerance tgt = new org.hl7.fhir.r4.model.AllergyIntolerance();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertAllergyIntoleranceClinicalStatus(src.getClinicalStatus()));
         if (src.hasVerificationStatus())
             tgt.setVerificationStatus(convertAllergyIntoleranceVerificationStatus(src.getVerificationStatus()));
         if (src.hasType())
             tgt.setType(convertAllergyIntoleranceType(src.getType()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory()) VersionConvertor_30_40.copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
-        }
+        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCategory> t : src.getCategory()) VersionConvertor_30_40.copyElement(t, tgt.addCategoryElement().setValue(convertAllergyIntoleranceCategory(t.getValue())));
         if (src.hasCriticality())
             tgt.setCriticality(convertAllergyIntoleranceCriticality(src.getCriticality()));
         if (src.hasCode())
@@ -81,12 +68,8 @@ public class AllergyIntolerance30_40 {
             tgt.setAsserter(VersionConvertor_30_40.convertReference(src.getAsserter()));
         if (src.hasLastOccurrence())
             tgt.setLastOccurrenceElement(VersionConvertor_30_40.convertDateTime(src.getLastOccurrenceElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
-        if (src.hasReaction()) {
-            for (org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction()) tgt.addReaction(convertAllergyIntoleranceReactionComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        for (org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent t : src.getReaction()) tgt.addReaction(convertAllergyIntoleranceReactionComponent(t));
         return tgt;
     }
 
@@ -188,20 +171,16 @@ public class AllergyIntolerance30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(VersionConvertor_30_40.convertCodeableConcept(src.getSubstance()));
-        if (src.hasManifestation()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
             tgt.setOnsetElement(VersionConvertor_30_40.convertDateTime(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
         if (src.hasExposureRoute())
             tgt.setExposureRoute(VersionConvertor_30_40.convertCodeableConcept(src.getExposureRoute()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
         return tgt;
     }
 
@@ -212,20 +191,16 @@ public class AllergyIntolerance30_40 {
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(VersionConvertor_30_40.convertCodeableConcept(src.getSubstance()));
-        if (src.hasManifestation()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_40.convertCodeableConcept(t));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
             tgt.setOnsetElement(VersionConvertor_30_40.convertDateTime(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(convertAllergyIntoleranceSeverity(src.getSeverity()));
         if (src.hasExposureRoute())
             tgt.setExposureRoute(VersionConvertor_30_40.convertCodeableConcept(src.getExposureRoute()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
         return tgt;
     }
 

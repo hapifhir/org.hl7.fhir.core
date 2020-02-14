@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.PaymentReconciliation tgt = new org.hl7.fhir.r5.model.PaymentReconciliation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertPaymentReconciliationStatus(src.getStatus()));
         if (src.hasPeriod())
@@ -83,14 +81,10 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
             tgt.setPaymentAmount(convertMoney(src.getPaymentAmount()));
         if (src.hasPaymentIdentifier())
             tgt.setPaymentIdentifier(convertIdentifier(src.getPaymentIdentifier()));
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.PaymentReconciliation.DetailsComponent t : src.getDetail()) tgt.addDetail(convertDetailsComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PaymentReconciliation.DetailsComponent t : src.getDetail()) tgt.addDetail(convertDetailsComponent(t));
         if (src.hasFormCode())
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r4.model.PaymentReconciliation.NotesComponent t : src.getProcessNote()) tgt.addProcessNote(convertNotesComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.PaymentReconciliation.NotesComponent t : src.getProcessNote()) tgt.addProcessNote(convertNotesComponent(t));
         return tgt;
     }
 
@@ -99,9 +93,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.PaymentReconciliation tgt = new org.hl7.fhir.r4.model.PaymentReconciliation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertPaymentReconciliationStatus(src.getStatus()));
         if (src.hasPeriod())
@@ -124,14 +116,10 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
             tgt.setPaymentAmount(convertMoney(src.getPaymentAmount()));
         if (src.hasPaymentIdentifier())
             tgt.setPaymentIdentifier(convertIdentifier(src.getPaymentIdentifier()));
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.PaymentReconciliation.DetailsComponent t : src.getDetail()) tgt.addDetail(convertDetailsComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PaymentReconciliation.DetailsComponent t : src.getDetail()) tgt.addDetail(convertDetailsComponent(t));
         if (src.hasFormCode())
             tgt.setFormCode(convertCodeableConcept(src.getFormCode()));
-        if (src.hasProcessNote()) {
-            for (org.hl7.fhir.r5.model.PaymentReconciliation.NotesComponent t : src.getProcessNote()) tgt.addProcessNote(convertNotesComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.PaymentReconciliation.NotesComponent t : src.getProcessNote()) tgt.addProcessNote(convertNotesComponent(t));
         return tgt;
     }
 

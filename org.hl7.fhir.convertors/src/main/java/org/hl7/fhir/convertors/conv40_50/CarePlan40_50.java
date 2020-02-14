@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,31 +59,17 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CarePlan tgt = new org.hl7.fhir.r5.model.CarePlan();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCarePlanStatus(src.getStatus()));
         if (src.hasIntent())
             tgt.setIntent(convertCarePlanIntent(src.getIntent()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasDescription())
@@ -98,27 +84,13 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
-        if (src.hasContributor()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getContributor()) tgt.addContributor(convertReference(t));
-        }
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(convertReference(t));
-        }
-        if (src.hasAddresses()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasGoal()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
-        }
-        if (src.hasActivity()) {
-            for (org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent t : src.getActivity()) tgt.addActivity(convertCarePlanActivityComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getContributor()) tgt.addContributor(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
+        for (org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent t : src.getActivity()) tgt.addActivity(convertCarePlanActivityComponent(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -127,31 +99,17 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CarePlan tgt = new org.hl7.fhir.r4.model.CarePlan();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCarePlanStatus(src.getStatus()));
         if (src.hasIntent())
             tgt.setIntent(convertCarePlanIntent(src.getIntent()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasDescription())
@@ -166,26 +124,14 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
-        if (src.hasContributor()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getContributor()) tgt.addContributor(convertReference(t));
-        }
-        if (src.hasCareTeam()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addCareTeam(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getContributor()) tgt.addContributor(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addCareTeam(convertReference(t));
         for (CodeableReference t : src.getAddresses()) if (t.hasReference())
             tgt.addAddresses(convertReference(t.getReference()));
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasGoal()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
-        }
-        if (src.hasActivity()) {
-            for (org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent t : src.getActivity()) tgt.addActivity(convertCarePlanActivityComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
+        for (org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent t : src.getActivity()) tgt.addActivity(convertCarePlanActivityComponent(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -274,15 +220,9 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
         copyElement(src, tgt);
-        if (src.hasOutcomeCodeableConcept()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasOutcomeReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addOutcome(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasProgress()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addOutcome(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
         if (src.hasDetail())
@@ -299,9 +239,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.addOutcomeCodeableConcept(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getOutcome()) if (t.hasReference())
             tgt.addOutcomeReference(convertReference(t.getReference()));
-        if (src.hasProgress()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
         if (src.hasDetail())
@@ -316,23 +254,13 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasKind())
             tgt.setKind(convertCarePlanActivityKind(src.getKind()));
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasGoal()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -343,9 +271,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setScheduled(convertType(src.getScheduled()));
         if (src.hasLocation())
             tgt.setLocation(convertReference(src.getLocation()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));
         if (src.hasDailyAmount())
@@ -364,21 +290,15 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasKind())
             tgt.setKind(convertCarePlanActivityKind(src.getKind()));
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasGoal()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
         if (src.hasStatusReason())
@@ -389,9 +309,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setScheduled(convertType(src.getScheduled()));
         if (src.hasLocation())
             tgt.setLocation(convertReference(src.getLocation()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));
         if (src.hasDailyAmount())

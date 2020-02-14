@@ -46,6 +46,7 @@ public class ParserElement {
 
   public static void main(String[] args) {
     VERSION_FILES.forEach(version -> {
+    //String version = "10_50";
     List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
     System.out.println("Checking the following files:");
     Collections.sort(filenames);
@@ -62,7 +63,7 @@ public class ParserElement {
 //    VERSION_FILES2.forEach(version -> {
 //
 //      try {
-//        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/", "VersionConvertor_" + version, ".java", BASE_TYPES, version);
+//        modifyElementNotField("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_50/", "DiagnosticReport10_50", ".java", BASE_TYPES, "10_50");
 //      } catch (FileNotFoundException e) {
 //        e.printStackTrace();
 //      }
@@ -105,7 +106,7 @@ public class ParserElement {
           @Override
           public Visitable visit(ExpressionStmt n, Void arg) {
             super.visit(n, arg);
-            if (n.toString().contains("src.get") && n.toString().contains("tgt.set")) {
+            if (n.toString().contains("src.get") && (n.toString().contains("tgt.add") || n.toString().contains("tgt.set"))) {
               try {
                 if (canModifyElement(n, fromClass, toClass)) {
                   String s = generateNewIfStatement(n, fromClass, toClass, version);
@@ -234,7 +235,7 @@ public class ParserElement {
   public static final String OLD_CONDITION_STATEMENT_TEMPLATE = "src.has%1$s()";
   public static final String NEW_CONDITION_STATEMENT_TEMPLATE = "src.has%1$sElement()";
   public static final String NEW_EXPR_STATEMENT_TEMPLATE = "tgt.set%1$sElement(convert%3$s(src.get%4$sElement()));";
-  public static final String NEW_EXPR_STATEMENT_TEMPLATE_SUBFILE = "tgt.set%1$sElement(VersionConvertor_convertor%2$s.convert%3$s(src.get%4$sElement()));";
+  public static final String NEW_EXPR_STATEMENT_TEMPLATE_SUBFILE = "tgt.set%1$sElement(VersionConvertor_%2$s.convert%3$s(src.get%4$sElement()));";
 
   private static Statement modifyElementAccess(ExpressionStmt n, ClassOrInterfaceDeclaration fromType, ClassOrInterfaceDeclaration toType, String version) throws Exception {
     if (!canModifyElement(n, fromType, toType)) throw new IllegalArgumentException("Cannot modify passed in elements.");
@@ -264,13 +265,13 @@ public class ParserElement {
     String paramTypeString = getParameterType(setMethodName + ELEMENT, toType).toString();
     String returnTypeName = getReturnType(getMethodName + ELEMENT, fromType).toString();
 
-    String condition = String.format(NEW_CONDITION_STATEMENT_TEMPLATE, getMethodName.replace("get", ""));
+    String condition = String.format(NEW_CONDITION_STATEMENT_TEMPLATE, getMethodName.replaceFirst("get", ""));
 
     String expString = String.format(NEW_EXPR_STATEMENT_TEMPLATE_SUBFILE,
-      setMethodName.replace("set", ""),
+      setMethodName.replaceFirst("set", ""),
       version,
       returnTypeName.replace("Type", ""),
-      getMethodName.replace("get", ""));
+      getMethodName.replaceFirst("get", ""));
 
     if (n.getParentNode().get() instanceof IfStmt) {
       return expString;
@@ -288,10 +289,17 @@ public class ParserElement {
     }
     String getMethodName = ((MethodCallExpr) ((MethodCallExpr) n.getExpression()).getArgument(0)).getNameAsString();
     if (((MethodCallExpr) n.getExpression()).getArgument(0) instanceof MethodCallExpr) {
-      getMethodName = ((MethodCallExpr) ((MethodCallExpr) ((MethodCallExpr) n.getExpression()).getArgument(0)).getArgument(0)).getNameAsString();
+      try {
+        getMethodName = ((MethodCallExpr) ((MethodCallExpr) ((MethodCallExpr) n.getExpression()).getArgument(0)).getArgument(0)).getNameAsString();
+      } catch (Exception e) {
+        getMethodName = ((MethodCallExpr) ((MethodCallExpr) n.getExpression()).getArgument(0)).getNameAsString();
+      }
     }
-    if (methodWithNameExists("has" + getMethodName.replace("get", ""), fromType)) {
-      String condition = String.format(OLD_CONDITION_STATEMENT_TEMPLATE, getMethodName.replace("get", ""));
+
+    getMethodName = getMethodName.replace("FirstRep", "");
+
+    if (methodWithNameExists("has" + getMethodName.replaceFirst("get", ""), fromType)) {
+      String condition = String.format(OLD_CONDITION_STATEMENT_TEMPLATE, getMethodName.replaceFirst("get", ""));
 
       IfStmt ifStmt = new IfStmt();
       ifStmt.setCondition(StaticJavaParser.parseExpression(condition));

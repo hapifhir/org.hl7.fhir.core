@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,33 +58,23 @@ public class BiologicallyDerivedProduct40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.BiologicallyDerivedProduct tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasProductCategory())
             tgt.setProductCategory(convertBiologicallyDerivedProductCategory(src.getProductCategory()));
         if (src.hasProductCode())
             tgt.setProductCode(convertCodeableConcept(src.getProductCode()));
         if (src.hasStatus())
             tgt.setStatus(convertBiologicallyDerivedProductStatus(src.getStatus()));
-        if (src.hasRequest()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(convertReference(t));
         if (src.hasQuantity())
             tgt.setQuantityElement(convertInteger(src.getQuantityElement()));
-        if (src.hasParent()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(convertReference(t));
         if (src.hasCollection())
             tgt.setCollection(convertBiologicallyDerivedProductCollectionComponent(src.getCollection()));
-        if (src.hasProcessing()) {
-            for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
         if (src.hasManipulation())
             tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
-        if (src.hasStorage()) {
-            for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage()) tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage()) tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
         return tgt;
     }
 
@@ -93,33 +83,23 @@ public class BiologicallyDerivedProduct40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.BiologicallyDerivedProduct tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasProductCategory())
             tgt.setProductCategory(convertBiologicallyDerivedProductCategory(src.getProductCategory()));
         if (src.hasProductCode())
             tgt.setProductCode(convertCodeableConcept(src.getProductCode()));
         if (src.hasStatus())
             tgt.setStatus(convertBiologicallyDerivedProductStatus(src.getStatus()));
-        if (src.hasRequest()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(convertReference(t));
         if (src.hasQuantity())
             tgt.setQuantityElement(convertInteger(src.getQuantityElement()));
-        if (src.hasParent()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getParent()) tgt.addParent(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getParent()) tgt.addParent(convertReference(t));
         if (src.hasCollection())
             tgt.setCollection(convertBiologicallyDerivedProductCollectionComponent(src.getCollection()));
-        if (src.hasProcessing()) {
-            for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
         if (src.hasManipulation())
             tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
-        if (src.hasStorage()) {
-            for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage()) tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage()) tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
         return tgt;
     }
 

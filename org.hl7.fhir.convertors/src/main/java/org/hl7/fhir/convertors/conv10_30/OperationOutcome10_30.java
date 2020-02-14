@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class OperationOutcome10_30 {
 
@@ -179,9 +178,7 @@ public class OperationOutcome10_30 {
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome tgt = new org.hl7.fhir.dstu3.model.OperationOutcome();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -190,9 +187,7 @@ public class OperationOutcome10_30 {
             return null;
         org.hl7.fhir.dstu2.model.OperationOutcome tgt = new org.hl7.fhir.dstu2.model.OperationOutcome();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -201,20 +196,15 @@ public class OperationOutcome10_30 {
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSeverity()) {
+        if (src.hasSeverity())
             tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        }
-        if (src.hasCode()) {
+        if (src.hasCode())
             tgt.setCode(convertIssueType(src.getCode()));
-        }
-        if (src.hasDetails()) {
+        if (src.hasDetails())
             tgt.setDetails(VersionConvertor_10_30.convertCodeableConcept(src.getDetails()));
-        }
         if (src.hasDiagnosticsElement())
-            tgt.setDiagnosticsElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu2.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        }
+            tgt.setDiagnosticsElement(VersionConvertor_10_30.convertString(src.getDiagnosticsElement()));
+        for (org.hl7.fhir.dstu2.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
         return tgt;
     }
 
@@ -223,20 +213,15 @@ public class OperationOutcome10_30 {
             return null;
         org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSeverity()) {
+        if (src.hasSeverity())
             tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
-        }
-        if (src.hasCode()) {
+        if (src.hasCode())
             tgt.setCode(convertIssueType(src.getCode()));
-        }
-        if (src.hasDetails()) {
+        if (src.hasDetails())
             tgt.setDetails(VersionConvertor_10_30.convertCodeableConcept(src.getDetails()));
-        }
         if (src.hasDiagnosticsElement())
-            tgt.setDiagnosticsElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        }
+            tgt.setDiagnosticsElement(VersionConvertor_10_30.convertString(src.getDiagnosticsElement()));
+        for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
         return tgt;
     }
 }

@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -74,17 +74,11 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
@@ -97,9 +91,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setImplementation(convertTerminologyCapabilitiesImplementationComponent(src.getImplementation()));
         if (src.hasLockedDate())
             tgt.setLockedDateElement(convertBoolean(src.getLockedDateElement()));
-        if (src.hasCodeSystem()) {
-            for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent t : src.getCodeSystem()) tgt.addCodeSystem(convertTerminologyCapabilitiesCodeSystemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent t : src.getCodeSystem()) tgt.addCodeSystem(convertTerminologyCapabilitiesCodeSystemComponent(t));
         if (src.hasExpansion())
             tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
         if (src.hasCodeSearch())
@@ -134,17 +126,11 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
@@ -157,9 +143,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setImplementation(convertTerminologyCapabilitiesImplementationComponent(src.getImplementation()));
         if (src.hasLockedDate())
             tgt.setLockedDateElement(convertBoolean(src.getLockedDateElement()));
-        if (src.hasCodeSystem()) {
-            for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent t : src.getCodeSystem()) tgt.addCodeSystem(convertTerminologyCapabilitiesCodeSystemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent t : src.getCodeSystem()) tgt.addCodeSystem(convertTerminologyCapabilitiesCodeSystemComponent(t));
         if (src.hasExpansion())
             tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
         if (src.hasCodeSearch())
@@ -284,9 +268,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasUri())
             tgt.setUriElement(convertCanonical(src.getUriElement()));
-        if (src.hasVersion()) {
-            for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion()) tgt.addVersion(convertTerminologyCapabilitiesCodeSystemVersionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion()) tgt.addVersion(convertTerminologyCapabilitiesCodeSystemVersionComponent(t));
         if (src.hasSubsumption())
             tgt.setSubsumptionElement(convertBoolean(src.getSubsumptionElement()));
         return tgt;
@@ -299,9 +281,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasUri())
             tgt.setUriElement(convertCanonical(src.getUriElement()));
-        if (src.hasVersion()) {
-            for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion()) tgt.addVersion(convertTerminologyCapabilitiesCodeSystemVersionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion()) tgt.addVersion(convertTerminologyCapabilitiesCodeSystemVersionComponent(t));
         if (src.hasSubsumption())
             tgt.setSubsumptionElement(convertBoolean(src.getSubsumptionElement()));
         return tgt;
@@ -318,15 +298,9 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setIsDefaultElement(convertBoolean(src.getIsDefaultElement()));
         if (src.hasCompositional())
             tgt.setCompositionalElement(convertBoolean(src.getCompositionalElement()));
-        if (src.hasLanguage()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(convertCode(t));
-        }
-        if (src.hasFilter()) {
-            for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter()) tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
-        }
-        if (src.hasProperty()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getProperty()) tgt.getProperty().add(convertCode(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(convertCode(t));
+        for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter()) tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getProperty()) tgt.getProperty().add(convertCode(t));
         return tgt;
     }
 
@@ -341,15 +315,9 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setIsDefaultElement(convertBoolean(src.getIsDefaultElement()));
         if (src.hasCompositional())
             tgt.setCompositionalElement(convertBoolean(src.getCompositionalElement()));
-        if (src.hasLanguage()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(convertCode(t));
-        }
-        if (src.hasFilter()) {
-            for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter()) tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
-        }
-        if (src.hasProperty()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getProperty()) tgt.getProperty().add(convertCode(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(convertCode(t));
+        for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter()) tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
+        for (org.hl7.fhir.r5.model.CodeType t : src.getProperty()) tgt.getProperty().add(convertCode(t));
         return tgt;
     }
 
@@ -360,9 +328,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertCode(src.getCodeElement()));
-        if (src.hasOp()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getOp()) tgt.getOp().add(convertCode(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getOp()) tgt.getOp().add(convertCode(t));
         return tgt;
     }
 
@@ -373,9 +339,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertCode(src.getCodeElement()));
-        if (src.hasOp()) {
-            for (org.hl7.fhir.r5.model.CodeType t : src.getOp()) tgt.getOp().add(convertCode(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeType t : src.getOp()) tgt.getOp().add(convertCode(t));
         return tgt;
     }
 
@@ -390,9 +354,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setPagingElement(convertBoolean(src.getPagingElement()));
         if (src.hasIncomplete())
             tgt.setIncompleteElement(convertBoolean(src.getIncompleteElement()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent t : src.getParameter()) tgt.addParameter(convertTerminologyCapabilitiesExpansionParameterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent t : src.getParameter()) tgt.addParameter(convertTerminologyCapabilitiesExpansionParameterComponent(t));
         if (src.hasTextFilter())
             tgt.setTextFilterElement(convertMarkdown(src.getTextFilterElement()));
         return tgt;
@@ -409,9 +371,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
             tgt.setPagingElement(convertBoolean(src.getPagingElement()));
         if (src.hasIncomplete())
             tgt.setIncompleteElement(convertBoolean(src.getIncompleteElement()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent t : src.getParameter()) tgt.addParameter(convertTerminologyCapabilitiesExpansionParameterComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent t : src.getParameter()) tgt.addParameter(convertTerminologyCapabilitiesExpansionParameterComponent(t));
         if (src.hasTextFilter())
             tgt.setTextFilterElement(convertMarkdown(src.getTextFilterElement()));
         return tgt;
