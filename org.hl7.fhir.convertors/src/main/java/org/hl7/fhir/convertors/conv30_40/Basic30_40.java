@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Basic30_40 {
 
@@ -11,9 +10,7 @@ public class Basic30_40 {
             return null;
         org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -30,9 +27,7 @@ public class Basic30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Basic tgt = new org.hl7.fhir.dstu3.model.Basic();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())

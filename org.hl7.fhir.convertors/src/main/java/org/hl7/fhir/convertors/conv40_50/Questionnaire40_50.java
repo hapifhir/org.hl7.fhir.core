@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -61,40 +61,28 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasDerivedFrom()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getDerivedFrom()) tgt.getDerivedFrom().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getDerivedFrom()) tgt.getDerivedFrom().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
-        if (src.hasSubjectType()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
@@ -105,12 +93,8 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
+        for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -121,40 +105,28 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasDerivedFrom()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getDerivedFrom()) tgt.getDerivedFrom().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getDerivedFrom()) tgt.getDerivedFrom().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
-        if (src.hasSubjectType()) {
-            for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
-        }
+        for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
@@ -165,12 +137,8 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setLastReviewDateElement(convertDate(src.getLastReviewDateElement()));
         if (src.hasEffectivePeriod())
             tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
+        for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -183,18 +151,14 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setLinkIdElement(convertString(src.getLinkIdElement()));
         if (src.hasDefinition())
             tgt.setDefinitionElement(convertUri(src.getDefinitionElement()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
-        }
+        for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
         if (src.hasPrefix())
             tgt.setPrefixElement(convertString(src.getPrefixElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         if (src.hasType())
             tgt.setType(convertQuestionnaireItemType(src.getType()));
-        if (src.hasEnableWhen()) {
-            for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasEnableBehavior())
             tgt.setEnableBehavior(convertEnableWhenBehavior(src.getEnableBehavior()));
         if (src.hasRequired())
@@ -207,15 +171,9 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setMaxLengthElement(convertInteger(src.getMaxLengthElement()));
         if (src.hasAnswerValueSet())
             tgt.setAnswerValueSetElement(convertCanonical(src.getAnswerValueSetElement()));
-        if (src.hasAnswerOption()) {
-            for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption()) tgt.addAnswerOption(convertQuestionnaireItemAnswerOptionComponent(t));
-        }
-        if (src.hasInitial()) {
-            for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemInitialComponent t : src.getInitial()) tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption()) tgt.addAnswerOption(convertQuestionnaireItemAnswerOptionComponent(t));
+        for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemInitialComponent t : src.getInitial()) tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
+        for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 
@@ -228,18 +186,14 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setLinkIdElement(convertString(src.getLinkIdElement()));
         if (src.hasDefinition())
             tgt.setDefinitionElement(convertUri(src.getDefinitionElement()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
-        }
+        for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
         if (src.hasPrefix())
             tgt.setPrefixElement(convertString(src.getPrefixElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         if (src.hasType())
             tgt.setType(convertQuestionnaireItemType(src.getType()));
-        if (src.hasEnableWhen()) {
-            for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasEnableBehavior())
             tgt.setEnableBehavior(convertEnableWhenBehavior(src.getEnableBehavior()));
         if (src.hasRequired())
@@ -252,15 +206,9 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setMaxLengthElement(convertInteger(src.getMaxLengthElement()));
         if (src.hasAnswerValueSet())
             tgt.setAnswerValueSetElement(convertCanonical(src.getAnswerValueSetElement()));
-        if (src.hasAnswerOption()) {
-            for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption()) tgt.addAnswerOption(convertQuestionnaireItemAnswerOptionComponent(t));
-        }
-        if (src.hasInitial()) {
-            for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemInitialComponent t : src.getInitial()) tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
-        }
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption()) tgt.addAnswerOption(convertQuestionnaireItemAnswerOptionComponent(t));
+        for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemInitialComponent t : src.getInitial()) tgt.addInitial(convertQuestionnaireItemInitialComponent(t));
+        for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireItemComponent(t));
         return tgt;
     }
 

@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Linkage30_40 {
 
@@ -11,13 +10,11 @@ public class Linkage30_40 {
             return null;
         org.hl7.fhir.r4.model.Linkage tgt = new org.hl7.fhir.r4.model.Linkage();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_40.convertBoolean(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
         return tgt;
     }
 
@@ -26,13 +23,11 @@ public class Linkage30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Linkage tgt = new org.hl7.fhir.dstu3.model.Linkage();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_40.convertBoolean(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(VersionConvertor_30_40.convertReference(src.getAuthor()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
         return tgt;
     }
 

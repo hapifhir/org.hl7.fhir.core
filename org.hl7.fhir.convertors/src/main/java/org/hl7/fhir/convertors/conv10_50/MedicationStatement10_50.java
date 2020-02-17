@@ -3,9 +3,6 @@ package org.hl7.fhir.convertors.conv10_50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
-import org.hl7.fhir.r5.model.StringType;
-
-import java.util.Collections;
 
 public class MedicationStatement10_50 {
 
@@ -14,35 +11,22 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement tgt = new org.hl7.fhir.dstu2.model.MedicationStatement();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-        }
-        if (src.hasMedication()) {
+        if (src.hasMedication())
             tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
-        }
-        if (src.hasSubject()) {
+        if (src.hasSubject())
             tgt.setPatient(VersionConvertor_10_50.convertReference(src.getSubject()));
-        }
-        if (src.hasEffective()) {
+        if (src.hasEffective())
             tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
-        }
-        if (src.hasInformationSource()) {
+        if (src.hasInformationSource())
             tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
-        }
-        if (src.hasDerivedFrom()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_50.convertReference(t));
-        }
-        if (src.hasDateAssertedElement())
-            tgt.setDateAssertedElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateAssertedElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
-        }
-        if (src.hasDosage()) {
-            for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addSupportingInformation(VersionConvertor_10_50.convertReference(t));
+        if (src.hasDateAsserted())
+            tgt.setDateAssertedElement(VersionConvertor_10_50.convertDateTime(src.getDateAssertedElement()));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.setNote(t.getText());
+        for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
         return tgt;
     }
 
@@ -51,34 +35,23 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.r5.model.MedicationUsage tgt = new org.hl7.fhir.r5.model.MedicationUsage();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
-        }
-        if (src.hasMedication()) {
+        if (src.hasMedication())
             tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
-        }
-        if (src.hasPatient()) {
+        if (src.hasPatient())
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getPatient()));
-        }
-        if (src.hasEffective()) {
+        if (src.hasEffective())
             tgt.setEffective(VersionConvertor_10_50.convertType(src.getEffective()));
-        }
-        if (src.hasInformationSource()) {
+        if (src.hasInformationSource())
             tgt.setInformationSource(VersionConvertor_10_50.convertReference(src.getInformationSource()));
-        }
-        if (src.hasSupportingInformation()) {
-            for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_50.convertReference(t));
-        }
-        if (src.hasDateAssertedElement())
-          tgt.setDateAssertedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_10_50.convertType(src.getDateAssertedElement()));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addDerivedFrom(VersionConvertor_10_50.convertReference(t));
+        if (src.hasDateAsserted())
+            tgt.setDateAssertedElement(VersionConvertor_10_50.convertDateTime(src.getDateAssertedElement()));
         if (src.hasNote())
             tgt.addNote().setText(src.getNote());
-        if (src.hasDosage()) {
-            for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
-        }
+        for (org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent t : src.getDosage()) tgt.addDosage(convertMedicationStatementDosageComponent(t));
         return tgt;
     }
 
@@ -87,31 +60,25 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.r5.model.Dosage tgt = new org.hl7.fhir.r5.model.Dosage();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasTextElement()) {
-            tgt.setTextElement((StringType) VersionConvertor_10_50.convertType(src.getTextElement()));
-        }
-        if (src.hasTiming()) {
+        if (src.hasTextElement())
+            tgt.setTextElement(VersionConvertor_10_50.convertString(src.getTextElement()));
+        if (src.hasTiming())
             tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
-        }
-        if (src.hasAsNeeded()) {
+        if (src.hasAsNeeded())
             tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
-        }
         if (src.hasSiteCodeableConcept())
             tgt.setSite(VersionConvertor_10_50.convertCodeableConcept(src.getSiteCodeableConcept()));
-        if (src.hasRoute()) {
+        if (src.hasRoute())
             tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
-        }
-        if (src.hasMethod()) {
+        if (src.hasMethod())
             tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
-        }
         if (src.hasRate()) {
             DosageDoseAndRateComponent dr = tgt.addDoseAndRate();
             if (src.hasRate())
                 dr.setRate(VersionConvertor_10_50.convertType(src.getRate()));
         }
-        if (src.hasMaxDosePerPeriod()) {
+        if (src.hasMaxDosePerPeriod())
             tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
-        }
         return tgt;
     }
 
@@ -120,29 +87,22 @@ public class MedicationStatement10_50 {
             return null;
         org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent tgt = new org.hl7.fhir.dstu2.model.MedicationStatement.MedicationStatementDosageComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
-        if (src.hasTextElement()) {
-            tgt.setTextElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_50.convertType(src.getTextElement()));
-        }
-        if (src.hasTiming()) {
+        if (src.hasTextElement())
+            tgt.setTextElement(VersionConvertor_10_50.convertString(src.getTextElement()));
+        if (src.hasTiming())
             tgt.setTiming(VersionConvertor_10_50.convertTiming(src.getTiming()));
-        }
-        if (src.hasAsNeeded()) {
+        if (src.hasAsNeeded())
             tgt.setAsNeeded(VersionConvertor_10_50.convertType(src.getAsNeeded()));
-        }
-        if (src.hasSite()) {
+        if (src.hasSite())
             tgt.setSite(VersionConvertor_10_50.convertType(src.getSite()));
-        }
-        if (src.hasRoute()) {
+        if (src.hasRoute())
             tgt.setRoute(VersionConvertor_10_50.convertCodeableConcept(src.getRoute()));
-        }
-        if (src.hasMethod()) {
+        if (src.hasMethod())
             tgt.setMethod(VersionConvertor_10_50.convertCodeableConcept(src.getMethod()));
-        }
         if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasRate())
             tgt.setRate(VersionConvertor_10_50.convertType(src.getDoseAndRate().get(0).getRate()));
-        if (src.hasMaxDosePerPeriod()) {
+        if (src.hasMaxDosePerPeriod())
             tgt.setMaxDosePerPeriod(VersionConvertor_10_50.convertRatio(src.getMaxDosePerPeriod()));
-        }
         return tgt;
     }
 

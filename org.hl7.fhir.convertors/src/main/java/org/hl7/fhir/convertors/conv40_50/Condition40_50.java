@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,23 +58,17 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Condition tgt = new org.hl7.fhir.r5.model.Condition();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertCodeableConcept(src.getClinicalStatus()));
         if (src.hasVerificationStatus())
             tgt.setVerificationStatus(convertCodeableConcept(src.getVerificationStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasSeverity())
             tgt.setSeverity(convertCodeableConcept(src.getSeverity()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasBodySite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -89,15 +83,9 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             tgt.setRecorder(convertReference(src.getRecorder()));
         if (src.hasAsserter())
             tgt.setAsserter(convertReference(src.getAsserter()));
-        if (src.hasStage()) {
-            for (org.hl7.fhir.r4.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
-        }
-        if (src.hasEvidence()) {
-            for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
+        for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -106,23 +94,17 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Condition tgt = new org.hl7.fhir.r4.model.Condition();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertCodeableConcept(src.getClinicalStatus()));
         if (src.hasVerificationStatus())
             tgt.setVerificationStatus(convertCodeableConcept(src.getVerificationStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasSeverity())
             tgt.setSeverity(convertCodeableConcept(src.getSeverity()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasBodySite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -137,15 +119,9 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             tgt.setRecorder(convertReference(src.getRecorder()));
         if (src.hasAsserter())
             tgt.setAsserter(convertReference(src.getAsserter()));
-        if (src.hasStage()) {
-            for (org.hl7.fhir.r5.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
-        }
-        if (src.hasEvidence()) {
-            for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
+        for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -156,9 +132,7 @@ public class Condition40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSummary())
             tgt.setSummary(convertCodeableConcept(src.getSummary()));
-        if (src.hasAssessment()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(convertReference(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         return tgt;
@@ -171,9 +145,7 @@ public class Condition40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSummary())
             tgt.setSummary(convertCodeableConcept(src.getSummary()));
-        if (src.hasAssessment()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(convertReference(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         return tgt;
@@ -184,12 +156,8 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 
@@ -198,12 +166,8 @@ public class Condition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasDetail()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(convertReference(t));
         return tgt;
     }
 }

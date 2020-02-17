@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class DeviceComponent10_30 {
 
@@ -11,35 +10,24 @@ public class DeviceComponent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.DeviceComponent tgt = new org.hl7.fhir.dstu2.model.DeviceComponent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
-        if (src.hasIdentifier()) {
+        if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        }
         if (src.hasLastSystemChangeElement())
-            tgt.setLastSystemChangeElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_30.convertType(src.getLastSystemChangeElement()));
-        if (src.hasSource()) {
+            tgt.setLastSystemChangeElement(VersionConvertor_10_30.convertInstant(src.getLastSystemChangeElement()));
+        if (src.hasSource())
             tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
-        }
-        if (src.hasParent()) {
+        if (src.hasParent())
             tgt.setParent(VersionConvertor_10_30.convertReference(src.getParent()));
-        }
-        if (src.hasOperationalStatus()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasParameterGroup()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasParameterGroup())
             tgt.setParameterGroup(VersionConvertor_10_30.convertCodeableConcept(src.getParameterGroup()));
-        }
-        if (src.hasMeasurementPrinciple()) {
+        if (src.hasMeasurementPrinciple())
             tgt.setMeasurementPrinciple(convertMeasmntPrinciple(src.getMeasurementPrinciple()));
-        }
-        if (src.hasProductionSpecification()) {
-            for (org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
-        }
-        if (src.hasLanguageCode()) {
+        for (org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
+        if (src.hasLanguageCode())
             tgt.setLanguageCode(VersionConvertor_10_30.convertCodeableConcept(src.getLanguageCode()));
-        }
         return tgt;
     }
 
@@ -48,35 +36,24 @@ public class DeviceComponent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.DeviceComponent tgt = new org.hl7.fhir.dstu3.model.DeviceComponent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
-        if (src.hasIdentifier()) {
+        if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
-        }
         if (src.hasLastSystemChangeElement())
-            tgt.setLastSystemChangeElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_10_30.convertType(src.getLastSystemChangeElement()));
-        if (src.hasSource()) {
+            tgt.setLastSystemChangeElement(VersionConvertor_10_30.convertInstant(src.getLastSystemChangeElement()));
+        if (src.hasSource())
             tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
-        }
-        if (src.hasParent()) {
+        if (src.hasParent())
             tgt.setParent(VersionConvertor_10_30.convertReference(src.getParent()));
-        }
-        if (src.hasOperationalStatus()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasParameterGroup()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasParameterGroup())
             tgt.setParameterGroup(VersionConvertor_10_30.convertCodeableConcept(src.getParameterGroup()));
-        }
-        if (src.hasMeasurementPrinciple()) {
+        if (src.hasMeasurementPrinciple())
             tgt.setMeasurementPrinciple(convertMeasmntPrinciple(src.getMeasurementPrinciple()));
-        }
-        if (src.hasProductionSpecification()) {
-            for (org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
-        }
-        if (src.hasLanguageCode()) {
+        for (org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
+        if (src.hasLanguageCode())
             tgt.setLanguageCode(VersionConvertor_10_30.convertCodeableConcept(src.getLanguageCode()));
-        }
         return tgt;
     }
 
@@ -85,14 +62,12 @@ public class DeviceComponent10_30 {
             return null;
         org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent tgt = new org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSpecType()) {
+        if (src.hasSpecType())
             tgt.setSpecType(VersionConvertor_10_30.convertCodeableConcept(src.getSpecType()));
-        }
-        if (src.hasComponentId()) {
+        if (src.hasComponentId())
             tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
-        }
         if (src.hasProductionSpecElement())
-            tgt.setProductionSpecElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getProductionSpecElement()));
+            tgt.setProductionSpecElement(VersionConvertor_10_30.convertString(src.getProductionSpecElement()));
         return tgt;
     }
 
@@ -101,14 +76,12 @@ public class DeviceComponent10_30 {
             return null;
         org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent tgt = new org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasSpecType()) {
+        if (src.hasSpecType())
             tgt.setSpecType(VersionConvertor_10_30.convertCodeableConcept(src.getSpecType()));
-        }
-        if (src.hasComponentId()) {
+        if (src.hasComponentId())
             tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
-        }
         if (src.hasProductionSpecElement())
-            tgt.setProductionSpecElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getProductionSpecElement()));
+            tgt.setProductionSpecElement(VersionConvertor_10_30.convertString(src.getProductionSpecElement()));
         return tgt;
     }
 

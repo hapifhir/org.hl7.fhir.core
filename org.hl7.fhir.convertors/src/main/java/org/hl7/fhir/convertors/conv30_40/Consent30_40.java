@@ -3,8 +3,8 @@ package org.hl7.fhir.convertors.conv30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Identifier;
 import java.util.List;
-import java.util.Collections;
 
 public class Consent30_40 {
 
@@ -17,56 +17,34 @@ public class Consent30_40 {
             tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(src.getIdentifier()));
         if (src.hasStatus())
             tgt.setStatus(convertConsentState(src.getStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
-        if (src.hasDateTimeElement())
+        if (src.hasDateTime())
             tgt.setDateTimeElement(VersionConvertor_30_40.convertDateTime(src.getDateTimeElement()));
-        if (src.hasConsentingParty()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getConsentingParty()) tgt.addPerformer(VersionConvertor_30_40.convertReference(t));
-        }
-        if (src.hasOrganization()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getOrganization()) tgt.addOrganization(VersionConvertor_30_40.convertReference(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getConsentingParty()) tgt.addPerformer(VersionConvertor_30_40.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getOrganization()) tgt.addOrganization(VersionConvertor_30_40.convertReference(t));
         if (src.hasSource())
             tgt.setSource(VersionConvertor_30_40.convertType(src.getSource()));
-        if (src.hasPolicy()) {
-            for (org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
         if (src.hasPolicyRule()) {
             org.hl7.fhir.r4.model.Coding c = new org.hl7.fhir.r4.model.Coding();
             c.setSystem(VersionConvertor_30_40.URN_IETF_RFC_3986);
-            if (src.hasPolicyRule()) {
-                c.setCode(src.getPolicyRule());
-            }
+            c.setCode(src.getPolicyRule());
             tgt.setPolicyRule(new CodeableConcept(c));
         }
         if (src.hasSecurityLabel() || src.hasPeriod() || src.hasActor() || src.hasAction() || src.hasPurpose() || src.hasDataPeriod() || src.hasData() || src.hasExcept()) {
             org.hl7.fhir.r4.model.Consent.provisionComponent pc = new org.hl7.fhir.r4.model.Consent.provisionComponent();
             if (src.hasPeriod())
                 pc.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
-            if (src.hasActor()) {
-                for (org.hl7.fhir.dstu3.model.Consent.ConsentActorComponent t : src.getActor()) pc.addActor(convertConsentActorComponent(t));
-            }
-            if (src.hasAction()) {
-                for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAction()) pc.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
-            }
-            if (src.hasSecurityLabel()) {
-                for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) pc.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
-            }
-            if (src.hasPurpose()) {
-                for (org.hl7.fhir.dstu3.model.Coding t : src.getPurpose()) pc.addPurpose(VersionConvertor_30_40.convertCoding(t));
-            }
+            for (org.hl7.fhir.dstu3.model.Consent.ConsentActorComponent t : src.getActor()) pc.addActor(convertConsentActorComponent(t));
+            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAction()) pc.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) pc.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
+            for (org.hl7.fhir.dstu3.model.Coding t : src.getPurpose()) pc.addPurpose(VersionConvertor_30_40.convertCoding(t));
             if (src.hasDataPeriod())
                 pc.setDataPeriod(VersionConvertor_30_40.convertPeriod(src.getDataPeriod()));
-            if (src.hasData()) {
-                for (org.hl7.fhir.dstu3.model.Consent.ConsentDataComponent t : src.getData()) pc.addData(convertConsentDataComponent(t));
-            }
-            if (src.hasExcept()) {
-                for (org.hl7.fhir.dstu3.model.Consent.ExceptComponent t : src.getExcept()) pc.addProvision(convertExceptComponent(t));
-            }
+            for (org.hl7.fhir.dstu3.model.Consent.ConsentDataComponent t : src.getData()) pc.addData(convertConsentDataComponent(t));
+            for (org.hl7.fhir.dstu3.model.Consent.ExceptComponent t : src.getExcept()) pc.addProvision(convertExceptComponent(t));
             tgt.setProvision(pc);
         }
         return tgt;
@@ -77,7 +55,7 @@ public class Consent30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Consent tgt = new org.hl7.fhir.dstu3.model.Consent();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        List<org.hl7.fhir.r4.model.Identifier> identifier = src.getIdentifier();
+        List<Identifier> identifier = src.getIdentifier();
         if (identifier.size() > 0) {
             tgt.setIdentifier(VersionConvertor_30_40.convertIdentifier(identifier.get(0)));
             if (identifier.size() > 1) {
@@ -88,7 +66,7 @@ public class Consent30_40 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
-        if (src.hasDateTimeElement())
+        if (src.hasDateTime())
             tgt.setDateTimeElement(VersionConvertor_30_40.convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addConsentingParty(VersionConvertor_30_40.convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(VersionConvertor_30_40.convertReference(t));
@@ -232,10 +210,10 @@ public class Consent30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasAuthorityElement())
-            tgt.setAuthorityElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getAuthorityElement()));
-        if (src.hasUriElement())
-            tgt.setUriElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_30_40.convertType(src.getUriElement()));
+        if (src.hasAuthority())
+            tgt.setAuthorityElement(VersionConvertor_30_40.convertUri(src.getAuthorityElement()));
+        if (src.hasUri())
+            tgt.setUriElement(VersionConvertor_30_40.convertUri(src.getUriElement()));
         return tgt;
     }
 
@@ -244,10 +222,10 @@ public class Consent30_40 {
             return null;
         org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        if (src.hasAuthorityElement())
-            tgt.setAuthorityElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getAuthorityElement()));
-        if (src.hasUriElement())
-            tgt.setUriElement((org.hl7.fhir.r4.model.UriType) VersionConvertor_30_40.convertType(src.getUriElement()));
+        if (src.hasAuthority())
+            tgt.setAuthorityElement(VersionConvertor_30_40.convertUri(src.getAuthorityElement()));
+        if (src.hasUri())
+            tgt.setUriElement(VersionConvertor_30_40.convertUri(src.getUriElement()));
         return tgt;
     }
 
@@ -326,29 +304,15 @@ public class Consent30_40 {
             tgt.setType(convertConsentExceptType(src.getType()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : src.getActor()) tgt.addActor(convertExceptActorComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getPurpose()) tgt.addPurpose(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasCode()) {
-            for (CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCoding(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : src.getActor()) tgt.addActor(convertExceptActorComponent(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getPurpose()) tgt.addPurpose(VersionConvertor_30_40.convertCoding(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(VersionConvertor_30_40.convertCoding(t));
+        for (CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_40.convertCoding(t));
         if (src.hasDataPeriod())
             tgt.setDataPeriod(VersionConvertor_30_40.convertPeriod(src.getDataPeriod()));
-        if (src.hasData()) {
-            for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : src.getData()) tgt.addData(convertExceptDataComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : src.getData()) tgt.addData(convertExceptDataComponent(t));
         return tgt;
     }
 
@@ -361,29 +325,15 @@ public class Consent30_40 {
             tgt.setType(convertConsentExceptType(src.getType()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.dstu3.model.Consent.ExceptActorComponent t : src.getActor()) tgt.addActor(convertExceptActorComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
-        }
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getPurpose()) tgt.addPurpose(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getClass_()) tgt.addClass_(VersionConvertor_30_40.convertCoding(t));
-        }
-        if (src.hasCode()) {
-            for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addCode(new CodeableConcept(VersionConvertor_30_40.convertCoding(t)));
-        }
+        for (org.hl7.fhir.dstu3.model.Consent.ExceptActorComponent t : src.getActor()) tgt.addActor(convertExceptActorComponent(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getAction()) tgt.addAction(VersionConvertor_30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_40.convertCoding(t));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getPurpose()) tgt.addPurpose(VersionConvertor_30_40.convertCoding(t));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getClass_()) tgt.addClass_(VersionConvertor_30_40.convertCoding(t));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addCode(new CodeableConcept(VersionConvertor_30_40.convertCoding(t)));
         if (src.hasDataPeriod())
             tgt.setDataPeriod(VersionConvertor_30_40.convertPeriod(src.getDataPeriod()));
-        if (src.hasData()) {
-            for (org.hl7.fhir.dstu3.model.Consent.ExceptDataComponent t : src.getData()) tgt.addData(convertExceptDataComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Consent.ExceptDataComponent t : src.getData()) tgt.addData(convertExceptDataComponent(t));
         return tgt;
     }
 

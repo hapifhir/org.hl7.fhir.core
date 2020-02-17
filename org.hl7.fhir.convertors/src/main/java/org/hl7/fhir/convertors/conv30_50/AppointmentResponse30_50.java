@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class AppointmentResponse30_50 {
 
@@ -11,24 +10,20 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
-        if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
-        if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.r5.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
-        if (src.hasParticipantType()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
+        if (src.hasStart())
+            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
         if (src.hasActor())
             tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-        if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+        if (src.hasComment())
+            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -37,24 +32,20 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.dstu3.model.AppointmentResponse tgt = new org.hl7.fhir.dstu3.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
-        if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getStartElement()));
-        if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.dstu3.model.InstantType) VersionConvertor_30_50.convertType(src.getEndElement()));
-        if (src.hasParticipantType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
+        if (src.hasStart())
+            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+        if (src.hasEnd())
+            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
         if (src.hasActor())
             tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-        if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getCommentElement()));
+        if (src.hasComment())
+            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 

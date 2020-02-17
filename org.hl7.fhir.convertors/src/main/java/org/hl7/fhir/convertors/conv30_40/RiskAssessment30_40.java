@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class RiskAssessment30_40 {
 
@@ -37,14 +36,10 @@ public class RiskAssessment30_40 {
             tgt.setReason(VersionConvertor_30_40.convertType(src.getReasonCodeFirstRep()));
         if (src.hasReasonReference())
             tgt.setReason(VersionConvertor_30_40.convertType(src.getReasonReferenceFirstRep()));
-        if (src.hasBasis()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_40.convertReference(t));
-        }
-        if (src.hasPrediction()) {
-            for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
-        }
-        if (src.hasMitigationElement())
-            tgt.setMitigationElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getMitigationElement()));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_40.convertReference(t));
+        for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
+        if (src.hasMitigation())
+            tgt.setMitigationElement(VersionConvertor_30_40.convertString(src.getMitigationElement()));
         if (src.hasNote())
             tgt.setComment(src.getNoteFirstRep().getText());
         return tgt;
@@ -86,8 +81,8 @@ public class RiskAssessment30_40 {
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getBasis()) tgt.addBasis(VersionConvertor_30_40.convertReference(t));
         for (org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
-        if (src.hasMitigationElement())
-            tgt.setMitigationElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getMitigationElement()));
+        if (src.hasMitigation())
+            tgt.setMitigationElement(VersionConvertor_30_40.convertString(src.getMitigationElement()));
         if (src.hasComment())
             tgt.addNote().setText(src.getComment());
         return tgt;
@@ -104,12 +99,12 @@ public class RiskAssessment30_40 {
             tgt.setProbability(VersionConvertor_30_40.convertType(src.getProbability()));
         if (src.hasQualitativeRisk())
             tgt.setQualitativeRisk(VersionConvertor_30_40.convertCodeableConcept(src.getQualitativeRisk()));
-        if (src.hasRelativeRiskElement())
-            tgt.setRelativeRiskElement((org.hl7.fhir.r4.model.DecimalType) VersionConvertor_30_40.convertType(src.getRelativeRiskElement()));
+        if (src.hasRelativeRisk())
+            tgt.setRelativeRiskElement(VersionConvertor_30_40.convertDecimal(src.getRelativeRiskElement()));
         if (src.hasWhen())
             tgt.setWhen(VersionConvertor_30_40.convertType(src.getWhen()));
-        if (src.hasRationaleElement())
-            tgt.setRationaleElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getRationaleElement()));
+        if (src.hasRationale())
+            tgt.setRationaleElement(VersionConvertor_30_40.convertString(src.getRationaleElement()));
         return tgt;
     }
 
@@ -124,12 +119,12 @@ public class RiskAssessment30_40 {
             tgt.setProbability(VersionConvertor_30_40.convertType(src.getProbability()));
         if (src.hasQualitativeRisk())
             tgt.setQualitativeRisk(VersionConvertor_30_40.convertCodeableConcept(src.getQualitativeRisk()));
-        if (src.hasRelativeRiskElement())
-            tgt.setRelativeRiskElement((org.hl7.fhir.dstu3.model.DecimalType) VersionConvertor_30_40.convertType(src.getRelativeRiskElement()));
+        if (src.hasRelativeRisk())
+            tgt.setRelativeRiskElement(VersionConvertor_30_40.convertDecimal(src.getRelativeRiskElement()));
         if (src.hasWhen())
             tgt.setWhen(VersionConvertor_30_40.convertType(src.getWhen()));
-        if (src.hasRationaleElement())
-            tgt.setRationaleElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getRationaleElement()));
+        if (src.hasRationale())
+            tgt.setRationaleElement(VersionConvertor_30_40.convertString(src.getRationaleElement()));
         return tgt;
     }
 

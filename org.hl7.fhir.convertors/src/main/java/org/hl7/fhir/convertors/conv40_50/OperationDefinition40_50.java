@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -77,17 +77,11 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasAffectsState())
@@ -98,9 +92,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCommentElement(convertMarkdown(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBaseElement(convertCanonical(src.getBaseElement()));
-        if (src.hasResource()) {
-            for (org.hl7.fhir.r4.model.CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
         if (src.hasSystem())
             tgt.setSystemElement(convertBoolean(src.getSystemElement()));
         if (src.hasType())
@@ -111,12 +103,8 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setInputProfileElement(convertCanonical(src.getInputProfileElement()));
         if (src.hasOutputProfile())
             tgt.setOutputProfileElement(convertCanonical(src.getOutputProfileElement()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter()) tgt.addParameter(convertOperationDefinitionParameterComponent(t));
-        }
-        if (src.hasOverload()) {
-            for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionOverloadComponent t : src.getOverload()) tgt.addOverload(convertOperationDefinitionOverloadComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter()) tgt.addParameter(convertOperationDefinitionParameterComponent(t));
+        for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionOverloadComponent t : src.getOverload()) tgt.addOverload(convertOperationDefinitionOverloadComponent(t));
         return tgt;
     }
 
@@ -143,17 +131,11 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasAffectsState())
@@ -164,9 +146,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCommentElement(convertMarkdown(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBaseElement(convertCanonical(src.getBaseElement()));
-        if (src.hasResource()) {
-            for (CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
-        }
+        for (CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
         if (src.hasSystem())
             tgt.setSystemElement(convertBoolean(src.getSystemElement()));
         if (src.hasType())
@@ -177,12 +157,8 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setInputProfileElement(convertCanonical(src.getInputProfileElement()));
         if (src.hasOutputProfile())
             tgt.setOutputProfileElement(convertCanonical(src.getOutputProfileElement()));
-        if (src.hasParameter()) {
-            for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter()) tgt.addParameter(convertOperationDefinitionParameterComponent(t));
-        }
-        if (src.hasOverload()) {
-            for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionOverloadComponent t : src.getOverload()) tgt.addOverload(convertOperationDefinitionOverloadComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getParameter()) tgt.addParameter(convertOperationDefinitionParameterComponent(t));
+        for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionOverloadComponent t : src.getOverload()) tgt.addOverload(convertOperationDefinitionOverloadComponent(t));
         return tgt;
     }
 
@@ -229,19 +205,13 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
         if (src.hasType())
             tgt.getTypeElement().setValue(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
-        if (src.hasTargetProfile()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile()) tgt.getTargetProfile().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile()) tgt.getTargetProfile().add(convertCanonical(t));
         if (src.hasSearchType())
             tgt.setSearchType(Enumerations40_50.convertSearchParamType(src.getSearchType()));
         if (src.hasBinding())
             tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
-        if (src.hasReferencedFrom()) {
-            for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterReferencedFromComponent t : src.getReferencedFrom()) tgt.addReferencedFrom(convertOperationDefinitionParameterReferencedFromComponent(t));
-        }
-        if (src.hasPart()) {
-            for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart()) tgt.addPart(convertOperationDefinitionParameterComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterReferencedFromComponent t : src.getReferencedFrom()) tgt.addReferencedFrom(convertOperationDefinitionParameterReferencedFromComponent(t));
+        for (org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart()) tgt.addPart(convertOperationDefinitionParameterComponent(t));
         return tgt;
     }
 
@@ -262,19 +232,13 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
         if (src.hasType())
             tgt.setTypeElement(new org.hl7.fhir.r4.model.CodeType(src.getType().toCode()));
-        if (src.hasTargetProfile()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile()) tgt.getTargetProfile().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile()) tgt.getTargetProfile().add(convertCanonical(t));
         if (src.hasSearchType())
             tgt.setSearchType(Enumerations40_50.convertSearchParamType(src.getSearchType()));
         if (src.hasBinding())
             tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
-        if (src.hasReferencedFrom()) {
-            for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterReferencedFromComponent t : src.getReferencedFrom()) tgt.addReferencedFrom(convertOperationDefinitionParameterReferencedFromComponent(t));
-        }
-        if (src.hasPart()) {
-            for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart()) tgt.addPart(convertOperationDefinitionParameterComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterReferencedFromComponent t : src.getReferencedFrom()) tgt.addReferencedFrom(convertOperationDefinitionParameterReferencedFromComponent(t));
+        for (org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart()) tgt.addPart(convertOperationDefinitionParameterComponent(t));
         return tgt;
     }
 
@@ -357,9 +321,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionOverloadComponent tgt = new org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionOverloadComponent();
         copyElement(src, tgt);
-        if (src.hasParameterName()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getParameterName()) tgt.getParameterName().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getParameterName()) tgt.getParameterName().add(convertString(t));
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
         return tgt;
@@ -370,9 +332,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionOverloadComponent tgt = new org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionOverloadComponent();
         copyElement(src, tgt);
-        if (src.hasParameterName()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getParameterName()) tgt.getParameterName().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getParameterName()) tgt.getParameterName().add(convertString(t));
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
         return tgt;

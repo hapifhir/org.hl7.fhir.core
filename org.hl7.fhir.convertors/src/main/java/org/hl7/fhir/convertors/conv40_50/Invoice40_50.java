@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Invoice tgt = new org.hl7.fhir.r5.model.Invoice();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertInvoiceStatus(src.getStatus()));
         if (src.hasCancelledReason())
@@ -73,28 +71,20 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             tgt.setRecipient(convertReference(src.getRecipient()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertInvoiceParticipantComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertInvoiceParticipantComponent(t));
         if (src.hasIssuer())
             tgt.setIssuer(convertReference(src.getIssuer()));
         if (src.hasAccount())
             tgt.setAccount(convertReference(src.getAccount()));
-        if (src.hasLineItem()) {
-            for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemComponent t : src.getLineItem()) tgt.addLineItem(convertInvoiceLineItemComponent(t));
-        }
-        if (src.hasTotalPriceComponent()) {
-            for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getTotalPriceComponent()) tgt.addTotalPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemComponent t : src.getLineItem()) tgt.addLineItem(convertInvoiceLineItemComponent(t));
+        for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getTotalPriceComponent()) tgt.addTotalPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
         if (src.hasTotalNet())
             tgt.setTotalNet(convertMoney(src.getTotalNet()));
         if (src.hasTotalGross())
             tgt.setTotalGross(convertMoney(src.getTotalGross()));
         if (src.hasPaymentTerms())
             tgt.setPaymentTermsElement(convertMarkdown(src.getPaymentTermsElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -103,9 +93,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Invoice tgt = new org.hl7.fhir.r4.model.Invoice();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertInvoiceStatus(src.getStatus()));
         if (src.hasCancelledReason())
@@ -118,28 +106,20 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             tgt.setRecipient(convertReference(src.getRecipient()));
         if (src.hasDate())
             tgt.setDateElement(convertDateTime(src.getDateElement()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertInvoiceParticipantComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertInvoiceParticipantComponent(t));
         if (src.hasIssuer())
             tgt.setIssuer(convertReference(src.getIssuer()));
         if (src.hasAccount())
             tgt.setAccount(convertReference(src.getAccount()));
-        if (src.hasLineItem()) {
-            for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemComponent t : src.getLineItem()) tgt.addLineItem(convertInvoiceLineItemComponent(t));
-        }
-        if (src.hasTotalPriceComponent()) {
-            for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getTotalPriceComponent()) tgt.addTotalPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemComponent t : src.getLineItem()) tgt.addLineItem(convertInvoiceLineItemComponent(t));
+        for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getTotalPriceComponent()) tgt.addTotalPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
         if (src.hasTotalNet())
             tgt.setTotalNet(convertMoney(src.getTotalNet()));
         if (src.hasTotalGross())
             tgt.setTotalGross(convertMoney(src.getTotalGross()));
         if (src.hasPaymentTerms())
             tgt.setPaymentTermsElement(convertMarkdown(src.getPaymentTermsElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
 
@@ -214,9 +194,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasChargeItem())
             tgt.setChargeItem(convertType(src.getChargeItem()));
-        if (src.hasPriceComponent()) {
-            for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
         return tgt;
     }
 
@@ -229,9 +207,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
             tgt.setSequenceElement(convertPositiveInt(src.getSequenceElement()));
         if (src.hasChargeItem())
             tgt.setChargeItem(convertType(src.getChargeItem()));
-        if (src.hasPriceComponent()) {
-            for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
         return tgt;
     }
 

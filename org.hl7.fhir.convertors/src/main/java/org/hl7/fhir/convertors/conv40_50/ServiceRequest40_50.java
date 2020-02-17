@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,39 +59,25 @@ public class ServiceRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ServiceRequest tgt = new org.hl7.fhir.r5.model.ServiceRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         if (src.hasRequisition())
             tgt.setRequisition(convertIdentifier(src.getRequisition()));
         if (src.hasStatus())
             tgt.setStatus(convertServiceRequestStatus(src.getStatus()));
         if (src.hasIntent())
             tgt.setIntent(convertServiceRequestIntent(src.getIntent()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(convertServiceRequestPriority(src.getPriority()));
         if (src.hasDoNotPerform())
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasOrderDetail()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail()) tgt.addOrderDetail(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail()) tgt.addOrderDetail(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertType(src.getQuantity()));
         if (src.hasSubject())
@@ -108,41 +94,19 @@ public class ServiceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setRequester(convertReference(src.getRequester()));
         if (src.hasPerformerType())
             tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
-        if (src.hasLocationCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationCode()) tgt.addLocation(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasLocationReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getLocationReference()) tgt.addLocation(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
-        if (src.hasBodySite()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationCode()) tgt.addLocation(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getLocationReference()) tgt.addLocation(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         if (src.hasPatientInstruction())
             tgt.setPatientInstructionElement(convertString(src.getPatientInstructionElement()));
-        if (src.hasRelevantHistory()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
         return tgt;
     }
 
@@ -151,39 +115,25 @@ public class ServiceRequest40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ServiceRequest tgt = new org.hl7.fhir.r4.model.ServiceRequest();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         if (src.hasRequisition())
             tgt.setRequisition(convertIdentifier(src.getRequisition()));
         if (src.hasStatus())
             tgt.setStatus(convertServiceRequestStatus(src.getStatus()));
         if (src.hasIntent())
             tgt.setIntent(convertServiceRequestIntent(src.getIntent()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(convertServiceRequestPriority(src.getPriority()));
         if (src.hasDoNotPerform())
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasOrderDetail()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOrderDetail()) tgt.addOrderDetail(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOrderDetail()) tgt.addOrderDetail(convertCodeableConcept(t));
         if (src.hasQuantity())
             tgt.setQuantity(convertType(src.getQuantity()));
         if (src.hasSubject())
@@ -200,9 +150,7 @@ public class ServiceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setRequester(convertReference(src.getRequester()));
         if (src.hasPerformerType())
             tgt.setPerformerType(convertCodeableConcept(src.getPerformerType()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         for (CodeableReference t : src.getLocation()) if (t.hasConcept())
             tgt.addLocationCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getLocation()) if (t.hasReference())
@@ -211,26 +159,14 @@ public class ServiceRequest40_50 extends VersionConvertor_40_50 {
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasInsurance()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
-        }
-        if (src.hasSupportingInfo()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
-        }
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
-        if (src.hasBodySite()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getInsurance()) tgt.addInsurance(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         if (src.hasPatientInstruction())
             tgt.setPatientInstructionElement(convertString(src.getPatientInstructionElement()));
-        if (src.hasRelevantHistory()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory()) tgt.addRelevantHistory(convertReference(t));
         return tgt;
     }
 

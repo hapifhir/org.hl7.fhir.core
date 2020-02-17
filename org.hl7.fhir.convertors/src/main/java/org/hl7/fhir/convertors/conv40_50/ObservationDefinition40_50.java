@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,17 +58,11 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ObservationDefinition tgt = new org.hl7.fhir.r5.model.ObservationDefinition();
         copyDomainResource(src, tgt);
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.setIdentifier(convertIdentifier(t));
-        }
-        if (src.hasPermittedDataType()) {
-            for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType()) copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.setIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType()) copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
         if (src.hasMultipleResultsAllowed())
             tgt.setMultipleResultsAllowedElement(convertBoolean(src.getMultipleResultsAllowedElement()));
         if (src.hasMethod())
@@ -77,9 +71,7 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPreferredReportNameElement(convertString(src.getPreferredReportNameElement()));
         if (src.hasQuantitativeDetails())
             tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
-        if (src.hasQualifiedInterval()) {
-            for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
         if (src.hasValidCodedValueSet())
             tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
         if (src.hasNormalCodedValueSet())
@@ -96,16 +88,12 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ObservationDefinition tgt = new org.hl7.fhir.r4.model.ObservationDefinition();
         copyDomainResource(src, tgt);
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasIdentifier())
             tgt.addIdentifier(convertIdentifier(src.getIdentifier()));
-        if (src.hasPermittedDataType()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType()) copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
-        }
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> t : src.getPermittedDataType()) copyElement(t, tgt.addPermittedDataTypeElement().setValue(convertObservationDataType(t.getValue())));
         if (src.hasMultipleResultsAllowed())
             tgt.setMultipleResultsAllowedElement(convertBoolean(src.getMultipleResultsAllowedElement()));
         if (src.hasMethod())
@@ -114,9 +102,7 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPreferredReportNameElement(convertString(src.getPreferredReportNameElement()));
         if (src.hasQuantitativeDetails())
             tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
-        if (src.hasQualifiedInterval()) {
-            for (org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
         if (src.hasValidCodedValueSet())
             tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
         if (src.hasNormalCodedValueSet())
@@ -233,9 +219,7 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setRange(convertRange(src.getRange()));
         if (src.hasContext())
             tgt.setContext(convertCodeableConcept(src.getContext()));
-        if (src.hasAppliesTo()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
         if (src.hasGender())
             tgt.setGender(Enumerations40_50.convertAdministrativeGender(src.getGender()));
         if (src.hasAge())
@@ -258,9 +242,7 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setRange(convertRange(src.getRange()));
         if (src.hasContext())
             tgt.setContext(convertCodeableConcept(src.getContext()));
-        if (src.hasAppliesTo()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
         if (src.hasGender())
             tgt.setGender(Enumerations40_50.convertAdministrativeGender(src.getGender()));
         if (src.hasAge())

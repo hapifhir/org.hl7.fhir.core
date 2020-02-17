@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,38 +58,26 @@ public class Consent40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Consent tgt = new org.hl7.fhir.r5.model.Consent();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertConsentState(src.getStatus()));
         if (src.hasScope())
             tgt.setScope(convertCodeableConcept(src.getScope()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
-        if (src.hasOrganization()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
         if (src.hasSourceAttachment())
             tgt.addSourceAttachment(convertAttachment(src.getSourceAttachment()));
         if (src.hasSourceReference())
             tgt.addSourceReference(convertReference(src.getSourceReference()));
-        if (src.hasPolicy()) {
-            for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
         if (src.hasPolicyRule())
             tgt.setPolicyRule(convertCodeableConcept(src.getPolicyRule()));
-        if (src.hasVerification()) {
-            for (org.hl7.fhir.r4.model.Consent.ConsentVerificationComponent t : src.getVerification()) tgt.addVerification(convertConsentVerificationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.ConsentVerificationComponent t : src.getVerification()) tgt.addVerification(convertConsentVerificationComponent(t));
         if (src.hasProvision())
             tgt.setProvision(convertprovisionComponent(src.getProvision()));
         return tgt;
@@ -100,38 +88,26 @@ public class Consent40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Consent tgt = new org.hl7.fhir.r4.model.Consent();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertConsentState(src.getStatus()));
         if (src.hasScope())
             tgt.setScope(convertCodeableConcept(src.getScope()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
-        if (src.hasOrganization()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
         if (src.hasSourceAttachment())
             tgt.setSource(convertType(src.getSourceAttachmentFirstRep()));
         if (src.hasSourceReference())
             tgt.setSource(convertType(src.getSourceReferenceFirstRep()));
-        if (src.hasPolicy()) {
-            for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
         if (src.hasPolicyRule())
             tgt.setPolicyRule(convertCodeableConcept(src.getPolicyRule()));
-        if (src.hasVerification()) {
-            for (org.hl7.fhir.r5.model.Consent.ConsentVerificationComponent t : src.getVerification()) tgt.addVerification(convertConsentVerificationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Consent.ConsentVerificationComponent t : src.getVerification()) tgt.addVerification(convertConsentVerificationComponent(t));
         if (src.hasProvision())
             tgt.setProvision(convertprovisionComponent(src.getProvision()));
         return tgt;
@@ -236,32 +212,16 @@ public class Consent40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertConsentProvisionType(src.getType()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : src.getActor()) tgt.addActor(convertprovisionActorComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAction()) tgt.addAction(convertCodeableConcept(t));
-        }
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(convertCoding(t));
-        }
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getPurpose()) tgt.addPurpose(convertCoding(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(convertCoding(t));
-        }
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : src.getActor()) tgt.addActor(convertprovisionActorComponent(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAction()) tgt.addAction(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(convertCoding(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getPurpose()) tgt.addPurpose(convertCoding(t));
+        for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(convertCoding(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasDataPeriod())
             tgt.setDataPeriod(convertPeriod(src.getDataPeriod()));
-        if (src.hasData()) {
-            for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : src.getData()) tgt.addData(convertprovisionDataComponent(t));
-        }
-        if (src.hasProvision()) {
-            for (org.hl7.fhir.r4.model.Consent.provisionComponent t : src.getProvision()) tgt.addProvision(convertprovisionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : src.getData()) tgt.addData(convertprovisionDataComponent(t));
+        for (org.hl7.fhir.r4.model.Consent.provisionComponent t : src.getProvision()) tgt.addProvision(convertprovisionComponent(t));
         return tgt;
     }
 
@@ -274,32 +234,16 @@ public class Consent40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertConsentProvisionType(src.getType()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.r5.model.Consent.ProvisionActorComponent t : src.getActor()) tgt.addActor(convertprovisionActorComponent(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAction()) tgt.addAction(convertCodeableConcept(t));
-        }
-        if (src.hasSecurityLabel()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(convertCoding(t));
-        }
-        if (src.hasPurpose()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getPurpose()) tgt.addPurpose(convertCoding(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(convertCoding(t));
-        }
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.Consent.ProvisionActorComponent t : src.getActor()) tgt.addActor(convertprovisionActorComponent(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAction()) tgt.addAction(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(convertCoding(t));
+        for (org.hl7.fhir.r5.model.Coding t : src.getPurpose()) tgt.addPurpose(convertCoding(t));
+        for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(convertCoding(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         if (src.hasDataPeriod())
             tgt.setDataPeriod(convertPeriod(src.getDataPeriod()));
-        if (src.hasData()) {
-            for (org.hl7.fhir.r5.model.Consent.ProvisionDataComponent t : src.getData()) tgt.addData(convertprovisionDataComponent(t));
-        }
-        if (src.hasProvision()) {
-            for (org.hl7.fhir.r5.model.Consent.ProvisionComponent t : src.getProvision()) tgt.addProvision(convertprovisionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Consent.ProvisionDataComponent t : src.getData()) tgt.addData(convertprovisionDataComponent(t));
+        for (org.hl7.fhir.r5.model.Consent.ProvisionComponent t : src.getProvision()) tgt.addProvision(convertprovisionComponent(t));
         return tgt;
     }
 

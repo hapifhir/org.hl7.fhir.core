@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,9 +60,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
@@ -75,31 +73,17 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorComponent t : src.getActor()) tgt.addActor(convertExampleScenarioActorComponent(t));
-        }
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceComponent t : src.getInstance()) tgt.addInstance(convertExampleScenarioInstanceComponent(t));
-        }
-        if (src.hasProcess()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
-        }
-        if (src.hasWorkflow()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getWorkflow()) tgt.getWorkflow().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorComponent t : src.getActor()) tgt.addActor(convertExampleScenarioActorComponent(t));
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceComponent t : src.getInstance()) tgt.addInstance(convertExampleScenarioInstanceComponent(t));
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getWorkflow()) tgt.getWorkflow().add(convertCanonical(t));
         return tgt;
     }
 
@@ -110,9 +94,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
@@ -125,31 +107,17 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
-        if (src.hasActor()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorComponent t : src.getActor()) tgt.addActor(convertExampleScenarioActorComponent(t));
-        }
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent t : src.getInstance()) tgt.addInstance(convertExampleScenarioInstanceComponent(t));
-        }
-        if (src.hasProcess()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
-        }
-        if (src.hasWorkflow()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getWorkflow()) tgt.getWorkflow().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorComponent t : src.getActor()) tgt.addActor(convertExampleScenarioActorComponent(t));
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent t : src.getInstance()) tgt.addInstance(convertExampleScenarioInstanceComponent(t));
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getWorkflow()) tgt.getWorkflow().add(convertCanonical(t));
         return tgt;
     }
 
@@ -224,12 +192,8 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasVersion()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion()) tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
-        }
-        if (src.hasContainedInstance()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstance()) tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion()) tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstance()) tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
         return tgt;
     }
 
@@ -246,12 +210,8 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasVersion()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion()) tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
-        }
-        if (src.hasContainedInstance()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstance()) tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion()) tgt.addVersion(convertExampleScenarioInstanceVersionComponent(t));
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent t : src.getContainedInstance()) tgt.addContainedInstance(convertExampleScenarioInstanceContainedInstanceComponent(t));
         return tgt;
     }
 
@@ -332,9 +292,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setPreConditionsElement(convertMarkdown(src.getPreConditionsElement()));
         if (src.hasPostConditions())
             tgt.setPostConditionsElement(convertMarkdown(src.getPostConditionsElement()));
-        if (src.hasStep()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
         return tgt;
     }
 
@@ -351,9 +309,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setPreConditionsElement(convertMarkdown(src.getPreConditionsElement()));
         if (src.hasPostConditions())
             tgt.setPostConditionsElement(convertMarkdown(src.getPostConditionsElement()));
-        if (src.hasStep()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
         return tgt;
     }
 
@@ -362,16 +318,12 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent();
         copyElement(src, tgt);
-        if (src.hasProcess()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
         if (src.hasPause())
             tgt.setPauseElement(convertBoolean(src.getPauseElement()));
         if (src.hasOperation())
             tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation()));
-        if (src.hasAlternative()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative()) tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative()) tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
         return tgt;
     }
 
@@ -380,16 +332,12 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent tgt = new org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent();
         copyElement(src, tgt);
-        if (src.hasProcess()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess()) tgt.addProcess(convertExampleScenarioProcessComponent(t));
         if (src.hasPause())
             tgt.setPauseElement(convertBoolean(src.getPauseElement()));
         if (src.hasOperation())
             tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation()));
-        if (src.hasAlternative()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative()) tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative()) tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
         return tgt;
     }
 
@@ -458,9 +406,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasStep()) {
-            for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
         return tgt;
     }
 
@@ -473,9 +419,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasStep()) {
-            for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent t : src.getStep()) tgt.addStep(convertExampleScenarioProcessStepComponent(t));
         return tgt;
     }
 }

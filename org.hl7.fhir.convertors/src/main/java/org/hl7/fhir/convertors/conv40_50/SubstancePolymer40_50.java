@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,18 +62,10 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setClass_(convertCodeableConcept(src.getClass_()));
         if (src.hasGeometry())
             tgt.setGeometry(convertCodeableConcept(src.getGeometry()));
-        if (src.hasCopolymerConnectivity()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
-        }
-        if (src.hasModification()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
-        }
-        if (src.hasMonomerSet()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
-        }
-        if (src.hasRepeat()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
         return tgt;
     }
 
@@ -86,18 +78,10 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setClass_(convertCodeableConcept(src.getClass_()));
         if (src.hasGeometry())
             tgt.setGeometry(convertCodeableConcept(src.getGeometry()));
-        if (src.hasCopolymerConnectivity()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
-        }
-        if (src.hasModification()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
-        }
-        if (src.hasMonomerSet()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
-        }
-        if (src.hasRepeat()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
         return tgt;
     }
 
@@ -108,9 +92,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasRatioType())
             tgt.setRatioType(convertCodeableConcept(src.getRatioType()));
-        if (src.hasStartingMaterial()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent t : src.getStartingMaterial()) tgt.addStartingMaterial(convertSubstancePolymerMonomerSetStartingMaterialComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent t : src.getStartingMaterial()) tgt.addStartingMaterial(convertSubstancePolymerMonomerSetStartingMaterialComponent(t));
         return tgt;
     }
 
@@ -121,9 +103,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasRatioType())
             tgt.setRatioType(convertCodeableConcept(src.getRatioType()));
-        if (src.hasStartingMaterial()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent t : src.getStartingMaterial()) tgt.addStartingMaterial(convertSubstancePolymerMonomerSetStartingMaterialComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent t : src.getStartingMaterial()) tgt.addStartingMaterial(convertSubstancePolymerMonomerSetStartingMaterialComponent(t));
         return tgt;
     }
 
@@ -170,9 +150,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setAverageMolecularFormulaElement(convertString(src.getAverageMolecularFormulaElement()));
         if (src.hasRepeatUnitAmountType())
             tgt.setRepeatUnitAmountType(convertCodeableConcept(src.getRepeatUnitAmountType()));
-        if (src.hasRepeatUnit()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent t : src.getRepeatUnit()) tgt.addRepeatUnit(convertSubstancePolymerRepeatRepeatUnitComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent t : src.getRepeatUnit()) tgt.addRepeatUnit(convertSubstancePolymerRepeatRepeatUnitComponent(t));
         return tgt;
     }
 
@@ -187,9 +165,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setAverageMolecularFormulaElement(convertString(src.getAverageMolecularFormulaElement()));
         if (src.hasRepeatUnitAmountType())
             tgt.setRepeatUnitAmountType(convertCodeableConcept(src.getRepeatUnitAmountType()));
-        if (src.hasRepeatUnit()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent t : src.getRepeatUnit()) tgt.addRepeatUnit(convertSubstancePolymerRepeatRepeatUnitComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent t : src.getRepeatUnit()) tgt.addRepeatUnit(convertSubstancePolymerRepeatRepeatUnitComponent(t));
         return tgt;
     }
 
@@ -204,12 +180,8 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setRepeatUnitElement(convertString(src.getRepeatUnitElement()));
         if (src.hasAmount())
             tgt.setAmount(convertSubstanceAmount(src.getAmount()));
-        if (src.hasDegreeOfPolymerisation()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
-        }
-        if (src.hasStructuralRepresentation()) {
-            for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
+        for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
         return tgt;
     }
 
@@ -224,12 +196,8 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setRepeatUnitElement(convertString(src.getRepeatUnitElement()));
         if (src.hasAmount())
             tgt.setAmount(convertSubstanceAmount(src.getAmount()));
-        if (src.hasDegreeOfPolymerisation()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
-        }
-        if (src.hasStructuralRepresentation()) {
-            for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
+        for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
         return tgt;
     }
 

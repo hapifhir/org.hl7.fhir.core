@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,22 +60,14 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasDerivedFromUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getDerivedFromUri()) tgt.getDerivedFromUri().add(convertUri(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getPartOf()) tgt.getPartOf().add(convertCanonical(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.UriType t : src.getDerivedFromUri()) tgt.getDerivedFromUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getPartOf()) tgt.getPartOf().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
@@ -84,17 +76,11 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasApprovalDate())
@@ -105,15 +91,9 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getInstance()) tgt.addInstance(convertReference(t));
-        }
-        if (src.hasApplicability()) {
-            for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-        }
-        if (src.hasPropertyGroup()) {
-            for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent t : src.getPropertyGroup()) tgt.addPropertyGroup(convertChargeItemDefinitionPropertyGroupComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getInstance()) tgt.addInstance(convertReference(t));
+        for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
+        for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent t : src.getPropertyGroup()) tgt.addPropertyGroup(convertChargeItemDefinitionPropertyGroupComponent(t));
         return tgt;
     }
 
@@ -124,22 +104,14 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasDerivedFromUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getDerivedFromUri()) tgt.getDerivedFromUri().add(convertUri(t));
-        }
-        if (src.hasPartOf()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getPartOf()) tgt.getPartOf().add(convertCanonical(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.UriType t : src.getDerivedFromUri()) tgt.getDerivedFromUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getPartOf()) tgt.getPartOf().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
@@ -148,17 +120,11 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasApprovalDate())
@@ -169,15 +135,9 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setEffectivePeriod(convertPeriod(src.getEffectivePeriod()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasInstance()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getInstance()) tgt.addInstance(convertReference(t));
-        }
-        if (src.hasApplicability()) {
-            for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-        }
-        if (src.hasPropertyGroup()) {
-            for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent t : src.getPropertyGroup()) tgt.addPropertyGroup(convertChargeItemDefinitionPropertyGroupComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getInstance()) tgt.addInstance(convertReference(t));
+        for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
+        for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent t : src.getPropertyGroup()) tgt.addPropertyGroup(convertChargeItemDefinitionPropertyGroupComponent(t));
         return tgt;
     }
 
@@ -214,12 +174,8 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent tgt = new org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent();
         copyElement(src, tgt);
-        if (src.hasApplicability()) {
-            for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-        }
-        if (src.hasPriceComponent()) {
-            for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
+        for (org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
         return tgt;
     }
 
@@ -228,12 +184,8 @@ public class ChargeItemDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent tgt = new org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupComponent();
         copyElement(src, tgt);
-        if (src.hasApplicability()) {
-            for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-        }
-        if (src.hasPriceComponent()) {
-            for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability()) tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
+        for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent()) tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
         return tgt;
     }
 

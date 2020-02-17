@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,17 +58,11 @@ public class DiagnosticReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.DiagnosticReport tgt = new org.hl7.fhir.r5.model.DiagnosticReport();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertDiagnosticReportStatus(src.getStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -79,32 +73,16 @@ public class DiagnosticReport40_50 extends VersionConvertor_40_50 {
             tgt.setEffective(convertType(src.getEffective()));
         if (src.hasIssued())
             tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
-        if (src.hasResultsInterpreter()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getResultsInterpreter()) tgt.addResultsInterpreter(convertReference(t));
-        }
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
-        if (src.hasResult()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getResult()) tgt.addResult(convertReference(t));
-        }
-        if (src.hasImagingStudy()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getImagingStudy()) tgt.addImagingStudy(convertReference(t));
-        }
-        if (src.hasMedia()) {
-            for (org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia()) tgt.addMedia(convertDiagnosticReportMediaComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getResultsInterpreter()) tgt.addResultsInterpreter(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getResult()) tgt.addResult(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getImagingStudy()) tgt.addImagingStudy(convertReference(t));
+        for (org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia()) tgt.addMedia(convertDiagnosticReportMediaComponent(t));
         if (src.hasConclusion())
             tgt.setConclusionElement(convertString(src.getConclusionElement()));
-        if (src.hasConclusionCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getConclusionCode()) tgt.addConclusionCode(convertCodeableConcept(t));
-        }
-        if (src.hasPresentedForm()) {
-            for (org.hl7.fhir.r4.model.Attachment t : src.getPresentedForm()) tgt.addPresentedForm(convertAttachment(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getConclusionCode()) tgt.addConclusionCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Attachment t : src.getPresentedForm()) tgt.addPresentedForm(convertAttachment(t));
         return tgt;
     }
 
@@ -113,17 +91,11 @@ public class DiagnosticReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.DiagnosticReport tgt = new org.hl7.fhir.r4.model.DiagnosticReport();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
         if (src.hasStatus())
             tgt.setStatus(convertDiagnosticReportStatus(src.getStatus()));
-        if (src.hasCategory()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -134,32 +106,16 @@ public class DiagnosticReport40_50 extends VersionConvertor_40_50 {
             tgt.setEffective(convertType(src.getEffective()));
         if (src.hasIssued())
             tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
-        if (src.hasPerformer()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        }
-        if (src.hasResultsInterpreter()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getResultsInterpreter()) tgt.addResultsInterpreter(convertReference(t));
-        }
-        if (src.hasSpecimen()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
-        }
-        if (src.hasResult()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getResult()) tgt.addResult(convertReference(t));
-        }
-        if (src.hasImagingStudy()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getImagingStudy()) tgt.addImagingStudy(convertReference(t));
-        }
-        if (src.hasMedia()) {
-            for (org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia()) tgt.addMedia(convertDiagnosticReportMediaComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getResultsInterpreter()) tgt.addResultsInterpreter(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getResult()) tgt.addResult(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getImagingStudy()) tgt.addImagingStudy(convertReference(t));
+        for (org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia()) tgt.addMedia(convertDiagnosticReportMediaComponent(t));
         if (src.hasConclusion())
             tgt.setConclusionElement(convertString(src.getConclusionElement()));
-        if (src.hasConclusionCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getConclusionCode()) tgt.addConclusionCode(convertCodeableConcept(t));
-        }
-        if (src.hasPresentedForm()) {
-            for (org.hl7.fhir.r5.model.Attachment t : src.getPresentedForm()) tgt.addPresentedForm(convertAttachment(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getConclusionCode()) tgt.addConclusionCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Attachment t : src.getPresentedForm()) tgt.addPresentedForm(convertAttachment(t));
         return tgt;
     }
 

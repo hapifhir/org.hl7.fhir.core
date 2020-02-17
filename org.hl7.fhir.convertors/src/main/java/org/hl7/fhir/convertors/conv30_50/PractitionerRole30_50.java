@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class PractitionerRole30_50 {
 
@@ -34,43 +33,25 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PractitionerRole tgt = new org.hl7.fhir.dstu3.model.PractitionerRole();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_50.convertBoolean(src.getActiveElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         if (src.hasPractitioner())
             tgt.setPractitioner(VersionConvertor_30_50.convertReference(src.getPractitioner()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_30_50.convertReference(src.getOrganization()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(VersionConvertor_30_50.convertReference(t));
-        }
-        if (src.hasHealthcareService()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(VersionConvertor_30_50.convertReference(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
-        }
-        if (src.hasAvailableTime()) {
-            for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-        }
-        if (src.hasNotAvailable()) {
-            for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-        }
-        if (src.hasAvailabilityExceptionsElement())
-            tgt.setAvailabilityExceptionsElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getAvailabilityExceptionsElement()));
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
+        for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
+        if (src.hasAvailabilityExceptions())
+            tgt.setAvailabilityExceptionsElement(VersionConvertor_30_50.convertString(src.getAvailabilityExceptionsElement()));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
         return tgt;
     }
 
@@ -79,43 +60,25 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.r5.model.PractitionerRole tgt = new org.hl7.fhir.r5.model.PractitionerRole();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getActiveElement()));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_50.convertBoolean(src.getActiveElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         if (src.hasPractitioner())
             tgt.setPractitioner(VersionConvertor_30_50.convertReference(src.getPractitioner()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_30_50.convertReference(src.getOrganization()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getLocation()) tgt.addLocation(VersionConvertor_30_50.convertReference(t));
-        }
-        if (src.hasHealthcareService()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(VersionConvertor_30_50.convertReference(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
-        }
-        if (src.hasAvailableTime()) {
-            for (org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-        }
-        if (src.hasNotAvailable()) {
-            for (org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-        }
-        if (src.hasAvailabilityExceptionsElement())
-            tgt.setAvailabilityExceptionsElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getAvailabilityExceptionsElement()));
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
-        }
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getLocation()) tgt.addLocation(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
+        for (org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime()) tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
+        for (org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable()) tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
+        if (src.hasAvailabilityExceptions())
+            tgt.setAvailabilityExceptionsElement(VersionConvertor_30_50.convertString(src.getAvailabilityExceptionsElement()));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getEndpoint()) tgt.addEndpoint(VersionConvertor_30_50.convertReference(t));
         return tgt;
     }
 
@@ -124,15 +87,13 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDaysOfWeek()) {
-            for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek2(t.getValue())));
-        }
-        if (src.hasAllDayElement())
-            tgt.setAllDayElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_50.convertType(src.getAllDayElement()));
-        if (src.hasAvailableStartTimeElement())
-            tgt.setAvailableStartTimeElement((org.hl7.fhir.dstu3.model.TimeType) VersionConvertor_30_50.convertType(src.getAvailableStartTimeElement()));
-        if (src.hasAvailableEndTimeElement())
-            tgt.setAvailableEndTimeElement((org.hl7.fhir.dstu3.model.TimeType) VersionConvertor_30_50.convertType(src.getAvailableEndTimeElement()));
+        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(convertDaysOfWeek2(t.getValue())));
+        if (src.hasAllDay())
+            tgt.setAllDayElement(VersionConvertor_30_50.convertBoolean(src.getAllDayElement()));
+        if (src.hasAvailableStartTime())
+            tgt.setAvailableStartTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableStartTimeElement()));
+        if (src.hasAvailableEndTime())
+            tgt.setAvailableEndTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableEndTimeElement()));
         return tgt;
     }
 
@@ -141,15 +102,13 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDaysOfWeek()) {
-            for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_50.convertDaysOfWeek(t.getValue())));
-        }
-        if (src.hasAllDayElement())
-            tgt.setAllDayElement((org.hl7.fhir.r5.model.BooleanType) VersionConvertor_30_50.convertType(src.getAllDayElement()));
-        if (src.hasAvailableStartTimeElement())
-            tgt.setAvailableStartTimeElement((org.hl7.fhir.r5.model.TimeType) VersionConvertor_30_50.convertType(src.getAvailableStartTimeElement()));
-        if (src.hasAvailableEndTimeElement())
-            tgt.setAvailableEndTimeElement((org.hl7.fhir.r5.model.TimeType) VersionConvertor_30_50.convertType(src.getAvailableEndTimeElement()));
+        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_50.convertDaysOfWeek(t.getValue())));
+        if (src.hasAllDay())
+            tgt.setAllDayElement(VersionConvertor_30_50.convertBoolean(src.getAllDayElement()));
+        if (src.hasAvailableStartTime())
+            tgt.setAvailableStartTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableStartTimeElement()));
+        if (src.hasAvailableEndTime())
+            tgt.setAvailableEndTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableEndTimeElement()));
         return tgt;
     }
 
@@ -158,8 +117,8 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasDuring())
             tgt.setDuring(VersionConvertor_30_50.convertPeriod(src.getDuring()));
         return tgt;
@@ -170,8 +129,8 @@ public class PractitionerRole30_50 {
             return null;
         org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDescriptionElement()));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasDuring())
             tgt.setDuring(VersionConvertor_30_50.convertPeriod(src.getDuring()));
         return tgt;

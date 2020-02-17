@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class BodySite30_40 {
 
@@ -11,16 +10,12 @@ public class BodySite30_40 {
             return null;
         org.hl7.fhir.dstu3.model.BodySite tgt = new org.hl7.fhir.dstu3.model.BodySite();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.dstu3.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
-        if (src.hasImage()) {
-            for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_40.convertAttachment(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_40.convertBoolean(src.getActiveElement()));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_40.convertAttachment(t));
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
         return tgt;
@@ -31,16 +26,12 @@ public class BodySite30_40 {
             return null;
         org.hl7.fhir.r4.model.BodyStructure tgt = new org.hl7.fhir.r4.model.BodyStructure();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
-        }
-        if (src.hasActiveElement())
-            tgt.setActiveElement((org.hl7.fhir.r4.model.BooleanType) VersionConvertor_30_40.convertType(src.getActiveElement()));
-        if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_30_40.convertType(src.getDescriptionElement()));
-        if (src.hasImage()) {
-            for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_40.convertAttachment(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        if (src.hasActive())
+            tgt.setActiveElement(VersionConvertor_30_40.convertBoolean(src.getActiveElement()));
+        if (src.hasDescription())
+            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.Attachment t : src.getImage()) tgt.addImage(VersionConvertor_30_40.convertAttachment(t));
         if (src.hasPatient())
             tgt.setPatient(VersionConvertor_30_40.convertReference(src.getPatient()));
         return tgt;

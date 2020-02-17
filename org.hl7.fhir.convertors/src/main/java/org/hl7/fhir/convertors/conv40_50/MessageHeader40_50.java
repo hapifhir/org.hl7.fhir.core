@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,9 +60,7 @@ public class MessageHeader40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
-        if (src.hasDestination()) {
-            for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
         if (src.hasSender())
             tgt.setSender(convertReference(src.getSender()));
         if (src.hasEnterer())
@@ -77,9 +75,7 @@ public class MessageHeader40_50 extends VersionConvertor_40_50 {
             tgt.setReason(convertCodeableConcept(src.getReason()));
         if (src.hasResponse())
             tgt.setResponse(convertMessageHeaderResponseComponent(src.getResponse()));
-        if (src.hasFocus()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getFocus()) tgt.addFocus(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getFocus()) tgt.addFocus(convertReference(t));
         if (src.hasDefinition())
             tgt.setDefinitionElement(convertCanonical(src.getDefinitionElement()));
         return tgt;
@@ -92,9 +88,7 @@ public class MessageHeader40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
-        if (src.hasDestination()) {
-            for (org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent t : src.getDestination()) tgt.addDestination(convertMessageDestinationComponent(t));
         if (src.hasSender())
             tgt.setSender(convertReference(src.getSender()));
         if (src.hasEnterer())
@@ -109,9 +103,7 @@ public class MessageHeader40_50 extends VersionConvertor_40_50 {
             tgt.setReason(convertCodeableConcept(src.getReason()));
         if (src.hasResponse())
             tgt.setResponse(convertMessageHeaderResponseComponent(src.getResponse()));
-        if (src.hasFocus()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getFocus()) tgt.addFocus(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getFocus()) tgt.addFocus(convertReference(t));
         if (src.hasDefinition())
             tgt.setDefinitionElement(convertCanonical(src.getDefinitionElement()));
         return tgt;
