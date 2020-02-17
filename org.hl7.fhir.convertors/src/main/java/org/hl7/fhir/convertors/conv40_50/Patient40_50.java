@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,47 +58,29 @@ public class Patient40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Patient tgt = new org.hl7.fhir.r5.model.Patient();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasActive())
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-        if (src.hasName()) {
-            for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
+        for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
         if (src.hasGender())
             tgt.setGender(Enumerations40_50.convertAdministrativeGender(src.getGender()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())
             tgt.setDeceased(convertType(src.getDeceased()));
-        if (src.hasAddress()) {
-            for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
-        }
+        for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
         if (src.hasMaritalStatus())
             tgt.setMaritalStatus(convertCodeableConcept(src.getMaritalStatus()));
         if (src.hasMultipleBirth())
             tgt.setMultipleBirth(convertType(src.getMultipleBirth()));
-        if (src.hasPhoto()) {
-            for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
-        }
-        if (src.hasCommunication()) {
-            for (org.hl7.fhir.r4.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
-        }
-        if (src.hasGeneralPractitioner()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getGeneralPractitioner()) tgt.addGeneralPractitioner(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        for (org.hl7.fhir.r4.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
+        for (org.hl7.fhir.r4.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getGeneralPractitioner()) tgt.addGeneralPractitioner(convertReference(t));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r4.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
         return tgt;
     }
 
@@ -107,47 +89,29 @@ public class Patient40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Patient tgt = new org.hl7.fhir.r4.model.Patient();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasActive())
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
-        if (src.hasName()) {
-            for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
+        for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(convertHumanName(t));
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
         if (src.hasGender())
             tgt.setGender(Enumerations40_50.convertAdministrativeGender(src.getGender()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())
             tgt.setDeceased(convertType(src.getDeceased()));
-        if (src.hasAddress()) {
-            for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
-        }
+        for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(convertAddress(t));
         if (src.hasMaritalStatus())
             tgt.setMaritalStatus(convertCodeableConcept(src.getMaritalStatus()));
         if (src.hasMultipleBirth())
             tgt.setMultipleBirth(convertType(src.getMultipleBirth()));
-        if (src.hasPhoto()) {
-            for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
-        }
-        if (src.hasCommunication()) {
-            for (org.hl7.fhir.r5.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
-        }
-        if (src.hasGeneralPractitioner()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getGeneralPractitioner()) tgt.addGeneralPractitioner(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(convertAttachment(t));
+        for (org.hl7.fhir.r5.model.Patient.ContactComponent t : src.getContact()) tgt.addContact(convertContactComponent(t));
+        for (org.hl7.fhir.r5.model.Patient.PatientCommunicationComponent t : src.getCommunication()) tgt.addCommunication(convertPatientCommunicationComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getGeneralPractitioner()) tgt.addGeneralPractitioner(convertReference(t));
         if (src.hasManagingOrganization())
             tgt.setManagingOrganization(convertReference(src.getManagingOrganization()));
-        if (src.hasLink()) {
-            for (org.hl7.fhir.r5.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Patient.PatientLinkComponent t : src.getLink()) tgt.addLink(convertPatientLinkComponent(t));
         return tgt;
     }
 
@@ -156,14 +120,10 @@ public class Patient40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Patient.ContactComponent tgt = new org.hl7.fhir.r5.model.Patient.ContactComponent();
         copyElement(src, tgt);
-        if (src.hasRelationship()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
         if (src.hasName())
             tgt.setName(convertHumanName(src.getName()));
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
         if (src.hasAddress())
             tgt.setAddress(convertAddress(src.getAddress()));
         if (src.hasGender())
@@ -180,14 +140,10 @@ public class Patient40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Patient.ContactComponent tgt = new org.hl7.fhir.r4.model.Patient.ContactComponent();
         copyElement(src, tgt);
-        if (src.hasRelationship()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRelationship()) tgt.addRelationship(convertCodeableConcept(t));
         if (src.hasName())
             tgt.setName(convertHumanName(src.getName()));
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
         if (src.hasAddress())
             tgt.setAddress(convertAddress(src.getAddress()));
         if (src.hasGender())

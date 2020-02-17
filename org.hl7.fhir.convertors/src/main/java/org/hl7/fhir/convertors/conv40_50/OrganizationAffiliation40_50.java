@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class OrganizationAffiliation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.OrganizationAffiliation tgt = new org.hl7.fhir.r5.model.OrganizationAffiliation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasActive())
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
         if (src.hasPeriod())
@@ -69,27 +67,13 @@ public class OrganizationAffiliation40_50 extends VersionConvertor_40_50 {
             tgt.setOrganization(convertReference(src.getOrganization()));
         if (src.hasParticipatingOrganization())
             tgt.setParticipatingOrganization(convertReference(src.getParticipatingOrganization()));
-        if (src.hasNetwork()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getNetwork()) tgt.addNetwork(convertReference(t));
-        }
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(convertReference(t));
-        }
-        if (src.hasHealthcareService()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(convertReference(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getNetwork()) tgt.addNetwork(convertReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(convertReference(t));
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         return tgt;
     }
 
@@ -98,9 +82,7 @@ public class OrganizationAffiliation40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.OrganizationAffiliation tgt = new org.hl7.fhir.r4.model.OrganizationAffiliation();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasActive())
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
         if (src.hasPeriod())
@@ -109,27 +91,13 @@ public class OrganizationAffiliation40_50 extends VersionConvertor_40_50 {
             tgt.setOrganization(convertReference(src.getOrganization()));
         if (src.hasParticipatingOrganization())
             tgt.setParticipatingOrganization(convertReference(src.getParticipatingOrganization()));
-        if (src.hasNetwork()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(convertReference(t));
-        }
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasSpecialty()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(convertReference(t));
-        }
-        if (src.hasHealthcareService()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(convertReference(t));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
-        }
-        if (src.hasEndpoint()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(convertReference(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(convertReference(t));
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(convertContactPoint(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(convertReference(t));
         return tgt;
     }
 }

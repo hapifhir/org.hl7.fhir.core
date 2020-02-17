@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,9 +60,7 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasMasterIdentifier())
             tgt.setMasterIdentifier(convertIdentifier(src.getMasterIdentifier()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertDocumentReferenceStatus(src.getStatus()));
         if (src.hasType())
@@ -71,22 +69,14 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
-        if (src.hasRecipient()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
         if (src.hasSource())
             tgt.setSourceElement(convertUri(src.getSourceElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasContent()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getContent()) tgt.addContent(convertReference(t));
-        }
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r4.model.DocumentManifest.DocumentManifestRelatedComponent t : src.getRelated()) tgt.addRelated(convertDocumentManifestRelatedComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getContent()) tgt.addContent(convertReference(t));
+        for (org.hl7.fhir.r4.model.DocumentManifest.DocumentManifestRelatedComponent t : src.getRelated()) tgt.addRelated(convertDocumentManifestRelatedComponent(t));
         return tgt;
     }
 
@@ -97,9 +87,7 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasMasterIdentifier())
             tgt.setMasterIdentifier(convertIdentifier(src.getMasterIdentifier()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertDocumentReferenceStatus(src.getStatus()));
         if (src.hasType())
@@ -108,22 +96,14 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
-        }
-        if (src.hasRecipient()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getRecipient()) tgt.addRecipient(convertReference(t));
         if (src.hasSource())
             tgt.setSourceElement(convertUri(src.getSourceElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        if (src.hasContent()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getContent()) tgt.addContent(convertReference(t));
-        }
-        if (src.hasRelated()) {
-            for (org.hl7.fhir.r5.model.DocumentManifest.DocumentManifestRelatedComponent t : src.getRelated()) tgt.addRelated(convertDocumentManifestRelatedComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getContent()) tgt.addContent(convertReference(t));
+        for (org.hl7.fhir.r5.model.DocumentManifest.DocumentManifestRelatedComponent t : src.getRelated()) tgt.addRelated(convertDocumentManifestRelatedComponent(t));
         return tgt;
     }
 

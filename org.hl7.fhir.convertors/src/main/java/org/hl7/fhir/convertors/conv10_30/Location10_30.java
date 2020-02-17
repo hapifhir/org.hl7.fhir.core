@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.dstu3.model.DecimalType;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Location10_30 {
 
@@ -12,40 +10,28 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Location tgt = new org.hl7.fhir.dstu2.model.Location();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertLocationStatus(src.getStatus()));
-        }
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
+            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
-        if (src.hasMode()) {
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
+        if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasAddress()) {
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
-        }
-        if (src.hasPhysicalType()) {
+        if (src.hasPhysicalType())
             tgt.setPhysicalType(VersionConvertor_10_30.convertCodeableConcept(src.getPhysicalType()));
-        }
-        if (src.hasPosition()) {
+        if (src.hasPosition())
             tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
-        }
-        if (src.hasManagingOrganization()) {
+        if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_10_30.convertReference(src.getManagingOrganization()));
-        }
-        if (src.hasPartOf()) {
+        if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_10_30.convertReference(src.getPartOf()));
-        }
         return tgt;
     }
 
@@ -54,40 +40,28 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Location tgt = new org.hl7.fhir.dstu3.model.Location();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertLocationStatus(src.getStatus()));
-        }
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
+            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
-        if (src.hasMode()) {
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
+        if (src.hasMode())
             tgt.setMode(convertLocationMode(src.getMode()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
-        if (src.hasTelecom()) {
-            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasAddress()) {
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
-        }
-        if (src.hasPhysicalType()) {
+        if (src.hasPhysicalType())
             tgt.setPhysicalType(VersionConvertor_10_30.convertCodeableConcept(src.getPhysicalType()));
-        }
-        if (src.hasPosition()) {
+        if (src.hasPosition())
             tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
-        }
-        if (src.hasManagingOrganization()) {
+        if (src.hasManagingOrganization())
             tgt.setManagingOrganization(VersionConvertor_10_30.convertReference(src.getManagingOrganization()));
-        }
-        if (src.hasPartOf()) {
+        if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_10_30.convertReference(src.getPartOf()));
-        }
         return tgt;
     }
 
@@ -122,15 +96,12 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu3.model.Location.LocationPositionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLongitudeElement()) {
-            tgt.setLongitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getLongitudeElement()));
-        }
-        if (src.hasLatitudeElement()) {
-            tgt.setLatitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getLatitudeElement()));
-        }
-        if (src.hasAltitudeElement()) {
-            tgt.setAltitudeElement((DecimalType) VersionConvertor_10_30.convertType(src.getAltitudeElement()));
-        }
+        if (src.hasLongitudeElement())
+            tgt.setLongitudeElement(VersionConvertor_10_30.convertDecimal(src.getLongitudeElement()));
+        if (src.hasLatitudeElement())
+            tgt.setLatitudeElement(VersionConvertor_10_30.convertDecimal(src.getLatitudeElement()));
+        if (src.hasAltitudeElement())
+            tgt.setAltitudeElement(VersionConvertor_10_30.convertDecimal(src.getAltitudeElement()));
         return tgt;
     }
 
@@ -139,15 +110,12 @@ public class Location10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu2.model.Location.LocationPositionComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLongitudeElement()) {
-            tgt.setLongitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getLongitudeElement()));
-        }
-        if (src.hasLatitudeElement()) {
-            tgt.setLatitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getLatitudeElement()));
-        }
-        if (src.hasAltitudeElement()) {
-            tgt.setAltitudeElement((org.hl7.fhir.dstu2.model.DecimalType) VersionConvertor_10_30.convertType(src.getAltitudeElement()));
-        }
+        if (src.hasLongitudeElement())
+            tgt.setLongitudeElement(VersionConvertor_10_30.convertDecimal(src.getLongitudeElement()));
+        if (src.hasLatitudeElement())
+            tgt.setLatitudeElement(VersionConvertor_10_30.convertDecimal(src.getLatitudeElement()));
+        if (src.hasAltitudeElement())
+            tgt.setAltitudeElement(VersionConvertor_10_30.convertDecimal(src.getAltitudeElement()));
         return tgt;
     }
 

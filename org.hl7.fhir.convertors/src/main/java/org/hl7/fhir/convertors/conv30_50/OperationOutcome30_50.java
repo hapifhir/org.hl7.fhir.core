@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class OperationOutcome30_50 {
 
@@ -179,9 +178,7 @@ public class OperationOutcome30_50 {
             return null;
         org.hl7.fhir.r5.model.OperationOutcome tgt = new org.hl7.fhir.r5.model.OperationOutcome();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -190,9 +187,7 @@ public class OperationOutcome30_50 {
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome tgt = new org.hl7.fhir.dstu3.model.OperationOutcome();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -207,14 +202,10 @@ public class OperationOutcome30_50 {
             tgt.setCode(convertIssueType(src.getCode()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_30_50.convertCodeableConcept(src.getDetails()));
-        if (src.hasDiagnosticsElement())
-            tgt.setDiagnosticsElement((org.hl7.fhir.r5.model.StringType) VersionConvertor_30_50.convertType(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        }
-        if (src.hasExpression()) {
-            for (org.hl7.fhir.dstu3.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
-        }
+        if (src.hasDiagnostics())
+            tgt.setDiagnosticsElement(VersionConvertor_30_50.convertString(src.getDiagnosticsElement()));
+        for (org.hl7.fhir.dstu3.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        for (org.hl7.fhir.dstu3.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
         return tgt;
     }
 
@@ -229,14 +220,10 @@ public class OperationOutcome30_50 {
             tgt.setCode(convertIssueType(src.getCode()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_30_50.convertCodeableConcept(src.getDetails()));
-        if (src.hasDiagnosticsElement())
-            tgt.setDiagnosticsElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_30_50.convertType(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
-        }
-        if (src.hasExpression()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
-        }
+        if (src.hasDiagnostics())
+            tgt.setDiagnosticsElement(VersionConvertor_30_50.convertString(src.getDiagnosticsElement()));
+        for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.addLocation(t.getValue());
+        for (org.hl7.fhir.r5.model.StringType t : src.getExpression()) tgt.addExpression(t.getValue());
         return tgt;
     }
 }

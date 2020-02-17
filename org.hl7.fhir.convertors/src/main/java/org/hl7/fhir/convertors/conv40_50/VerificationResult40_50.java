@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,12 +58,8 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.VerificationResult tgt = new org.hl7.fhir.r5.model.VerificationResult();
         copyDomainResource(src, tgt);
-        if (src.hasTarget()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getTarget()) tgt.addTarget(convertReference(t));
-        }
-        if (src.hasTargetLocation()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getTargetLocation()) tgt.getTargetLocation().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getTarget()) tgt.addTarget(convertReference(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getTargetLocation()) tgt.getTargetLocation().add(convertString(t));
         if (src.hasNeed())
             tgt.setNeed(convertCodeableConcept(src.getNeed()));
         if (src.hasStatus())
@@ -72,9 +68,7 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             tgt.setStatusDateElement(convertDateTime(src.getStatusDateElement()));
         if (src.hasValidationType())
             tgt.setValidationType(convertCodeableConcept(src.getValidationType()));
-        if (src.hasValidationProcess()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getValidationProcess()) tgt.addValidationProcess(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getValidationProcess()) tgt.addValidationProcess(convertCodeableConcept(t));
         if (src.hasFrequency())
             tgt.setFrequency(convertTiming(src.getFrequency()));
         if (src.hasLastPerformed())
@@ -83,14 +77,10 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             tgt.setNextScheduledElement(convertDate(src.getNextScheduledElement()));
         if (src.hasFailureAction())
             tgt.setFailureAction(convertCodeableConcept(src.getFailureAction()));
-        if (src.hasPrimarySource()) {
-            for (org.hl7.fhir.r4.model.VerificationResult.VerificationResultPrimarySourceComponent t : src.getPrimarySource()) tgt.addPrimarySource(convertVerificationResultPrimarySourceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.VerificationResult.VerificationResultPrimarySourceComponent t : src.getPrimarySource()) tgt.addPrimarySource(convertVerificationResultPrimarySourceComponent(t));
         if (src.hasAttestation())
             tgt.setAttestation(convertVerificationResultAttestationComponent(src.getAttestation()));
-        if (src.hasValidator()) {
-            for (org.hl7.fhir.r4.model.VerificationResult.VerificationResultValidatorComponent t : src.getValidator()) tgt.addValidator(convertVerificationResultValidatorComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.VerificationResult.VerificationResultValidatorComponent t : src.getValidator()) tgt.addValidator(convertVerificationResultValidatorComponent(t));
         return tgt;
     }
 
@@ -99,12 +89,8 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.VerificationResult tgt = new org.hl7.fhir.r4.model.VerificationResult();
         copyDomainResource(src, tgt);
-        if (src.hasTarget()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getTarget()) tgt.addTarget(convertReference(t));
-        }
-        if (src.hasTargetLocation()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getTargetLocation()) tgt.getTargetLocation().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getTarget()) tgt.addTarget(convertReference(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getTargetLocation()) tgt.getTargetLocation().add(convertString(t));
         if (src.hasNeed())
             tgt.setNeed(convertCodeableConcept(src.getNeed()));
         if (src.hasStatus())
@@ -113,9 +99,7 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             tgt.setStatusDateElement(convertDateTime(src.getStatusDateElement()));
         if (src.hasValidationType())
             tgt.setValidationType(convertCodeableConcept(src.getValidationType()));
-        if (src.hasValidationProcess()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getValidationProcess()) tgt.addValidationProcess(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getValidationProcess()) tgt.addValidationProcess(convertCodeableConcept(t));
         if (src.hasFrequency())
             tgt.setFrequency(convertTiming(src.getFrequency()));
         if (src.hasLastPerformed())
@@ -124,14 +108,10 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
             tgt.setNextScheduledElement(convertDate(src.getNextScheduledElement()));
         if (src.hasFailureAction())
             tgt.setFailureAction(convertCodeableConcept(src.getFailureAction()));
-        if (src.hasPrimarySource()) {
-            for (org.hl7.fhir.r5.model.VerificationResult.VerificationResultPrimarySourceComponent t : src.getPrimarySource()) tgt.addPrimarySource(convertVerificationResultPrimarySourceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.VerificationResult.VerificationResultPrimarySourceComponent t : src.getPrimarySource()) tgt.addPrimarySource(convertVerificationResultPrimarySourceComponent(t));
         if (src.hasAttestation())
             tgt.setAttestation(convertVerificationResultAttestationComponent(src.getAttestation()));
-        if (src.hasValidator()) {
-            for (org.hl7.fhir.r5.model.VerificationResult.VerificationResultValidatorComponent t : src.getValidator()) tgt.addValidator(convertVerificationResultValidatorComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.VerificationResult.VerificationResultValidatorComponent t : src.getValidator()) tgt.addValidator(convertVerificationResultValidatorComponent(t));
         return tgt;
     }
 
@@ -184,21 +164,15 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasWho())
             tgt.setWho(convertReference(src.getWho()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasCommunicationMethod()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunicationMethod()) tgt.addCommunicationMethod(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCommunicationMethod()) tgt.addCommunicationMethod(convertCodeableConcept(t));
         if (src.hasValidationStatus())
             tgt.setValidationStatus(convertCodeableConcept(src.getValidationStatus()));
         if (src.hasValidationDate())
             tgt.setValidationDateElement(convertDateTime(src.getValidationDateElement()));
         if (src.hasCanPushUpdates())
             tgt.setCanPushUpdates(convertCodeableConcept(src.getCanPushUpdates()));
-        if (src.hasPushTypeAvailable()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPushTypeAvailable()) tgt.addPushTypeAvailable(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPushTypeAvailable()) tgt.addPushTypeAvailable(convertCodeableConcept(t));
         return tgt;
     }
 
@@ -209,21 +183,15 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasWho())
             tgt.setWho(convertReference(src.getWho()));
-        if (src.hasType()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
-        }
-        if (src.hasCommunicationMethod()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCommunicationMethod()) tgt.addCommunicationMethod(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCommunicationMethod()) tgt.addCommunicationMethod(convertCodeableConcept(t));
         if (src.hasValidationStatus())
             tgt.setValidationStatus(convertCodeableConcept(src.getValidationStatus()));
         if (src.hasValidationDate())
             tgt.setValidationDateElement(convertDateTime(src.getValidationDateElement()));
         if (src.hasCanPushUpdates())
             tgt.setCanPushUpdates(convertCodeableConcept(src.getCanPushUpdates()));
-        if (src.hasPushTypeAvailable()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPushTypeAvailable()) tgt.addPushTypeAvailable(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPushTypeAvailable()) tgt.addPushTypeAvailable(convertCodeableConcept(t));
         return tgt;
     }
 

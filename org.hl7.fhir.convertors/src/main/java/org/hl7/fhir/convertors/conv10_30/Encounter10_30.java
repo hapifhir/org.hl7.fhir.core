@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Encounter10_30 {
 
@@ -11,57 +10,33 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Encounter tgt = new org.hl7.fhir.dstu3.model.Encounter();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertEncounterState(src.getStatus()));
-        }
-        if (src.hasClass_()) {
+        if (src.hasClass_())
             tgt.setClass_(convertEncounterClass(src.getClass_()));
-        }
-        if (src.hasType()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasPriority()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasPriority())
             tgt.setPriority(VersionConvertor_10_30.convertCodeableConcept(src.getPriority()));
-        }
-        if (src.hasPatient()) {
+        if (src.hasPatient())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getPatient()));
-        }
-        if (src.hasEpisodeOfCare()) {
-            for (org.hl7.fhir.dstu2.model.Reference t : src.getEpisodeOfCare()) tgt.addEpisodeOfCare(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasIncomingReferral()) {
-            for (org.hl7.fhir.dstu2.model.Reference t : src.getIncomingReferral()) tgt.addIncomingReferral(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.dstu2.model.Encounter.EncounterParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertEncounterParticipantComponent(t));
-        }
-        if (src.hasAppointment()) {
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getEpisodeOfCare()) tgt.addEpisodeOfCare(VersionConvertor_10_30.convertReference(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getIncomingReferral()) tgt.addIncomingReferral(VersionConvertor_10_30.convertReference(t));
+        for (org.hl7.fhir.dstu2.model.Encounter.EncounterParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertEncounterParticipantComponent(t));
+        if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_10_30.convertReference(src.getAppointment()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
-        if (src.hasLength()) {
+        if (src.hasLength())
             tgt.setLength(VersionConvertor_10_30.convertDuration(src.getLength()));
-        }
-        if (src.hasReason()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasHospitalization()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasHospitalization())
             tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent t : src.getLocation()) tgt.addLocation(convertEncounterLocationComponent(t));
-        }
-        if (src.hasServiceProvider()) {
+        for (org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent t : src.getLocation()) tgt.addLocation(convertEncounterLocationComponent(t));
+        if (src.hasServiceProvider())
             tgt.setServiceProvider(VersionConvertor_10_30.convertReference(src.getServiceProvider()));
-        }
-        if (src.hasPartOf()) {
+        if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_10_30.convertReference(src.getPartOf()));
-        }
         return tgt;
     }
 
@@ -70,57 +45,33 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Encounter tgt = new org.hl7.fhir.dstu2.model.Encounter();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasStatus()) {
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasStatus())
             tgt.setStatus(convertEncounterState(src.getStatus()));
-        }
-        if (src.hasClass_()) {
+        if (src.hasClass_())
             tgt.setClass_(convertEncounterClass(src.getClass_()));
-        }
-        if (src.hasType()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasPriority()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasPriority())
             tgt.setPriority(VersionConvertor_10_30.convertCodeableConcept(src.getPriority()));
-        }
-        if (src.hasSubject()) {
+        if (src.hasSubject())
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getSubject()));
-        }
-        if (src.hasEpisodeOfCare()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getEpisodeOfCare()) tgt.addEpisodeOfCare(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasIncomingReferral()) {
-            for (org.hl7.fhir.dstu3.model.Reference t : src.getIncomingReferral()) tgt.addIncomingReferral(VersionConvertor_10_30.convertReference(t));
-        }
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertEncounterParticipantComponent(t));
-        }
-        if (src.hasAppointment()) {
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getEpisodeOfCare()) tgt.addEpisodeOfCare(VersionConvertor_10_30.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getIncomingReferral()) tgt.addIncomingReferral(VersionConvertor_10_30.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertEncounterParticipantComponent(t));
+        if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_10_30.convertReference(src.getAppointment()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
-        if (src.hasLength()) {
+        if (src.hasLength())
             tgt.setLength(VersionConvertor_10_30.convertDuration(src.getLength()));
-        }
-        if (src.hasReason()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasHospitalization()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasHospitalization())
             tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
-        }
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent t : src.getLocation()) tgt.addLocation(convertEncounterLocationComponent(t));
-        }
-        if (src.hasServiceProvider()) {
+        for (org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent t : src.getLocation()) tgt.addLocation(convertEncounterLocationComponent(t));
+        if (src.hasServiceProvider())
             tgt.setServiceProvider(VersionConvertor_10_30.convertReference(src.getServiceProvider()));
-        }
-        if (src.hasPartOf()) {
+        if (src.hasPartOf())
             tgt.setPartOf(VersionConvertor_10_30.convertReference(src.getPartOf()));
-        }
         return tgt;
     }
 
@@ -176,33 +127,21 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasPreAdmissionIdentifier()) {
+        if (src.hasPreAdmissionIdentifier())
             tgt.setPreAdmissionIdentifier(VersionConvertor_10_30.convertIdentifier(src.getPreAdmissionIdentifier()));
-        }
-        if (src.hasOrigin()) {
+        if (src.hasOrigin())
             tgt.setOrigin(VersionConvertor_10_30.convertReference(src.getOrigin()));
-        }
-        if (src.hasAdmitSource()) {
+        if (src.hasAdmitSource())
             tgt.setAdmitSource(VersionConvertor_10_30.convertCodeableConcept(src.getAdmitSource()));
-        }
-        if (src.hasReAdmission()) {
+        if (src.hasReAdmission())
             tgt.setReAdmission(VersionConvertor_10_30.convertCodeableConcept(src.getReAdmission()));
-        }
-        if (src.hasDietPreference()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getDietPreference()) tgt.addDietPreference(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialCourtesy()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialCourtesy()) tgt.addSpecialCourtesy(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialArrangement()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialArrangement()) tgt.addSpecialArrangement(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasDestination()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getDietPreference()) tgt.addDietPreference(VersionConvertor_10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialCourtesy()) tgt.addSpecialCourtesy(VersionConvertor_10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialArrangement()) tgt.addSpecialArrangement(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasDestination())
             tgt.setDestination(VersionConvertor_10_30.convertReference(src.getDestination()));
-        }
-        if (src.hasDischargeDisposition()) {
+        if (src.hasDischargeDisposition())
             tgt.setDischargeDisposition(VersionConvertor_10_30.convertCodeableConcept(src.getDischargeDisposition()));
-        }
         return tgt;
     }
 
@@ -211,33 +150,21 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.dstu2.model.Encounter.EncounterHospitalizationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasPreAdmissionIdentifier()) {
+        if (src.hasPreAdmissionIdentifier())
             tgt.setPreAdmissionIdentifier(VersionConvertor_10_30.convertIdentifier(src.getPreAdmissionIdentifier()));
-        }
-        if (src.hasOrigin()) {
+        if (src.hasOrigin())
             tgt.setOrigin(VersionConvertor_10_30.convertReference(src.getOrigin()));
-        }
-        if (src.hasAdmitSource()) {
+        if (src.hasAdmitSource())
             tgt.setAdmitSource(VersionConvertor_10_30.convertCodeableConcept(src.getAdmitSource()));
-        }
-        if (src.hasReAdmission()) {
+        if (src.hasReAdmission())
             tgt.setReAdmission(VersionConvertor_10_30.convertCodeableConcept(src.getReAdmission()));
-        }
-        if (src.hasDietPreference()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getDietPreference()) tgt.addDietPreference(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialCourtesy()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialCourtesy()) tgt.addSpecialCourtesy(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasSpecialArrangement()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialArrangement()) tgt.addSpecialArrangement(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasDestination()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getDietPreference()) tgt.addDietPreference(VersionConvertor_10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialCourtesy()) tgt.addSpecialCourtesy(VersionConvertor_10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialArrangement()) tgt.addSpecialArrangement(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasDestination())
             tgt.setDestination(VersionConvertor_10_30.convertReference(src.getDestination()));
-        }
-        if (src.hasDischargeDisposition()) {
+        if (src.hasDischargeDisposition())
             tgt.setDischargeDisposition(VersionConvertor_10_30.convertCodeableConcept(src.getDischargeDisposition()));
-        }
         return tgt;
     }
 
@@ -246,15 +173,12 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLocation()) {
+        if (src.hasLocation())
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        }
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertEncounterLocationStatus(src.getStatus()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
         return tgt;
     }
 
@@ -263,15 +187,12 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent tgt = new org.hl7.fhir.dstu2.model.Encounter.EncounterLocationComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasLocation()) {
+        if (src.hasLocation())
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        }
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertEncounterLocationStatus(src.getStatus()));
-        }
-        if (src.hasPeriod()) {
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
         return tgt;
     }
 
@@ -314,15 +235,11 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Encounter.EncounterParticipantComponent tgt = new org.hl7.fhir.dstu2.model.Encounter.EncounterParticipantComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasPeriod()) {
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
-        if (src.hasIndividual()) {
+        if (src.hasIndividual())
             tgt.setIndividual(VersionConvertor_10_30.convertReference(src.getIndividual()));
-        }
         return tgt;
     }
 
@@ -331,15 +248,11 @@ public class Encounter10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
-        if (src.hasType()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
-        }
-        if (src.hasPeriod()) {
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_30.convertCodeableConcept(t));
+        if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_30.convertPeriod(src.getPeriod()));
-        }
-        if (src.hasIndividual()) {
+        if (src.hasIndividual())
             tgt.setIndividual(VersionConvertor_10_30.convertReference(src.getIndividual()));
-        }
         return tgt;
     }
 

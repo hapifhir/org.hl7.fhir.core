@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.dstu2.model.DateTimeType;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class Device10_30 {
 
@@ -12,47 +10,35 @@ public class Device10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Device tgt = new org.hl7.fhir.dstu2.model.Device();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         if (src.hasUdi())
             tgt.setUdi(src.getUdi().getDeviceIdentifier());
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertDeviceStatus(src.getStatus()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
         if (src.hasLotNumberElement())
-            tgt.setLotNumberElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+            tgt.setLotNumberElement(VersionConvertor_10_30.convertString(src.getLotNumberElement()));
         if (src.hasManufacturerElement())
-            tgt.setManufacturerElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getManufacturerElement()));
+            tgt.setManufacturerElement(VersionConvertor_10_30.convertString(src.getManufacturerElement()));
         if (src.hasManufactureDateElement())
-            tgt.setManufactureDateElement((org.hl7.fhir.dstu2.model.DateTimeType) VersionConvertor_10_30.convertType(src.getManufactureDateElement()));
-        if (src.hasExpirationDateElement()) {
-            tgt.setExpiryElement((DateTimeType) VersionConvertor_10_30.convertType(src.getExpirationDateElement()));
-        }
+            tgt.setManufactureDateElement(VersionConvertor_10_30.convertDateTime(src.getManufactureDateElement()));
+        if (src.hasExpirationDateElement())
+            tgt.setExpiryElement(VersionConvertor_10_30.convertDateTime(src.getExpirationDateElement()));
         if (src.hasModelElement())
-            tgt.setModelElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getModelElement()));
+            tgt.setModelElement(VersionConvertor_10_30.convertString(src.getModelElement()));
         if (src.hasVersionElement())
-            tgt.setVersionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getVersionElement()));
-        if (src.hasPatient()) {
+            tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
+        if (src.hasPatient())
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        }
-        if (src.hasOwner()) {
+        if (src.hasOwner())
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasLocation()) {
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasLocation())
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        }
         if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu2.model.UriType) VersionConvertor_10_30.convertType(src.getUrlElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
-        }
+            tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
         return tgt;
     }
 
@@ -61,48 +47,35 @@ public class Device10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Device tgt = new org.hl7.fhir.dstu3.model.Device();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasUdi()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasUdi())
             tgt.setUdi((new org.hl7.fhir.dstu3.model.Device.DeviceUdiComponent()).setDeviceIdentifier(src.getUdi()));
-        }
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertDeviceStatus(src.getStatus()));
-        }
-        if (src.hasType()) {
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
         if (src.hasLotNumberElement())
-            tgt.setLotNumberElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getLotNumberElement()));
+            tgt.setLotNumberElement(VersionConvertor_10_30.convertString(src.getLotNumberElement()));
         if (src.hasManufacturerElement())
-            tgt.setManufacturerElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getManufacturerElement()));
+            tgt.setManufacturerElement(VersionConvertor_10_30.convertString(src.getManufacturerElement()));
         if (src.hasManufactureDateElement())
-            tgt.setManufactureDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getManufactureDateElement()));
-        if (src.hasExpiryElement()) {
-            tgt.setExpirationDateElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_10_30.convertType(src.getExpiryElement()));
-        }
+            tgt.setManufactureDateElement(VersionConvertor_10_30.convertDateTime(src.getManufactureDateElement()));
+        if (src.hasExpiryElement())
+            tgt.setExpirationDateElement(VersionConvertor_10_30.convertDateTime(src.getExpiryElement()));
         if (src.hasModelElement())
-            tgt.setModelElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getModelElement()));
+            tgt.setModelElement(VersionConvertor_10_30.convertString(src.getModelElement()));
         if (src.hasVersionElement())
-            tgt.setVersionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getVersionElement()));
-        if (src.hasPatient()) {
+            tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
+        if (src.hasPatient())
             tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
-        }
-        if (src.hasOwner()) {
+        if (src.hasOwner())
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        }
-        if (src.hasContact()) {
-            for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
-        }
-        if (src.hasLocation()) {
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_30.convertContactPoint(t));
+        if (src.hasLocation())
             tgt.setLocation(VersionConvertor_10_30.convertReference(src.getLocation()));
-        }
         if (src.hasUrlElement())
-            tgt.setUrlElement((org.hl7.fhir.dstu3.model.UriType) VersionConvertor_10_30.convertType(src.getUrlElement()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.dstu2.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
-        }
+            tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu2.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(t));
         return tgt;
     }
 

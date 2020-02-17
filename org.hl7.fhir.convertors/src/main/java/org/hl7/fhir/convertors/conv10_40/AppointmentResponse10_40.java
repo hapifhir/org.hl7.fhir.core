@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class AppointmentResponse10_40 {
 
@@ -11,27 +10,20 @@ public class AppointmentResponse10_40 {
             return null;
         org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        }
-        if (src.hasAppointment()) {
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_10_40.convertReference(src.getAppointment()));
-        }
         if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_10_40.convertType(src.getStartElement()));
+            tgt.setStartElement(VersionConvertor_10_40.convertInstant(src.getStartElement()));
         if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.r4.model.InstantType) VersionConvertor_10_40.convertType(src.getEndElement()));
-        if (src.hasParticipantType()) {
-            for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_40.convertCodeableConcept(t));
-        }
-        if (src.hasActor()) {
+            tgt.setEndElement(VersionConvertor_10_40.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_40.convertCodeableConcept(t));
+        if (src.hasActor())
             tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
-        }
-        if (src.hasParticipantStatus()) {
+        if (src.hasParticipantStatus())
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-        }
         if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.r4.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
+            tgt.setCommentElement(VersionConvertor_10_40.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -40,27 +32,20 @@ public class AppointmentResponse10_40 {
             return null;
         org.hl7.fhir.dstu2.model.AppointmentResponse tgt = new org.hl7.fhir.dstu2.model.AppointmentResponse();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
-        }
-        if (src.hasAppointment()) {
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        if (src.hasAppointment())
             tgt.setAppointment(VersionConvertor_10_40.convertReference(src.getAppointment()));
-        }
         if (src.hasStartElement())
-            tgt.setStartElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_40.convertType(src.getStartElement()));
+            tgt.setStartElement(VersionConvertor_10_40.convertInstant(src.getStartElement()));
         if (src.hasEndElement())
-            tgt.setEndElement((org.hl7.fhir.dstu2.model.InstantType) VersionConvertor_10_40.convertType(src.getEndElement()));
-        if (src.hasParticipantType()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_40.convertCodeableConcept(t));
-        }
-        if (src.hasActor()) {
+            tgt.setEndElement(VersionConvertor_10_40.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_10_40.convertCodeableConcept(t));
+        if (src.hasActor())
             tgt.setActor(VersionConvertor_10_40.convertReference(src.getActor()));
-        }
-        if (src.hasParticipantStatus()) {
+        if (src.hasParticipantStatus())
             tgt.setParticipantStatus(convertParticipantStatus(src.getParticipantStatus()));
-        }
         if (src.hasCommentElement())
-            tgt.setCommentElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_40.convertType(src.getCommentElement()));
+            tgt.setCommentElement(VersionConvertor_10_40.convertString(src.getCommentElement()));
         return tgt;
     }
 

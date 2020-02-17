@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.Collections;
 
 public class PaymentNotice30_50 {
 
@@ -11,9 +10,7 @@ public class PaymentNotice30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PaymentNotice tgt = new org.hl7.fhir.dstu3.model.PaymentNotice();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
         if (src.hasRequest())
@@ -21,9 +18,9 @@ public class PaymentNotice30_50 {
         if (src.hasResponse())
             tgt.setResponse(VersionConvertor_30_50.convertReference(src.getResponse()));
         if (src.hasPaymentDate())
-            tgt.setStatusDate(src.getPaymentDate());
-        if (src.hasCreatedElement())
-            tgt.setCreatedElement((org.hl7.fhir.dstu3.model.DateTimeType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
+            tgt.setStatusDateElement(VersionConvertor_30_50.convertDate(src.getPaymentDateElement()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(VersionConvertor_30_50.convertDateTime(src.getCreatedElement()));
         if (src.hasRecipient())
             tgt.setTarget(VersionConvertor_30_50.convertReference(src.getRecipient()));
         if (src.hasProvider())
@@ -38,9 +35,7 @@ public class PaymentNotice30_50 {
             return null;
         org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertPaymentNoticeStatus(src.getStatus()));
         if (src.hasRequest())
@@ -48,9 +43,9 @@ public class PaymentNotice30_50 {
         if (src.hasResponse())
             tgt.setResponse(VersionConvertor_30_50.convertReference(src.getResponse()));
         if (src.hasStatusDate())
-            tgt.setPaymentDate(src.getStatusDate());
-        if (src.hasCreatedElement())
-            tgt.setCreatedElement((org.hl7.fhir.r5.model.DateTimeType) VersionConvertor_30_50.convertType(src.getCreatedElement()));
+            tgt.setPaymentDateElement(VersionConvertor_30_50.convertDate(src.getStatusDateElement()));
+        if (src.hasCreated())
+            tgt.setCreatedElement(VersionConvertor_30_50.convertDateTime(src.getCreatedElement()));
         if (src.hasTarget())
             tgt.setRecipient(VersionConvertor_30_50.convertReference(src.getTarget()));
         if (src.hasProvider())

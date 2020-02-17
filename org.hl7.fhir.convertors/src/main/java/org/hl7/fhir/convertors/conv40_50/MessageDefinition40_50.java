@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,18 +60,14 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
@@ -80,41 +76,27 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasBase())
             tgt.setBaseElement(convertCanonical(src.getBaseElement()));
-        if (src.hasParent()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getParent()) tgt.getParent().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getParent()) tgt.getParent().add(convertCanonical(t));
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
         if (src.hasCategory())
             tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
-        if (src.hasFocus()) {
-            for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
             tgt.setResponseRequired(convertMessageheaderResponseRequest(src.getResponseRequired()));
-        if (src.hasAllowedResponse()) {
-            for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-        }
-        if (src.hasGraph()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
         return tgt;
     }
 
@@ -125,18 +107,14 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasVersion())
             tgt.setVersionElement(convertString(src.getVersionElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
             tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
         if (src.hasExperimental())
@@ -145,41 +123,27 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
-        if (src.hasJurisdiction()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasBase())
             tgt.setBaseElement(convertCanonical(src.getBaseElement()));
-        if (src.hasParent()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getParent()) tgt.getParent().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getParent()) tgt.getParent().add(convertCanonical(t));
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
         if (src.hasCategory())
             tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
-        if (src.hasFocus()) {
-            for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
             tgt.setResponseRequired(convertMessageheaderResponseRequest(src.getResponseRequired()));
-        if (src.hasAllowedResponse()) {
-            for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-        }
-        if (src.hasGraph()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
-        }
+        for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
         return tgt;
     }
 

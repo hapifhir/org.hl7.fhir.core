@@ -19,9 +19,9 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,21 +59,11 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.RequestGroup tgt = new org.hl7.fhir.r5.model.RequestGroup();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
@@ -92,18 +82,10 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.setAuthoredOnElement(convertDateTime(src.getAuthoredOnElement()));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
-        if (src.hasReasonCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        }
-        if (src.hasReasonReference()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
-        }
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
         return tgt;
     }
 
@@ -112,21 +94,11 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.RequestGroup tgt = new org.hl7.fhir.r4.model.RequestGroup();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
-        if (src.hasInstantiatesCanonical()) {
-            for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
-        }
-        if (src.hasInstantiatesUri()) {
-            for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
-        }
-        if (src.hasBasedOn()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
-        }
-        if (src.hasReplaces()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
+        for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
@@ -149,12 +121,8 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasNote()) {
-            for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        }
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
+        for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
         return tgt;
     }
 
@@ -307,23 +275,13 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
             tgt.setPriority(convertRequestPriority(src.getPriority()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasDocumentation()) {
-            for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
-        }
-        if (src.hasCondition()) {
-            for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
-        }
-        if (src.hasRelatedAction()) {
-            for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertRequestGroupActionRelatedActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
+        for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
+        for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertRequestGroupActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getParticipant()) tgt.addParticipant(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getParticipant()) tgt.addParticipant(convertReference(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasGroupingBehavior())
@@ -338,9 +296,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
         return tgt;
     }
 
@@ -359,23 +315,13 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
             tgt.setPriority(convertRequestPriority(src.getPriority()));
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasDocumentation()) {
-            for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
-        }
-        if (src.hasCondition()) {
-            for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
-        }
-        if (src.hasRelatedAction()) {
-            for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertRequestGroupActionRelatedActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
+        for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
+        for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertRequestGroupActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
-        if (src.hasParticipant()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getParticipant()) tgt.addParticipant(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getParticipant()) tgt.addParticipant(convertReference(t));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasGroupingBehavior())
@@ -390,9 +336,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
             tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
-        if (src.hasAction()) {
-            for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
         return tgt;
     }
 

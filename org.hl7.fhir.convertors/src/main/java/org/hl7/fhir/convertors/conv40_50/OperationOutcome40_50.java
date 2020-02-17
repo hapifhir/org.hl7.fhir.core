@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class OperationOutcome40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.OperationOutcome tgt = new org.hl7.fhir.r5.model.OperationOutcome();
         copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -69,9 +67,7 @@ public class OperationOutcome40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
         copyDomainResource(src, tgt);
-        if (src.hasIssue()) {
-            for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
 
@@ -88,12 +84,8 @@ public class OperationOutcome40_50 extends VersionConvertor_40_50 {
             tgt.setDetails(convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())
             tgt.setDiagnosticsElement(convertString(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.getLocation().add(convertString(t));
-        }
-        if (src.hasExpression()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.getExpression().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.getLocation().add(convertString(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.getExpression().add(convertString(t));
         return tgt;
     }
 
@@ -110,12 +102,8 @@ public class OperationOutcome40_50 extends VersionConvertor_40_50 {
             tgt.setDetails(convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())
             tgt.setDiagnosticsElement(convertString(src.getDiagnosticsElement()));
-        if (src.hasLocation()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.getLocation().add(convertString(t));
-        }
-        if (src.hasExpression()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getExpression()) tgt.getExpression().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.getLocation().add(convertString(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getExpression()) tgt.getExpression().add(convertString(t));
         return tgt;
     }
 

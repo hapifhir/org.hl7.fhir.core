@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,9 +62,7 @@ public class Linkage40_50 extends VersionConvertor_40_50 {
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
         return tgt;
     }
 
@@ -77,9 +75,7 @@ public class Linkage40_50 extends VersionConvertor_40_50 {
             tgt.setActiveElement(convertBoolean(src.getActiveElement()));
         if (src.hasAuthor())
             tgt.setAuthor(convertReference(src.getAuthor()));
-        if (src.hasItem()) {
-            for (org.hl7.fhir.r5.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Linkage.LinkageItemComponent t : src.getItem()) tgt.addItem(convertLinkageItemComponent(t));
         return tgt;
     }
 

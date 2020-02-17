@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -68,28 +68,16 @@ public class SubstanceSourceMaterial40_50 extends VersionConvertor_40_50 {
             tgt.setOrganismId(convertIdentifier(src.getOrganismId()));
         if (src.hasOrganismName())
             tgt.setOrganismNameElement(convertString(src.getOrganismNameElement()));
-        if (src.hasParentSubstanceId()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getParentSubstanceId()) tgt.addParentSubstanceId(convertIdentifier(t));
-        }
-        if (src.hasParentSubstanceName()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getParentSubstanceName()) tgt.getParentSubstanceName().add(convertString(t));
-        }
-        if (src.hasCountryOfOrigin()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCountryOfOrigin()) tgt.addCountryOfOrigin(convertCodeableConcept(t));
-        }
-        if (src.hasGeographicalLocation()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getGeographicalLocation()) tgt.getGeographicalLocation().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getParentSubstanceId()) tgt.addParentSubstanceId(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getParentSubstanceName()) tgt.getParentSubstanceName().add(convertString(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCountryOfOrigin()) tgt.addCountryOfOrigin(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getGeographicalLocation()) tgt.getGeographicalLocation().add(convertString(t));
         if (src.hasDevelopmentStage())
             tgt.setDevelopmentStage(convertCodeableConcept(src.getDevelopmentStage()));
-        if (src.hasFractionDescription()) {
-            for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent t : src.getFractionDescription()) tgt.addFractionDescription(convertSubstanceSourceMaterialFractionDescriptionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent t : src.getFractionDescription()) tgt.addFractionDescription(convertSubstanceSourceMaterialFractionDescriptionComponent(t));
         if (src.hasOrganism())
             tgt.setOrganism(convertSubstanceSourceMaterialOrganismComponent(src.getOrganism()));
-        if (src.hasPartDescription()) {
-            for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent t : src.getPartDescription()) tgt.addPartDescription(convertSubstanceSourceMaterialPartDescriptionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent t : src.getPartDescription()) tgt.addPartDescription(convertSubstanceSourceMaterialPartDescriptionComponent(t));
         return tgt;
     }
 
@@ -108,28 +96,16 @@ public class SubstanceSourceMaterial40_50 extends VersionConvertor_40_50 {
             tgt.setOrganismId(convertIdentifier(src.getOrganismId()));
         if (src.hasOrganismName())
             tgt.setOrganismNameElement(convertString(src.getOrganismNameElement()));
-        if (src.hasParentSubstanceId()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getParentSubstanceId()) tgt.addParentSubstanceId(convertIdentifier(t));
-        }
-        if (src.hasParentSubstanceName()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getParentSubstanceName()) tgt.getParentSubstanceName().add(convertString(t));
-        }
-        if (src.hasCountryOfOrigin()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCountryOfOrigin()) tgt.addCountryOfOrigin(convertCodeableConcept(t));
-        }
-        if (src.hasGeographicalLocation()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getGeographicalLocation()) tgt.getGeographicalLocation().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getParentSubstanceId()) tgt.addParentSubstanceId(convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getParentSubstanceName()) tgt.getParentSubstanceName().add(convertString(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCountryOfOrigin()) tgt.addCountryOfOrigin(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.StringType t : src.getGeographicalLocation()) tgt.getGeographicalLocation().add(convertString(t));
         if (src.hasDevelopmentStage())
             tgt.setDevelopmentStage(convertCodeableConcept(src.getDevelopmentStage()));
-        if (src.hasFractionDescription()) {
-            for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent t : src.getFractionDescription()) tgt.addFractionDescription(convertSubstanceSourceMaterialFractionDescriptionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent t : src.getFractionDescription()) tgt.addFractionDescription(convertSubstanceSourceMaterialFractionDescriptionComponent(t));
         if (src.hasOrganism())
             tgt.setOrganism(convertSubstanceSourceMaterialOrganismComponent(src.getOrganism()));
-        if (src.hasPartDescription()) {
-            for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent t : src.getPartDescription()) tgt.addPartDescription(convertSubstanceSourceMaterialPartDescriptionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent t : src.getPartDescription()) tgt.addPartDescription(convertSubstanceSourceMaterialPartDescriptionComponent(t));
         return tgt;
     }
 
@@ -172,9 +148,7 @@ public class SubstanceSourceMaterial40_50 extends VersionConvertor_40_50 {
             tgt.setIntraspecificType(convertCodeableConcept(src.getIntraspecificType()));
         if (src.hasIntraspecificDescription())
             tgt.setIntraspecificDescriptionElement(convertString(src.getIntraspecificDescriptionElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent t : src.getAuthor()) tgt.addAuthor(convertSubstanceSourceMaterialOrganismAuthorComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent t : src.getAuthor()) tgt.addAuthor(convertSubstanceSourceMaterialOrganismAuthorComponent(t));
         if (src.hasHybrid())
             tgt.setHybrid(convertSubstanceSourceMaterialOrganismHybridComponent(src.getHybrid()));
         if (src.hasOrganismGeneral())
@@ -197,9 +171,7 @@ public class SubstanceSourceMaterial40_50 extends VersionConvertor_40_50 {
             tgt.setIntraspecificType(convertCodeableConcept(src.getIntraspecificType()));
         if (src.hasIntraspecificDescription())
             tgt.setIntraspecificDescriptionElement(convertString(src.getIntraspecificDescriptionElement()));
-        if (src.hasAuthor()) {
-            for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent t : src.getAuthor()) tgt.addAuthor(convertSubstanceSourceMaterialOrganismAuthorComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent t : src.getAuthor()) tgt.addAuthor(convertSubstanceSourceMaterialOrganismAuthorComponent(t));
         if (src.hasHybrid())
             tgt.setHybrid(convertSubstanceSourceMaterialOrganismHybridComponent(src.getHybrid()));
         if (src.hasOrganismGeneral())

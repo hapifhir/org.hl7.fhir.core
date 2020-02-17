@@ -10,31 +10,23 @@ public class Account10_30 {
             return null;
         org.hl7.fhir.dstu2.model.Account tgt = new org.hl7.fhir.dstu2.model.Account();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
-        if (src.hasType()) {
+            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
+        if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        }
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertAccountStatus(src.getStatus()));
-        }
-        if (src.hasActive()) {
+        if (src.hasActive())
             tgt.setActivePeriod(VersionConvertor_10_30.convertPeriod(src.getActive()));
-        }
-        if (src.hasBalance()) {
+        if (src.hasBalance())
             tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
-        }
-        if (src.hasSubject()) {
+        if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        }
-        if (src.hasOwner()) {
+        if (src.hasOwner())
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        }
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu2.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         return tgt;
     }
 
@@ -43,30 +35,23 @@ public class Account10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Account tgt = new org.hl7.fhir.dstu3.model.Account();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
-        }
-        if (src.hasNameElement())
-            tgt.setNameElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getNameElement()));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        if (src.hasName())
+            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
-        if (src.hasStatus()) {
+        if (src.hasStatus())
             tgt.setStatus(convertAccountStatus(src.getStatus()));
-        }
-        if (src.hasActivePeriod()) {
+        if (src.hasActivePeriod())
             tgt.setActive(VersionConvertor_10_30.convertPeriod(src.getActivePeriod()));
-        }
-        if (src.hasBalance()) {
+        if (src.hasBalance())
             tgt.setBalance(VersionConvertor_10_30.convertMoney(src.getBalance()));
-        }
-        if (src.hasSubject()) {
+        if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
-        }
-        if (src.hasOwner()) {
+        if (src.hasOwner())
             tgt.setOwner(VersionConvertor_10_30.convertReference(src.getOwner()));
-        }
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement((org.hl7.fhir.dstu3.model.StringType) VersionConvertor_10_30.convertType(src.getDescriptionElement()));
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         return tgt;
     }
 

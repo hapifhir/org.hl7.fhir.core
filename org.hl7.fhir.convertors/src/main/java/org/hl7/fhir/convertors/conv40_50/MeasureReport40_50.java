@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.MeasureReport tgt = new org.hl7.fhir.r5.model.MeasureReport();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertMeasureReportStatus(src.getStatus()));
         if (src.hasType())
@@ -77,12 +75,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasImprovementNotation())
             tgt.setImprovementNotation(convertCodeableConcept(src.getImprovementNotation()));
-        if (src.hasGroup()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent t : src.getGroup()) tgt.addGroup(convertMeasureReportGroupComponent(t));
-        }
-        if (src.hasEvaluatedResource()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getEvaluatedResource()) tgt.addEvaluatedResource(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent t : src.getGroup()) tgt.addGroup(convertMeasureReportGroupComponent(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getEvaluatedResource()) tgt.addEvaluatedResource(convertReference(t));
         return tgt;
     }
 
@@ -91,9 +85,7 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.MeasureReport tgt = new org.hl7.fhir.r4.model.MeasureReport();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertMeasureReportStatus(src.getStatus()));
         if (src.hasType())
@@ -110,12 +102,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasImprovementNotation())
             tgt.setImprovementNotation(convertCodeableConcept(src.getImprovementNotation()));
-        if (src.hasGroup()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent t : src.getGroup()) tgt.addGroup(convertMeasureReportGroupComponent(t));
-        }
-        if (src.hasEvaluatedResource()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getEvaluatedResource()) tgt.addEvaluatedResource(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent t : src.getGroup()) tgt.addGroup(convertMeasureReportGroupComponent(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getEvaluatedResource()) tgt.addEvaluatedResource(convertReference(t));
         return tgt;
     }
 
@@ -190,14 +178,10 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasPopulation()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
         if (src.hasMeasureScore())
             tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
-        if (src.hasStratifier()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifier()) tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifier()) tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
         return tgt;
     }
 
@@ -208,14 +192,10 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasPopulation()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
         if (src.hasMeasureScore())
             tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
-        if (src.hasStratifier()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifier()) tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifier()) tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
         return tgt;
     }
 
@@ -252,12 +232,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasStratum()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent t : src.getStratum()) tgt.addStratum(convertStratifierGroupComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent t : src.getStratum()) tgt.addStratum(convertStratifierGroupComponent(t));
         return tgt;
     }
 
@@ -266,12 +242,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent();
         copyElement(src, tgt);
-        if (src.hasCode()) {
-            for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
-        }
-        if (src.hasStratum()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent t : src.getStratum()) tgt.addStratum(convertStratifierGroupComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent t : src.getStratum()) tgt.addStratum(convertStratifierGroupComponent(t));
         return tgt;
     }
 
@@ -282,12 +254,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasValue())
             tgt.setValue(convertCodeableConcept(src.getValue()));
-        if (src.hasComponent()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent()) tgt.addComponent(convertStratifierGroupComponentComponent(t));
-        }
-        if (src.hasPopulation()) {
-            for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent()) tgt.addComponent(convertStratifierGroupComponentComponent(t));
+        for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
         if (src.hasMeasureScore())
             tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
         return tgt;
@@ -300,12 +268,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasValue())
             tgt.setValue(convertCodeableConcept(src.getValue()));
-        if (src.hasComponent()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent()) tgt.addComponent(convertStratifierGroupComponentComponent(t));
-        }
-        if (src.hasPopulation()) {
-            for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent()) tgt.addComponent(convertStratifierGroupComponentComponent(t));
+        for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
         if (src.hasMeasureScore())
             tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
         return tgt;

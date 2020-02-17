@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,9 +58,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Coverage tgt = new org.hl7.fhir.r5.model.Coverage();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertCoverageStatus(src.getStatus()));
         if (src.hasType())
@@ -79,24 +77,16 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasPayor()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.r4.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
+        for (org.hl7.fhir.r4.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
         if (src.hasOrder())
             tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
         if (src.hasNetwork())
             tgt.setNetworkElement(convertString(src.getNetworkElement()));
-        if (src.hasCostToBeneficiary()) {
-            for (org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
         if (src.hasSubrogation())
             tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
-        if (src.hasContract()) {
-            for (org.hl7.fhir.r4.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
-        }
+        for (org.hl7.fhir.r4.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
         return tgt;
     }
 
@@ -105,9 +95,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Coverage tgt = new org.hl7.fhir.r4.model.Coverage();
         copyDomainResource(src, tgt);
-        if (src.hasIdentifier()) {
-            for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
-        }
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatus(convertCoverageStatus(src.getStatus()));
         if (src.hasType())
@@ -126,24 +114,16 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             tgt.setRelationship(convertCodeableConcept(src.getRelationship()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
-        if (src.hasPayor()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
-        }
-        if (src.hasClass_()) {
-            for (org.hl7.fhir.r5.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getPayor()) tgt.addPayor(convertReference(t));
+        for (org.hl7.fhir.r5.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
         if (src.hasOrder())
             tgt.setOrderElement(convertPositiveInt(src.getOrderElement()));
         if (src.hasNetwork())
             tgt.setNetworkElement(convertString(src.getNetworkElement()));
-        if (src.hasCostToBeneficiary()) {
-            for (org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent t : src.getCostToBeneficiary()) tgt.addCostToBeneficiary(convertCostToBeneficiaryComponent(t));
         if (src.hasSubrogation())
             tgt.setSubrogationElement(convertBoolean(src.getSubrogationElement()));
-        if (src.hasContract()) {
-            for (org.hl7.fhir.r5.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
-        }
+        for (org.hl7.fhir.r5.model.Reference t : src.getContract()) tgt.addContract(convertReference(t));
         return tgt;
     }
 
@@ -218,9 +198,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasValue())
             tgt.setValue(convertType(src.getValue()));
-        if (src.hasException()) {
-            for (org.hl7.fhir.r4.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
         return tgt;
     }
 
@@ -233,9 +211,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasValue())
             tgt.setValue(convertType(src.getValue()));
-        if (src.hasException()) {
-            for (org.hl7.fhir.r5.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.Coverage.ExemptionComponent t : src.getException()) tgt.addException(convertExemptionComponent(t));
         return tgt;
     }
 

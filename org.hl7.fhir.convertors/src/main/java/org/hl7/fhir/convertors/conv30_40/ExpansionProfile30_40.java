@@ -5,7 +5,6 @@ import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationCo
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Type;
-import java.util.Collections;
 
 public class ExpansionProfile30_40 {
 
@@ -30,9 +29,7 @@ public class ExpansionProfile30_40 {
                 tgt.addParameter("force-system-version", t.getSystem() + "|" + t.getVersion());
         }
         if (src.hasExcludedSystem()) {
-            if (src.hasExcludedSystem()) {
-                tgt.addParameter("exclude-system", src.getExcludedSystem().getSystem() + "|" + src.getExcludedSystem().getVersion());
-            }
+            tgt.addParameter("exclude-system", src.getExcludedSystem().getSystem() + "|" + src.getExcludedSystem().getVersion());
         }
         if (src.hasIncludeDesignations())
             tgt.addParameter("includeDesignations", src.getIncludeDesignations());

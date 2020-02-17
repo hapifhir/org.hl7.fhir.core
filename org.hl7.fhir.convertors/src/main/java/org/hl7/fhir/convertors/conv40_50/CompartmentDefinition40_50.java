@@ -19,8 +19,8 @@ package org.hl7.fhir.convertors.conv40_50;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -72,23 +72,17 @@ public class CompartmentDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCode(convertCompartmentType(src.getCode()));
         if (src.hasSearch())
             tgt.setSearchElement(convertBoolean(src.getSearchElement()));
-        if (src.hasResource()) {
-            for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
-        }
+        for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
         return tgt;
     }
 
@@ -111,23 +105,17 @@ public class CompartmentDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDateElement(convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
             tgt.setPublisherElement(convertString(src.getPublisherElement()));
-        if (src.hasContact()) {
-            for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
-        }
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(convertContactDetail(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertMarkdown(src.getDescriptionElement()));
-        if (src.hasUseContext()) {
-            for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
-        }
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(convertUsageContext(t));
         if (src.hasPurpose())
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCode(convertCompartmentType(src.getCode()));
         if (src.hasSearch())
             tgt.setSearchElement(convertBoolean(src.getSearchElement()));
-        if (src.hasResource()) {
-            for (org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
-        }
+        for (org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
         return tgt;
     }
 
@@ -176,9 +164,7 @@ public class CompartmentDefinition40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
-        if (src.hasParam()) {
-            for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.getParam().add(convertString(t));
-        }
+        for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.getParam().add(convertString(t));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
         return tgt;
@@ -191,9 +177,7 @@ public class CompartmentDefinition40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
-        if (src.hasParam()) {
-            for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(convertString(t));
-        }
+        for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(convertString(t));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(convertString(src.getDocumentationElement()));
         return tgt;
