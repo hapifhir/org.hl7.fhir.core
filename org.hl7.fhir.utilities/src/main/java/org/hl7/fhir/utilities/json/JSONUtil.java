@@ -77,6 +77,11 @@ public class JSONUtil {
     return e == null || e instanceof JsonNull ? null : e.getAsString();
   }
 
+  public static boolean bool(JsonObject json, String name) {
+    JsonElement e = json.get(name);
+    return e == null || e instanceof JsonNull ? false : e.getAsBoolean();
+  }
+
   public static String str(JsonObject json, String name1, String name2) {
     JsonElement e = json.get(name1);
     if (e == null)
