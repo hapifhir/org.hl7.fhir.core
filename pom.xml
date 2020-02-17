@@ -113,8 +113,6 @@
                 <artifactId>txtmark</artifactId>
                 <version>0.13</version>
             </dependency>
-
-
         </dependencies>
 
     </dependencyManagement>
