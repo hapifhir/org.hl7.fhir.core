@@ -255,8 +255,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   public static class ResourceContext {
     Bundle bundleResource;
+    org.hl7.fhir.r5.elementmodel.Element bundleElement;
     
     DomainResource resourceResource;
+    org.hl7.fhir.r5.elementmodel.Element resourceElement;
     
     public ResourceContext(Bundle bundle, DomainResource dr) {
       super();
@@ -264,26 +266,56 @@ public class NarrativeGenerator implements INarrativeGenerator {
       this.resourceResource = dr;
     }
 
-    public ResourceContext(Element bundle, Element doc) {
+    public ResourceContext(org.hl7.fhir.r5.elementmodel.Element bundle, org.hl7.fhir.r5.elementmodel.Element dr) {
+      this.bundleElement = bundle;
+      this.resourceElement = dr;
     }
 
-    public ResourceContext(org.hl7.fhir.r5.elementmodel.Element bundle, org.hl7.fhir.r5.elementmodel.Element er) {
+    public ResourceContext(Object bundle, Element doc) {
+      // TODO Auto-generated constructor stub
     }
 
-    public Resource resolve(String value) {
+    public BundleEntryComponent resolve(String value) {
       if (value.startsWith("#")) {
-        for (Resource r : resourceResource.getContained()) {
-          if (r.getId().equals(value.substring(1)))
-            return r;
+        if (resourceResource != null) {
+          for (Resource r : resourceResource.getContained()) {
+            if (r.getId().equals(value.substring(1))) {
+              BundleEntryComponent be = new BundleEntryComponent();
+              be.setResource(r);
+              return be;
+            }
+          }
         }
         return null;
       }
       if (bundleResource != null) {
         for (BundleEntryComponent be : bundleResource.getEntry()) {
           if (be.getFullUrl().equals(value))
-            return be.getResource();
+            return be;
           if (value.equals(be.getResource().fhirType()+"/"+be.getResource().getId()))
-            return be.getResource();
+            return be;
+        }
+      }
+      return null;
+    }
+    
+    public org.hl7.fhir.r5.elementmodel.Element resolveElement(String value) {
+      if (value.startsWith("#")) {
+        if (resourceElement != null) {
+          for (org.hl7.fhir.r5.elementmodel.Element r : resourceElement.getChildrenByName("contained")) {
+            if (r.getChildValue("id").equals(value.substring(1)))
+              return r;
+          }          
+        }
+        return null;
+      }
+      if (bundleElement != null) {
+        for (org.hl7.fhir.r5.elementmodel.Element be : bundleElement.getChildren("entry")) {
+          org.hl7.fhir.r5.elementmodel.Element res = be.getNamedChild("resource");
+          if (value.equals(be.getChildValue("fullUrl")))
+            return be;
+          if (value.equals(res.fhirType()+"/"+res.getChildValue("id")))
+            return be;
         }
       }
       return null;
@@ -1716,10 +1748,20 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     
     if (rc!=null) {
-      Resource bundleResource = rc.resolve(url);
-      if (bundleResource!=null) {
-        String bundleUrl = "#" + bundleResource.getResourceType().name().toLowerCase() + "_" + bundleResource.getId(); 
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(bundleResource));
+      BundleEntryComponent bundleResource = rc.resolve(url);
+      if (bundleResource != null) {
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name().toLowerCase() + "_" + bundleResource.getResource().getId(); 
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(bundleResource.getResource()));
+      }
+      org.hl7.fhir.r5.elementmodel.Element bundleElement = rc.resolveElement(url);
+      if (bundleElement != null) {
+        String bundleUrl = null;
+        if (bundleElement.getNamedChild("resource").getChildValue("id") != null) {
+          bundleUrl = "#" + bundleElement.fhirType().toLowerCase() + "_" + bundleElement.getNamedChild("resource").getChildValue("id");
+        } else {
+          bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
+        }
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(bundleElement));
       }
     }
 
@@ -1730,6 +1772,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return resolver.resolve(url);
     } else
       return null;
+  }
+
+  private String fullUrlToAnchor(String url) {
+    return url.replace(":", "").replace("/", "_");
   }
 
   private void renderCodeableConcept(CodeableConcept cc, XhtmlNode x, boolean showCodeDetails) {
@@ -2321,40 +2367,41 @@ public class NarrativeGenerator implements INarrativeGenerator {
       addMarkdown(x, cm.getDescription());
 
     x.br();
+    
     CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
-      cs = context.fetchCodeSystem("http://hl7.org/fhir/ValueSet/concept-map-equivalence");
+      cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
     String eqpath = cs == null ? null : cs.getUserString("path");
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
       boolean comment = false;
       boolean ok = true;
-    Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
-    Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
+      Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
+      Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
       sources.put("code", new HashSet<String>());
-    targets.put("code", new HashSet<String>());
+      targets.put("code", new HashSet<String>());
       SourceElementComponent cc = grp.getElement().get(0);
       String dst = grp.getTarget();
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty();
-      	for (TargetElementComponent ccm : ccl.getTarget()) {
-      		comment = comment || !Utilities.noString(ccm.getComment());
-      		for (OtherElementComponent d : ccm.getDependsOn()) {
+        for (TargetElementComponent ccm : ccl.getTarget()) {
+          comment = comment || !Utilities.noString(ccm.getComment());
+          for (OtherElementComponent d : ccm.getDependsOn()) {
             if (!sources.containsKey(d.getProperty()))
               sources.put(d.getProperty(), new HashSet<String>());
             sources.get(d.getProperty()).add(d.getSystem());
-      		}
-      		for (OtherElementComponent d : ccm.getProduct()) {
+          }
+          for (OtherElementComponent d : ccm.getProduct()) {
             if (!targets.containsKey(d.getProperty()))
               targets.put(d.getProperty(), new HashSet<String>());
             targets.get(d.getProperty()).add(d.getSystem());
-            }
+          }
 
-      		}
-      	}
+        }
+      }
 
       String display;
       if (ok) {
@@ -2473,7 +2520,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
             display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
             if (display != null)
               td.tx(" ("+display+")");
-  
+
             for (String s : targets.keySet()) {
               if (!s.equals("code")) {
                 td = tr.td();
@@ -3799,7 +3846,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
   private void AddVsRef(ResourceContext rcontext, String value, XhtmlNode li) {
-    Resource res = rcontext == null ? null : rcontext.resolve(value); 
+    Resource res = null;
+    if (rcontext != null) {
+       BundleEntryComponent be = rcontext.resolve(value);
+       if (be != null) {
+         res = be.getResource(); 
+       }
+    }
     if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
       return;      
@@ -4773,6 +4826,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   public XhtmlNode renderBundle(Bundle b) throws FHIRException {
+    System.out.println("render "+b.getId());
     if (b.getType() == BundleType.DOCUMENT) {
       if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition))
         throw new FHIRException("Invalid document - first entry is not a Composition");
@@ -4883,8 +4937,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
   public XhtmlNode renderBundle(org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException {
     XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
     for (Base b : element.listChildrenByName("entry")) {
-      org.hl7.fhir.r5.elementmodel.Element r = ((org.hl7.fhir.r5.elementmodel.Element) b).getNamedChild("resource");
+      org.hl7.fhir.r5.elementmodel.Element be = ((org.hl7.fhir.r5.elementmodel.Element) b);
+      org.hl7.fhir.r5.elementmodel.Element r = be.getNamedChild("resource");
       if (r!=null) {
+        if (r.getChildValue("id") != null) {
+          root.an(r.getChildValue("id"));
+        } else if (be.getChildValue("fullUrl") != null){
+          root.an(fullUrlToAnchor(be.getChildValue("fullUrl")));          
+        }
         XhtmlNode c = getHtmlForResource(r);
         if (c != null)
           root.getChildNodes().addAll(c.getChildNodes());
