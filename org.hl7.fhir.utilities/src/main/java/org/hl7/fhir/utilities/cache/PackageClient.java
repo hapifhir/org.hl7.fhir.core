@@ -55,10 +55,9 @@ public class PackageClient {
     @Override
     public String toString() {
       return id+"#"+(version == null ? "??" : version)+(fhirVersion == null ? "": "for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
-    }
-    
+    }    
   }
-
+ 
   private String address;
 
 
@@ -105,7 +104,7 @@ public class PackageClient {
     }
     return res;    
   }
-  
+   
   private List<String> sorted(Set<String> keys) {
     List<String> res = new ArrayList<>();
     res.addAll(keys);
@@ -134,7 +133,7 @@ public class PackageClient {
         JsonObject obj = (JsonObject) e;
         res.add(new PackageInfo(JSONUtil.str(obj, "Name"), null, JSONUtil.str(obj, "FhirVersion"), JSONUtil.str(obj, "Description"), null));
       }
-    } catch (FileNotFoundException e1) {
+    } catch (IOException e1) {
     }
     return res;    
   }  
@@ -159,6 +158,10 @@ public class PackageClient {
     String src = TextFile.streamToString(fetchUrl(source));
     //System.out.println(src);
     return (JsonArray) new com.google.gson.JsonParser().parse(src);
+  }
+
+  public String url(String id, String v) {
+    return Utilities.pathURL(address, id, v);
   }
   
 
