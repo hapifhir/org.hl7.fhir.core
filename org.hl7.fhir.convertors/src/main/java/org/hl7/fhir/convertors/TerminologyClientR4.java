@@ -25,14 +25,14 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
-import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 
 public class TerminologyClientR4 implements TerminologyClient {
 

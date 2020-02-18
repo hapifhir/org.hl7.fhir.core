@@ -60,19 +60,31 @@ import org.hl7.fhir.r5.model.CodeableReference;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class VersionConvertor_40_50 {
 
-    protected static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.r5.model.Element tgt) throws FHIRException {
+  static public boolean isExemptExtension(String url, String[] extensionsToIgnore) {
+    boolean ok = false;
+    for (String s : extensionsToIgnore) if (s.equals(url))
+        ok = true;
+    return ok;
+}
+
+
+    protected static void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.r5.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
         if (src.hasId())
             tgt.setId(src.getId());
         for (org.hl7.fhir.r4.model.Extension e : src.getExtension()) {
+          if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
             tgt.addExtension(convertExtension(e));
+          }
         }
     }
 
-    protected static void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.r4.model.Element tgt) throws FHIRException {
+    protected static void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.r4.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
         if (src.hasId())
             tgt.setId(src.getId());
         for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+          if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
             tgt.addExtension(convertExtension(e));
+          }
         }
     }
 

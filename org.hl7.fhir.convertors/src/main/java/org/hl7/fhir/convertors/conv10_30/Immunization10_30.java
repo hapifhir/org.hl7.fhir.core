@@ -1,10 +1,11 @@
 package org.hl7.fhir.convertors.conv10_30;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.util.List;
 
 public class Immunization10_30 {
 

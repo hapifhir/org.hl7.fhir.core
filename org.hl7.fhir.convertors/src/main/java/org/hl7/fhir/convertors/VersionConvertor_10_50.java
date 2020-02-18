@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.convertors
@@ -19,7 +22,60 @@ package org.hl7.fhir.convertors;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.convertors.conv10_50.*;
+import org.hl7.fhir.convertors.conv10_50.Appointment10_50;
+import org.hl7.fhir.convertors.conv10_50.AppointmentResponse10_50;
+import org.hl7.fhir.convertors.conv10_50.AuditEvent10_50;
+import org.hl7.fhir.convertors.conv10_50.Basic10_50;
+import org.hl7.fhir.convertors.conv10_50.Binary10_50;
+import org.hl7.fhir.convertors.conv10_50.Bundle10_50;
+import org.hl7.fhir.convertors.conv10_50.CarePlan10_50;
+import org.hl7.fhir.convertors.conv10_50.Communication10_50;
+import org.hl7.fhir.convertors.conv10_50.CommunicationRequest10_50;
+import org.hl7.fhir.convertors.conv10_50.Composition10_50;
+import org.hl7.fhir.convertors.conv10_50.ConceptMap10_50;
+import org.hl7.fhir.convertors.conv10_50.Condition10_50;
+import org.hl7.fhir.convertors.conv10_50.Conformance10_50;
+import org.hl7.fhir.convertors.conv10_50.DataElement10_50;
+import org.hl7.fhir.convertors.conv10_50.DetectedIssue10_50;
+import org.hl7.fhir.convertors.conv10_50.DeviceMetric10_50;
+import org.hl7.fhir.convertors.conv10_50.DeviceUseStatement10_50;
+import org.hl7.fhir.convertors.conv10_50.DiagnosticReport10_50;
+import org.hl7.fhir.convertors.conv10_50.DocumentReference10_50;
+import org.hl7.fhir.convertors.conv10_50.Encounter10_50;
+import org.hl7.fhir.convertors.conv10_50.EnrollmentRequest10_50;
+import org.hl7.fhir.convertors.conv10_50.EnrollmentResponse10_50;
+import org.hl7.fhir.convertors.conv10_50.EpisodeOfCare10_50;
+import org.hl7.fhir.convertors.conv10_50.FamilyMemberHistory10_50;
+import org.hl7.fhir.convertors.conv10_50.Flag10_50;
+import org.hl7.fhir.convertors.conv10_50.Group10_50;
+import org.hl7.fhir.convertors.conv10_50.HealthcareService10_50;
+import org.hl7.fhir.convertors.conv10_50.ImplementationGuide10_50;
+import org.hl7.fhir.convertors.conv10_50.List10_50;
+import org.hl7.fhir.convertors.conv10_50.Location10_50;
+import org.hl7.fhir.convertors.conv10_50.MedicationDispense10_50;
+import org.hl7.fhir.convertors.conv10_50.MedicationStatement10_50;
+import org.hl7.fhir.convertors.conv10_50.MessageHeader10_50;
+import org.hl7.fhir.convertors.conv10_50.NamingSystem10_50;
+import org.hl7.fhir.convertors.conv10_50.Observation10_50;
+import org.hl7.fhir.convertors.conv10_50.OperationDefinition10_50;
+import org.hl7.fhir.convertors.conv10_50.OperationOutcome10_50;
+import org.hl7.fhir.convertors.conv10_50.Organization10_50;
+import org.hl7.fhir.convertors.conv10_50.Parameters10_50;
+import org.hl7.fhir.convertors.conv10_50.Patient10_50;
+import org.hl7.fhir.convertors.conv10_50.Person10_50;
+import org.hl7.fhir.convertors.conv10_50.Practitioner10_50;
+import org.hl7.fhir.convertors.conv10_50.Questionnaire10_50;
+import org.hl7.fhir.convertors.conv10_50.QuestionnaireResponse10_50;
+import org.hl7.fhir.convertors.conv10_50.RiskAssessment10_50;
+import org.hl7.fhir.convertors.conv10_50.Schedule10_50;
+import org.hl7.fhir.convertors.conv10_50.SearchParameter10_50;
+import org.hl7.fhir.convertors.conv10_50.Slot10_50;
+import org.hl7.fhir.convertors.conv10_50.StructureDefinition10_50;
+import org.hl7.fhir.convertors.conv10_50.Substance10_50;
+import org.hl7.fhir.convertors.conv10_50.SupplyDelivery10_50;
+import org.hl7.fhir.convertors.conv10_50.SupplyRequest10_50;
+import org.hl7.fhir.convertors.conv10_50.TestScript10_50;
+import org.hl7.fhir.convertors.conv10_50.ValueSet10_50;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
 import org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent;
@@ -27,18 +83,20 @@ import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -92,24 +150,30 @@ public class VersionConvertor_10_50 {
         CANONICAL_URLS.add("http://hl7.org/fhir/StructureDefinition/valueset-system");
     }
 
-    public static void copyElement(org.hl7.fhir.dstu2.model.Element src, org.hl7.fhir.r5.model.Element tgt) throws FHIRException {
+    public static void copyElement(org.hl7.fhir.dstu2.model.Element src, org.hl7.fhir.r5.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
         tgt.setId(src.getId());
         for (org.hl7.fhir.dstu2.model.Extension e : src.getExtension()) {
+          if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
             tgt.addExtension(convertExtension(e));
+          }
         }
     }
 
-    public static void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.dstu2.model.Element tgt) throws FHIRException {
+    public static void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.dstu2.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
         tgt.setId(src.getId());
         for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+          if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
             tgt.addExtension(convertExtension(e));
+          }
         }
     }
 
-    public static void copyElement(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2.model.Element tgt) throws FHIRException {
+    public static void copyElement(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2.model.Element tgt, String... extensionsToIgnore) throws FHIRException {
         tgt.setId(src.getId());
         for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+          if (!isExemptExtension(e.getUrl(), extensionsToIgnore)) {
             tgt.addExtension(convertExtension(e));
+          }
         }
     }
 

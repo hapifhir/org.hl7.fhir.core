@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.convertors
@@ -19,7 +22,61 @@ package org.hl7.fhir.convertors;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.convertors.conv10_40.*;
+import org.hl7.fhir.convertors.conv10_40.Appointment10_40;
+import org.hl7.fhir.convertors.conv10_40.AppointmentResponse10_40;
+import org.hl7.fhir.convertors.conv10_40.AuditEvent10_40;
+import org.hl7.fhir.convertors.conv10_40.Basic10_40;
+import org.hl7.fhir.convertors.conv10_40.Binary10_40;
+import org.hl7.fhir.convertors.conv10_40.Bundle10_40;
+import org.hl7.fhir.convertors.conv10_40.CarePlan10_40;
+import org.hl7.fhir.convertors.conv10_40.Communication10_40;
+import org.hl7.fhir.convertors.conv10_40.CommunicationRequest10_40;
+import org.hl7.fhir.convertors.conv10_40.Composition10_40;
+import org.hl7.fhir.convertors.conv10_40.ConceptMap10_40;
+import org.hl7.fhir.convertors.conv10_40.Condition10_40;
+import org.hl7.fhir.convertors.conv10_40.Conformance10_40;
+import org.hl7.fhir.convertors.conv10_40.DataElement10_40;
+import org.hl7.fhir.convertors.conv10_40.DetectedIssue10_40;
+import org.hl7.fhir.convertors.conv10_40.DeviceMetric10_40;
+import org.hl7.fhir.convertors.conv10_40.DeviceUseStatement10_40;
+import org.hl7.fhir.convertors.conv10_40.DiagnosticReport10_40;
+import org.hl7.fhir.convertors.conv10_40.DocumentReference10_40;
+import org.hl7.fhir.convertors.conv10_40.Encounter10_40;
+import org.hl7.fhir.convertors.conv10_40.EnrollmentRequest10_40;
+import org.hl7.fhir.convertors.conv10_40.EnrollmentResponse10_40;
+import org.hl7.fhir.convertors.conv10_40.EpisodeOfCare10_40;
+import org.hl7.fhir.convertors.conv10_40.FamilyMemberHistory10_40;
+import org.hl7.fhir.convertors.conv10_40.Flag10_40;
+import org.hl7.fhir.convertors.conv10_40.Group10_40;
+import org.hl7.fhir.convertors.conv10_40.HealthcareService10_40;
+import org.hl7.fhir.convertors.conv10_40.ImplementationGuide10_40;
+import org.hl7.fhir.convertors.conv10_40.List10_40;
+import org.hl7.fhir.convertors.conv10_40.Location10_40;
+import org.hl7.fhir.convertors.conv10_40.MedicationDispense10_40;
+import org.hl7.fhir.convertors.conv10_40.MedicationStatement10_40;
+import org.hl7.fhir.convertors.conv10_40.MessageHeader10_40;
+import org.hl7.fhir.convertors.conv10_40.NamingSystem10_40;
+import org.hl7.fhir.convertors.conv10_40.Observation10_40;
+import org.hl7.fhir.convertors.conv10_40.OperationDefinition10_40;
+import org.hl7.fhir.convertors.conv10_40.OperationOutcome10_40;
+import org.hl7.fhir.convertors.conv10_40.Organization10_40;
+import org.hl7.fhir.convertors.conv10_40.Parameters10_40;
+import org.hl7.fhir.convertors.conv10_40.Patient10_40;
+import org.hl7.fhir.convertors.conv10_40.Person10_40;
+import org.hl7.fhir.convertors.conv10_40.Practitioner10_40;
+import org.hl7.fhir.convertors.conv10_40.Questionnaire10_40;
+import org.hl7.fhir.convertors.conv10_40.QuestionnaireResponse10_40;
+import org.hl7.fhir.convertors.conv10_40.RiskAssessment10_40;
+import org.hl7.fhir.convertors.conv10_40.Schedule10_40;
+import org.hl7.fhir.convertors.conv10_40.SearchParameter10_40;
+import org.hl7.fhir.convertors.conv10_40.Slot10_40;
+import org.hl7.fhir.convertors.conv10_40.StructureDefinition10_40;
+import org.hl7.fhir.convertors.conv10_40.Subscription10_40;
+import org.hl7.fhir.convertors.conv10_40.Substance10_40;
+import org.hl7.fhir.convertors.conv10_40.SupplyDelivery10_40;
+import org.hl7.fhir.convertors.conv10_40.SupplyRequest10_40;
+import org.hl7.fhir.convertors.conv10_40.TestScript10_40;
+import org.hl7.fhir.convertors.conv10_40.ValueSet10_40;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
 import org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent;
@@ -40,8 +97,6 @@ import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r4.model.Timing.EventTiming;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

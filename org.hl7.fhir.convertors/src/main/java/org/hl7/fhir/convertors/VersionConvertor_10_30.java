@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.convertors
@@ -19,7 +22,78 @@ package org.hl7.fhir.convertors;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.convertors.conv10_30.*;
+import org.hl7.fhir.convertors.conv10_30.Account10_30;
+import org.hl7.fhir.convertors.conv10_30.Appointment10_30;
+import org.hl7.fhir.convertors.conv10_30.AppointmentResponse10_30;
+import org.hl7.fhir.convertors.conv10_30.AuditEvent10_30;
+import org.hl7.fhir.convertors.conv10_30.Basic10_30;
+import org.hl7.fhir.convertors.conv10_30.Binary10_30;
+import org.hl7.fhir.convertors.conv10_30.Bundle10_30;
+import org.hl7.fhir.convertors.conv10_30.CarePlan10_30;
+import org.hl7.fhir.convertors.conv10_30.ClinicalImpression10_30;
+import org.hl7.fhir.convertors.conv10_30.Communication10_30;
+import org.hl7.fhir.convertors.conv10_30.CommunicationRequest10_30;
+import org.hl7.fhir.convertors.conv10_30.Composition10_30;
+import org.hl7.fhir.convertors.conv10_30.ConceptMap10_30;
+import org.hl7.fhir.convertors.conv10_30.Condition10_30;
+import org.hl7.fhir.convertors.conv10_30.Conformance10_30;
+import org.hl7.fhir.convertors.conv10_30.Contract10_30;
+import org.hl7.fhir.convertors.conv10_30.DataElement10_30;
+import org.hl7.fhir.convertors.conv10_30.DetectedIssue10_30;
+import org.hl7.fhir.convertors.conv10_30.Device10_30;
+import org.hl7.fhir.convertors.conv10_30.DeviceComponent10_30;
+import org.hl7.fhir.convertors.conv10_30.DeviceMetric10_30;
+import org.hl7.fhir.convertors.conv10_30.DeviceUseStatement10_30;
+import org.hl7.fhir.convertors.conv10_30.DiagnosticReport10_30;
+import org.hl7.fhir.convertors.conv10_30.DocumentManifest10_30;
+import org.hl7.fhir.convertors.conv10_30.DocumentReference10_30;
+import org.hl7.fhir.convertors.conv10_30.Encounter10_30;
+import org.hl7.fhir.convertors.conv10_30.EnrollmentRequest10_30;
+import org.hl7.fhir.convertors.conv10_30.EnrollmentResponse10_30;
+import org.hl7.fhir.convertors.conv10_30.EpisodeOfCare10_30;
+import org.hl7.fhir.convertors.conv10_30.FamilyMemberHistory10_30;
+import org.hl7.fhir.convertors.conv10_30.Flag10_30;
+import org.hl7.fhir.convertors.conv10_30.Group10_30;
+import org.hl7.fhir.convertors.conv10_30.HealthcareService10_30;
+import org.hl7.fhir.convertors.conv10_30.ImagingStudy10_30;
+import org.hl7.fhir.convertors.conv10_30.Immunization10_30;
+import org.hl7.fhir.convertors.conv10_30.ImmunizationRecommendation10_30;
+import org.hl7.fhir.convertors.conv10_30.ImplementationGuide10_30;
+import org.hl7.fhir.convertors.conv10_30.List10_30;
+import org.hl7.fhir.convertors.conv10_30.Location10_30;
+import org.hl7.fhir.convertors.conv10_30.Media10_30;
+import org.hl7.fhir.convertors.conv10_30.Medication10_30;
+import org.hl7.fhir.convertors.conv10_30.MedicationDispense10_30;
+import org.hl7.fhir.convertors.conv10_30.MedicationStatement10_30;
+import org.hl7.fhir.convertors.conv10_30.MessageHeader10_30;
+import org.hl7.fhir.convertors.conv10_30.NamingSystem10_30;
+import org.hl7.fhir.convertors.conv10_30.Observation10_30;
+import org.hl7.fhir.convertors.conv10_30.OperationDefinition10_30;
+import org.hl7.fhir.convertors.conv10_30.OperationOutcome10_30;
+import org.hl7.fhir.convertors.conv10_30.Organization10_30;
+import org.hl7.fhir.convertors.conv10_30.Parameters10_30;
+import org.hl7.fhir.convertors.conv10_30.Patient10_30;
+import org.hl7.fhir.convertors.conv10_30.Person10_30;
+import org.hl7.fhir.convertors.conv10_30.Practitioner10_30;
+import org.hl7.fhir.convertors.conv10_30.Procedure10_30;
+import org.hl7.fhir.convertors.conv10_30.ProcedureRequest10_30;
+import org.hl7.fhir.convertors.conv10_30.Provenance10_30;
+import org.hl7.fhir.convertors.conv10_30.Questionnaire10_30;
+import org.hl7.fhir.convertors.conv10_30.QuestionnaireResponse10_30;
+import org.hl7.fhir.convertors.conv10_30.ReferralRequest10_30;
+import org.hl7.fhir.convertors.conv10_30.RelatedPerson10_30;
+import org.hl7.fhir.convertors.conv10_30.RiskAssessment10_30;
+import org.hl7.fhir.convertors.conv10_30.Schedule10_30;
+import org.hl7.fhir.convertors.conv10_30.SearchParameter10_30;
+import org.hl7.fhir.convertors.conv10_30.Slot10_30;
+import org.hl7.fhir.convertors.conv10_30.Specimen10_30;
+import org.hl7.fhir.convertors.conv10_30.StructureDefinition10_30;
+import org.hl7.fhir.convertors.conv10_30.Subscription10_30;
+import org.hl7.fhir.convertors.conv10_30.Substance10_30;
+import org.hl7.fhir.convertors.conv10_30.SupplyDelivery10_30;
+import org.hl7.fhir.convertors.conv10_30.SupplyRequest10_30;
+import org.hl7.fhir.convertors.conv10_30.TestScript10_30;
+import org.hl7.fhir.convertors.conv10_30.ValueSet10_30;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
@@ -33,8 +107,6 @@ import org.hl7.fhir.dstu3.model.Timing.EventTiming;
 import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

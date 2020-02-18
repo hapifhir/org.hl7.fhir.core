@@ -88,4 +88,6 @@ public class VersionConvertorConstants {
     else
       return null;
   }
+
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
 }

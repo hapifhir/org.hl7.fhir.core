@@ -3,11 +3,9 @@ package org.hl7.fhir.convertors.misc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 
 import com.google.gson.JsonElement;

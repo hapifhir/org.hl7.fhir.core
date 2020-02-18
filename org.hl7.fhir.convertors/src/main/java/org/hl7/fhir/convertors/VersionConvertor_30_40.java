@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.convertors
@@ -19,7 +22,88 @@ package org.hl7.fhir.convertors;
  * limitations under the License.
  * #L%
  */
-import org.hl7.fhir.convertors.conv30_40.*;
+import org.hl7.fhir.convertors.conv30_40.ActivityDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.AllergyIntolerance30_40;
+import org.hl7.fhir.convertors.conv30_40.Appointment30_40;
+import org.hl7.fhir.convertors.conv30_40.AppointmentResponse30_40;
+import org.hl7.fhir.convertors.conv30_40.AuditEvent30_40;
+import org.hl7.fhir.convertors.conv30_40.Basic30_40;
+import org.hl7.fhir.convertors.conv30_40.Binary30_40;
+import org.hl7.fhir.convertors.conv30_40.BodySite30_40;
+import org.hl7.fhir.convertors.conv30_40.Bundle30_40;
+import org.hl7.fhir.convertors.conv30_40.CapabilityStatement30_40;
+import org.hl7.fhir.convertors.conv30_40.CarePlan30_40;
+import org.hl7.fhir.convertors.conv30_40.CareTeam30_40;
+import org.hl7.fhir.convertors.conv30_40.ClinicalImpression30_40;
+import org.hl7.fhir.convertors.conv30_40.CodeSystem30_40;
+import org.hl7.fhir.convertors.conv30_40.Communication30_40;
+import org.hl7.fhir.convertors.conv30_40.CompartmentDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.Composition30_40;
+import org.hl7.fhir.convertors.conv30_40.ConceptMap30_40;
+import org.hl7.fhir.convertors.conv30_40.Condition30_40;
+import org.hl7.fhir.convertors.conv30_40.Consent30_40;
+import org.hl7.fhir.convertors.conv30_40.DataElement30_40;
+import org.hl7.fhir.convertors.conv30_40.DetectedIssue30_40;
+import org.hl7.fhir.convertors.conv30_40.DeviceUseStatement30_40;
+import org.hl7.fhir.convertors.conv30_40.DiagnosticReport30_40;
+import org.hl7.fhir.convertors.conv30_40.DocumentReference30_40;
+import org.hl7.fhir.convertors.conv30_40.Encounter30_40;
+import org.hl7.fhir.convertors.conv30_40.Endpoint30_40;
+import org.hl7.fhir.convertors.conv30_40.EpisodeOfCare30_40;
+import org.hl7.fhir.convertors.conv30_40.ExpansionProfile30_40;
+import org.hl7.fhir.convertors.conv30_40.FamilyMemberHistory30_40;
+import org.hl7.fhir.convertors.conv30_40.Flag30_40;
+import org.hl7.fhir.convertors.conv30_40.Goal30_40;
+import org.hl7.fhir.convertors.conv30_40.GraphDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.Group30_40;
+import org.hl7.fhir.convertors.conv30_40.HealthcareService30_40;
+import org.hl7.fhir.convertors.conv30_40.ImagingStudy30_40;
+import org.hl7.fhir.convertors.conv30_40.Immunization30_40;
+import org.hl7.fhir.convertors.conv30_40.ImplementationGuide30_40;
+import org.hl7.fhir.convertors.conv30_40.Library30_40;
+import org.hl7.fhir.convertors.conv30_40.Linkage30_40;
+import org.hl7.fhir.convertors.conv30_40.List30_40;
+import org.hl7.fhir.convertors.conv30_40.Location30_40;
+import org.hl7.fhir.convertors.conv30_40.Media30_40;
+import org.hl7.fhir.convertors.conv30_40.Medication30_40;
+import org.hl7.fhir.convertors.conv30_40.MedicationAdministration30_40;
+import org.hl7.fhir.convertors.conv30_40.MedicationDispense30_40;
+import org.hl7.fhir.convertors.conv30_40.MedicationRequest30_40;
+import org.hl7.fhir.convertors.conv30_40.MedicationStatement30_40;
+import org.hl7.fhir.convertors.conv30_40.MessageDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.MessageHeader30_40;
+import org.hl7.fhir.convertors.conv30_40.NamingSystem30_40;
+import org.hl7.fhir.convertors.conv30_40.Observation30_40;
+import org.hl7.fhir.convertors.conv30_40.OperationDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.OperationOutcome30_40;
+import org.hl7.fhir.convertors.conv30_40.Organization30_40;
+import org.hl7.fhir.convertors.conv30_40.Parameters30_40;
+import org.hl7.fhir.convertors.conv30_40.Patient30_40;
+import org.hl7.fhir.convertors.conv30_40.PaymentNotice30_40;
+import org.hl7.fhir.convertors.conv30_40.Person30_40;
+import org.hl7.fhir.convertors.conv30_40.PlanDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.Practitioner30_40;
+import org.hl7.fhir.convertors.conv30_40.PractitionerRole30_40;
+import org.hl7.fhir.convertors.conv30_40.Procedure30_40;
+import org.hl7.fhir.convertors.conv30_40.ProcedureRequest30_40;
+import org.hl7.fhir.convertors.conv30_40.Provenance30_40;
+import org.hl7.fhir.convertors.conv30_40.Questionnaire30_40;
+import org.hl7.fhir.convertors.conv30_40.QuestionnaireResponse30_40;
+import org.hl7.fhir.convertors.conv30_40.RelatedPerson30_40;
+import org.hl7.fhir.convertors.conv30_40.RiskAssessment30_40;
+import org.hl7.fhir.convertors.conv30_40.Schedule30_40;
+import org.hl7.fhir.convertors.conv30_40.SearchParameter30_40;
+import org.hl7.fhir.convertors.conv30_40.Sequence30_40;
+import org.hl7.fhir.convertors.conv30_40.Slot30_40;
+import org.hl7.fhir.convertors.conv30_40.Specimen30_40;
+import org.hl7.fhir.convertors.conv30_40.StructureDefinition30_40;
+import org.hl7.fhir.convertors.conv30_40.StructureMap30_40;
+import org.hl7.fhir.convertors.conv30_40.Subscription30_40;
+import org.hl7.fhir.convertors.conv30_40.Substance30_40;
+import org.hl7.fhir.convertors.conv30_40.SupplyDelivery30_40;
+import org.hl7.fhir.convertors.conv30_40.TestReport30_40;
+import org.hl7.fhir.convertors.conv30_40.TestScript30_40;
+import org.hl7.fhir.convertors.conv30_40.ValueSet30_40;
 import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -28,8 +112,6 @@ import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -47,7 +47,23 @@ package org.hl7.fhir.convertors;
   POSSIBILITY OF SUCH DAMAGE.
 
  */
-import org.hl7.fhir.convertors.conv14_30.*;
+import org.hl7.fhir.convertors.conv14_30.Bundle14_30;
+import org.hl7.fhir.convertors.conv14_30.CodeSystem14_30;
+import org.hl7.fhir.convertors.conv14_30.CompartmentDefinition14_30;
+import org.hl7.fhir.convertors.conv14_30.ConceptMap14_30;
+import org.hl7.fhir.convertors.conv14_30.Conformance14_30;
+import org.hl7.fhir.convertors.conv14_30.DataElement14_30;
+import org.hl7.fhir.convertors.conv14_30.ImplementationGuide14_30;
+import org.hl7.fhir.convertors.conv14_30.NamingSystem14_30;
+import org.hl7.fhir.convertors.conv14_30.OperationDefinition14_30;
+import org.hl7.fhir.convertors.conv14_30.OperationOutcome14_30;
+import org.hl7.fhir.convertors.conv14_30.Parameters14_30;
+import org.hl7.fhir.convertors.conv14_30.Questionnaire14_30;
+import org.hl7.fhir.convertors.conv14_30.QuestionnaireResponse14_30;
+import org.hl7.fhir.convertors.conv14_30.SearchParameter14_30;
+import org.hl7.fhir.convertors.conv14_30.StructureDefinition14_30;
+import org.hl7.fhir.convertors.conv14_30.TestScript14_30;
+import org.hl7.fhir.convertors.conv14_30.ValueSet14_30;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;

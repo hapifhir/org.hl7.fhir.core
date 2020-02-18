@@ -1,9 +1,10 @@
 package org.hl7.fhir.convertors.conv30_50;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableConcept;
-import java.util.List;
 
 public class RelatedPerson30_50 {
 
