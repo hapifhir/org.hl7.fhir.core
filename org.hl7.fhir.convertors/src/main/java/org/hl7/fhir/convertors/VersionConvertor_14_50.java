@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * org.hl7.fhir.convertors
@@ -47,7 +50,23 @@ package org.hl7.fhir.convertors;
   POSSIBILITY OF SUCH DAMAGE.
 
  */
-import org.hl7.fhir.convertors.conv14_50.*;
+import org.hl7.fhir.convertors.conv14_50.Bundle14_50;
+import org.hl7.fhir.convertors.conv14_50.CodeSystem14_50;
+import org.hl7.fhir.convertors.conv14_50.CompartmentDefinition14_50;
+import org.hl7.fhir.convertors.conv14_50.ConceptMap14_50;
+import org.hl7.fhir.convertors.conv14_50.Conformance14_50;
+import org.hl7.fhir.convertors.conv14_50.DataElement14_50;
+import org.hl7.fhir.convertors.conv14_50.ImplementationGuide14_50;
+import org.hl7.fhir.convertors.conv14_50.NamingSystem14_50;
+import org.hl7.fhir.convertors.conv14_50.OperationDefinition14_50;
+import org.hl7.fhir.convertors.conv14_50.OperationOutcome14_50;
+import org.hl7.fhir.convertors.conv14_50.Parameters14_50;
+import org.hl7.fhir.convertors.conv14_50.Questionnaire14_50;
+import org.hl7.fhir.convertors.conv14_50.QuestionnaireResponse14_50;
+import org.hl7.fhir.convertors.conv14_50.SearchParameter14_50;
+import org.hl7.fhir.convertors.conv14_50.StructureDefinition14_50;
+import org.hl7.fhir.convertors.conv14_50.StructureMap14_50;
+import org.hl7.fhir.convertors.conv14_50.ValueSet14_50;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
 import org.hl7.fhir.dstu2016may.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -58,8 +77,6 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscrimin
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.utilities.Utilities;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VersionConvertor_14_50 {
 

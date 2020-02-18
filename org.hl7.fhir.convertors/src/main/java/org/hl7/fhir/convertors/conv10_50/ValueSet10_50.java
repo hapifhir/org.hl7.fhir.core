@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv10_50;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.dstu2.model.ValueSet;
@@ -9,7 +11,6 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import java.util.List;
 
 public class ValueSet10_50 {
 

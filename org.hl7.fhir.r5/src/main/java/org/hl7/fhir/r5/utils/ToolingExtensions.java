@@ -165,6 +165,7 @@ public class ToolingExtensions {
   public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
 
   // specific extension helpers
 

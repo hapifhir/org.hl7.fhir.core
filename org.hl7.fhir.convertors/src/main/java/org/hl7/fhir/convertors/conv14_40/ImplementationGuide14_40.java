@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv14_40;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_14_40;
 import org.hl7.fhir.dstu2016may.model.ImplementationGuide;
@@ -9,7 +11,6 @@ import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration;
 import org.hl7.fhir.r4.model.Type;
-import java.util.List;
 
 public class ImplementationGuide14_40 {
 

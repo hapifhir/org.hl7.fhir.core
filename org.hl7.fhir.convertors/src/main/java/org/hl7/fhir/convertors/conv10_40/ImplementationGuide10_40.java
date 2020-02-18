@@ -1,12 +1,13 @@
 package org.hl7.fhir.convertors.conv10_40;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.dstu2.model.ImplementationGuide;
 import org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration;
-import java.util.List;
 
 public class ImplementationGuide10_40 {
 

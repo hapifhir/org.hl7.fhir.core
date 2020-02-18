@@ -64,7 +64,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.LinkedTransferQueue;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -2510,8 +2509,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
             first = false;
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-            else
-              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(ccm.getRelationship().toCode());
+            else {
+              if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                tr.td().ah(eqpath+"#"+code).tx(code);                
+              } else {
+                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(ccm.getRelationship().toCode());
+              }
+            }
             td = tr.td();
             if (targets.get("code").size() == 1)
               td.addText(ccm.getCode());
