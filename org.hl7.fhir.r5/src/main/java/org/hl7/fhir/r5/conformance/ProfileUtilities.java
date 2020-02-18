@@ -3126,7 +3126,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private Piece checkForNoChange(Element source, Piece piece) {
     if (source.hasUserData(DERIVATION_EQUALS)) {
-      piece.addStyle("opacity: 0.4");
+      piece.addStyle("opacity: 0.5");
     }
     return piece;
   }
