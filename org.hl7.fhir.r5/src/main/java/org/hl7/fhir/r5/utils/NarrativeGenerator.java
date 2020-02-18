@@ -4831,7 +4831,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   public XhtmlNode renderBundle(Bundle b) throws FHIRException {
-    System.out.println("render "+b.getId());
     if (b.getType() == BundleType.DOCUMENT) {
       if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition))
         throw new FHIRException("Invalid document - first entry is not a Composition");
