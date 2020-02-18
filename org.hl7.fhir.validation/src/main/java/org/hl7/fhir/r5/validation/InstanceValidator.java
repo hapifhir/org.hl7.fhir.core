@@ -2733,7 +2733,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return extensionDomains;
   }
 
-  private IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type) {
+  private IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction) {
     String targetUrl = null;
     String version = "";
     String resourceType = null;
@@ -2752,7 +2752,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return null;
 
     } else if (ref.split("/").length!=2 && ref.split("/").length!=4) {
-      rule(errors, IssueType.INVALID, -1, -1, path, false, "Relative URLs must be of the format [ResourceName]/[id].  Encountered " + ref);
+      if (isTransaction) {
+        rule(errors, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), "Relative URLs must be of the format [ResourceName]/[id], or a search ULR is allowed ([type]?parameters.  Encountered " + ref);        
+      } else {
+        rule(errors, IssueType.INVALID, -1, -1, path, false, "Relative URLs must be of the format [ResourceName]/[id].  Encountered " + ref);
+      }
       return null;
 
     } else {
@@ -2819,7 +2823,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return match == null ? null : new IndexedElement(matchIndex, match, entries.get(matchIndex));
   }
 
-  private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
+ private boolean isSearchUrl(String ref) {
+    if (Utilities.noString(ref) || !ref.contains("?")) {
+      return false;
+    }
+    String tn = ref.substring(0, ref.indexOf("?"));
+    String q = ref.substring(ref.indexOf("?")+1);
+    if (!context.getResourceNames().contains(tn)) {
+      return false;
+    } else {
+      return q.matches("([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+))*");
+    }
+  }
+
+ private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
     for (TypeRefComponent tr : list) {
       String url = tr.getWorkingCode();
       if (!Utilities.isAbsoluteUrl(url))
@@ -3006,7 +3023,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         if ("Bundle".equals(stack.getElement().getType())) {
           String type = stack.getElement().getChildValue("type");
-          IndexedElement res = getFromBundle(stack.getElement(), ref, fullUrl, errors, path, type);
+          IndexedElement res = getFromBundle(stack.getElement(), ref, fullUrl, errors, path, type, "transaction".equals(type));
           if (res == null) {
             return null;
           } else {
@@ -3025,7 +3042,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String type = hostContext.getChildValue("type");
         Element entry = getEntryForSource(hostContext, source);
         fullUrl = entry.getChildValue("fullUrl");
-        IndexedElement res = getFromBundle(hostContext, ref, fullUrl, errors, path, type);
+        IndexedElement res = getFromBundle(hostContext, ref, fullUrl, errors, path, type, "transaction".equals(type));
         if (res == null) {
           return null;
         } else {
@@ -4577,7 +4594,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     Set<String> references = findReferences(resource);
     for (String reference: references) {
       // We don't want errors when just retrieving the element as they will be caught (with better path info) in subsequent processing
-      IndexedElement r = getFromBundle(stack.getElement(), reference, entry.getChildValue("fullUrl"), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type);
+      IndexedElement r = getFromBundle(stack.getElement(), reference, entry.getChildValue("fullUrl"), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type, "transaction".equals(stack.getElement().getChildValue("type")));
       if (r!=null && !visitedResources.containsValue(r.match)) {
         followResourceLinks(candidateEntries.get(r.match), visitedResources, candidateEntries, candidateResources, errors, stack, depth+1);
       }
