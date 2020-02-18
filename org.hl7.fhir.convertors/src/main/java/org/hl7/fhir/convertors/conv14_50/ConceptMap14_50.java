@@ -142,14 +142,19 @@ public class ConceptMap14_50 {
         switch(src.getValue()) {
         case EQUIVALENT:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.EQUIVALENT);
+          break;
         case BROADER:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.WIDER);
+          break;
         case NARROWER:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NARROWER);
+          break;
         case NOTRELATEDTO:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.DISJOINT);
+          break;
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence.NULL);
+          break;
         }
       }
       return tgt;
@@ -165,24 +170,34 @@ public class ConceptMap14_50 {
       switch(src.getValue()) {
       case EQUIVALENT:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
+        break;
       case EQUAL:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
+        break;
       case WIDER:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+        break;
       case SUBSUMES:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+        break;
       case NARROWER:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+        break;
       case SPECIALIZES:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+        break;
       case INEXACT:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
+        break;
       case UNMATCHED:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
+        break;
       case DISJOINT:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO);
+        break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
+        break;
       }
       return tgt;
     }
