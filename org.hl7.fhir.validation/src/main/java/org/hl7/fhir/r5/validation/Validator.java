@@ -90,6 +90,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
@@ -269,7 +270,7 @@ public class Validator {
       for (String s : args)
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
-      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
 
       String dest =  getParam(args, "-dest");
       if (dest == null)
@@ -394,7 +395,7 @@ public class Validator {
       for (String s : args)
         System.out.print(s.contains(" ") ? " \""+s+"\"" : " "+s);
       System.out.println();
-      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+PackageCacheManager.userDir());
+      System.out.println("Directories: Current = "+System.getProperty("user.dir")+", Package Cache = "+new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
 
       String map = null;
       List<String> igs = new ArrayList<String>();

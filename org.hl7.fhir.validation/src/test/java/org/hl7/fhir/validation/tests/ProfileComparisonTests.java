@@ -24,7 +24,7 @@ public class ProfileComparisonTests {
   public void testCurrentComparison() throws Exception {
     if (!TestUtilities.silent) 
       System.out.println("Compare US Patient Core with AU Patient Base");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.1", DEF_TX, null, FhirPublication.R4);
+    ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.R4);
     ve.loadIg("hl7.fhir.us.core#1.0.1", false);
     ve.loadIg("hl7.fhir.au.base#dev", false);
 

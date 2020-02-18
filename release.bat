@@ -4,9 +4,9 @@ set oldver=4.1.62
 set newver=4.1.63
 
 echo ..
-echo =====================================================================
+echo =========================================================================
 echo upgrade and release fhir.core from %oldver%-SNAPSHOT to %newver%-SNAPSHOT
-echo =====================================================================
+echo =========================================================================
 echo ..
 
 call mvn versions:set -DnewVersion=%newver%-SNAPSHOT
@@ -24,7 +24,6 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\latest-ig-publisher\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
-
 
 copy org.hl7.fhir.validation.cli\target\org.hl7.fhir.validation.cli-%newver%-SNAPSHOT.jar ..\latest-ig-publisher\org.hl7.fhir.validator.jar
 cd ..\latest-ig-publisher
