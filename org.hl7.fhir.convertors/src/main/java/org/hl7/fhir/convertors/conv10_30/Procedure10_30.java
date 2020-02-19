@@ -14,7 +14,7 @@ public class Procedure10_30 {
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
         if (src.hasStatus())
-            tgt.setStatus(convertProcedureStatus(src.getStatus()));
+            tgt.setStatusElement(convertProcedureStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
         if (src.hasCode())
@@ -53,7 +53,7 @@ public class Procedure10_30 {
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_30.convertReference(src.getSubject()));
         if (src.hasStatus())
-            tgt.setStatus(convertProcedureStatus(src.getStatus()));
+            tgt.setStatusElement(convertProcedureStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_10_30.convertCodeableConcept(src.getCategory()));
         if (src.hasCode())
@@ -131,37 +131,53 @@ public class Procedure10_30 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus convertProcedureStatus(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus> convertProcedureStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Procedure.ProcedureStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.INPROGRESS);
+                break;
             case ABORTED:
-                return org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.ABORTED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus convertProcedureStatus(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus> convertProcedureStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Procedure.ProcedureStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.INPROGRESS);
+                break;
             case ABORTED:
-                return org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.ABORTED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

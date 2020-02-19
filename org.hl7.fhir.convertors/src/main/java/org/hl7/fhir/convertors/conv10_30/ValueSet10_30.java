@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu2.model.ValueSet;
@@ -103,7 +102,7 @@ public class ValueSet10_30 {
         if (src.hasPropertyElement())
             tgt.setPropertyElement(VersionConvertor_10_30.convertCode(src.getPropertyElement()));
         if (src.hasOp())
-            tgt.setOp(convertFilterOperator(src.getOp()));
+            tgt.setOpElement(convertFilterOperator(src.getOpElement()));
         if (src.hasValueElement())
             tgt.setValueElement(VersionConvertor_10_30.convertCode(src.getValueElement()));
         return tgt;
@@ -117,52 +116,72 @@ public class ValueSet10_30 {
         if (src.hasPropertyElement())
             tgt.setPropertyElement(VersionConvertor_10_30.convertCode(src.getPropertyElement()));
         if (src.hasOp())
-            tgt.setOp(convertFilterOperator(src.getOp()));
+            tgt.setOpElement(convertFilterOperator(src.getOpElement()));
         if (src.hasValueElement())
             tgt.setValueElement(VersionConvertor_10_30.convertCode(src.getValueElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ValueSet.FilterOperator> convertFilterOperator(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ValueSet.FilterOperatorEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.ISA);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NOTIN);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> convertFilterOperator(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ValueSet.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ValueSet.FilterOperatorEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISA);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NOTIN);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu3.model.ValueSet convertValueSet(org.hl7.fhir.dstu2.model.ValueSet src, VersionConvertorAdvisor30 advisor) throws FHIRException {

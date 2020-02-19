@@ -5,34 +5,48 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Media10_30 {
 
-    public static org.hl7.fhir.dstu2.model.Media.DigitalMediaType convertDigitalMediaType(org.hl7.fhir.dstu3.model.Media.DigitalMediaType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> convertDigitalMediaType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Media.DigitalMediaTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PHOTO:
-                return org.hl7.fhir.dstu2.model.Media.DigitalMediaType.PHOTO;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.PHOTO);
+                break;
             case VIDEO:
-                return org.hl7.fhir.dstu2.model.Media.DigitalMediaType.VIDEO;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.VIDEO);
+                break;
             case AUDIO:
-                return org.hl7.fhir.dstu2.model.Media.DigitalMediaType.AUDIO;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.AUDIO);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Media.DigitalMediaType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Media.DigitalMediaType convertDigitalMediaType(org.hl7.fhir.dstu2.model.Media.DigitalMediaType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> convertDigitalMediaType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Media.DigitalMediaTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PHOTO:
-                return org.hl7.fhir.dstu3.model.Media.DigitalMediaType.PHOTO;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.PHOTO);
+                break;
             case VIDEO:
-                return org.hl7.fhir.dstu3.model.Media.DigitalMediaType.VIDEO;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.VIDEO);
+                break;
             case AUDIO:
-                return org.hl7.fhir.dstu3.model.Media.DigitalMediaType.AUDIO;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.AUDIO);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Media.DigitalMediaType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.Media convertMedia(org.hl7.fhir.dstu3.model.Media src) throws FHIRException {
@@ -42,7 +56,7 @@ public class Media10_30 {
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         if (src.hasType())
-            tgt.setType(convertDigitalMediaType(src.getType()));
+            tgt.setTypeElement(convertDigitalMediaType(src.getTypeElement()));
         if (src.hasSubtype())
             tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
         if (src.hasView())
@@ -72,7 +86,7 @@ public class Media10_30 {
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
         if (src.hasType())
-            tgt.setType(convertDigitalMediaType(src.getType()));
+            tgt.setTypeElement(convertDigitalMediaType(src.getTypeElement()));
         if (src.hasSubtype())
             tgt.setSubtype(VersionConvertor_10_30.convertCodeableConcept(src.getSubtype()));
         if (src.hasView())

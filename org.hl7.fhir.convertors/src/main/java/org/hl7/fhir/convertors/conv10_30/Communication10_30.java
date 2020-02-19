@@ -19,7 +19,7 @@ public class Communication10_30 {
         for (org.hl7.fhir.dstu2.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getMedium()) tgt.addMedium(VersionConvertor_10_30.convertCodeableConcept(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCommunicationStatus(src.getStatus()));
+            tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasEncounter())
             tgt.setContext(VersionConvertor_10_30.convertReference(src.getEncounter()));
         if (src.hasSentElement())
@@ -46,7 +46,7 @@ public class Communication10_30 {
         for (org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getMedium()) tgt.addMedium(VersionConvertor_10_30.convertCodeableConcept(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCommunicationStatus(src.getStatus()));
+            tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasContext())
             tgt.setEncounter(VersionConvertor_10_30.convertReference(src.getContext()));
         if (src.hasSentElement())
@@ -79,41 +79,59 @@ public class Communication10_30 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Communication.CommunicationStatus convertCommunicationStatus(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> convertCommunicationStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Communication.CommunicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Communication.CommunicationStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.COMPLETED);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.SUSPENDED);
+                break;
             case REJECTED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ENTEREDINERROR);
+                break;
             case FAILED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ABORTED);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Communication.CommunicationStatus convertCommunicationStatus(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Communication.CommunicationStatus> convertCommunicationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Communication.CommunicationStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.COMPLETED);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.SUSPENDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.REJECTED);
+                break;
             case ABORTED:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.FAILED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.FAILED);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }
