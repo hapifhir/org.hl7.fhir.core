@@ -501,7 +501,7 @@ public class PackageCacheManager {
   public String getPackageId(String canonical) throws IOException {
     String result = null;
     if (result == null) {
-      getPackageId(canonical, PRIMARY_SERVER);
+      result = getPackageId(canonical, PRIMARY_SERVER);
     }
     if (result == null) {
       result = getPackageId(canonical, SECONDARY_SERVER);
@@ -611,10 +611,12 @@ public class PackageCacheManager {
   
   private String getPackageIdFromBuildList(String canonical) throws IOException {
     checkBuildLoaded();
-    for (JsonElement n : buildInfo) {
-      JsonObject o = (JsonObject) n;
-      if (canonical.equals(JSONUtil.str(o, "url"))) {
-        return JSONUtil.str(o, "package-id");
+    if (buildInfo != null) {
+      for (JsonElement n : buildInfo) {
+        JsonObject o = (JsonObject) n;
+        if (canonical.equals(JSONUtil.str(o, "url"))  || JSONUtil.str(o, "url").startsWith(canonical+"/ImplementationGuide/")) {
+          return JSONUtil.str(o, "package-id");
+        }
       }
     }
     return null;
@@ -663,7 +665,7 @@ public class PackageCacheManager {
     if (buildLoaded)
       return true;
     try {
-    loadFromBuildServer();
+      loadFromBuildServer();
     } catch (Exception e) {
       System.out.println("Error connecting to build server - running without build ("+e.getMessage()+")");
     }
@@ -672,7 +674,6 @@ public class PackageCacheManager {
   
   
   private void loadFromBuildServer() throws IOException {
-    buildLoaded = true; // whether it succeeds or not
     URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
@@ -696,6 +697,7 @@ public class PackageCacheManager {
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/"+bld.getRepo());        
       }
     }
+    buildLoaded = true; // whether it succeeds or not
   }
 
 //  private String buildPath(String url) {
@@ -726,6 +728,16 @@ public class PackageCacheManager {
   // ----- the old way, from before package server, while everything gets onto the package server
   private InputStream fetchTheOldWay(String id, String v) {
     String url = getUrlForPackage(id);
+    if (url == null) {
+      try {
+        url = getPackageUrlFromBuildList(id);
+      } catch (Exception e) {
+        url = null;
+      }
+    }
+    if (url == null) {
+      throw new FHIRException("Unable to resolve package id "+id);
+    }
     String pu = Utilities.pathURL(url, "package-list.json");
     String aurl = pu;
     JsonObject json;
