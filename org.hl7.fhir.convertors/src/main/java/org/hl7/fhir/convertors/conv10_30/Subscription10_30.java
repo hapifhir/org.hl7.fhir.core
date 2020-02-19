@@ -16,7 +16,7 @@ public class Subscription10_30 {
         if (src.hasReasonElement())
             tgt.setReasonElement(VersionConvertor_10_30.convertString(src.getReasonElement()));
         if (src.hasStatus())
-            tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
+            tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
         if (src.hasErrorElement())
             tgt.setErrorElement(VersionConvertor_10_30.convertString(src.getErrorElement()));
         if (src.hasChannel())
@@ -38,7 +38,7 @@ public class Subscription10_30 {
         if (src.hasReasonElement())
             tgt.setReasonElement(VersionConvertor_10_30.convertString(src.getReasonElement()));
         if (src.hasStatus())
-            tgt.setStatus(convertSubscriptionStatus(src.getStatus()));
+            tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
         if (src.hasErrorElement())
             tgt.setErrorElement(VersionConvertor_10_30.convertString(src.getErrorElement()));
         if (src.hasChannel())
@@ -55,7 +55,7 @@ public class Subscription10_30 {
         org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertSubscriptionChannelType(src.getType()));
+            tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
         if (src.hasEndpointElement())
             tgt.setEndpointElement(VersionConvertor_10_30.convertUri(src.getEndpointElement()));
         if (src.hasPayloadElement())
@@ -71,7 +71,7 @@ public class Subscription10_30 {
         org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertSubscriptionChannelType(src.getType()));
+            tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
         if (src.hasEndpointElement())
             tgt.setEndpointElement(VersionConvertor_10_30.convertUri(src.getEndpointElement()));
         if (src.hasPayloadElement())
@@ -80,75 +80,109 @@ public class Subscription10_30 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType convertSubscriptionChannelType(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType> convertSubscriptionChannelType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESTHOOK:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.RESTHOOK;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.RESTHOOK);
+                break;
             case WEBSOCKET:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.WEBSOCKET;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.WEBSOCKET);
+                break;
             case EMAIL:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.EMAIL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.EMAIL);
+                break;
             case SMS:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.SMS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.SMS);
+                break;
             case MESSAGE:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.MESSAGE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.MESSAGE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType convertSubscriptionChannelType(org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType> convertSubscriptionChannelType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionChannelType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESTHOOK:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.RESTHOOK;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.RESTHOOK);
+                break;
             case WEBSOCKET:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.WEBSOCKET;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.WEBSOCKET);
+                break;
             case EMAIL:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.EMAIL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.EMAIL);
+                break;
             case SMS:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.SMS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.SMS);
+                break;
             case MESSAGE:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.MESSAGE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.MESSAGE);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus convertSubscriptionStatus(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus> convertSubscriptionStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REQUESTED:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.REQUESTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.REQUESTED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.ACTIVE);
+                break;
             case ERROR:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.ERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.ERROR);
+                break;
             case OFF:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.OFF;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.OFF);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus convertSubscriptionStatus(org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus> convertSubscriptionStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Subscription.SubscriptionStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REQUESTED:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.REQUESTED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.REQUESTED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.ACTIVE);
+                break;
             case ERROR:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.ERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.ERROR);
+                break;
             case OFF:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.OFF;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.OFF);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

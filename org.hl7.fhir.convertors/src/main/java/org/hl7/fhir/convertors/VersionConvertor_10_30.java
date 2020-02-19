@@ -418,7 +418,8 @@ public class VersionConvertor_10_30 {
         copyElement(src, tgt);
         if (src.hasStatus())
             tgt.setStatus(convertNarrativeStatus(src.getStatus()));
-        tgt.setDiv(src.getDiv());
+        if (src.hasDiv())
+            tgt.setDiv(src.getDiv());
         return tgt;
     }
 
