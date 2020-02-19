@@ -161,11 +161,21 @@ public class NpmPackage {
       return name + " ("+ (folder == null ? "null" : folder.toString())+") | "+Boolean.toString(index != null)+" | "+content.size()+" | "+types.size();
     }
 
+    public void removeFile(String n) throws IOException {
+      if (folder != null) {
+        new File(Utilities.path(folder.getAbsolutePath(), n)).delete();
+      } else {
+        content.remove(n);
+      }
+      changedByLoader = true;      
+    }
+
   }
 
   private String path;
   private JsonObject npm;
   private Map<String, NpmPackageFolder> folders = new HashMap<>();
+  private boolean changedByLoader; // internal qa only!
 
   private NpmPackage() {
 
@@ -333,12 +343,18 @@ public class NpmPackage {
 
   private void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
+      List<String> remove = new ArrayList<>();
       if (folder.index == null) {
         NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
         indexer.start();
         for (String n : folder.listFiles()) {
-          indexer.seeFile(n, folder.fetchFile(n));
-        }       
+          if (!indexer.seeFile(n, folder.fetchFile(n))) {
+            remove.add(n);
+          }
+        } 
+        for (String n : remove) {
+          folder.removeFile(n);
+        }
         String json = indexer.build();
         try {
           folder.readIndex(JsonTrackingParser.parseJson(json));
@@ -818,5 +834,11 @@ public class NpmPackage {
       }
     }
   }
+
+  public boolean isChangedByLoader() {
+    return changedByLoader;
+  }
+  
+  
 }
 

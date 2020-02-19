@@ -34,7 +34,7 @@ public class NpmPackageIndexBuilder {
     index.add("files", files);
   }
   
-  public void seeFile(String name, byte[] content) {
+  public boolean seeFile(String name, byte[] content) {
     if (name.endsWith(".json")) {
       try {
         JsonObject json = JsonTrackingParser.parseJson(content);
@@ -57,8 +57,12 @@ public class NpmPackageIndexBuilder {
         }
       } catch (Exception e) {
         System.out.println("Error parsing "+name+": "+e.getMessage());
+        if (name.contains("openapi")) {
+          return false;
+        }
       }
     }
+    return true;
   }
   
   public String build() {
