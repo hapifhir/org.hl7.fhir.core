@@ -614,7 +614,13 @@ public class PackageCacheManager {
     if (buildInfo != null) {
       for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
-        if (canonical.equals(JSONUtil.str(o, "url"))  || JSONUtil.str(o, "url").startsWith(canonical+"/ImplementationGuide/")) {
+        if (canonical.equals(JSONUtil.str(o, "url"))) {
+          return JSONUtil.str(o, "package-id");
+        }
+      }
+      for (JsonElement n : buildInfo) {
+        JsonObject o = (JsonObject) n;
+        if (JSONUtil.str(o, "url").startsWith(canonical+"/ImplementationGuide/")) {
           return JSONUtil.str(o, "package-id");
         }
       }
