@@ -13,7 +13,7 @@ public class Immunization30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertImmunizationStatus(src.getStatus()));
+            tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
         if (src.hasVaccineCode())
             tgt.setVaccineCode(VersionConvertor_30_50.convertCodeableConcept(src.getVaccineCode()));
         if (src.hasPatient())
@@ -53,7 +53,7 @@ public class Immunization30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertImmunizationStatus(src.getStatus()));
+            tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
         if (src.hasVaccineCode())
             tgt.setVaccineCode(VersionConvertor_30_50.convertCodeableConcept(src.getVaccineCode()));
         if (src.hasPatient())
@@ -111,29 +111,41 @@ public class Immunization30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus convertImmunizationStatus(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus> convertImmunizationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes convertImmunizationStatus(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> convertImmunizationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodesEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 }

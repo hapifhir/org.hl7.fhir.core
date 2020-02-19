@@ -60,11 +60,11 @@ public class DetectedIssue40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertDetectedIssueStatus(src.getStatus()));
+            tgt.setStatusElement(convertDetectedIssueStatus(src.getStatusElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSeverity())
-            tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasIdentified())
@@ -88,11 +88,11 @@ public class DetectedIssue40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertDetectedIssueStatus(src.getStatus()));
+            tgt.setStatusElement(convertDetectedIssueStatus(src.getStatusElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSeverity())
-            tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasIdentified())
@@ -109,84 +109,122 @@ public class DetectedIssue40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ObservationStatus convertDetectedIssueStatus(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> convertDetectedIssueStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ObservationStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus convertDetectedIssueStatus(org.hl7.fhir.r5.model.Enumerations.ObservationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus> convertDetectedIssueStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity convertDetectedIssueSeverity(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity> convertDetectedIssueSeverity(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HIGH:
-                return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.HIGH;
+                tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.HIGH);
+                break;
             case MODERATE:
-                return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.MODERATE;
+                tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.MODERATE);
+                break;
             case LOW:
-                return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.LOW;
+                tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.LOW);
+                break;
             default:
-                return org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity convertDetectedIssueSeverity(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> convertDetectedIssueSeverity(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HIGH:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.HIGH;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.HIGH);
+                break;
             case MODERATE:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.MODERATE;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.MODERATE);
+                break;
             case LOW:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.LOW;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.LOW);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueEvidenceComponent convertDetectedIssueEvidenceComponent(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueEvidenceComponent src) throws FHIRException {

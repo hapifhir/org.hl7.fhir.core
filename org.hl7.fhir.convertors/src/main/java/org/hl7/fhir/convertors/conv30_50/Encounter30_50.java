@@ -37,7 +37,7 @@ public class Encounter30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
         for (org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertStatusHistoryComponent(t));
         if (src.hasClass_())
             tgt.setClass_(VersionConvertor_30_50.convertCoding(src.getClass_()));
@@ -76,7 +76,7 @@ public class Encounter30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertStatusHistoryComponent(t));
         if (src.hasClass_())
             tgt.setClass_(VersionConvertor_30_50.convertCoding(src.getClass_()));
@@ -163,7 +163,7 @@ public class Encounter30_50 {
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterLocationStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterLocationStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         return tgt;
@@ -177,44 +177,60 @@ public class Encounter30_50 {
         if (src.hasLocation())
             tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterLocationStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterLocationStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus convertEncounterLocationStatus(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> convertEncounterLocationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Encounter.EncounterLocationStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.PLANNED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.ACTIVE);
+                break;
             case RESERVED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.RESERVED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.RESERVED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.COMPLETED);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus convertEncounterLocationStatus(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus> convertEncounterLocationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.PLANNED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.ACTIVE);
+                break;
             case RESERVED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.RESERVED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.RESERVED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.COMPLETED);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterLocationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent convertEncounterParticipantComponent(org.hl7.fhir.r5.model.Encounter.EncounterParticipantComponent src) throws FHIRException {
@@ -243,52 +259,75 @@ public class Encounter30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Encounter.EncounterStatus convertEncounterStatus(org.hl7.fhir.r5.model.Encounter.EncounterStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterStatus> convertEncounterStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Encounter.EncounterStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.PLANNED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.FINISHED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.FINISHED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Encounter.EncounterStatus convertEncounterStatus(org.hl7.fhir.dstu3.model.Encounter.EncounterStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> convertEncounterStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Encounter.EncounterStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Encounter.EncounterStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.PLANNED);
+                break;
             case ARRIVED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+                break;
             case TRIAGED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+                break;
             case ONLEAVE:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.INPROGRESS);
+                break;
             case FINISHED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.COMPLETED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Encounter.EncounterStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent convertStatusHistoryComponent(org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent src) throws FHIRException {
@@ -297,7 +336,7 @@ public class Encounter30_50 {
         org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         return tgt;
@@ -309,7 +348,7 @@ public class Encounter30_50 {
         org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasStatus())
-            tgt.setStatus(convertEncounterStatus(src.getStatus()));
+            tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_30_50.convertPeriod(src.getPeriod()));
         return tgt;

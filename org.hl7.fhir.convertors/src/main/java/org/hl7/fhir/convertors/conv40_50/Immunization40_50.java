@@ -61,7 +61,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertImmunizationStatus(src.getStatus()));
+            tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasVaccineCode())
@@ -115,7 +115,7 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertImmunizationStatus(src.getStatus()));
+            tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasVaccineCode())
@@ -164,34 +164,48 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes convertImmunizationStatus(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> convertImmunizationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.ENTEREDINERROR);
+                break;
             case NOTDONE:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NOTDONE;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NOTDONE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Immunization.ImmunizationStatus convertImmunizationStatus(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> convertImmunizationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Immunization.ImmunizationStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case COMPLETED:
-                return org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.ENTEREDINERROR);
+                break;
             case NOTDONE:
-                return org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.NOTDONE;
+                tgt.setValue(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.NOTDONE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent convertImmunizationPerformerComponent(org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent src) throws FHIRException {

@@ -3070,7 +3070,7 @@ public class VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
         copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(Enumerations40_50.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasValueSet())
@@ -3084,7 +3084,7 @@ public class VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent();
         copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(Enumerations40_50.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasValueSet())

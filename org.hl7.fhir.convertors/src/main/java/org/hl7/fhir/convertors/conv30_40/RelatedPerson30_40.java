@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;

@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv14_50;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.dstu2016may.model.ImplementationGuide;

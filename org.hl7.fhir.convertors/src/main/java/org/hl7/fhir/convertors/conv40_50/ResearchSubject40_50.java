@@ -60,7 +60,7 @@ public class ResearchSubject40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
+            tgt.setStatusElement(convertResearchSubjectStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasStudy())
@@ -83,7 +83,7 @@ public class ResearchSubject40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertResearchSubjectStatus(src.getStatus()));
+            tgt.setStatusElement(convertResearchSubjectStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasStudy())
@@ -99,73 +99,107 @@ public class ResearchSubject40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus> convertResearchSubjectStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CANDIDATE:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE);
+                break;
             case ELIGIBLE:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE);
+                break;
             case FOLLOWUP:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP);
+                break;
             case INELIGIBLE:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE);
+                break;
             case NOTREGISTERED:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED);
+                break;
             case OFFSTUDY:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY);
+                break;
             case ONSTUDY:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY);
+                break;
             case ONSTUDYINTERVENTION:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION);
+                break;
             case ONSTUDYOBSERVATION:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION);
+                break;
             case PENDINGONSTUDY:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY);
+                break;
             case POTENTIALCANDIDATE:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE);
+                break;
             case SCREENING:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.SCREENING);
+                break;
             case WITHDRAWN:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus convertResearchSubjectStatus(org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus> convertResearchSubjectStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchSubject.ResearchSubjectStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CANDIDATE:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.CANDIDATE);
+                break;
             case ELIGIBLE:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ELIGIBLE);
+                break;
             case FOLLOWUP:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.FOLLOWUP);
+                break;
             case INELIGIBLE:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.INELIGIBLE);
+                break;
             case NOTREGISTERED:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NOTREGISTERED);
+                break;
             case OFFSTUDY:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.OFFSTUDY);
+                break;
             case ONSTUDY:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDY);
+                break;
             case ONSTUDYINTERVENTION:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYINTERVENTION);
+                break;
             case ONSTUDYOBSERVATION:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.ONSTUDYOBSERVATION);
+                break;
             case PENDINGONSTUDY:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.PENDINGONSTUDY);
+                break;
             case POTENTIALCANDIDATE:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.POTENTIALCANDIDATE);
+                break;
             case SCREENING:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.SCREENING;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.SCREENING);
+                break;
             case WITHDRAWN:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.WITHDRAWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchSubject.ResearchSubjectStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }
