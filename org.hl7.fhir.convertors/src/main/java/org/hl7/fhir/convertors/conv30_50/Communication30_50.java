@@ -19,7 +19,7 @@ public class Communication30_50 {
             if (src.getStatus() == org.hl7.fhir.r5.model.Enumerations.EventStatus.NOTDONE)
                 tgt.setNotDone(true);
             else
-                tgt.setStatus(convertCommunicationStatus(src.getStatus()));
+                tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setNotDoneReason(VersionConvertor_30_50.convertCodeableConcept(src.getStatusReason()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_50.convertCodeableConcept(t));
@@ -56,7 +56,7 @@ public class Communication30_50 {
         if (src.hasNotDone())
             tgt.setStatus(org.hl7.fhir.r5.model.Enumerations.EventStatus.NOTDONE);
         else if (src.hasStatus())
-            tgt.setStatus(convertCommunicationStatus(src.getStatus()));
+            tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasNotDoneReason())
             tgt.setStatusReason(VersionConvertor_30_50.convertCodeableConcept(src.getNotDoneReason()));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_50.convertCodeableConcept(t));
@@ -99,49 +99,71 @@ public class Communication30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Communication.CommunicationStatus convertCommunicationStatus(org.hl7.fhir.r5.model.Enumerations.EventStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> convertCommunicationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Communication.CommunicationStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PREPARATION:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.PREPARATION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.PREPARATION);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.INPROGRESS);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.SUSPENDED);
+                break;
             case STOPPED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ABORTED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Enumerations.EventStatus convertCommunicationStatus(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertCommunicationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PREPARATION:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ONHOLD);
+                break;
             case ABORTED:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.STOPPED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.STOPPED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

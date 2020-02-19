@@ -5,172 +5,254 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class OperationOutcome14_30 {
 
-    static public org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity convertIssueSeverity(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverityEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case FATAL:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.FATAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.FATAL);
+                break;
             case ERROR:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.ERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.ERROR);
+                break;
             case WARNING:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.WARNING;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.WARNING);
+                break;
             case INFORMATION:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.INFORMATION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.INFORMATION);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity convertIssueSeverity(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverityEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case FATAL:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.FATAL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.FATAL);
+                break;
             case ERROR:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.ERROR;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.ERROR);
+                break;
             case WARNING:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.WARNING;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.WARNING);
+                break;
             case INFORMATION:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.INFORMATION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.INFORMATION);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType convertIssueType(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INVALID:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INVALID;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INVALID);
+                break;
             case STRUCTURE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.STRUCTURE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.STRUCTURE);
+                break;
             case REQUIRED:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.REQUIRED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.REQUIRED);
+                break;
             case VALUE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.VALUE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.VALUE);
+                break;
             case INVARIANT:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INVARIANT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INVARIANT);
+                break;
             case SECURITY:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.SECURITY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.SECURITY);
+                break;
             case LOGIN:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.LOGIN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.LOGIN);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.UNKNOWN);
+                break;
             case EXPIRED:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXPIRED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXPIRED);
+                break;
             case FORBIDDEN:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.FORBIDDEN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.FORBIDDEN);
+                break;
             case SUPPRESSED:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.SUPPRESSED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.SUPPRESSED);
+                break;
             case PROCESSING:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.PROCESSING;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.PROCESSING);
+                break;
             case NOTSUPPORTED:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOTSUPPORTED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOTSUPPORTED);
+                break;
             case DUPLICATE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.DUPLICATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.DUPLICATE);
+                break;
             case NOTFOUND:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOTFOUND;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOTFOUND);
+                break;
             case TOOLONG:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TOOLONG;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TOOLONG);
+                break;
             case CODEINVALID:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.CODEINVALID;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.CODEINVALID);
+                break;
             case EXTENSION:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXTENSION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXTENSION);
+                break;
             case TOOCOSTLY:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TOOCOSTLY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TOOCOSTLY);
+                break;
             case BUSINESSRULE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.BUSINESSRULE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.BUSINESSRULE);
+                break;
             case CONFLICT:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.CONFLICT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.CONFLICT);
+                break;
             case INCOMPLETE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INCOMPLETE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INCOMPLETE);
+                break;
             case TRANSIENT:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TRANSIENT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TRANSIENT);
+                break;
             case LOCKERROR:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.LOCKERROR;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.LOCKERROR);
+                break;
             case NOSTORE:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOSTORE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NOSTORE);
+                break;
             case EXCEPTION:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXCEPTION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.EXCEPTION);
+                break;
             case TIMEOUT:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TIMEOUT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.TIMEOUT);
+                break;
             case THROTTLED:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.THROTTLED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.THROTTLED);
+                break;
             case INFORMATIONAL:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INFORMATIONAL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.INFORMATIONAL);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.OperationOutcome.IssueType convertIssueType(org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationOutcome.IssueType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationOutcome.IssueTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INVALID:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INVALID;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INVALID);
+                break;
             case STRUCTURE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.STRUCTURE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.STRUCTURE);
+                break;
             case REQUIRED:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.REQUIRED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.REQUIRED);
+                break;
             case VALUE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.VALUE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.VALUE);
+                break;
             case INVARIANT:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INVARIANT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INVARIANT);
+                break;
             case SECURITY:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.SECURITY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.SECURITY);
+                break;
             case LOGIN:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.LOGIN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.LOGIN);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.UNKNOWN);
+                break;
             case EXPIRED:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXPIRED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXPIRED);
+                break;
             case FORBIDDEN:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.FORBIDDEN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.FORBIDDEN);
+                break;
             case SUPPRESSED:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.SUPPRESSED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.SUPPRESSED);
+                break;
             case PROCESSING:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.PROCESSING;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.PROCESSING);
+                break;
             case NOTSUPPORTED:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOTSUPPORTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOTSUPPORTED);
+                break;
             case DUPLICATE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.DUPLICATE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.DUPLICATE);
+                break;
             case NOTFOUND:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOTFOUND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOTFOUND);
+                break;
             case TOOLONG:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TOOLONG;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TOOLONG);
+                break;
             case CODEINVALID:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.CODEINVALID;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.CODEINVALID);
+                break;
             case EXTENSION:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXTENSION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXTENSION);
+                break;
             case TOOCOSTLY:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TOOCOSTLY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TOOCOSTLY);
+                break;
             case BUSINESSRULE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.BUSINESSRULE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.BUSINESSRULE);
+                break;
             case CONFLICT:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.CONFLICT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.CONFLICT);
+                break;
             case INCOMPLETE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INCOMPLETE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INCOMPLETE);
+                break;
             case TRANSIENT:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TRANSIENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TRANSIENT);
+                break;
             case LOCKERROR:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.LOCKERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.LOCKERROR);
+                break;
             case NOSTORE:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOSTORE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NOSTORE);
+                break;
             case EXCEPTION:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXCEPTION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.EXCEPTION);
+                break;
             case TIMEOUT:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TIMEOUT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.TIMEOUT);
+                break;
             case THROTTLED:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.THROTTLED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.THROTTLED);
+                break;
             case INFORMATIONAL:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INFORMATIONAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INFORMATIONAL);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2016may.model.OperationOutcome convertOperationOutcome(org.hl7.fhir.dstu3.model.OperationOutcome src) throws FHIRException {
@@ -197,9 +279,9 @@ public class OperationOutcome14_30 {
         org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
         if (src.hasSeverity())
-            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
         if (src.hasCode())
-            tgt.setCode(convertIssueType(src.getCode()));
+            tgt.setCodeElement(convertIssueType(src.getCodeElement()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_14_30.convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())
@@ -215,9 +297,9 @@ public class OperationOutcome14_30 {
         org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent();
         VersionConvertor_14_30.copyElement(src, tgt);
         if (src.hasSeverity())
-            tgt.setSeverity(convertIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
         if (src.hasCode())
-            tgt.setCode(convertIssueType(src.getCode()));
+            tgt.setCodeElement(convertIssueType(src.getCodeElement()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_14_30.convertCodeableConcept(src.getDetails()));
         if (src.hasDiagnostics())

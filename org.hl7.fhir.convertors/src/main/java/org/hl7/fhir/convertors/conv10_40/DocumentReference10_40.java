@@ -61,7 +61,7 @@ public class DocumentReference10_40 {
         if (src.hasDate())
             tgt.setCreated(src.getDate());
         if (src.hasStatus())
-            tgt.setStatus(convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDocStatus())
             tgt.setDocStatus(convertDocStatus(src.getDocStatus()));
         for (org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));
@@ -95,7 +95,7 @@ public class DocumentReference10_40 {
         if (src.hasCreated())
             tgt.setDate(src.getCreated());
         if (src.hasStatus())
-            tgt.setStatus(convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDocStatus())
             tgt.setDocStatus(convertDocStatus(src.getDocStatus()));
         for (org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));
@@ -198,7 +198,7 @@ public class DocumentReference10_40 {
         org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_10_40.convertReference(src.getTarget()));
         return tgt;
@@ -210,73 +210,103 @@ public class DocumentReference10_40 {
         org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent();
         VersionConvertor_10_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_10_40.convertReference(src.getTarget()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus convertDocumentReferenceStatus(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatusEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CURRENT:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.CURRENT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.CURRENT);
+                break;
             case SUPERSEDED:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.SUPERSEDED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatusEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CURRENT:
-                return org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.CURRENT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.CURRENT);
+                break;
             case SUPERSEDED:
-                return org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.SUPERSEDED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACES:
-                return org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.REPLACES;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.REPLACES);
+                break;
             case TRANSFORMS:
-                return org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.TRANSFORMS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.TRANSFORMS);
+                break;
             case SIGNS:
-                return org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.SIGNS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.SIGNS);
+                break;
             case APPENDS:
-                return org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.APPENDS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.APPENDS);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType convertDocumentRelationshipType(org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACES:
-                return org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.REPLACES;
+                tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.REPLACES);
+                break;
             case TRANSFORMS:
-                return org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.TRANSFORMS;
+                tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.TRANSFORMS);
+                break;
             case SIGNS:
-                return org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.SIGNS;
+                tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.SIGNS);
+                break;
             case APPENDS:
-                return org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.APPENDS;
+                tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.APPENDS);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DocumentReference.DocumentRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 }

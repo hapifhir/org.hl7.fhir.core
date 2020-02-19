@@ -74,36 +74,51 @@ public class Patient10_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Patient.LinkType convertLinkType(org.hl7.fhir.dstu2.model.Patient.LinkType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> convertLinkType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Patient.LinkTypeEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACE:
-                return org.hl7.fhir.r5.model.Patient.LinkType.REPLACEDBY;
+                tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REPLACEDBY);
+                break;
             case REFER:
-                return org.hl7.fhir.r5.model.Patient.LinkType.REFER;
+                tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REFER);
+                break;
             case SEEALSO:
-                return org.hl7.fhir.r5.model.Patient.LinkType.SEEALSO;
+                tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.SEEALSO);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Patient.LinkType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Patient.LinkType convertLinkType(org.hl7.fhir.r5.model.Patient.LinkType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> convertLinkType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Patient.LinkTypeEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACEDBY:
-                return org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
+                break;
             case REPLACES:
-                return org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
+                break;
             case REFER:
-                return org.hl7.fhir.dstu2.model.Patient.LinkType.REFER;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REFER);
+                break;
             case SEEALSO:
-                return org.hl7.fhir.dstu2.model.Patient.LinkType.SEEALSO;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.SEEALSO);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Patient.LinkType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Patient convertPatient(org.hl7.fhir.dstu2.model.Patient src) throws FHIRException {
@@ -204,7 +219,7 @@ public class Patient10_50 {
         if (src.hasOther())
             tgt.setOther(VersionConvertor_10_50.convertReference(src.getOther()));
         if (src.hasType())
-            tgt.setType(convertLinkType(src.getType()));
+            tgt.setTypeElement(convertLinkType(src.getTypeElement()));
         return tgt;
     }
 
@@ -216,7 +231,7 @@ public class Patient10_50 {
         if (src.hasOther())
             tgt.setOther(VersionConvertor_10_50.convertReference(src.getOther()));
         if (src.hasType())
-            tgt.setType(convertLinkType(src.getType()));
+            tgt.setTypeElement(convertLinkType(src.getTypeElement()));
         return tgt;
     }
 }

@@ -28,7 +28,7 @@ public class CompartmentDefinition14_50 {
         if (src.hasPurpose())
             tgt.setRequirements(src.getPurpose());
         if (src.hasCode())
-            tgt.setCode(convertCompartmentType(src.getCode()));
+            tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
         if (src.hasSearchElement())
             tgt.setSearchElement(VersionConvertor_14_50.convertBoolean(src.getSearchElement()));
         for (org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
@@ -58,7 +58,7 @@ public class CompartmentDefinition14_50 {
         if (src.hasRequirements())
             tgt.setPurpose(src.getRequirements());
         if (src.hasCode())
-            tgt.setCode(convertCompartmentType(src.getCode()));
+            tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
         if (src.hasSearchElement())
             tgt.setSearchElement(VersionConvertor_14_50.convertBoolean(src.getSearchElement()));
         for (org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
@@ -115,41 +115,59 @@ public class CompartmentDefinition14_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Enumerations.CompartmentType convertCompartmentType(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> convertCompartmentType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CompartmentTypeEnumFactory());
+        VersionConvertor_14_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT);
+                break;
             case ENCOUNTER:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER);
+                break;
             case DEVICE:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType convertCompartmentType(org.hl7.fhir.r5.model.Enumerations.CompartmentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> convertCompartmentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentTypeEnumFactory());
+        VersionConvertor_14_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PATIENT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PATIENT);
+                break;
             case ENCOUNTER:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.ENCOUNTER;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
+                break;
             case DEVICE:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.DEVICE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.DEVICE);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.NULL);
+                break;
         }
+        return tgt;
     }
 }

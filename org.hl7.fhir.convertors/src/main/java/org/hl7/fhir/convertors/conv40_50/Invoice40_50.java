@@ -60,7 +60,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertInvoiceStatus(src.getStatus()));
+            tgt.setStatusElement(convertInvoiceStatus(src.getStatusElement()));
         if (src.hasCancelledReason())
             tgt.setCancelledReasonElement(convertString(src.getCancelledReasonElement()));
         if (src.hasType())
@@ -95,7 +95,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertInvoiceStatus(src.getStatus()));
+            tgt.setStatusElement(convertInvoiceStatus(src.getStatusElement()));
         if (src.hasCancelledReason())
             tgt.setCancelledReasonElement(convertString(src.getCancelledReasonElement()));
         if (src.hasType())
@@ -123,42 +123,60 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Invoice.InvoiceStatus convertInvoiceStatus(org.hl7.fhir.r4.model.Invoice.InvoiceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> convertInvoiceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Invoice.InvoiceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.DRAFT);
+                break;
             case ISSUED:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ISSUED;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ISSUED);
+                break;
             case BALANCED:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.BALANCED;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.BALANCED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Invoice.InvoiceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Invoice.InvoiceStatus convertInvoiceStatus(org.hl7.fhir.r5.model.Invoice.InvoiceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> convertInvoiceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Invoice.InvoiceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.DRAFT);
+                break;
             case ISSUED:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ISSUED;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ISSUED);
+                break;
             case BALANCED:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.BALANCED;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.BALANCED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Invoice.InvoiceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent convertInvoiceParticipantComponent(org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent src) throws FHIRException {
@@ -217,7 +235,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent tgt = new org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertInvoicePriceComponentType(src.getType()));
+            tgt.setTypeElement(convertInvoicePriceComponentType(src.getTypeElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasFactor())
@@ -233,7 +251,7 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent tgt = new org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertInvoicePriceComponentType(src.getType()));
+            tgt.setTypeElement(convertInvoicePriceComponentType(src.getTypeElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasFactor())
@@ -243,45 +261,65 @@ public class Invoice40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> convertInvoicePriceComponentType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BASE:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.BASE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.BASE);
+                break;
             case SURCHARGE:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.SURCHARGE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.SURCHARGE);
+                break;
             case DEDUCTION:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DEDUCTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DEDUCTION);
+                break;
             case DISCOUNT:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DISCOUNT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DISCOUNT);
+                break;
             case TAX:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.TAX;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.TAX);
+                break;
             case INFORMATIONAL:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType convertInvoicePriceComponentType(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType> convertInvoicePriceComponentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BASE:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.BASE;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.BASE);
+                break;
             case SURCHARGE:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.SURCHARGE;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.SURCHARGE);
+                break;
             case DEDUCTION:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.DEDUCTION;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.DEDUCTION);
+                break;
             case DISCOUNT:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.DISCOUNT;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.DISCOUNT);
+                break;
             case TAX:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.TAX;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.TAX);
+                break;
             case INFORMATIONAL:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.INFORMATIONAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.INFORMATIONAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoicePriceComponentType.NULL);
+                break;
         }
+        return tgt;
     }
 }

@@ -40,7 +40,9 @@ public class ParserEnumeration {
 
     public static final String ELEMENT = "Element";
 
-    private static final List<String> VERSION_FILES = Arrays.asList("10_30", "10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
+    private static final List<String> VERSION_FILES = Arrays.asList("10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
+    //private static final List<String> VERSION_FILES = Arrays.asList("10_30", "10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
+
     private static String MODEL_BASE_PATH = "/Users/markiantorno/Documents/Development/fhir/org.hl7.fhir.core/org.hl7.fhir.%1$s/src/main/java/";
 
     public static HashMap<MethodDeclaration, HashMap<ExpressionStmt, String>> masterList = new HashMap<>();
@@ -73,21 +75,9 @@ public class ParserEnumeration {
     public static final String SWITCH_STATEMENT_TEMPLATE = "tgt.setValue(org.hl7.fhir.%1$s.model.%2$s.%3$s);";
     public static final String SWITCH_BREAK = " break;";
 
-/**
- *             case ACTIVE:
- *                 tgt.setValue(org.hl7.fhir.%2$s.model.%4$s.ACTIVE);
- *                 break;
- *             case INACTIVE:
- *                 tgt.setValue(org.hl7.fhir.%2$s.model.%4$s.INACTIVE);
- *                 break;
- *             default:
- *                 tgt.setValue(org.hl7.fhir.%2$s.model.%4$s.NULL);
- *                 break;
- */
-
     public static void main(String[] args) {
-//        VERSION_FILES.forEach(version -> {
-            String version = "10_30";
+        VERSION_FILES.forEach(version -> {
+            //String version = "10_30";
             List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
             //System.out.println("Checking the following files:");
             Collections.sort(filenames);
@@ -101,7 +91,7 @@ public class ParserEnumeration {
                     e.printStackTrace();
                 }
             });
-//        });
+        });
 
 //    VERSION_FILES2.forEach(version -> {
 //

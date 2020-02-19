@@ -6,34 +6,48 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class StructureDefinition14_30 {
 
-    static public org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext> convertExtensionContext(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContextEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESOURCE:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.RESOURCE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.RESOURCE);
+                break;
             case DATATYPE:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.DATATYPE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.DATATYPE);
+                break;
             case EXTENSION:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.EXTENSION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.EXTENSION);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext convertExtensionContext(org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext> convertExtensionContext(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.ExtensionContext> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContextEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESOURCE:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.RESOURCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.RESOURCE);
+                break;
             case DATATYPE:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.DATATYPE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.DATATYPE);
+                break;
             case EXTENSION:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.EXTENSION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.EXTENSION);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.ExtensionContext.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2016may.model.StructureDefinition convertStructureDefinition(org.hl7.fhir.dstu3.model.StructureDefinition src) throws FHIRException {
@@ -73,18 +87,18 @@ public class StructureDefinition14_30 {
             tgt.setFhirVersionElement(VersionConvertor_14_30.convertId(src.getFhirVersionElement()));
         for (org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionMappingComponent t : src.getMapping()) tgt.addMapping(convertStructureDefinitionMappingComponent(t));
         if (src.hasKind())
-            tgt.setKind(convertStructureDefinitionKind(src.getKind()));
+            tgt.setKindElement(convertStructureDefinitionKind(src.getKindElement()));
         if (src.hasAbstractElement())
             tgt.setAbstractElement(VersionConvertor_14_30.convertBoolean(src.getAbstractElement()));
         if (src.hasContextType())
-            tgt.setContextType(convertExtensionContext(src.getContextType()));
+            tgt.setContextTypeElement(convertExtensionContext(src.getContextTypeElement()));
         for (org.hl7.fhir.dstu3.model.StringType t : src.getContext()) tgt.addContext(t.getValue());
         if (src.hasBaseDefinition())
             tgt.setBaseDefinitionElement(VersionConvertor_14_30.convertUri(src.getBaseDefinitionElement()));
         if (src.hasType() && src.getDerivation() == org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.CONSTRAINT)
             tgt.setBaseTypeElement(VersionConvertor_14_30.convertCode(src.getTypeElement()));
         if (src.hasDerivation())
-            tgt.setDerivation(convertTypeDerivationRule(src.getDerivation()));
+            tgt.setDerivationElement(convertTypeDerivationRule(src.getDerivationElement()));
         if (src.hasSnapshot())
             tgt.setSnapshot(convertStructureDefinitionSnapshotComponent(src.getSnapshot()));
         if (src.hasDifferential())
@@ -130,11 +144,11 @@ public class StructureDefinition14_30 {
             tgt.setFhirVersionElement(VersionConvertor_14_30.convertId(src.getFhirVersionElement()));
         for (org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionMappingComponent t : src.getMapping()) tgt.addMapping(convertStructureDefinitionMappingComponent(t));
         if (src.hasKind())
-            tgt.setKind(convertStructureDefinitionKind(src.getKind()));
+            tgt.setKindElement(convertStructureDefinitionKind(src.getKindElement()));
         if (src.hasAbstractElement())
             tgt.setAbstractElement(VersionConvertor_14_30.convertBoolean(src.getAbstractElement()));
         if (src.hasContextType())
-            tgt.setContextType(convertExtensionContext(src.getContextType()));
+            tgt.setContextTypeElement(convertExtensionContext(src.getContextTypeElement()));
         for (org.hl7.fhir.dstu2016may.model.StringType t : src.getContext()) tgt.addContext(t.getValue());
         if (src.getDerivation() == TypeDerivationRule.CONSTRAINT)
             tgt.setTypeElement(VersionConvertor_14_30.convertCode(src.getBaseTypeElement()));
@@ -143,7 +157,7 @@ public class StructureDefinition14_30 {
         if (src.hasBaseDefinition())
             tgt.setBaseDefinitionElement(VersionConvertor_14_30.convertUri(src.getBaseDefinitionElement()));
         if (src.hasDerivation())
-            tgt.setDerivation(convertTypeDerivationRule(src.getDerivation()));
+            tgt.setDerivationElement(convertTypeDerivationRule(src.getDerivationElement()));
         if (src.hasSnapshot()) {
             if (src.hasSnapshot())
                 tgt.setSnapshot(convertStructureDefinitionSnapshotComponent(src.getSnapshot()));
@@ -197,36 +211,51 @@ public class StructureDefinition14_30 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind convertStructureDefinitionKind(org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind> convertStructureDefinitionKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKindEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PRIMITIVETYPE:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.DATATYPE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.DATATYPE);
+                break;
             case COMPLEXTYPE:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.DATATYPE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.DATATYPE);
+                break;
             case RESOURCE:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.RESOURCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.RESOURCE);
+                break;
             case LOGICAL:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.LOGICAL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.LOGICAL);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind convertStructureDefinitionKind(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind> convertStructureDefinitionKind(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKindEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DATATYPE:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.COMPLEXTYPE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.COMPLEXTYPE);
+                break;
             case RESOURCE:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.RESOURCE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.RESOURCE);
+                break;
             case LOGICAL:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.LOGICAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.LOGICAL);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionMappingComponent convertStructureDefinitionMappingComponent(org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionMappingComponent src) throws FHIRException {
@@ -279,29 +308,41 @@ public class StructureDefinition14_30 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule convertTypeDerivationRule(org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule> convertTypeDerivationRule(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRuleEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SPECIALIZATION:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.SPECIALIZATION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.SPECIALIZATION);
+                break;
             case CONSTRAINT:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.CONSTRAINT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.CONSTRAINT);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule convertTypeDerivationRule(org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule> convertTypeDerivationRule(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRuleEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SPECIALIZATION:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.SPECIALIZATION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.SPECIALIZATION);
+                break;
             case CONSTRAINT:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.CONSTRAINT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.CONSTRAINT);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureDefinition.TypeDerivationRule.NULL);
+                break;
         }
+        return tgt;
     }
 }

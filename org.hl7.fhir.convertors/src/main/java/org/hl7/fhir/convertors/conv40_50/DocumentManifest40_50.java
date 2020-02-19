@@ -62,7 +62,7 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
             tgt.setMasterIdentifier(convertIdentifier(src.getMasterIdentifier()));
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubject())
@@ -89,7 +89,7 @@ public class DocumentManifest40_50 extends VersionConvertor_40_50 {
             tgt.setMasterIdentifier(convertIdentifier(src.getMasterIdentifier()));
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubject())

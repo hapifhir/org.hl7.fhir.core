@@ -44,7 +44,7 @@ public class MessageDefinition30_50 {
         if (src.hasEventCoding())
             tgt.setEvent(VersionConvertor_30_50.convertCoding(src.getEventCoding()));
         if (src.hasCategory())
-            tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
+            tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
             tgt.setResponseRequired(src.getResponseRequired() != org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
@@ -91,7 +91,7 @@ public class MessageDefinition30_50 {
         if (src.hasEvent())
             tgt.setEvent(VersionConvertor_30_50.convertCoding(src.getEvent()));
         if (src.hasCategory())
-            tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
+            tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
             tgt.setResponseRequired(src.getResponseRequired() ? org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS : org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
@@ -155,33 +155,47 @@ public class MessageDefinition30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory convertMessageSignificanceCategory(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory> convertMessageSignificanceCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CONSEQUENCE:
-                return org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
+                break;
             case CURRENCY:
-                return org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.CURRENCY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.CURRENCY);
+                break;
             case NOTIFICATION:
-                return org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory convertMessageSignificanceCategory(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> convertMessageSignificanceCategory(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CONSEQUENCE:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
+                break;
             case CURRENCY:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CURRENCY;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CURRENCY);
+                break;
             case NOTIFICATION:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NULL);
+                break;
         }
+        return tgt;
     }
 }

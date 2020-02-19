@@ -7,6 +7,8 @@ import org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumeration;
 
+import java.util.stream.Collectors;
+
 public class StructureMap14_40 {
 
     public static org.hl7.fhir.dstu2016may.model.StructureMap convertStructureMap(org.hl7.fhir.r4.model.StructureMap src) throws FHIRException {
@@ -104,30 +106,39 @@ public class StructureMap14_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.StructureMap.StructureMapContextType convertStructureMapContextType(StructureMapContextType src) throws FHIRException {
-        if (src == null)
+    public static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> convertStructureMapContextType(org.hl7.fhir.dstu2016may.model.Enumeration<StructureMapContextType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapContextTypeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case TYPE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.TYPE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.TYPE);
             case VARIABLE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE);
             default:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.NULL);
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType convertStructureMapContextType(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType> convertStructureMapContextType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextTypeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case TYPE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.TYPE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.TYPE);
+                break;
             case VARIABLE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.VARIABLE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.VARIABLE);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapGroupComponent convertStructureMapGroupComponent(org.hl7.fhir.r4.model.StructureMap.StructureMapGroupComponent src) throws FHIRException {
@@ -175,7 +186,7 @@ public class StructureMap14_40 {
         if (src.hasType())
             tgt.setTypeElement(VersionConvertor_14_40.convertString(src.getTypeElement()));
         if (src.hasMode())
-            tgt.setMode(convertStructureMapInputMode(src.getMode()));
+            tgt.setModeElement(convertStructureMapInputMode(src.getModeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_40.convertString(src.getDocumentationElement()));
         return tgt;
@@ -191,7 +202,7 @@ public class StructureMap14_40 {
         if (src.hasType())
             tgt.setTypeElement(VersionConvertor_14_40.convertString(src.getTypeElement()));
         if (src.hasMode())
-            tgt.setMode(convertStructureMapInputMode(src.getMode()));
+            tgt.setModeElement(convertStructureMapInputMode(src.getModeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_40.convertString(src.getDocumentationElement()));
         return tgt;
@@ -262,7 +273,7 @@ public class StructureMap14_40 {
         if (src.hasElement())
             tgt.setElementElement(VersionConvertor_14_40.convertString(src.getElementElement()));
         if (src.hasListMode())
-            tgt.setListMode(convertStructureMapSourceListMode(src.getListMode()));
+            tgt.setListModeElement(convertStructureMapSourceListMode(src.getListModeElement()));
         if (src.hasVariable())
             tgt.setVariableElement(VersionConvertor_14_40.convertId(src.getVariableElement()));
         if (src.hasCondition())
@@ -283,7 +294,7 @@ public class StructureMap14_40 {
         if (src.hasElement())
             tgt.setElementElement(VersionConvertor_14_40.convertString(src.getElementElement()));
         if (src.hasListMode())
-            tgt.setListMode(convertStructureMapSourceListMode(src.getListMode()));
+            tgt.setListModeElement(convertStructureMapSourceListMode(src.getListModeElement()));
         if (src.hasVariable())
             tgt.setVariableElement(VersionConvertor_14_40.convertId(src.getVariableElement()));
         if (src.hasCondition())
@@ -301,16 +312,18 @@ public class StructureMap14_40 {
         if (src.hasContext())
             tgt.setContextElement(VersionConvertor_14_40.convertId(src.getContextElement()));
         if (src.hasContextType())
-            tgt.setContextType(convertStructureMapContextType(src.getContextType()));
+            tgt.setContextTypeElement(convertStructureMapContextType(src.getContextTypeElement()));
         if (src.hasElement())
             tgt.setElementElement(VersionConvertor_14_40.convertString(src.getElementElement()));
         if (src.hasVariable())
             tgt.setVariableElement(VersionConvertor_14_40.convertId(src.getVariableElement()));
-        for (Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode> t : src.getListMode()) tgt.addListMode(convertStructureMapTargetListMode(t.getValue()));
+        tgt.setListMode(src.getListMode().stream()
+                .map(StructureMap14_40::convertStructureMapTargetListMode)
+                .collect(Collectors.toList()));
         if (src.hasListRuleId())
             tgt.setListRuleIdElement(VersionConvertor_14_40.convertId(src.getListRuleIdElement()));
         if (src.hasTransform())
-            tgt.setTransform(convertStructureMapTransform(src.getTransform()));
+            tgt.setTransformElement(convertStructureMapTransform(src.getTransformElement()));
         for (org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
         return tgt;
     }
@@ -323,7 +336,7 @@ public class StructureMap14_40 {
         if (src.hasContext())
             tgt.setContextElement(VersionConvertor_14_40.convertId(src.getContextElement()));
         if (src.hasContextType())
-            tgt.setContextType(convertStructureMapContextType(src.getContextType()));
+            tgt.setContextTypeElement(convertStructureMapContextType(src.getContextTypeElement()));
         if (src.hasElement())
             tgt.setElementElement(VersionConvertor_14_40.convertString(src.getElementElement()));
         if (src.hasVariable())
@@ -332,7 +345,7 @@ public class StructureMap14_40 {
         if (src.hasListRuleId())
             tgt.setListRuleIdElement(VersionConvertor_14_40.convertId(src.getListRuleIdElement()));
         if (src.hasTransform())
-            tgt.setTransform(convertStructureMapTransform(src.getTransform()));
+            tgt.setTransformElement(convertStructureMapTransform(src.getTransformElement()));
         for (org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
         return tgt;
     }
@@ -357,56 +370,80 @@ public class StructureMap14_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode convertStructureMapInputMode(org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode> convertStructureMapInputMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SOURCE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.SOURCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.SOURCE);
+                break;
             case TARGET:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.TARGET;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.TARGET);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode convertStructureMapInputMode(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode> convertStructureMapInputMode(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapInputMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapInputModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SOURCE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.SOURCE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.SOURCE);
+                break;
             case TARGET:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.TARGET;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.TARGET);
+                break;
             default:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapInputMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode convertStructureMapSourceListMode(StructureMapListMode src) throws FHIRException {
-        if (src == null)
+    public static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode> convertStructureMapSourceListMode(org.hl7.fhir.dstu2016may.model.Enumeration<StructureMapListMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case FIRST:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.FIRST;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.FIRST);
+                break;
             case LAST:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.LAST;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.LAST);
+                break;
             default:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode convertStructureMapSourceListMode(org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> convertStructureMapSourceListMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapSourceListMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case FIRST:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.FIRST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.FIRST);
+                break;
             case LAST:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.LAST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.LAST);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapStructureComponent convertStructureMapStructureComponent(org.hl7.fhir.r4.model.StructureMap.StructureMapStructureComponent src) throws FHIRException {
@@ -417,7 +454,7 @@ public class StructureMap14_40 {
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
         if (src.hasMode())
-            tgt.setMode(convertStructureMapStructureMode(src.getMode()));
+            tgt.setModeElement(convertStructureMapStructureMode(src.getModeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_40.convertString(src.getDocumentationElement()));
         return tgt;
@@ -431,44 +468,60 @@ public class StructureMap14_40 {
         if (src.hasUrl())
             tgt.setUrl(src.getUrl());
         if (src.hasMode())
-            tgt.setMode(convertStructureMapStructureMode(src.getMode()));
+            tgt.setModeElement(convertStructureMapStructureMode(src.getModeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_40.convertString(src.getDocumentationElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode convertStructureMapStructureMode(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode> convertStructureMapStructureMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PRODUCED:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.PRODUCED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.PRODUCED);
+                break;
             case QUERIED:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.QUERIED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.QUERIED);
+                break;
             case SOURCE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.SOURCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.SOURCE);
+                break;
             case TARGET:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.TARGET;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.TARGET);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode convertStructureMapStructureMode(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode> convertStructureMapStructureMode(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapModelMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapModelModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PRODUCED:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.PRODUCED;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.PRODUCED);
+                break;
             case QUERIED:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.QUERIED;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.QUERIED);
+                break;
             case SOURCE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.SOURCE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.SOURCE);
+                break;
             case TARGET:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.TARGET;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.TARGET);
+                break;
             default:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode convertStructureMapTargetListMode(StructureMapListMode src) throws FHIRException {
@@ -486,84 +539,123 @@ public class StructureMap14_40 {
         }
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode convertStructureMapTargetListMode(org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> convertStructureMapTargetListMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListModeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case FIRST:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.FIRST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.FIRST);
+                break;
             case LAST:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.LAST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.LAST);
+                break;
             case SHARE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.SHARE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.SHARE);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapListMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform convertStructureMapTransform(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform> convertStructureMapTransform(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTransform> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransformEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPEND:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.APPEND;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.APPEND);
+                break;
             case CAST:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.CAST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.CAST);
+                break;
             case COPY:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.COPY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.COPY);
+                break;
             case CREATE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.CREATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.CREATE);
+                break;
             case DATEOP:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.DATEOP;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.DATEOP);
+                break;
             case ESCAPE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.ESCAPE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.ESCAPE);
+                break;
             case EVALUATE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.EVALUATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.EVALUATE);
+                break;
             case POINTER:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.POINTER;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.POINTER);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.REFERENCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.REFERENCE);
+                break;
             case TRANSLATE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.TRANSLATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.TRANSLATE);
+                break;
             case TRUNCATE:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.TRUNCATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.TRUNCATE);
+                break;
             case UUID:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.UUID;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.UUID);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapTransform.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.StructureMap.StructureMapTransform convertStructureMapTransform(StructureMap.StructureMapTransform src) throws FHIRException {
-        if (src == null)
+    public static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTransform> convertStructureMapTransform(org.hl7.fhir.dstu2016may.model.Enumeration<StructureMap.StructureMapTransform> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapTransform> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapTransformEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPEND:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.APPEND;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.APPEND);
+                break;
             case CAST:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.CAST;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.CAST);
+                break;
             case COPY:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.COPY;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.COPY);
+                break;
             case CREATE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.CREATE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.CREATE);
+                break;
             case DATEOP:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.DATEOP;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.DATEOP);
+                break;
             case ESCAPE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.ESCAPE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.ESCAPE);
+                break;
             case EVALUATE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.EVALUATE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.EVALUATE);
+                break;
             case POINTER:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.POINTER;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.POINTER);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.REFERENCE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.REFERENCE);
+                break;
             case TRANSLATE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.TRANSLATE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.TRANSLATE);
+                break;
             case TRUNCATE:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.TRUNCATE;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.TRUNCATE);
+                break;
             case UUID:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.UUID;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.UUID);
+                break;
             default:
-                return org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapTransform.NULL);
+                break;
         }
+        return tgt;
     }
 }

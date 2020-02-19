@@ -67,7 +67,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -84,7 +84,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasKind())
-            tgt.setKind(convertCapabilityStatementKind(src.getKind()));
+            tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
         if (src.hasSoftware())
             tgt.setSoftware(convertTerminologyCapabilitiesSoftwareComponent(src.getSoftware()));
         if (src.hasImplementation())
@@ -95,7 +95,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasExpansion())
             tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
         if (src.hasCodeSearch())
-            tgt.setCodeSearch(convertCodeSearchSupport(src.getCodeSearch()));
+            tgt.setCodeSearchElement(convertCodeSearchSupport(src.getCodeSearchElement()));
         if (src.hasValidateCode())
             tgt.setValidateCode(convertTerminologyCapabilitiesValidateCodeComponent(src.getValidateCode()));
         if (src.hasTranslation())
@@ -119,7 +119,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -136,7 +136,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasKind())
-            tgt.setKind(convertCapabilityStatementKind(src.getKind()));
+            tgt.setKindElement(convertCapabilityStatementKind(src.getKindElement()));
         if (src.hasSoftware())
             tgt.setSoftware(convertTerminologyCapabilitiesSoftwareComponent(src.getSoftware()));
         if (src.hasImplementation())
@@ -147,7 +147,7 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         if (src.hasExpansion())
             tgt.setExpansion(convertTerminologyCapabilitiesExpansionComponent(src.getExpansion()));
         if (src.hasCodeSearch())
-            tgt.setCodeSearch(convertCodeSearchSupport(src.getCodeSearch()));
+            tgt.setCodeSearchElement(convertCodeSearchSupport(src.getCodeSearchElement()));
         if (src.hasValidateCode())
             tgt.setValidateCode(convertTerminologyCapabilitiesValidateCodeComponent(src.getValidateCode()));
         if (src.hasTranslation())
@@ -157,60 +157,86 @@ public class TerminologyCapabilities40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INSTANCE:
-                return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE);
+                break;
             case CAPABILITY:
-                return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.CAPABILITY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.CAPABILITY);
+                break;
             case REQUIREMENTS:
-                return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.REQUIREMENTS;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.REQUIREMENTS);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind convertCapabilityStatementKind(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INSTANCE:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.INSTANCE;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.INSTANCE);
+                break;
             case CAPABILITY:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.CAPABILITY;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.CAPABILITY);
+                break;
             case REQUIREMENTS:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.REQUIREMENTS;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.REQUIREMENTS);
+                break;
             default:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport convertCodeSearchSupport(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> convertCodeSearchSupport(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EXPLICIT:
-                return org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT;
+                tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
+                break;
             case ALL:
-                return org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.ALL;
+                tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.ALL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport convertCodeSearchSupport(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> convertCodeSearchSupport(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EXPLICIT:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
+                break;
             case ALL:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.ALL;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.ALL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent convertTerminologyCapabilitiesSoftwareComponent(org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent src) throws FHIRException {
