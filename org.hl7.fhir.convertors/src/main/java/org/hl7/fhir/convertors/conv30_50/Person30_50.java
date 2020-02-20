@@ -5,38 +5,54 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Person30_50 {
 
-    static public org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel> convertIdentityAssuranceLevel(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevelEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case LEVEL1:
-                return org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL1;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL1);
+                break;
             case LEVEL2:
-                return org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL2;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL2);
+                break;
             case LEVEL3:
-                return org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL3;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL3);
+                break;
             case LEVEL4:
-                return org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL4;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL4);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel convertIdentityAssuranceLevel(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel> convertIdentityAssuranceLevel(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Person.IdentityAssuranceLevelEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case LEVEL1:
-                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL1;
+                tgt.setValue(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL1);
+                break;
             case LEVEL2:
-                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL2;
+                tgt.setValue(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL2);
+                break;
             case LEVEL3:
-                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL3;
+                tgt.setValue(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL3);
+                break;
             case LEVEL4:
-                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL4;
+                tgt.setValue(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.LEVEL4);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Person.IdentityAssuranceLevel.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu3.model.Person convertPerson(org.hl7.fhir.r5.model.Person src) throws FHIRException {
@@ -48,7 +64,7 @@ public class Person30_50 {
         for (org.hl7.fhir.r5.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_50.convertHumanName(t));
         for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_50.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_50.convertDate(src.getBirthDateElement()));
         for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_30_50.convertAddress(t));
@@ -71,7 +87,7 @@ public class Person30_50 {
         for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_50.convertHumanName(t));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_50.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_50.convertDate(src.getBirthDateElement()));
         for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_30_50.convertAddress(t));
@@ -93,7 +109,7 @@ public class Person30_50 {
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_50.convertReference(src.getTarget()));
         if (src.hasAssurance())
-            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+            tgt.setAssuranceElement(convertIdentityAssuranceLevel(src.getAssuranceElement()));
         return tgt;
     }
 
@@ -105,7 +121,7 @@ public class Person30_50 {
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_50.convertReference(src.getTarget()));
         if (src.hasAssurance())
-            tgt.setAssurance(convertIdentityAssuranceLevel(src.getAssurance()));
+            tgt.setAssuranceElement(convertIdentityAssuranceLevel(src.getAssuranceElement()));
         return tgt;
     }
 }

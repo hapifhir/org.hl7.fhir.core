@@ -67,11 +67,11 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
-            tgt.setStatus(convertDeviceRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertDeviceRequestStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertType(src.getCode()));
         for (org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
@@ -111,11 +111,11 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
-            tgt.setStatus(convertDeviceRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertDeviceRequestStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertType(src.getCode()));
         for (org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
@@ -144,138 +144,202 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertDeviceRequestStatus(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> convertDeviceRequestStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus convertDeviceRequestStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus> convertDeviceRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> convertRequestIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DeviceRequest.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestIntent> convertRequestIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceRequest.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertRequestPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DeviceRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestPriority> convertRequestPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceRequest.RequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceRequest.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceRequest.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent convertDeviceRequestParameterComponent(org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent src) throws FHIRException {

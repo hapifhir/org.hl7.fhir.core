@@ -68,15 +68,15 @@ public class Task40_50 extends VersionConvertor_40_50 {
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertTaskStatus(src.getStatus()));
+            tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasBusinessStatus())
             tgt.setBusinessStatus(convertCodeableConcept(src.getBusinessStatus()));
         if (src.hasIntent())
-            tgt.setIntent(convertTaskIntent(src.getIntent()));
+            tgt.setIntentElement(convertTaskIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertTaskPriority(src.getPriority()));
+            tgt.setPriorityElement(convertTaskPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasDescription())
@@ -129,15 +129,15 @@ public class Task40_50 extends VersionConvertor_40_50 {
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertTaskStatus(src.getStatus()));
+            tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasBusinessStatus())
             tgt.setBusinessStatus(convertCodeableConcept(src.getBusinessStatus()));
         if (src.hasIntent())
-            tgt.setIntent(convertTaskIntent(src.getIntent()));
+            tgt.setIntentElement(convertTaskIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertTaskPriority(src.getPriority()));
+            tgt.setPriorityElement(convertTaskPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasDescription())
@@ -175,158 +175,232 @@ public class Task40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Task.TaskStatus convertTaskStatus(org.hl7.fhir.r4.model.Task.TaskStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskStatus> convertTaskStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Task.TaskStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.DRAFT);
+                break;
             case REQUESTED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.REQUESTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.REQUESTED);
+                break;
             case RECEIVED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.RECEIVED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.RECEIVED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.ACCEPTED);
+                break;
             case REJECTED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.REJECTED);
+                break;
             case READY:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.READY;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.READY);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.CANCELLED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.INPROGRESS);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.ONHOLD);
+                break;
             case FAILED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.FAILED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.FAILED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Task.TaskStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Task.TaskStatus convertTaskStatus(org.hl7.fhir.r5.model.Task.TaskStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskStatus> convertTaskStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Task.TaskStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.DRAFT);
+                break;
             case REQUESTED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.REQUESTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.REQUESTED);
+                break;
             case RECEIVED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.RECEIVED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.RECEIVED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.ACCEPTED);
+                break;
             case REJECTED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.REJECTED);
+                break;
             case READY:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.READY;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.READY);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.CANCELLED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.INPROGRESS);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.ONHOLD);
+                break;
             case FAILED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.FAILED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.FAILED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Task.TaskStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Task.TaskIntent convertTaskIntent(org.hl7.fhir.r4.model.Task.TaskIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskIntent> convertTaskIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Task.TaskIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.UNKNOWN);
+                break;
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.PLAN);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Task.TaskIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Task.TaskIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Task.TaskIntent convertTaskIntent(org.hl7.fhir.r5.model.Task.TaskIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskIntent> convertTaskIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Task.TaskIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Task.TaskIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.UNKNOWN);
+                break;
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.PLAN);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Task.TaskIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertTaskPriority(org.hl7.fhir.r4.model.Task.TaskPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertTaskPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Task.TaskPriority convertTaskPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskPriority> convertTaskPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Task.TaskPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Task.TaskPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r4.model.Task.TaskPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r4.model.Task.TaskPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r4.model.Task.TaskPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r4.model.Task.TaskPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Task.TaskPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Task.TaskPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Task.TaskRestrictionComponent convertTaskRestrictionComponent(org.hl7.fhir.r4.model.Task.TaskRestrictionComponent src) throws FHIRException {

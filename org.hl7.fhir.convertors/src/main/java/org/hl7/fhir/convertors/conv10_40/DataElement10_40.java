@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
@@ -21,7 +20,7 @@ public class DataElement10_40 {
         if (src.hasVersionElement())
             tgt.setVersionElement(VersionConvertor_10_40.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())

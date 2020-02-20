@@ -17,7 +17,7 @@ public class DataElement14_40 {
         if (src.hasVersion())
             tgt.setVersionElement(VersionConvertor_14_40.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisher())

@@ -357,6 +357,14 @@ public class Composition extends DomainResource {
         }
 
         /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CompositionAttesterComponent setMode(List<Enumeration<CompositionAttestationMode>> mode) {
+            this.mode = mode;
+            return this;
+        }
+
+        /**
          * @return {@link #mode} (The type of attestation the authenticator offers.)
          */
     // syntactic sugar

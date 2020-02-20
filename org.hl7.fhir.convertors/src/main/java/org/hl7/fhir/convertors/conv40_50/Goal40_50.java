@@ -61,7 +61,7 @@ public class Goal40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasLifecycleStatus())
-            tgt.setLifecycleStatus(convertGoalLifecycleStatus(src.getLifecycleStatus()));
+            tgt.setLifecycleStatusElement(convertGoalLifecycleStatus(src.getLifecycleStatusElement()));
         if (src.hasAchievementStatus())
             tgt.setAchievementStatus(convertCodeableConcept(src.getAchievementStatus()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
@@ -94,7 +94,7 @@ public class Goal40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasLifecycleStatus())
-            tgt.setLifecycleStatus(convertGoalLifecycleStatus(src.getLifecycleStatus()));
+            tgt.setLifecycleStatusElement(convertGoalLifecycleStatus(src.getLifecycleStatusElement()));
         if (src.hasAchievementStatus())
             tgt.setAchievementStatus(convertCodeableConcept(src.getAchievementStatus()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
@@ -122,58 +122,84 @@ public class Goal40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus convertGoalLifecycleStatus(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus> convertGoalLifecycleStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Goal.GoalLifecycleStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.PROPOSED);
+                break;
             case PLANNED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.PLANNED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ACCEPTED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ONHOLD);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.COMPLETED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.ENTEREDINERROR);
+                break;
             case REJECTED:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.REJECTED);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus convertGoalLifecycleStatus(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> convertGoalLifecycleStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Goal.GoalLifecycleStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PROPOSED);
+                break;
             case PLANNED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PLANNED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACCEPTED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ONHOLD);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.COMPLETED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ENTEREDINERROR);
+                break;
             case REJECTED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.REJECTED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Goal.GoalTargetComponent convertGoalTargetComponent(org.hl7.fhir.r4.model.Goal.GoalTargetComponent src) throws FHIRException {

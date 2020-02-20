@@ -13,7 +13,7 @@ public class Observation30_40 {
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertObservationStatus(src.getStatus()));
+            tgt.setStatusElement(convertObservationStatus(src.getStatusElement()));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
@@ -59,7 +59,7 @@ public class Observation30_40 {
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertObservationStatus(src.getStatus()));
+            tgt.setStatusElement(convertObservationStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
@@ -177,53 +177,77 @@ public class Observation30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Observation.ObservationStatus convertObservationStatus(org.hl7.fhir.r4.model.Observation.ObservationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Observation.ObservationStatus> convertObservationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Observation.ObservationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Observation.ObservationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Observation.ObservationStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Observation.ObservationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Observation.ObservationStatus convertObservationStatus(org.hl7.fhir.dstu3.model.Observation.ObservationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Observation.ObservationStatus> convertObservationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Observation.ObservationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Observation.ObservationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Observation.ObservationStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Observation.ObservationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Observation.ObservationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

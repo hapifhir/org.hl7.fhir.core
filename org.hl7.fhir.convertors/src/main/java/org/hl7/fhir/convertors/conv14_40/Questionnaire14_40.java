@@ -19,7 +19,7 @@ public class Questionnaire14_40 {
         if (src.hasVersion())
             tgt.setVersionElement(VersionConvertor_14_40.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(convertQuestionnaireStatus(src.getStatus()));
+            tgt.setStatusElement(convertQuestionnaireStatus(src.getStatusElement()));
         if (src.hasDate())
             tgt.setDateElement(VersionConvertor_14_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
@@ -48,7 +48,7 @@ public class Questionnaire14_40 {
         if (src.hasVersion())
             tgt.setVersionElement(VersionConvertor_14_40.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(convertQuestionnaireStatus(src.getStatus()));
+            tgt.setStatusElement(convertQuestionnaireStatus(src.getStatusElement()));
         if (src.hasDate())
             tgt.setDateElement(VersionConvertor_14_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
@@ -86,7 +86,7 @@ public class Questionnaire14_40 {
         if (src.hasText())
             tgt.setTextElement(VersionConvertor_14_40.convertString(src.getTextElement()));
         if (src.hasType())
-            tgt.setType(convertQuestionnaireItemType(src.getType()));
+            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
         for (org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasRequired())
             tgt.setRequiredElement(VersionConvertor_14_40.convertBoolean(src.getRequiredElement()));
@@ -118,7 +118,7 @@ public class Questionnaire14_40 {
         if (src.hasText())
             tgt.setTextElement(VersionConvertor_14_40.convertString(src.getTextElement()));
         if (src.hasType())
-            tgt.setType(convertQuestionnaireItemType(src.getType()));
+            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
         for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasRequired())
             tgt.setRequiredElement(VersionConvertor_14_40.convertBoolean(src.getRequiredElement()));
@@ -188,121 +188,178 @@ public class Questionnaire14_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType convertQuestionnaireItemType(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> convertQuestionnaireItemType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GROUP:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP);
+                break;
             case DISPLAY:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DISPLAY;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DISPLAY);
+                break;
             case QUESTION:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION);
+                break;
             case BOOLEAN:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN);
+                break;
             case DECIMAL:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DECIMAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DECIMAL);
+                break;
             case INTEGER:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.INTEGER;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.INTEGER);
+                break;
             case DATE:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATE;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATE);
+                break;
             case DATETIME:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME);
+                break;
             case INSTANT:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME);
+                break;
             case TIME:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TIME;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TIME);
+                break;
             case STRING:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.STRING;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.STRING);
+                break;
             case TEXT:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TEXT;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TEXT);
+                break;
             case URL:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.URL;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.URL);
+                break;
             case CHOICE:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE);
+                break;
             case OPENCHOICE:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.OPENCHOICE;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
+                break;
             case ATTACHMENT:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.ATTACHMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.REFERENCE;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.REFERENCE);
+                break;
             case QUANTITY:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUANTITY;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUANTITY);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType convertQuestionnaireItemType(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType> convertQuestionnaireItemType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GROUP:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.GROUP;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.GROUP);
+                break;
             case DISPLAY:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DISPLAY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DISPLAY);
+                break;
             case QUESTION:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.QUESTION;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.QUESTION);
+                break;
             case BOOLEAN:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.BOOLEAN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.BOOLEAN);
+                break;
             case DECIMAL:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DECIMAL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DECIMAL);
+                break;
             case INTEGER:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.INTEGER;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.INTEGER);
+                break;
             case DATE:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DATE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DATE);
+                break;
             case DATETIME:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DATETIME;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.DATETIME);
+                break;
             case TIME:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.TIME;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.TIME);
+                break;
             case STRING:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.STRING;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.STRING);
+                break;
             case TEXT:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.TEXT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.TEXT);
+                break;
             case URL:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.URL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.URL);
+                break;
             case CHOICE:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.CHOICE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.CHOICE);
+                break;
             case OPENCHOICE:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.OPENCHOICE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
+                break;
             case ATTACHMENT:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.ATTACHMENT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.REFERENCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.REFERENCE);
+                break;
             case QUANTITY:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.QUANTITY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.QUANTITY);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus convertQuestionnaireStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus> convertQuestionnaireStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatusEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.PUBLISHED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.PUBLISHED);
+                break;
             case RETIRED:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.RETIRED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.RETIRED);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Enumerations.PublicationStatus convertQuestionnaireStatus(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> convertQuestionnaireStatus(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
+                break;
             case PUBLISHED:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE);
+                break;
             case RETIRED:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

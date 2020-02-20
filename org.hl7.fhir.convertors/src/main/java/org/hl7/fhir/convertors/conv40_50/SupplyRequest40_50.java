@@ -61,11 +61,11 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertSupplyRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertSupplyRequestStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasItem())
             tgt.setItem(convertType(src.getItem()));
         if (src.hasQuantity())
@@ -94,11 +94,11 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertSupplyRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertSupplyRequestStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasItem())
             tgt.setItem(convertType(src.getItem()));
         if (src.hasQuantity())
@@ -122,84 +122,122 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus convertSupplyRequestStatus(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus> convertSupplyRequestStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.SUSPENDED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus convertSupplyRequestStatus(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus> convertSupplyRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.SUSPENDED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertRequestPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.SupplyRequest.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.RequestPriority> convertRequestPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyRequest.RequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SupplyRequest.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent convertSupplyRequestParameterComponent(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent src) throws FHIRException {

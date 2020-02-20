@@ -60,11 +60,11 @@ public class EnrollmentResponse40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEnrollmentResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertEnrollmentResponseStatus(src.getStatusElement()));
         if (src.hasRequest())
             tgt.setRequest(convertReference(src.getRequest()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasCreated())
@@ -83,11 +83,11 @@ public class EnrollmentResponse40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEnrollmentResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertEnrollmentResponseStatus(src.getStatusElement()));
         if (src.hasRequest())
             tgt.setRequest(convertReference(src.getRequest()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasCreated())
@@ -99,71 +99,103 @@ public class EnrollmentResponse40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEnrollmentResponseStatus(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertEnrollmentResponseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus convertEnrollmentResponseStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus> convertEnrollmentResponseStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentResponse.EnrollmentResponseStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.RemittanceOutcomeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.QUEUED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.ERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.NULL);
+                break;
         }
+        return tgt;
     }
 }

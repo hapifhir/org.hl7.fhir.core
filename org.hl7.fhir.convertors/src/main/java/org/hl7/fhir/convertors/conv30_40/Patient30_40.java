@@ -46,7 +46,7 @@ public class Patient30_40 {
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_30_40.convertAddress(src.getAddress()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_30_40.convertReference(src.getOrganization()));
         if (src.hasPeriod())
@@ -66,7 +66,7 @@ public class Patient30_40 {
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_30_40.convertAddress(src.getAddress()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_30_40.convertReference(src.getOrganization()));
         if (src.hasPeriod())
@@ -74,38 +74,54 @@ public class Patient30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Patient.LinkType convertLinkType(org.hl7.fhir.r4.model.Patient.LinkType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Patient.LinkType> convertLinkType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Patient.LinkType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Patient.LinkTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACEDBY:
-                return org.hl7.fhir.dstu3.model.Patient.LinkType.REPLACEDBY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.REPLACEDBY);
+                break;
             case REPLACES:
-                return org.hl7.fhir.dstu3.model.Patient.LinkType.REPLACES;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.REPLACES);
+                break;
             case REFER:
-                return org.hl7.fhir.dstu3.model.Patient.LinkType.REFER;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.REFER);
+                break;
             case SEEALSO:
-                return org.hl7.fhir.dstu3.model.Patient.LinkType.SEEALSO;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.SEEALSO);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Patient.LinkType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Patient.LinkType convertLinkType(org.hl7.fhir.dstu3.model.Patient.LinkType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Patient.LinkType> convertLinkType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Patient.LinkType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Patient.LinkType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Patient.LinkTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REPLACEDBY:
-                return org.hl7.fhir.r4.model.Patient.LinkType.REPLACEDBY;
+                tgt.setValue(org.hl7.fhir.r4.model.Patient.LinkType.REPLACEDBY);
+                break;
             case REPLACES:
-                return org.hl7.fhir.r4.model.Patient.LinkType.REPLACES;
+                tgt.setValue(org.hl7.fhir.r4.model.Patient.LinkType.REPLACES);
+                break;
             case REFER:
-                return org.hl7.fhir.r4.model.Patient.LinkType.REFER;
+                tgt.setValue(org.hl7.fhir.r4.model.Patient.LinkType.REFER);
+                break;
             case SEEALSO:
-                return org.hl7.fhir.r4.model.Patient.LinkType.SEEALSO;
+                tgt.setValue(org.hl7.fhir.r4.model.Patient.LinkType.SEEALSO);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Patient.LinkType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Patient.LinkType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu3.model.Patient convertPatient(org.hl7.fhir.r4.model.Patient src) throws FHIRException {
@@ -119,7 +135,7 @@ public class Patient30_40 {
         for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_40.convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())
@@ -152,7 +168,7 @@ public class Patient30_40 {
         for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_40.convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())
@@ -206,7 +222,7 @@ public class Patient30_40 {
         if (src.hasOther())
             tgt.setOther(VersionConvertor_30_40.convertReference(src.getOther()));
         if (src.hasType())
-            tgt.setType(convertLinkType(src.getType()));
+            tgt.setTypeElement(convertLinkType(src.getTypeElement()));
         return tgt;
     }
 
@@ -218,7 +234,7 @@ public class Patient30_40 {
         if (src.hasOther())
             tgt.setOther(VersionConvertor_30_40.convertReference(src.getOther()));
         if (src.hasType())
-            tgt.setType(convertLinkType(src.getType()));
+            tgt.setTypeElement(convertLinkType(src.getTypeElement()));
         return tgt;
     }
 }

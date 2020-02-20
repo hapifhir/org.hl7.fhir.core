@@ -14,7 +14,7 @@ public class Flag10_50 {
         if (src.hasCategory())
             tgt.addCategory(VersionConvertor_10_50.convertCodeableConcept(src.getCategory()));
         if (src.hasStatus())
-            tgt.setStatus(convertFlagStatus(src.getStatus()));
+            tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
         if (src.hasSubject())
@@ -37,7 +37,7 @@ public class Flag10_50 {
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_10_50.convertCodeableConcept(src.getCategoryFirstRep()));
         if (src.hasStatus())
-            tgt.setStatus(convertFlagStatus(src.getStatus()));
+            tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
         if (src.hasSubject())
@@ -51,33 +51,47 @@ public class Flag10_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.r5.model.Flag.FlagStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Flag.FlagStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Flag.FlagStatusEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu2.model.Flag.FlagStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Flag.FlagStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.dstu2.model.Flag.FlagStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Flag.FlagStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.Flag.FlagStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Flag.FlagStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Flag.FlagStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Flag.FlagStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Flag.FlagStatus convertFlagStatus(org.hl7.fhir.dstu2.model.Flag.FlagStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Flag.FlagStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Flag.FlagStatusEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Flag.FlagStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

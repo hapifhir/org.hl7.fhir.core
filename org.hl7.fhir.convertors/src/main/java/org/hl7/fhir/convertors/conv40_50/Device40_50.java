@@ -63,7 +63,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
             tgt.setDefinition(convertReference(src.getDefinition()));
         for (org.hl7.fhir.r4.model.Device.DeviceUdiCarrierComponent t : src.getUdiCarrier()) tgt.addUdiCarrier(convertDeviceUdiCarrierComponent(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFHIRDeviceStatus(src.getStatus()));
+            tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
         if (src.hasDistinctIdentifier())
             tgt.setDistinctIdentifierElement(convertString(src.getDistinctIdentifierElement()));
@@ -113,7 +113,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
             tgt.setDefinition(convertReference(src.getDefinition()));
         for (org.hl7.fhir.r5.model.Device.DeviceUdiCarrierComponent t : src.getUdiCarrier()) tgt.addUdiCarrier(convertDeviceUdiCarrierComponent(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFHIRDeviceStatus(src.getStatus()));
+            tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
         if (src.hasDistinctIdentifier())
             tgt.setDistinctIdentifierElement(convertString(src.getDistinctIdentifierElement()));
@@ -153,38 +153,54 @@ public class Device40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Device.FHIRDeviceStatus convertFHIRDeviceStatus(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.FHIRDeviceStatus> convertFHIRDeviceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Device.FHIRDeviceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Device.FHIRDeviceStatus convertFHIRDeviceStatus(org.hl7.fhir.r5.model.Device.FHIRDeviceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> convertFHIRDeviceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.FHIRDeviceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Device.FHIRDeviceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Device.DeviceUdiCarrierComponent convertDeviceUdiCarrierComponent(org.hl7.fhir.r4.model.Device.DeviceUdiCarrierComponent src) throws FHIRException {
@@ -203,7 +219,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasCarrierHRF())
             tgt.setCarrierHRFElement(convertString(src.getCarrierHRFElement()));
         if (src.hasEntryType())
-            tgt.setEntryType(convertUDIEntryType(src.getEntryType()));
+            tgt.setEntryTypeElement(convertUDIEntryType(src.getEntryTypeElement()));
         return tgt;
     }
 
@@ -223,50 +239,70 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasCarrierHRF())
             tgt.setCarrierHRFElement(convertString(src.getCarrierHRFElement()));
         if (src.hasEntryType())
-            tgt.setEntryType(convertUDIEntryType(src.getEntryType()));
+            tgt.setEntryTypeElement(convertUDIEntryType(src.getEntryTypeElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Device.UDIEntryType convertUDIEntryType(org.hl7.fhir.r4.model.Device.UDIEntryType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.UDIEntryType> convertUDIEntryType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.UDIEntryType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Device.UDIEntryTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BARCODE:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.BARCODE;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.BARCODE);
+                break;
             case RFID:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.RFID;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.RFID);
+                break;
             case MANUAL:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.MANUAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.MANUAL);
+                break;
             case CARD:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.CARD;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.CARD);
+                break;
             case SELFREPORTED:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.SELFREPORTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.SELFREPORTED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Device.UDIEntryType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Device.UDIEntryType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Device.UDIEntryType convertUDIEntryType(org.hl7.fhir.r5.model.Device.UDIEntryType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> convertUDIEntryType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Device.UDIEntryType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Device.UDIEntryTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BARCODE:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.BARCODE;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.BARCODE);
+                break;
             case RFID:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.RFID;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.RFID);
+                break;
             case MANUAL:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.MANUAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.MANUAL);
+                break;
             case CARD:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.CARD;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.CARD);
+                break;
             case SELFREPORTED:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.SELFREPORTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.SELFREPORTED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Device.UDIEntryType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Device.DeviceDeviceNameComponent convertDeviceDeviceNameComponent(org.hl7.fhir.r4.model.Device.DeviceDeviceNameComponent src) throws FHIRException {
@@ -277,7 +313,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasType())
-            tgt.setType(convertDeviceNameType(src.getType()));
+            tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
         return tgt;
     }
 
@@ -289,50 +325,70 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasType())
-            tgt.setType(convertDeviceNameType(src.getType()));
+            tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.DeviceNameType convertDeviceNameType(org.hl7.fhir.r4.model.Device.DeviceNameType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.DeviceNameType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DeviceNameTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UDILABELNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.UDILABELNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.UDILABELNAME);
+                break;
             case USERFRIENDLYNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
+                break;
             case PATIENTREPORTEDNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
+                break;
             case MANUFACTURERNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MANUFACTURERNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MANUFACTURERNAME);
+                break;
             case MODELNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MODELNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MODELNAME);
+                break;
             case OTHER:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.OTHER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Device.DeviceNameType convertDeviceNameType(org.hl7.fhir.r5.model.Enumerations.DeviceNameType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.DeviceNameType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Device.DeviceNameTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UDILABELNAME:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.UDILABELNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.UDILABELNAME);
+                break;
             case USERFRIENDLYNAME:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.USERFRIENDLYNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.USERFRIENDLYNAME);
+                break;
             case PATIENTREPORTEDNAME:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.PATIENTREPORTEDNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.PATIENTREPORTEDNAME);
+                break;
             case MANUFACTURERNAME:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.MANUFACTURERNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.MANUFACTURERNAME);
+                break;
             case MODELNAME:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.MODELNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.MODELNAME);
+                break;
             case OTHER:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.OTHER;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Device.DeviceNameType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Device.DeviceNameType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Device.DeviceSpecializationComponent convertDeviceSpecializationComponent(org.hl7.fhir.r4.model.Device.DeviceSpecializationComponent src) throws FHIRException {
