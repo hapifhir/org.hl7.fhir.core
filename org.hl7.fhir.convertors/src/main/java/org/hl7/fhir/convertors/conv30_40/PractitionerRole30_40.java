@@ -3,6 +3,8 @@ package org.hl7.fhir.convertors.conv30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import java.util.stream.Collectors;
+
 public class PractitionerRole30_40 {
 
     public static org.hl7.fhir.r4.model.PractitionerRole convertPractitionerRole(org.hl7.fhir.dstu3.model.PractitionerRole src) throws FHIRException {
@@ -64,7 +66,9 @@ public class PractitionerRole30_40 {
             return null;
         org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_40.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_40.convertDaysOfWeek(t.getValue())));
+        tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+                .map(VersionConvertor_30_40::convertDaysOfWeek)
+                .collect(Collectors.toList()));
         if (src.hasAllDay())
             tgt.setAllDayElement(VersionConvertor_30_40.convertBoolean(src.getAllDayElement()));
         if (src.hasAvailableStartTime())
@@ -79,7 +83,9 @@ public class PractitionerRole30_40 {
             return null;
         org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_40.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_40.convertDaysOfWeek(t.getValue())));
+        tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+                .map(VersionConvertor_30_40::convertDaysOfWeek)
+                .collect(Collectors.toList()));
         if (src.hasAllDay())
             tgt.setAllDayElement(VersionConvertor_30_40.convertBoolean(src.getAllDayElement()));
         if (src.hasAvailableStartTime())

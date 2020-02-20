@@ -18,7 +18,7 @@ public class DataElement10_30 {
         if (src.hasVersionElement())
             tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
@@ -51,7 +51,7 @@ public class DataElement10_30 {
         if (src.hasVersionElement())
             tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())

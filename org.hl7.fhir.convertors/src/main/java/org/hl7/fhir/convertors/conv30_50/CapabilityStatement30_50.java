@@ -22,7 +22,7 @@ public class CapabilityStatement30_50 {
         if (src.hasTitle())
             tgt.setTitleElement(VersionConvertor_30_50.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -73,7 +73,7 @@ public class CapabilityStatement30_50 {
         if (src.hasTitle())
             tgt.setTitleElement(VersionConvertor_30_50.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -468,7 +468,7 @@ public class CapabilityStatement30_50 {
         if (src.hasDefinition())
             tgt.setDefinition(src.getDefinition());
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;
@@ -484,7 +484,7 @@ public class CapabilityStatement30_50 {
         if (src.hasDefinition())
             tgt.setDefinition(src.getDefinition());
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;

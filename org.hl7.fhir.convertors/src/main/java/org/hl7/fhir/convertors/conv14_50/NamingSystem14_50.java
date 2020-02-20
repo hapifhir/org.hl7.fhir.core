@@ -13,7 +13,7 @@ public class NamingSystem14_50 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertNamingSystemType(src.getKindElement()));
         if (src.hasDateElement())
@@ -45,7 +45,7 @@ public class NamingSystem14_50 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertNamingSystemType(src.getKindElement()));
         if (src.hasDateElement())

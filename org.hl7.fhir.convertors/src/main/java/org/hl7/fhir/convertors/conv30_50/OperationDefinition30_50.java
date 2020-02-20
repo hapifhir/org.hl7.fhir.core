@@ -20,7 +20,7 @@ public class OperationDefinition30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
@@ -68,7 +68,7 @@ public class OperationDefinition30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
@@ -132,7 +132,7 @@ public class OperationDefinition30_50 {
         org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_30_50.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_30_50.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet()) {
             DataType t = VersionConvertor_30_50.convertType(src.getValueSet());
             if (t instanceof org.hl7.fhir.r5.model.Reference)
@@ -150,7 +150,7 @@ public class OperationDefinition30_50 {
         org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_30_50.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_30_50.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet()) {
             String vsr = VersionConvertorConstants.vsToRef(src.getValueSet());
             if (vsr != null)
@@ -179,7 +179,7 @@ public class OperationDefinition30_50 {
         if (src.hasType())
             tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
         if (src.hasSearchType())
-            tgt.setSearchType(VersionConvertor_30_50.convertSearchParamType(src.getSearchType()));
+            tgt.setSearchTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getSearchTypeElement()));
         if (src.hasProfile())
             tgt.addTargetProfile(src.getProfile().getReference());
         if (src.hasBinding())
@@ -206,7 +206,7 @@ public class OperationDefinition30_50 {
         if (src.hasType())
             tgt.setType(src.getType().toCode());
         if (src.hasSearchType())
-            tgt.setSearchType(VersionConvertor_30_50.convertSearchParamType(src.getSearchType()));
+            tgt.setSearchTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getSearchTypeElement()));
         for (org.hl7.fhir.r5.model.UriType t : src.getTargetProfile()) tgt.setProfile(new org.hl7.fhir.dstu3.model.Reference(t.getValue()));
         if (src.hasBinding())
             tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));

@@ -64,7 +64,7 @@ public class Person30_40 {
         for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_40.convertDate(src.getBirthDateElement()));
         for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_30_40.convertAddress(t));
@@ -87,7 +87,7 @@ public class Person30_40 {
         for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_30_40.convertHumanName(t));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDate())
             tgt.setBirthDateElement(VersionConvertor_30_40.convertDate(src.getBirthDateElement()));
         for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_30_40.convertAddress(t));

@@ -185,7 +185,7 @@ public class SearchParameter30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -201,7 +201,7 @@ public class SearchParameter30_50 {
             tgt.setCodeElement(VersionConvertor_30_50.convertCode(src.getCodeElement()));
         for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.addBase(t.getValue());
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasDerivedFrom())
             tgt.setDerivedFrom(src.getDerivedFrom());
         if (src.hasDescription())
@@ -236,7 +236,7 @@ public class SearchParameter30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -252,7 +252,7 @@ public class SearchParameter30_50 {
             tgt.setCodeElement(VersionConvertor_30_50.convertCode(src.getCodeElement()));
         for (org.hl7.fhir.r5.model.CodeType t : src.getBase()) tgt.addBase(t.getValue());
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_30_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasDerivedFrom())
             tgt.setDerivedFrom(src.getDerivedFrom());
         if (src.hasDescription())

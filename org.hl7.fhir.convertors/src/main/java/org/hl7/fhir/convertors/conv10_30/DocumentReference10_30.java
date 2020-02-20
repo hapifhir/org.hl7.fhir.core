@@ -64,7 +64,7 @@ public class DocumentReference10_30 {
         if (src.hasIndexedElement())
             tgt.setIndexedElement(VersionConvertor_10_30.convertInstant(src.getIndexedElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDocStatus())
             tgt.setDocStatus(convertDocStatus(src.getDocStatus()));
         for (org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));
@@ -101,7 +101,7 @@ public class DocumentReference10_30 {
         if (src.hasIndexedElement())
             tgt.setIndexedElement(VersionConvertor_10_30.convertInstant(src.getIndexedElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDocStatus())
             tgt.setDocStatus(convertDocStatus(src.getDocStatus()));
         for (org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo()) tgt.addRelatesTo(convertDocumentReferenceRelatesToComponent(t));

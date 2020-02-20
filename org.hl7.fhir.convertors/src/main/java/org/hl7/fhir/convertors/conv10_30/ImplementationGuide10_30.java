@@ -129,7 +129,7 @@ public class ImplementationGuide10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
@@ -168,7 +168,7 @@ public class ImplementationGuide10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
