@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv14_50;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.dstu2016may.model.ImplementationGuide;
@@ -26,7 +25,7 @@ public class ImplementationGuide14_50 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisher())
@@ -65,7 +64,7 @@ public class ImplementationGuide14_50 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_50.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisher())

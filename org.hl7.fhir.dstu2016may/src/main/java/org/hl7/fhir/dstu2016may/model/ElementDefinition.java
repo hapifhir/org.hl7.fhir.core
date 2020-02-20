@@ -1406,7 +1406,12 @@ public class ElementDefinition extends Type implements ICompositeType {
           return this.aggregation;
         }
 
-        public boolean hasAggregation() { 
+        public TypeRefComponent setAggregation(List<Enumeration<AggregationMode>> aggregation) {
+            this.aggregation = aggregation;
+            return this;
+        }
+
+        public boolean hasAggregation() {
           if (this.aggregation == null)
             return false;
           for (Enumeration<AggregationMode> item : this.aggregation)
@@ -3022,7 +3027,12 @@ public class ElementDefinition extends Type implements ICompositeType {
       return this.representation;
     }
 
-    public boolean hasRepresentation() { 
+    public ElementDefinition setRepresentation(List<Enumeration<PropertyRepresentation>> representation) {
+        this.representation = representation;
+        return this;
+    }
+
+    public boolean hasRepresentation() {
       if (this.representation == null)
         return false;
       for (Enumeration<PropertyRepresentation> item : this.representation)

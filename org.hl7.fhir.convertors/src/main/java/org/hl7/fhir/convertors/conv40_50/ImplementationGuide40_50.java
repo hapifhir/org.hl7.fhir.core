@@ -23,6 +23,8 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.util.stream.Collectors;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -70,7 +72,7 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -87,8 +89,10 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasPackageId())
             tgt.setPackageIdElement(convertId(src.getPackageIdElement()));
         if (src.hasLicense())
-            tgt.setLicense(convertSPDXLicense(src.getLicense()));
-        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> t : src.getFhirVersion()) copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations40_50.convertFHIRVersion(t.getValue())));
+            tgt.setLicenseElement(convertSPDXLicense(src.getLicenseElement()));
+        tgt.setFhirVersion(src.getFhirVersion().stream()
+                .map(Enumerations40_50::convertFHIRVersion)
+                .collect(Collectors.toList()));
         for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent t : src.getDependsOn()) tgt.addDependsOn(convertImplementationGuideDependsOnComponent(t));
         for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent t : src.getGlobal()) tgt.addGlobal(convertImplementationGuideGlobalComponent(t));
         if (src.hasDefinition())
@@ -112,7 +116,7 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -129,8 +133,10 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasPackageId())
             tgt.setPackageIdElement(convertId(src.getPackageIdElement()));
         if (src.hasLicense())
-            tgt.setLicense(convertSPDXLicense(src.getLicense()));
-        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> t : src.getFhirVersion()) copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations40_50.convertFHIRVersion(t.getValue())));
+            tgt.setLicenseElement(convertSPDXLicense(src.getLicenseElement()));
+        tgt.setFhirVersion(src.getFhirVersion().stream()
+                .map(Enumerations40_50::convertFHIRVersion)
+                .collect(Collectors.toList()));
         for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent t : src.getDependsOn()) tgt.addDependsOn(convertImplementationGuideDependsOnComponent(t));
         for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent t : src.getGlobal()) tgt.addGlobal(convertImplementationGuideGlobalComponent(t));
         if (src.hasDefinition())
@@ -140,1406 +146,2106 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense convertSPDXLicense(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense> convertSPDXLicense(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicenseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTOPENSOURCE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOTOPENSOURCE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOTOPENSOURCE);
+                break;
             case _0BSD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense._0BSD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense._0BSD);
+                break;
             case AAL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AAL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AAL);
+                break;
             case ABSTYLES:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ABSTYLES;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ABSTYLES);
+                break;
             case ADOBE2006:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADOBE2006;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADOBE2006);
+                break;
             case ADOBEGLYPH:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADOBEGLYPH;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADOBEGLYPH);
+                break;
             case ADSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ADSL);
+                break;
             case AFL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL1_1);
+                break;
             case AFL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL1_2);
+                break;
             case AFL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL2_0);
+                break;
             case AFL2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL2_1);
+                break;
             case AFL3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFL3_0);
+                break;
             case AFMPARSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFMPARSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AFMPARSE);
+                break;
             case AGPL1_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL1_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL1_0ONLY);
+                break;
             case AGPL1_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL1_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL1_0ORLATER);
+                break;
             case AGPL3_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL3_0ONLY);
+                break;
             case AGPL3_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AGPL3_0ORLATER);
+                break;
             case ALADDIN:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ALADDIN;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ALADDIN);
+                break;
             case AMDPLPA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AMDPLPA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AMDPLPA);
+                break;
             case AML:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AML;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AML);
+                break;
             case AMPAS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AMPAS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.AMPAS);
+                break;
             case ANTLRPD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ANTLRPD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ANTLRPD);
+                break;
             case APACHE1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE1_0);
+                break;
             case APACHE1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE1_1);
+                break;
             case APACHE2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APACHE2_0);
+                break;
             case APAFML:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APAFML;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APAFML);
+                break;
             case APL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APL1_0);
+                break;
             case APSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_0);
+                break;
             case APSL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_1);
+                break;
             case APSL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL1_2);
+                break;
             case APSL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.APSL2_0);
+                break;
             case ARTISTIC1_0CL8:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0CL8;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0CL8);
+                break;
             case ARTISTIC1_0PERL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0PERL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0PERL);
+                break;
             case ARTISTIC1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0);
+                break;
             case ARTISTIC2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ARTISTIC2_0);
+                break;
             case BAHYPH:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BAHYPH;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BAHYPH);
+                break;
             case BARR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BARR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BARR);
+                break;
             case BEERWARE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BEERWARE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BEERWARE);
+                break;
             case BITTORRENT1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BITTORRENT1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BITTORRENT1_0);
+                break;
             case BITTORRENT1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BITTORRENT1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BITTORRENT1_1);
+                break;
             case BORCEUX:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BORCEUX;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BORCEUX);
+                break;
             case BSD1CLAUSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD1CLAUSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD1CLAUSE);
+                break;
             case BSD2CLAUSEFREEBSD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEFREEBSD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEFREEBSD);
+                break;
             case BSD2CLAUSENETBSD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSENETBSD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSENETBSD);
+                break;
             case BSD2CLAUSEPATENT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEPATENT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEPATENT);
+                break;
             case BSD2CLAUSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD2CLAUSE);
+                break;
             case BSD3CLAUSEATTRIBUTION:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSEATTRIBUTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSEATTRIBUTION);
+                break;
             case BSD3CLAUSECLEAR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSECLEAR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSECLEAR);
+                break;
             case BSD3CLAUSELBNL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSELBNL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSELBNL);
+                break;
             case BSD3CLAUSENONUCLEARLICENSE2014:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014);
+                break;
             case BSD3CLAUSENONUCLEARLICENSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE);
+                break;
             case BSD3CLAUSENONUCLEARWARRANTY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY);
+                break;
             case BSD3CLAUSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD3CLAUSE);
+                break;
             case BSD4CLAUSEUC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD4CLAUSEUC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD4CLAUSEUC);
+                break;
             case BSD4CLAUSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD4CLAUSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSD4CLAUSE);
+                break;
             case BSDPROTECTION:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSDPROTECTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSDPROTECTION);
+                break;
             case BSDSOURCECODE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSDSOURCECODE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSDSOURCECODE);
+                break;
             case BSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BSL1_0);
+                break;
             case BZIP21_0_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BZIP21_0_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BZIP21_0_5);
+                break;
             case BZIP21_0_6:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BZIP21_0_6;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.BZIP21_0_6);
+                break;
             case CALDERA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CALDERA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CALDERA);
+                break;
             case CATOSL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CATOSL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CATOSL1_1);
+                break;
             case CCBY1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY1_0);
+                break;
             case CCBY2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY2_0);
+                break;
             case CCBY2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY2_5);
+                break;
             case CCBY3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY3_0);
+                break;
             case CCBY4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBY4_0);
+                break;
             case CCBYNC1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC1_0);
+                break;
             case CCBYNC2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC2_0);
+                break;
             case CCBYNC2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC2_5);
+                break;
             case CCBYNC3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC3_0);
+                break;
             case CCBYNC4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNC4_0);
+                break;
             case CCBYNCND1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND1_0);
+                break;
             case CCBYNCND2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND2_0);
+                break;
             case CCBYNCND2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND2_5);
+                break;
             case CCBYNCND3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND3_0);
+                break;
             case CCBYNCND4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCND4_0);
+                break;
             case CCBYNCSA1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA1_0);
+                break;
             case CCBYNCSA2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_0);
+                break;
             case CCBYNCSA2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_5);
+                break;
             case CCBYNCSA3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA3_0);
+                break;
             case CCBYNCSA4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYNCSA4_0);
+                break;
             case CCBYND1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND1_0);
+                break;
             case CCBYND2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND2_0);
+                break;
             case CCBYND2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND2_5);
+                break;
             case CCBYND3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND3_0);
+                break;
             case CCBYND4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYND4_0);
+                break;
             case CCBYSA1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA1_0);
+                break;
             case CCBYSA2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA2_0);
+                break;
             case CCBYSA2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA2_5);
+                break;
             case CCBYSA3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA3_0);
+                break;
             case CCBYSA4_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CCBYSA4_0);
+                break;
             case CC01_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CC01_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CC01_0);
+                break;
             case CDDL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDDL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDDL1_0);
+                break;
             case CDDL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDDL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDDL1_1);
+                break;
             case CDLAPERMISSIVE1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDLAPERMISSIVE1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDLAPERMISSIVE1_0);
+                break;
             case CDLASHARING1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDLASHARING1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CDLASHARING1_0);
+                break;
             case CECILL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL1_0);
+                break;
             case CECILL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL1_1);
+                break;
             case CECILL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL2_0);
+                break;
             case CECILL2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILL2_1);
+                break;
             case CECILLB:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILLB;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILLB);
+                break;
             case CECILLC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILLC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CECILLC);
+                break;
             case CLARTISTIC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CLARTISTIC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CLARTISTIC);
+                break;
             case CNRIJYTHON:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIJYTHON;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIJYTHON);
+                break;
             case CNRIPYTHONGPLCOMPATIBLE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIPYTHONGPLCOMPATIBLE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIPYTHONGPLCOMPATIBLE);
+                break;
             case CNRIPYTHON:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIPYTHON;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CNRIPYTHON);
+                break;
             case CONDOR1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CONDOR1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CONDOR1_1);
+                break;
             case CPAL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPAL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPAL1_0);
+                break;
             case CPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPL1_0);
+                break;
             case CPOL1_02:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPOL1_02;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CPOL1_02);
+                break;
             case CROSSWORD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CROSSWORD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CROSSWORD);
+                break;
             case CRYSTALSTACKER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CRYSTALSTACKER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CRYSTALSTACKER);
+                break;
             case CUAOPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CUAOPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CUAOPL1_0);
+                break;
             case CUBE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CUBE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CUBE);
+                break;
             case CURL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CURL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.CURL);
+                break;
             case DFSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DFSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DFSL1_0);
+                break;
             case DIFFMARK:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DIFFMARK;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DIFFMARK);
+                break;
             case DOC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DOC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DOC);
+                break;
             case DOTSEQN:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DOTSEQN;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DOTSEQN);
+                break;
             case DSDP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DSDP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DSDP);
+                break;
             case DVIPDFM:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DVIPDFM;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.DVIPDFM);
+                break;
             case ECL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ECL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ECL1_0);
+                break;
             case ECL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ECL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ECL2_0);
+                break;
             case EFL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EFL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EFL1_0);
+                break;
             case EFL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EFL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EFL2_0);
+                break;
             case EGENIX:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EGENIX;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EGENIX);
+                break;
             case ENTESSA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ENTESSA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ENTESSA);
+                break;
             case EPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EPL1_0);
+                break;
             case EPL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EPL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EPL2_0);
+                break;
             case ERLPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ERLPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ERLPL1_1);
+                break;
             case EUDATAGRID:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUDATAGRID;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUDATAGRID);
+                break;
             case EUPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_0);
+                break;
             case EUPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_1);
+                break;
             case EUPL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUPL1_2);
+                break;
             case EUROSYM:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUROSYM;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.EUROSYM);
+                break;
             case FAIR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FAIR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FAIR);
+                break;
             case FRAMEWORX1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FRAMEWORX1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FRAMEWORX1_0);
+                break;
             case FREEIMAGE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FREEIMAGE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FREEIMAGE);
+                break;
             case FSFAP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFAP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFAP);
+                break;
             case FSFUL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFUL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFUL);
+                break;
             case FSFULLR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFULLR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FSFULLR);
+                break;
             case FTL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FTL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.FTL);
+                break;
             case GFDL1_1ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_1ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_1ONLY);
+                break;
             case GFDL1_1ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_1ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_1ORLATER);
+                break;
             case GFDL1_2ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_2ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_2ONLY);
+                break;
             case GFDL1_2ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_2ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_2ORLATER);
+                break;
             case GFDL1_3ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_3ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_3ONLY);
+                break;
             case GFDL1_3ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_3ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GFDL1_3ORLATER);
+                break;
             case GIFTWARE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GIFTWARE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GIFTWARE);
+                break;
             case GL2PS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GL2PS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GL2PS);
+                break;
             case GLIDE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GLIDE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GLIDE);
+                break;
             case GLULXE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GLULXE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GLULXE);
+                break;
             case GNUPLOT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GNUPLOT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GNUPLOT);
+                break;
             case GPL1_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL1_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL1_0ONLY);
+                break;
             case GPL1_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL1_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL1_0ORLATER);
+                break;
             case GPL2_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL2_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL2_0ONLY);
+                break;
             case GPL2_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL2_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL2_0ORLATER);
+                break;
             case GPL3_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL3_0ONLY);
+                break;
             case GPL3_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GPL3_0ORLATER);
+                break;
             case GSOAP1_3B:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GSOAP1_3B;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.GSOAP1_3B);
+                break;
             case HASKELLREPORT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.HASKELLREPORT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.HASKELLREPORT);
+                break;
             case HPND:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.HPND;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.HPND);
+                break;
             case IBMPIBS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IBMPIBS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IBMPIBS);
+                break;
             case ICU:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ICU;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ICU);
+                break;
             case IJG:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IJG;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IJG);
+                break;
             case IMAGEMAGICK:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMAGEMAGICK;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMAGEMAGICK);
+                break;
             case IMATIX:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMATIX;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMATIX);
+                break;
             case IMLIB2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMLIB2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IMLIB2);
+                break;
             case INFOZIP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INFOZIP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INFOZIP);
+                break;
             case INTELACPI:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTELACPI;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTELACPI);
+                break;
             case INTEL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTEL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTEL);
+                break;
             case INTERBASE1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTERBASE1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.INTERBASE1_0);
+                break;
             case IPA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IPA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IPA);
+                break;
             case IPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.IPL1_0);
+                break;
             case ISC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ISC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ISC);
+                break;
             case JASPER2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.JASPER2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.JASPER2_0);
+                break;
             case JSON:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.JSON;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.JSON);
+                break;
             case LAL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LAL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LAL1_2);
+                break;
             case LAL1_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LAL1_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LAL1_3);
+                break;
             case LATEX2E:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LATEX2E;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LATEX2E);
+                break;
             case LEPTONICA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LEPTONICA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LEPTONICA);
+                break;
             case LGPL2_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_0ONLY);
+                break;
             case LGPL2_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_0ORLATER);
+                break;
             case LGPL2_1ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_1ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_1ONLY);
+                break;
             case LGPL2_1ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_1ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL2_1ORLATER);
+                break;
             case LGPL3_0ONLY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL3_0ONLY);
+                break;
             case LGPL3_0ORLATER:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPL3_0ORLATER);
+                break;
             case LGPLLR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPLLR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LGPLLR);
+                break;
             case LIBPNG:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LIBPNG;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LIBPNG);
+                break;
             case LIBTIFF:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LIBTIFF;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LIBTIFF);
+                break;
             case LILIQP1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQP1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQP1_1);
+                break;
             case LILIQR1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQR1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQR1_1);
+                break;
             case LILIQRPLUS1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQRPLUS1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LILIQRPLUS1_1);
+                break;
             case LINUXOPENIB:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LINUXOPENIB;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LINUXOPENIB);
+                break;
             case LPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPL1_0);
+                break;
             case LPL1_02:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPL1_02;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPL1_02);
+                break;
             case LPPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_0);
+                break;
             case LPPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_1);
+                break;
             case LPPL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_2);
+                break;
             case LPPL1_3A:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_3A;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_3A);
+                break;
             case LPPL1_3C:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_3C;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.LPPL1_3C);
+                break;
             case MAKEINDEX:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MAKEINDEX;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MAKEINDEX);
+                break;
             case MIROS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIROS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIROS);
+                break;
             case MIT0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIT0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIT0);
+                break;
             case MITADVERTISING:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITADVERTISING;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITADVERTISING);
+                break;
             case MITCMU:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITCMU;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITCMU);
+                break;
             case MITENNA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITENNA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITENNA);
+                break;
             case MITFEH:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITFEH;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITFEH);
+                break;
             case MIT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MIT);
+                break;
             case MITNFA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITNFA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MITNFA);
+                break;
             case MOTOSOTO:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MOTOSOTO;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MOTOSOTO);
+                break;
             case MPICH2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPICH2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPICH2);
+                break;
             case MPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL1_0);
+                break;
             case MPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL1_1);
+                break;
             case MPL2_0NOCOPYLEFTEXCEPTION:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION);
+                break;
             case MPL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MPL2_0);
+                break;
             case MSPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MSPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MSPL);
+                break;
             case MSRL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MSRL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MSRL);
+                break;
             case MTLL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MTLL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MTLL);
+                break;
             case MULTICS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MULTICS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MULTICS);
+                break;
             case MUP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MUP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.MUP);
+                break;
             case NASA1_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NASA1_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NASA1_3);
+                break;
             case NAUMEN:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NAUMEN;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NAUMEN);
+                break;
             case NBPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NBPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NBPL1_0);
+                break;
             case NCSA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NCSA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NCSA);
+                break;
             case NETSNMP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NETSNMP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NETSNMP);
+                break;
             case NETCDF:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NETCDF;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NETCDF);
+                break;
             case NEWSLETR:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NEWSLETR;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NEWSLETR);
+                break;
             case NGPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NGPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NGPL);
+                break;
             case NLOD1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NLOD1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NLOD1_0);
+                break;
             case NLPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NLPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NLPL);
+                break;
             case NOKIA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOKIA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOKIA);
+                break;
             case NOSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOSL);
+                break;
             case NOWEB:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOWEB;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NOWEB);
+                break;
             case NPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPL1_0);
+                break;
             case NPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPL1_1);
+                break;
             case NPOSL3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPOSL3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NPOSL3_0);
+                break;
             case NRL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NRL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NRL);
+                break;
             case NTP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NTP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NTP);
+                break;
             case OCCTPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OCCTPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OCCTPL);
+                break;
             case OCLC2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OCLC2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OCLC2_0);
+                break;
             case ODBL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ODBL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ODBL1_0);
+                break;
             case OFL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OFL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OFL1_0);
+                break;
             case OFL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OFL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OFL1_1);
+                break;
             case OGTSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OGTSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OGTSL);
+                break;
             case OLDAP1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_1);
+                break;
             case OLDAP1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_2);
+                break;
             case OLDAP1_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_3);
+                break;
             case OLDAP1_4:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_4;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP1_4);
+                break;
             case OLDAP2_0_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_0_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_0_1);
+                break;
             case OLDAP2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_0);
+                break;
             case OLDAP2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_1);
+                break;
             case OLDAP2_2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2_1);
+                break;
             case OLDAP2_2_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2_2);
+                break;
             case OLDAP2_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_2);
+                break;
             case OLDAP2_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_3);
+                break;
             case OLDAP2_4:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_4;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_4);
+                break;
             case OLDAP2_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_5);
+                break;
             case OLDAP2_6:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_6;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_6);
+                break;
             case OLDAP2_7:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_7;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_7);
+                break;
             case OLDAP2_8:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_8;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OLDAP2_8);
+                break;
             case OML:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OML;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OML);
+                break;
             case OPENSSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OPENSSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OPENSSL);
+                break;
             case OPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OPL1_0);
+                break;
             case OSETPL2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSETPL2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSETPL2_1);
+                break;
             case OSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL1_0);
+                break;
             case OSL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL1_1);
+                break;
             case OSL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL2_0);
+                break;
             case OSL2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL2_1);
+                break;
             case OSL3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.OSL3_0);
+                break;
             case PDDL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PDDL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PDDL1_0);
+                break;
             case PHP3_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PHP3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PHP3_0);
+                break;
             case PHP3_01:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PHP3_01;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PHP3_01);
+                break;
             case PLEXUS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PLEXUS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PLEXUS);
+                break;
             case POSTGRESQL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.POSTGRESQL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.POSTGRESQL);
+                break;
             case PSFRAG:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PSFRAG;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PSFRAG);
+                break;
             case PSUTILS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PSUTILS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PSUTILS);
+                break;
             case PYTHON2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PYTHON2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.PYTHON2_0);
+                break;
             case QHULL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.QHULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.QHULL);
+                break;
             case QPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.QPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.QPL1_0);
+                break;
             case RDISC:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RDISC;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RDISC);
+                break;
             case RHECOS1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RHECOS1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RHECOS1_1);
+                break;
             case RPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPL1_1);
+                break;
             case RPL1_5:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPL1_5;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPL1_5);
+                break;
             case RPSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RPSL1_0);
+                break;
             case RSAMD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RSAMD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RSAMD);
+                break;
             case RSCPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RSCPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RSCPL);
+                break;
             case RUBY:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RUBY;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.RUBY);
+                break;
             case SAXPD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SAXPD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SAXPD);
+                break;
             case SAXPATH:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SAXPATH;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SAXPATH);
+                break;
             case SCEA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SCEA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SCEA);
+                break;
             case SENDMAIL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SENDMAIL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SENDMAIL);
+                break;
             case SGIB1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB1_0);
+                break;
             case SGIB1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB1_1);
+                break;
             case SGIB2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SGIB2_0);
+                break;
             case SIMPL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SIMPL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SIMPL2_0);
+                break;
             case SISSL1_2:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SISSL1_2;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SISSL1_2);
+                break;
             case SISSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SISSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SISSL);
+                break;
             case SLEEPYCAT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SLEEPYCAT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SLEEPYCAT);
+                break;
             case SMLNJ:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SMLNJ;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SMLNJ);
+                break;
             case SMPPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SMPPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SMPPL);
+                break;
             case SNIA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SNIA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SNIA);
+                break;
             case SPENCER86:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER86;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER86);
+                break;
             case SPENCER94:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER94;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER94);
+                break;
             case SPENCER99:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER99;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPENCER99);
+                break;
             case SPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SPL1_0);
+                break;
             case SUGARCRM1_1_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SUGARCRM1_1_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SUGARCRM1_1_3);
+                break;
             case SWL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SWL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.SWL);
+                break;
             case TCL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TCL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TCL);
+                break;
             case TCPWRAPPERS:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TCPWRAPPERS;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TCPWRAPPERS);
+                break;
             case TMATE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TMATE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TMATE);
+                break;
             case TORQUE1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TORQUE1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TORQUE1_1);
+                break;
             case TOSL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TOSL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.TOSL);
+                break;
             case UNICODEDFS2015:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODEDFS2015;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODEDFS2015);
+                break;
             case UNICODEDFS2016:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODEDFS2016;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODEDFS2016);
+                break;
             case UNICODETOU:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODETOU;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNICODETOU);
+                break;
             case UNLICENSE:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNLICENSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UNLICENSE);
+                break;
             case UPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.UPL1_0);
+                break;
             case VIM:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VIM;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VIM);
+                break;
             case VOSTROM:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VOSTROM;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VOSTROM);
+                break;
             case VSL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VSL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.VSL1_0);
+                break;
             case W3C19980720:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C19980720;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C19980720);
+                break;
             case W3C20150513:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C20150513;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C20150513);
+                break;
             case W3C:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.W3C);
+                break;
             case WATCOM1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WATCOM1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WATCOM1_0);
+                break;
             case WSUIPA:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WSUIPA;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WSUIPA);
+                break;
             case WTFPL:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WTFPL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.WTFPL);
+                break;
             case X11:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.X11;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.X11);
+                break;
             case XEROX:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XEROX;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XEROX);
+                break;
             case XFREE861_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XFREE861_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XFREE861_1);
+                break;
             case XINETD:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XINETD;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XINETD);
+                break;
             case XNET:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XNET;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XNET);
+                break;
             case XPP:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XPP;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XPP);
+                break;
             case XSKAT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XSKAT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.XSKAT);
+                break;
             case YPL1_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.YPL1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.YPL1_0);
+                break;
             case YPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.YPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.YPL1_1);
+                break;
             case ZED:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZED;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZED);
+                break;
             case ZEND2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZEND2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZEND2_0);
+                break;
             case ZIMBRA1_3:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZIMBRA1_3;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZIMBRA1_3);
+                break;
             case ZIMBRA1_4:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZIMBRA1_4;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZIMBRA1_4);
+                break;
             case ZLIBACKNOWLEDGEMENT:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZLIBACKNOWLEDGEMENT;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZLIBACKNOWLEDGEMENT);
+                break;
             case ZLIB:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZLIB;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZLIB);
+                break;
             case ZPL1_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL1_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL1_1);
+                break;
             case ZPL2_0:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL2_0;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL2_0);
+                break;
             case ZPL2_1:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL2_1;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.ZPL2_1);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense convertSPDXLicense(org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense> convertSPDXLicense(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.SPDXLicense> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicenseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTOPENSOURCE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOTOPENSOURCE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOTOPENSOURCE);
+                break;
             case _0BSD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense._0BSD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense._0BSD);
+                break;
             case AAL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AAL);
+                break;
             case ABSTYLES:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ABSTYLES;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ABSTYLES);
+                break;
             case ADOBE2006:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADOBE2006;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADOBE2006);
+                break;
             case ADOBEGLYPH:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADOBEGLYPH;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADOBEGLYPH);
+                break;
             case ADSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ADSL);
+                break;
             case AFL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL1_1);
+                break;
             case AFL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL1_2);
+                break;
             case AFL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL2_0);
+                break;
             case AFL2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL2_1);
+                break;
             case AFL3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFL3_0);
+                break;
             case AFMPARSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFMPARSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AFMPARSE);
+                break;
             case AGPL1_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL1_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL1_0ONLY);
+                break;
             case AGPL1_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL1_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL1_0ORLATER);
+                break;
             case AGPL3_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL3_0ONLY);
+                break;
             case AGPL3_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AGPL3_0ORLATER);
+                break;
             case ALADDIN:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ALADDIN;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ALADDIN);
+                break;
             case AMDPLPA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AMDPLPA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AMDPLPA);
+                break;
             case AML:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AML;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AML);
+                break;
             case AMPAS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AMPAS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.AMPAS);
+                break;
             case ANTLRPD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ANTLRPD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ANTLRPD);
+                break;
             case APACHE1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE1_0);
+                break;
             case APACHE1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE1_1);
+                break;
             case APACHE2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APACHE2_0);
+                break;
             case APAFML:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APAFML;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APAFML);
+                break;
             case APL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APL1_0);
+                break;
             case APSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_0);
+                break;
             case APSL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_1);
+                break;
             case APSL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL1_2);
+                break;
             case APSL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.APSL2_0);
+                break;
             case ARTISTIC1_0CL8:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0CL8;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0CL8);
+                break;
             case ARTISTIC1_0PERL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0PERL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0PERL);
+                break;
             case ARTISTIC1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC1_0);
+                break;
             case ARTISTIC2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ARTISTIC2_0);
+                break;
             case BAHYPH:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BAHYPH;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BAHYPH);
+                break;
             case BARR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BARR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BARR);
+                break;
             case BEERWARE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BEERWARE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BEERWARE);
+                break;
             case BITTORRENT1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BITTORRENT1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BITTORRENT1_0);
+                break;
             case BITTORRENT1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BITTORRENT1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BITTORRENT1_1);
+                break;
             case BORCEUX:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BORCEUX;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BORCEUX);
+                break;
             case BSD1CLAUSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD1CLAUSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD1CLAUSE);
+                break;
             case BSD2CLAUSEFREEBSD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEFREEBSD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEFREEBSD);
+                break;
             case BSD2CLAUSENETBSD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSENETBSD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSENETBSD);
+                break;
             case BSD2CLAUSEPATENT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEPATENT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSEPATENT);
+                break;
             case BSD2CLAUSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD2CLAUSE);
+                break;
             case BSD3CLAUSEATTRIBUTION:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSEATTRIBUTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSEATTRIBUTION);
+                break;
             case BSD3CLAUSECLEAR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSECLEAR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSECLEAR);
+                break;
             case BSD3CLAUSELBNL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSELBNL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSELBNL);
+                break;
             case BSD3CLAUSENONUCLEARLICENSE2014:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE2014);
+                break;
             case BSD3CLAUSENONUCLEARLICENSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARLICENSE);
+                break;
             case BSD3CLAUSENONUCLEARWARRANTY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSENONUCLEARWARRANTY);
+                break;
             case BSD3CLAUSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD3CLAUSE);
+                break;
             case BSD4CLAUSEUC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD4CLAUSEUC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD4CLAUSEUC);
+                break;
             case BSD4CLAUSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD4CLAUSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSD4CLAUSE);
+                break;
             case BSDPROTECTION:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSDPROTECTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSDPROTECTION);
+                break;
             case BSDSOURCECODE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSDSOURCECODE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSDSOURCECODE);
+                break;
             case BSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BSL1_0);
+                break;
             case BZIP21_0_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BZIP21_0_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BZIP21_0_5);
+                break;
             case BZIP21_0_6:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BZIP21_0_6;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.BZIP21_0_6);
+                break;
             case CALDERA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CALDERA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CALDERA);
+                break;
             case CATOSL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CATOSL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CATOSL1_1);
+                break;
             case CCBY1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY1_0);
+                break;
             case CCBY2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY2_0);
+                break;
             case CCBY2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY2_5);
+                break;
             case CCBY3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY3_0);
+                break;
             case CCBY4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBY4_0);
+                break;
             case CCBYNC1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC1_0);
+                break;
             case CCBYNC2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC2_0);
+                break;
             case CCBYNC2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC2_5);
+                break;
             case CCBYNC3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC3_0);
+                break;
             case CCBYNC4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNC4_0);
+                break;
             case CCBYNCND1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND1_0);
+                break;
             case CCBYNCND2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND2_0);
+                break;
             case CCBYNCND2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND2_5);
+                break;
             case CCBYNCND3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND3_0);
+                break;
             case CCBYNCND4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCND4_0);
+                break;
             case CCBYNCSA1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA1_0);
+                break;
             case CCBYNCSA2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_0);
+                break;
             case CCBYNCSA2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA2_5);
+                break;
             case CCBYNCSA3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA3_0);
+                break;
             case CCBYNCSA4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYNCSA4_0);
+                break;
             case CCBYND1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND1_0);
+                break;
             case CCBYND2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND2_0);
+                break;
             case CCBYND2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND2_5);
+                break;
             case CCBYND3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND3_0);
+                break;
             case CCBYND4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYND4_0);
+                break;
             case CCBYSA1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA1_0);
+                break;
             case CCBYSA2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA2_0);
+                break;
             case CCBYSA2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA2_5);
+                break;
             case CCBYSA3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA3_0);
+                break;
             case CCBYSA4_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CCBYSA4_0);
+                break;
             case CC01_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CC01_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CC01_0);
+                break;
             case CDDL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDDL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDDL1_0);
+                break;
             case CDDL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDDL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDDL1_1);
+                break;
             case CDLAPERMISSIVE1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDLAPERMISSIVE1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDLAPERMISSIVE1_0);
+                break;
             case CDLASHARING1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDLASHARING1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CDLASHARING1_0);
+                break;
             case CECILL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL1_0);
+                break;
             case CECILL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL1_1);
+                break;
             case CECILL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL2_0);
+                break;
             case CECILL2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILL2_1);
+                break;
             case CECILLB:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILLB;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILLB);
+                break;
             case CECILLC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILLC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CECILLC);
+                break;
             case CLARTISTIC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CLARTISTIC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CLARTISTIC);
+                break;
             case CNRIJYTHON:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIJYTHON;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIJYTHON);
+                break;
             case CNRIPYTHONGPLCOMPATIBLE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIPYTHONGPLCOMPATIBLE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIPYTHONGPLCOMPATIBLE);
+                break;
             case CNRIPYTHON:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIPYTHON;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CNRIPYTHON);
+                break;
             case CONDOR1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CONDOR1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CONDOR1_1);
+                break;
             case CPAL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPAL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPAL1_0);
+                break;
             case CPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPL1_0);
+                break;
             case CPOL1_02:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPOL1_02;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CPOL1_02);
+                break;
             case CROSSWORD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CROSSWORD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CROSSWORD);
+                break;
             case CRYSTALSTACKER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CRYSTALSTACKER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CRYSTALSTACKER);
+                break;
             case CUAOPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CUAOPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CUAOPL1_0);
+                break;
             case CUBE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CUBE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CUBE);
+                break;
             case CURL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CURL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.CURL);
+                break;
             case DFSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DFSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DFSL1_0);
+                break;
             case DIFFMARK:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DIFFMARK;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DIFFMARK);
+                break;
             case DOC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DOC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DOC);
+                break;
             case DOTSEQN:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DOTSEQN;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DOTSEQN);
+                break;
             case DSDP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DSDP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DSDP);
+                break;
             case DVIPDFM:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DVIPDFM;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.DVIPDFM);
+                break;
             case ECL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ECL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ECL1_0);
+                break;
             case ECL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ECL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ECL2_0);
+                break;
             case EFL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EFL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EFL1_0);
+                break;
             case EFL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EFL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EFL2_0);
+                break;
             case EGENIX:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EGENIX;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EGENIX);
+                break;
             case ENTESSA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ENTESSA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ENTESSA);
+                break;
             case EPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EPL1_0);
+                break;
             case EPL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EPL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EPL2_0);
+                break;
             case ERLPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ERLPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ERLPL1_1);
+                break;
             case EUDATAGRID:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUDATAGRID;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUDATAGRID);
+                break;
             case EUPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_0);
+                break;
             case EUPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_1);
+                break;
             case EUPL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUPL1_2);
+                break;
             case EUROSYM:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUROSYM;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.EUROSYM);
+                break;
             case FAIR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FAIR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FAIR);
+                break;
             case FRAMEWORX1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FRAMEWORX1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FRAMEWORX1_0);
+                break;
             case FREEIMAGE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FREEIMAGE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FREEIMAGE);
+                break;
             case FSFAP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFAP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFAP);
+                break;
             case FSFUL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFUL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFUL);
+                break;
             case FSFULLR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFULLR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FSFULLR);
+                break;
             case FTL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FTL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.FTL);
+                break;
             case GFDL1_1ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_1ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_1ONLY);
+                break;
             case GFDL1_1ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_1ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_1ORLATER);
+                break;
             case GFDL1_2ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_2ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_2ONLY);
+                break;
             case GFDL1_2ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_2ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_2ORLATER);
+                break;
             case GFDL1_3ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_3ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_3ONLY);
+                break;
             case GFDL1_3ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_3ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GFDL1_3ORLATER);
+                break;
             case GIFTWARE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GIFTWARE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GIFTWARE);
+                break;
             case GL2PS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GL2PS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GL2PS);
+                break;
             case GLIDE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GLIDE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GLIDE);
+                break;
             case GLULXE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GLULXE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GLULXE);
+                break;
             case GNUPLOT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GNUPLOT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GNUPLOT);
+                break;
             case GPL1_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL1_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL1_0ONLY);
+                break;
             case GPL1_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL1_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL1_0ORLATER);
+                break;
             case GPL2_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL2_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL2_0ONLY);
+                break;
             case GPL2_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL2_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL2_0ORLATER);
+                break;
             case GPL3_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL3_0ONLY);
+                break;
             case GPL3_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GPL3_0ORLATER);
+                break;
             case GSOAP1_3B:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GSOAP1_3B;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.GSOAP1_3B);
+                break;
             case HASKELLREPORT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.HASKELLREPORT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.HASKELLREPORT);
+                break;
             case HPND:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.HPND;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.HPND);
+                break;
             case IBMPIBS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IBMPIBS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IBMPIBS);
+                break;
             case ICU:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ICU;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ICU);
+                break;
             case IJG:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IJG;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IJG);
+                break;
             case IMAGEMAGICK:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMAGEMAGICK;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMAGEMAGICK);
+                break;
             case IMATIX:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMATIX;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMATIX);
+                break;
             case IMLIB2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMLIB2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IMLIB2);
+                break;
             case INFOZIP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INFOZIP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INFOZIP);
+                break;
             case INTELACPI:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTELACPI;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTELACPI);
+                break;
             case INTEL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTEL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTEL);
+                break;
             case INTERBASE1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTERBASE1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.INTERBASE1_0);
+                break;
             case IPA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IPA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IPA);
+                break;
             case IPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.IPL1_0);
+                break;
             case ISC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ISC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ISC);
+                break;
             case JASPER2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.JASPER2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.JASPER2_0);
+                break;
             case JSON:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.JSON;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.JSON);
+                break;
             case LAL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LAL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LAL1_2);
+                break;
             case LAL1_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LAL1_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LAL1_3);
+                break;
             case LATEX2E:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LATEX2E;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LATEX2E);
+                break;
             case LEPTONICA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LEPTONICA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LEPTONICA);
+                break;
             case LGPL2_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_0ONLY);
+                break;
             case LGPL2_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_0ORLATER);
+                break;
             case LGPL2_1ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_1ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_1ONLY);
+                break;
             case LGPL2_1ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_1ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL2_1ORLATER);
+                break;
             case LGPL3_0ONLY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL3_0ONLY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL3_0ONLY);
+                break;
             case LGPL3_0ORLATER:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL3_0ORLATER;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPL3_0ORLATER);
+                break;
             case LGPLLR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPLLR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LGPLLR);
+                break;
             case LIBPNG:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LIBPNG;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LIBPNG);
+                break;
             case LIBTIFF:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LIBTIFF;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LIBTIFF);
+                break;
             case LILIQP1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQP1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQP1_1);
+                break;
             case LILIQR1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQR1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQR1_1);
+                break;
             case LILIQRPLUS1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQRPLUS1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LILIQRPLUS1_1);
+                break;
             case LINUXOPENIB:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LINUXOPENIB;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LINUXOPENIB);
+                break;
             case LPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPL1_0);
+                break;
             case LPL1_02:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPL1_02;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPL1_02);
+                break;
             case LPPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_0);
+                break;
             case LPPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_1);
+                break;
             case LPPL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_2);
+                break;
             case LPPL1_3A:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_3A;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_3A);
+                break;
             case LPPL1_3C:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_3C;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.LPPL1_3C);
+                break;
             case MAKEINDEX:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MAKEINDEX;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MAKEINDEX);
+                break;
             case MIROS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIROS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIROS);
+                break;
             case MIT0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIT0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIT0);
+                break;
             case MITADVERTISING:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITADVERTISING;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITADVERTISING);
+                break;
             case MITCMU:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITCMU;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITCMU);
+                break;
             case MITENNA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITENNA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITENNA);
+                break;
             case MITFEH:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITFEH;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITFEH);
+                break;
             case MIT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MIT);
+                break;
             case MITNFA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITNFA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MITNFA);
+                break;
             case MOTOSOTO:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MOTOSOTO;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MOTOSOTO);
+                break;
             case MPICH2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPICH2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPICH2);
+                break;
             case MPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL1_0);
+                break;
             case MPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL1_1);
+                break;
             case MPL2_0NOCOPYLEFTEXCEPTION:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL2_0NOCOPYLEFTEXCEPTION);
+                break;
             case MPL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MPL2_0);
+                break;
             case MSPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MSPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MSPL);
+                break;
             case MSRL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MSRL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MSRL);
+                break;
             case MTLL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MTLL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MTLL);
+                break;
             case MULTICS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MULTICS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MULTICS);
+                break;
             case MUP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MUP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.MUP);
+                break;
             case NASA1_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NASA1_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NASA1_3);
+                break;
             case NAUMEN:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NAUMEN;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NAUMEN);
+                break;
             case NBPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NBPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NBPL1_0);
+                break;
             case NCSA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NCSA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NCSA);
+                break;
             case NETSNMP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NETSNMP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NETSNMP);
+                break;
             case NETCDF:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NETCDF;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NETCDF);
+                break;
             case NEWSLETR:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NEWSLETR;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NEWSLETR);
+                break;
             case NGPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NGPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NGPL);
+                break;
             case NLOD1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NLOD1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NLOD1_0);
+                break;
             case NLPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NLPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NLPL);
+                break;
             case NOKIA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOKIA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOKIA);
+                break;
             case NOSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOSL);
+                break;
             case NOWEB:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOWEB;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NOWEB);
+                break;
             case NPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPL1_0);
+                break;
             case NPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPL1_1);
+                break;
             case NPOSL3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPOSL3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NPOSL3_0);
+                break;
             case NRL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NRL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NRL);
+                break;
             case NTP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NTP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NTP);
+                break;
             case OCCTPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OCCTPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OCCTPL);
+                break;
             case OCLC2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OCLC2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OCLC2_0);
+                break;
             case ODBL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ODBL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ODBL1_0);
+                break;
             case OFL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OFL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OFL1_0);
+                break;
             case OFL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OFL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OFL1_1);
+                break;
             case OGTSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OGTSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OGTSL);
+                break;
             case OLDAP1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_1);
+                break;
             case OLDAP1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_2);
+                break;
             case OLDAP1_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_3);
+                break;
             case OLDAP1_4:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_4;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP1_4);
+                break;
             case OLDAP2_0_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_0_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_0_1);
+                break;
             case OLDAP2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_0);
+                break;
             case OLDAP2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_1);
+                break;
             case OLDAP2_2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2_1);
+                break;
             case OLDAP2_2_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2_2);
+                break;
             case OLDAP2_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_2);
+                break;
             case OLDAP2_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_3);
+                break;
             case OLDAP2_4:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_4;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_4);
+                break;
             case OLDAP2_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_5);
+                break;
             case OLDAP2_6:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_6;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_6);
+                break;
             case OLDAP2_7:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_7;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_7);
+                break;
             case OLDAP2_8:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_8;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OLDAP2_8);
+                break;
             case OML:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OML;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OML);
+                break;
             case OPENSSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OPENSSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OPENSSL);
+                break;
             case OPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OPL1_0);
+                break;
             case OSETPL2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSETPL2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSETPL2_1);
+                break;
             case OSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL1_0);
+                break;
             case OSL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL1_1);
+                break;
             case OSL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL2_0);
+                break;
             case OSL2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL2_1);
+                break;
             case OSL3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.OSL3_0);
+                break;
             case PDDL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PDDL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PDDL1_0);
+                break;
             case PHP3_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PHP3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PHP3_0);
+                break;
             case PHP3_01:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PHP3_01;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PHP3_01);
+                break;
             case PLEXUS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PLEXUS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PLEXUS);
+                break;
             case POSTGRESQL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.POSTGRESQL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.POSTGRESQL);
+                break;
             case PSFRAG:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PSFRAG;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PSFRAG);
+                break;
             case PSUTILS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PSUTILS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PSUTILS);
+                break;
             case PYTHON2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PYTHON2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.PYTHON2_0);
+                break;
             case QHULL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.QHULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.QHULL);
+                break;
             case QPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.QPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.QPL1_0);
+                break;
             case RDISC:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RDISC;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RDISC);
+                break;
             case RHECOS1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RHECOS1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RHECOS1_1);
+                break;
             case RPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPL1_1);
+                break;
             case RPL1_5:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPL1_5;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPL1_5);
+                break;
             case RPSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RPSL1_0);
+                break;
             case RSAMD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RSAMD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RSAMD);
+                break;
             case RSCPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RSCPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RSCPL);
+                break;
             case RUBY:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RUBY;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.RUBY);
+                break;
             case SAXPD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SAXPD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SAXPD);
+                break;
             case SAXPATH:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SAXPATH;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SAXPATH);
+                break;
             case SCEA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SCEA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SCEA);
+                break;
             case SENDMAIL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SENDMAIL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SENDMAIL);
+                break;
             case SGIB1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB1_0);
+                break;
             case SGIB1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB1_1);
+                break;
             case SGIB2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SGIB2_0);
+                break;
             case SIMPL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SIMPL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SIMPL2_0);
+                break;
             case SISSL1_2:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SISSL1_2;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SISSL1_2);
+                break;
             case SISSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SISSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SISSL);
+                break;
             case SLEEPYCAT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SLEEPYCAT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SLEEPYCAT);
+                break;
             case SMLNJ:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SMLNJ;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SMLNJ);
+                break;
             case SMPPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SMPPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SMPPL);
+                break;
             case SNIA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SNIA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SNIA);
+                break;
             case SPENCER86:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER86;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER86);
+                break;
             case SPENCER94:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER94;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER94);
+                break;
             case SPENCER99:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER99;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPENCER99);
+                break;
             case SPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SPL1_0);
+                break;
             case SUGARCRM1_1_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SUGARCRM1_1_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SUGARCRM1_1_3);
+                break;
             case SWL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SWL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.SWL);
+                break;
             case TCL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TCL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TCL);
+                break;
             case TCPWRAPPERS:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TCPWRAPPERS;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TCPWRAPPERS);
+                break;
             case TMATE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TMATE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TMATE);
+                break;
             case TORQUE1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TORQUE1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TORQUE1_1);
+                break;
             case TOSL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TOSL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.TOSL);
+                break;
             case UNICODEDFS2015:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODEDFS2015;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODEDFS2015);
+                break;
             case UNICODEDFS2016:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODEDFS2016;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODEDFS2016);
+                break;
             case UNICODETOU:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODETOU;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNICODETOU);
+                break;
             case UNLICENSE:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNLICENSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UNLICENSE);
+                break;
             case UPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.UPL1_0);
+                break;
             case VIM:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VIM;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VIM);
+                break;
             case VOSTROM:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VOSTROM;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VOSTROM);
+                break;
             case VSL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VSL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.VSL1_0);
+                break;
             case W3C19980720:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C19980720;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C19980720);
+                break;
             case W3C20150513:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C20150513;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C20150513);
+                break;
             case W3C:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.W3C);
+                break;
             case WATCOM1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WATCOM1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WATCOM1_0);
+                break;
             case WSUIPA:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WSUIPA;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WSUIPA);
+                break;
             case WTFPL:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WTFPL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.WTFPL);
+                break;
             case X11:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.X11;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.X11);
+                break;
             case XEROX:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XEROX;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XEROX);
+                break;
             case XFREE861_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XFREE861_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XFREE861_1);
+                break;
             case XINETD:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XINETD;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XINETD);
+                break;
             case XNET:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XNET;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XNET);
+                break;
             case XPP:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XPP;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XPP);
+                break;
             case XSKAT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XSKAT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.XSKAT);
+                break;
             case YPL1_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.YPL1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.YPL1_0);
+                break;
             case YPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.YPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.YPL1_1);
+                break;
             case ZED:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZED;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZED);
+                break;
             case ZEND2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZEND2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZEND2_0);
+                break;
             case ZIMBRA1_3:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZIMBRA1_3;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZIMBRA1_3);
+                break;
             case ZIMBRA1_4:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZIMBRA1_4;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZIMBRA1_4);
+                break;
             case ZLIBACKNOWLEDGEMENT:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZLIBACKNOWLEDGEMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZLIBACKNOWLEDGEMENT);
+                break;
             case ZLIB:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZLIB;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZLIB);
+                break;
             case ZPL1_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL1_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL1_1);
+                break;
             case ZPL2_0:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL2_0;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL2_0);
+                break;
             case ZPL2_1:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL2_1;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.ZPL2_1);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.SPDXLicense.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent convertImplementationGuideDependsOnComponent(org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent src) throws FHIRException {
@@ -1670,7 +2376,9 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
-        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> t : src.getFhirVersion()) copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations40_50.convertFHIRVersion(t.getValue())));
+        tgt.setFhirVersion(src.getFhirVersion().stream()
+                .map(Enumerations40_50::convertFHIRVersion)
+                .collect(Collectors.toList()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
@@ -1689,7 +2397,9 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasReference())
             tgt.setReference(convertReference(src.getReference()));
-        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> t : src.getFhirVersion()) copyElement(t, tgt.addFhirVersionElement().setValue(Enumerations40_50.convertFHIRVersion(t.getValue())));
+        tgt.setFhirVersion(src.getFhirVersion().stream()
+                .map(Enumerations40_50::convertFHIRVersion)
+                .collect(Collectors.toList()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
@@ -1711,7 +2421,7 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasGeneration())
-            tgt.setGeneration(convertGuidePageGeneration(src.getGeneration()));
+            tgt.setGenerationElement(convertGuidePageGeneration(src.getGenerationElement()));
         for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent t : src.getPage()) tgt.addPage(convertImplementationGuideDefinitionPageComponent(t));
         return tgt;
     }
@@ -1726,43 +2436,59 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasGeneration())
-            tgt.setGeneration(convertGuidePageGeneration(src.getGeneration()));
+            tgt.setGenerationElement(convertGuidePageGeneration(src.getGenerationElement()));
         for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent t : src.getPage()) tgt.addPage(convertImplementationGuideDefinitionPageComponent(t));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration convertGuidePageGeneration(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGenerationEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HTML:
-                return org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.HTML;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.HTML);
+                break;
             case MARKDOWN:
-                return org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.MARKDOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                break;
             case XML:
-                return org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.XML;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.XML);
+                break;
             case GENERATED:
-                return org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.GENERATED;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.GENERATED);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration convertGuidePageGeneration(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGenerationEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HTML:
-                return org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML);
+                break;
             case MARKDOWN:
-                return org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                break;
             case XML:
-                return org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML);
+                break;
             case GENERATED:
-                return org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent convertImplementationGuideDefinitionParameterComponent(org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent src) throws FHIRException {

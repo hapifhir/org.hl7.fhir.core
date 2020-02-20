@@ -5,6 +5,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceEligibilityComponent;
 
+import java.util.stream.Collectors;
+
 public class HealthcareService30_50 {
 
     public static org.hl7.fhir.r5.model.HealthcareService convertHealthcareService(org.hl7.fhir.dstu3.model.HealthcareService src) throws FHIRException {
@@ -101,7 +103,9 @@ public class HealthcareService30_50 {
             return null;
         org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_50.convertDaysOfWeek(t.getValue())));
+        tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+                .map(HealthcareService30_50::convertDaysOfWeek)
+                .collect(Collectors.toList()));
         if (src.hasAllDay())
             tgt.setAllDayElement(VersionConvertor_30_50.convertBoolean(src.getAllDayElement()));
         if (src.hasAvailableStartTime())
@@ -116,13 +120,83 @@ public class HealthcareService30_50 {
             return null;
         org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> t : src.getDaysOfWeek()) VersionConvertor_30_50.copyElement(t, tgt.addDaysOfWeekElement().setValue(VersionConvertor_30_50.convertDaysOfWeek(t.getValue())));
+        tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+                .map(HealthcareService30_50::convertDaysOfWeek)
+                .collect(Collectors.toList()));
         if (src.hasAllDay())
             tgt.setAllDayElement(VersionConvertor_30_50.convertBoolean(src.getAllDayElement()));
         if (src.hasAvailableStartTime())
             tgt.setAvailableStartTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableStartTimeElement()));
         if (src.hasAvailableEndTime())
             tgt.setAvailableEndTimeElement(VersionConvertor_30_50.convertTime(src.getAvailableEndTimeElement()));
+        return tgt;
+    }
+
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> src) throws FHIRException {
+        if (src == null || src.isEmpty())
+            return null;
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeekEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
+            case MON:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.MON);
+                break;
+            case TUE:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.TUE);
+                break;
+            case WED:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.WED);
+                break;
+            case THU:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.THU);
+                break;
+            case FRI:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.FRI);
+                break;
+            case SAT:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.SAT);
+                break;
+            case SUN:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.SUN);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek.NULL);
+                break;
+        }
+        return tgt;
+    }
+
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.HealthcareService.DaysOfWeek> src) throws FHIRException {
+        if (src == null || src.isEmpty())
+            return null;
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
+            case MON:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON);
+                break;
+            case TUE:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE);
+                break;
+            case WED:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED);
+                break;
+            case THU:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU);
+                break;
+            case FRI:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI);
+                break;
+            case SAT:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT);
+                break;
+            case SUN:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
+                break;
+        }
         return tgt;
     }
 

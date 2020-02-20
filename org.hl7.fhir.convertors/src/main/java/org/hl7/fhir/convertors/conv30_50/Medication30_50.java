@@ -13,7 +13,7 @@ public class Medication30_50 {
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
         if (src.hasManufacturer())
             tgt.setManufacturer(VersionConvertor_30_50.convertReference(src.getManufacturer()));
         if (src.hasForm())
@@ -32,7 +32,7 @@ public class Medication30_50 {
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
         if (src.hasManufacturer())
             tgt.setManufacturer(VersionConvertor_30_50.convertReference(src.getManufacturer()));
         if (src.hasDoseForm())
@@ -95,33 +95,47 @@ public class Medication30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Medication.MedicationStatusCodes convertMedicationStatus(org.hl7.fhir.dstu3.model.Medication.MedicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Medication.MedicationStatusCodes> convertMedicationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Medication.MedicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Medication.MedicationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Medication.MedicationStatusCodesEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Medication.MedicationStatus convertMedicationStatus(org.hl7.fhir.r5.model.Medication.MedicationStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Medication.MedicationStatus> convertMedicationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Medication.MedicationStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Medication.MedicationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Medication.MedicationStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Medication.MedicationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Medication.MedicationStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.dstu3.model.Medication.MedicationStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Medication.MedicationStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Medication.MedicationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Medication.MedicationStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Medication.MedicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Medication.MedicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

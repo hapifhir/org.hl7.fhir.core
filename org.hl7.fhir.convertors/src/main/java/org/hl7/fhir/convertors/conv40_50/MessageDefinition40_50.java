@@ -69,7 +69,7 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -91,10 +91,10 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
         if (src.hasCategory())
-            tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
+            tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
-            tgt.setResponseRequired(convertMessageheaderResponseRequest(src.getResponseRequired()));
+            tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
         for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
         return tgt;
@@ -116,7 +116,7 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setTitleElement(convertString(src.getTitleElement()));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.getReplaces().add(convertCanonical(t));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -138,77 +138,107 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasEvent())
             tgt.setEvent(convertType(src.getEvent()));
         if (src.hasCategory())
-            tgt.setCategory(convertMessageSignificanceCategory(src.getCategory()));
+            tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
         if (src.hasResponseRequired())
-            tgt.setResponseRequired(convertMessageheaderResponseRequest(src.getResponseRequired()));
+            tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
         for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse()) tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(convertCanonical(t));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory convertMessageSignificanceCategory(org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> convertMessageSignificanceCategory(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CONSEQUENCE:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
+                break;
             case CURRENCY:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CURRENCY;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CURRENCY);
+                break;
             case NOTIFICATION:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory convertMessageSignificanceCategory(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory> convertMessageSignificanceCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CONSEQUENCE:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
+                break;
             case CURRENCY:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.CURRENCY;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.CURRENCY);
+                break;
             case NOTIFICATION:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.NOTIFICATION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageSignificanceCategory.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest convertMessageheaderResponseRequest(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest> convertMessageheaderResponseRequest(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequestEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ALWAYS:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS);
+                break;
             case ONERROR:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ONERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ONERROR);
+                break;
             case NEVER:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NEVER;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
+                break;
             case ONSUCCESS:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ONSUCCESS;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.ONSUCCESS);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest convertMessageheaderResponseRequest(org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest> convertMessageheaderResponseRequest(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageheaderResponseRequest> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequestEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ALWAYS:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ALWAYS);
+                break;
             case ONERROR:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ONERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ONERROR);
+                break;
             case NEVER:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NEVER;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NEVER);
+                break;
             case ONSUCCESS:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ONSUCCESS;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.ONSUCCESS);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MessageDefinition.MessageheaderResponseRequest.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent convertMessageDefinitionFocusComponent(org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent src) throws FHIRException {

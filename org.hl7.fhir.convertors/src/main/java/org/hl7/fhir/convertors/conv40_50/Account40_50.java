@@ -60,7 +60,7 @@ public class Account40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertAccountStatus(src.getStatus()));
+            tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasName())
@@ -86,7 +86,7 @@ public class Account40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertAccountStatus(src.getStatus()));
+            tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasName())
@@ -105,42 +105,60 @@ public class Account40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Account.AccountStatus convertAccountStatus(org.hl7.fhir.r4.model.Account.AccountStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Account.AccountStatus> convertAccountStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Account.AccountStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Account.AccountStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.ENTEREDINERROR);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.ONHOLD);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Account.AccountStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Account.AccountStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Account.AccountStatus convertAccountStatus(org.hl7.fhir.r5.model.Account.AccountStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> convertAccountStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Account.AccountStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Account.AccountStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.ENTEREDINERROR);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.ONHOLD);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Account.AccountStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Account.CoverageComponent convertCoverageComponent(org.hl7.fhir.r4.model.Account.CoverageComponent src) throws FHIRException {

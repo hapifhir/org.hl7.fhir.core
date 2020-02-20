@@ -12,7 +12,7 @@ public class Endpoint30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEndpointStatus(src.getStatus()));
+            tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_40.convertCoding(src.getConnectionType()));
         if (src.hasName())
@@ -37,7 +37,7 @@ public class Endpoint30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEndpointStatus(src.getStatus()));
+            tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
         if (src.hasConnectionType())
             tgt.setConnectionType(VersionConvertor_30_40.convertCoding(src.getConnectionType()));
         if (src.hasName())
@@ -55,45 +55,65 @@ public class Endpoint30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> convertEndpointStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Endpoint.EndpointStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.SUSPENDED);
+                break;
             case ERROR:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ERROR);
+                break;
             case OFF:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.OFF;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.OFF);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ENTEREDINERROR);
+                break;
             case TEST:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.TEST;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.TEST);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Endpoint.EndpointStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus convertEndpointStatus(org.hl7.fhir.r4.model.Endpoint.EndpointStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> convertEndpointStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Endpoint.EndpointStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.SUSPENDED);
+                break;
             case ERROR:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ERROR);
+                break;
             case OFF:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.OFF;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.OFF);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ENTEREDINERROR);
+                break;
             case TEST:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.TEST;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.TEST);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

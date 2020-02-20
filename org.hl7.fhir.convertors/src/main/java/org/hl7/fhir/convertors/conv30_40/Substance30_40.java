@@ -5,34 +5,48 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Substance30_40 {
 
-    static public org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus convertFHIRSubstanceStatus(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus> convertFHIRSubstanceStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus convertFHIRSubstanceStatus(org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus> convertFHIRSubstanceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Substance.FHIRSubstanceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.ACTIVE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.Substance convertSubstance(org.hl7.fhir.dstu3.model.Substance src) throws FHIRException {
@@ -42,7 +56,7 @@ public class Substance30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFHIRSubstanceStatus(src.getStatus()));
+            tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
@@ -60,7 +74,7 @@ public class Substance30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFHIRSubstanceStatus(src.getStatus()));
+            tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasCode())
             tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));

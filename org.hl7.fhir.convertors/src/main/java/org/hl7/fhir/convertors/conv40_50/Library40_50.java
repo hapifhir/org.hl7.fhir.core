@@ -70,7 +70,7 @@ public class Library40_50 extends VersionConvertor_40_50 {
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasType())
@@ -127,7 +127,7 @@ public class Library40_50 extends VersionConvertor_40_50 {
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasType())

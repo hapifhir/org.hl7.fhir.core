@@ -60,7 +60,7 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertVisionStatus(src.getStatus()));
+            tgt.setStatusElement(convertVisionStatus(src.getStatusElement()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasPatient())
@@ -82,7 +82,7 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertVisionStatus(src.getStatus()));
+            tgt.setStatusElement(convertVisionStatus(src.getStatusElement()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasPatient())
@@ -97,38 +97,54 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertVisionStatus(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertVisionStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.VisionPrescription.VisionStatus convertVisionStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionStatus> convertVisionStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.VisionPrescription.VisionStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent convertVisionPrescriptionLensSpecificationComponent(org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent src) throws FHIRException {
@@ -139,7 +155,7 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         if (src.hasProduct())
             tgt.setProduct(convertCodeableConcept(src.getProduct()));
         if (src.hasEye())
-            tgt.setEye(convertVisionEyes(src.getEye()));
+            tgt.setEyeElement(convertVisionEyes(src.getEyeElement()));
         if (src.hasSphere())
             tgt.setSphereElement(convertDecimal(src.getSphereElement()));
         if (src.hasCylinder())
@@ -173,7 +189,7 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         if (src.hasProduct())
             tgt.setProduct(convertCodeableConcept(src.getProduct()));
         if (src.hasEye())
-            tgt.setEye(convertVisionEyes(src.getEye()));
+            tgt.setEyeElement(convertVisionEyes(src.getEyeElement()));
         if (src.hasSphere())
             tgt.setSphereElement(convertDecimal(src.getSphereElement()));
         if (src.hasCylinder())
@@ -199,30 +215,42 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionEyes> convertVisionEyes(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionEyes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionEyes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.VisionPrescription.VisionEyesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RIGHT:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.RIGHT;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.RIGHT);
+                break;
             case LEFT:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.LEFT;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.LEFT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.VisionPrescription.VisionEyes convertVisionEyes(org.hl7.fhir.r5.model.VisionPrescription.VisionEyes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionEyes> convertVisionEyes(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionEyes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionEyes> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.VisionPrescription.VisionEyesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RIGHT:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.RIGHT;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.RIGHT);
+                break;
             case LEFT:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.LEFT;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.LEFT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionEyes.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.VisionPrescription.PrismComponent convertPrismComponent(org.hl7.fhir.r4.model.VisionPrescription.PrismComponent src) throws FHIRException {
@@ -233,7 +261,7 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         if (src.hasAmount())
             tgt.setAmountElement(convertDecimal(src.getAmountElement()));
         if (src.hasBase())
-            tgt.setBase(convertVisionBase(src.getBase()));
+            tgt.setBaseElement(convertVisionBase(src.getBaseElement()));
         return tgt;
     }
 
@@ -245,41 +273,57 @@ public class VisionPrescription40_50 extends VersionConvertor_40_50 {
         if (src.hasAmount())
             tgt.setAmountElement(convertDecimal(src.getAmountElement()));
         if (src.hasBase())
-            tgt.setBase(convertVisionBase(src.getBase()));
+            tgt.setBaseElement(convertVisionBase(src.getBaseElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r4.model.VisionPrescription.VisionBase src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionBase> convertVisionBase(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionBase> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionBase> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.VisionPrescription.VisionBaseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UP:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.UP;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionBase.UP);
+                break;
             case DOWN:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.DOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionBase.DOWN);
+                break;
             case IN:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.IN;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionBase.IN);
+                break;
             case OUT:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.OUT;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionBase.OUT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.VisionPrescription.VisionBase.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.VisionPrescription.VisionBase.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.VisionPrescription.VisionBase convertVisionBase(org.hl7.fhir.r5.model.VisionPrescription.VisionBase src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionBase> convertVisionBase(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VisionPrescription.VisionBase> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VisionPrescription.VisionBase> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.VisionPrescription.VisionBaseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UP:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.UP;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionBase.UP);
+                break;
             case DOWN:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.DOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionBase.DOWN);
+                break;
             case IN:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.IN;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionBase.IN);
+                break;
             case OUT:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.OUT;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionBase.OUT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.VisionPrescription.VisionBase.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.VisionPrescription.VisionBase.NULL);
+                break;
         }
+        return tgt;
     }
 }

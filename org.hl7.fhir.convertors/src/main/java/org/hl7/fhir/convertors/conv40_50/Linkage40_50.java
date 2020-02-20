@@ -85,7 +85,7 @@ public class Linkage40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.Linkage.LinkageItemComponent tgt = new org.hl7.fhir.r5.model.Linkage.LinkageItemComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertLinkageType(src.getType()));
+            tgt.setTypeElement(convertLinkageType(src.getTypeElement()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
         return tgt;
@@ -97,39 +97,53 @@ public class Linkage40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.Linkage.LinkageItemComponent tgt = new org.hl7.fhir.r4.model.Linkage.LinkageItemComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertLinkageType(src.getType()));
+            tgt.setTypeElement(convertLinkageType(src.getTypeElement()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Linkage.LinkageType convertLinkageType(org.hl7.fhir.r4.model.Linkage.LinkageType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Linkage.LinkageType> convertLinkageType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Linkage.LinkageType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Linkage.LinkageType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Linkage.LinkageTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SOURCE:
-                return org.hl7.fhir.r5.model.Linkage.LinkageType.SOURCE;
+                tgt.setValue(org.hl7.fhir.r5.model.Linkage.LinkageType.SOURCE);
+                break;
             case ALTERNATE:
-                return org.hl7.fhir.r5.model.Linkage.LinkageType.ALTERNATE;
+                tgt.setValue(org.hl7.fhir.r5.model.Linkage.LinkageType.ALTERNATE);
+                break;
             case HISTORICAL:
-                return org.hl7.fhir.r5.model.Linkage.LinkageType.HISTORICAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Linkage.LinkageType.HISTORICAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Linkage.LinkageType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Linkage.LinkageType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Linkage.LinkageType convertLinkageType(org.hl7.fhir.r5.model.Linkage.LinkageType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Linkage.LinkageType> convertLinkageType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Linkage.LinkageType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Linkage.LinkageType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Linkage.LinkageTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SOURCE:
-                return org.hl7.fhir.r4.model.Linkage.LinkageType.SOURCE;
+                tgt.setValue(org.hl7.fhir.r4.model.Linkage.LinkageType.SOURCE);
+                break;
             case ALTERNATE:
-                return org.hl7.fhir.r4.model.Linkage.LinkageType.ALTERNATE;
+                tgt.setValue(org.hl7.fhir.r4.model.Linkage.LinkageType.ALTERNATE);
+                break;
             case HISTORICAL:
-                return org.hl7.fhir.r4.model.Linkage.LinkageType.HISTORICAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Linkage.LinkageType.HISTORICAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Linkage.LinkageType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Linkage.LinkageType.NULL);
+                break;
         }
+        return tgt;
     }
 }

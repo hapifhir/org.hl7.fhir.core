@@ -65,7 +65,7 @@ public class GuidanceResponse40_50 extends VersionConvertor_40_50 {
         if (src.hasModule())
             tgt.setModule(convertType(src.getModule()));
         if (src.hasStatus())
-            tgt.setStatus(convertGuidanceResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertGuidanceResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -97,7 +97,7 @@ public class GuidanceResponse40_50 extends VersionConvertor_40_50 {
         if (src.hasModule())
             tgt.setModule(convertType(src.getModule()));
         if (src.hasStatus())
-            tgt.setStatus(convertGuidanceResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertGuidanceResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -120,45 +120,65 @@ public class GuidanceResponse40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus convertGuidanceResponseStatus(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus> convertGuidanceResponseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SUCCESS:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.SUCCESS;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.SUCCESS);
+                break;
             case DATAREQUESTED:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUESTED;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUESTED);
+                break;
             case DATAREQUIRED:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUIRED;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUIRED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.INPROGRESS);
+                break;
             case FAILURE:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.FAILURE;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.FAILURE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus convertGuidanceResponseStatus(org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus> convertGuidanceResponseStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GuidanceResponse.GuidanceResponseStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SUCCESS:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.SUCCESS;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.SUCCESS);
+                break;
             case DATAREQUESTED:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUESTED;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUESTED);
+                break;
             case DATAREQUIRED:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUIRED;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.DATAREQUIRED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.INPROGRESS);
+                break;
             case FAILURE:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.FAILURE;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.FAILURE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.GuidanceResponse.GuidanceResponseStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

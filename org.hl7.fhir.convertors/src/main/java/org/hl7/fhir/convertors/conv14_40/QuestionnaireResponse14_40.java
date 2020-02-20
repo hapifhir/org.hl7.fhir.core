@@ -15,7 +15,7 @@ public class QuestionnaireResponse14_40 {
         if (src.hasQuestionnaire())
             tgt.setQuestionnaireElement(VersionConvertor_14_40.convertReferenceToCanonical(src.getQuestionnaire()));
         if (src.hasStatus())
-            tgt.setStatus(convertQuestionnaireResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_14_40.convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -40,7 +40,7 @@ public class QuestionnaireResponse14_40 {
         if (src.hasQuestionnaireElement())
             tgt.setQuestionnaire(VersionConvertor_14_40.convertCanonicalToReference(src.getQuestionnaireElement()));
         if (src.hasStatus())
-            tgt.setStatus(convertQuestionnaireResponseStatus(src.getStatus()));
+            tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_14_40.convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -105,33 +105,47 @@ public class QuestionnaireResponse14_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus convertQuestionnaireResponseStatus(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
+                break;
             case AMENDED:
-                return org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus convertQuestionnaireResponseStatus(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
+        VersionConvertor_14_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
+                break;
             case AMENDED:
-                return org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

@@ -15,7 +15,7 @@ public class SearchParameter14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -32,7 +32,7 @@ public class SearchParameter14_30 {
             tgt.setCodeElement(VersionConvertor_14_30.convertCode(src.getCodeElement()));
         for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.setBase(t.asStringValue());
         if (src.hasType())
-            tgt.setType(VersionConvertor_14_30.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_14_30.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasExpression())
@@ -40,7 +40,7 @@ public class SearchParameter14_30 {
         if (src.hasXpath())
             tgt.setXpathElement(VersionConvertor_14_30.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
-            tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
+            tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
         for (org.hl7.fhir.dstu3.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
         return tgt;
     }
@@ -55,7 +55,7 @@ public class SearchParameter14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -73,7 +73,7 @@ public class SearchParameter14_30 {
             tgt.setCodeElement(VersionConvertor_14_30.convertCode(src.getCodeElement()));
         tgt.addBase(src.getBase());
         if (src.hasType())
-            tgt.setType(VersionConvertor_14_30.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_14_30.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasExpression())
@@ -81,7 +81,7 @@ public class SearchParameter14_30 {
         if (src.hasXpath())
             tgt.setXpathElement(VersionConvertor_14_30.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
-            tgt.setXpathUsage(convertXPathUsageType(src.getXpathUsage()));
+            tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
         for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
         return tgt;
     }
@@ -108,41 +108,59 @@ public class SearchParameter14_30 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType convertXPathUsageType(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NORMAL:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NORMAL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NORMAL);
+                break;
             case PHONETIC:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.PHONETIC;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.PHONETIC);
+                break;
             case NEARBY:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NEARBY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NEARBY);
+                break;
             case DISTANCE:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.DISTANCE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.DISTANCE);
+                break;
             case OTHER:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.OTHER;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType convertXPathUsageType(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NORMAL:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NORMAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NORMAL);
+                break;
             case PHONETIC:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.PHONETIC;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.PHONETIC);
+                break;
             case NEARBY:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NEARBY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NEARBY);
+                break;
             case DISTANCE:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.DISTANCE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.DISTANCE);
+                break;
             case OTHER:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.OTHER;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NULL);
+                break;
         }
+        return tgt;
     }
 }

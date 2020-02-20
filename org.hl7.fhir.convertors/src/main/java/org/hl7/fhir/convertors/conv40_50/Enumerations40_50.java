@@ -53,377 +53,556 @@ import org.hl7.fhir.exceptions.FHIRException;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class Enumerations40_50 extends VersionConvertor_40_50 {
 
-    public static org.hl7.fhir.r5.model.Enumerations.BindingStrength convertBindingStrength(org.hl7.fhir.r4.model.Enumerations.BindingStrength src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REQUIRED:
-                return org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED);
+                break;
             case EXTENSIBLE:
-                return org.hl7.fhir.r5.model.Enumerations.BindingStrength.EXTENSIBLE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.EXTENSIBLE);
+                break;
             case PREFERRED:
-                return org.hl7.fhir.r5.model.Enumerations.BindingStrength.PREFERRED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.PREFERRED);
+                break;
             case EXAMPLE:
-                return org.hl7.fhir.r5.model.Enumerations.BindingStrength.EXAMPLE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.EXAMPLE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.BindingStrength.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.BindingStrength convertBindingStrength(org.hl7.fhir.r5.model.Enumerations.BindingStrength src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.BindingStrength> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REQUIRED:
-                return org.hl7.fhir.r4.model.Enumerations.BindingStrength.REQUIRED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.REQUIRED);
+                break;
             case EXTENSIBLE:
-                return org.hl7.fhir.r4.model.Enumerations.BindingStrength.EXTENSIBLE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.EXTENSIBLE);
+                break;
             case PREFERRED:
-                return org.hl7.fhir.r4.model.Enumerations.BindingStrength.PREFERRED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.PREFERRED);
+                break;
             case EXAMPLE:
-                return org.hl7.fhir.r4.model.Enumerations.BindingStrength.EXAMPLE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.EXAMPLE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.BindingStrength.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.PublicationStatus convertPublicationStatus(org.hl7.fhir.r4.model.Enumerations.PublicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.PublicationStatus> convertPublicationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.PublicationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.ACTIVE);
+                break;
             case RETIRED:
-                return org.hl7.fhir.r5.model.Enumerations.PublicationStatus.RETIRED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.RETIRED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.PublicationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.PublicationStatus convertPublicationStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> convertPublicationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.PublicationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.ACTIVE);
+                break;
             case RETIRED:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.RETIRED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.PublicationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FHIRVersion convertFHIRVersion(org.hl7.fhir.r4.model.Enumerations.FHIRVersion src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> convertFHIRVersion(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case _0_01:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_01;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_01);
+                break;
             case _0_05:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_05;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_05);
+                break;
             case _0_06:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_06;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_06);
+                break;
             case _0_11:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_11;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_11);
+                break;
             case _0_0_80:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_80;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_80);
+                break;
             case _0_0_81:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_81;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_81);
+                break;
             case _0_0_82:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_82;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_0_82);
+                break;
             case _0_4_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_4_0);
+                break;
             case _0_5_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_5_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_5_0);
+                break;
             case _1_0_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_0);
+                break;
             case _1_0_1:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_1;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_1);
+                break;
             case _1_0_2:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_2;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_0_2);
+                break;
             case _1_1_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_1_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_1_0);
+                break;
             case _1_4_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_4_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_4_0);
+                break;
             case _1_6_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_6_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_6_0);
+                break;
             case _1_8_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_8_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._1_8_0);
+                break;
             case _3_0_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_0);
+                break;
             case _3_0_1:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_1;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_1);
+                break;
             case _3_0_2:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_2;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_0_2);
+                break;
             case _3_3_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_3_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_3_0);
+                break;
             case _3_5_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_5_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._3_5_0);
+                break;
             case _4_0_0:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_0;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_0);
+                break;
             case _4_0_1:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_1;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_1);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.FHIRVersion convertFHIRVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> convertFHIRVersion(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case _0_01:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_01;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_01);
+                break;
             case _0_05:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_05;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_05);
+                break;
             case _0_06:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_06;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_06);
+                break;
             case _0_11:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_11;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_11);
+                break;
             case _0_0_80:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_80;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_80);
+                break;
             case _0_0_81:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_81;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_81);
+                break;
             case _0_0_82:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_82;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_0_82);
+                break;
             case _0_4_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_4_0);
+                break;
             case _0_5_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_5_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_5_0);
+                break;
             case _1_0_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_0);
+                break;
             case _1_0_1:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_1;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_1);
+                break;
             case _1_0_2:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_2;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_0_2);
+                break;
             case _1_1_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_1_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_1_0);
+                break;
             case _1_4_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_4_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_4_0);
+                break;
             case _1_6_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_6_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_6_0);
+                break;
             case _1_8_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_8_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._1_8_0);
+                break;
             case _3_0_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_0);
+                break;
             case _3_0_1:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_1;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_1);
+                break;
             case _3_0_2:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_2;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_0_2);
+                break;
             case _3_3_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_3_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_3_0);
+                break;
             case _3_5_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_5_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._3_5_0);
+                break;
             case _4_0_0:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_0;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_0);
+                break;
             case _4_0_1:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_1;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_1);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.SearchParamType convertSearchParamType(org.hl7.fhir.r4.model.Enumerations.SearchParamType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.SearchParamTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NUMBER:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.NUMBER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.NUMBER);
+                break;
             case DATE:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.DATE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.DATE);
+                break;
             case STRING:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.STRING;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.STRING);
+                break;
             case TOKEN:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.TOKEN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.TOKEN);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.REFERENCE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.REFERENCE);
+                break;
             case COMPOSITE:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.COMPOSITE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.COMPOSITE);
+                break;
             case QUANTITY:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.QUANTITY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.QUANTITY);
+                break;
             case URI:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.URI;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.URI);
+                break;
             case SPECIAL:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.SPECIAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.SPECIAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.SearchParamType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.SearchParamType convertSearchParamType(org.hl7.fhir.r5.model.Enumerations.SearchParamType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchParamType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.SearchParamTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NUMBER:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.NUMBER;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.NUMBER);
+                break;
             case DATE:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.DATE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.DATE);
+                break;
             case STRING:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.STRING;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.STRING);
+                break;
             case TOKEN:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.TOKEN;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.TOKEN);
+                break;
             case REFERENCE:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.REFERENCE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.REFERENCE);
+                break;
             case COMPOSITE:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.COMPOSITE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.COMPOSITE);
+                break;
             case QUANTITY:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.QUANTITY;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.QUANTITY);
+                break;
             case URI:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.URI;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.URI);
+                break;
             case SPECIAL:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.SPECIAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.SPECIAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.SearchParamType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.NoteType convertNoteType(org.hl7.fhir.r4.model.Enumerations.NoteType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> convertNoteType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.NoteTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DISPLAY:
-                return org.hl7.fhir.r5.model.Enumerations.NoteType.DISPLAY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.DISPLAY);
+                break;
             case PRINT:
-                return org.hl7.fhir.r5.model.Enumerations.NoteType.PRINT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.PRINT);
+                break;
             case PRINTOPER:
-                return org.hl7.fhir.r5.model.Enumerations.NoteType.PRINTOPER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.PRINTOPER);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.NoteType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.NoteType convertNoteType(org.hl7.fhir.r5.model.Enumerations.NoteType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> convertNoteType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.NoteTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DISPLAY:
-                return org.hl7.fhir.r4.model.Enumerations.NoteType.DISPLAY;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.NoteType.DISPLAY);
+                break;
             case PRINT:
-                return org.hl7.fhir.r4.model.Enumerations.NoteType.PRINT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.NoteType.PRINT);
+                break;
             case PRINTOPER:
-                return org.hl7.fhir.r4.model.Enumerations.NoteType.PRINTOPER;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.NoteType.PRINTOPER);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.NoteType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.NoteType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship convertConceptMapRelationship(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship> convertConceptMapRelationship(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationshipEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RELATEDTO:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
+                break;
             case EQUIVALENT:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
+                break;
             case EQUAL:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
+                break;
             case WIDER:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+                break;
             case SUBSUMES:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+                break;
             case NARROWER:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+                break;
             case SPECIALIZES:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+                break;
             case INEXACT:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
+                break;
             case UNMATCHED:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
+                break;
             case DISJOINT:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence> convertConceptMapEquivalence(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalenceEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RELATEDTO:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.RELATEDTO;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.RELATEDTO);
+                break;
             case EQUIVALENT:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT);
+                break;
             case BROADER:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER);
+                break;
             case NARROWER:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NARROWER;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NARROWER);
+                break;
             case NOTRELATEDTO:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.DISJOINT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.DISJOINT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CURRENT:
-                return org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.CURRENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.CURRENT);
+                break;
             case SUPERSEDED:
-                return org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.SUPERSEDED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus convertDocumentReferenceStatus(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CURRENT:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.CURRENT;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.CURRENT);
+                break;
             case SUPERSEDED:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.SUPERSEDED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.AdministrativeGender convertAdministrativeGender(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.AdministrativeGender> convertAdministrativeGender(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.AdministrativeGender> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.AdministrativeGender> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MALE:
-                return org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.MALE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.MALE);
+                break;
             case FEMALE:
-                return org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.FEMALE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.FEMALE);
+                break;
             case OTHER:
-                return org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.OTHER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.OTHER);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.AdministrativeGender convertAdministrativeGender(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.AdministrativeGender> convertAdministrativeGender(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.AdministrativeGender> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.AdministrativeGender> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.AdministrativeGenderEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MALE:
-                return org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.MALE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.MALE);
+                break;
             case FEMALE:
-                return org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.FEMALE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.FEMALE);
+                break;
             case OTHER:
-                return org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.OTHER;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.OTHER);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.NULL);
+                break;
         }
+        return tgt;
     }
 }

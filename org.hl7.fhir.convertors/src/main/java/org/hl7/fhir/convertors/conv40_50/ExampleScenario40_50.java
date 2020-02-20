@@ -66,7 +66,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -100,7 +100,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -129,7 +129,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         if (src.hasActorId())
             tgt.setActorIdElement(convertString(src.getActorIdElement()));
         if (src.hasType())
-            tgt.setType(convertExampleScenarioActorType(src.getType()));
+            tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
@@ -145,7 +145,7 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         if (src.hasActorId())
             tgt.setActorIdElement(convertString(src.getActorIdElement()));
         if (src.hasType())
-            tgt.setType(convertExampleScenarioActorType(src.getType()));
+            tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasDescription())
@@ -153,30 +153,42 @@ public class ExampleScenario40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType convertExampleScenarioActorType(org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PERSON:
-                return org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.PERSON;
+                tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.PERSON);
+                break;
             case ENTITY:
-                return org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.ENTITY;
+                tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.ENTITY);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType convertExampleScenarioActorType(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PERSON:
-                return org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.PERSON;
+                tgt.setValue(org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.PERSON);
+                break;
             case ENTITY:
-                return org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.ENTITY;
+                tgt.setValue(org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.ENTITY);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioActorType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent convertExampleScenarioInstanceComponent(org.hl7.fhir.r4.model.ExampleScenario.ExampleScenarioInstanceComponent src) throws FHIRException {

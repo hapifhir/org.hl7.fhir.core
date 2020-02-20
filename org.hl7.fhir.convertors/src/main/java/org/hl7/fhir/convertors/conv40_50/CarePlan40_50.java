@@ -66,9 +66,9 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCarePlanStatus(src.getStatus()));
+            tgt.setStatusElement(convertCarePlanStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertCarePlanIntent(src.getIntent()));
+            tgt.setIntentElement(convertCarePlanIntent(src.getIntentElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
@@ -106,9 +106,9 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Reference t : src.getReplaces()) tgt.addReplaces(convertReference(t));
         for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCarePlanStatus(src.getStatus()));
+            tgt.setStatusElement(convertCarePlanStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertCarePlanIntent(src.getIntent()));
+            tgt.setIntentElement(convertCarePlanIntent(src.getIntentElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
@@ -135,84 +135,122 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertCarePlanStatus(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> convertCarePlanStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CarePlan.CarePlanStatus convertCarePlanStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanStatus> convertCarePlanStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CarePlan.CarePlanIntent convertCarePlanIntent(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanIntent> convertCarePlanIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CarePlan.CarePlanIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.PLAN);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.ORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CarePlan.CarePlanIntent convertCarePlanIntent(org.hl7.fhir.r5.model.CarePlan.CarePlanIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanIntent> convertCarePlanIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.PLAN);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.ORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent convertCarePlanActivityComponent(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent src) throws FHIRException {
@@ -253,7 +291,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent();
         copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertCarePlanActivityKind(src.getKind()));
+            tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasCode())
@@ -262,7 +300,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
+            tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasDoNotPerform())
@@ -289,7 +327,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
         copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertCarePlanActivityKind(src.getKind()));
+            tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
         for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasCode())
@@ -300,7 +338,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.addReasonReference(convertReference(t.getReference()));
         for (org.hl7.fhir.r5.model.Reference t : src.getGoal()) tgt.addGoal(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCarePlanActivityStatus(src.getStatus()));
+            tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));
         if (src.hasStatusReason())
             tgt.setStatusReason(convertCodeableConcept(src.getStatusReason()));
         if (src.hasDoNotPerform())
@@ -321,107 +359,157 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind convertCarePlanActivityKind(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind> convertCarePlanActivityKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPOINTMENT:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.APPOINTMENT;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.APPOINTMENT);
+                break;
             case COMMUNICATIONREQUEST:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.COMMUNICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.COMMUNICATIONREQUEST);
+                break;
             case DEVICEREQUEST:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.DEVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.DEVICEREQUEST);
+                break;
             case MEDICATIONREQUEST:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.MEDICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.MEDICATIONREQUEST);
+                break;
             case NUTRITIONORDER:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.NUTRITIONORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.NUTRITIONORDER);
+                break;
             case TASK:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.TASK;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.TASK);
+                break;
             case SERVICEREQUEST:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.SERVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.SERVICEREQUEST);
+                break;
             case VISIONPRESCRIPTION:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.VISIONPRESCRIPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.VISIONPRESCRIPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind convertCarePlanActivityKind(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind> convertCarePlanActivityKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPOINTMENT:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.APPOINTMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.APPOINTMENT);
+                break;
             case COMMUNICATIONREQUEST:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.COMMUNICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.COMMUNICATIONREQUEST);
+                break;
             case DEVICEREQUEST:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.DEVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.DEVICEREQUEST);
+                break;
             case MEDICATIONREQUEST:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.MEDICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.MEDICATIONREQUEST);
+                break;
             case NUTRITIONORDER:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.NUTRITIONORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.NUTRITIONORDER);
+                break;
             case TASK:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.TASK;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.TASK);
+                break;
             case SERVICEREQUEST:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.SERVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.SERVICEREQUEST);
+                break;
             case VISIONPRESCRIPTION:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.VISIONPRESCRIPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.VISIONPRESCRIPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus convertCarePlanActivityStatus(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus> convertCarePlanActivityStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTSTARTED:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.NOTSTARTED;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.NOTSTARTED);
+                break;
             case SCHEDULED:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.SCHEDULED;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.SCHEDULED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.INPROGRESS);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.ONHOLD);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.COMPLETED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.CANCELLED);
+                break;
             case STOPPED:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.STOPPED;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.STOPPED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.UNKNOWN);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus convertCarePlanActivityStatus(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus> convertCarePlanActivityStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CarePlan.CarePlanActivityStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTSTARTED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.NOTSTARTED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.NOTSTARTED);
+                break;
             case SCHEDULED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.SCHEDULED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.SCHEDULED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.INPROGRESS);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.ONHOLD);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.COMPLETED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.CANCELLED);
+                break;
             case STOPPED:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.STOPPED;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.STOPPED);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.UNKNOWN);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }
