@@ -60,7 +60,7 @@ public class EnrollmentRequest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertEnrollmentRequestStatus(src.getStatusElement()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasInsurer())
@@ -81,7 +81,7 @@ public class EnrollmentRequest40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertEnrollmentRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertEnrollmentRequestStatus(src.getStatusElement()));
         if (src.hasCreated())
             tgt.setCreatedElement(convertDateTime(src.getCreatedElement()));
         if (src.hasInsurer())
@@ -95,37 +95,53 @@ public class EnrollmentRequest40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertEnrollmentRequestStatus(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertEnrollmentRequestStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus convertEnrollmentRequestStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus> convertEnrollmentRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.EnrollmentRequest.EnrollmentRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

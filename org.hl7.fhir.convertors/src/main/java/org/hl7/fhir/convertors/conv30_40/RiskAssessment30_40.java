@@ -17,7 +17,7 @@ public class RiskAssessment30_40 {
         if (src.hasParent())
             tgt.setParent(VersionConvertor_30_40.convertReference(src.getParent()));
         if (src.hasStatus())
-            tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
+            tgt.setStatusElement(convertRiskAssessmentStatus(src.getStatusElement()));
         if (src.hasMethod())
             tgt.setMethod(VersionConvertor_30_40.convertCodeableConcept(src.getMethod()));
         if (src.hasCode())
@@ -57,7 +57,7 @@ public class RiskAssessment30_40 {
         if (src.hasParent())
             tgt.setParent(VersionConvertor_30_40.convertReference(src.getParent()));
         if (src.hasStatus())
-            tgt.setStatus(convertRiskAssessmentStatus(src.getStatus()));
+            tgt.setStatusElement(convertRiskAssessmentStatus(src.getStatusElement()));
         if (src.hasMethod())
             tgt.setMethod(VersionConvertor_30_40.convertCodeableConcept(src.getMethod()));
         if (src.hasCode())
@@ -128,53 +128,77 @@ public class RiskAssessment30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> convertRiskAssessmentStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus convertRiskAssessmentStatus(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> convertRiskAssessmentStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case REGISTERED:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
+                break;
             case PRELIMINARY:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
+                break;
             case FINAL:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL);
+                break;
             case AMENDED:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED);
+                break;
             case CORRECTED:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

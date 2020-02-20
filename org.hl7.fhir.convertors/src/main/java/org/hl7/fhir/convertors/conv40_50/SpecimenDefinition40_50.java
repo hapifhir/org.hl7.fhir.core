@@ -97,7 +97,7 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasPreference())
-            tgt.setPreference(convertSpecimenContainedPreference(src.getPreference()));
+            tgt.setPreferenceElement(convertSpecimenContainedPreference(src.getPreferenceElement()));
         if (src.hasContainer())
             tgt.setContainer(convertSpecimenDefinitionTypeTestedContainerComponent(src.getContainer()));
         if (src.hasRequirement())
@@ -119,7 +119,7 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasPreference())
-            tgt.setPreference(convertSpecimenContainedPreference(src.getPreference()));
+            tgt.setPreferenceElement(convertSpecimenContainedPreference(src.getPreferenceElement()));
         if (src.hasContainer())
             tgt.setContainer(convertSpecimenDefinitionTypeTestedContainerComponent(src.getContainer()));
         if (src.hasRequirement())
@@ -131,30 +131,42 @@ public class SpecimenDefinition40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference convertSpecimenContainedPreference(org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> convertSpecimenContainedPreference(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PREFERRED:
-                return org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED;
+                tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
+                break;
             case ALTERNATE:
-                return org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE;
+                tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference convertSpecimenContainedPreference(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference> convertSpecimenContainedPreference(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PREFERRED:
-                return org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED;
+                tgt.setValue(org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
+                break;
             case ALTERNATE:
-                return org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE;
+                tgt.setValue(org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenContainedPreference.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent convertSpecimenDefinitionTypeTestedContainerComponent(org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent src) throws FHIRException {

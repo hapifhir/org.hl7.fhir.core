@@ -7,272 +7,398 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class PlanDefinition30_40 {
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior> convertActionCardinalityBehavior(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SINGLE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.SINGLE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.SINGLE);
+                break;
             case MULTIPLE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.MULTIPLE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.MULTIPLE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior> convertActionCardinalityBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionCardinalityBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SINGLE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.SINGLE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.SINGLE);
+                break;
             case MULTIPLE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.MULTIPLE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.MULTIPLE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionCardinalityBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind> convertActionConditionKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKindEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPLICABILITY:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.APPLICABILITY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.APPLICABILITY);
+                break;
             case START:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.START;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.START);
+                break;
             case STOP:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.STOP;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.STOP);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind convertActionConditionKind(org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind> convertActionConditionKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionConditionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKindEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPLICABILITY:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.APPLICABILITY;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.APPLICABILITY);
+                break;
             case START:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.START;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.START);
+                break;
             case STOP:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.STOP;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.STOP);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionConditionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior> convertActionGroupingBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case VISUALGROUP:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.VISUALGROUP;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.VISUALGROUP);
+                break;
             case LOGICALGROUP:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.LOGICALGROUP;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.LOGICALGROUP);
+                break;
             case SENTENCEGROUP:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.SENTENCEGROUP;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.SENTENCEGROUP);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior> convertActionGroupingBehavior(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionGroupingBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case VISUALGROUP:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.VISUALGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.VISUALGROUP);
+                break;
             case LOGICALGROUP:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.LOGICALGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.LOGICALGROUP);
+                break;
             case SENTENCEGROUP:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.SENTENCEGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.SENTENCEGROUP);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionGroupingBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType convertActionParticipantType(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType> convertActionParticipantType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.PATIENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.PATIENT);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.PRACTITIONER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.RELATEDPERSON);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType convertActionParticipantType(org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType> convertActionParticipantType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionParticipantType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.PATIENT;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.PATIENT);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.PRACTITIONER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.RELATEDPERSON);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionParticipantType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior> convertActionPrecheckBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case YES:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.YES;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.YES);
+                break;
             case NO:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.NO;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.NO);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior> convertActionPrecheckBehavior(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionPrecheckBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case YES:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.YES;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.YES);
+                break;
             case NO:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.NO;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.NO);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionPrecheckBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType> convertActionRelationshipType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BEFORESTART:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFORESTART;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFORESTART);
+                break;
             case BEFORE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFORE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFORE);
+                break;
             case BEFOREEND:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFOREEND;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.BEFOREEND);
+                break;
             case CONCURRENTWITHSTART:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHSTART;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHSTART);
+                break;
             case CONCURRENT:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENT;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENT);
+                break;
             case CONCURRENTWITHEND:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHEND;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHEND);
+                break;
             case AFTERSTART:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTERSTART;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTERSTART);
+                break;
             case AFTER:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTER;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTER);
+                break;
             case AFTEREND:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTEREND;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.AFTEREND);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType> convertActionRelationshipType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BEFORESTART:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFORESTART;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFORESTART);
+                break;
             case BEFORE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFORE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFORE);
+                break;
             case BEFOREEND:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFOREEND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.BEFOREEND);
+                break;
             case CONCURRENTWITHSTART:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHSTART;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHSTART);
+                break;
             case CONCURRENT:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENT);
+                break;
             case CONCURRENTWITHEND:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHEND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.CONCURRENTWITHEND);
+                break;
             case AFTERSTART:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTERSTART;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTERSTART);
+                break;
             case AFTER:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTER;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTER);
+                break;
             case AFTEREND:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTEREND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.AFTEREND);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior> convertActionRequiredBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MUST:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.MUST;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.MUST);
+                break;
             case COULD:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.COULD;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.COULD);
+                break;
             case MUSTUNLESSDOCUMENTED:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior> convertActionRequiredBehavior(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionRequiredBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MUST:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.MUST;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.MUST);
+                break;
             case COULD:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.COULD;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.COULD);
+                break;
             case MUSTUNLESSDOCUMENTED:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionRequiredBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior> convertActionSelectionBehavior(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ANY:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ANY;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ANY);
+                break;
             case ALL:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ALL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ALL);
+                break;
             case ALLORNONE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ALLORNONE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ALLORNONE);
+                break;
             case EXACTLYONE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.EXACTLYONE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.EXACTLYONE);
+                break;
             case ATMOSTONE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ATMOSTONE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ATMOSTONE);
+                break;
             case ONEORMORE:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ONEORMORE;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.ONEORMORE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior> convertActionSelectionBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PlanDefinition.ActionSelectionBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehaviorEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ANY:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ANY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ANY);
+                break;
             case ALL:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ALL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ALL);
+                break;
             case ALLORNONE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ALLORNONE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ALLORNONE);
+                break;
             case EXACTLYONE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.EXACTLYONE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.EXACTLYONE);
+                break;
             case ATMOSTONE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ATMOSTONE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ATMOSTONE);
+                break;
             case ONEORMORE:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ONEORMORE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.ONEORMORE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.PlanDefinition.ActionSelectionBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.PlanDefinition convertPlanDefinition(org.hl7.fhir.dstu3.model.PlanDefinition src) throws FHIRException {
@@ -292,7 +418,7 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCodeableConcept(src.getType()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
@@ -351,7 +477,7 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCodeableConcept(src.getType()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
@@ -435,15 +561,15 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.getType().addCoding(VersionConvertor_30_40.convertCoding(src.getType()));
         if (src.hasGroupingBehavior())
-            tgt.setGroupingBehavior(convertActionGroupingBehavior(src.getGroupingBehavior()));
+            tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
         if (src.hasSelectionBehavior())
-            tgt.setSelectionBehavior(convertActionSelectionBehavior(src.getSelectionBehavior()));
+            tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
         if (src.hasRequiredBehavior())
-            tgt.setRequiredBehavior(convertActionRequiredBehavior(src.getRequiredBehavior()));
+            tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
         if (src.hasPrecheckBehavior())
-            tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
+            tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
         if (src.hasCardinalityBehavior())
-            tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
+            tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
         if (src.hasDefinition())
             tgt.setDefinition(VersionConvertor_30_40.convertReferenceToCanonical(src.getDefinition()));
         if (src.hasTransform())
@@ -481,15 +607,15 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCoding(src.getType().getCodingFirstRep()));
         if (src.hasGroupingBehavior())
-            tgt.setGroupingBehavior(convertActionGroupingBehavior(src.getGroupingBehavior()));
+            tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
         if (src.hasSelectionBehavior())
-            tgt.setSelectionBehavior(convertActionSelectionBehavior(src.getSelectionBehavior()));
+            tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
         if (src.hasRequiredBehavior())
-            tgt.setRequiredBehavior(convertActionRequiredBehavior(src.getRequiredBehavior()));
+            tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
         if (src.hasPrecheckBehavior())
-            tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
+            tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
         if (src.hasCardinalityBehavior())
-            tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
+            tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
         if (src.hasDefinitionCanonicalType())
             tgt.setDefinition(VersionConvertor_30_40.convertCanonicalToReference(src.getDefinitionCanonicalType()));
         if (src.hasTransform())
@@ -505,7 +631,7 @@ public class PlanDefinition30_40 {
         org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent tgt = new org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertActionConditionKind(src.getKind()));
+            tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
         if (src.hasDescription())
             tgt.getExpression().setDescription(src.getDescription());
         if (src.hasLanguage())
@@ -521,7 +647,7 @@ public class PlanDefinition30_40 {
         org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionConditionComponent tgt = new org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionConditionComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertActionConditionKind(src.getKind()));
+            tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
         if (src.getExpression().hasDescription())
             tgt.setDescription(src.getExpression().getDescription());
         if (src.getExpression().hasLanguage())
@@ -569,7 +695,7 @@ public class PlanDefinition30_40 {
         org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionParticipantComponent tgt = new org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionParticipantComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertActionParticipantType(src.getType()));
+            tgt.setTypeElement(convertActionParticipantType(src.getTypeElement()));
         if (src.hasRole())
             tgt.setRole(VersionConvertor_30_40.convertCodeableConcept(src.getRole()));
         return tgt;
@@ -581,7 +707,7 @@ public class PlanDefinition30_40 {
         org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent tgt = new org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertActionParticipantType(src.getType()));
+            tgt.setTypeElement(convertActionParticipantType(src.getTypeElement()));
         if (src.hasRole())
             tgt.setRole(VersionConvertor_30_40.convertCodeableConcept(src.getRole()));
         return tgt;
@@ -595,7 +721,7 @@ public class PlanDefinition30_40 {
         if (src.hasActionId())
             tgt.setActionIdElement(VersionConvertor_30_40.convertId(src.getActionIdElement()));
         if (src.hasRelationship())
-            tgt.setRelationship(convertActionRelationshipType(src.getRelationship()));
+            tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
             tgt.setOffset(VersionConvertor_30_40.convertType(src.getOffset()));
         return tgt;
@@ -609,7 +735,7 @@ public class PlanDefinition30_40 {
         if (src.hasActionId())
             tgt.setActionIdElement(VersionConvertor_30_40.convertId(src.getActionIdElement()));
         if (src.hasRelationship())
-            tgt.setRelationship(convertActionRelationshipType(src.getRelationship()));
+            tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
             tgt.setOffset(VersionConvertor_30_40.convertType(src.getOffset()));
         return tgt;

@@ -25,13 +25,13 @@ public class ProcedureRequest10_30 {
         if (src.hasPerformer())
             tgt.setPerformer(VersionConvertor_10_30.convertReference(src.getPerformer()));
         if (src.hasStatus())
-            tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertProcedureRequestStatus(src.getStatusElement()));
         if (src.hasAsNeeded())
             tgt.setAsNeeded(VersionConvertor_10_30.convertType(src.getAsNeeded()));
         if (src.hasOrderedOnElement())
             tgt.setAuthoredOnElement(VersionConvertor_10_30.convertDateTime(src.getOrderedOnElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertProcedureRequestPriority(src.getPriorityElement()));
         return tgt;
     }
 
@@ -55,93 +55,131 @@ public class ProcedureRequest10_30 {
         if (src.hasPerformer())
             tgt.setPerformer(VersionConvertor_10_30.convertReference(src.getPerformer()));
         if (src.hasStatus())
-            tgt.setStatus(convertProcedureRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertProcedureRequestStatus(src.getStatusElement()));
         if (src.hasAsNeeded())
             tgt.setAsNeeded(VersionConvertor_10_30.convertType(src.getAsNeeded()));
         if (src.hasAuthoredOnElement())
             tgt.setOrderedOnElement(VersionConvertor_10_30.convertDateTime(src.getAuthoredOnElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertProcedureRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertProcedureRequestPriority(src.getPriorityElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority convertProcedureRequestPriority(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> convertProcedureRequestPriority(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriorityEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.URGENT);
+                break;
             case STAT:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.STAT);
+                break;
             case ASAP:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ASAP);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority convertProcedureRequestPriority(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority> convertProcedureRequestPriority(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriorityEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.URGENT);
+                break;
             case STAT:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.STAT);
+                break;
             case ASAP:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.ASAP);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus convertProcedureRequestStatus(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus> convertProcedureRequestStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.COMPLETED);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.SUSPENDED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.ABORTED);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus convertProcedureRequestStatus(org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> convertProcedureRequestStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcedureRequest.ProcedureRequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.DRAFT);
+                break;
             case DRAFT:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.DRAFT);
+                break;
             case REQUESTED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
+                break;
             case RECEIVED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.COMPLETED);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.SUSPENDED);
+                break;
             case ABORTED:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

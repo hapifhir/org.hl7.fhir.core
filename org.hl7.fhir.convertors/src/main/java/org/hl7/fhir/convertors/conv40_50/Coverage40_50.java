@@ -60,7 +60,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCoverageStatus(src.getStatus()));
+            tgt.setStatusElement(convertCoverageStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasPolicyHolder())
@@ -97,7 +97,7 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCoverageStatus(src.getStatus()));
+            tgt.setStatusElement(convertCoverageStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasPolicyHolder())
@@ -127,38 +127,54 @@ public class Coverage40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertCoverageStatus(org.hl7.fhir.r4.model.Coverage.CoverageStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertCoverageStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Coverage.CoverageStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Coverage.CoverageStatus convertCoverageStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Coverage.CoverageStatus> convertCoverageStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Coverage.CoverageStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Coverage.CoverageStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Coverage.CoverageStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Coverage.CoverageStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Coverage.CoverageStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Coverage.CoverageStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Coverage.CoverageStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Coverage.CoverageStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Coverage.ClassComponent convertClassComponent(org.hl7.fhir.r4.model.Coverage.ClassComponent src) throws FHIRException {

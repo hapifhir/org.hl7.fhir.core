@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv30_50;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -37,8 +36,7 @@ public class RelatedPerson30_50 {
             tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
         }
         if (src.hasGender()) {
-            if (src.hasGender())
-                tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_50.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
             tgt.setBirthDate(tgt.getBirthDate());
@@ -83,8 +81,7 @@ public class RelatedPerson30_50 {
             tgt.addTelecom(VersionConvertor_30_50.convertContactPoint(t));
         }
         if (src.hasGender()) {
-            if (src.hasGender())
-                tgt.setGender(VersionConvertor_30_50.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_50.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
             tgt.setBirthDate(tgt.getBirthDate());

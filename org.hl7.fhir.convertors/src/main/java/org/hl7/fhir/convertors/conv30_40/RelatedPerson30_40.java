@@ -37,8 +37,7 @@ public class RelatedPerson30_40 {
             tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         }
         if (src.hasGender()) {
-            if (src.hasGender())
-                tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
             tgt.setBirthDate(tgt.getBirthDate());
@@ -50,8 +49,7 @@ public class RelatedPerson30_40 {
             tgt.addPhoto(VersionConvertor_30_40.convertAttachment(t));
         }
         if (src.hasPeriod()) {
-            if (src.hasPeriod())
-                tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
         }
         return tgt;
     }
@@ -83,8 +81,7 @@ public class RelatedPerson30_40 {
             tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
         }
         if (src.hasGender()) {
-            if (src.hasGender())
-                tgt.setGender(VersionConvertor_30_40.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
             tgt.setBirthDate(tgt.getBirthDate());
@@ -96,8 +93,7 @@ public class RelatedPerson30_40 {
             tgt.addPhoto(VersionConvertor_30_40.convertAttachment(t));
         }
         if (src.hasPeriod()) {
-            if (src.hasPeriod())
-                tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(VersionConvertor_30_40.convertPeriod(src.getPeriod()));
         }
         return tgt;
     }

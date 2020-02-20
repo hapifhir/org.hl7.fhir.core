@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv10_40;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.dstu2.model.ValueSet;
@@ -104,7 +103,7 @@ public class ValueSet10_40 {
         if (src.hasPropertyElement())
             tgt.setPropertyElement(VersionConvertor_10_40.convertCode(src.getPropertyElement()));
         if (src.hasOp())
-            tgt.setOp(convertFilterOperator(src.getOp()));
+            tgt.setOpElement(convertFilterOperator(src.getOpElement()));
         if (src.hasValue())
             tgt.setValue(src.getValue());
         return tgt;
@@ -118,52 +117,72 @@ public class ValueSet10_40 {
         if (src.hasPropertyElement())
             tgt.setPropertyElement(VersionConvertor_10_40.convertCode(src.getPropertyElement()));
         if (src.hasOp())
-            tgt.setOp(convertFilterOperator(src.getOp()));
+            tgt.setOpElement(convertFilterOperator(src.getOpElement()));
         if (src.hasValue())
             tgt.setValue(src.getValue());
         return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ValueSet.FilterOperator> convertFilterOperator(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ValueSet.FilterOperatorEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.ISA);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.NOTIN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ValueSet.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.ValueSet.FilterOperator convertFilterOperator(org.hl7.fhir.r4.model.ValueSet.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> convertFilterOperator(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ValueSet.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ValueSet.FilterOperatorEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISA);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NOTIN);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.ValueSet.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.ValueSet convertValueSet(org.hl7.fhir.dstu2.model.ValueSet src) throws FHIRException {
@@ -184,7 +203,7 @@ public class ValueSet10_40 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
@@ -218,7 +237,7 @@ public class ValueSet10_40 {
             tgtcs.addIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifier()));
             tgtcs.setVersion(src.getCodeSystem().getVersion());
             tgtcs.setName(src.getName() + " Code System");
-            tgtcs.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgtcs.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
             if (src.hasExperimental())
                 tgtcs.setExperimental(src.getExperimental());
             tgtcs.setPublisher(src.getPublisher());
@@ -257,7 +276,7 @@ public class ValueSet10_40 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())

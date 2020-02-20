@@ -89,7 +89,7 @@ public class MessageHeader10_50 {
         if (src.hasIdentifierElement())
             tgt.setIdentifierElement(VersionConvertor_10_50.convertId(src.getIdentifierElement()));
         if (src.hasCode())
-            tgt.setCode(convertResponseType(src.getCode()));
+            tgt.setCodeElement(convertResponseType(src.getCodeElement()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_10_50.convertReference(src.getDetails()));
         return tgt;
@@ -103,7 +103,7 @@ public class MessageHeader10_50 {
         if (src.hasIdentifierElement())
             tgt.setIdentifierElement(VersionConvertor_10_50.convertId(src.getIdentifierElement()));
         if (src.hasCode())
-            tgt.setCode(convertResponseType(src.getCode()));
+            tgt.setCodeElement(convertResponseType(src.getCodeElement()));
         if (src.hasDetails())
             tgt.setDetails(VersionConvertor_10_50.convertReference(src.getDetails()));
         return tgt;
@@ -145,33 +145,47 @@ public class MessageHeader10_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MessageHeader.ResponseType convertResponseType(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageHeader.ResponseTypeEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OK:
-                return org.hl7.fhir.r5.model.MessageHeader.ResponseType.OK;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.OK);
+                break;
             case TRANSIENTERROR:
-                return org.hl7.fhir.r5.model.MessageHeader.ResponseType.TRANSIENTERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.TRANSIENTERROR);
+                break;
             case FATALERROR:
-                return org.hl7.fhir.r5.model.MessageHeader.ResponseType.FATALERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.FATALERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MessageHeader.ResponseType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.MessageHeader.ResponseType convertResponseType(org.hl7.fhir.r5.model.MessageHeader.ResponseType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.MessageHeader.ResponseTypeEnumFactory());
+        VersionConvertor_10_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OK:
-                return org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.OK;
+                tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.OK);
+                break;
             case TRANSIENTERROR:
-                return org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.TRANSIENTERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.TRANSIENTERROR);
+                break;
             case FATALERROR:
-                return org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.FATALERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.FATALERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.NULL);
+                break;
         }
+        return tgt;
     }
 }

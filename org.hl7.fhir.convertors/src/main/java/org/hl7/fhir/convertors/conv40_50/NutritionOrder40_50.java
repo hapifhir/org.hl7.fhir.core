@@ -63,9 +63,9 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
         if (src.hasStatus())
-            tgt.setStatus(convertNutritionOrderStatus(src.getStatus()));
+            tgt.setStatusElement(convertNutritionOrderStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertNutritiionOrderIntent(src.getIntent()));
+            tgt.setIntentElement(convertNutritiionOrderIntent(src.getIntentElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasEncounter())
@@ -96,9 +96,9 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         for (org.hl7.fhir.r5.model.UriType t : src.getInstantiates()) tgt.getInstantiates().add(convertUri(t));
         if (src.hasStatus())
-            tgt.setStatus(convertNutritionOrderStatus(src.getStatus()));
+            tgt.setStatusElement(convertNutritionOrderStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertNutritiionOrderIntent(src.getIntent()));
+            tgt.setIntentElement(convertNutritiionOrderIntent(src.getIntentElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasEncounter())
@@ -119,104 +119,152 @@ public class NutritionOrder40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertNutritionOrderStatus(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> convertNutritionOrderStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus convertNutritionOrderStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus> convertNutritionOrderStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertNutritiionOrderIntent(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> convertNutritiionOrderIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent convertNutritiionOrderIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent> convertNutritiionOrderIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.NutritionOrder.NutritiionOrderIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietComponent convertNutritionOrderOralDietComponent(org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderOralDietComponent src) throws FHIRException {

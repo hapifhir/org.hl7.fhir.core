@@ -12,7 +12,7 @@ public class ClinicalImpression30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
+            tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasSubject())
@@ -45,7 +45,7 @@ public class ClinicalImpression30_50 {
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertClinicalImpressionStatus(src.getStatus()));
+            tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasSubject())
@@ -99,33 +99,47 @@ public class ClinicalImpression30_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus convertClinicalImpressionStatus(org.hl7.fhir.r5.model.Enumerations.EventStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> convertClinicalImpressionStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INPROGRESS:
-                return org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.DRAFT);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Enumerations.EventStatus convertClinicalImpressionStatus(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertClinicalImpressionStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

@@ -60,13 +60,13 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertClaimStatus(src.getStatus()));
+            tgt.setStatusElement(convertClaimStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubType())
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasUse())
-            tgt.setUse(convertUse(src.getUse()));
+            tgt.setUseElement(convertUse(src.getUseElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasBillablePeriod())
@@ -114,13 +114,13 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertClaimStatus(src.getStatus()));
+            tgt.setStatusElement(convertClaimStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubType())
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasUse())
-            tgt.setUse(convertUse(src.getUse()));
+            tgt.setUseElement(convertUse(src.getUseElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasBillablePeriod())
@@ -161,68 +161,98 @@ public class Claim40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertClaimStatus(org.hl7.fhir.r4.model.Claim.ClaimStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertClaimStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.ClaimStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Claim.ClaimStatus convertClaimStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.ClaimStatus> convertClaimStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.ClaimStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Claim.ClaimStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Claim.ClaimStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.ClaimStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Claim.ClaimStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.ClaimStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.Claim.ClaimStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.ClaimStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Claim.ClaimStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.ClaimStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Claim.ClaimStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.ClaimStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.Use convertUse(org.hl7.fhir.r4.model.Claim.Use src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> convertUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.Use> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.UseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CLAIM:
-                return org.hl7.fhir.r5.model.Enumerations.Use.CLAIM;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.CLAIM);
+                break;
             case PREAUTHORIZATION:
-                return org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION);
+                break;
             case PREDETERMINATION:
-                return org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.Use.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Claim.Use convertUse(org.hl7.fhir.r5.model.Enumerations.Use src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.Use> convertUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Claim.Use> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Claim.UseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CLAIM:
-                return org.hl7.fhir.r4.model.Claim.Use.CLAIM;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.Use.CLAIM);
+                break;
             case PREAUTHORIZATION:
-                return org.hl7.fhir.r4.model.Claim.Use.PREAUTHORIZATION;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.Use.PREAUTHORIZATION);
+                break;
             case PREDETERMINATION:
-                return org.hl7.fhir.r4.model.Claim.Use.PREDETERMINATION;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.Use.PREDETERMINATION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Claim.Use.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Claim.Use.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Claim.RelatedClaimComponent convertRelatedClaimComponent(org.hl7.fhir.r4.model.Claim.RelatedClaimComponent src) throws FHIRException {

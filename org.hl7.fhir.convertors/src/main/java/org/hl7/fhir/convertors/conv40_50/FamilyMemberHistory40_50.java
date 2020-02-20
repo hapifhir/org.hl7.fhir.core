@@ -63,7 +63,7 @@ public class FamilyMemberHistory40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
+            tgt.setStatusElement(convertFamilyHistoryStatus(src.getStatusElement()));
         if (src.hasDataAbsentReason())
             tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
         if (src.hasPatient())
@@ -100,7 +100,7 @@ public class FamilyMemberHistory40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical()) tgt.getInstantiatesCanonical().add(convertCanonical(t));
         for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(convertUri(t));
         if (src.hasStatus())
-            tgt.setStatus(convertFamilyHistoryStatus(src.getStatus()));
+            tgt.setStatusElement(convertFamilyHistoryStatus(src.getStatusElement()));
         if (src.hasDataAbsentReason())
             tgt.setDataAbsentReason(convertCodeableConcept(src.getDataAbsentReason()));
         if (src.hasPatient())
@@ -130,38 +130,54 @@ public class FamilyMemberHistory40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> convertFamilyHistoryStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PARTIAL:
-                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
+                break;
             case HEALTHUNKNOWN:
-                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus convertFamilyHistoryStatus(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus> convertFamilyHistoryStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PARTIAL:
-                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
+                break;
             case HEALTHUNKNOWN:
-                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {

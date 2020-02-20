@@ -15,7 +15,7 @@ public class DetectedIssue10_40 {
         if (src.hasCode())
             tgt.setCategory(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
         if (src.hasSeverity())
-            tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_40.convertReference(t));
         if (src.hasDetailElement())
             tgt.setDetailElement(VersionConvertor_10_40.convertString(src.getDetailElement()));
@@ -41,7 +41,7 @@ public class DetectedIssue10_40 {
         if (src.hasCategory())
             tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCategory()));
         if (src.hasSeverity())
-            tgt.setSeverity(convertDetectedIssueSeverity(src.getSeverity()));
+            tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
         for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_40.convertReference(t));
         if (src.hasDetailElement())
             tgt.setDetailElement(VersionConvertor_10_40.convertString(src.getDetailElement()));
@@ -85,33 +85,47 @@ public class DetectedIssue10_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity convertDetectedIssueSeverity(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity> convertDetectedIssueSeverity(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HIGH:
-                return org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.HIGH;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.HIGH);
+                break;
             case MODERATE:
-                return org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.MODERATE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.MODERATE);
+                break;
             case LOW:
-                return org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.LOW;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.LOW);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity convertDetectedIssueSeverity(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> convertDetectedIssueSeverity(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
+        VersionConvertor_10_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case HIGH:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.HIGH;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.HIGH);
+                break;
             case MODERATE:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.MODERATE;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.MODERATE);
+                break;
             case LOW:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.LOW;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.LOW);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DetectedIssue.DetectedIssueSeverity.NULL);
+                break;
         }
+        return tgt;
     }
 }

@@ -61,7 +61,7 @@ public class CareTeam40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCareTeamStatus(src.getStatus()));
+            tgt.setStatusElement(convertCareTeamStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
@@ -85,7 +85,7 @@ public class CareTeam40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertCareTeamStatus(src.getStatus()));
+            tgt.setStatusElement(convertCareTeamStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
@@ -104,42 +104,60 @@ public class CareTeam40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CareTeam.CareTeamStatus> convertCareTeamStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CareTeam.CareTeamStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CareTeam.CareTeamStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CareTeam.CareTeamStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.PROPOSED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.SUSPENDED);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CareTeam.CareTeamStatus convertCareTeamStatus(org.hl7.fhir.r5.model.CareTeam.CareTeamStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CareTeam.CareTeamStatus> convertCareTeamStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CareTeam.CareTeamStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CareTeam.CareTeamStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CareTeam.CareTeamStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.PROPOSED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.SUSPENDED);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CareTeam.CareTeamStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent convertCareTeamParticipantComponent(org.hl7.fhir.r4.model.CareTeam.CareTeamParticipantComponent src) throws FHIRException {

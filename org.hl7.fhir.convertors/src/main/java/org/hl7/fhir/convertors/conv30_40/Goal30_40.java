@@ -12,7 +12,7 @@ public class Goal30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasLifecycleStatus())
-            tgt.setStatus(convertGoalStatus(src.getLifecycleStatus()));
+            tgt.setStatusElement(convertGoalStatus(src.getLifecycleStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(VersionConvertor_30_40.convertCodeableConcept(src.getPriority()));
@@ -44,7 +44,7 @@ public class Goal30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setLifecycleStatus(convertGoalStatus(src.getStatus()));
+            tgt.setLifecycleStatusElement(convertGoalStatus(src.getStatusElement()));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
         if (src.hasPriority())
             tgt.setPriority(VersionConvertor_30_40.convertCodeableConcept(src.getPriority()));
@@ -69,66 +69,96 @@ public class Goal30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus convertGoalStatus(org.hl7.fhir.dstu3.model.Goal.GoalStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> convertGoalStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Goal.GoalStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Goal.GoalLifecycleStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PROPOSED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACCEPTED);
+                break;
             case PLANNED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PLANNED);
+                break;
             case INPROGRESS:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case ONTARGET:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case AHEADOFTARGET:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case BEHINDTARGET:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case SUSTAINING:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ACTIVE);
+                break;
             case ACHIEVED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.COMPLETED);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ONHOLD);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.ENTEREDINERROR);
+                break;
             case REJECTED:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.REJECTED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Goal.GoalStatus convertGoalStatus(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Goal.GoalStatus> convertGoalStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Goal.GoalStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Goal.GoalStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.PROPOSED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.PROPOSED);
+                break;
             case ACCEPTED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.ACCEPTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.ACCEPTED);
+                break;
             case PLANNED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.PLANNED);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.INPROGRESS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.INPROGRESS);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.ACHIEVED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.ACHIEVED);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.ONHOLD);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.CANCELLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.ENTEREDINERROR);
+                break;
             case REJECTED:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.REJECTED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.REJECTED);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Goal.GoalStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Goal.GoalStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.Goal.GoalTargetComponent convertGoalTargetComponent(org.hl7.fhir.dstu3.model.Goal.GoalTargetComponent src) throws FHIRException {

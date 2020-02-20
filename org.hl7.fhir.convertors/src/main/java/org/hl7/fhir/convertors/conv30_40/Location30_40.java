@@ -12,7 +12,7 @@ public class Location30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertLocationStatus(src.getStatus()));
+            tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_40.convertCoding(src.getOperationalStatus()));
         if (src.hasName())
@@ -21,7 +21,7 @@ public class Location30_40 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
         if (src.hasMode())
-            tgt.setMode(convertLocationMode(src.getMode()));
+            tgt.setModeElement(convertLocationMode(src.getModeElement()));
         if (src.hasType())
             tgt.addType(VersionConvertor_30_40.convertCodeableConcept(src.getType()));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
@@ -46,7 +46,7 @@ public class Location30_40 {
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertLocationStatus(src.getStatus()));
+            tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatus(VersionConvertor_30_40.convertCoding(src.getOperationalStatus()));
         if (src.hasName())
@@ -55,7 +55,7 @@ public class Location30_40 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
         if (src.hasMode())
-            tgt.setMode(convertLocationMode(src.getMode()));
+            tgt.setModeElement(convertLocationMode(src.getModeElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCodeableConcept(src.getTypeFirstRep()));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_30_40.convertContactPoint(t));
@@ -73,30 +73,42 @@ public class Location30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Location.LocationMode convertLocationMode(org.hl7.fhir.dstu3.model.Location.LocationMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> convertLocationMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationModeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INSTANCE:
-                return org.hl7.fhir.r4.model.Location.LocationMode.INSTANCE;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.INSTANCE);
+                break;
             case KIND:
-                return org.hl7.fhir.r4.model.Location.LocationMode.KIND;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.KIND);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Location.LocationMode.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Location.LocationMode convertLocationMode(org.hl7.fhir.r4.model.Location.LocationMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationMode> convertLocationMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Location.LocationModeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INSTANCE:
-                return org.hl7.fhir.dstu3.model.Location.LocationMode.INSTANCE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationMode.INSTANCE);
+                break;
             case KIND:
-                return org.hl7.fhir.dstu3.model.Location.LocationMode.KIND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationMode.KIND);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Location.LocationMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationMode.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r4.model.Location.LocationPositionComponent convertLocationPositionComponent(org.hl7.fhir.dstu3.model.Location.LocationPositionComponent src) throws FHIRException {
@@ -127,33 +139,47 @@ public class Location30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Location.LocationStatus convertLocationStatus(org.hl7.fhir.dstu3.model.Location.LocationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> convertLocationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.Location.LocationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.r4.model.Location.LocationStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.SUSPENDED);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.r4.model.Location.LocationStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.INACTIVE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Location.LocationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.Location.LocationStatus convertLocationStatus(org.hl7.fhir.r4.model.Location.LocationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationStatus> convertLocationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Location.LocationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Location.LocationStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.Location.LocationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationStatus.ACTIVE);
+                break;
             case SUSPENDED:
-                return org.hl7.fhir.dstu3.model.Location.LocationStatus.SUSPENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationStatus.SUSPENDED);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.dstu3.model.Location.LocationStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationStatus.INACTIVE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Location.LocationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Location.LocationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

@@ -60,13 +60,13 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertExplanationOfBenefitStatus(src.getStatus()));
+            tgt.setStatusElement(convertExplanationOfBenefitStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubType())
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasUse())
-            tgt.setUse(convertUse(src.getUse()));
+            tgt.setUseElement(convertUse(src.getUseElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasBillablePeriod())
@@ -101,7 +101,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         if (src.hasClaimResponse())
             tgt.setClaimResponse(convertReference(src.getClaimResponse()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         for (org.hl7.fhir.r4.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
@@ -139,13 +139,13 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertExplanationOfBenefitStatus(src.getStatus()));
+            tgt.setStatusElement(convertExplanationOfBenefitStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSubType())
             tgt.setSubType(convertCodeableConcept(src.getSubType()));
         if (src.hasUse())
-            tgt.setUse(convertUse(src.getUse()));
+            tgt.setUseElement(convertUse(src.getUseElement()));
         if (src.hasPatient())
             tgt.setPatient(convertReference(src.getPatient()));
         if (src.hasBillablePeriod())
@@ -180,7 +180,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         if (src.hasClaimResponse())
             tgt.setClaimResponse(convertReference(src.getClaimResponse()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         for (org.hl7.fhir.r5.model.StringType t : src.getPreAuthRef()) tgt.getPreAuthRef().add(convertString(t));
@@ -211,102 +211,148 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus convertExplanationOfBenefitStatus(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> convertExplanationOfBenefitStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus convertExplanationOfBenefitStatus(org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> convertExplanationOfBenefitStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.ExplanationOfBenefitStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.Use convertUse(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> convertUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.Use> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.UseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CLAIM:
-                return org.hl7.fhir.r5.model.Enumerations.Use.CLAIM;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.CLAIM);
+                break;
             case PREAUTHORIZATION:
-                return org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.PREAUTHORIZATION);
+                break;
             case PREDETERMINATION:
-                return org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.PREDETERMINATION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.Use.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.Use.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ExplanationOfBenefit.Use convertUse(org.hl7.fhir.r5.model.Enumerations.Use src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.Use> convertUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.Use> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.Use> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ExplanationOfBenefit.UseEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CLAIM:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.CLAIM;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.CLAIM);
+                break;
             case PREAUTHORIZATION:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.PREAUTHORIZATION;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.PREAUTHORIZATION);
+                break;
             case PREDETERMINATION:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.PREDETERMINATION;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.PREDETERMINATION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.Use.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes convertRemittanceOutcome(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome> convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcomeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.QUEUED;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.ERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ExplanationOfBenefit.RemittanceOutcome.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ExplanationOfBenefit.RelatedClaimComponent convertRelatedClaimComponent(org.hl7.fhir.r4.model.ExplanationOfBenefit.RelatedClaimComponent src) throws FHIRException {
@@ -1017,7 +1063,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         if (src.hasNumber())
             tgt.setNumberElement(convertPositiveInt(src.getNumberElement()));
         if (src.hasType())
-            tgt.setType(Enumerations40_50.convertNoteType(src.getType()));
+            tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         if (src.hasLanguage())
@@ -1033,7 +1079,7 @@ public class ExplanationOfBenefit40_50 extends VersionConvertor_40_50 {
         if (src.hasNumber())
             tgt.setNumberElement(convertPositiveInt(src.getNumberElement()));
         if (src.hasType())
-            tgt.setType(Enumerations40_50.convertNoteType(src.getType()));
+            tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         if (src.hasLanguage())

@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv30_50;
 
 import java.util.List;
-
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;

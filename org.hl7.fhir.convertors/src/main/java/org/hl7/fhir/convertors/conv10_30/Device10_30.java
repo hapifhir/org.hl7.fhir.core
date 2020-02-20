@@ -14,7 +14,7 @@ public class Device10_30 {
         if (src.hasUdi())
             tgt.setUdi(src.getUdi().getDeviceIdentifier());
         if (src.hasStatus())
-            tgt.setStatus(convertDeviceStatus(src.getStatus()));
+            tgt.setStatusElement(convertDeviceStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         if (src.hasLotNumberElement())
@@ -51,7 +51,7 @@ public class Device10_30 {
         if (src.hasUdi())
             tgt.setUdi((new org.hl7.fhir.dstu3.model.Device.DeviceUdiComponent()).setDeviceIdentifier(src.getUdi()));
         if (src.hasStatus())
-            tgt.setStatus(convertDeviceStatus(src.getStatus()));
+            tgt.setStatusElement(convertDeviceStatus(src.getStatusElement()));
         if (src.hasType())
             tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
         if (src.hasLotNumberElement())
@@ -79,33 +79,47 @@ public class Device10_30 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus convertDeviceStatus(org.hl7.fhir.dstu2.model.Device.DeviceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> convertDeviceStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Device.DeviceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case AVAILABLE:
-                return org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ACTIVE);
+                break;
             case NOTAVAILABLE:
-                return org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.INACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.INACTIVE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Device.DeviceStatus convertDeviceStatus(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Device.DeviceStatus> convertDeviceStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Device.DeviceStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Device.DeviceStatusEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu2.model.Device.DeviceStatus.AVAILABLE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Device.DeviceStatus.AVAILABLE);
+                break;
             case INACTIVE:
-                return org.hl7.fhir.dstu2.model.Device.DeviceStatus.NOTAVAILABLE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Device.DeviceStatus.NOTAVAILABLE);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu2.model.Device.DeviceStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Device.DeviceStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Device.DeviceStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Device.DeviceStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }
