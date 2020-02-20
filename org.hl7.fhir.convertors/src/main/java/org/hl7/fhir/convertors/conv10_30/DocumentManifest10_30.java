@@ -24,7 +24,7 @@ public class DocumentManifest10_30 {
         if (src.hasSourceElement())
             tgt.setSourceElement(VersionConvertor_10_30.convertUri(src.getSourceElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.dstu3.model.DocumentManifest.DocumentManifestContentComponent t : src.getContent()) tgt.addContent(convertDocumentManifestContentComponent(t));
@@ -51,7 +51,7 @@ public class DocumentManifest10_30 {
         if (src.hasSourceElement())
             tgt.setSourceElement(VersionConvertor_10_30.convertUri(src.getSourceElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertDocumentReferenceStatus(src.getStatusElement()));
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.dstu2.model.DocumentManifest.DocumentManifestContentComponent t : src.getContent()) tgt.addContent(convertDocumentManifestContentComponent(t));

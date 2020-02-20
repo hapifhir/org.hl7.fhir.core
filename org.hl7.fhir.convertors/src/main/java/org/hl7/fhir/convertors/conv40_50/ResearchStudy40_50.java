@@ -64,7 +64,7 @@ public class ResearchStudy40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.Reference t : src.getProtocol()) tgt.addProtocol(convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertResearchStudyStatus(src.getStatus()));
+            tgt.setStatusElement(convertResearchStudyStatus(src.getStatusElement()));
         if (src.hasPrimaryPurposeType())
             tgt.setPrimaryPurposeType(convertCodeableConcept(src.getPrimaryPurposeType()));
         if (src.hasPhase())
@@ -105,7 +105,7 @@ public class ResearchStudy40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Reference t : src.getProtocol()) tgt.addProtocol(convertReference(t));
         for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertResearchStudyStatus(src.getStatus()));
+            tgt.setStatusElement(convertResearchStudyStatus(src.getStatusElement()));
         if (src.hasPrimaryPurposeType())
             tgt.setPrimaryPurposeType(convertCodeableConcept(src.getPrimaryPurposeType()));
         if (src.hasPhase())
@@ -135,66 +135,96 @@ public class ResearchStudy40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus convertResearchStudyStatus(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus> convertResearchStudyStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.ACTIVE);
+                break;
             case ADMINISTRATIVELYCOMPLETED:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED);
+                break;
             case APPROVED:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.APPROVED;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.APPROVED);
+                break;
             case CLOSEDTOACCRUAL:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUAL;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUAL);
+                break;
             case CLOSEDTOACCRUALANDINTERVENTION:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.COMPLETED);
+                break;
             case DISAPPROVED:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.DISAPPROVED;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.DISAPPROVED);
+                break;
             case INREVIEW:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.INREVIEW;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.INREVIEW);
+                break;
             case TEMPORARILYCLOSEDTOACCRUAL:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL);
+                break;
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION);
+                break;
             case WITHDRAWN:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.WITHDRAWN;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.WITHDRAWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus convertResearchStudyStatus(org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus> convertResearchStudyStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.ACTIVE);
+                break;
             case ADMINISTRATIVELYCOMPLETED:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED);
+                break;
             case APPROVED:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.APPROVED;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.APPROVED);
+                break;
             case CLOSEDTOACCRUAL:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUAL);
+                break;
             case CLOSEDTOACCRUALANDINTERVENTION:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.COMPLETED);
+                break;
             case DISAPPROVED:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.DISAPPROVED;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.DISAPPROVED);
+                break;
             case INREVIEW:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.INREVIEW;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.INREVIEW);
+                break;
             case TEMPORARILYCLOSEDTOACCRUAL:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL);
+                break;
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION);
+                break;
             case WITHDRAWN:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.WITHDRAWN;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.WITHDRAWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ResearchStudy.ResearchStudyArmComponent convertResearchStudyArmComponent(org.hl7.fhir.r4.model.ResearchStudy.ResearchStudyArmComponent src) throws FHIRException {

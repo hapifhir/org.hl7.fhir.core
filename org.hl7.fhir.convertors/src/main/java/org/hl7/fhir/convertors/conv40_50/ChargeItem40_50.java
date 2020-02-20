@@ -62,7 +62,7 @@ public class ChargeItem40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.UriType t : src.getDefinitionUri()) tgt.getDefinitionUri().add(convertUri(t));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getDefinitionCanonical()) tgt.getDefinitionCanonical().add(convertCanonical(t));
         if (src.hasStatus())
-            tgt.setStatus(convertChargeItemStatus(src.getStatus()));
+            tgt.setStatusElement(convertChargeItemStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
@@ -111,7 +111,7 @@ public class ChargeItem40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.UriType t : src.getDefinitionUri()) tgt.getDefinitionUri().add(convertUri(t));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getDefinitionCanonical()) tgt.getDefinitionCanonical().add(convertCanonical(t));
         if (src.hasStatus())
-            tgt.setStatus(convertChargeItemStatus(src.getStatus()));
+            tgt.setStatusElement(convertChargeItemStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
@@ -151,50 +151,72 @@ public class ChargeItem40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus> convertChargeItemStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.PLANNED);
+                break;
             case BILLABLE:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLABLE;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLABLE);
+                break;
             case NOTBILLABLE:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NOTBILLABLE);
+                break;
             case ABORTED:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ABORTED);
+                break;
             case BILLED:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLED;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.BILLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus convertChargeItemStatus(org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus> convertChargeItemStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ChargeItem.ChargeItemStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PLANNED:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.PLANNED;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.PLANNED);
+                break;
             case BILLABLE:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLABLE;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLABLE);
+                break;
             case NOTBILLABLE:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NOTBILLABLE;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NOTBILLABLE);
+                break;
             case ABORTED:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ABORTED;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ABORTED);
+                break;
             case BILLED:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLED;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.BILLED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ChargeItem.ChargeItemStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent convertChargeItemPerformerComponent(org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent src) throws FHIRException {

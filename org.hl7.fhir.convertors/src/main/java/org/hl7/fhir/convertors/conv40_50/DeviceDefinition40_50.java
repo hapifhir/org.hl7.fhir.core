@@ -167,7 +167,7 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasType())
-            tgt.setType(convertDeviceNameType(src.getType()));
+            tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
         return tgt;
     }
 
@@ -179,50 +179,70 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasName())
             tgt.setNameElement(convertString(src.getNameElement()));
         if (src.hasType())
-            tgt.setType(convertDeviceNameType(src.getType()));
+            tgt.setTypeElement(convertDeviceNameType(src.getTypeElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.DeviceNameType convertDeviceNameType(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DeviceNameTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UDILABELNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.UDILABELNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.UDILABELNAME);
+                break;
             case USERFRIENDLYNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
+                break;
             case PATIENTREPORTEDNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
+                break;
             case MANUFACTURERNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MANUFACTURERNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MANUFACTURERNAME);
+                break;
             case MODELNAME:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MODELNAME;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.MODELNAME);
+                break;
             case OTHER:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.OTHER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType convertDeviceNameType(org.hl7.fhir.r5.model.Enumerations.DeviceNameType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case UDILABELNAME:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.UDILABELNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.UDILABELNAME);
+                break;
             case USERFRIENDLYNAME:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.USERFRIENDLYNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.USERFRIENDLYNAME);
+                break;
             case PATIENTREPORTEDNAME:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.PATIENTREPORTEDNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.PATIENTREPORTEDNAME);
+                break;
             case MANUFACTURERNAME:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MANUFACTURERNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MANUFACTURERNAME);
+                break;
             case MODELNAME:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MODELNAME;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.MODELNAME);
+                break;
             case OTHER:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.OTHER;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.DeviceDefinition.DeviceNameType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionSpecializationComponent convertDeviceDefinitionSpecializationComponent(org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent src) throws FHIRException {

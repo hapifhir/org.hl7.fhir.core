@@ -5,180 +5,264 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class TestScript14_30 {
 
-    static public org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType convertAssertionDirectionType(org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType> convertAssertionDirectionType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESPONSE:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.RESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.RESPONSE);
+                break;
             case REQUEST:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.REQUEST;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.REQUEST);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType convertAssertionDirectionType(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType> convertAssertionDirectionType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case RESPONSE:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.RESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.RESPONSE);
+                break;
             case REQUEST:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.REQUEST;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.REQUEST);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionDirectionType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType convertAssertionOperatorType(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType> convertAssertionOperatorType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUALS:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.EQUALS;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.EQUALS);
+                break;
             case NOTEQUALS:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTEQUALS;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTEQUALS);
+                break;
             case IN:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.IN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTIN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTIN);
+                break;
             case GREATERTHAN:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.GREATERTHAN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.GREATERTHAN);
+                break;
             case LESSTHAN:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.LESSTHAN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.LESSTHAN);
+                break;
             case EMPTY:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.EMPTY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.EMPTY);
+                break;
             case NOTEMPTY:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTEMPTY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTEMPTY);
+                break;
             case CONTAINS:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.CONTAINS;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.CONTAINS);
+                break;
             case NOTCONTAINS:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTCONTAINS;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NOTCONTAINS);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType convertAssertionOperatorType(org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType> convertAssertionOperatorType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionOperatorType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUALS:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.EQUALS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.EQUALS);
+                break;
             case NOTEQUALS:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTEQUALS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTEQUALS);
+                break;
             case IN:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.IN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTIN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTIN);
+                break;
             case GREATERTHAN:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.GREATERTHAN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.GREATERTHAN);
+                break;
             case LESSTHAN:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.LESSTHAN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.LESSTHAN);
+                break;
             case EMPTY:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.EMPTY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.EMPTY);
+                break;
             case NOTEMPTY:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTEMPTY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTEMPTY);
+                break;
             case CONTAINS:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.CONTAINS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.CONTAINS);
+                break;
             case NOTCONTAINS:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTCONTAINS;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NOTCONTAINS);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes convertAssertionResponseTypes(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes> convertAssertionResponseTypes(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypesEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OKAY:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.OKAY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.OKAY);
+                break;
             case CREATED:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.CREATED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.CREATED);
+                break;
             case NOCONTENT:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOCONTENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOCONTENT);
+                break;
             case NOTMODIFIED:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOTMODIFIED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOTMODIFIED);
+                break;
             case BAD:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.BAD;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.BAD);
+                break;
             case FORBIDDEN:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.FORBIDDEN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.FORBIDDEN);
+                break;
             case NOTFOUND:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOTFOUND;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NOTFOUND);
+                break;
             case METHODNOTALLOWED:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.METHODNOTALLOWED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.METHODNOTALLOWED);
+                break;
             case CONFLICT:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.CONFLICT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.CONFLICT);
+                break;
             case GONE:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.GONE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.GONE);
+                break;
             case PRECONDITIONFAILED:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED);
+                break;
             case UNPROCESSABLE:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.UNPROCESSABLE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.UNPROCESSABLE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes convertAssertionResponseTypes(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes> convertAssertionResponseTypes(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypesEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OKAY:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.OKAY;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.OKAY);
+                break;
             case CREATED:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.CREATED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.CREATED);
+                break;
             case NOCONTENT:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOCONTENT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOCONTENT);
+                break;
             case NOTMODIFIED:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOTMODIFIED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOTMODIFIED);
+                break;
             case BAD:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.BAD;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.BAD);
+                break;
             case FORBIDDEN:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.FORBIDDEN;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.FORBIDDEN);
+                break;
             case NOTFOUND:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOTFOUND;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NOTFOUND);
+                break;
             case METHODNOTALLOWED:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.METHODNOTALLOWED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.METHODNOTALLOWED);
+                break;
             case CONFLICT:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.CONFLICT;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.CONFLICT);
+                break;
             case GONE:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.GONE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.GONE);
+                break;
             case PRECONDITIONFAILED:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.PRECONDITIONFAILED);
+                break;
             case UNPROCESSABLE:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.UNPROCESSABLE;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.UNPROCESSABLE);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.AssertionResponseTypes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.TestScript.ContentType convertContentType(org.hl7.fhir.dstu2016may.model.TestScript.ContentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.ContentType> convertContentType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.ContentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.ContentType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.ContentTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case XML:
-                return org.hl7.fhir.dstu3.model.TestScript.ContentType.XML;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.ContentType.XML);
+                break;
             case JSON:
-                return org.hl7.fhir.dstu3.model.TestScript.ContentType.JSON;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.ContentType.JSON);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.TestScript.ContentType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.ContentType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu2016may.model.TestScript.ContentType convertContentType(org.hl7.fhir.dstu3.model.TestScript.ContentType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.ContentType> convertContentType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.ContentType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.TestScript.ContentType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.TestScript.ContentTypeEnumFactory());
+        VersionConvertor_14_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case XML:
-                return org.hl7.fhir.dstu2016may.model.TestScript.ContentType.XML;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.ContentType.XML);
+                break;
             case JSON:
-                return org.hl7.fhir.dstu2016may.model.TestScript.ContentType.JSON;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.ContentType.JSON);
+                break;
             default:
-                return org.hl7.fhir.dstu2016may.model.TestScript.ContentType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2016may.model.TestScript.ContentType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.dstu2016may.model.TestScript.SetupActionAssertComponent convertSetupActionAssertComponent(org.hl7.fhir.dstu3.model.TestScript.SetupActionAssertComponent src) throws FHIRException {
@@ -191,13 +275,13 @@ public class TestScript14_30 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_14_30.convertString(src.getDescriptionElement()));
         if (src.hasDirection())
-            tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
+            tgt.setDirectionElement(convertAssertionDirectionType(src.getDirectionElement()));
         if (src.hasCompareToSourceId())
             tgt.setCompareToSourceIdElement(VersionConvertor_14_30.convertString(src.getCompareToSourceIdElement()));
         if (src.hasCompareToSourcePath())
             tgt.setCompareToSourcePathElement(VersionConvertor_14_30.convertString(src.getCompareToSourcePathElement()));
         if (src.hasContentType())
-            tgt.setContentType(convertContentType(src.getContentType()));
+            tgt.setContentTypeElement(convertContentType(src.getContentTypeElement()));
         if (src.hasHeaderField())
             tgt.setHeaderFieldElement(VersionConvertor_14_30.convertString(src.getHeaderFieldElement()));
         if (src.hasMinimumId())
@@ -205,13 +289,13 @@ public class TestScript14_30 {
         if (src.hasNavigationLinks())
             tgt.setNavigationLinksElement(VersionConvertor_14_30.convertBoolean(src.getNavigationLinksElement()));
         if (src.hasOperator())
-            tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
+            tgt.setOperatorElement(convertAssertionOperatorType(src.getOperatorElement()));
         if (src.hasPath())
             tgt.setPathElement(VersionConvertor_14_30.convertString(src.getPathElement()));
         if (src.hasResource())
             tgt.setResourceElement(VersionConvertor_14_30.convertCode(src.getResourceElement()));
         if (src.hasResponse())
-            tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
+            tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
         if (src.hasResponseCode())
             tgt.setResponseCodeElement(VersionConvertor_14_30.convertString(src.getResponseCodeElement()));
         if (src.hasRule())
@@ -239,13 +323,13 @@ public class TestScript14_30 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_14_30.convertString(src.getDescriptionElement()));
         if (src.hasDirection())
-            tgt.setDirection(convertAssertionDirectionType(src.getDirection()));
+            tgt.setDirectionElement(convertAssertionDirectionType(src.getDirectionElement()));
         if (src.hasCompareToSourceId())
             tgt.setCompareToSourceIdElement(VersionConvertor_14_30.convertString(src.getCompareToSourceIdElement()));
         if (src.hasCompareToSourcePath())
             tgt.setCompareToSourcePathElement(VersionConvertor_14_30.convertString(src.getCompareToSourcePathElement()));
         if (src.hasContentType())
-            tgt.setContentType(convertContentType(src.getContentType()));
+            tgt.setContentTypeElement(convertContentType(src.getContentTypeElement()));
         if (src.hasHeaderField())
             tgt.setHeaderFieldElement(VersionConvertor_14_30.convertString(src.getHeaderFieldElement()));
         if (src.hasMinimumId())
@@ -253,13 +337,13 @@ public class TestScript14_30 {
         if (src.hasNavigationLinks())
             tgt.setNavigationLinksElement(VersionConvertor_14_30.convertBoolean(src.getNavigationLinksElement()));
         if (src.hasOperator())
-            tgt.setOperator(convertAssertionOperatorType(src.getOperator()));
+            tgt.setOperatorElement(convertAssertionOperatorType(src.getOperatorElement()));
         if (src.hasPath())
             tgt.setPathElement(VersionConvertor_14_30.convertString(src.getPathElement()));
         if (src.hasResource())
             tgt.setResourceElement(VersionConvertor_14_30.convertCode(src.getResourceElement()));
         if (src.hasResponse())
-            tgt.setResponse(convertAssertionResponseTypes(src.getResponse()));
+            tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
         if (src.hasResponseCode())
             tgt.setResponseCodeElement(VersionConvertor_14_30.convertString(src.getResponseCodeElement()));
         if (src.hasRule())
@@ -417,9 +501,9 @@ public class TestScript14_30 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_14_30.convertString(src.getDescriptionElement()));
         if (src.hasAccept())
-            tgt.setAccept(convertContentType(src.getAccept()));
+            tgt.setAcceptElement(convertContentType(src.getAcceptElement()));
         if (src.hasContentType())
-            tgt.setContentType(convertContentType(src.getContentType()));
+            tgt.setContentTypeElement(convertContentType(src.getContentTypeElement()));
         if (src.hasDestination())
             tgt.setDestinationElement(VersionConvertor_14_30.convertInteger(src.getDestinationElement()));
         if (src.hasEncodeRequestUrl())
@@ -452,9 +536,9 @@ public class TestScript14_30 {
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_14_30.convertString(src.getDescriptionElement()));
         if (src.hasAccept())
-            tgt.setAccept(convertContentType(src.getAccept()));
+            tgt.setAcceptElement(convertContentType(src.getAcceptElement()));
         if (src.hasContentType())
-            tgt.setContentType(convertContentType(src.getContentType()));
+            tgt.setContentTypeElement(convertContentType(src.getContentTypeElement()));
         if (src.hasDestination())
             tgt.setDestinationElement(VersionConvertor_14_30.convertInteger(src.getDestinationElement()));
         if (src.hasEncodeRequestUrl())
@@ -555,7 +639,7 @@ public class TestScript14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_14_30.convertIdentifier(src.getIdentifier()));
         if (src.hasExperimental())
@@ -604,7 +688,7 @@ public class TestScript14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_14_30.convertIdentifier(src.getIdentifier()));
         if (src.hasExperimental())

@@ -460,6 +460,14 @@ public class HealthcareService extends DomainResource {
         }
 
         /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public HealthcareServiceAvailableTimeComponent setDaysOfWeek(List<Enumeration<DaysOfWeek>> daysOfWeek) {
+            this.daysOfWeek = daysOfWeek;
+            return this;
+        }
+
+        /**
          * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
          */
     // syntactic sugar

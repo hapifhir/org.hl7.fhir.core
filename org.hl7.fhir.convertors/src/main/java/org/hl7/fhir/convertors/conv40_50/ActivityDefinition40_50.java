@@ -70,7 +70,7 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasSubject())
@@ -104,15 +104,15 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(convertRelatedArtifact(t));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getLibrary()) tgt.getLibrary().add(convertCanonical(t));
         if (src.hasKind())
-            tgt.setKind(convertActivityDefinitionKind(src.getKind()));
+            tgt.setKindElement(convertActivityDefinitionKind(src.getKindElement()));
         if (src.hasProfile())
             tgt.setProfileElement(convertCanonical(src.getProfileElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasDoNotPerform())
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasTiming())
@@ -152,7 +152,7 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasSubtitle())
             tgt.setSubtitleElement(convertString(src.getSubtitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasSubject())
@@ -186,15 +186,15 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getRelatedArtifact()) tgt.addRelatedArtifact(convertRelatedArtifact(t));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getLibrary()) tgt.getLibrary().add(convertCanonical(t));
         if (src.hasKind())
-            tgt.setKind(convertActivityDefinitionKind(src.getKind()));
+            tgt.setKindElement(convertActivityDefinitionKind(src.getKindElement()));
         if (src.hasProfile())
             tgt.setProfileElement(convertCanonical(src.getProfileElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasDoNotPerform())
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasTiming())
@@ -217,170 +217,250 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType convertActivityDefinitionKind(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> convertActivityDefinitionKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPOINTMENT:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENT;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENT);
+                break;
             case APPOINTMENTRESPONSE:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENTRESPONSE;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENTRESPONSE);
+                break;
             case CAREPLAN:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CAREPLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CAREPLAN);
+                break;
             case CLAIM:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CLAIM;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CLAIM);
+                break;
             case COMMUNICATIONREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.COMMUNICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.COMMUNICATIONREQUEST);
+                break;
             case CONTRACT:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CONTRACT;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CONTRACT);
+                break;
             case DEVICEREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.DEVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.DEVICEREQUEST);
+                break;
             case ENROLLMENTREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.ENROLLMENTREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.ENROLLMENTREQUEST);
+                break;
             case IMMUNIZATIONRECOMMENDATION:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.IMMUNIZATIONRECOMMENDATION;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.IMMUNIZATIONRECOMMENDATION);
+                break;
             case MEDICATIONREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.MEDICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.MEDICATIONREQUEST);
+                break;
             case NUTRITIONORDER:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NUTRITIONORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NUTRITIONORDER);
+                break;
             case SERVICEREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SERVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SERVICEREQUEST);
+                break;
             case SUPPLYREQUEST:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST);
+                break;
             case TASK:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.TASK;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.TASK);
+                break;
             case VISIONPRESCRIPTION:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind convertActivityDefinitionKind(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind> convertActivityDefinitionKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPOINTMENT:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT);
+                break;
             case APPOINTMENTRESPONSE:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENTRESPONSE;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENTRESPONSE);
+                break;
             case CAREPLAN:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CAREPLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CAREPLAN);
+                break;
             case CLAIM:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CLAIM;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CLAIM);
+                break;
             case COMMUNICATIONREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.COMMUNICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.COMMUNICATIONREQUEST);
+                break;
             case CONTRACT:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CONTRACT;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.CONTRACT);
+                break;
             case DEVICEREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.DEVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.DEVICEREQUEST);
+                break;
             case ENROLLMENTREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.ENROLLMENTREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.ENROLLMENTREQUEST);
+                break;
             case IMMUNIZATIONRECOMMENDATION:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION);
+                break;
             case MEDICATIONREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.MEDICATIONREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.MEDICATIONREQUEST);
+                break;
             case NUTRITIONORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.NUTRITIONORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.NUTRITIONORDER);
+                break;
             case SERVICEREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.SERVICEREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.SERVICEREQUEST);
+                break;
             case SUPPLYREQUEST:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.SUPPLYREQUEST;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.SUPPLYREQUEST);
+                break;
             case TASK:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.TASK;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.TASK);
+                break;
             case VISIONPRESCRIPTION:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> convertRequestIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent> convertRequestIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertRequestPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority> convertRequestPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent convertActivityDefinitionParticipantComponent(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent src) throws FHIRException {
@@ -389,7 +469,7 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertActivityParticipantType(src.getType()));
+            tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
@@ -401,44 +481,60 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertActivityParticipantType(src.getType()));
+            tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
         if (src.hasRole())
             tgt.setRole(convertCodeableConcept(src.getRole()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionParticipantType convertActivityParticipantType(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionParticipantType> convertActivityParticipantType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionParticipantType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionParticipantTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PATIENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PATIENT);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PRACTITIONER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.RELATEDPERSON);
+                break;
             case DEVICE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.DEVICE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.DEVICE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType convertActivityParticipantType(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType> convertActivityParticipantType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionParticipantType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PATIENT:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.PATIENT;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.PATIENT);
+                break;
             case PRACTITIONER:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.PRACTITIONER;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.PRACTITIONER);
+                break;
             case RELATEDPERSON:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.RELATEDPERSON;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.RELATEDPERSON);
+                break;
             case DEVICE:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.DEVICE;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.DEVICE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent convertActivityDefinitionDynamicValueComponent(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent src) throws FHIRException {

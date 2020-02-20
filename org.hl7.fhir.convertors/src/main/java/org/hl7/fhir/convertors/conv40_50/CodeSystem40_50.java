@@ -22,6 +22,8 @@ package org.hl7.fhir.convertors.conv40_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import java.util.stream.Collectors;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -68,7 +70,7 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -89,13 +91,13 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasValueSet())
             tgt.setValueSetElement(convertCanonical(src.getValueSetElement()));
         if (src.hasHierarchyMeaning())
-            tgt.setHierarchyMeaning(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaning()));
+            tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
         if (src.hasCompositional())
             tgt.setCompositionalElement(convertBoolean(src.getCompositionalElement()));
         if (src.hasVersionNeeded())
             tgt.setVersionNeededElement(convertBoolean(src.getVersionNeededElement()));
         if (src.hasContent())
-            tgt.setContent(convertCodeSystemContentMode(src.getContent()));
+            tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
         if (src.hasSupplements())
             tgt.setSupplementsElement(convertCanonical(src.getSupplementsElement()));
         if (src.hasCount())
@@ -121,7 +123,7 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasTitle())
             tgt.setTitleElement(convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(Enumerations40_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -142,13 +144,13 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasValueSet())
             tgt.setValueSetElement(convertCanonical(src.getValueSetElement()));
         if (src.hasHierarchyMeaning())
-            tgt.setHierarchyMeaning(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaning()));
+            tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
         if (src.hasCompositional())
             tgt.setCompositionalElement(convertBoolean(src.getCompositionalElement()));
         if (src.hasVersionNeeded())
             tgt.setVersionNeededElement(convertBoolean(src.getVersionNeededElement()));
         if (src.hasContent())
-            tgt.setContent(convertCodeSystemContentMode(src.getContent()));
+            tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
         if (src.hasSupplements())
             tgt.setSupplementsElement(convertCanonical(src.getSupplementsElement()));
         if (src.hasCount())
@@ -159,76 +161,110 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning convertCodeSystemHierarchyMeaning(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning> convertCodeSystemHierarchyMeaning(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaningEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GROUPEDBY:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY);
+                break;
             case ISA:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.ISA;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.ISA);
+                break;
             case PARTOF:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.PARTOF;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.PARTOF);
+                break;
             case CLASSIFIEDWITH:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.CLASSIFIEDWITH;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.CLASSIFIEDWITH);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning convertCodeSystemHierarchyMeaning(org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning> convertCodeSystemHierarchyMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaningEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GROUPEDBY:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY);
+                break;
             case ISA:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.ISA;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.ISA);
+                break;
             case PARTOF:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.PARTOF;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.PARTOF);
+                break;
             case CLASSIFIEDWITH:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.CLASSIFIEDWITH;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.CLASSIFIEDWITH);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode convertCodeSystemContentMode(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentModeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTPRESENT:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NOTPRESENT;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
+                break;
             case EXAMPLE:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.EXAMPLE;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.EXAMPLE);
+                break;
             case FRAGMENT:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.FRAGMENT;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.FRAGMENT);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE);
+                break;
             case SUPPLEMENT:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.SUPPLEMENT;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.SUPPLEMENT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode convertCodeSystemContentMode(org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode> convertCodeSystemContentMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentModeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case NOTPRESENT:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NOTPRESENT;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
+                break;
             case EXAMPLE:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.EXAMPLE;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.EXAMPLE);
+                break;
             case FRAGMENT:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.FRAGMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.FRAGMENT);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.COMPLETE);
+                break;
             case SUPPLEMENT:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.SUPPLEMENT;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.SUPPLEMENT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent convertCodeSystemFilterComponent(org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent src) throws FHIRException {
@@ -240,7 +276,9 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
             tgt.setCodeElement(convertCode(src.getCodeElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> t : src.getOperator()) copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
+        tgt.setOperator(src.getOperator().stream()
+                .map(CodeSystem40_50::convertFilterOperator)
+                .collect(Collectors.toList()));
         if (src.hasValue())
             tgt.setValueElement(convertString(src.getValueElement()));
         return tgt;
@@ -255,64 +293,92 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
             tgt.setCodeElement(convertCode(src.getCodeElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> t : src.getOperator()) copyElement(t, tgt.addOperatorElement().setValue(convertFilterOperator(t.getValue())));
+        tgt.setOperator(src.getOperator().stream()
+                .map(CodeSystem40_50::convertFilterOperator)
+                .collect(Collectors.toList()));
         if (src.hasValue())
             tgt.setValueElement(convertString(src.getValueElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FilterOperator convertFilterOperator(org.hl7.fhir.r4.model.CodeSystem.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> convertFilterOperator(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FilterOperatorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISA);
+                break;
             case DESCENDENTOF:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.DESCENDENTOF;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.DESCENDENTOF);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.NOTIN);
+                break;
             case GENERALIZES:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.GENERALIZES;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.GENERALIZES);
+                break;
             case EXISTS:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.EXISTS;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.EXISTS);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CodeSystem.FilterOperator convertFilterOperator(org.hl7.fhir.r5.model.Enumerations.FilterOperator src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> convertFilterOperator(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.FilterOperatorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case EQUAL:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.EQUAL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.EQUAL);
+                break;
             case ISA:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.ISA;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.ISA);
+                break;
             case DESCENDENTOF:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.DESCENDENTOF;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.DESCENDENTOF);
+                break;
             case ISNOTA:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.ISNOTA;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.ISNOTA);
+                break;
             case REGEX:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.REGEX;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.REGEX);
+                break;
             case IN:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.IN;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.IN);
+                break;
             case NOTIN:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.NOTIN;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.NOTIN);
+                break;
             case GENERALIZES:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.GENERALIZES;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.GENERALIZES);
+                break;
             case EXISTS:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.EXISTS;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.EXISTS);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CodeSystem.FilterOperator.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CodeSystem.PropertyComponent convertPropertyComponent(org.hl7.fhir.r4.model.CodeSystem.PropertyComponent src) throws FHIRException {
@@ -327,7 +393,7 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasType())
-            tgt.setType(convertPropertyType(src.getType()));
+            tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
         return tgt;
     }
 
@@ -343,54 +409,76 @@ public class CodeSystem40_50 extends VersionConvertor_40_50 {
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasType())
-            tgt.setType(convertPropertyType(src.getType()));
+            tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CodeSystem.PropertyType convertPropertyType(org.hl7.fhir.r4.model.CodeSystem.PropertyType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.PropertyType> convertPropertyType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.PropertyType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CodeSystem.PropertyTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CODE:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.CODE;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.CODE);
+                break;
             case CODING:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.CODING;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.CODING);
+                break;
             case STRING:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.STRING;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.STRING);
+                break;
             case INTEGER:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.INTEGER;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.INTEGER);
+                break;
             case BOOLEAN:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.BOOLEAN;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.BOOLEAN);
+                break;
             case DATETIME:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.DATETIME;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.DATETIME);
+                break;
             case DECIMAL:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.DECIMAL;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.DECIMAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.CodeSystem.PropertyType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.CodeSystem.PropertyType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CodeSystem.PropertyType convertPropertyType(org.hl7.fhir.r5.model.CodeSystem.PropertyType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.PropertyType> convertPropertyType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CodeSystem.PropertyType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.PropertyTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case CODE:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODE;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODE);
+                break;
             case CODING:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODING;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODING);
+                break;
             case STRING:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.STRING;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.STRING);
+                break;
             case INTEGER:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.INTEGER;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.INTEGER);
+                break;
             case BOOLEAN:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.BOOLEAN;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.BOOLEAN);
+                break;
             case DATETIME:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.DATETIME;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.DATETIME);
+                break;
             case DECIMAL:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.DECIMAL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.DECIMAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.CodeSystem.PropertyType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent convertConceptDefinitionComponent(org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent src) throws FHIRException {

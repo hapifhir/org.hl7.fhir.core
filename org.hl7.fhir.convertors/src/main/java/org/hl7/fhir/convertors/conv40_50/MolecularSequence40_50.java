@@ -60,7 +60,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasType())
-            tgt.setType(convertSequenceType(src.getType()));
+            tgt.setTypeElement(convertSequenceType(src.getTypeElement()));
         if (src.hasCoordinateSystem())
             tgt.setCoordinateSystemElement(convertInteger(src.getCoordinateSystemElement()));
         if (src.hasPatient())
@@ -94,7 +94,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasType())
-            tgt.setType(convertSequenceType(src.getType()));
+            tgt.setTypeElement(convertSequenceType(src.getTypeElement()));
         if (src.hasCoordinateSystem())
             tgt.setCoordinateSystemElement(convertInteger(src.getCoordinateSystemElement()));
         if (src.hasPatient())
@@ -121,34 +121,48 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MolecularSequence.SequenceType convertSequenceType(org.hl7.fhir.r4.model.MolecularSequence.SequenceType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.SequenceType> convertSequenceType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.SequenceType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.SequenceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.SequenceTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case AA:
-                return org.hl7.fhir.r5.model.MolecularSequence.SequenceType.AA;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.AA);
+                break;
             case DNA:
-                return org.hl7.fhir.r5.model.MolecularSequence.SequenceType.DNA;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.DNA);
+                break;
             case RNA:
-                return org.hl7.fhir.r5.model.MolecularSequence.SequenceType.RNA;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.RNA);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MolecularSequence.SequenceType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MolecularSequence.SequenceType convertSequenceType(org.hl7.fhir.r5.model.MolecularSequence.SequenceType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.SequenceType> convertSequenceType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.SequenceType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.SequenceType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.SequenceTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case AA:
-                return org.hl7.fhir.r4.model.MolecularSequence.SequenceType.AA;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.SequenceType.AA);
+                break;
             case DNA:
-                return org.hl7.fhir.r4.model.MolecularSequence.SequenceType.DNA;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.SequenceType.DNA);
+                break;
             case RNA:
-                return org.hl7.fhir.r4.model.MolecularSequence.SequenceType.RNA;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.SequenceType.RNA);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MolecularSequence.SequenceType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.SequenceType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceReferenceSeqComponent convertMolecularSequenceReferenceSeqComponent(org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceReferenceSeqComponent src) throws FHIRException {
@@ -161,7 +175,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         if (src.hasGenomeBuild())
             tgt.setGenomeBuildElement(convertString(src.getGenomeBuildElement()));
         if (src.hasOrientation())
-            tgt.setOrientation(convertOrientationType(src.getOrientation()));
+            tgt.setOrientationElement(convertOrientationType(src.getOrientationElement()));
         if (src.hasReferenceSeqId())
             tgt.setReferenceSeqId(convertCodeableConcept(src.getReferenceSeqId()));
         if (src.hasReferenceSeqPointer())
@@ -169,7 +183,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         if (src.hasReferenceSeqString())
             tgt.setReferenceSeqStringElement(convertString(src.getReferenceSeqStringElement()));
         if (src.hasStrand())
-            tgt.setStrand(convertStrandType(src.getStrand()));
+            tgt.setStrandElement(convertStrandType(src.getStrandElement()));
         if (src.hasWindowStart())
             tgt.setWindowStartElement(convertInteger(src.getWindowStartElement()));
         if (src.hasWindowEnd())
@@ -187,7 +201,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         if (src.hasGenomeBuild())
             tgt.setGenomeBuildElement(convertString(src.getGenomeBuildElement()));
         if (src.hasOrientation())
-            tgt.setOrientation(convertOrientationType(src.getOrientation()));
+            tgt.setOrientationElement(convertOrientationType(src.getOrientationElement()));
         if (src.hasReferenceSeqId())
             tgt.setReferenceSeqId(convertCodeableConcept(src.getReferenceSeqId()));
         if (src.hasReferenceSeqPointer())
@@ -195,7 +209,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         if (src.hasReferenceSeqString())
             tgt.setReferenceSeqStringElement(convertString(src.getReferenceSeqStringElement()));
         if (src.hasStrand())
-            tgt.setStrand(convertStrandType(src.getStrand()));
+            tgt.setStrandElement(convertStrandType(src.getStrandElement()));
         if (src.hasWindowStart())
             tgt.setWindowStartElement(convertInteger(src.getWindowStartElement()));
         if (src.hasWindowEnd())
@@ -203,56 +217,80 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MolecularSequence.OrientationType convertOrientationType(org.hl7.fhir.r4.model.MolecularSequence.OrientationType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.OrientationType> convertOrientationType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.OrientationType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.OrientationType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.OrientationTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SENSE:
-                return org.hl7.fhir.r5.model.MolecularSequence.OrientationType.SENSE;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.OrientationType.SENSE);
+                break;
             case ANTISENSE:
-                return org.hl7.fhir.r5.model.MolecularSequence.OrientationType.ANTISENSE;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.OrientationType.ANTISENSE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MolecularSequence.OrientationType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.OrientationType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MolecularSequence.OrientationType convertOrientationType(org.hl7.fhir.r5.model.MolecularSequence.OrientationType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.OrientationType> convertOrientationType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.OrientationType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.OrientationType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.OrientationTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SENSE:
-                return org.hl7.fhir.r4.model.MolecularSequence.OrientationType.SENSE;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.OrientationType.SENSE);
+                break;
             case ANTISENSE:
-                return org.hl7.fhir.r4.model.MolecularSequence.OrientationType.ANTISENSE;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.OrientationType.ANTISENSE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MolecularSequence.OrientationType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.OrientationType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MolecularSequence.StrandType convertStrandType(org.hl7.fhir.r4.model.MolecularSequence.StrandType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.StrandType> convertStrandType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.StrandType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.StrandType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.StrandTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case WATSON:
-                return org.hl7.fhir.r5.model.MolecularSequence.StrandType.WATSON;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.StrandType.WATSON);
+                break;
             case CRICK:
-                return org.hl7.fhir.r5.model.MolecularSequence.StrandType.CRICK;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.StrandType.CRICK);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MolecularSequence.StrandType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.StrandType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MolecularSequence.StrandType convertStrandType(org.hl7.fhir.r5.model.MolecularSequence.StrandType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.StrandType> convertStrandType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.StrandType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.StrandType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.StrandTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case WATSON:
-                return org.hl7.fhir.r4.model.MolecularSequence.StrandType.WATSON;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.StrandType.WATSON);
+                break;
             case CRICK:
-                return org.hl7.fhir.r4.model.MolecularSequence.StrandType.CRICK;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.StrandType.CRICK);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MolecularSequence.StrandType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.StrandType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent convertMolecularSequenceVariantComponent(org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceVariantComponent src) throws FHIRException {
@@ -301,7 +339,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertQualityType(src.getType()));
+            tgt.setTypeElement(convertQualityType(src.getTypeElement()));
         if (src.hasStandardSequence())
             tgt.setStandardSequence(convertCodeableConcept(src.getStandardSequence()));
         if (src.hasStart())
@@ -339,7 +377,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertQualityType(src.getType()));
+            tgt.setTypeElement(convertQualityType(src.getTypeElement()));
         if (src.hasStandardSequence())
             tgt.setStandardSequence(convertCodeableConcept(src.getStandardSequence()));
         if (src.hasStart())
@@ -371,34 +409,48 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MolecularSequence.QualityType convertQualityType(org.hl7.fhir.r4.model.MolecularSequence.QualityType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.QualityType> convertQualityType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.QualityType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.QualityType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.QualityTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INDEL:
-                return org.hl7.fhir.r5.model.MolecularSequence.QualityType.INDEL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.INDEL);
+                break;
             case SNP:
-                return org.hl7.fhir.r5.model.MolecularSequence.QualityType.SNP;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.SNP);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.MolecularSequence.QualityType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MolecularSequence.QualityType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MolecularSequence.QualityType convertQualityType(org.hl7.fhir.r5.model.MolecularSequence.QualityType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.QualityType> convertQualityType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.QualityType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.QualityType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.QualityTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case INDEL:
-                return org.hl7.fhir.r4.model.MolecularSequence.QualityType.INDEL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.QualityType.INDEL);
+                break;
             case SNP:
-                return org.hl7.fhir.r4.model.MolecularSequence.QualityType.SNP;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.QualityType.SNP);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.MolecularSequence.QualityType.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.QualityType.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MolecularSequence.QualityType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.QualityType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityRocComponent convertMolecularSequenceQualityRocComponent(org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityRocComponent src) throws FHIRException {
@@ -437,7 +489,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertRepositoryType(src.getType()));
+            tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasName())
@@ -457,7 +509,7 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(convertRepositoryType(src.getType()));
+            tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
         if (src.hasUrl())
             tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasName())
@@ -471,42 +523,60 @@ public class MolecularSequence40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.MolecularSequence.RepositoryType convertRepositoryType(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.RepositoryType> convertRepositoryType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.RepositoryType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.RepositoryType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.RepositoryTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DIRECTLINK:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.DIRECTLINK;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.DIRECTLINK);
+                break;
             case OPENAPI:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OPENAPI;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OPENAPI);
+                break;
             case LOGIN:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.LOGIN;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.LOGIN);
+                break;
             case OAUTH:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OAUTH;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OAUTH);
+                break;
             case OTHER:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OTHER;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.MolecularSequence.RepositoryType convertRepositoryType(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.RepositoryType> convertRepositoryType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.RepositoryType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.RepositoryType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.RepositoryTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DIRECTLINK:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.DIRECTLINK;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.DIRECTLINK);
+                break;
             case OPENAPI:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OPENAPI;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OPENAPI);
+                break;
             case LOGIN:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.LOGIN;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.LOGIN);
+                break;
             case OAUTH:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OAUTH;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OAUTH);
+                break;
             case OTHER:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OTHER;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.OTHER);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantComponent convertMolecularSequenceStructureVariantComponent(org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantComponent src) throws FHIRException {

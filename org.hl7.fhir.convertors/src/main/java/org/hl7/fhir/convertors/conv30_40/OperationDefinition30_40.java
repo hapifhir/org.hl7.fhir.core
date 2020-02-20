@@ -19,9 +19,9 @@ public class OperationDefinition30_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasKind())
-            tgt.setKind(convertOperationKind(src.getKind()));
+            tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
@@ -67,9 +67,9 @@ public class OperationDefinition30_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasKind())
-            tgt.setKind(convertOperationKind(src.getKind()));
+            tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
@@ -131,7 +131,7 @@ public class OperationDefinition30_40 {
         org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_30_40.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_30_40.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet()) {
             String vsr = VersionConvertorConstants.vsToRef(src.getValueSet());
             if (vsr != null)
@@ -148,7 +148,7 @@ public class OperationDefinition30_40 {
         org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.r4.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_30_40.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_30_40.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet()) {
             Type t = VersionConvertor_30_40.convertType(src.getValueSet());
             if (t instanceof org.hl7.fhir.r4.model.Reference)
@@ -168,7 +168,7 @@ public class OperationDefinition30_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_40.convertCode(src.getNameElement()));
         if (src.hasUse())
-            tgt.setUse(convertOperationParameterUse(src.getUse()));
+            tgt.setUseElement(convertOperationParameterUse(src.getUseElement()));
         if (src.hasMin())
             tgt.setMinElement(VersionConvertor_30_40.convertInteger(src.getMinElement()));
         if (src.hasMax())
@@ -178,7 +178,7 @@ public class OperationDefinition30_40 {
         if (src.hasType())
             tgt.setTypeElement(VersionConvertor_30_40.convertCode(src.getTypeElement()));
         if (src.hasSearchType())
-            tgt.setSearchType(VersionConvertor_30_40.convertSearchParamType(src.getSearchType()));
+            tgt.setSearchTypeElement(VersionConvertor_30_40.convertSearchParamType(src.getSearchTypeElement()));
         for (org.hl7.fhir.r4.model.UriType t : src.getTargetProfile()) tgt.setProfile(new org.hl7.fhir.dstu3.model.Reference(t.getValue()));
         if (src.hasBinding())
             tgt.setBinding(convertOperationDefinitionParameterBindingComponent(src.getBinding()));
@@ -194,7 +194,7 @@ public class OperationDefinition30_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_40.convertCode(src.getNameElement()));
         if (src.hasUse())
-            tgt.setUse(convertOperationParameterUse(src.getUse()));
+            tgt.setUseElement(convertOperationParameterUse(src.getUseElement()));
         if (src.hasMin())
             tgt.setMinElement(VersionConvertor_30_40.convertInteger(src.getMinElement()));
         if (src.hasMax())
@@ -204,7 +204,7 @@ public class OperationDefinition30_40 {
         if (src.hasType())
             tgt.setTypeElement(VersionConvertor_30_40.convertCode(src.getTypeElement()));
         if (src.hasSearchType())
-            tgt.setSearchType(VersionConvertor_30_40.convertSearchParamType(src.getSearchType()));
+            tgt.setSearchTypeElement(VersionConvertor_30_40.convertSearchParamType(src.getSearchTypeElement()));
         if (src.hasProfile())
             tgt.addTargetProfile(src.getProfile().getReference());
         if (src.hasBinding())
@@ -213,55 +213,79 @@ public class OperationDefinition30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind convertOperationKind(org.hl7.fhir.r4.model.OperationDefinition.OperationKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind> convertOperationKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationDefinition.OperationKindEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OPERATION:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.OPERATION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.OPERATION);
+                break;
             case QUERY:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.QUERY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.QUERY);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.OperationDefinition.OperationKind convertOperationKind(org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationKind> convertOperationKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationDefinition.OperationKindEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case OPERATION:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationKind.OPERATION;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationKind.OPERATION);
+                break;
             case QUERY:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationKind.QUERY;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationKind.QUERY);
+                break;
             default:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse> convertOperationParameterUse(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUseEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case IN:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.IN;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.IN);
+                break;
             case OUT:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.OUT;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.OUT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse convertOperationParameterUse(org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse> convertOperationParameterUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationDefinition.OperationParameterUse> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUseEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case IN:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.IN;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.IN);
+                break;
             case OUT:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.OUT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.OUT);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.OperationDefinition.OperationParameterUse.NULL);
+                break;
         }
+        return tgt;
     }
 }

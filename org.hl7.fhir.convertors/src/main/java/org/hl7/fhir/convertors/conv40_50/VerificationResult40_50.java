@@ -63,7 +63,7 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
         if (src.hasNeed())
             tgt.setNeed(convertCodeableConcept(src.getNeed()));
         if (src.hasStatus())
-            tgt.setStatus(convertStatus(src.getStatus()));
+            tgt.setStatusElement(convertStatus(src.getStatusElement()));
         if (src.hasStatusDate())
             tgt.setStatusDateElement(convertDateTime(src.getStatusDateElement()));
         if (src.hasValidationType())
@@ -94,7 +94,7 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
         if (src.hasNeed())
             tgt.setNeed(convertCodeableConcept(src.getNeed()));
         if (src.hasStatus())
-            tgt.setStatus(convertStatus(src.getStatus()));
+            tgt.setStatusElement(convertStatus(src.getStatusElement()));
         if (src.hasStatusDate())
             tgt.setStatusDateElement(convertDateTime(src.getStatusDateElement()));
         if (src.hasValidationType())
@@ -115,46 +115,66 @@ public class VerificationResult40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.VerificationResult.Status convertStatus(org.hl7.fhir.r4.model.VerificationResult.Status src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VerificationResult.Status> convertStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VerificationResult.Status> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VerificationResult.Status> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.VerificationResult.StatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ATTESTED:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.ATTESTED;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.ATTESTED);
+                break;
             case VALIDATED:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.VALIDATED;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.VALIDATED);
+                break;
             case INPROCESS:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.INPROCESS;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.INPROCESS);
+                break;
             case REQREVALID:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.REQREVALID;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.REQREVALID);
+                break;
             case VALFAIL:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.VALFAIL;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.VALFAIL);
+                break;
             case REVALFAIL:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.REVALFAIL;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.REVALFAIL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.VerificationResult.Status.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.VerificationResult.Status.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.VerificationResult.Status convertStatus(org.hl7.fhir.r5.model.VerificationResult.Status src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VerificationResult.Status> convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.VerificationResult.Status> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.VerificationResult.Status> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.VerificationResult.StatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ATTESTED:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.ATTESTED;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.ATTESTED);
+                break;
             case VALIDATED:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.VALIDATED;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.VALIDATED);
+                break;
             case INPROCESS:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.INPROCESS;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.INPROCESS);
+                break;
             case REQREVALID:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.REQREVALID;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.REQREVALID);
+                break;
             case VALFAIL:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.VALFAIL;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.VALFAIL);
+                break;
             case REVALFAIL:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.REVALFAIL;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.REVALFAIL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.VerificationResult.Status.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.VerificationResult.Status.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.VerificationResult.VerificationResultPrimarySourceComponent convertVerificationResultPrimarySourceComponent(org.hl7.fhir.r4.model.VerificationResult.VerificationResultPrimarySourceComponent src) throws FHIRException {

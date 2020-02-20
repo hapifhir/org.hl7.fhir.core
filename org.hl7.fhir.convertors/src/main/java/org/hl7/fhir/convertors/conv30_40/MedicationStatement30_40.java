@@ -16,7 +16,7 @@ public class MedicationStatement30_40 {
         if (src.hasContext())
             tgt.setContext(VersionConvertor_30_40.convertReference(src.getContext()));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
@@ -48,7 +48,7 @@ public class MedicationStatement30_40 {
         if (src.hasContext())
             tgt.setContext(VersionConvertor_30_40.convertReference(src.getContext()));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationStatementStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
@@ -69,45 +69,65 @@ public class MedicationStatement30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus> convertMedicationStatementStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ACTIVE);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR);
+                break;
             case INTENDED:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.INTENDED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.INTENDED);
+                break;
             case STOPPED:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.STOPPED;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.STOPPED);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.ONHOLD);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus convertMedicationStatementStatus(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus> convertMedicationStatementStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatusEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ENTEREDINERROR);
+                break;
             case INTENDED:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.INTENDED;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.INTENDED);
+                break;
             case STOPPED:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.STOPPED;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.STOPPED);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD);
+                break;
             default:
-                return org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.NULL);
+                break;
         }
+        return tgt;
     }
 }

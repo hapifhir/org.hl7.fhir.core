@@ -12,7 +12,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu3.model.Bundle tgt = new org.hl7.fhir.dstu3.model.Bundle();
         VersionConvertor_10_30.copyResource(src, tgt);
         if (src.hasType())
-            tgt.setType(convertBundleType(src.getType()));
+            tgt.setTypeElement(convertBundleType(src.getTypeElement()));
         if (src.hasTotal())
             tgt.setTotalElement(VersionConvertor_10_30.convertUnsignedInt(src.getTotalElement()));
         for (org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
@@ -28,7 +28,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu2.model.Bundle tgt = new org.hl7.fhir.dstu2.model.Bundle();
         VersionConvertor_10_30.copyResource(src, tgt);
         if (src.hasType())
-            tgt.setType(convertBundleType(src.getType()));
+            tgt.setTypeElement(convertBundleType(src.getTypeElement()));
         if (src.hasTotal())
             tgt.setTotalElement(VersionConvertor_10_30.convertUnsignedInt(src.getTotalElement()));
         for (org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
@@ -94,7 +94,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasMethod())
-            tgt.setMethod(convertHTTPVerb(src.getMethod()));
+            tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
         if (src.hasUrlElement())
             tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
         if (src.hasIfNoneMatchElement())
@@ -114,7 +114,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu3.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu3.model.Bundle.BundleEntryRequestComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasMethod())
-            tgt.setMethod(convertHTTPVerb(src.getMethod()));
+            tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
         if (src.hasUrlElement())
             tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
         if (src.hasIfNoneMatchElement())
@@ -166,7 +166,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasMode())
-            tgt.setMode(convertSearchEntryMode(src.getMode()));
+            tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
         if (src.hasScoreElement())
             tgt.setScoreElement(VersionConvertor_10_30.convertDecimal(src.getScoreElement()));
         return tgt;
@@ -178,7 +178,7 @@ public class Bundle10_30 {
         org.hl7.fhir.dstu3.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu3.model.Bundle.BundleEntrySearchComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasMode())
-            tgt.setMode(convertSearchEntryMode(src.getMode()));
+            tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
         if (src.hasScoreElement())
             tgt.setScoreElement(VersionConvertor_10_30.convertDecimal(src.getScoreElement()));
         return tgt;
@@ -208,121 +208,177 @@ public class Bundle10_30 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Bundle.BundleType convertBundleType(org.hl7.fhir.dstu2.model.Bundle.BundleType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.BundleType> convertBundleType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.BundleType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.BundleType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Bundle.BundleTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DOCUMENT:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.DOCUMENT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.DOCUMENT);
+                break;
             case MESSAGE:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.MESSAGE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.MESSAGE);
+                break;
             case TRANSACTION:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.TRANSACTION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.TRANSACTION);
+                break;
             case TRANSACTIONRESPONSE:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.TRANSACTIONRESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.TRANSACTIONRESPONSE);
+                break;
             case BATCH:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.BATCH;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.BATCH);
+                break;
             case BATCHRESPONSE:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.BATCHRESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.BATCHRESPONSE);
+                break;
             case HISTORY:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.HISTORY;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.HISTORY);
+                break;
             case SEARCHSET:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.SEARCHSET;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.SEARCHSET);
+                break;
             case COLLECTION:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.COLLECTION;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.COLLECTION);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Bundle.BundleType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.BundleType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Bundle.BundleType convertBundleType(org.hl7.fhir.dstu3.model.Bundle.BundleType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.BundleType> convertBundleType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.BundleType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.BundleType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.BundleTypeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DOCUMENT:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.DOCUMENT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.DOCUMENT);
+                break;
             case MESSAGE:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.MESSAGE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.MESSAGE);
+                break;
             case TRANSACTION:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.TRANSACTION;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.TRANSACTION);
+                break;
             case TRANSACTIONRESPONSE:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.TRANSACTIONRESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.TRANSACTIONRESPONSE);
+                break;
             case BATCH:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.BATCH;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.BATCH);
+                break;
             case BATCHRESPONSE:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.BATCHRESPONSE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.BATCHRESPONSE);
+                break;
             case HISTORY:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.HISTORY;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.HISTORY);
+                break;
             case SEARCHSET:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.SEARCHSET;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.SEARCHSET);
+                break;
             case COLLECTION:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.COLLECTION;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.COLLECTION);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Bundle.BundleType.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Bundle.HTTPVerb convertHTTPVerb(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.HTTPVerb> convertHTTPVerb(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.HTTPVerb> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.HTTPVerb> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Bundle.HTTPVerbEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GET:
-                return org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.GET;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.GET);
+                break;
             case POST:
-                return org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.POST;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.POST);
+                break;
             case PUT:
-                return org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.PUT;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.PUT);
+                break;
             case DELETE:
-                return org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.DELETE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.DELETE);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Bundle.HTTPVerb convertHTTPVerb(org.hl7.fhir.dstu3.model.Bundle.HTTPVerb src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.HTTPVerb> convertHTTPVerb(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.HTTPVerb> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.HTTPVerb> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.HTTPVerbEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case GET:
-                return org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.GET;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.GET);
+                break;
             case POST:
-                return org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.POST;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.POST);
+                break;
             case PUT:
-                return org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.PUT;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.PUT);
+                break;
             case DELETE:
-                return org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.DELETE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.DELETE);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode convertSearchEntryMode(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode> convertSearchEntryMode(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Bundle.SearchEntryModeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MATCH:
-                return org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.MATCH;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.MATCH);
+                break;
             case INCLUDE:
-                return org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.INCLUDE;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.INCLUDE);
+                break;
             case OUTCOME:
-                return org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.OUTCOME;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.OUTCOME);
+                break;
             default:
-                return org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode convertSearchEntryMode(org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode> convertSearchEntryMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Bundle.SearchEntryMode> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.SearchEntryModeEnumFactory());
+        VersionConvertor_10_30.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MATCH:
-                return org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.MATCH;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.MATCH);
+                break;
             case INCLUDE:
-                return org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.INCLUDE;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.INCLUDE);
+                break;
             case OUTCOME:
-                return org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.OUTCOME;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.OUTCOME);
+                break;
             default:
-                return org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.NULL;
+                tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.NULL);
+                break;
         }
+        return tgt;
     }
 }

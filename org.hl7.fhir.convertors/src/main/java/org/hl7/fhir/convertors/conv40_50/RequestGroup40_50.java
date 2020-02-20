@@ -67,11 +67,11 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
-            tgt.setStatus(convertRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertRequestStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -102,11 +102,11 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasGroupIdentifier())
             tgt.setGroupIdentifier(convertIdentifier(src.getGroupIdentifier()));
         if (src.hasStatus())
-            tgt.setStatus(convertRequestStatus(src.getStatus()));
+            tgt.setStatusElement(convertRequestStatus(src.getStatusElement()));
         if (src.hasIntent())
-            tgt.setIntent(convertRequestIntent(src.getIntent()));
+            tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
@@ -126,138 +126,202 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestStatus convertRequestStatus(org.hl7.fhir.r4.model.RequestGroup.RequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> convertRequestStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.RequestStatus convertRequestStatus(org.hl7.fhir.r5.model.Enumerations.RequestStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestStatus> convertRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.RequestStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case DRAFT:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.DRAFT);
+                break;
             case ACTIVE:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ACTIVE);
+                break;
             case ONHOLD:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ONHOLD;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ONHOLD);
+                break;
             case REVOKED:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.REVOKED;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.REVOKED);
+                break;
             case COMPLETED:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.COMPLETED;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.COMPLETED);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.ENTEREDINERROR);
+                break;
             case UNKNOWN:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.UNKNOWN;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.UNKNOWN);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestIntent convertRequestIntent(org.hl7.fhir.r4.model.RequestGroup.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> convertRequestIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.RequestIntent convertRequestIntent(org.hl7.fhir.r5.model.Enumerations.RequestIntent src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestIntent> convertRequestIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestIntent> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.RequestIntentEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case PROPOSAL:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.PROPOSAL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.PROPOSAL);
+                break;
             case PLAN:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.PLAN;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.PLAN);
+                break;
             case DIRECTIVE:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.DIRECTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.DIRECTIVE);
+                break;
             case ORDER:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.ORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.ORDER);
+                break;
             case ORIGINALORDER:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.ORIGINALORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.ORIGINALORDER);
+                break;
             case REFLEXORDER:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.REFLEXORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.REFLEXORDER);
+                break;
             case FILLERORDER:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.FILLERORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.FILLERORDER);
+                break;
             case INSTANCEORDER:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.INSTANCEORDER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.INSTANCEORDER);
+                break;
             case OPTION:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.OPTION;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.OPTION);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestIntent.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestIntent.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.RequestPriority convertRequestPriority(org.hl7.fhir.r4.model.RequestGroup.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertRequestPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.RequestPriority convertRequestPriority(org.hl7.fhir.r5.model.Enumerations.RequestPriority src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestPriority> convertRequestPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.RequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.RequestPriorityEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ROUTINE:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestPriority.ROUTINE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestPriority.ROUTINE);
+                break;
             case URGENT:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestPriority.URGENT;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestPriority.URGENT);
+                break;
             case ASAP:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestPriority.ASAP;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestPriority.ASAP);
+                break;
             case STAT:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestPriority.STAT;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestPriority.STAT);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.RequestPriority.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.RequestPriority.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent convertRequestGroupActionComponent(org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent src) throws FHIRException {
@@ -274,7 +338,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasTextEquivalent())
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
         for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
@@ -285,15 +349,15 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasGroupingBehavior())
-            tgt.setGroupingBehavior(convertActionGroupingBehavior(src.getGroupingBehavior()));
+            tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
         if (src.hasSelectionBehavior())
-            tgt.setSelectionBehavior(convertActionSelectionBehavior(src.getSelectionBehavior()));
+            tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
         if (src.hasRequiredBehavior())
-            tgt.setRequiredBehavior(convertActionRequiredBehavior(src.getRequiredBehavior()));
+            tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
         if (src.hasPrecheckBehavior())
-            tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
+            tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
         if (src.hasCardinalityBehavior())
-            tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
+            tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
         for (org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
@@ -314,7 +378,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasTextEquivalent())
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
-            tgt.setPriority(convertRequestPriority(src.getPriority()));
+            tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
         for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent t : src.getCondition()) tgt.addCondition(convertRequestGroupActionConditionComponent(t));
@@ -325,173 +389,245 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasGroupingBehavior())
-            tgt.setGroupingBehavior(convertActionGroupingBehavior(src.getGroupingBehavior()));
+            tgt.setGroupingBehaviorElement(convertActionGroupingBehavior(src.getGroupingBehaviorElement()));
         if (src.hasSelectionBehavior())
-            tgt.setSelectionBehavior(convertActionSelectionBehavior(src.getSelectionBehavior()));
+            tgt.setSelectionBehaviorElement(convertActionSelectionBehavior(src.getSelectionBehaviorElement()));
         if (src.hasRequiredBehavior())
-            tgt.setRequiredBehavior(convertActionRequiredBehavior(src.getRequiredBehavior()));
+            tgt.setRequiredBehaviorElement(convertActionRequiredBehavior(src.getRequiredBehaviorElement()));
         if (src.hasPrecheckBehavior())
-            tgt.setPrecheckBehavior(convertActionPrecheckBehavior(src.getPrecheckBehavior()));
+            tgt.setPrecheckBehaviorElement(convertActionPrecheckBehavior(src.getPrecheckBehaviorElement()));
         if (src.hasCardinalityBehavior())
-            tgt.setCardinalityBehavior(convertActionCardinalityBehavior(src.getCardinalityBehavior()));
+            tgt.setCardinalityBehaviorElement(convertActionCardinalityBehavior(src.getCardinalityBehaviorElement()));
         if (src.hasResource())
             tgt.setResource(convertReference(src.getResource()));
         for (org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionComponent t : src.getAction()) tgt.addAction(convertRequestGroupActionComponent(t));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior> convertActionGroupingBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case VISUALGROUP:
-                return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.VISUALGROUP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.VISUALGROUP);
+                break;
             case LOGICALGROUP:
-                return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.LOGICALGROUP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.LOGICALGROUP);
+                break;
             case SENTENCEGROUP:
-                return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.SENTENCEGROUP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.SENTENCEGROUP);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior convertActionGroupingBehavior(org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior> convertActionGroupingBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case VISUALGROUP:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.VISUALGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.VISUALGROUP);
+                break;
             case LOGICALGROUP:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.LOGICALGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.LOGICALGROUP);
+                break;
             case SENTENCEGROUP:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.SENTENCEGROUP;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.SENTENCEGROUP);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionGroupingBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior> convertActionSelectionBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ANY:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ANY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ANY);
+                break;
             case ALL:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALL);
+                break;
             case ALLORNONE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALLORNONE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ALLORNONE);
+                break;
             case EXACTLYONE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.EXACTLYONE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.EXACTLYONE);
+                break;
             case ATMOSTONE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ATMOSTONE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ATMOSTONE);
+                break;
             case ONEORMORE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ONEORMORE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.ONEORMORE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior convertActionSelectionBehavior(org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior> convertActionSelectionBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ANY:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ANY;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ANY);
+                break;
             case ALL:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ALL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ALL);
+                break;
             case ALLORNONE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ALLORNONE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ALLORNONE);
+                break;
             case EXACTLYONE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.EXACTLYONE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.EXACTLYONE);
+                break;
             case ATMOSTONE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ATMOSTONE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ATMOSTONE);
+                break;
             case ONEORMORE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ONEORMORE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.ONEORMORE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionSelectionBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior> convertActionRequiredBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MUST:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUST;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUST);
+                break;
             case COULD:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.COULD;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.COULD);
+                break;
             case MUSTUNLESSDOCUMENTED:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior convertActionRequiredBehavior(org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior> convertActionRequiredBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case MUST:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.MUST;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.MUST);
+                break;
             case COULD:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.COULD;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.COULD);
+                break;
             case MUSTUNLESSDOCUMENTED:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.MUSTUNLESSDOCUMENTED);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRequiredBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior> convertActionPrecheckBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case YES:
-                return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.YES;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.YES);
+                break;
             case NO:
-                return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NO;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NO);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior convertActionPrecheckBehavior(org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior> convertActionPrecheckBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case YES:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.YES;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.YES);
+                break;
             case NO:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.NO;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.NO);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionPrecheckBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior> convertActionCardinalityBehavior(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SINGLE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.SINGLE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.SINGLE);
+                break;
             case MULTIPLE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.MULTIPLE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.MULTIPLE);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior convertActionCardinalityBehavior(org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior> convertActionCardinalityBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehaviorEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case SINGLE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.SINGLE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.SINGLE);
+                break;
             case MULTIPLE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.MULTIPLE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.MULTIPLE);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionCardinalityBehavior.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent convertRequestGroupActionConditionComponent(org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent src) throws FHIRException {
@@ -500,7 +636,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent tgt = new org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionConditionComponent();
         copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertActionConditionKind(src.getKind()));
+            tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
         if (src.hasExpression())
             tgt.setExpression(convertExpression(src.getExpression()));
         return tgt;
@@ -512,40 +648,54 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent tgt = new org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionConditionComponent();
         copyElement(src, tgt);
         if (src.hasKind())
-            tgt.setKind(convertActionConditionKind(src.getKind()));
+            tgt.setKindElement(convertActionConditionKind(src.getKindElement()));
         if (src.hasExpression())
             tgt.setExpression(convertExpression(src.getExpression()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionConditionKind> convertActionConditionKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionConditionKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionConditionKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPLICABILITY:
-                return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.APPLICABILITY;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.APPLICABILITY);
+                break;
             case START:
-                return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.START;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.START);
+                break;
             case STOP:
-                return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.STOP;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.STOP);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind convertActionConditionKind(org.hl7.fhir.r5.model.Enumerations.ActionConditionKind src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind> convertActionConditionKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionConditionKind> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionConditionKindEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case APPLICABILITY:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.APPLICABILITY;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.APPLICABILITY);
+                break;
             case START:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.START;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.START);
+                break;
             case STOP:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.STOP;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.STOP);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionConditionKind.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.RequestGroup.RequestGroupActionRelatedActionComponent convertRequestGroupActionRelatedActionComponent(org.hl7.fhir.r4.model.RequestGroup.RequestGroupActionRelatedActionComponent src) throws FHIRException {
@@ -556,7 +706,7 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasActionId())
             tgt.setActionIdElement(convertId(src.getActionIdElement()));
         if (src.hasRelationship())
-            tgt.setRelationship(convertActionRelationshipType(src.getRelationship()));
+            tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
             tgt.setOffset(convertType(src.getOffset()));
         return tgt;
@@ -570,63 +720,89 @@ public class RequestGroup40_50 extends VersionConvertor_40_50 {
         if (src.hasActionId())
             tgt.setActionIdElement(convertId(src.getActionIdElement()));
         if (src.hasRelationship())
-            tgt.setRelationship(convertActionRelationshipType(src.getRelationship()));
+            tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
             tgt.setOffset(convertType(src.getOffset()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType> convertActionRelationshipType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionRelationshipTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BEFORESTART:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORESTART;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORESTART);
+                break;
             case BEFORE:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFORE);
+                break;
             case BEFOREEND:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFOREEND;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.BEFOREEND);
+                break;
             case CONCURRENTWITHSTART:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHSTART;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHSTART);
+                break;
             case CONCURRENT:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENT);
+                break;
             case CONCURRENTWITHEND:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHEND;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.CONCURRENTWITHEND);
+                break;
             case AFTERSTART:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTERSTART;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTERSTART);
+                break;
             case AFTER:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTER;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTER);
+                break;
             case AFTEREND:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTEREND;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.AFTEREND);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType convertActionRelationshipType(org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType> convertActionRelationshipType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipTypeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case BEFORESTART:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFORESTART;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFORESTART);
+                break;
             case BEFORE:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFORE;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFORE);
+                break;
             case BEFOREEND:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFOREEND;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.BEFOREEND);
+                break;
             case CONCURRENTWITHSTART:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHSTART;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHSTART);
+                break;
             case CONCURRENT:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENT;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENT);
+                break;
             case CONCURRENTWITHEND:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHEND;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.CONCURRENTWITHEND);
+                break;
             case AFTERSTART:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTERSTART;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTERSTART);
+                break;
             case AFTER:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTER;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTER);
+                break;
             case AFTEREND:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTEREND;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.AFTEREND);
+                break;
             default:
-                return org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.RequestGroup.ActionRelationshipType.NULL);
+                break;
         }
+        return tgt;
     }
 }

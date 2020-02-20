@@ -60,7 +60,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertPaymentReconciliationStatus(src.getStatus()));
+            tgt.setStatusElement(convertPaymentReconciliationStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasCreated())
@@ -72,7 +72,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         if (src.hasRequestor())
             tgt.setRequestor(convertReference(src.getRequestor()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasPaymentDate())
@@ -95,7 +95,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         copyDomainResource(src, tgt);
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasStatus())
-            tgt.setStatus(convertPaymentReconciliationStatus(src.getStatus()));
+            tgt.setStatusElement(convertPaymentReconciliationStatus(src.getStatusElement()));
         if (src.hasPeriod())
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasCreated())
@@ -107,7 +107,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         if (src.hasRequestor())
             tgt.setRequestor(convertReference(src.getRequestor()));
         if (src.hasOutcome())
-            tgt.setOutcome(convertRemittanceOutcome(src.getOutcome()));
+            tgt.setOutcomeElement(convertRemittanceOutcome(src.getOutcomeElement()));
         if (src.hasDisposition())
             tgt.setDispositionElement(convertString(src.getDispositionElement()));
         if (src.hasPaymentDate())
@@ -123,72 +123,104 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes convertPaymentReconciliationStatus(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertPaymentReconciliationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus convertPaymentReconciliationStatus(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus> convertPaymentReconciliationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatusEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case ACTIVE:
-                return org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.ACTIVE;
+                tgt.setValue(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.ACTIVE);
+                break;
             case CANCELLED:
-                return org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.CANCELLED;
+                tgt.setValue(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.CANCELLED);
+                break;
             case DRAFT:
-                return org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.DRAFT;
+                tgt.setValue(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.DRAFT);
+                break;
             case ENTEREDINERROR:
-                return org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.ENTEREDINERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.ENTEREDINERROR);
+                break;
             default:
-                return org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.PaymentReconciliation.PaymentReconciliationStatus.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> convertRemittanceOutcome(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodesEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL;
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes.NULL);
+                break;
         }
+        return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes src) throws FHIRException {
-        if (src == null)
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> convertRemittanceOutcome(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ClaimProcessingCodes> src) throws FHIRException {
+        if (src == null || src.isEmpty())
             return null;
-        switch(src) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.RemittanceOutcomeEnumFactory());
+        VersionConvertor_40_50.copyElement(src, tgt);
+        switch(src.getValue()) {
             case QUEUED:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.QUEUED;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.QUEUED);
+                break;
             case COMPLETE:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.COMPLETE;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.COMPLETE);
+                break;
             case ERROR:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.ERROR;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.ERROR);
+                break;
             case PARTIAL:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.PARTIAL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.PARTIAL);
+                break;
             default:
-                return org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.NULL;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.RemittanceOutcome.NULL);
+                break;
         }
+        return tgt;
     }
 
     public static org.hl7.fhir.r5.model.PaymentReconciliation.DetailsComponent convertDetailsComponent(org.hl7.fhir.r4.model.PaymentReconciliation.DetailsComponent src) throws FHIRException {
@@ -253,7 +285,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.PaymentReconciliation.NotesComponent tgt = new org.hl7.fhir.r5.model.PaymentReconciliation.NotesComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(Enumerations40_50.convertNoteType(src.getType()));
+            tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         return tgt;
@@ -265,7 +297,7 @@ public class PaymentReconciliation40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.PaymentReconciliation.NotesComponent tgt = new org.hl7.fhir.r4.model.PaymentReconciliation.NotesComponent();
         copyElement(src, tgt);
         if (src.hasType())
-            tgt.setType(Enumerations40_50.convertNoteType(src.getType()));
+            tgt.setTypeElement(Enumerations40_50.convertNoteType(src.getTypeElement()));
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         return tgt;
