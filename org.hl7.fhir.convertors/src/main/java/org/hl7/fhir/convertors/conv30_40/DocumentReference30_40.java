@@ -170,7 +170,7 @@ public class DocumentReference30_40 {
         org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_40.convertReference(src.getTarget()));
         return tgt;
@@ -182,7 +182,7 @@ public class DocumentReference30_40 {
         org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_40.convertReference(src.getTarget()));
         return tgt;

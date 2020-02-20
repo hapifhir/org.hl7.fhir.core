@@ -418,7 +418,7 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCodeableConcept(src.getType()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
@@ -477,7 +477,7 @@ public class PlanDefinition30_40 {
         if (src.hasType())
             tgt.setType(VersionConvertor_30_40.convertCodeableConcept(src.getType()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_40.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())

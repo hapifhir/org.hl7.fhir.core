@@ -123,7 +123,7 @@ public class GraphDefinition30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -157,7 +157,7 @@ public class GraphDefinition30_50 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_30_50.convertPublicationStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())

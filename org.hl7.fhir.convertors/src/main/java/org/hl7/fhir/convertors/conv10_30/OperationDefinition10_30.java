@@ -19,7 +19,7 @@ public class OperationDefinition10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
@@ -63,7 +63,7 @@ public class OperationDefinition10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasKind())
             tgt.setKindElement(convertOperationKind(src.getKindElement()));
         if (src.hasExperimental())
@@ -123,7 +123,7 @@ public class OperationDefinition10_30 {
         org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_10_30.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_10_30.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet())
             tgt.setValueSet(VersionConvertor_10_30.convertType(src.getValueSet()));
         return tgt;
@@ -135,7 +135,7 @@ public class OperationDefinition10_30 {
         org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
         VersionConvertor_10_30.copyElement(src, tgt);
         if (src.hasStrength())
-            tgt.setStrength(VersionConvertor_10_30.convertBindingStrength(src.getStrength()));
+            tgt.setStrengthElement(VersionConvertor_10_30.convertBindingStrength(src.getStrengthElement()));
         if (src.hasValueSet())
             tgt.setValueSet(VersionConvertor_10_30.convertType(src.getValueSet()));
         return tgt;

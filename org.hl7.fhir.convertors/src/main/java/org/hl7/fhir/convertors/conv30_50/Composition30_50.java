@@ -181,7 +181,7 @@ public class Composition30_50 {
         org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_50.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_50.convertType(src.getTarget()));
         return tgt;
@@ -193,9 +193,59 @@ public class Composition30_50 {
         org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_50.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_50.convertType(src.getTarget()));
+        return tgt;
+    }
+
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
+            case REPLACES:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.REPLACES);
+                break;
+            case TRANSFORMS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.TRANSFORMS);
+                break;
+            case SIGNS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.SIGNS);
+                break;
+            case APPENDS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.APPENDS);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.NULL);
+                break;
+        }
+        return tgt;
+    }
+
+    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null)
+            return null;
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_30_50.copyElement(src, tgt);
+        switch(src.getValue()) {
+            case REPLACES:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.REPLACES);
+                break;
+            case TRANSFORMS:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.TRANSFORMS);
+                break;
+            case SIGNS:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.SIGNS);
+                break;
+            case APPENDS:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.APPENDS);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.NULL);
+                break;
+        }
         return tgt;
     }
 

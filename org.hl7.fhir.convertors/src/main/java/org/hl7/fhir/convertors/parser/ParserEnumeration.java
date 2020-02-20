@@ -40,8 +40,7 @@ public class ParserEnumeration {
 
     public static final String ELEMENT = "Element";
 
-    private static final List<String> VERSION_FILES = Arrays.asList("10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
-    //private static final List<String> VERSION_FILES = Arrays.asList("10_30", "10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
+    private static final List<String> VERSION_FILES = Arrays.asList("10_30", "10_40", "10_50", "14_30", "14_40", "14_50", "30_40", "30_50", "40_50");
 
     private static String MODEL_BASE_PATH = "/Users/markiantorno/Documents/Development/fhir/org.hl7.fhir.core/org.hl7.fhir.%1$s/src/main/java/";
 
@@ -78,19 +77,19 @@ public class ParserEnumeration {
     public static void main(String[] args) {
         VERSION_FILES.forEach(version -> {
             //String version = "10_30";
-            List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
+            //List<String> filenames = listAllJavaFilesInDirectory(new File("").getAbsolutePath() + "/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/");
             //System.out.println("Checking the following files:");
-            Collections.sort(filenames);
+            //Collections.sort(filenames);
             //filenames.forEach(System.out::println);
-            filenames.forEach(name -> {
+            //filenames.forEach(name -> {
                 try {
-                    modifyEnumMethods("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", version);
-                    modifyExpressionsCallingEnums("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv" + version + "/", name, ".java", version);
+                    modifyEnumMethods("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/", "VersionConvertor_" + version, ".java", version);
+                    modifyExpressionsCallingEnums("/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/", "VersionConvertor_" + version, ".java", version);
                     methodNames.clear();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            });
+            //});
         });
 
 //    VERSION_FILES2.forEach(version -> {

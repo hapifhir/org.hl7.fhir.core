@@ -62,7 +62,7 @@ public class Conformance10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -106,7 +106,7 @@ public class Conformance10_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -489,7 +489,7 @@ public class Conformance10_30 {
         if (src.hasDefinitionElement())
             tgt.setDefinitionElement(VersionConvertor_10_30.convertUri(src.getDefinitionElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_10_30.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentationElement())
             tgt.setDocumentationElement(VersionConvertor_10_30.convertString(src.getDocumentationElement()));
         return tgt;
@@ -505,7 +505,7 @@ public class Conformance10_30 {
         if (src.hasDefinitionElement())
             tgt.setDefinitionElement(VersionConvertor_10_30.convertUri(src.getDefinitionElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_10_30.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentationElement())
             tgt.setDocumentationElement(VersionConvertor_10_30.convertString(src.getDocumentationElement()));
         return tgt;

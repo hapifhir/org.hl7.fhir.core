@@ -639,7 +639,7 @@ public class TestScript14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_14_30.convertIdentifier(src.getIdentifier()));
         if (src.hasExperimental())
@@ -688,7 +688,7 @@ public class TestScript14_30 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_14_30.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasIdentifier())
             tgt.setIdentifier(VersionConvertor_14_30.convertIdentifier(src.getIdentifier()));
         if (src.hasExperimental())

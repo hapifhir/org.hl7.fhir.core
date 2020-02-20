@@ -77,7 +77,7 @@ public class StructureDefinition10_40 {
         if (src.hasDisplayElement())
             tgt.setTitleElement(VersionConvertor_10_40.convertString(src.getDisplayElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
@@ -157,7 +157,7 @@ public class StructureDefinition10_40 {
         if (src.hasTitleElement())
             tgt.setDisplayElement(VersionConvertor_10_40.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())

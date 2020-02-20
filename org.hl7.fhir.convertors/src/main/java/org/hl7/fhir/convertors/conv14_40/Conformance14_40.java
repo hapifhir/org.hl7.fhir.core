@@ -64,7 +64,7 @@ public class Conformance14_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -110,7 +110,7 @@ public class Conformance14_40 {
         if (src.hasName())
             tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_14_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -440,7 +440,7 @@ public class Conformance14_40 {
         if (src.hasDefinition())
             tgt.setDefinition(src.getDefinition());
         if (src.hasType())
-            tgt.setType(VersionConvertor_14_40.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_14_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;
@@ -456,7 +456,7 @@ public class Conformance14_40 {
         if (src.hasDefinition())
             tgt.setDefinition(src.getDefinition());
         if (src.hasType())
-            tgt.setType(VersionConvertor_14_40.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_14_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDocumentation())
             tgt.setDocumentation(src.getDocumentation());
         return tgt;

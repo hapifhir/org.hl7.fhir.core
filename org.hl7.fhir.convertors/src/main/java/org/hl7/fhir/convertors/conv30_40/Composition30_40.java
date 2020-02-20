@@ -195,7 +195,7 @@ public class Composition30_40 {
         org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_40.convertType(src.getTarget()));
         return tgt;
@@ -207,7 +207,7 @@ public class Composition30_40 {
         org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent();
         VersionConvertor_30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_30_40.convertDocumentRelationshipType(src.getCode()));
+            tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_30_40.convertType(src.getTarget()));
         return tgt;
@@ -416,4 +416,55 @@ public class Composition30_40 {
         }
         return tgt;
     }
+
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
+            return null;
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentRelationshipType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Composition.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch (src.getValue()) {
+            case REPLACES:
+                tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType.REPLACES);
+                break;
+            case TRANSFORMS:
+                tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType.TRANSFORMS);
+                break;
+            case SIGNS:
+                tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType.SIGNS);
+                break;
+            case APPENDS:
+                tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType.APPENDS);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentRelationshipType.NULL);
+                break;
+        }
+        return tgt;
+    }
+
+    static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentRelationshipType> src) throws FHIRException {
+        if (src == null || src.isEmpty())
+            return null;
+        org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipTypeEnumFactory());
+        VersionConvertor_30_40.copyElement(src, tgt);
+        switch (src.getValue()) {
+            case REPLACES:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.REPLACES);
+                break;
+            case TRANSFORMS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.TRANSFORMS);
+                break;
+            case SIGNS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.SIGNS);
+                break;
+            case APPENDS:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.APPENDS);
+                break;
+            default:
+                tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType.NULL);
+                break;
+        }
+        return tgt;
+    }
+
 }

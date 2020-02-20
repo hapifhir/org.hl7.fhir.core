@@ -45,7 +45,7 @@ public class Patient10_30 {
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
         if (src.hasPeriod())
@@ -65,7 +65,7 @@ public class Patient10_30 {
         if (src.hasAddress())
             tgt.setAddress(VersionConvertor_10_30.convertAddress(src.getAddress()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasOrganization())
             tgt.setOrganization(VersionConvertor_10_30.convertReference(src.getOrganization()));
         if (src.hasPeriod())
@@ -131,7 +131,7 @@ public class Patient10_30 {
         for (org.hl7.fhir.dstu2.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
         for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDateElement())
             tgt.setBirthDateElement(VersionConvertor_10_30.convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())
@@ -164,7 +164,7 @@ public class Patient10_30 {
         for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(VersionConvertor_10_30.convertHumanName(t));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBirthDateElement())
             tgt.setBirthDateElement(VersionConvertor_10_30.convertDate(src.getBirthDateElement()));
         if (src.hasDeceased())

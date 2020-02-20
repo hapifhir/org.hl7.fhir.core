@@ -16,7 +16,7 @@ public class SearchParameter10_40 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -30,7 +30,7 @@ public class SearchParameter10_40 {
             tgt.setCodeElement(VersionConvertor_10_40.convertCode(src.getCodeElement()));
         for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.setBase(t.asStringValue());
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_40.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_10_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         org.hl7.fhir.dstu2.utils.ToolingExtensions.setStringExtension(tgt, ToolingExtensions.EXT_EXPRESSION, src.getExpression());
@@ -52,7 +52,7 @@ public class SearchParameter10_40 {
         if (src.hasNameElement())
             tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatus(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatus()));
+            tgt.setStatusElement(VersionConvertor_10_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(VersionConvertor_10_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
@@ -66,7 +66,7 @@ public class SearchParameter10_40 {
             tgt.setCodeElement(VersionConvertor_10_40.convertCode(src.getCodeElement()));
         tgt.addBase(src.getBase());
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_40.convertSearchParamType(src.getType()));
+            tgt.setTypeElement(VersionConvertor_10_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));

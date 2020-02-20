@@ -72,7 +72,7 @@ public class FamilyMemberHistory10_30 {
         if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBorn())
             tgt.setBorn(VersionConvertor_10_30.convertType(src.getBorn()));
         if (src.hasAge())
@@ -100,7 +100,7 @@ public class FamilyMemberHistory10_30 {
         if (src.hasRelationship())
             tgt.setRelationship(VersionConvertor_10_30.convertCodeableConcept(src.getRelationship()));
         if (src.hasGender())
-            tgt.setGender(VersionConvertor_10_30.convertAdministrativeGender(src.getGender()));
+            tgt.setGenderElement(VersionConvertor_10_30.convertAdministrativeGender(src.getGenderElement()));
         if (src.hasBorn())
             tgt.setBorn(VersionConvertor_10_30.convertType(src.getBorn()));
         if (src.hasAge())
