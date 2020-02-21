@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.validation.instancevalidator.utils;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.validation.instancevalidator.InstanceValidator;
+import org.hl7.fhir.r5.validation.instancevalidator.ValidatorHostContext;
 
 public class ResolvedReference {
 
@@ -51,7 +52,7 @@ public class ResolvedReference {
         return focus;
     }
 
-    public InstanceValidator.ValidatorHostContext hostContext(InstanceValidator.ValidatorHostContext hostContext, StructureDefinition profile) {
+    public ValidatorHostContext hostContext(ValidatorHostContext hostContext, StructureDefinition profile) {
         if (external) {
             return hostContext.forRemoteReference(profile, resource);
         } else {
