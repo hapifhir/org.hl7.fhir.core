@@ -130,6 +130,7 @@ import org.hl7.fhir.r5.validation.BaseValidator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.r5.validation.XVerExtensionManager;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.ChildIterator;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.IndexedElement;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.ResolvedReference;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -2899,7 +2900,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private boolean isPrimitiveType(String code) {
+  public boolean isPrimitiveType(String code) {
     StructureDefinition sd = context.fetchTypeDefinition(code);
     return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
@@ -5203,7 +5204,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   public List<ElementInfo> listChildren(Element element, NodeStack stack) {
     // 1. List the children, and remember their exact path (convenience)
     List<ElementInfo> children = new ArrayList<InstanceValidator.ElementInfo>();
-    ChildIterator iter = new ChildIterator(stack.getLiteralPath(), element);
+    ChildIterator iter = new ChildIterator(this, stack.getLiteralPath(), element);
     while (iter.next())
       children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count()));
     return children;
@@ -5496,72 +5497,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     return Calendar.getInstance().get(Calendar.YEAR);
   }
 
-  public class ChildIterator {
-    private String basePath;
-    private Element parent;
-    private int cursor;
-    private int lastCount;
-
-    public ChildIterator(String path, Element element) {
-      parent = element;
-      basePath = path;
-      cursor = -1;
-    }
-
-    public int count() {
-      String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor-1).getName();
-      String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor+1).getName();
-      if (name().equals(nb) || name().equals(na) ) {
-        return lastCount;
-      } else
-        return -1;
-    }
-
-    public Element element() {
-      return parent.getChildren().get(cursor);
-    }
-
-    public String name() {
-      return element().getName();
-    }
-
-    public boolean next() {
-      if (cursor == -1) {
-        cursor++;
-        lastCount = 0;
-      } else {
-        String lastName = name();
-        cursor++;
-        if (cursor < parent.getChildren().size() && name().equals(lastName))
-          lastCount++;
-        else
-          lastCount = 0;
-      }
-      return cursor < parent.getChildren().size();
-    }
-
-    public String path() {
-      int i = count();
-      String sfx = "";
-      String n = name();
-      String fn = "";
-      if (element().getProperty().isChoice()) {
-        String en = element().getProperty().getName();
-        en = en.substring(0, en.length()-3);
-        String t = n.substring(en.length());
-        if (isPrimitiveType(Utilities.uncapitalize(t)))
-          t = Utilities.uncapitalize(t);
-        n = en;
-        fn = ".ofType("+t+")";       
-      }
-      if (i > -1 || (element().getSpecial() == null && element().isList())) {
-        sfx = "[" + Integer.toString(lastCount) + "]";
-      }
-      return basePath + "." + n + sfx+fn;
-    }
-  }
-
-  public class NodeStack {
+    public class NodeStack {
     private ElementDefinition definition;
     private Element element;
     private ElementDefinition extension;
