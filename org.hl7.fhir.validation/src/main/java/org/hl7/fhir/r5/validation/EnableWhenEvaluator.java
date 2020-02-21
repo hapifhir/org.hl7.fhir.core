@@ -21,7 +21,6 @@ package org.hl7.fhir.r5.validation;
  */
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -29,7 +28,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Questionnaire.*;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.validation.InstanceValidator.ValidatorHostContext;
+import org.hl7.fhir.r5.validation.instancevalidator.InstanceValidator.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
