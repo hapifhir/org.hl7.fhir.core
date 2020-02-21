@@ -2398,7 +2398,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
               targets.put(d.getProperty(), new HashSet<String>());
             targets.get(d.getProperty()).add(d.getSystem());
           }
-
         }
       }
 
@@ -2420,7 +2419,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
-          tr.td().addText(!ccm.hasRelationship() ? "" : ccm.getRelationship().toCode());
+          if (!ccm.hasRelationship())
+            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+          else {
+            if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+              String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+              tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+            } else {
+              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+            }
+          }
           td = tr.td();
           td.addText(ccm.getCode());
           display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
@@ -2511,10 +2519,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else {
               if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(eqpath+"#"+code).tx(code);                
+                String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
               } else {
-                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(ccm.getRelationship().toCode());
+                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
               }
             }
             td = tr.td();
@@ -2544,6 +2552,48 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     inject(cm, x, NarrativeStatus.GENERATED);
     return true;
+  }
+
+  private String presentRelationshipCode(String code) {
+    if ("related-to".equals(code)) {
+      return "is related to";
+    } else if ("equivalent".equals(code)) {
+      return "is equivalent to";
+    } else if ("broader".equals(code)) {
+      return "maps to wider concept";
+    } else if ("narrower".equals(code)) {
+      return "maps to narrower concept";
+    } else if ("not-related-to".equals(code)) {
+      return "is not related to";
+    } else {
+      return code;
+    }
+  }
+
+  private String presentEquivalenceCode(String code) {
+    if ("relatedto".equals(code)) {
+      return "is related to";
+    } else if ("equivalent".equals(code)) {
+      return "is equivalent to";
+    } else if ("equal".equals(code)) {
+      return "is equal to";
+    } else if ("wider".equals(code)) {
+      return "maps to wider concept";
+    } else if ("subsumes".equals(code)) {
+      return "is subsumed by";
+    } else if ("narrower".equals(code)) {
+      return "maps to narrower concept";
+    } else if ("specializes".equals(code)) {
+      return "has specialization";
+    } else if ("inexact".equals(code)) {
+      return "maps loosely to";
+    } else if ("unmatched".equals(code)) {
+      return "has no match";
+    } else if ("disjoint".equals(code)) {
+      return "is not related to";
+    } else {
+      return code;
+    }
   }
 
   public void renderCSDetailsLink(XhtmlNode tr, String url) {
