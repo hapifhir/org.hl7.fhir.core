@@ -4805,7 +4805,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       } else if (ei.definition.getType().size() == 1 && "*".equals(ei.definition.getType().get(0).getWorkingCode())) {
         String prefix = tail(ei.definition.getPath());
         assert prefix.endsWith("[x]");
-        type = ei.name.substring(prefix.length() - 3);
+        type = ei.getName().substring(prefix.length() - 3);
         if (isPrimitiveType(type))
           type = Utilities.uncapitalize(type);
         if (ei.definition.getType().get(0).hasProfile()) {
@@ -4819,11 +4819,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         assert typesAreAllReference(ei.definition.getType()) || ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") : prefix;
 
         if (ei.definition.hasRepresentation(PropertyRepresentation.TYPEATTR))
-          type = ei.element.getType();
+          type = ei.getElement().getType();
         else {
         prefix = prefix.substring(0, prefix.length() - 3);
         for (TypeRefComponent t : ei.definition.getType())
-          if ((prefix + Utilities.capitalize(t.getWorkingCode())).equals(ei.name)) {
+          if ((prefix + Utilities.capitalize(t.getWorkingCode())).equals(ei.getName())) {
             type = t.getWorkingCode();
             // Excluding reference is a kludge to get around versioning issues
             if (t.hasProfile() && !type.equals("Reference"))
@@ -4836,7 +4836,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             type = "Reference";
           else
             rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false,
-                "The type of element " + ei.name + " is not known, which is illegal. Valid types at this point are " + describeTypes(ei.definition.getType()));
+                "The type of element " + ei.getName() + " is not known, which is illegal. Valid types at this point are " + describeTypes(ei.definition.getType()));
         }
       } else if (ei.definition.getContentReference() != null) {
         typeDefn = resolveNameReference(profile.getSnapshot(), ei.definition.getContentReference());
@@ -4856,55 +4856,55 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           type = null;
         }
       }
-      NodeStack localStack = stack.push(ei.element, ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
+      NodeStack localStack = stack.push(ei.getElement(), ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
       if (debug) {
         System.out.println("  "+localStack.getLiteralPath());
       }
       String localStackLiterapPath = localStack.getLiteralPath();
-      String eiPath = ei.path;
-      assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.path + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
+      String eiPath = ei.getPath();
+      assert(eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.getPath() + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
       boolean thisIsCodeableConcept = false;
       String thisExtension = null;
       boolean checkDisplay = true;
 
-      checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.element, localStack, true);
+      checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.getElement(), localStack, true);
 
-      ei.element.markValidation(profile, ei.definition);
+      ei.getElement().markValidation(profile, ei.definition);
       boolean elementValidated = false;
       if (type != null) {
         if (isPrimitiveType(type)) {
-          checkPrimitive(hostContext, errors, ei.path, type, ei.definition, ei.element, profile, stack);
+          checkPrimitive(hostContext, errors, ei.getPath(), type, ei.definition, ei.getElement(), profile, stack);
         } else {
           if (ei.definition.hasFixed()) {
-            checkFixedValue(errors,ei.path, ei.element, ei.definition.getFixed(), profile.getUrl(), ei.definition.getSliceName(), null);
+            checkFixedValue(errors,ei.getPath(), ei.getElement(), ei.definition.getFixed(), profile.getUrl(), ei.definition.getSliceName(), null);
           }
           if (ei.definition.hasPattern()) {
-              checkFixedValue(errors,ei.path, ei.element, ei.definition.getPattern(), profile.getUrl(), ei.definition.getSliceName(), null, true);
+              checkFixedValue(errors,ei.getPath(), ei.getElement(), ei.definition.getPattern(), profile.getUrl(), ei.definition.getSliceName(), null, true);
           }
         }
         if (type.equals("Identifier")) {
-          checkIdentifier(errors, ei.path, ei.element, ei.definition);
+          checkIdentifier(errors, ei.getPath(), ei.getElement(), ei.definition);
         } else if (type.equals("Coding")) {
-          checkCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
+          checkCoding(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
         } else if (type.equals("CodeableConcept")) {
-          checkDisplay = checkCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack);
+          checkDisplay = checkCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, ei.definition, stack);
           thisIsCodeableConcept = true;
         } else if (type.equals("Reference")) {
-          checkReference(hostContext, errors, ei.path, ei.element, profile, ei.definition, actualType, localStack);
+          checkReference(hostContext, errors, ei.getPath(), ei.getElement(), profile, ei.definition, actualType, localStack);
         // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
         } else if (type.equals("Extension")) {
-          Element eurl = ei.element.getNamedChild("url");
-          if (rule(errors, IssueType.INVALID, ei.path, eurl != null, "Extension.url is required")) {
+          Element eurl = ei.getElement().getNamedChild("url");
+          if (rule(errors, IssueType.INVALID, ei.getPath(), eurl != null, "Extension.url is required")) {
             String url = eurl.primitiveValue();
             thisExtension = url;
-            if (rule(errors, IssueType.INVALID, ei.path, !Utilities.noString(url), "Extension.url is required")) {
-              if (rule(errors, IssueType.INVALID, ei.path, (extensionUrl != null) || Utilities.isAbsoluteUrl(url), "Extension.url must be an absolute URL")) {
-                checkExtension(hostContext, errors, ei.path, resource, element, ei.element, ei.definition, profile, localStack, stack, extensionUrl);
+            if (rule(errors, IssueType.INVALID, ei.getPath(), !Utilities.noString(url), "Extension.url is required")) {
+              if (rule(errors, IssueType.INVALID, ei.getPath(), (extensionUrl != null) || Utilities.isAbsoluteUrl(url), "Extension.url must be an absolute URL")) {
+                checkExtension(hostContext, errors, ei.getPath(), resource, element, ei.getElement(), ei.definition, profile, localStack, stack, extensionUrl);
               }
             }
           }
         } else if (type.equals("Resource")) {
-          validateContains(hostContext, errors, ei.path, ei.definition, definition, resource, ei.element, localStack, idStatusForEntry(element, ei)); // if
+          validateContains(hostContext, errors, ei.getPath(), ei.definition, definition, resource, ei.getElement(), localStack, idStatusForEntry(element, ei)); // if
           elementValidated = true;
         // (str.matches(".*([.,/])work\\1$"))
         } else if (Utilities.isAbsoluteUrl(type)) {
@@ -4912,16 +4912,16 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           if (defn != null && hasMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep())) {
             List<String> txtype = getMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep());
             if (txtype.contains("CodeableConcept")) {
-              checkTerminologyCodeableConcept(errors, ei.path, ei.element, profile, ei.definition, stack, defn);
+              checkTerminologyCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, ei.definition, stack, defn);
               thisIsCodeableConcept = true;
             } else if (txtype.contains("Coding")) {
-              checkTerminologyCoding(errors, ei.path, ei.element, profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack, defn);
+              checkTerminologyCoding(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack, defn);
             }
           }
         }
       } else {
-        if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.name))
-          validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, false, true, null);
+        if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), ei.definition != null, "Unrecognised Content " + ei.getName()))
+          validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.getElement(), type, localStack, false, true, null);
       }
       StructureDefinition p = null;
       String tail = null;
@@ -4936,7 +4936,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           //  checkInvariants(hostContext, errors, ei.path, profile, ei.definition, null, null, resource, ei.element);
           //}
 
-          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown type " + type);
+          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, "Unknown type " + type);
         }
       } else if (profiles.size()==1) {
         String url = profiles.get(0);
@@ -4945,7 +4945,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
           url = url.substring(0, url.indexOf("#"));
         }
         p = this.context.fetchResource(StructureDefinition.class, url);
-        rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + profiles.get(0));
+        rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, "Unknown profile " + profiles.get(0));
       } else {
         elementValidated = true;
         HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
@@ -4958,9 +4958,9 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             url = url.substring(0, url.indexOf("#"));
           }
           p = this.context.fetchResource(StructureDefinition.class, typeProfile);
-          if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, p != null, "Unknown profile " + typeProfile)) {
+          if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, "Unknown profile " + typeProfile)) {
             List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
-            validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
+            validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
             if (hasErrors(profileErrors))
               badProfiles.put(typeProfile, profileErrors);
             else
@@ -4970,7 +4970,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (goodProfiles.size()==1) {
           errors.addAll(goodProfiles.values().iterator().next());
         } else if (goodProfiles.size()==0) {
-          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
+          rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, "Unable to find matching profile among choices: " + StringUtils.join("; ", profiles));
           for (String m : badProfiles.keySet()) {
             p = this.context.fetchResource(StructureDefinition.class, m);
             for (ValidationMessage message : badProfiles.get(m)) {
@@ -4979,7 +4979,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             }
           }
         } else {
-          warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.path, false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
+          warning(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, "Found multiple matching profiles among choices: " + StringUtils.join("; ", goodProfiles.keySet()));
           for (String m : goodProfiles.keySet()) {
             p = this.context.fetchResource(StructureDefinition.class, m);
             for (ValidationMessage message : goodProfiles.get(m)) {
@@ -4993,16 +4993,16 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         trackUsage(p, hostContext, element);
 
         if (!elementValidated) {
-          if (ei.element.getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.element.getSpecial() == SpecialElement.PARAMETER )
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.element, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
+          if (ei.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.getElement().getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.getElement().getSpecial() == SpecialElement.PARAMETER )
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
           else
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
         }
         int index = profile.getSnapshot().getElement().indexOf(ei.definition);
         if (index < profile.getSnapshot().getElement().size() - 1) {
           String nextPath = profile.getSnapshot().getElement().get(index+1).getPath();
           if (!nextPath.equals(ei.definition.getPath()) && nextPath.startsWith(ei.definition.getPath()))
-            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.element, type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
+            validateElement(hostContext, errors, profile, ei.definition, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
         }
       }
     }
@@ -5065,13 +5065,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       profile.setUserData("usesMustSupport", usesMustSupport);
     }
     if (usesMustSupport.equals("Y")) {
-      String elementSupported = ei.element.getUserString("elementSupported");
+      String elementSupported = ei.getElement().getUserString("elementSupported");
       if (elementSupported==null || ei.definition.getMustSupport())
         if (ei.definition.getMustSupport()) {
-          ei.element.setUserData("elementSupported", "Y");
+          ei.getElement().setUserData("elementSupported", "Y");
         }
-//        else
-//          ei.element.setUserData("elementSupported", "N");
     }
   }
 
@@ -5164,16 +5162,16 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
               ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
                 "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()+": "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicing(ei.sliceInfo)),
+            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicing(ei.sliceInfo)),
                 "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: "+errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
           if (!profile.getAbstract())
-            rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.path, (ei.definition != null), "This element is not allowed by the profile "+profile.getUrl());
+            rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.getPath(), (ei.definition != null), "This element is not allowed by the profile "+profile.getUrl());
         }
       // TODO: Should get the order of elements correct when parsing elements that are XML attributes vs. elements
       boolean isXmlAttr = false;
@@ -5188,10 +5186,10 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       
       if (!ToolingExtensions.readBoolExtension(profile, "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order")) {
         boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr;
-        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, ok, "As specified by profile " + profile.getUrl() + ", Element '"+ei.name+"' is out of order");
+        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, "As specified by profile " + profile.getUrl() + ", Element '"+ei.getName()+"' is out of order");
       }
       if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered())
-        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, "As specified by profile " + profile.getUrl() + ", Element '"+ei.name+"' is out of order in ordered slice");
+        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, "As specified by profile " + profile.getUrl() + ", Element '"+ei.getName()+"' is out of order in ordered slice");
       if (ei.definition == null || !isXmlAttr)
         last = ei.index;
       if (ei.slice != null)
@@ -5220,11 +5218,11 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       boolean childUnsupportedSlicing, ElementInfo ei) {
     boolean match = false;
     if (slicer == null || slicer == ed) {
-      match = nameMatches(ei.name, tail(ed.getPath()));      
+      match = nameMatches(ei.getName(), tail(ed.getPath()));
     } else {
-      if (nameMatches(ei.name, tail(ed.getPath())))
+      if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
-          match = sliceMatches(hostContext, ei.element, ei.path, slicer, ed, profile, errors, sliceInfo, stack);
+          match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack);
           if (match) {
             ei.slice = slicer;
 
@@ -5235,14 +5233,14 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
             ei.additionalSlice = true;
           }
         } catch (FHIRException e) {
-          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.path, false, e.getMessage());
+          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false, e.getMessage());
           unsupportedSlicing = true;
           childUnsupportedSlicing = true;
         }
     }
     if (match) {
       boolean isOk = ei.definition == null || ei.definition == slicer || (ei.definition.getPath().endsWith("[x]") && ed.getPath().startsWith(ei.definition.getPath().replace("[x]", "")));
-      if (rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.path, isOk, "Profile " + profile.getUrl() + ", Element matches more than one slice - " + (ei.definition==null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()) + ", " + (ed.hasSliceName() ? ed.getSliceName() : ""))) {
+      if (rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), isOk, "Profile " + profile.getUrl() + ", Element matches more than one slice - " + (ei.definition==null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()) + ", " + (ed.hasSliceName() ? ed.getSliceName() : ""))) {
         ei.definition = ed;
         if (ei.slice == null) {
           ei.index = i;
@@ -5268,7 +5266,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   }
 
   private IdStatus idStatusForEntry(Element ep, ElementInfo ei) {
-    if (isBundleEntry(ei.path)) {
+    if (isBundleEntry(ei.getPath())) {
       Element req = ep.getNamedChild("request");
       Element resp = ep.getNamedChild("response");
       Element fullUrl = ep.getNamedChild("fullUrl");
@@ -5299,7 +5297,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
         else // actually, we should never get to here; a bundle entry with method get/delete should not have a resource
           return IdStatus.OPTIONAL;					
       }
-    } else if (isParametersEntry(ei.path) || isBundleOutcome(ei.path))
+    } else if (isParametersEntry(ei.getPath()) || isBundleOutcome(ei.getPath()))
       return IdStatus.OPTIONAL; 
     else
       return IdStatus.REQUIRED; 
