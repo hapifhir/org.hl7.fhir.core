@@ -130,6 +130,7 @@ import org.hl7.fhir.r5.validation.BaseValidator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.r5.validation.XVerExtensionManager;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.IndexedElement;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.ResolvedReference;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -2602,21 +2603,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private class IndexedElement {
-    private int index;
-    private Element match;
-    private Element entry;
-    
-    public IndexedElement(int index, Element match, Element entry) {
-      super();
-      this.index = index;
-      this.match = match;
-      this.entry = entry;
-    }
-    
-  }
-  
-  private IndexedElement getContainedById(Element container, String id) {
+    private IndexedElement getContainedById(Element container, String id) {
     List<Element> contained = new ArrayList<Element>();
     container.getNamedChildren("contained", contained);
     for (int i = 0; i < contained.size(); i++) {
@@ -2962,9 +2949,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (res != null) {
             ResolvedReference rr = new ResolvedReference();
             rr.setResource(stack.getElement());
-            rr.setFocus(res.match);
+            rr.setFocus(res.getMatch());
             rr.setExternal(false);
-            rr.setStack(stack.push(res.match, res.index, res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
+            rr.setStack(stack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
             return rr;
           }
         }
@@ -2993,12 +2980,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             return null;
           } else {
             ResolvedReference rr = new ResolvedReference();
-            rr.setResource(res.match);
-            rr.setFocus(res.match);
+            rr.setResource(res.getMatch());
+            rr.setFocus(res.getMatch());
             rr.setExternal(false);
-            rr.setStack(stack.push(res.entry, res.index, res.entry.getProperty().getDefinition(),
-                    res.entry.getProperty().getDefinition()).push(res.match, -1,
-                    res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
+            rr.setStack(stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+                    res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
+                    res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
             return rr;
           }
         }
@@ -3014,12 +3001,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return null;
         } else {
           ResolvedReference rr = new ResolvedReference();
-          rr.setResource(res.match);
-          rr.setFocus(res.match);
+          rr.setResource(res.getMatch());
+          rr.setFocus(res.getMatch());
           rr.setExternal(false);
-          rr.setStack(new NodeStack(hostContext).push(res.entry, res.index, res.entry.getProperty().getDefinition(),
-                  res.entry.getProperty().getDefinition()).push(res.match, -1,
-                  res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
+          rr.setStack(new NodeStack(hostContext).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+                  res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
+                  res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
           return rr;
         }
       }
@@ -4564,8 +4551,8 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     for (String reference: references) {
       // We don't want errors when just retrieving the element as they will be caught (with better path info) in subsequent processing
       IndexedElement r = getFromBundle(stack.getElement(), reference, entry.getChildValue("fullUrl"), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type, "transaction".equals(stack.getElement().getChildValue("type")));
-      if (r!=null && !visitedResources.containsValue(r.match)) {
-        followResourceLinks(candidateEntries.get(r.match), visitedResources, candidateEntries, candidateResources, errors, stack, depth+1);
+      if (r!=null && !visitedResources.containsValue(r.getMatch())) {
+        followResourceLinks(candidateEntries.get(r.getMatch()), visitedResources, candidateEntries, candidateResources, errors, stack, depth+1);
       }
     }
   }
