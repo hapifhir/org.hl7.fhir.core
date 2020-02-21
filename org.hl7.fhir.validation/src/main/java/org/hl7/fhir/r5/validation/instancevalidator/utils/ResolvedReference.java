@@ -3,7 +3,6 @@ package org.hl7.fhir.r5.validation.instancevalidator.utils;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.validation.instancevalidator.InstanceValidator;
-import org.hl7.fhir.r5.validation.instancevalidator.ValidatorHostContext;
 
 public class ResolvedReference {
 

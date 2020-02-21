@@ -130,10 +130,7 @@ import org.hl7.fhir.r5.validation.BaseValidator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.r5.validation.XVerExtensionManager;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.ChildIterator;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.ElementInfo;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.IndexedElement;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.ResolvedReference;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -4357,18 +4354,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
    }
   }
 
-  public class EntrySummary {
-    Element entry;
-    Element resource;
-    List<EntrySummary> targets = new ArrayList<>();
-    public EntrySummary(Element entry, Element resource) {
-      this.entry = entry;
-      this.resource = resource;
-    }
-
-  }
-
-  private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {
+    private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {
     List<EntrySummary> entryList = new ArrayList<>();
     for (Element entry: entries) {
       Element r = entry.getNamedChild("resource");
@@ -4377,13 +4363,13 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       }
     }
     for (EntrySummary e : entryList) {
-      Set<String> references = findReferences(e.entry);
+      Set<String> references = findReferences(e.getEntry());
       for (String ref : references) {
-        Element tgt = resolveInBundle(entries, ref, e.entry.getChildValue("fullUrl"), e.resource.fhirType(), e.resource.getIdBase());
+        Element tgt = resolveInBundle(entries, ref, e.getEntry().getChildValue("fullUrl"), e.getResource().fhirType(), e.getResource().getIdBase());
         if (tgt != null) {
           EntrySummary t = entryForTarget(entryList, tgt);
           if (t != null) {
-            e.targets.add(t);
+            e.getTargets().add(t);
           }
         }
       }
@@ -4397,7 +4383,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
       for (EntrySummary e : entryList) {
         if (!visited.contains(e)) {
           boolean add = false;
-          for (EntrySummary t : e.targets) {
+          for (EntrySummary t : e.getTargets()) {
             if (visited.contains(t)) {
               add = true;
             }
@@ -4412,7 +4398,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     
     int i = 0;
     for (EntrySummary e : entryList) {
-      Element entry = e.entry;
+      Element entry = e.getEntry();
       if (isError) {
         rule(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath("entry" + '[' + (i+1) + ']'), visited.contains(e), "Entry "+(entry.getChildValue("fullUrl") != null ? "'"+entry.getChildValue("fullUrl")+"'" : "")+" isn't reachable by traversing from first Bundle entry");
       } else {
@@ -4424,7 +4410,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   private EntrySummary entryForTarget(List<EntrySummary> entryList, Element tgt) {
     for (EntrySummary e : entryList) {
-      if (e.entry == tgt) {
+      if (e.getEntry() == tgt) {
         return e;
       }
     }
@@ -4434,7 +4420,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   private void visitLinked(Set<EntrySummary> visited, EntrySummary t) {
     if (!visited.contains(t)) {
       visited.add(t);
-      for (EntrySummary e : t.targets) {
+      for (EntrySummary e : t.getTargets()) {
         visitLinked(visited, e);
       }
     }

@@ -28,7 +28,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Questionnaire.*;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.validation.instancevalidator.ValidatorHostContext;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
