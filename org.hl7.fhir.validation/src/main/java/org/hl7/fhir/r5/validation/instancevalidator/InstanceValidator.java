@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.r5.validation.instancevalidator;
 
 /*-
  * #%L
@@ -35,9 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import ca.uhn.fhir.context.FhirContext;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
@@ -94,8 +92,6 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Period;
@@ -130,11 +126,12 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.validation.BaseValidator;
+import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
-import org.hl7.fhir.r5.validation.InstanceValidator.EntrySummary;
-import org.hl7.fhir.r5.validation.InstanceValidator.ResolvedReference;
+import org.hl7.fhir.r5.validation.XVerExtensionManager;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.ResolvedReference;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -172,39 +169,7 @@ import ca.uhn.fhir.util.ObjectUtil;
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
 
-  public class ResolvedReference {
-
-    private Element resource;
-    private Element focus;
-    private boolean external;
-    private NodeStack stack;
-    
-    public String getType() {
-      return focus.fhirType();
-    }
-
-    public ValidatorHostContext hostContext(ValidatorHostContext hostContext, StructureDefinition profile) {
-      if (external) {
-        return hostContext.forRemoteReference(profile, resource);
-      } else {
-        return hostContext.forLocalReference(profile, resource);
-      }
-    }
-
-    public Element getResource() {
-      return resource;
-    }
-
-    public Element getFocus() {
-      return focus;
-    }
-
-    public NodeStack getStack() {
-      return stack;
-    }
-  }
-
-  public class ValidatorHostContext {
+    public class ValidatorHostContext {
     private Object appContext;
     private Element container; // bundle, or parameters
     private Element resource;
@@ -2996,10 +2961,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           IndexedElement res = getContainedById(stack.getElement(), ref.substring(1));
           if (res != null) {
             ResolvedReference rr = new ResolvedReference();
-            rr.resource = stack.getElement();
-            rr.focus = res.match;
-            rr.external = false;
-            rr.stack = stack.push(res.match, res.index, res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition());
+            rr.setResource(stack.getElement());
+            rr.setFocus(res.match);
+            rr.setExternal(false);
+            rr.setStack(stack.push(res.match, res.index, res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
             return rr;
           }
         }
@@ -3028,10 +2993,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             return null;
           } else {
             ResolvedReference rr = new ResolvedReference();
-            rr.resource = res.match;
-            rr.focus = res.match;
-            rr.external = false;
-            rr.stack = stack.push(res.entry, res.index, res.entry.getProperty().getDefinition(), res.entry.getProperty().getDefinition()).push(res.match, -1, res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition());
+            rr.setResource(res.match);
+            rr.setFocus(res.match);
+            rr.setExternal(false);
+            rr.setStack(stack.push(res.entry, res.index, res.entry.getProperty().getDefinition(),
+                    res.entry.getProperty().getDefinition()).push(res.match, -1,
+                    res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
             return rr;
           }
         }
@@ -3047,10 +3014,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return null;
         } else {
           ResolvedReference rr = new ResolvedReference();
-          rr.resource = res.match;
-          rr.focus = res.match;
-          rr.external = false;
-          rr.stack = new NodeStack(hostContext).push(res.entry, res.index, res.entry.getProperty().getDefinition(), res.entry.getProperty().getDefinition()).push(res.match, -1, res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition());
+          rr.setResource(res.match);
+          rr.setFocus(res.match);
+          rr.setExternal(false);
+          rr.setStack(new NodeStack(hostContext).push(res.entry, res.index, res.entry.getProperty().getDefinition(),
+                  res.entry.getProperty().getDefinition()).push(res.match, -1,
+                  res.match.getProperty().getDefinition(), res.match.getProperty().getDefinition()));
           return rr;
         }
       }
@@ -3071,16 +3040,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private ResolvedReference makeExternalRef(Element external, String path) {
     ResolvedReference res = new ResolvedReference();
-    res.resource = external;
-    res.focus = external;
-    res.external = true;
-    res.stack = new NodeStack(external, path);
+    res.setResource(external);
+    res.setFocus(external);
+    res.setExternal(true);
+    res.setStack(new NodeStack(external, path));
     return res;
   }
 
 
   private Element resolve(Object appContext, String ref, NodeStack stack, List<ValidationMessage> errors, String path) throws IOException, FHIRException {
-    Element local = localResolve(ref, stack, errors, path, null, null).focus;
+    Element local = localResolve(ref, stack, errors, path, null, null).getFocus();
     if (local!=null)
       return local;
     if (fetcher == null)
