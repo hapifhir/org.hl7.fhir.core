@@ -175,6 +175,7 @@ public class PackageCacheManager {
 
   private static final String PRIMARY_SERVER = "http://packages.fhir.org";
   private static final String SECONDARY_SERVER = "http://test.fhir.org/packages";
+//  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
@@ -281,6 +282,12 @@ public class PackageCacheManager {
     if (res.size() == 0) {
       return null;
     } else {
+      // this is driven by HL7 Australia (http://hl7.org.au/fhir/ is the canonical url for the base package, and the root for all the others)
+      for (PackageInfo pi : res) {
+        if (canonical.equals(pi.getCanonical())) {
+          return pi.getId();
+        }
+      }
       return res.get(0).getId();
     }
   }
