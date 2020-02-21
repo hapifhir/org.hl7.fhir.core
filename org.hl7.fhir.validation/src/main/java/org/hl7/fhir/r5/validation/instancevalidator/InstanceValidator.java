@@ -36,13 +36,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -116,7 +114,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -168,165 +165,7 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
-
-    private class ValidatorHostServices implements IEvaluationContext {
-
-//    private Stack<Map<String, List<>>>
-    
-    @Override
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
-      ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (externalHostServices != null)
-        return externalHostServices.resolveConstant(c.getAppContext(), name, beforeContext);
-      else
-        return null;
-    }
-
-    @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
-      ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (externalHostServices != null)
-        return externalHostServices.resolveConstantType(c.getAppContext(), name);
-      else
-        return null;
-    }
-
-    @Override
-    public boolean log(String argument, List<Base> focus) {
-      if (externalHostServices != null)
-        return externalHostServices.log(argument, focus);
-      else 
-        return false;
-    }
-
-    @Override
-    public FunctionDetails resolveFunction(String functionName) {
-      throw new Error("Not done yet (ValidatorHostServices.resolveFunction): "+functionName);
-    }
-
-    @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
-      throw new Error("Not done yet (ValidatorHostServices.checkFunction)");
-    }
-
-    @Override
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
-      throw new Error("Not done yet (ValidatorHostServices.executeFunction)");
-    }
-
-    @Override
-    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
-      ValidatorHostContext c = (ValidatorHostContext) appContext;
-      
-      if (refContext != null && refContext.hasUserData("validator.bundle.resolution")) {
-        return (Base) refContext.getUserData("validator.bundle.resolution");      
-      }
-      
-      if (c.getAppContext() instanceof Element)  {
-        Element bnd = (Element) c.getAppContext();
-        Base res = resolveInBundle(url, bnd);
-        if (res != null)
-          return res;
-      }
-      Base res = resolveInBundle(url, c.getResource());
-      if (res != null)
-        return res;
-      res = resolveInBundle(url, c.getContainer());
-      if (res != null)
-        return res;
-      
-      if (externalHostServices != null)
-        return externalHostServices.resolveReference(c.getAppContext(), url, refContext);
-      else if (fetcher != null)
-        try {
-          return fetcher.fetch(c.getAppContext(), url);
-        } catch (IOException e) {
-          throw new FHIRException(e);
-        }
-      else
-        throw new Error("Not done yet - resolve "+url+" locally (2)");
-          
-    }
-
-    public Base resolveInBundle(String url, Element bnd) {
-      if (bnd == null)
-        return null;
-      if (bnd.fhirType().equals("Bundle")) {
-        for (Element be : bnd.getChildrenByName("entry")) {
-          Element res = be.getNamedChild("resource");
-          if (res != null) { 
-            String fullUrl = be.getChildValue("fullUrl");
-            String rt = res.fhirType();
-            String id = res.getChildValue("id");
-            if (url.equals(fullUrl))
-              return res;
-            if (url.equals(rt+"/"+id))
-              return res;
-          }
-        }
-      }
-      return null;
-    }
-
-    @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-      ValidatorHostContext ctxt = (ValidatorHostContext) appContext;
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-      if (sd == null) {
-        throw new FHIRException("Unable to resolve "+url);
-      }
-      InstanceValidator self = InstanceValidator.this;
-      List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
-      if (item instanceof Resource) {
-        try {
-          Element e = new ObjectConverter(context).convert((Resource) item);
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL,new NodeStack(e));
-        } catch (IOException e1) {
-          throw new FHIRException(e1);
-        }
-      } else if (item instanceof Element) {
-        Element e = (Element) item;
-        if (e.isResource()) {
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL,new NodeStack(e));
-        } else {
-          throw new FHIRException("Not supported yet");
-        }
-      } else
-        throw new NotImplementedException("Not done yet (ValidatorHostServices.conformsToProfile), when item is not an element");
-      boolean ok = true;
-      List<ValidationMessage> record = new ArrayList<>();
-      for (ValidationMessage v : valerrors) {
-        ok = ok && !v.getLevel().isError();
-        if (v.getLevel().isError() || v.isSlicingHint()) {
-          record.add(v);
-        }
-      }
-      if (!ok && !record.isEmpty()) {
-        ctxt.sliceNotes(url, record);
-      }
-      return ok;
-    }
-
-    @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
-      ValidatorHostContext c = (ValidatorHostContext) appContext;
-      if (c.getProfile() != null && url.startsWith("#")) {
-        for (Resource r : c.getProfile().getContained()) {
-          if (r.getId().equals(url.substring(1))) {
-            if (r instanceof ValueSet)
-              return (ValueSet) r;
-            else
-              throw new FHIRException("Reference "+url+" refers to a "+r.fhirType()+" not a ValueSet");
-          }
-        }
-        return null;
-      }
-      return context.fetchResource(ValueSet.class, url);
-    }
-
-  }
-
-  /**
+    /**
    * The validator keeps one of these classes for each resource it validates (e.g. when chasing references)
    * 
    * It keeps track of the state of resource validation - a given resrouce may be validated agaisnt multiple 
@@ -415,7 +254,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.context = theContext;
     this.externalHostServices = hostServices;
     fpe = new FHIRPathEngine(context);
-    validatorServices = new ValidatorHostServices();
+    validatorServices = new ValidatorHostServices(this);
     fpe.setHostServices(validatorServices);
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
       fpe.setLegacyMode(true);
@@ -5282,7 +5121,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
   /*
    * The actual base entry point for internal use (re-entrant)
    */
-  private void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack) throws FHIRException {
+  public void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack) throws FHIRException {
     assert stack != null;
     assert resource != null;
     boolean ok = true;
@@ -5385,7 +5224,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     return Calendar.getInstance().get(Calendar.YEAR);
   }
 
-    public class NodeStack {
+    public static class NodeStack {
     private ElementDefinition definition;
     private Element element;
     private ElementDefinition extension;
