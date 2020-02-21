@@ -131,6 +131,7 @@ import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
 import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.r5.validation.XVerExtensionManager;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.ChildIterator;
+import org.hl7.fhir.r5.validation.instancevalidator.utils.ElementInfo;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.IndexedElement;
 import org.hl7.fhir.r5.validation.instancevalidator.utils.ResolvedReference;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -5203,7 +5204,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
 
   public List<ElementInfo> listChildren(Element element, NodeStack stack) {
     // 1. List the children, and remember their exact path (convenience)
-    List<ElementInfo> children = new ArrayList<InstanceValidator.ElementInfo>();
+    List<ElementInfo> children = new ArrayList<ElementInfo>();
     ChildIterator iter = new ChildIterator(this, stack.getLiteralPath(), element);
     while (iter.next())
       children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count()));
@@ -5623,41 +5624,7 @@ private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, L
     }
   }
 
-  public class ElementInfo {
-
-    public List<ValidationMessage> sliceInfo;
-    public int index; // order of definition in overall order. all slices get the index of the slicing definition
-    public int sliceindex; // order of the definition in the slices (if slice != null)
-    public int count;
-    public ElementDefinition definition;
-    public ElementDefinition slice;
-    public boolean additionalSlice; // If true, indicates that this element is an additional slice
-    private Element element;
-    private String name;
-    private String path;
-
-    public ElementInfo(String name, Element element, String path, int count) {
-      this.name = name;
-      this.element = element;
-      this.path = path;
-      this.count = count;
-    }
-
-    public int col() {
-      return element.col();
-    }
-
-    public int line() {
-      return element.line();
-    }
-
-    @Override
-    public String toString() {
-      return path;
-    }
-  }
-
-  public String reportTimes() {
+    public String reportTimes() {
     String s = String.format("Times (ms): overall = %d, tx = %d, sd = %d, load = %d, fpe = %d", overall / 1000000, txTime / 1000000, sdTime / 1000000, loadTime / 1000000, fpeTime / 1000000);
     overall = 0;
     txTime = 0;
