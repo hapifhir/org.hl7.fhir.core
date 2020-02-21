@@ -5362,7 +5362,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         private String workingLang;
 
         public NodeStack() {
-            workingLang = validationLanguage;
         }
 
         public NodeStack(Element element) {
