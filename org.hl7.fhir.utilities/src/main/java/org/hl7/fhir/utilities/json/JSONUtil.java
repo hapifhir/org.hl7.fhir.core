@@ -86,7 +86,7 @@ public class JSONUtil {
     JsonElement e = json.get(name1);
     if (e == null)
       e = json.get(name2);
-    return e == null ? null : e.getAsString();
+    return e == null ? null : e instanceof JsonNull ? null :  e.getAsString();
   }
 
   public static boolean has(JsonObject json, String name1, String name2) {
