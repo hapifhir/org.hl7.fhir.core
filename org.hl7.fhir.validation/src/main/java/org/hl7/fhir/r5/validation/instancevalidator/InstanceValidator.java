@@ -3475,21 +3475,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     private void validateQuestionnaireElement(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, List<Element> parents) {
         // R4+
-        if (FHIRVersion.isR4Plus(context.getVersion())) {
-            if (item.hasChildren("enableWhen")) {
-                List<Element> ewl = item.getChildren("enableWhen");
-                for (Element ew : ewl) {
-//          Element ew = item.getNamedChild("enableWhen");
-                    String ql = ew.getNamedChildValue("question");
-                    if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, ql != null, "Questions with an enableWhen must have a value for the question link")) {
-                        Element tgt = getQuestionById(item, ql);
-                        if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt == null, "Questions with an enableWhen cannot refer to an inner question for it's enableWhen condition")) {
-                            tgt = getQuestionById(questionnaire, ql);
-                            if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find target '" + ql + "' for this question enableWhen")) {
-                                if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
-                                    if (!isBefore(item, tgt, parents)) {
-                                        warning(errors, IssueType.BUSINESSRULE, ns.literalPath, false, "The target of this enableWhen rule (" + ql + ") comes after the question itself");
-                                    }
+        if ((FHIRVersion.isR4Plus(context.getVersion())) && (item.hasChildren("enableWhen"))) {
+            List<Element> ewl = item.getChildren("enableWhen");
+            for (Element ew : ewl) {
+                String ql = ew.getNamedChildValue("question");
+                if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, ql != null, "Questions with an enableWhen must have a value for the question link")) {
+                    Element tgt = getQuestionById(item, ql);
+                    if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt == null, "Questions with an enableWhen cannot refer to an inner question for it's enableWhen condition")) {
+                        tgt = getQuestionById(questionnaire, ql);
+                        if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != null, "Unable to find target '" + ql + "' for this question enableWhen")) {
+                            if (rule(errors, IssueType.BUSINESSRULE, ns.literalPath, tgt != item, "Target for this question enableWhen can't reference itself")) {
+                                if (!isBefore(item, tgt, parents)) {
+                                    warning(errors, IssueType.BUSINESSRULE, ns.literalPath, false, "The target of this enableWhen rule (" + ql + ") comes after the question itself");
                                 }
                             }
                         }
@@ -4568,14 +4565,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     private void validateElement(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl) throws FHIRException {
-        // element.markValidation(profile, definition);
 
-        //		time = System.nanoTime();
         // check type invariants
         checkInvariants(hostContext, errors, profile, definition, resource, element, stack, false);
         if (definition.getFixed() != null)
             checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getUrl(), definition.getSliceName(), null);
-
 
         // get the list of direct defined children, including slices
         List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(profile, definition);
@@ -4997,14 +4991,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else if (slicer != null && !slicer.getPath().equals(ed.getPath()))
                 slicer = null;
 
-//      if (process) {
             for (ElementInfo ei : children) {
                 if (ei.sliceInfo == null) {
                     ei.sliceInfo = new ArrayList<>();
                 }
                 unsupportedSlicing = matchSlice(hostContext, errors, ei.sliceInfo, profile, stack, slicer, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei);
             }
-//      }
         }
         int last = -1;
         int lastSlice = -1;
@@ -5466,10 +5458,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 res.logicalPaths.add(definition.typeSummary());
             } else
                 res.logicalPaths.addAll(getLogicalPaths());
-            // CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-            // for (String lp : res.logicalPaths)
-            // b.append(lp);
-            // System.out.println(res.literalPath+" : "+b.toString());
             return res;
         }
 
