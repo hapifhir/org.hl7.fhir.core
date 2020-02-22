@@ -26,7 +26,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
-import org.hl7.fhir.r5.validation.InstanceValidator;
+import org.hl7.fhir.r5.validation.instancevalidator.InstanceValidator;
 import org.hl7.fhir.r5.validation.ValidationEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
