@@ -219,9 +219,9 @@ public class NpmPackage {
           }
           loadSubFolders(res, dir.getAbsolutePath(), f);
         } else {
-          NpmPackageFolder folder = res.new NpmPackageFolder("package/$root");
+          NpmPackageFolder folder = res.new NpmPackageFolder(Utilities.path("package", "$root"));
           folder.folder = dir;
-          res.folders.put("package/$root", folder);        
+          res.folders.put(Utilities.path("package", "$root"), folder);        
         }
       }
     }
