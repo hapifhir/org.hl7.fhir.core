@@ -1,8 +1,8 @@
-package org.hl7.fhir.r5.validation.instancevalidator.utils;
+package org.hl7.fhir.validation.instance.utils;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.validation.instancevalidator.InstanceValidator;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 
 public class ResolvedReference {
 
