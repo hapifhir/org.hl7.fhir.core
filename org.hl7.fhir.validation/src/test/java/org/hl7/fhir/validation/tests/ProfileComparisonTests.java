@@ -1,19 +1,15 @@
 package org.hl7.fhir.validation.tests;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.util.UUID;
 
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.model.FhirPublication;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.KeyGenerator;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ProfileComparisonTests {
