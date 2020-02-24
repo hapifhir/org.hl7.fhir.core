@@ -152,7 +152,7 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 /**
  * Thinking of using this in a java program? Don't!
- * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine
+ * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine, or NativeHostServices
  * <p>
  * Validation todo:
  * - support @default slices

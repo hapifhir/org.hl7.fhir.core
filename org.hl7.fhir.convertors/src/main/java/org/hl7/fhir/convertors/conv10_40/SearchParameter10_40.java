@@ -105,27 +105,25 @@ public class SearchParameter10_40 {
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SearchParameter.XPathUsageTypeEnumFactory());
         VersionConvertor_10_40.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case NORMAL:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NORMAL);
-                break;
-            case PHONETIC:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.PHONETIC);
-                break;
-            case NEARBY:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NEARBY);
-                break;
-            case DISTANCE:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.DISTANCE);
-                break;
-            case OTHER:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.OTHER);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NULL);
-                break;
-        }
+        tgt.setValue(convertXPathUsageType(src.getValue()));
         return tgt;
+    }
+
+    static public org.hl7.fhir.r4.model.SearchParameter.XPathUsageType convertXPathUsageType(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType src) {
+      switch(src) {
+          case NORMAL:
+              return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NORMAL;
+          case PHONETIC:
+            return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.PHONETIC;
+          case NEARBY:
+            return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NEARBY;
+          case DISTANCE:
+            return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.DISTANCE;
+          case OTHER:
+            return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.OTHER;
+          default:
+            return org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NULL;
+      }
     }
 
     static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.XPathUsageType> src) throws FHIRException {
