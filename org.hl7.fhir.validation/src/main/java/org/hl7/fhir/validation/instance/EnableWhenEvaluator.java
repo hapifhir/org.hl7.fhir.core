@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.validation.instance;
 
 /*-
  * #%L
@@ -28,7 +28,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Questionnaire.*;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.ValidatorHostContext;
+import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
