@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.validation;
 
 import java.io.IOException;
 import java.util.Date;
@@ -16,7 +16,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.validation.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;

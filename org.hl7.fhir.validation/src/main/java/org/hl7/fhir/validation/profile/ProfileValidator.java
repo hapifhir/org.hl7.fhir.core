@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.validation.profile;
 
 /*-
  * #%L
@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.validation.BaseValidator;
 
 public class ProfileValidator extends BaseValidator {
 

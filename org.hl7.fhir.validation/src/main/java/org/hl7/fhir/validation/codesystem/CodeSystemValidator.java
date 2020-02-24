@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.validation.codesystem;
 
 /*-
  * #%L
@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.validation.BaseValidator;
 
 public class CodeSystemValidator extends BaseValidator {
 
