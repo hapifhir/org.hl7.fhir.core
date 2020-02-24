@@ -1102,7 +1102,6 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private void validateXmlSchema(String location, List<ValidationMessage> messages) throws FileNotFoundException, IOException, SAXException {
-    XmlValidator xml = new XmlValidator(messages, loadSchemas(), loadTransforms());
     messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "XML Schema Validation is not done yet", IssueSeverity.INFORMATION));
   }
 
