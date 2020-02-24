@@ -20,7 +20,6 @@ package org.hl7.fhir.validation.profile;
  * #L%
  */
 
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
