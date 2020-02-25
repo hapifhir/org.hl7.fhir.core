@@ -3280,7 +3280,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         Gson gson = new Gson();
         String json = gson.toJson((StringType) fixed);
         String escapedString = json.substring(json.indexOf(":") + 2);
-        escapedString = escapedString.substring(0, escapedString.indexOf(",'myStringValue") - 1);
+        escapedString = escapedString.substring(0, escapedString.indexOf(",\"myStringValue") - 1);
         expression.append("'" + escapedString + "'");
       } else if (fixed instanceof UriType) {
         expression.append("'" + ((UriType) fixed).asStringValue() + "'");
