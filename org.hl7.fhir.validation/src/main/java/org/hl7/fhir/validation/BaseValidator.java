@@ -149,7 +149,7 @@ public class BaseValidator {
    }
     return thePass;
   }
-  
+
   /**
    * Test a rule and add a {@link IssueSeverity#INFORMATION} validation message if the validation fails. And mark it as a slicing hint for later recovery if appropriate
    * 
@@ -279,10 +279,20 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
+
+  //todo: delete this when finished i18n
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
     if (!thePass) {
 		 addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR);
 	 }
+    return thePass;
+  }
+
+  protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+    if (!thePass) {
+      String message = formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR);
+    }
     return thePass;
   }
 
