@@ -3798,7 +3798,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false,messages.getString("Definition_for_item__does_not_contain_a_type"), qItem.getLinkId());
     } else if (qItem.getType() == QuestionnaireItemType.DISPLAY) {
-      List<Element> items = new ArrayList<Element>();
+      List<Element> items = new ArrayList<>();
       element.getNamedChildren("item", items);
       rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(),messages.getString("Items_not_of_type_DISPLAY_should_not_have_items__linkId_0"), qItem.getLinkId());
     } else {
