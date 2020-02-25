@@ -3334,10 +3334,12 @@ public class FHIRPathEngine {
         Base res = null;
         if (s.startsWith("#")) {
           Property p = context.rootResource.getChildByName("contained");
-          for (Base c : p.getValues()) {
-            if (chompHash(s).equals(chompHash(c.getIdBase()))) {
-              res = c;
-              break;
+          if (p != null) {
+            for (Base c : p.getValues()) {
+              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+                res = c;
+                break;
+              }
             }
           }
         } else if (hostServices != null) {

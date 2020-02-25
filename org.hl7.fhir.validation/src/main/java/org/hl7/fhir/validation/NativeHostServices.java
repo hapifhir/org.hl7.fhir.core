@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation;
+package org.hl7.fhir.validation;
 
 /*-
  * #%L
@@ -67,7 +67,7 @@ import com.google.gson.JsonObject;
  * This class allows you to host the java validator in another service, and use the services it has in a wider context. The way it works is 
 
 - put the jar in your class path
-- Find the class org.hl7.fhir.r5.validation.NativeHostServices or org.hl7.fhir.dstu3.validation.NativeHostServices
+- Find the class org.hl7.fhir.validation.NativeHostServices 
 - call init(path) where path refers to one of the definitions files from the main build (e.g. definitions.xml.zip) - required, do only once, do before anything else
 - call load(path) where path refers to the igpack.zip produced by the ig publisher (do this once for each IG you care about)
 - call connectToTxSvc(url) where the url is your terminology service of choice (can be http://tx.fhir.org/r4 or /r3)

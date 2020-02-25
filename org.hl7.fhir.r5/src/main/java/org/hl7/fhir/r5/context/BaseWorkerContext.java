@@ -758,7 +758,11 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @SuppressWarnings("unchecked")
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
-       if (class_ == StructureDefinition.class)
+    if (uri == null) {
+      return null;
+    }
+   
+    if (class_ == StructureDefinition.class)
       uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
     synchronized (lock) {
 

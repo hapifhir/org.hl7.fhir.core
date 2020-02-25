@@ -38,6 +38,9 @@ public class PackageClient {
       this.fhirVersion = fhirVersion;
       this.description = description;
       this.url = url;
+      if (url == null && id != null && version != null) {
+        url = Utilities.pathURL(address, id, version);
+      }
       this.canonical = canonical;
     }
     public String getId() {
