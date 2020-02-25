@@ -1095,7 +1095,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), "Coding.system must be an absolute reference, not a local reference");
 
     if (system != null && code != null && !noTerminologyChecks) {
-      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system (\"" + system + "\")");
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system ('" + system + "')");
       try {
         if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
@@ -1310,7 +1310,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), "Coding.system must be an absolute reference, not a local reference");
 
     if (system != null && code != null && !noTerminologyChecks) {
-      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system (\"" + system + "\")");
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), "The Coding references a value set, not a code system ('" + system + "')");
       try {
         if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
@@ -1404,13 +1404,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xverManager.matchingUrl(url)) {
         switch (xverManager.status(url)) {
           case BadVersion:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion'" + xverManager.getVersion(url) + "\")");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion'" + xverManager.getVersion(url) + "')");
             break;
           case Unknown:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id'" + xverManager.getElementId(url) + "\")");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id'" + xverManager.getElementId(url) + "')");
             break;
           case Invalid:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id'" + xverManager.getElementId(url) + "\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id'" + xverManager.getElementId(url) + "' is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
             break;
           case Valid:
             ex = xverManager.makeDefinition(url);
@@ -1906,7 +1906,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
         if (charCount > 0 && charCount % 4 != 0) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, "The value'{0}\" is not a valid Base64 value", value);
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, "The value'{0}' is not a valid Base64 value", value);
         }
       }
     }
@@ -3307,7 +3307,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         Gson gson = new Gson();
         String json = gson.toJson((StringType) fixed);
         String escapedString = json.substring(json.indexOf(":") + 2);
-        escapedString = escapedString.substring(0, escapedString.indexOf(",\"myStringValue") - 1);
+        escapedString = escapedString.substring(0, escapedString.indexOf(",'myStringValue") - 1);
         expression.append("'" + escapedString + "'");
       } else if (fixed instanceof UriType) {
         expression.append("'" + ((UriType) fixed).asStringValue() + "'");
@@ -3663,7 +3663,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
       sdTime = sdTime + (System.nanoTime() - t);
-      if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire'" + questionnaire + "\" could not be resolved, so no validation can be performed against the base questionnaire")) {
+      if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire'" + questionnaire + "' could not be resolved, so no validation can be performed against the base questionnaire")) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
         validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
@@ -3872,7 +3872,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             NodeStack ns = stack.push(item, -1, null, null);
             validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           } else
-            rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId'" + linkId + "\" not found in questionnaire");
+            rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId'" + linkId + "' not found in questionnaire");
         } else {
           rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index >= lastIndex, "Structural Error: items are out of order");
           lastIndex = index;
@@ -5509,7 +5509,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 }
                 fpe.check(null, sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
               } catch (Exception e) {
-                System.out.println("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " (\"" + inv.getExpression() + "\"): " + e.getMessage());
+                System.out.println("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage());
               }
             }
           }
