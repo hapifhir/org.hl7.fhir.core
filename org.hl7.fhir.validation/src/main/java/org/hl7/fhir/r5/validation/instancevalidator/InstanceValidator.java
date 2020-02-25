@@ -1404,13 +1404,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xverManager.matchingUrl(url)) {
         switch (xverManager.status(url)) {
           case BadVersion:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion \"" + xverManager.getVersion(url) + "\")");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion'" + xverManager.getVersion(url) + "\")");
             break;
           case Unknown:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id \"" + xverManager.getElementId(url) + "\")");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id'" + xverManager.getElementId(url) + "\")");
             break;
           case Invalid:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id \"" + xverManager.getElementId(url) + "\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id'" + xverManager.getElementId(url) + "\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
             break;
           case Valid:
             ex = xverManager.makeDefinition(url);
@@ -1906,7 +1906,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
         if (charCount > 0 && charCount % 4 != 0) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, "The value \"{0}\" is not a valid Base64 value", value);
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, "The value'{0}\" is not a valid Base64 value", value);
         }
       }
     }
@@ -3663,7 +3663,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
       sdTime = sdTime + (System.nanoTime() - t);
-      if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire \"" + questionnaire + "\" could not be resolved, so no validation can be performed against the base questionnaire")) {
+      if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, "The questionnaire'" + questionnaire + "\" could not be resolved, so no validation can be performed against the base questionnaire")) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
         validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
@@ -3872,7 +3872,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             NodeStack ns = stack.push(item, -1, null, null);
             validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           } else
-            rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId \"" + linkId + "\" not found in questionnaire");
+            rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, "LinkId'" + linkId + "\" not found in questionnaire");
         } else {
           rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index >= lastIndex, "Structural Error: items are out of order");
           lastIndex = index;
