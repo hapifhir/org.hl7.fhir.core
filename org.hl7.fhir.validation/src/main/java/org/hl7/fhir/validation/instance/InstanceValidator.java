@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.validation.instancevalidator;
+package org.hl7.fhir.validation.instance;
 
 /*-
  * #%L
@@ -126,11 +126,9 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.validation.BaseValidator;
-import org.hl7.fhir.r5.validation.EnableWhenEvaluator;
-import org.hl7.fhir.r5.validation.EnableWhenEvaluator.QStack;
-import org.hl7.fhir.r5.validation.XVerExtensionManager;
-import org.hl7.fhir.r5.validation.instancevalidator.utils.*;
+import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -142,6 +140,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.validation.instance.utils.*;
 import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
@@ -152,7 +151,7 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 /**
  * Thinking of using this in a java program? Don't!
- * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine
+ * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine, or NativeHostServices
  * <p>
  * Validation todo:
  * - support @default slices

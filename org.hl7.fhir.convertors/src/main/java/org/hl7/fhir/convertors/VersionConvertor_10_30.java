@@ -2685,36 +2685,31 @@ public class VersionConvertor_10_30 {
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Enumerations.SearchParamTypeEnumFactory());
         VersionConvertor_10_30.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case NUMBER:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.NUMBER);
-                break;
-            case DATE:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.DATE);
-                break;
-            case STRING:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.STRING);
-                break;
-            case TOKEN:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.TOKEN);
-                break;
-            case REFERENCE:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.REFERENCE);
-                break;
-            case COMPOSITE:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.COMPOSITE);
-                break;
-            case QUANTITY:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.QUANTITY);
-                break;
-            case URI:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.URI);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.NULL);
-                break;
-        }
+        tgt.setValue(convertSearchParamType(src.getValue()));
         return tgt;
+    }
+
+    static public org.hl7.fhir.dstu3.model.Enumerations.SearchParamType convertSearchParamType(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType src) throws FHIRException {
+      switch(src) {
+      case NUMBER:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.NUMBER;
+      case DATE:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.DATE;
+      case STRING:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.STRING;
+      case TOKEN:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.TOKEN;
+      case REFERENCE:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.REFERENCE;
+      case COMPOSITE:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.COMPOSITE;
+      case QUANTITY:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.QUANTITY;
+      case URI:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.URI;
+      default:
+        return org.hl7.fhir.dstu3.model.Enumerations.SearchParamType.NULL;
+      }
     }
 
     static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> src) throws FHIRException {
