@@ -2570,7 +2570,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
         } else if (ref.split("/").length != 2 && ref.split("/").length != 4) {
             if (isTransaction) {
-                rule(errors, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), "Relative URLs must be of the format [ResourceName]/[id], or a search ULR is allowed ([type]?parameters.  Encountered " + ref);
+                rule(errors, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), "Relative URLs must be of the format [ResourceName]/[id], or a search ULR is allowed ([type]?parameters.  Encountered " + ref + ")");
             } else {
                 rule(errors, IssueType.INVALID, -1, -1, path, false, "Relative URLs must be of the format [ResourceName]/[id].  Encountered " + ref);
             }
