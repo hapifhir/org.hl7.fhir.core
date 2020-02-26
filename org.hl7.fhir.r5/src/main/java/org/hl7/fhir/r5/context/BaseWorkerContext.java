@@ -30,7 +30,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -93,6 +95,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import com.google.gson.JsonObject;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
+
+  private Locale locale;
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
@@ -417,6 +421,19 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     this.expandCodesLimit = expandCodesLimit;
   }
 
+  @Override
+  public Locale getLocale() {
+    if (Objects.nonNull(locale)){
+      return locale;
+    } else {
+      return Locale.US;
+    }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+  }
   @Override
   public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heirarchical) throws FHIRException {
     ValueSet vs = null;
