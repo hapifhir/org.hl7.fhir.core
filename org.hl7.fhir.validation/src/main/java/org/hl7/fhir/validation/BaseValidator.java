@@ -53,7 +53,10 @@ POSSIBILITY OF SUCH DAMAGE.
 import java.text.MessageFormat;
 import java.util.List;
 
+import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -62,7 +65,19 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 public class BaseValidator {
 
   protected Source source;
-  
+  protected IWorkerContext context;
+  private ResourceBundle messages;
+
+  public BaseValidator(IWorkerContext context){
+    this.context = context;
+    messages = ResourceBundle.getBundle("Messages", context.getLocale() );
+  }
+
+  public void setContext(IWorkerContext context) {
+    this.context = context;
+    messages = ResourceBundle.getBundle("Messages", context.getLocale() );
+  }
+
   /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
    * 
@@ -134,7 +149,7 @@ public class BaseValidator {
   private String formatMessage(String theMessage, Object... theMessageArguments) {
     String message;
     if (theMessageArguments != null && theMessageArguments.length > 0) {
-      message = MessageFormat.format(theMessage, theMessageArguments);
+      message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
     } else { 
       message = theMessage;
     }
@@ -546,5 +561,4 @@ public class BaseValidator {
 	 }
     return thePass;
   }
-
 }
