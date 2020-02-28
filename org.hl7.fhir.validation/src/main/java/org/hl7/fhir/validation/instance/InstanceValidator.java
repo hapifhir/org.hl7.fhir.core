@@ -3209,6 +3209,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             CodeableConcept cc = (CodeableConcept) pattern;
             expression.append(" and ");
             buildCodeableConceptExpression(ed, expression, discriminator, cc);
+        } else if (pattern instanceof Coding) {
+          Coding c = (Coding) pattern;
+          expression.append(" and ");
+          buildCodingExpression(ed, expression, discriminator, c);
         } else if (pattern instanceof Identifier) {
             Identifier ii = (Identifier) pattern;
             expression.append(" and ");
@@ -3290,6 +3294,34 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
     }
 
+    private void buildCodingExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Coding c)
+        throws DefinitionException {
+      if (c.hasExtension())
+        throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
+      expression.append(discriminator + ".coding.where(");
+      boolean first = true;
+      if (c.hasSystem()) {
+        first = false;
+        expression.append("system = '" + c.getSystem() + "'");
+      }
+      if (c.hasVersion()) {
+        if (first) first = false;
+        else expression.append(" and ");
+        expression.append("version = '" + c.getVersion() + "'");
+      }
+      if (c.hasCode()) {
+        if (first) first = false;
+        else expression.append(" and ");
+        expression.append("code = '" + c.getCode() + "'");
+      }
+      if (c.hasDisplay()) {
+        if (first) first = false;
+        else expression.append(" and ");
+        expression.append("display = '" + c.getDisplay() + "'");
+      }
+      expression.append(").exists()");
+    }
+
     private void buildFixedExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
         DataType fixed = criteriaElement.getFixed();
         if (fixed instanceof CodeableConcept) {
@@ -3300,6 +3332,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             Identifier ii = (Identifier) fixed;
             expression.append(" and ");
             buildIdentifierExpression(ed, expression, discriminator, ii);
+        } else if (fixed instanceof Coding) {
+          Coding c = (Coding) fixed;
+          expression.append(" and ");
+          buildCodingExpression(ed, expression, discriminator, c);
         } else {
             expression.append(" and (");
             if (fixed instanceof StringType) {
