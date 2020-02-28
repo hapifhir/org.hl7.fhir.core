@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
@@ -59,22 +61,28 @@ import com.google.gson.JsonSyntaxException;
 public class TestingUtilities {
   private static final boolean SHOW_DIFF = true;
   
-	static public IWorkerContext fcontext;
+	static public Map<String, IWorkerContext> fcontexts;
 	
-	public static IWorkerContext context() {
-	  if (fcontext == null) {
+  public static IWorkerContext context() {
+    return context("4.0.1");
+  }
+	public static IWorkerContext context(String version) {
+    if (fcontexts == null) {
+      fcontexts = new HashMap<>();
+    }
+	  if (!fcontexts.containsKey(version)) {
 	    PackageCacheManager pcm;
 	    try {
 	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
+	      IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
+	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
 	      throw new Error(e);
 	    }
-
 	  }
-	  return fcontext;
+	  return fcontexts.get(version);
 	}
 	static public boolean silent;
 
