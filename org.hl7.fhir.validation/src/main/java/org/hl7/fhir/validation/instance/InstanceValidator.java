@@ -3298,7 +3298,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         throws DefinitionException {
       if (c.hasExtension())
         throw new DefinitionException("Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator(" + discriminator + ") for slice " + ed.getId());
-      expression.append(discriminator + ".coding.where(");
+      expression.append(discriminator + ".where(");
       boolean first = true;
       if (c.hasSystem()) {
         first = false;
