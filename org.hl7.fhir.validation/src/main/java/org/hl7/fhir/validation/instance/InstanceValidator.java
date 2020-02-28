@@ -1403,10 +1403,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (xverManager.matchingUrl(url)) {
                 switch (xverManager.status(url)) {
                     case BadVersion:
-                        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalidVersion \"" + xverManager.getVersion(url) + "\")");
+                        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalid Version \"" + xverManager.getVersion(url) + "\")");
                         break;
                     case Unknown:
-                        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (unknown Element id \"" + xverManager.getElementId(url) + "\")");
+                        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (invalid Element id \"" + xverManager.getElementId(url) + "\")");
                         break;
                     case Invalid:
                         rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, "Extension url '" + url + "' is not valid (Element id \"" + xverManager.getElementId(url) + "\" is valid, but cannot be used in a cross-version paradigm because there has been no changes across the relevant versions)");
@@ -1783,7 +1783,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (e.primitiveValue() == null)
                 rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), "Primitive types must have a value or must have child extensions");
             else if (e.primitiveValue().length() == 0)
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), "Primitive types must have a value that is not empty");
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), "@value cannot be empty");
             else if (StringUtils.isWhitespace(e.primitiveValue()))
                 warning(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), "Primitive types should not only be whitespace");
             return;
