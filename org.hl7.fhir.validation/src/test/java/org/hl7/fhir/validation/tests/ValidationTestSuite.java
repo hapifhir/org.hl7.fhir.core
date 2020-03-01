@@ -118,7 +118,10 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     vCurr = ve.get(v);
     vCurr.setFetcher(this);
-    TestingUtilities.fcontext = vCurr.getContext();
+    if (TestingUtilities.fcontexts == null) {
+      TestingUtilities.fcontexts = new HashMap<>();
+    }
+    TestingUtilities.fcontexts.put(v, vCurr.getContext());
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
