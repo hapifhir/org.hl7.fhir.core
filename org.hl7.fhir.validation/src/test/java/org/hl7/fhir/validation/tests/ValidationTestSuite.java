@@ -75,6 +75,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   
   private String name;
   private JsonObject content;
+  private String version;
   
   public ValidationTestSuite(String name, JsonObject content) {
     this.name = name;
@@ -95,33 +96,33 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("txLog")) {
       txLog = content.get("txLog").getAsString();      
     }
-    String v = "5.0";
+    version = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (content.has("version")) {
-      v = content.get("version").getAsString();
+      version = content.get("version").getAsString();
     }
       
-    v = VersionUtilities.getMajMin(v);
-    if (!ve.containsKey(v)) {
-      if (v.startsWith("5.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, txLog, FhirPublication.R5, true));
-      else if (v.startsWith("3.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true));
-      else if (v.startsWith("4.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, txLog, FhirPublication.R4, true));
-      else if (v.startsWith("1.0"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, txLog, FhirPublication.DSTU2, true));
-      else if (v.startsWith("1.4"))
-        ve.put(v, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, txLog, FhirPublication.DSTU2016May, true));
+    version = VersionUtilities.getMajMin(version);
+    if (!ve.containsKey(version)) {
+      if (version.startsWith("5.0"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, txLog, FhirPublication.R5, true));
+      else if (version.startsWith("3.0"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true));
+      else if (version.startsWith("4.0"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, txLog, FhirPublication.R4, true));
+      else if (version.startsWith("1.0"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, txLog, FhirPublication.DSTU2, true));
+      else if (version.startsWith("1.4"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, txLog, FhirPublication.DSTU2016May, true));
       else
-        throw new Exception("unknown version "+v);
+        throw new Exception("unknown version "+version);
     }
-    vCurr = ve.get(v);
+    vCurr = ve.get(version);
     vCurr.setFetcher(this);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
     }
-    TestingUtilities.fcontexts.put(v, vCurr.getContext());
+    TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
@@ -143,13 +144,13 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("questionnaire")) {
       String filename = content.get("questionnaire").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
-      vCurr.getContext().cacheResource(loadResource(filename, contents, v));
+      vCurr.getContext().cacheResource(loadResource(filename, contents));
     }
     if (content.has("codesystems")) {
       for (JsonElement je : content.getAsJsonArray("codesystems")) {
         String filename = je.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        CodeSystem sd = (CodeSystem) loadResource(filename, contents, v);
+        CodeSystem sd = (CodeSystem) loadResource(filename, contents);
         val.getContext().cacheResource(sd);
       }
     }
@@ -157,7 +158,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       for (JsonElement je : content.getAsJsonArray("valuesets")) {
         String filename = je.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        ValueSet vs = (ValueSet) loadResource(filename, contents, v);
+        ValueSet vs = (ValueSet) loadResource(filename, contents);
         val.getContext().cacheResource(vs);
       }
     }
@@ -165,7 +166,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String filename = je.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        StructureDefinition sd = loadProfile(filename, contents, v, messages);
+        StructureDefinition sd = loadProfile(filename, contents, messages);
         val.getContext().cacheResource(sd);
       }
     }
@@ -194,15 +195,15 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
           String filename =  e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
-          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, v);
+          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           val.getContext().cacheResource(mr);
         }
       }
       String filename =  profile.get("source").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
       System.out.println("Name: " + name+" - profile : "+profile.get("source").getAsString());
-      v = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
-      StructureDefinition sd = loadProfile(filename, contents, v, messages);
+      version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
+      StructureDefinition sd = loadProfile(filename, contents, messages);
       val.getContext().cacheResource(sd);    
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
@@ -219,7 +220,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
           String filename =  e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
-          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, v);
+          CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           if (mr instanceof StructureDefinition) {
             val.getContext().generateSnapshot((StructureDefinition) mr, true);
           }
@@ -245,11 +246,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     return res;
   }
 
-  public StructureDefinition loadProfile(String filename, String contents, String v, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-    StructureDefinition sd = (StructureDefinition) loadResource(filename, contents, v);
-    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, null);
+  public StructureDefinition loadProfile(String filename, String contents, List<ValidationMessage> messages)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+    StructureDefinition sd = (StructureDefinition) loadResource(filename, contents);
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(version), messages, null);
     if (!sd.hasSnapshot()) {
-      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      StructureDefinition base = TestingUtilities.context(version).fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
@@ -257,7 +258,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       if (r instanceof StructureDefinition) {
         StructureDefinition childSd = (StructureDefinition)r;
         if (!childSd.hasSnapshot()) {
-          StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, childSd.getBaseDefinition());
+          StructureDefinition base = TestingUtilities.context(version).fetchResource(StructureDefinition.class, childSd.getBaseDefinition());
           pu.generateSnapshot(base, childSd, childSd.getUrl(), null, childSd.getTitle());          
         }
       }
@@ -265,34 +266,34 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     return sd;
   }
   
-  public Resource loadResource(String filename, String contents, String v)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+  public Resource loadResource(String filename, String contents)  throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        if (Constants.VERSION.equals(v) || "5.0".equals(v))
+        if (Constants.VERSION.equals(version) || "5.0".equals(version))
           return new JsonParser().parse(inputStream);
-        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(v) || "3.0".equals(v))
+        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream), false);
-        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v) || "1.4".equals(v))
+        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v) || "1.0".equals(v))
+        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
           return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
-        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v) || "4.0".equals(v))
+        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
           return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
         else
-          throw new FHIRException("unknown version "+v);
+          throw new FHIRException("unknown version "+version);
       } else {
-        if (Constants.VERSION.equals(v) || "5.0".equals(v))
+        if (Constants.VERSION.equals(version) || "5.0".equals(version))
           return new XmlParser().parse(inputStream);
-        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(v) || "3.0".equals(v))
+        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream), false);
-        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(v) || "1.4".equals(v))
+        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(v) || "1.0".equals(v))
+        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
           return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
-        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(v) || "4.0".equals(v))
+        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
           return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
         else
-          throw new FHIRException("unknown version " + v);
+          throw new FHIRException("unknown version " + version);
       }
     }
   }
@@ -320,7 +321,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         }
       }
     }
-    if (TestingUtilities.context().isNoTerminologyServer() || !focus.has("tx-dependent")) {
+    if (TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Expected "+Integer.toString(java.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", java.get("errorCount").getAsInt(), ec);
       if (java.has("warningCount"))
         Assert.assertEquals("Expected "+Integer.toString(java.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", java.get("warningCount").getAsInt(), wc);
@@ -392,18 +393,18 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     Element res = null;
     if (url.equals("Patient/test")) {
-      res = new ObjectConverter(TestingUtilities.context()).convert(new Patient());
+      res = new ObjectConverter(TestingUtilities.context(version)).convert(new Patient());
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".json")) {
-      res = Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".json"));
+      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".json"));
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase()+".xml")) {
-      res = Manager.makeParser(TestingUtilities.context(), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".xml"));
+      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase()+".xml"));
     }
     if (res == null && url.contains("/")) {
       String tail = url.substring(url.indexOf("/")+1);
       if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase()+".json")) {
-        res = Manager.makeParser(TestingUtilities.context(), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".json"));
+        res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".json"));
       } else if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase()+".xml")) {
-        res =  Manager.makeParser(TestingUtilities.context(), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".xml"));
+        res =  Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase()+".xml"));
       }
     }
     return res;
@@ -424,7 +425,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-    IResourceValidator val = TestingUtilities.context().newValidator();
+    IResourceValidator val = TestingUtilities.context(version).newValidator();
     List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
     if (item instanceof Resource) {
       val.validate(appContext, valerrors, (Resource) item, url);
