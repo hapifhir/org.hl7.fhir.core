@@ -226,4 +226,8 @@ public class I18nConstants {
   public final static String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
   public final static String FIXED_TYPE_CHECKS_DT_ADDRESS_LINE = "Fixed_Type_Checks_DT_Address_Line";
   public final static String MUSTSUPPORT_VAL_MUSTSUPPORT = "MustSupport_VAL_MustSupport";
+  public final static String ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD = "All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod";
+  public final static String ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER = "All_observations_should_have_a_performer";
+  public final static String ALL_OBSERVATIONS_SHOULD_HAVE_A_SUBJECT = "All_observations_should_have_a_subject";
+
 }
