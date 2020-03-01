@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -33,6 +34,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 
 public class CodeSystemValidator extends BaseValidator {
+
+  public CodeSystemValidator(IWorkerContext context) {
+    super(context);
+  }
 
   public List<ValidationMessage> validate(CodeSystem cs, boolean forBuild) {
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
