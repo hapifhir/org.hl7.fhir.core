@@ -77,7 +77,7 @@ import com.google.gson.JsonObject;
 public class NpmPackage {
 
   public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
+    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
   }
 
   public static boolean isValidVersion(String ver) {
@@ -826,7 +826,7 @@ public class NpmPackage {
   public void loadAllFiles() throws IOException {
     for (String folder : folders.keySet()) {
       NpmPackageFolder pf = folders.get(folder);
-      String p = Utilities.path(path, folder);
+      String p = folder.contains("$") ? path : Utilities.path(path, folder);
       for (File f : new File(p).listFiles()) {
         if (!f.isDirectory()) {
           pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
