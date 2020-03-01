@@ -52,10 +52,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import java.text.MessageFormat;
 import java.util.List;
-
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -145,12 +143,16 @@ public class BaseValidator {
     return thePass;
   }
 
-    
+
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message;
-    if (theMessageArguments != null && theMessageArguments.length > 0) {
-      message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
-    } else { 
+    String message = "";
+    if (messages.containsKey(theMessage)) {
+      if (theMessageArguments != null && theMessageArguments.length > 0) {
+        message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
+      } else if (messages.containsKey(theMessage)) {
+        message = messages.getString(theMessage);
+      }
+    } else {
       message = theMessage;
     }
     return message;
