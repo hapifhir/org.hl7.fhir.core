@@ -5008,7 +5008,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
               "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl() + ": " + errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice " + (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: " + errorSummaryForSlicing(ei.sliceInfo)), I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: " + errorSummaryForSlicingAsHtml(ei.sliceInfo)));
+            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: " + errorSummaryForSlicing(ei.sliceInfo)));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
