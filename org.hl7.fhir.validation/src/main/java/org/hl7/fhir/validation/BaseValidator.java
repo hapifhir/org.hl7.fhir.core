@@ -146,18 +146,15 @@ public class BaseValidator {
     return thePass;
   }
 
-    
+
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
     String message;
     if (theMessageArguments != null && theMessageArguments.length > 0) {
       message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
+    } else if (messages.containsKey(theMessage)) {
+      message = messages.getString(theMessage);
     } else {
-      try {
-        message = messages.getString(theMessage);
-      } catch (MissingResourceException e) {
-        // non-internationalized String
-        message = theMessage;
-      }
+      message = theMessage;
     }
     return message;
   }
