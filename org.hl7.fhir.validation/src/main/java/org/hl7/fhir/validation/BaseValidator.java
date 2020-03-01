@@ -146,7 +146,7 @@ public class BaseValidator {
   }
 
     
-  private String formatMessage(String theMessage, Object... theMessageArguments) {
+  protected String formatMessage(String theMessage, Object... theMessageArguments) {
     String message;
     if (theMessageArguments != null && theMessageArguments.length > 0) {
       message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
