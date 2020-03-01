@@ -108,6 +108,8 @@ public class SnapShotGenerationTests {
     private boolean fail;
     private boolean newSliceProcessing;
     private boolean debug;
+    private String version;
+    
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private StructureDefinition included;
@@ -121,6 +123,11 @@ public class SnapShotGenerationTests {
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
       debug = "true".equals(test.getAttribute("debug"));
+      if (test.hasAttribute("version")) {
+        version = test.getAttribute("version");
+      } else {
+        version = "4.0.1";        
+      }
       
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -493,7 +500,7 @@ public class SnapShotGenerationTests {
       throw new Exception("URL mismatch on base: "+base.getUrl()+" wanting "+test.getSource().getBaseDefinition());
     
     StructureDefinition output = test.getSource().copy();
-    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(test.version), messages , new TestPKP());
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
