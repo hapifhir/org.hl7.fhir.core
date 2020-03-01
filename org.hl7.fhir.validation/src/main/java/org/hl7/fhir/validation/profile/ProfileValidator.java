@@ -37,12 +37,11 @@ import org.hl7.fhir.validation.BaseValidator;
 
 public class ProfileValidator extends BaseValidator {
 
-  IWorkerContext context;
   private boolean checkAggregation = false;
   private boolean checkMustSupport = false;
 
-  public void setContext(IWorkerContext context) {
-    this.context = context;    
+  public ProfileValidator(IWorkerContext context) {
+    super(context);
   }
 
   public boolean isCheckAggregation() {

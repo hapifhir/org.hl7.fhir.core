@@ -24,6 +24,7 @@ import java.util.EnumSet;
 
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -327,7 +328,11 @@ public interface IWorkerContext {
    * @throws FHIRException 
    */
   public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
-  
+
+   Locale getLocale();
+
+   void setLocale(Locale locale);
+
   public class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;
