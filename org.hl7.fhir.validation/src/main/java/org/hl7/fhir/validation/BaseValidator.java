@@ -145,11 +145,13 @@ public class BaseValidator {
 
 
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message;
-    if (theMessageArguments != null && theMessageArguments.length > 0) {
-      message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
-    } else if (messages.containsKey(theMessage)) {
-      message = messages.getString(theMessage);
+    String message = "";
+    if (messages.containsKey(theMessage)) {
+      if (theMessageArguments != null && theMessageArguments.length > 0) {
+        message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
+      } else if (messages.containsKey(theMessage)) {
+        message = messages.getString(theMessage);
+      }
     } else {
       message = theMessage;
     }
