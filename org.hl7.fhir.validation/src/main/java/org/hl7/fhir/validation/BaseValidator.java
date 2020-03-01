@@ -52,11 +52,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import java.text.MessageFormat;
 import java.util.List;
-
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
