@@ -53,6 +53,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import java.text.MessageFormat;
 import java.util.List;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -150,8 +151,13 @@ public class BaseValidator {
     String message;
     if (theMessageArguments != null && theMessageArguments.length > 0) {
       message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
-    } else { 
-      message = theMessage;
+    } else {
+      try {
+        message = messages.getString(theMessage);
+      } catch (MissingResourceException e) {
+        // non-internationalized String
+        message = theMessage;
+      }
     }
     return message;
   }
