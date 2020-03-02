@@ -669,7 +669,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (expParameters == null)
       throw new Error("No ExpansionProfile provided");
     pin.addParameter().setName("profile").setResource(expParameters);
-    txLog.clearLastId();
+    if (txLog != null) {
+      txLog.clearLastId();
+    }
+    if (txClient == null) {
+      throw new FHIRException("Attempt to use Terminology server when no Terminology server is available");      
+    }
     Parameters pOut;
     if (vs == null)
       pOut = txClient.validateCS(pin);
