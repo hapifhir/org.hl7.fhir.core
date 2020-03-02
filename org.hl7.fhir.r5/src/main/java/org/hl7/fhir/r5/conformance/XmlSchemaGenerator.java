@@ -107,10 +107,12 @@ public class XmlSchemaGenerator  {
 	private String genDate;
 	private String license;
 	private boolean annotations;
+  private ProfileUtilities profileUtilities;
 
 	public XmlSchemaGenerator(String folder, IWorkerContext context) {
     this.folder = folder;
     this.context = context;
+    this.profileUtilities = new ProfileUtilities(context, null, null);
 	}
 
   public boolean isSingle() {
@@ -325,12 +327,12 @@ public class XmlSchemaGenerator  {
     ln("        <xs:sequence>");
     
     // hack....
-    for (ElementDefinition edc : ProfileUtilities.getChildList(sd,  ed)) {
+    for (ElementDefinition edc : profileUtilities.getChildList(sd,  ed)) {
       if (!(edc.hasRepresentation(PropertyRepresentation.XMLATTR) || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
         produceElement(sd, ed, edc, lang);
     }
     ln("        </xs:sequence>");
-    for (ElementDefinition edc : ProfileUtilities.getChildList(sd,  ed)) {
+    for (ElementDefinition edc : profileUtilities.getChildList(sd,  ed)) {
       if ((edc.hasRepresentation(PropertyRepresentation.XMLATTR) || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
         produceAttribute(sd, ed, edc, lang);
     }

@@ -315,7 +315,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
 
-  public static List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
+  public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
     if (element.getContentReference()!=null) {
       for (ElementDefinition e : profile.getSnapshot().getElement()) {
         if (element.getContentReference().equals("#"+e.getId()))
@@ -341,7 +341,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public static List<ElementDefinition> getSliceList(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
+  public List<ElementDefinition> getSliceList(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
     if (!element.hasSlicing())
       throw new Error("getSliceList should only be called when the element has slicing");
 
@@ -368,11 +368,11 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @param path The path of the element within the structure to get the children for
    * @return A List containing the element children (all of them are Elements)
    */
-  public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id) {
+  public List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id) {
     return getChildList(profile, path, id, false);
   }
   
-  public static List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff) {
+  public List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff) {
     List<ElementDefinition> res = new ArrayList<ElementDefinition>();
 
     boolean capturing = id==null;
@@ -415,11 +415,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
-  public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff) {
+  public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff) {
     return getChildList(structure, element.getPath(), element.getId(), diff);
   }
 
-  public static List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
+  public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
     return getChildList(structure, element.getPath(), element.getId(), false);
 	}
 

@@ -56,10 +56,12 @@ public class GraphQLSchemaGenerator {
   
   private static final String INNER_TYPE_NAME = "gql.type.name";
   IWorkerContext context;
+  private ProfileUtilities profileUtilities;
 
   public GraphQLSchemaGenerator(IWorkerContext context) {
     super();
     this.context = context;
+    profileUtilities = new ProfileUtilities(context, null, null); 
   }
   
   public void generateTypes(OutputStream stream) throws IOException, FHIRException {
@@ -265,7 +267,7 @@ public class GraphQLSchemaGenerator {
   }
 
   private void generateProperties(List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition ed, String mode, String suffix) throws IOException {
-    List<ElementDefinition> children = ProfileUtilities.getChildList(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     for (ElementDefinition child : children) {
       if (child.hasContentReference()) {
         ElementDefinition ref = resolveContentReference(sd, child.getContentReference());        
