@@ -369,11 +369,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidatorHostServices validatorServices;
   private boolean assumeValidRestReferences;
   private boolean allowExamples;
+  private ProfileUtilities profileUtilities;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
     this.context = theContext;
     this.externalHostServices = hostServices;
+    this.profileUtilities = new ProfileUtilities(theContext, null, null);
     fpe = new FHIRPathEngine(context);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
@@ -4570,7 +4572,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getUrl(), definition.getSliceName(), null);
 
     // get the list of direct defined children, including slices
-    List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(profile, definition);
+    List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(profile, definition);
     if (childDefinitions.isEmpty()) {
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
@@ -4625,7 +4627,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new DefinitionException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ACTUAL_TYPE_, actualType));
     trackUsage(dt, hostContext, element);
 
-    childDefinitions = ProfileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
+    childDefinitions = profileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
     return childDefinitions;
   }
 
@@ -4926,7 +4928,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         int count = 0;
         List<ElementDefinition> slices = null;
         if (ed.hasSlicing())
-          slices = ProfileUtilities.getSliceList(profile, ed);
+          slices = profileUtilities.getSliceList(profile, ed);
         for (ElementInfo ei : children)
           if (ei.definition == ed)
             count++;

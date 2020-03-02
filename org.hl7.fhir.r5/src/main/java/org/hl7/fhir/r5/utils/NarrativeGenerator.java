@@ -482,7 +482,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = ProfileUtilities.getChildList(structure, definition);
+        children = profileUtilities.getChildList(structure, definition);
         list = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -632,7 +632,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = ProfileUtilities.getChildList(structure, definition);
+        children = profileUtilities.getChildList(structure, definition);
         list = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<org.hl7.fhir.r5.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.r5.elementmodel.Element>();
@@ -703,7 +703,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = ProfileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = profileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<org.hl7.fhir.r5.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.r5.elementmodel.Element>();
@@ -841,7 +841,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = ProfileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = profileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -1044,6 +1044,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
   private List<String> codeSystemPropList = new ArrayList<>();
+  private ProfileUtilities profileUtilities;
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -1077,6 +1078,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
 
   private void init() {
+    profileUtilities = new ProfileUtilities(context, null, null); 
     renderingMaps.add(new ConceptMapRenderInstructions("Canonical Status", "http://hl7.org/fhir/ValueSet/resource-status", false));
   }
 
