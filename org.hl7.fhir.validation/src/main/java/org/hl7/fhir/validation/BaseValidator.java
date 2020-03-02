@@ -171,7 +171,8 @@ public class BaseValidator {
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass) {
-     addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION);
+      String message = formatMessage(msg);
+     addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION);
    }
     return thePass;
   }
