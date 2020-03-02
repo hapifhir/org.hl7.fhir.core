@@ -2018,7 +2018,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         long t = System.nanoTime();
         ValidationResult vr = null;
         if (binding.getStrength() != BindingStrength.EXAMPLE) {
-          vr = context.validateCode(new ValidationOptions(stack.workingLang), value, vs);
+          ValidationOptions options = new ValidationOptions(stack.workingLang).guessSystem();
+          vr = context.validateCode(options, value, vs);
         }
         txTime = txTime + (System.nanoTime() - t);
         if (vr != null && !vr.isOk()) {
