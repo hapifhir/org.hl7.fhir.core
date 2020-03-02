@@ -67,7 +67,7 @@ public class ValidationOptions {
 
   public ValidationOptions guessSystem() {
     ValidationOptions n = this.copy();
-    n.guessSystem = false;
+    n.guessSystem = true;
     return n;
   }
   
