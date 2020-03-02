@@ -423,6 +423,8 @@ public class Validator {
             throw new Error("Specified -output without indicating output file");
           else
             output = args[++i];
+        } else if (args[i].equals("-proxy")) {
+          i++; // ignore next parameter
         } else if (args[i].equals("-profile")) {
           String p = null;
           if (i+1 == args.length)
