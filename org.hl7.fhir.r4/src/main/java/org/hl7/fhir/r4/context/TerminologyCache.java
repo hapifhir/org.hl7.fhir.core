@@ -46,7 +46,6 @@ import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -55,6 +54,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 /**
  * This implements a two level cache. 
@@ -112,7 +112,7 @@ public class TerminologyCache {
       load();
   }
   
-  public CacheToken generateValidationToken(TerminologyServiceOptions options, Coding code, ValueSet vs) {
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
       ct.name = getNameForSystem(code.getSystem());
@@ -130,7 +130,7 @@ public class TerminologyCache {
     return ct;
   }
 
-  public CacheToken generateValidationToken(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs) {
+  public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
       if (c.hasSystem())

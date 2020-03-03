@@ -49,7 +49,7 @@ public class OIDUtils {
 		if (r.equals("2.16.840.1.113883.6.103"))
 			return "http://hl7.org/fhir/sid/icd-9"; //todo: confirm this		
 		if (r.equals("2.16.840.1.113883.6.73"))
-			return "http://hl7.org/fhir/sid/atc";
+			return "http://www.whocc.no/atc";
 		if (r.equals("2.16.840.1.113883.3.26.1.1"))
 			return "http://ncimeta.nci.nih.gov";
 		if (r.equals("2.16.840.1.113883.3.26.1.1.1"))
