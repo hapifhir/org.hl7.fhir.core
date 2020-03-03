@@ -309,17 +309,19 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.anyExtensionsAllowed = anyExtensionsAllowed;
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer) throws Exception {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws Exception {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadInitialDefinitions(src);
     context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);    
+    this.version = vString;
   }
   
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version) throws Exception {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws Exception {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadInitialDefinitions(src);
     setTerminologyServer(txsrvr, txLog, version);
+    this.version = vString;
   }
   
   public ValidationEngine(String src) throws Exception {
@@ -1206,7 +1208,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
 
     if(structureDefinition == null)
-      throw new FHIRException("Unable to determine StructureDefinition for target type");
+      throw new FHIRException("Unable to find StructureDefinition for target type ('"+targetTypeUrl+"')");
     
     return Manager.build(getContext(), structureDefinition);
   }
@@ -1691,6 +1693,338 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.assumeValidRestReferences = assumeValidRestReferences;
   }
 
+  public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {
+    Content cnt = loadContent(source, "validate");
+    org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    
+    // if the src has a url, we try to use the java code 
+    if ((canDoNative == null && src.hasChild("url")) || (canDoNative != null && canDoNative)) {
+      try {
+        if (VersionUtilities.isR2Ver(version)) {
+          return convertVersionNativeR2(targetVer, cnt, format);
+        } else if (VersionUtilities.isR2BVer(version)) {
+          return convertVersionNativeR2b(targetVer, cnt, format);
+        } else if (VersionUtilities.isR3Ver(version)) {
+          return convertVersionNativeR3(targetVer, cnt, format);
+        } else if (VersionUtilities.isR4Ver(version)) {
+          return convertVersionNativeR4(targetVer, cnt, format);
+        } else {
+          throw new Exception("Source version not supported yet: "+version);
+        }
+      } catch (Exception e) {
+        System.out.println("Conversion failed using Java convertor: "+e.getMessage());
+      }
+    }
+    // ok, we try converting using the structure maps
+    System.out.println("Loading hl7.fhir.xver.r4");
+    loadIg("hl7.fhir.xver.r4", false);
+    String type = src.fhirType();
+    String url = getMapId(type, targetVer);
+    List<Base> outputs = new ArrayList<Base>();
+    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
+    StructureMap map = context.getTransform(url);
+    if (map == null)
+      throw new Error("Unable to find map "+url+" (Known Maps = "+context.listMapUrls()+")");
+    org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
+    scu.transform(null, src, map, resource);
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    Manager.compose(context, resource, bs, format, OutputStyle.PRETTY, null);
+    return bs.toByteArray();
+  }
+  
+  private String getMapId(String type, String targetVer) {
+    if (VersionUtilities.isR2Ver(version)) {
+      if (VersionUtilities.isR3Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/"+type+"2to3";
+      }
+    } else if (VersionUtilities.isR3Ver(version)) {
+      if (VersionUtilities.isR2Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/"+type+"3to2";
+      } else if (VersionUtilities.isR4Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/"+type+"3to4";
+      }
+    } else if (VersionUtilities.isR4Ver(version)) {
+      if (VersionUtilities.isR3Ver(targetVer)) {
+        return "http://hl7.org/fhir/StructureMap/"+type+"4to3";
+      }
+    }
+    throw new FHIRException("Source/Target version not supported: "+version+" -> "+targetVer);
+  }
 
+  public byte[] convertVersionNativeR2(String targetVer, Content cnt, FhirFormat format) throws IOException, Exception {
+    org.hl7.fhir.dstu2.model.Resource r2;
+    switch (cnt.cntType) {
+    case JSON:
+      r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(cnt.focus);
+      break;
+    case XML:
+      r2 = new org.hl7.fhir.dstu2.formats.XmlParser().parse(cnt.focus);
+      break;
+    default:
+      throw new FHIRException("Unsupported input format: "+cnt.cntType.toString());
+    }
+    if (VersionUtilities.isR2Ver(targetVer)) {
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2.formats.JsonParser().compose(bs, r2);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2.formats.XmlParser().compose(bs, r2);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR2BVer(targetVer)) {
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2);
+      org.hl7.fhir.dstu2016may.model.Resource r2b = VersionConvertor_14_30.convertResource(r3);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2016may.formats.JsonParser().compose(bs, r2b);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2016may.formats.XmlParser().compose(bs, r2b);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR3Ver(targetVer)) {
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu3.formats.JsonParser().compose(bs, r3);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu3.formats.XmlParser().compose(bs, r3);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR4Ver(targetVer)) {
+      org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_10_40.convertResource(r2);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.r4.formats.JsonParser().compose(bs, r4);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.r4.formats.XmlParser().compose(bs, r4);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else {
+      throw new Exception("Target Version not supported yet: "+targetVer);
+    }
+  }
+  
+  public byte[] convertVersionNativeR2b(String targetVer, Content cnt, FhirFormat format) throws IOException, Exception {
+    org.hl7.fhir.dstu2016may.model.Resource r2b;
+    switch (cnt.cntType) {
+    case JSON:
+      r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt.focus);
+      break;
+    case XML:
+      r2b = new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(cnt.focus);
+      break;
+    default:
+      throw new FHIRException("Unsupported input format: "+cnt.cntType.toString());
+    }
+    if (VersionUtilities.isR2Ver(targetVer)) {
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_14_30.convertResource(r2b);
+      org.hl7.fhir.dstu2.model.Resource r2 = VersionConvertor_10_30.convertResource(r3);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2.formats.JsonParser().compose(bs, r2);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2.formats.XmlParser().compose(bs, r2);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR2BVer(targetVer)) {
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2016may.formats.JsonParser().compose(bs, r2b);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2016may.formats.XmlParser().compose(bs, r2b);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR3Ver(targetVer)) {
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_14_30.convertResource(r2b);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu3.formats.JsonParser().compose(bs, r3);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu3.formats.XmlParser().compose(bs, r3);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR4Ver(targetVer)) {
+      org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_14_40.convertResource(r2b);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.r4.formats.JsonParser().compose(bs, r4);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.r4.formats.XmlParser().compose(bs, r4);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else {
+      throw new Exception("Target Version not supported yet: "+targetVer);
+    }
+  }
+
+
+  public byte[] convertVersionNativeR3(String targetVer, Content cnt, FhirFormat format) throws IOException, Exception {
+    org.hl7.fhir.dstu3.model.Resource r3;
+    switch (cnt.cntType) {
+    case JSON:
+      r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt.focus);
+      break;
+    case XML:
+      r3 = new org.hl7.fhir.dstu3.formats.XmlParser().parse(cnt.focus);
+      break;
+    default:
+      throw new FHIRException("Unsupported input format: "+cnt.cntType.toString());
+    }
+    if (VersionUtilities.isR2Ver(targetVer)) {
+      org.hl7.fhir.dstu2.model.Resource r2 = VersionConvertor_10_30.convertResource(r3);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2.formats.JsonParser().compose(bs, r2);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2.formats.XmlParser().compose(bs, r2);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR2BVer(targetVer)) {
+      org.hl7.fhir.dstu2016may.model.Resource r2b = VersionConvertor_14_30.convertResource(r3);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2016may.formats.JsonParser().compose(bs, r2b);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2016may.formats.XmlParser().compose(bs, r2b);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR3Ver(targetVer)) {
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu3.formats.JsonParser().compose(bs, r3);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu3.formats.XmlParser().compose(bs, r3);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR4Ver(targetVer)) {
+      org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(r3, false);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.r4.formats.JsonParser().compose(bs, r4);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.r4.formats.XmlParser().compose(bs, r4);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else {
+      throw new Exception("Target Version not supported yet: "+targetVer);
+    }
+  }
+  
+
+  public byte[] convertVersionNativeR4(String targetVer, Content cnt, FhirFormat format) throws IOException, Exception {
+    org.hl7.fhir.r4.model.Resource r4;
+    switch (cnt.cntType) {
+    case JSON:
+      r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt.focus);
+      break;
+    case XML:
+      r4 = new org.hl7.fhir.r4.formats.XmlParser().parse(cnt.focus);
+      break;
+    default:
+      throw new FHIRException("Unsupported input format: "+cnt.cntType.toString());
+    }
+    if (VersionUtilities.isR2Ver(targetVer)) {
+      org.hl7.fhir.dstu2.model.Resource r2 = VersionConvertor_10_40.convertResource(r4);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2.formats.JsonParser().compose(bs, r2);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2.formats.XmlParser().compose(bs, r2);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR2BVer(targetVer)) {
+      org.hl7.fhir.dstu2016may.model.Resource r2b = VersionConvertor_14_40.convertResource(r4);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu2016may.formats.JsonParser().compose(bs, r2b);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu2016may.formats.XmlParser().compose(bs, r2b);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR3Ver(targetVer)) {
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_30_40.convertResource(r4, false);
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.dstu3.formats.JsonParser().compose(bs, r3);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.dstu3.formats.XmlParser().compose(bs, r3);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else if (VersionUtilities.isR4Ver(targetVer)) {
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      switch (format) {
+      case JSON:
+        new org.hl7.fhir.r4.formats.JsonParser().compose(bs, r4);
+        return bs.toByteArray();
+      case XML:
+        new org.hl7.fhir.r4.formats.XmlParser().compose(bs, r4);
+        return bs.toByteArray();
+      default:
+        throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
+      }
+    } else {
+      throw new Exception("Target Version not supported yet: "+targetVer);
+    }
+  }
+  
 }
-

@@ -84,9 +84,12 @@ public class PackageCacheManager {
 
     public InputStream stream;
     public String url;
-    public InputStreamWithSrc(InputStream stream, String url) {
+    public String version;
+    
+    public InputStreamWithSrc(InputStream stream, String url, String version) {
       this.stream = stream;
       this.url = url;
+      this.version = version;
     }
   }
 
@@ -316,10 +319,16 @@ public class PackageCacheManager {
     PackageClient pc = new PackageClient(PRIMARY_SERVER);
     InputStream stream;
     try {
+      if (Utilities.noString(v)) {
+        v = pc.getLatestVersion(id);
+      }
       stream = pc.fetch(id, v);
     } catch (IOException e) {
       pc = new PackageClient(SECONDARY_SERVER);
       try {
+        if (Utilities.noString(v)) {
+          v = pc.getLatestVersion(id);
+        }
         stream = pc.fetch(id, v);
       } catch (IOException e1) {
         // ok, well, we'll try the old way
@@ -329,7 +338,7 @@ public class PackageCacheManager {
         }
       }
     }
-    return new InputStreamWithSrc(stream, pc.url(id, v));
+    return new InputStreamWithSrc(stream, pc.url(id, v), v);
   }
 
 
@@ -547,12 +556,8 @@ public class PackageCacheManager {
   }
 
   public NpmPackage loadPackage(String id, String v) throws FHIRException, IOException {
-    if (Utilities.noString(v)) {
-      throw new FHIRException("Invalid version - ''");
-    }
-    
     //ok, try to resolve locally
-    if (v.startsWith("file:")) {
+    if (!Utilities.noString(v) && v.startsWith("file:")) {
       return loadPackageFromFile(id, v.substring(5));
     }
     NpmPackage p = loadPackageFromCacheOnly(id, v);
@@ -580,7 +585,7 @@ public class PackageCacheManager {
     } else {
       source = loadFromPackageServer(id, v);
     }
-    return addPackageToCache(id, v, source.stream, source.url);
+    return addPackageToCache(id, v == null ? source.version : v, source.stream, source.url);
   }
 
 
@@ -607,10 +612,10 @@ public class PackageCacheManager {
     checkBuildLoaded();
     if (ciList.containsKey(id)) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"));
+      return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"));
+      return new InputStreamWithSrc(stream, Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), "current");
     } else {
       throw new FHIRException("The package '"+id+"' has not entry on the current build server");
     }
