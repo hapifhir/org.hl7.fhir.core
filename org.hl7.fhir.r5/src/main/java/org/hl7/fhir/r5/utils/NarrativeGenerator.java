@@ -2935,18 +2935,43 @@ public class NarrativeGenerator implements INarrativeGenerator {
         return true;
       }
       String uri = cp.getUri();
+      String code = null;
       if (Utilities.noString(uri)){
         return false;
       }
       if (uri.contains("#")) {
+        code = uri.substring(uri.indexOf("#")+1);
         uri = uri.substring(0, uri.indexOf("#"));
       }
-      return 
-        Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") ||
-        codeSystemPropList.contains(uri);
+      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || codeSystemPropList.contains(uri)) {
+        return true;
+      };
+      CodeSystem cs = context.fetchCodeSystem(uri);
+      if (cs == null) {
+        return false;
+      }
+      return CodeSystemUtilities.hasCode(cs, code);
     }
     return false;
   }
+
+  private String getDisplayForProperty(String uri) {
+    if (Utilities.noString(uri)){
+      return null;
+    }
+    String code = null;
+    if (uri.contains("#")) {
+      code = uri.substring(uri.indexOf("#")+1);
+      uri = uri.substring(0, uri.indexOf("#"));
+    }
+    CodeSystem cs = context.fetchCodeSystem(uri);
+    if (cs == null) {
+      return null;
+    }
+    ConceptDefinitionComponent cc = CodeSystemUtilities.getCode(cs, code);
+    return cc == null ? null : cc.getDisplay();
+  }
+
 
   private int countConcepts(List<ConceptDefinitionComponent> list) {
     int count = list.size();
@@ -3475,7 +3500,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Version", lang));
     if (properties != null) {
       for (PropertyComponent pc : properties) {
-        tr.td().b().tx(context.translator().translate("xhtml-gen-cs", ToolingExtensions.getPresentation(pc, pc.getCodeElement()), lang));      
+        String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
+        if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
+          display = getDisplayForProperty(pc.getUri());
+          if (display == null) {
+            display = pc.getCode();
+          }
+        }
+        tr.td().b().tx(context.translator().translate("xhtml-gen-cs", display, lang));      
       }
     }
     return tr;
