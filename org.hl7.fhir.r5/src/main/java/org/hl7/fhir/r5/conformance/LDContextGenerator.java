@@ -215,7 +215,6 @@ public class LDContextGenerator {
     // if this is another backbone element, put it in the list for later and don't process.
     if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
       addToBackboneList(name, elementDefinition);
-      return;
     }
 
     ArrayList<ElementDefinition> bbList = (ArrayList)backboneList.get(nameTrimmed);
