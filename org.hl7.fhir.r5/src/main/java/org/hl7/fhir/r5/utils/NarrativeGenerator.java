@@ -56,7 +56,6 @@ Copyright (c) 2011+, HL7, Inc
 */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,6 +90,7 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -120,6 +120,7 @@ import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DiagnosticReport;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -127,6 +128,7 @@ import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.HumanName;
@@ -136,7 +138,6 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationDefinition;
@@ -163,7 +164,6 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -171,8 +171,6 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
-import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -181,10 +179,8 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -2934,6 +2930,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
         return true;
       }
+      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+        return true;
+      }
       String uri = cp.getUri();
       String code = null;
       if (Utilities.noString(uri)){
@@ -4127,6 +4126,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private ConceptDefinitionComponent getConceptForCode(CodeSystem e, String code, ConceptSetComponent inc) {
+    if (code == null) {
+      return null;
+    }
     // first, look in the code systems
     if (e == null)
     e = context.fetchCodeSystem(inc.getSystem());
