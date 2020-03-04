@@ -1051,7 +1051,7 @@ public class FHIRPathEngine {
     switch (exp.getFunction()) {
     case Empty: return checkParamCount(lexer, location, exp, 0);
     case Not: return checkParamCount(lexer, location, exp, 0);
-    case Exists: return checkParamCount(lexer, location, exp, 0);
+    case Exists: return checkParamCount(lexer, location, exp, 0, 1);
     case SubsetOf: return checkParamCount(lexer, location, exp, 1);
     case SupersetOf: return checkParamCount(lexer, location, exp, 1);
     case IsDistinct: return checkParamCount(lexer, location, exp, 0);
@@ -2381,8 +2381,10 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Not : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Exists : 
+    case Exists : { 
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    }
     case SubsetOf : {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, focus); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
@@ -3307,9 +3309,19 @@ public class FHIRPathEngine {
   private List<Base> funcExists(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     boolean empty = true;
-    for (Base f : focus)
-      if (!f.isEmpty())
+    List<Base> pc = new ArrayList<Base>();
+    for (Base f : focus) {
+      if (exp.getParameters().size() == 1) {
+        pc.clear();
+        pc.add(f);
+        Equality v = asBool(execute(changeThis(context, f), pc, exp.getParameters().get(0), true));
+        if (v == Equality.True) {
+          empty = false;
+        }
+      } else if (!f.isEmpty()) {
         empty = false;
+      }
+    }
     result.add(new BooleanType(!empty).noExtensions());
     return result;
   }
