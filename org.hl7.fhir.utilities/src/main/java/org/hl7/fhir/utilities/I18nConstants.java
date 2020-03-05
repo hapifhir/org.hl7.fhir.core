@@ -5,18 +5,6 @@ import java.util.ResourceBundle;
 
 public class I18nConstants {
 
-  public static String formatMessage(ResourceBundle resourceBundle, String theMessage, Object... theMessageArguments) {
-    String message;
-    if (theMessageArguments != null && theMessageArguments.length > 0) {
-      message = MessageFormat.format(resourceBundle.getString(theMessage), theMessageArguments);
-    } else if (resourceBundle.containsKey(theMessage)) {
-      message = resourceBundle.getString(theMessage);
-    } else {
-      message = theMessage;
-    }
-    return message;
-  }
-
   public final static String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public final static String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
   public final static String BUNDLE_BUNDLE_ENTRY_IDURLMISMATCH = "Bundle_BUNDLE_Entry_IdUrlMismatch";

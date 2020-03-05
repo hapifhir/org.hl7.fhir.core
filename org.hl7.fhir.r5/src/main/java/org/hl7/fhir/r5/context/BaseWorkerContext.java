@@ -22,17 +22,18 @@ package org.hl7.fhir.r5.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +42,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -95,6 +95,7 @@ import com.google.gson.JsonObject;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
 
+  private ResourceBundle i18Nmessages;
   private Locale locale;
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
@@ -166,19 +167,23 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private boolean tlogging = true;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
-    super();
     txCache = new TerminologyCache(lock, null);
+    setValidationMessageLanguage(getLocale());
   }
 
-  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles, 
+  public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    txCache = new TerminologyCache(lock, null);
+    setValidationMessageLanguage(locale);
+  }
+
+  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
       CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
-    super();
+    this();
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
     this.maps = maps;
     this.structures = profiles;
     this.guides = guides;
-    txCache = new TerminologyCache(lock, null);
   }
 
   protected void copy(BaseWorkerContext other) {
@@ -1288,5 +1293,20 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return binaries;
   }
 
+  @Override
+  public String formatMessage(String theMessage, Object... theMessageArguments) {
+    String message;
+    if (theMessageArguments != null && theMessageArguments.length > 0) {
+      message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+    } else if (i18Nmessages.containsKey(theMessage)) {
+      message = i18Nmessages.getString(theMessage);
+    } else {
+      message = theMessage;
+    }
+    return message;
+  }
 
+  public void setValidationMessageLanguage(Locale locale) {
+    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
+  }
 }

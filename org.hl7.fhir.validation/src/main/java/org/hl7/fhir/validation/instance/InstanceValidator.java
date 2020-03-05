@@ -3191,8 +3191,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Identifier ii = (Identifier) pattern;
       expression.append(" and ");
       buildIdentifierExpression(ed, expression, discriminator, ii);
-    } else
+    } else {
       throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.getClass().getName()));
+    }
   }
 
   private void buildIdentifierExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Identifier ii)
