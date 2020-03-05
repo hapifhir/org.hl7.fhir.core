@@ -143,9 +143,10 @@ public interface IResourceValidator {
 
   public boolean isShowMessagesFromReferences();
   public void setShowMessagesFromReferences(boolean value);
-  
-  public String getValidationLanguage();
-  public void setValidationLanguage(String value);
+
+  //FIXME: don't need that, gets never used?
+//  public String getValidationLanguage();
+//  public void setValidationLanguage(String value);
   
   /**
    * It's common to see references such as Patient/234234 - these usually mean a reference to a Patient resource. 
