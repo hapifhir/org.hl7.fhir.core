@@ -126,6 +126,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.XVerExtensionManager;
@@ -141,7 +142,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.instance.utils.*;
-import org.hl7.fhir.validation.utils.I18nConstants;
 import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
@@ -375,7 +375,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     super(theContext);
     this.context = theContext;
     this.externalHostServices = hostServices;
-    this.profileUtilities = new ProfileUtilities(theContext, null, null);
+    this.profileUtilities = new ProfileUtilities(theContext, null, null, getI18Nmessages());
     fpe = new FHIRPathEngine(context);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
