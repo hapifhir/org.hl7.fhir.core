@@ -64,16 +64,16 @@ public class BaseValidator {
 
   protected Source source;
   protected IWorkerContext context;
-  private ResourceBundle messages;
+  private ResourceBundle i18Nmessages;
 
   public BaseValidator(IWorkerContext context){
     this.context = context;
-    messages = ResourceBundle.getBundle("Messages", context.getLocale() );
+    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
   }
 
   public void setContext(IWorkerContext context) {
     this.context = context;
-    messages = ResourceBundle.getBundle("Messages", context.getLocale() );
+    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
   }
 
   /**
@@ -146,11 +146,11 @@ public class BaseValidator {
 
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
     String message = "";
-    if (messages.containsKey(theMessage)) {
+    if (i18Nmessages.containsKey(theMessage)) {
       if (theMessageArguments != null && theMessageArguments.length > 0) {
-        message = MessageFormat.format(messages.getString(theMessage), theMessageArguments);
-      } else if (messages.containsKey(theMessage)) {
-        message = messages.getString(theMessage);
+        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+      } else if (i18Nmessages.containsKey(theMessage)) {
+        message = i18Nmessages.getString(theMessage);
       }
     } else {
       message = theMessage;
@@ -563,5 +563,9 @@ public class BaseValidator {
 		 addValidationMessage(errors, type, path, msg, html, IssueSeverity.INFORMATION);
 	 }
     return thePass;
+  }
+
+  public ResourceBundle getI18Nmessages() {
+    return i18Nmessages;
   }
 }
