@@ -4706,7 +4706,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       NodeStack localStack = stack.push(ei.getElement(), ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
       if (debug) {
-        System.out.println("  " + localStack.getLiteralPath());
+        System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl());
       }
       String localStackLiterapPath = localStack.getLiteralPath();
       String eiPath = ei.getPath();
@@ -5154,7 +5154,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return;
 
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || profile.getUrl().equals(inv.getSource()))) {
+      if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || !isInheritedProfile(profile, inv.getSource()))) {
         @SuppressWarnings("unchecked")
         Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
         if (invList == null) {
@@ -5170,6 +5170,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+  }
+
+  private boolean isInheritedProfile(StructureDefinition profile, String source) {
+    if (source.equals(profile.getUrl())) {
+      return false;
+    }
+    while (profile != null) {
+      profile = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+      if (profile != null) {
+        if (source.equals(profile.getUrl())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public void checkInvariant(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {

@@ -191,6 +191,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
+      if (profile.getAsJsonObject("java").has("debug")) {
+        val.setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
+      }
       if (profile.has("supporting")) {
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
           String filename =  e.getAsString();
