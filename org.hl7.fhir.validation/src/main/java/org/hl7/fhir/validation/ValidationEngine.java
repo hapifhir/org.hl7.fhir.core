@@ -436,8 +436,6 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     
     File f = new File(Utilities.path(src));
     if (f.exists()) {
-      if(isIgnoreFile(f))
-        return null;
       if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
         return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));
       if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
