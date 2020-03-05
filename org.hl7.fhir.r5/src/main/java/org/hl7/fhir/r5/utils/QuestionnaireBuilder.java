@@ -136,10 +136,12 @@ public class QuestionnaireBuilder {
   // processing the response. for technical reasons, we still go through the process, but
   // we don't do the intensive parts of the work (save time)
   private Questionnaire prebuiltQuestionnaire;
+  private ProfileUtilities profileUtilities;
 
   public QuestionnaireBuilder(IWorkerContext context) {
     super();
     this.context = context;
+    profileUtilities = new ProfileUtilities(context, null, null); 
   }
 
   public Resource getReference() {
@@ -291,7 +293,7 @@ public class QuestionnaireBuilder {
     }
 
     // now, we iterate the children
-    List<ElementDefinition> list = ProfileUtilities.getChildList(profile, element);
+    List<ElementDefinition> list = profileUtilities.getChildList(profile, element);
     for (ElementDefinition child : list) {
 
       if (!isExempt(element, child) && !parents.contains(child)) {

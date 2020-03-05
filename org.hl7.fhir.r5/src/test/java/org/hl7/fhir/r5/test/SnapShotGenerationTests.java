@@ -108,6 +108,8 @@ public class SnapShotGenerationTests {
     private boolean fail;
     private boolean newSliceProcessing;
     private boolean debug;
+    private String version;
+    
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private StructureDefinition included;
@@ -121,6 +123,11 @@ public class SnapShotGenerationTests {
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
       debug = "true".equals(test.getAttribute("debug"));
+      if (test.hasAttribute("version")) {
+        version = test.getAttribute("version");
+      } else {
+        version = "4.0.1";        
+      }
       
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -346,7 +353,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) {
+    public Base resolveReference(Object appContext, String url, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }
@@ -458,7 +465,7 @@ public class SnapShotGenerationTests {
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
     pu.setIds(test.getSource(), false);
     List<String> errors = new ArrayList<String>();          
-    pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors);
+    pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId()+"-expected.xml")));
@@ -468,21 +475,32 @@ public class SnapShotGenerationTests {
 
   private void testGen(boolean fail) throws Exception {
     if (!Utilities.noString(test.register)) {
-      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), null, null);
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();          
+      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, null);
       pu.setNewSlicingProcessing(true);
-      List<String> errors = new ArrayList<String>();          
       pu.setIds(test.included, false);
       StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
-      pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
+      if (base != null) {
+        pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
+      }
       if (!TestingUtilities.context().hasResource(StructureDefinition.class, test.included.getUrl()))
         TestingUtilities.context().cacheResource(test.included);
+      int ec = 0;
+      for (ValidationMessage vm : messages) {
+        if (vm.getLevel() == IssueSeverity.ERROR) {
+          System.out.println(vm.summary());
+          ec++;
+        }
+      }
+      if (ec > 0)
+        throw new FHIRException("register gen failed: "+messages.toString());
     }
     StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
     if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
       throw new Exception("URL mismatch on base: "+base.getUrl()+" wanting "+test.getSource().getBaseDefinition());
     
     StructureDefinition output = test.getSource().copy();
-    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(test.version), messages , new TestPKP());
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
@@ -490,7 +508,7 @@ public class SnapShotGenerationTests {
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();
-      pu.sortDifferential(base, output, test.getSource().getName(), errors);
+      pu.sortDifferential(base, output, test.getSource().getName(), errors, false);
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: "+errors.toString());
     }
@@ -537,7 +555,7 @@ public class SnapShotGenerationTests {
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages , new TestPKP());
       pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();          
-      pu.sortDifferential(base, sd, url, errors);
+      pu.sortDifferential(base, sd, url, errors, false);
       if (!errors.isEmpty())
         throw new FHIRException(errors.get(0));
       pu.setIds(sd, false);

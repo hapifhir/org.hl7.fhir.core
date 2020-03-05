@@ -170,4 +170,28 @@ public class VersionUtilities {
     return ok;
   }
 
+  public static String incMajorVersion(String v) {
+    assert isSemVer(v);
+    int[] parts = splitParts(v);
+    return Integer.toString(parts[0]+1)+".0.0";
+  }
+
+  public static String incMinorVersion(String v) {
+    assert isSemVer(v);
+    int[] parts = splitParts(v);
+    return Integer.toString(parts[0])+"."+Integer.toString(parts[1]+1)+".0";
+  }
+
+  public static String incPatchVersion(String v) {
+    assert isSemVer(v);
+    int[] parts = splitParts(v);
+    return Integer.toString(parts[0])+"."+Integer.toString(parts[1])+"."+Integer.toString(parts[2]+1);
+  }
+
+  private static int[] splitParts(String v) {
+    String[] p = v.split("\\.");
+    int[] i = new int[] {Integer.parseInt(p[0]),Integer.parseInt(p[1]),Integer.parseInt(p[2])};
+    return i;
+  }
+
 }

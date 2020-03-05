@@ -2,6 +2,9 @@ package org.hl7.fhir.r5.model;
 
 import org.junit.Test;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import static org.junit.Assert.*;
 
 public class BaseDateTimeTypeTest {
@@ -33,6 +36,10 @@ public class BaseDateTimeTypeTest {
     
     @Test
     public void equalsUsingFhirPathRulesOther() {
+        // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
+        // all my time based tests failing locally...
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
+
         // Exact same - Same timezone
         assertTrue( compareDateTimes("2001-01-02T11:22:33.444Z", "2001-01-02T11:22:33.444Z"));
         // Exact same - Different timezone

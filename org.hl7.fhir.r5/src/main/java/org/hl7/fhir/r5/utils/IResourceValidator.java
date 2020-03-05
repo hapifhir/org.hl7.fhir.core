@@ -148,6 +148,24 @@ public interface IResourceValidator {
   public void setValidationLanguage(String value);
   
   /**
+   * It's common to see references such as Patient/234234 - these usually mean a reference to a Patient resource. 
+   * But there's no actual technical rule that it does, so the validator doesn't enforce that unless this setting is 
+   * set to true
+   * 
+   * @return
+   */
+  public boolean isAssumeValidRestReferences();
+  public void setAssumeValidRestReferences(boolean value);
+  
+  /** 
+   * if this is true, the validator will accept extensions and references to example.org and acme.com as 
+   * valid, on the basis that they are understood to be references to content that could exist in priniple but can't in practice
+   */
+  public boolean isAllowExamples();
+  public void setAllowExamples(boolean value) ;
+  
+
+  /**
    * Validate suite
    *  
    * you can validate one of the following representations of resources:

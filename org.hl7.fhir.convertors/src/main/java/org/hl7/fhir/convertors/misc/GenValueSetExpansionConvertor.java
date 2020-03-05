@@ -26,15 +26,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.dstu2.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Bundle;
 import org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.ValueSet;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.Utilities;
 
 public class GenValueSetExpansionConvertor {
 

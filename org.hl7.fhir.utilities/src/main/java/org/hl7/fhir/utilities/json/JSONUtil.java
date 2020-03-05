@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 public class JSONUtil {
@@ -73,14 +74,19 @@ public class JSONUtil {
 
   public static String str(JsonObject json, String name) {
     JsonElement e = json.get(name);
-    return e == null ? null : e.getAsString();
+    return e == null || e instanceof JsonNull ? null : e.getAsString();
+  }
+
+  public static boolean bool(JsonObject json, String name) {
+    JsonElement e = json.get(name);
+    return e == null || e instanceof JsonNull ? false : e.getAsBoolean();
   }
 
   public static String str(JsonObject json, String name1, String name2) {
     JsonElement e = json.get(name1);
     if (e == null)
       e = json.get(name2);
-    return e == null ? null : e.getAsString();
+    return e == null ? null : e instanceof JsonNull ? null :  e.getAsString();
   }
 
   public static boolean has(JsonObject json, String name1, String name2) {

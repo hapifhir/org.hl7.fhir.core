@@ -77,7 +77,7 @@ import com.google.gson.JsonObject;
 public class NpmPackage {
 
   public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
+    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
   }
 
   public static boolean isValidVersion(String ver) {
@@ -161,11 +161,21 @@ public class NpmPackage {
       return name + " ("+ (folder == null ? "null" : folder.toString())+") | "+Boolean.toString(index != null)+" | "+content.size()+" | "+types.size();
     }
 
+    public void removeFile(String n) throws IOException {
+      if (folder != null) {
+        new File(Utilities.path(folder.getAbsolutePath(), n)).delete();
+      } else {
+        content.remove(n);
+      }
+      changedByLoader = true;      
+    }
+
   }
 
   private String path;
   private JsonObject npm;
   private Map<String, NpmPackageFolder> folders = new HashMap<>();
+  private boolean changedByLoader; // internal qa only!
 
   private NpmPackage() {
 
@@ -186,10 +196,11 @@ public class NpmPackage {
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
     res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
-
+    res.path = path;
+    
     File dir = new File(path);
     for (File f : dir.listFiles()) {
-      if (!Utilities.existsInList(f.getName(), ".git", ".svn") && !Utilities.existsInList(f.getName(), exemptions)) {
+      if (!isInternalExemptFile(f) && !Utilities.existsInList(f.getName(), exemptions)) {
         if (f.isDirectory()) {
           String d = f.getName();
           if (!d.equals("package")) {
@@ -208,12 +219,16 @@ public class NpmPackage {
           }
           loadSubFolders(res, dir.getAbsolutePath(), f);
         } else {
-          NpmPackageFolder folder = res.new NpmPackageFolder("package/$root");
+          NpmPackageFolder folder = res.new NpmPackageFolder(Utilities.path("package", "$root"));
           folder.folder = dir;
-          res.folders.put("package/$root", folder);        
+          res.folders.put(Utilities.path("package", "$root"), folder);        
         }
       }
     }
+  }
+
+  public static boolean isInternalExemptFile(File f) {
+    return Utilities.existsInList(f.getName(), ".git", ".svn") || Utilities.existsInList(f.getName(), "package-list.json");
   }
 
   private static void loadSubFolders(NpmPackage res, String rootPath, File dir) throws IOException {
@@ -332,12 +347,18 @@ public class NpmPackage {
 
   private void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
+      List<String> remove = new ArrayList<>();
       if (folder.index == null) {
         NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
         indexer.start();
         for (String n : folder.listFiles()) {
-          indexer.seeFile(n, folder.fetchFile(n));
-        }       
+          if (!indexer.seeFile(n, folder.fetchFile(n))) {
+            remove.add(n);
+          }
+        } 
+        for (String n : remove) {
+          folder.removeFile(n);
+        }
         String json = indexer.build();
         try {
           folder.readIndex(JsonTrackingParser.parseJson(json));
@@ -622,6 +643,37 @@ public class NpmPackage {
     return folders;
   }
 
+  public void save(File directory) throws IOException {
+    File dir = new File(Utilities.path(directory.getAbsolutePath(), name()));
+    if (!dir.exists()) {
+      Utilities.createDirectory(dir.getAbsolutePath());
+    } else {
+      Utilities.clearDirectory(dir.getAbsolutePath());
+    }
+    
+    for (NpmPackageFolder folder : folders.values()) {
+      String n = folder.name;
+
+      File pd = new File(Utilities.path(dir.getAbsolutePath(), n));
+      if (!pd.exists()) {
+        Utilities.createDirectory(pd.getAbsolutePath());
+      }
+      NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+      indexer.start();
+      for (String s : folder.content.keySet()) {
+        byte[] b = folder.content.get(s);
+        indexer.seeFile(s, b);
+        if (!s.equals(".index.json") && !s.equals("package.json")) {
+          TextFile.bytesToFile(b, Utilities.path(dir.getAbsolutePath(), n, s));
+        }
+      }
+      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), n, ".index.json"));
+    }
+    byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
+    TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), "package", "package.json"));
+  }
+  
   public void save(OutputStream stream) throws IOException {
     TarArchiveOutputStream tar;
     ByteArrayOutputStream OutputStream;
@@ -636,7 +688,7 @@ public class NpmPackage {
 
     for (NpmPackageFolder folder : folders.values()) {
       String n = folder.name;
-      if (!"package".equals(n)) {
+      if (!"package".equals(n) && !(n.startsWith("package/") || n.startsWith("package\\"))) {
         n = "package/"+n;
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
@@ -756,5 +808,41 @@ public class NpmPackage {
     Collections.sort(res);
     return res ;
   }
+
+  public void clearFolder(String folderName) {
+    NpmPackageFolder folder = folders.get(folderName);
+    folder.content.clear();
+    folder.types.clear();    
+  }
+
+  public void deleteFolder(String folderName) {
+    folders.remove(folderName);
+  }
+
+  public void addFile(String folderName, String name, byte[] cnt, String type) {
+    NpmPackageFolder folder = folders.get(folderName);
+    folder.content.put(name, cnt);
+    if (!folder.types.containsKey(type))
+      folder.types.put(type, new ArrayList<>());
+    folder.types.get(type).add(name);
+  }
+
+  public void loadAllFiles() throws IOException {
+    for (String folder : folders.keySet()) {
+      NpmPackageFolder pf = folders.get(folder);
+      String p = folder.contains("$") ? path : Utilities.path(path, folder);
+      for (File f : new File(p).listFiles()) {
+        if (!f.isDirectory() && !isInternalExemptFile(f)) {
+          pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+        }
+      }
+    }
+  }
+
+  public boolean isChangedByLoader() {
+    return changedByLoader;
+  }
+  
+  
 }
 

@@ -32,6 +32,8 @@ import java.util.Stack;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -618,6 +620,23 @@ public class JsonTrackingParser {
   public void setErrorOnDuplicates(boolean errorOnDuplicates) {
     this.errorOnDuplicates = errorOnDuplicates;
   }
-	
+
+  public static void write(JsonObject json, File file) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    String jcnt = gson.toJson(json);
+    TextFile.stringToFile(jcnt, file);    
+  }
+  
+  public static void write(JsonObject json, String fileName) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    String jcnt = gson.toJson(json);
+    TextFile.stringToFile(jcnt, fileName);    
+  }
+  
+  public static String write(JsonObject json) {
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    return gson.toJson(json);    
+  }
+  
 	
 }

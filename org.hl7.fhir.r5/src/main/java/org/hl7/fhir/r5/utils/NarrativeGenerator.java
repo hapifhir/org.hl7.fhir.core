@@ -56,7 +56,6 @@ Copyright (c) 2011+, HL7, Inc
 */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,7 +63,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.LinkedTransferQueue;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -92,6 +90,7 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -121,6 +120,7 @@ import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DiagnosticReport;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -128,6 +128,7 @@ import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.HumanName;
@@ -137,7 +138,6 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationDefinition;
@@ -164,7 +164,6 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -172,8 +171,6 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
-import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -182,10 +179,8 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ILiquidTemplateProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -255,8 +250,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   public static class ResourceContext {
     Bundle bundleResource;
+    org.hl7.fhir.r5.elementmodel.Element bundleElement;
     
     DomainResource resourceResource;
+    org.hl7.fhir.r5.elementmodel.Element resourceElement;
     
     public ResourceContext(Bundle bundle, DomainResource dr) {
       super();
@@ -264,26 +261,56 @@ public class NarrativeGenerator implements INarrativeGenerator {
       this.resourceResource = dr;
     }
 
-    public ResourceContext(Element bundle, Element doc) {
+    public ResourceContext(org.hl7.fhir.r5.elementmodel.Element bundle, org.hl7.fhir.r5.elementmodel.Element dr) {
+      this.bundleElement = bundle;
+      this.resourceElement = dr;
     }
 
-    public ResourceContext(org.hl7.fhir.r5.elementmodel.Element bundle, org.hl7.fhir.r5.elementmodel.Element er) {
+    public ResourceContext(Object bundle, Element doc) {
+      // TODO Auto-generated constructor stub
     }
 
-    public Resource resolve(String value) {
+    public BundleEntryComponent resolve(String value) {
       if (value.startsWith("#")) {
-        for (Resource r : resourceResource.getContained()) {
-          if (r.getId().equals(value.substring(1)))
-            return r;
+        if (resourceResource != null) {
+          for (Resource r : resourceResource.getContained()) {
+            if (r.getId().equals(value.substring(1))) {
+              BundleEntryComponent be = new BundleEntryComponent();
+              be.setResource(r);
+              return be;
+            }
+          }
         }
         return null;
       }
       if (bundleResource != null) {
         for (BundleEntryComponent be : bundleResource.getEntry()) {
           if (be.getFullUrl().equals(value))
-            return be.getResource();
+            return be;
           if (value.equals(be.getResource().fhirType()+"/"+be.getResource().getId()))
-            return be.getResource();
+            return be;
+        }
+      }
+      return null;
+    }
+    
+    public org.hl7.fhir.r5.elementmodel.Element resolveElement(String value) {
+      if (value.startsWith("#")) {
+        if (resourceElement != null) {
+          for (org.hl7.fhir.r5.elementmodel.Element r : resourceElement.getChildrenByName("contained")) {
+            if (r.getChildValue("id").equals(value.substring(1)))
+              return r;
+          }          
+        }
+        return null;
+      }
+      if (bundleElement != null) {
+        for (org.hl7.fhir.r5.elementmodel.Element be : bundleElement.getChildren("entry")) {
+          org.hl7.fhir.r5.elementmodel.Element res = be.getNamedChild("resource");
+          if (value.equals(be.getChildValue("fullUrl")))
+            return be;
+          if (value.equals(res.fhirType()+"/"+res.getChildValue("id")))
+            return be;
         }
       }
       return null;
@@ -451,7 +478,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = ProfileUtilities.getChildList(structure, definition);
+        children = profileUtilities.getChildList(structure, definition);
         list = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -601,7 +628,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = ProfileUtilities.getChildList(structure, definition);
+        children = profileUtilities.getChildList(structure, definition);
         list = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<org.hl7.fhir.r5.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.r5.elementmodel.Element>();
@@ -672,7 +699,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = ProfileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = profileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<org.hl7.fhir.r5.elementmodel.Element> elements = new ArrayList<org.hl7.fhir.r5.elementmodel.Element>();
@@ -810,7 +837,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = ProfileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = profileUtilities.getChildList(definition, definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<NarrativeGenerator.PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -973,8 +1000,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     @Override
     public List<PropertyWrapper> children() {
       List<PropertyWrapper> list = new ArrayList<PropertyWrapper>();
+      if (wrapped.children() != null) {
       for (Property c : wrapped.children())
         list.add(new PropertyWrapperDirect(c));
+      }
       return list;
     }
   }
@@ -1011,6 +1040,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
   private List<String> codeSystemPropList = new ArrayList<>();
+  private ProfileUtilities profileUtilities;
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -1044,6 +1074,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
 
   private void init() {
+    profileUtilities = new ProfileUtilities(context, null, null); 
     renderingMaps.add(new ConceptMapRenderInstructions("Canonical Status", "http://hl7.org/fhir/ValueSet/resource-status", false));
   }
 
@@ -1618,6 +1649,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return false;
     } else if (e instanceof ElementDefinition) {
       return false;
+    } else if (e instanceof Base64BinaryType) {
+      return false;
     } else if (!(e instanceof Attachment))
       throw new NotImplementedException("type "+e.getClass().getName()+" not handled yet");
     return false;
@@ -1712,10 +1745,20 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     
     if (rc!=null) {
-      Resource bundleResource = rc.resolve(url);
-      if (bundleResource!=null) {
-        String bundleUrl = "#" + bundleResource.getResourceType().name().toLowerCase() + "_" + bundleResource.getId(); 
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(bundleResource));
+      BundleEntryComponent bundleResource = rc.resolve(url);
+      if (bundleResource != null) {
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name().toLowerCase() + "_" + bundleResource.getResource().getId(); 
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(bundleResource.getResource()));
+      }
+      org.hl7.fhir.r5.elementmodel.Element bundleElement = rc.resolveElement(url);
+      if (bundleElement != null) {
+        String bundleUrl = null;
+        if (bundleElement.getNamedChild("resource").getChildValue("id") != null) {
+          bundleUrl = "#" + bundleElement.fhirType().toLowerCase() + "_" + bundleElement.getNamedChild("resource").getChildValue("id");
+        } else {
+          bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
+        }
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(bundleElement));
       }
     }
 
@@ -1726,6 +1769,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return resolver.resolve(url);
     } else
       return null;
+  }
+
+  private String fullUrlToAnchor(String url) {
+    return url.replace(":", "").replace("/", "_");
   }
 
   private void renderCodeableConcept(CodeableConcept cc, XhtmlNode x, boolean showCodeDetails) {
@@ -2317,40 +2364,40 @@ public class NarrativeGenerator implements INarrativeGenerator {
       addMarkdown(x, cm.getDescription());
 
     x.br();
+    
     CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
-      cs = context.fetchCodeSystem("http://hl7.org/fhir/ValueSet/concept-map-equivalence");
+      cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
     String eqpath = cs == null ? null : cs.getUserString("path");
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
       boolean comment = false;
       boolean ok = true;
-    Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
-    Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
+      Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
+      Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
       sources.put("code", new HashSet<String>());
-    targets.put("code", new HashSet<String>());
+      targets.put("code", new HashSet<String>());
       SourceElementComponent cc = grp.getElement().get(0);
       String dst = grp.getTarget();
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty();
-      	for (TargetElementComponent ccm : ccl.getTarget()) {
-      		comment = comment || !Utilities.noString(ccm.getComment());
-      		for (OtherElementComponent d : ccm.getDependsOn()) {
+        for (TargetElementComponent ccm : ccl.getTarget()) {
+          comment = comment || !Utilities.noString(ccm.getComment());
+          for (OtherElementComponent d : ccm.getDependsOn()) {
             if (!sources.containsKey(d.getProperty()))
               sources.put(d.getProperty(), new HashSet<String>());
             sources.get(d.getProperty()).add(d.getSystem());
-      		}
-      		for (OtherElementComponent d : ccm.getProduct()) {
+          }
+          for (OtherElementComponent d : ccm.getProduct()) {
             if (!targets.containsKey(d.getProperty()))
               targets.put(d.getProperty(), new HashSet<String>());
             targets.get(d.getProperty()).add(d.getSystem());
-            }
-
-      		}
-      	}
+          }
+        }
+      }
 
       String display;
       if (ok) {
@@ -2370,7 +2417,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
-          tr.td().addText(!ccm.hasRelationship() ? "" : ccm.getRelationship().toCode());
+          if (!ccm.hasRelationship())
+            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+          else {
+            if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+              String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+              tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+            } else {
+              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+            }
+          }
           td = tr.td();
           td.addText(ccm.getCode());
           display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
@@ -2459,8 +2515,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
             first = false;
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-            else
-              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(ccm.getRelationship().toCode());
+            else {
+              if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+              } else {
+                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              }
+            }
             td = tr.td();
             if (targets.get("code").size() == 1)
               td.addText(ccm.getCode());
@@ -2469,7 +2531,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
             display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
             if (display != null)
               td.tx(" ("+display+")");
-  
+
             for (String s : targets.keySet()) {
               if (!s.equals("code")) {
                 td = tr.td();
@@ -2488,6 +2550,48 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     inject(cm, x, NarrativeStatus.GENERATED);
     return true;
+  }
+
+  private String presentRelationshipCode(String code) {
+    if ("related-to".equals(code)) {
+      return "is related to";
+    } else if ("equivalent".equals(code)) {
+      return "is equivalent to";
+    } else if ("broader".equals(code)) {
+      return "maps to wider concept";
+    } else if ("narrower".equals(code)) {
+      return "maps to narrower concept";
+    } else if ("not-related-to".equals(code)) {
+      return "is not related to";
+    } else {
+      return code;
+    }
+  }
+
+  private String presentEquivalenceCode(String code) {
+    if ("relatedto".equals(code)) {
+      return "is related to";
+    } else if ("equivalent".equals(code)) {
+      return "is equivalent to";
+    } else if ("equal".equals(code)) {
+      return "is equal to";
+    } else if ("wider".equals(code)) {
+      return "maps to wider concept";
+    } else if ("subsumes".equals(code)) {
+      return "is subsumed by";
+    } else if ("narrower".equals(code)) {
+      return "maps to narrower concept";
+    } else if ("specializes".equals(code)) {
+      return "has specialization";
+    } else if ("inexact".equals(code)) {
+      return "maps loosely to";
+    } else if ("unmatched".equals(code)) {
+      return "has no match";
+    } else if ("disjoint".equals(code)) {
+      return "is not related to";
+    } else {
+      return code;
+    }
   }
 
   public void renderCSDetailsLink(XhtmlNode tr, String url) {
@@ -2513,6 +2617,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
     if (r.hasLanguage()) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", r.getLanguage());
       x.setAttribute("xml:lang", r.getLanguage());
     }
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
@@ -2537,6 +2643,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void inject(Element er, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    Element le = XMLUtil.getNamedChild(er, "language");
+    String l = le == null ? null : le.getAttribute("value");
+    if (!Utilities.noString(l)) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", l);
+      x.setAttribute("xml:lang", l);
+    }
     Element txt = XMLUtil.getNamedChild(er, "text");
     if (txt == null) {
       txt = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "text");
@@ -2572,6 +2685,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status) throws IOException, FHIRException {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    String l = er.getChildValue("language");
+    if (!Utilities.noString(l)) {
+      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+      x.setAttribute("lang", l);
+      x.setAttribute("xml:lang", l);
+    }
     org.hl7.fhir.r5.elementmodel.Element txt = er.getNamedChild("text");
     if (txt == null) {
       txt = new org.hl7.fhir.r5.elementmodel.Element("text", er.getProperty().getChild(null, "text"));
@@ -2811,19 +2930,47 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (cp.hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
         return true;
       }
+      if (cp.getCodeElement().hasExtension(ToolingExtensions.EXT_RENDERED_VALUE)) {
+        return true;
+      }
       String uri = cp.getUri();
+      String code = null;
       if (Utilities.noString(uri)){
         return false;
       }
       if (uri.contains("#")) {
+        code = uri.substring(uri.indexOf("#")+1);
         uri = uri.substring(0, uri.indexOf("#"));
       }
-      return 
-        Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") ||
-        codeSystemPropList.contains(uri);
+      if (Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties") || codeSystemPropList.contains(uri)) {
+        return true;
+      };
+      CodeSystem cs = context.fetchCodeSystem(uri);
+      if (cs == null) {
+        return false;
+      }
+      return CodeSystemUtilities.hasCode(cs, code);
     }
     return false;
   }
+
+  private String getDisplayForProperty(String uri) {
+    if (Utilities.noString(uri)){
+      return null;
+    }
+    String code = null;
+    if (uri.contains("#")) {
+      code = uri.substring(uri.indexOf("#")+1);
+      uri = uri.substring(0, uri.indexOf("#"));
+    }
+    CodeSystem cs = context.fetchCodeSystem(uri);
+    if (cs == null) {
+      return null;
+    }
+    ConceptDefinitionComponent cc = CodeSystemUtilities.getCode(cs, code);
+    return cc == null ? null : cc.getDisplay();
+  }
+
 
   private int countConcepts(List<ConceptDefinitionComponent> list) {
     int count = list.size();
@@ -2917,6 +3064,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private ConceptMapRenderInstructions findByTarget(DataType source) {
+    if (source == null) {
+      return null;
+    }
     String src = source.primitiveValue();
     if (src != null)
       for (ConceptMapRenderInstructions t : renderingMaps) {
@@ -3349,7 +3499,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
       tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Version", lang));
     if (properties != null) {
       for (PropertyComponent pc : properties) {
-        tr.td().b().tx(context.translator().translate("xhtml-gen-cs", ToolingExtensions.getPresentation(pc, pc.getCodeElement()), lang));      
+        String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
+        if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
+          display = getDisplayForProperty(pc.getUri());
+          if (display == null) {
+            display = pc.getCode();
+          }
+        }
+        tr.td().b().tx(context.translator().translate("xhtml-gen-cs", display, lang));      
       }
     }
     return tr;
@@ -3777,7 +3934,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
   private void AddVsRef(ResourceContext rcontext, String value, XhtmlNode li) {
-    Resource res = rcontext == null ? null : rcontext.resolve(value); 
+    Resource res = null;
+    if (rcontext != null) {
+       BundleEntryComponent be = rcontext.resolve(value);
+       if (be != null) {
+         res = be.getResource(); 
+       }
+    }
     if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
       return;      
@@ -3963,6 +4126,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private ConceptDefinitionComponent getConceptForCode(CodeSystem e, String code, ConceptSetComponent inc) {
+    if (code == null) {
+      return null;
+    }
     // first, look in the code systems
     if (e == null)
     e = context.fetchCodeSystem(inc.getSystem());
@@ -4861,8 +5027,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
   public XhtmlNode renderBundle(org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException {
     XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
     for (Base b : element.listChildrenByName("entry")) {
-      org.hl7.fhir.r5.elementmodel.Element r = ((org.hl7.fhir.r5.elementmodel.Element) b).getNamedChild("resource");
+      org.hl7.fhir.r5.elementmodel.Element be = ((org.hl7.fhir.r5.elementmodel.Element) b);
+      org.hl7.fhir.r5.elementmodel.Element r = be.getNamedChild("resource");
       if (r!=null) {
+        if (r.getChildValue("id") != null) {
+          root.an(r.getChildValue("id"));
+        } else if (be.getChildValue("fullUrl") != null){
+          root.an(fullUrlToAnchor(be.getChildValue("fullUrl")));          
+        }
         XhtmlNode c = getHtmlForResource(r);
         if (c != null)
           root.getChildNodes().addAll(c.getChildNodes());

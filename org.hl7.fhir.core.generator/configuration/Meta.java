@@ -29,7 +29,7 @@
    * <code>null</code> if none 
    */
   public Coding getSecurity(String theSystem, String theCode) { 
-    for (Coding next : getTag()) {
+    for (Coding next : getSecurity()) {
       if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) { 
         return next; 
       } 

@@ -54,6 +54,8 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1427,16 +1429,33 @@ public class Parameters extends Resource implements IBaseParameters {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, resource, part
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, resource, part);
       }
 
-  public String fhirType() {
-    return "Parameters.parameter";
+      public String fhirType() {
+        return "Parameters.parameter";
+      }
 
-  }
-
-  }
+      public String toString() {
+        String s = getName() + " = ";
+        if (hasValue()) {
+          if (getValue().isPrimitive()) {
+            s = s + getValue().primitiveValue();
+          } else {
+            s = s + "["+getValue().fhirType()+"]";
+          }
+        } else if (hasResource()) {
+          s = s + "["+getResource().fhirType()+"]";
+        } else {
+          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+          for (ParametersParameterComponent p : getPart()) {
+            b.append(p.getName());
+          }
+          s = s + "{"+b.toString()+"}";
+        }
+        return s;
+      }
+    }
 
     /**
      * A parameter passed to or received from the operation.
@@ -1723,7 +1742,14 @@ public class Parameters extends Resource implements IBaseParameters {
     }
     return false;
   }
- 
+
+  public String toString() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ParametersParameterComponent p : parameter) {
+      b.append(p.getName());
+    }
+    return "{"+b.toString()+"}";
+  }
 
 // end addition
 

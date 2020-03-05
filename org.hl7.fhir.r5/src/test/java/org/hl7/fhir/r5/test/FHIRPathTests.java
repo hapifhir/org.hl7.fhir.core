@@ -3,10 +3,7 @@ package org.hl7.fhir.r5.test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -77,7 +74,7 @@ public class FHIRPathTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) throws FHIRException {
+    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference), when item is element");
     }
 
@@ -102,7 +99,7 @@ public class FHIRPathTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    Document dom = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fhirpath", "tests-fhir-r4.xml"));
+    Document dom = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fhirpath", "tests-fhir-r5.xml"));
 
     List<Element> list = new ArrayList<Element>();
     List<Element> groups = new ArrayList<Element>();
@@ -150,6 +147,10 @@ public class FHIRPathTests {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
+    // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
+    // all my time based tests failing locally...
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
+
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilities.context());
     fp.setHostServices(new FHIRPathTestEvaluationServices());

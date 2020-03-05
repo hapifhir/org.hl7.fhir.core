@@ -3425,6 +3425,11 @@ public class StructureMap extends DomainResource {
           return false;
         }
 
+        public StructureMapGroupRuleTargetComponent setListMode(List<Enumeration<StructureMapListMode>> listMode) {
+            this.listMode = listMode;
+            return this;
+        }
+
         /**
          * @return {@link #listMode} (If field is a list, how to manage the list.)
          */

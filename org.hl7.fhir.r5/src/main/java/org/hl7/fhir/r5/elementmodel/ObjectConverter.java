@@ -46,9 +46,11 @@ import org.hl7.fhir.r5.model.DataType;
 public class ObjectConverter  {
 
   private IWorkerContext context;
+  private ProfileUtilities profileUtilities;
 
   public ObjectConverter(IWorkerContext context) {
     this.context = context;
+    profileUtilities = new ProfileUtilities(context, null, null);
   }
 
   public Element convert(Resource ig) throws IOException, FHIRException {
@@ -76,7 +78,7 @@ public class ObjectConverter  {
     if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) 
       res.setValue(((PrimitiveType) base).asStringValue());
 
-    List<ElementDefinition> children = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
     for (ElementDefinition child : children) {
       String n = tail(child.getPath());
       if (sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE || !"value".equals(n)) {
@@ -153,6 +155,12 @@ public class ObjectConverter  {
     r.setDisplay(item.getNamedChildValue("display"));
     r.setReference(item.getNamedChildValue("reference"));
     r.setType(item.getNamedChildValue("type"));
+    if (!r.hasType()) {
+      Element ext = item.getExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-Reference.type");
+      if (ext != null) {
+        r.setType(ext.getChildValue("valueUri"));
+      }
+    }
     List<Element> identifier = item.getChildrenByName("identifier");
     if (identifier.isEmpty() == false) {
       r.setIdentifier(readAsIdentifier(identifier.get(0)));

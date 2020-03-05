@@ -51,6 +51,7 @@ import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 
 /**
@@ -376,7 +377,7 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display);
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display);
 
   /**
    * Validation of a code - consult the terminology service 
@@ -392,10 +393,10 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, String code, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, Coding code, ValueSet vs);
-  public ValidationResult validateCode(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs);
   
   /**
    * Validation of a code - consult the terminology service 
@@ -411,7 +412,7 @@ public interface IWorkerContext {
    * @param display
    * @return
    */
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ConceptSetComponent vsi);
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ConceptSetComponent vsi);
 
   /**
    * returns the recommended tla for the type 

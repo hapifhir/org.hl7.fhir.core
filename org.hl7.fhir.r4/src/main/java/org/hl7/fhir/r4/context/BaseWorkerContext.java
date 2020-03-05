@@ -45,17 +45,21 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
 
@@ -438,25 +442,25 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   // --- validate code -------------------------------------------------------------------------------
   
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display) {
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, null);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs) {
     Coding c = new Coding(system, code, display);
     return validateCode(options, c, vs);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String code, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs) {
     Coding c = new Coding(null, code, null);
     return doValidateCode(options, c, vs, true);
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, String system, String code, String display, ConceptSetComponent vsi) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ConceptSetComponent vsi) {
     Coding c = new Coding(system, code, display);
     ValueSet vs = new ValueSet();
     vs.setUrl(Utilities.makeUuidUrn());
@@ -465,11 +469,11 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, Coding code, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
     return doValidateCode(options, code, vs, false);
   }
   
-  public ValidationResult doValidateCode(TerminologyServiceOptions options, Coding code, ValueSet vs, boolean implySystem) {
+  public ValidationResult doValidateCode(ValidationOptions options, Coding code, ValueSet vs, boolean implySystem) {
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) 
@@ -511,7 +515,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return res;
   }
 
-  private void setTerminologyOptions(TerminologyServiceOptions options, Parameters pIn) {
+  private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options != null) {
       if (!Utilities.noString(options.getLanguage()))
       pIn.addParameter("displayLanguage", options.getLanguage());
@@ -519,7 +523,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
-  public ValidationResult validateCode(TerminologyServiceOptions options, CodeableConcept code, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
     ValidationResult res = txCache.getValidation(cacheToken);
     if (res != null)

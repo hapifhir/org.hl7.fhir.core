@@ -2,8 +2,7 @@ package org.hl7.fhir.validation.tests;
 
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.validation.Validator;
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.hl7.fhir.validation.Validator;
 import org.junit.Test;
 
 public class CDAValidationTestCase {

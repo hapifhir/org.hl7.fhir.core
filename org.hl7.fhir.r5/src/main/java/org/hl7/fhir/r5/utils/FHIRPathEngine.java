@@ -9,9 +9,6 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
@@ -155,6 +152,7 @@ public class FHIRPathEngine {
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ProfileUtilities profileUtilities;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -235,7 +233,7 @@ public class FHIRPathEngine {
      * @return
      * @throws FHIRException 
      */
-    public Base resolveReference(Object appContext, String url) throws FHIRException;
+    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException;
     
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
     
@@ -252,6 +250,7 @@ public class FHIRPathEngine {
   public FHIRPathEngine(IWorkerContext worker) {
     super();
     this.worker = worker;
+    profileUtilities = new ProfileUtilities(worker, null, null); 
     for (StructureDefinition sd : worker.getStructures()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
         allTypes.put(sd.getName(), sd);
@@ -1052,7 +1051,7 @@ public class FHIRPathEngine {
     switch (exp.getFunction()) {
     case Empty: return checkParamCount(lexer, location, exp, 0);
     case Not: return checkParamCount(lexer, location, exp, 0);
-    case Exists: return checkParamCount(lexer, location, exp, 0);
+    case Exists: return checkParamCount(lexer, location, exp, 0, 1);
     case SubsetOf: return checkParamCount(lexer, location, exp, 1);
     case SupersetOf: return checkParamCount(lexer, location, exp, 1);
     case IsDistinct: return checkParamCount(lexer, location, exp, 0);
@@ -1890,7 +1889,7 @@ public class FHIRPathEngine {
 	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
 	    for (Base l : left) {
-	      if (l.fhirType().equals("code")) {
+	      if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
           if (worker.validateCode(terminologyServiceOptions , TypeConvertor.castToCoding(l), vs).isOk())
             ans = true;
 	      } else if (l.fhirType().equals("Coding")) {
@@ -1899,6 +1898,8 @@ public class FHIRPathEngine {
 	      } else if (l.fhirType().equals("CodeableConcept")) {
 	        if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk())
 	          ans = true;
+	      } else {
+//	        System.out.println("unknown type in opMemberOf: "+l.fhirType());
 	      }
 	    }
 	  }
@@ -2380,8 +2381,10 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Not : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Exists : 
+    case Exists : { 
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    }
     case SubsetOf : {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, focus); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
@@ -2862,7 +2865,27 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcMemberOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    throw new Error("not Implemented yet");
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    if (nl.size() != 1 || focus.size() != 1) {
+      return new ArrayList<Base>();
+    }
+    
+    String url = nl.get(0).primitiveValue();
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    if (vs == null) {
+      return new ArrayList<Base>();
+    }
+    Base l = focus.get(0);
+    if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("Coding")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk());
+    } else if (l.fhirType().equals("CodeableConcept")) {
+      return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
+    } else {
+//      System.out.println("unknown type in funcMemberOf: "+l.fhirType());
+      return new ArrayList<Base>();
+    }
   }
 
 
@@ -3286,9 +3309,19 @@ public class FHIRPathEngine {
   private List<Base> funcExists(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     boolean empty = true;
-    for (Base f : focus)
-      if (!f.isEmpty())
+    List<Base> pc = new ArrayList<Base>();
+    for (Base f : focus) {
+      if (exp.getParameters().size() == 1) {
+        pc.clear();
+        pc.add(f);
+        Equality v = asBool(execute(changeThis(context, f), pc, exp.getParameters().get(0), true));
+        if (v == Equality.True) {
+          empty = false;
+        }
+      } else if (!f.isEmpty()) {
         empty = false;
+      }
+    }
     result.add(new BooleanType(!empty).noExtensions());
     return result;
   }
@@ -3296,9 +3329,11 @@ public class FHIRPathEngine {
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
+    Base refContext = null;
     for (Base item : focus) {
       String s = convertToString(item);
       if (item.fhirType().equals("Reference")) {
+        refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues())
           s = convertToString(p.getValues().get(0));
@@ -3307,19 +3342,22 @@ public class FHIRPathEngine {
       }
       if (item.fhirType().equals("canonical")) {
         s = item.primitiveValue();
+        refContext = item;
       }
       if (s != null) {
         Base res = null;
         if (s.startsWith("#")) {
           Property p = context.rootResource.getChildByName("contained");
-          for (Base c : p.getValues()) {
-            if (chompHash(s).equals(chompHash(c.getIdBase()))) {
-              res = c;
-              break;
+          if (p != null) {
+            for (Base c : p.getValues()) {
+              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+                res = c;
+                break;
+              }
             }
           }
         } else if (hostServices != null) {
-          res = hostServices.resolveReference(context.appInfo, s);
+          res = hostServices.resolveReference(context.appInfo, s, refContext);
         }
         if (res != null)
           result.add(res);
@@ -4180,14 +4218,14 @@ public class FHIRPathEngine {
         focus = element;
       } else { 
         List<ElementDefinition> childDefinitions;
-        childDefinitions = ProfileUtilities.getChildMap(sd, element);
+        childDefinitions = profileUtilities.getChildMap(sd, element);
         // if that's empty, get the children of the type
         if (childDefinitions.isEmpty()) {
 
           sd = fetchStructureByType(element);
           if (sd == null)
             throw new DefinitionException("Problem with use of resolve() - profile '"+element.getType().get(0).getProfile()+"' on "+element.getId()+" could not be resolved");
-          childDefinitions = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
+          childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }
         for (ElementDefinition t : childDefinitions) {
           if (tailMatches(t, expr.getName())) {
@@ -4213,14 +4251,14 @@ public class FHIRPathEngine {
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
 //        targetUrl = targetUrl.substring(1,targetUrl.length()-1);
-        List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(sd, element);
+        List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
            StructureDefinition exsd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
            while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
            if (exsd.getUrl().equals(targetUrl)) {
-             if (ProfileUtilities.getChildMap(sd, t).isEmpty())
+             if (profileUtilities.getChildMap(sd, t).isEmpty())
                sd = exsd;
              focus = t;
              break;
@@ -4245,7 +4283,7 @@ public class FHIRPathEngine {
   }
 
   private ElementDefinition pickMandatorySlice(StructureDefinition sd, ElementDefinition element) throws DefinitionException {
-    List<ElementDefinition> list = ProfileUtilities.getSliceList(sd, element);
+    List<ElementDefinition> list = profileUtilities.getSliceList(sd, element);
     for (ElementDefinition ed : list) {
       if (ed.getMin() > 0)
         return ed;
