@@ -64,17 +64,16 @@ public class BaseValidator {
 
   protected Source source;
   protected IWorkerContext context;
-  private ResourceBundle i18Nmessages;
+
 
   public BaseValidator(IWorkerContext context){
     this.context = context;
-    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
   }
 
-  public void setContext(IWorkerContext context) {
-    this.context = context;
-    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
-  }
+//  public void setContext(IWorkerContext context) {
+//    this.context = context;
+//    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
+//  }
 
   /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
@@ -93,7 +92,7 @@ public class BaseValidator {
 
   protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String msg = formatMessage(theMessage, theMessageArguments);
+      String msg = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL);
     }
     return thePass;
@@ -124,7 +123,7 @@ public class BaseValidator {
   protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
-		 addValidationMessage(errors, type, -1, -1, path, formatMessage(theMessage, theMessageArguments), IssueSeverity.FATAL);
+		 addValidationMessage(errors, type, -1, -1, path, context.formatMessage(theMessage, theMessageArguments), IssueSeverity.FATAL);
 	 }
     return thePass;
   }
@@ -143,21 +142,6 @@ public class BaseValidator {
     return thePass;
   }
 
-
-  protected String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message = "";
-    if (i18Nmessages.containsKey(theMessage)) {
-      if (theMessageArguments != null && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-      } else if (i18Nmessages.containsKey(theMessage)) {
-        message = i18Nmessages.getString(theMessage);
-      }
-    } else {
-      message = theMessage;
-    }
-    return message;
-  }
-
   protected boolean grammarWord(String w) {
     return w.equals("and") || w.equals("or") || w.equals("a") || w.equals("the") || w.equals("for") || w.equals("this") || w.equals("that") || w.equals("of");
   }
@@ -171,7 +155,7 @@ public class BaseValidator {
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass) {
-      String message = formatMessage(msg);
+      String message = context.formatMessage(msg);
      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION);
    }
     return thePass;
@@ -201,7 +185,7 @@ public class BaseValidator {
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION);
 	 }
     return thePass;
@@ -209,7 +193,7 @@ public class BaseValidator {
 
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine).setTxLink(txLink);
     }
     return thePass;
@@ -225,7 +209,7 @@ public class BaseValidator {
   protected boolean hint(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION);
 	 }
     return thePass;
@@ -254,7 +238,7 @@ public class BaseValidator {
    */
   protected boolean rule(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, line, col, path, message, IssueSeverity.ERROR);
 	 }
     return thePass;
@@ -262,7 +246,7 @@ public class BaseValidator {
 
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
       errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setTxLink(txLink));
     }
     return thePass;
@@ -293,7 +277,7 @@ public class BaseValidator {
   protected boolean rule(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR);
 	 }
     return thePass;
@@ -317,7 +301,7 @@ public class BaseValidator {
 
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR);
     }
     return thePass;
@@ -381,7 +365,7 @@ public class BaseValidator {
    */
   protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
 		  IssueSeverity severity = IssueSeverity.WARNING;
 		  addValidationMessage(errors, type, line, col, path, msg, severity);
 	 }
@@ -409,7 +393,7 @@ public class BaseValidator {
    */
   protected boolean txWarning(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
       errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, msg, IssueSeverity.WARNING).setTxLink(txLink));
     }
     return thePass;
@@ -418,7 +402,7 @@ public class BaseValidator {
 
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
 		 addValidationMessage(errors, type, line, col, path, msg, isError ? IssueSeverity.ERROR : IssueSeverity.WARNING);
 	 }
     return thePass;
@@ -435,7 +419,7 @@ public class BaseValidator {
   protected boolean warning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING);
 	 }
     return thePass;
@@ -478,7 +462,7 @@ public class BaseValidator {
    */
   protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
     if (!thePass) {
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
 		 addValidationMessage(errors, type, path, msg, html, IssueSeverity.WARNING);
 	 }
     return thePass;
@@ -494,7 +478,7 @@ public class BaseValidator {
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) { 
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
 		 addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION);
 	 }
     return thePass;
@@ -511,7 +495,7 @@ public class BaseValidator {
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
-      String message = formatMessage(theMessage, theMessageArguments);
+      String message = context.formatMessage(theMessage, theMessageArguments);
 		 addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION);
 	 }
     return thePass;
@@ -559,13 +543,9 @@ public class BaseValidator {
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
     if (!thePass) {
-      msg = formatMessage(msg, theMessageArguments);
+      msg = context.formatMessage(msg, theMessageArguments);
 		 addValidationMessage(errors, type, path, msg, html, IssueSeverity.INFORMATION);
 	 }
     return thePass;
-  }
-
-  public ResourceBundle getI18Nmessages() {
-    return i18Nmessages;
   }
 }
