@@ -355,4 +355,8 @@ public class I18nConstants {
   public final static String ELEMENT__NULL_ = "element__null_";
   public final static String GETSLICELIST_SHOULD_ONLY_BE_CALLED_WHEN_THE_ELEMENT_HAS_SLICING = "getSliceList_should_only_be_called_when_the_element_has_slicing";
   public final static String UNABLE_TO_RESOLVE_NAME_REFERENCE__AT_PATH_ = "Unable_to_resolve_name_reference__at_path_";
+  public final static String DETAILS_FOR__MATCHING_AGAINST_PROFILE_ = "Details_for__matching_against_Profile_";
+  public final static String DOES_NOT_MATCH_SLICE_ = "Does_not_match_slice_";
+  public final static String PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__ = "Profile__does_not_match_for__because_of_the_following_profile_issues__";
+  public final static String THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_ = "This_element_does_not_match_any_known_slice_";
 }
