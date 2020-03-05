@@ -4090,6 +4090,8 @@ public class VersionConvertor_40_50 {
             return MedicationRequest40_50.convertMedicationRequest((org.hl7.fhir.r4.model.MedicationRequest) src);
         if (src instanceof org.hl7.fhir.r4.model.MedicationStatement)
             return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r4.model.MedicationStatement) src);
+        if (src instanceof org.hl7.fhir.r4.model.MedicinalProduct)
+          return MedicinalProductDefinition40_50.convertMedicinalProduct((org.hl7.fhir.r4.model.MedicinalProduct) src);
         if (src instanceof org.hl7.fhir.r4.model.MessageDefinition)
             return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r4.model.MessageDefinition) src);
         if (src instanceof org.hl7.fhir.r4.model.MessageHeader)
@@ -4355,6 +4357,8 @@ public class VersionConvertor_40_50 {
             return MedicationRequest40_50.convertMedicationRequest((org.hl7.fhir.r5.model.MedicationRequest) src);
         if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
             return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
+        if (src instanceof org.hl7.fhir.r5.model.MedicinalProductDefinition)
+          return MedicinalProductDefinition40_50.convertMedicinalProductDefinition((org.hl7.fhir.r5.model.MedicinalProductDefinition) src);
         if (src instanceof org.hl7.fhir.r5.model.MessageDefinition)
             return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
         if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
