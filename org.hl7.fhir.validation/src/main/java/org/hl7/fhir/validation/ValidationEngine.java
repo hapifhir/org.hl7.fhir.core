@@ -436,6 +436,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     
     File f = new File(Utilities.path(src));
     if (f.exists()) {
+      if(isIgnoreFile(f))
+        return null;
       if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
         return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));
       if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
@@ -547,8 +549,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private boolean isIgnoreFile(File ff) {
-    return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
-    
+    if (ff.getName().startsWith(".")|| ff.getAbsolutePath().contains(".git")){
+      return true;
+    }
+    return Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
   }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws Exception {
