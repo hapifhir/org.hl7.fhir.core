@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -2190,7 +2191,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles), I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + ref + " matching against Profile" + sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+                    formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() == 1, I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile()));
@@ -2206,7 +2208,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + ref + " matching against Profile" + sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
@@ -3147,10 +3149,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Does not match slice'" + ed.getSliceName(), "discriminator = " + Utilities.escapeXml(n.toString()));
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName(), "discriminator = " + Utilities.escapeXml(n.toString()));
       for (String url : shc.getSliceRecords().keySet()) {
-        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + stack.getLiteralPath() + " against profile " + url,
-          "Profile " + url + " does not match for " + stack.getLiteralPath() + " because of the following profile issues: " + errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url)));
+        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+         formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), url),
+          formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
+              url,
+              stack.getLiteralPath(), errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url))));
       }
     }
     return pass;
@@ -5008,8 +5013,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
             ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
-              "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl() + ": " + errorSummaryForSlicingAsHtml(ei.sliceInfo)));
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false,
+              formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
+                profile == null ? "" : " defined in the profile " + profile.getUrl()),
+              formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : " defined in the profile " + profile.getUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
             rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: " + errorSummaryForSlicing(ei.sliceInfo)));
           }
