@@ -359,4 +359,5 @@ public class I18nConstants {
   public final static String DOES_NOT_MATCH_SLICE_ = "Does_not_match_slice_";
   public final static String PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__ = "Profile__does_not_match_for__because_of_the_following_profile_issues__";
   public final static String THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_ = "This_element_does_not_match_any_known_slice_";
+  public final static String DEFINED_IN_THE_PROFILE = "defined_in_the_profile";
 }
