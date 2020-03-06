@@ -546,8 +546,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private boolean isIgnoreFile(File ff) {
-    return Utilities.existsInList(ff.getName(), ".DS_Store") || Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
-    
+    if (ff.getName().startsWith(".")|| ff.getAbsolutePath().contains(".git")){
+      return true;
+    }
+    return Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
   }
 
   private Map<String, byte[]> loadPackage(InputStream stream, String name) throws Exception {
