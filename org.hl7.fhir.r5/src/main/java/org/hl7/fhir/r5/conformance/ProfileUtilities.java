@@ -3329,8 +3329,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         s = "@"+s;
       String hint = "";
       hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
-      hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+     if (hasDef && element.hasDefinition()) {
+        hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
+        hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+      }
       Cell left = gen.new Cell(null, ref, s, hint, null);
       row.getCells().add(left);
       Cell gc = gen.new Cell();
