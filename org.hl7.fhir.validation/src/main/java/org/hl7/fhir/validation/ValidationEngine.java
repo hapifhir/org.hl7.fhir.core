@@ -106,19 +106,15 @@ POSSIBILITY OF SUCH DAMAGE.
  *  
  * 1/ Initialize
  *    ValidationEngine validator = new ValidationEngine(src);
- *      - this must refer to the igpack.zip for the version of the spec against which you want to validate
- *       it can be a url or a file reference. It can nominate the igpack.zip directly, 
- *       or it can name the container alone (e.g. just the spec URL).
- *       The validation engine does not cache igpack.zip. the user must manage that if desired 
+ *      - this must be the packageId of the relevant core specification
+ *        for the version you want to validate against (e.g. hl7.fhir.r4.core)
  *
  *    validator.connectToTSServer(txServer);
  *      - this is optional; in the absence of a terminology service, snomed, loinc etc will not be validated
  *      
  *    validator.loadIg(src);
- *      - call this any number of times for the Implementation Guide(s) of interest. This is a reference
- *        to the igpack.zip for the implementation guide - same rules as above
- *        the version of the IGPack must match that of the spec 
- *        Alternatively it can point to a local folder that contains conformance resources.
+ *      - call this any number of times for the Implementation Guide(s) of interest. 
+ *      - See https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator for documentation about the src parameter (-ig parameter)
  *         
  *    validator.loadQuestionnaire(src)
  *      - url or filename of a questionnaire to load. Any loaded questionnaires will be used while validating
@@ -136,7 +132,8 @@ POSSIBILITY OF SUCH DAMAGE.
  *        if the source is provided as byte[] or stream, you need to provide a format too, though you can 
  *        leave that as null, and the validator will guess
  * 
- * 3. Or, instead of validating, transform        
+ * 3. Or, instead of validating, transform (see documentation and use in Validator.java)
+ *         
  * @author Grahame Grieve
  *
  */
