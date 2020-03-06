@@ -3476,10 +3476,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return false;
   }
 
-  private void generateCopyright(XhtmlNode x, ValueSet vs) {
+  private void generateCopyright(XhtmlNode x, ValueSet vs) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode p = x.para();
     p.b().tx("Copyright Statement:");
-    smartAddText(p, " " + vs.getCopyright());
+    addMarkdown(x, vs.getCopyright());
   }
 
   private XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, String lang, List<PropertyComponent> properties) {
@@ -3887,18 +3887,22 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (vs.hasCopyrightElement())
         generateCopyright(x, vs);
     }
-    XhtmlNode p = x.para();
-    p.tx("This value set includes codes from the following code systems:");
-
     XhtmlNode ul = x.ul();
-    XhtmlNode li;
-    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      hasExtensions = genInclude(rcontext, ul, inc, "Include", langs, maps) || hasExtensions;
-    }
-    for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-      hasExtensions = genInclude(rcontext, ul, exc, "Exclude", langs, maps) || hasExtensions;
-    }
+    if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
+      hasExtensions = genInclude(rcontext, ul, vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
+    } else {
+      XhtmlNode p = x.para();
+      p.tx("This value set includes codes based on the following rules:");
 
+      XhtmlNode li;
+      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+        hasExtensions = genInclude(rcontext, ul, inc, "Include", langs, maps) || hasExtensions;
+      }
+      for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
+        hasExtensions = genInclude(rcontext, ul, exc, "Exclude", langs, maps) || hasExtensions;
+      }
+    }
+    
     // now, build observed languages
 
     if (langs.size() > 0) {
@@ -4000,6 +4004,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
         if (inc.getConcept().size() > 0) {
           li.addText(type+" these codes as defined in ");
           addCsRef(inc, li, e);
+          if (inc.hasVersion()) {
+            li.addText(" version ");
+            li.code(inc.getVersion()); 
+          }
 
           XhtmlNode t = li.table("none");
           boolean hasComments = false;
