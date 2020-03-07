@@ -25,6 +25,7 @@ import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes;
+import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodesEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -141,7 +142,7 @@ public class MedicationAdministration40_50 extends VersionConvertor_40_50 {
     private static Enumeration<MedicationAdministrationStatusCodes> convertMedicationAdministrationStatus(CodeType src) {
         if (src == null)
             return null;
-        Enumeration<MedicationAdministrationStatusCodes> tgt = new Enumeration<MedicationAdministrationStatusCodes>();
+        Enumeration<MedicationAdministrationStatusCodes> tgt = new Enumeration<>(new MedicationAdministrationStatusCodesEnumFactory());
         copyElement(src, tgt);
         tgt.setValue(MedicationAdministrationStatusCodes.fromCode(src.getCode()));
         return tgt;
