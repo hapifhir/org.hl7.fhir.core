@@ -11,9 +11,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
 import org.hl7.fhir.utilities.json.JSONUtil;
 
@@ -172,6 +174,21 @@ public class PackageClient {
 
   public String url(String id, String v) {
     return Utilities.pathURL(address, id, v);
+  }
+
+  public String getLatestVersion(String id) throws IOException {
+    List<PackageInfo> list = getVersions(id);
+    if (list.isEmpty()) {
+      throw new IOException("Package not found: "+id);
+    } else {
+      String v = list.get(0).version;
+      for (PackageInfo p : list) {
+        if (VersionUtilities.isThisOrLater(v, p.version)) {
+          v = p.version;
+        }
+      }
+      return v;
+    }
   }
   
 

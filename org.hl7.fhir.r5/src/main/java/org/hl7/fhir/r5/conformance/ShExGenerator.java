@@ -188,6 +188,7 @@ public class ShExGenerator {
    * this makes internal metadata services available to the generator - retrieving structure definitions, and value set expansion etc
    */
   private IWorkerContext context;
+  private ProfileUtilities profileUtilities;
 
   /**
    * innerTypes -- inner complex types.  Currently flattened in ShEx (doesn't have to be, btw)
@@ -208,6 +209,7 @@ public class ShExGenerator {
   public ShExGenerator(IWorkerContext context) {
     super();
     this.context = context;
+    profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
     emittedInnerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
     datatypes = new HashSet<String>();
@@ -486,7 +488,7 @@ public class ShExGenerator {
       element_def.add("id", "fhir:" + (id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id) + " ");
     }
 
-    List<ElementDefinition> children = ProfileUtilities.getChildList(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
       innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
       defn = simpleElement(sd, ed, id);
@@ -571,7 +573,7 @@ public class ShExGenerator {
     if(typ.hasProfile()) {
       if(typ.getWorkingCode().equals("Reference"))
         return genReference("", typ);
-      else if(ProfileUtilities.getChildList(sd, ed).size() > 0) {
+      else if(profileUtilities.getChildList(sd, ed).size() > 0) {
         // inline anonymous type - give it a name and factor it out
         innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
         return simpleElement(sd, ed, id);
@@ -704,7 +706,7 @@ public class ShExGenerator {
     element_reference.add("comment", comment == null? " " : "# " + comment);
 
     List<String> elements = new ArrayList<String>();
-    for (ElementDefinition child: ProfileUtilities.getChildList(sd, path, null))
+    for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
       elements.add(genElementDefinition(sd, child));
 
     element_reference.add("elements", StringUtils.join(elements, "\n"));

@@ -30,8 +30,8 @@ import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r4.model.ValueSet.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +43,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private ValueSet valueset;
   private IWorkerContext context;
   private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
-  private TerminologyServiceOptions options;
+  private ValidationOptions options;
 
-  public ValueSetCheckerSimple(TerminologyServiceOptions options, ValueSet source, IWorkerContext context) {
+  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
     this.options = options;

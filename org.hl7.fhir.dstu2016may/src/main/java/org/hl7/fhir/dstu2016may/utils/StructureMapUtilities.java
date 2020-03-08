@@ -326,6 +326,7 @@ public class StructureMapUtilities {
 		lexer.token("map");
 		StructureMap result = new StructureMap();
 		result.setUrl(lexer.readConstant("url"));
+		result.setId(tail(result.getUrl()));
 		lexer.token("=");
 		result.setName(lexer.readConstant("name"));
 		lexer.skipComments();
@@ -344,10 +345,15 @@ public class StructureMapUtilities {
 			parseGroup(result, lexer);    
 		}
 
+		
 		return result;
 	}
 
-	private void parseConceptMap(StructureMap result, FHIRLexer lexer) throws FHIRLexerException {
+	private String tail(String url) {
+    return url.substring(url.lastIndexOf("/")+1);
+  }
+
+  private void parseConceptMap(StructureMap result, FHIRLexer lexer) throws FHIRLexerException {
 		lexer.token("conceptmap");
 		ConceptMap map = new ConceptMap();
 		String id = lexer.readConstant("map id");

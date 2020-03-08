@@ -77,7 +77,7 @@ import com.google.gson.JsonObject;
 public class NpmPackage {
 
   public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9]*)+$");
+    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
   }
 
   public static boolean isValidVersion(String ver) {
@@ -200,7 +200,7 @@ public class NpmPackage {
     
     File dir = new File(path);
     for (File f : dir.listFiles()) {
-      if (!Utilities.existsInList(f.getName(), ".git", ".svn") && !Utilities.existsInList(f.getName(), exemptions)) {
+      if (!isInternalExemptFile(f) && !Utilities.existsInList(f.getName(), exemptions)) {
         if (f.isDirectory()) {
           String d = f.getName();
           if (!d.equals("package")) {
@@ -225,6 +225,10 @@ public class NpmPackage {
         }
       }
     }
+  }
+
+  public static boolean isInternalExemptFile(File f) {
+    return Utilities.existsInList(f.getName(), ".git", ".svn") || Utilities.existsInList(f.getName(), "package-list.json");
   }
 
   private static void loadSubFolders(NpmPackage res, String rootPath, File dir) throws IOException {
@@ -684,7 +688,7 @@ public class NpmPackage {
 
     for (NpmPackageFolder folder : folders.values()) {
       String n = folder.name;
-      if (!"package".equals(n)) {
+      if (!"package".equals(n) && !(n.startsWith("package/") || n.startsWith("package\\"))) {
         n = "package/"+n;
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
@@ -826,9 +830,9 @@ public class NpmPackage {
   public void loadAllFiles() throws IOException {
     for (String folder : folders.keySet()) {
       NpmPackageFolder pf = folders.get(folder);
-      String p = Utilities.path(path, folder);
+      String p = folder.contains("$") ? path : Utilities.path(path, folder);
       for (File f : new File(p).listFiles()) {
-        if (!f.isDirectory()) {
+        if (!f.isDirectory() && !isInternalExemptFile(f)) {
           pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
         }
       }

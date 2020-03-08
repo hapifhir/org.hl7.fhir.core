@@ -30,7 +30,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +83,6 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 import org.hl7.fhir.utilities.OIDUtils;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -93,6 +94,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import com.google.gson.JsonObject;
 
 public abstract class BaseWorkerContext implements IWorkerContext {
+
+  private Locale locale;
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
@@ -418,6 +421,19 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
+  public Locale getLocale() {
+    if (Objects.nonNull(locale)){
+      return locale;
+    } else {
+      return Locale.US;
+    }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+  }
+  @Override
   public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heirarchical) throws FHIRException {
     ValueSet vs = null;
     vs = fetchResource(ValueSet.class, binding.getValueSet());
@@ -652,7 +668,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     if (expParameters == null)
       throw new Error("No ExpansionProfile provided");
     pin.addParameter().setName("profile").setResource(expParameters);
-    txLog.clearLastId();
+    if (txLog != null) {
+      txLog.clearLastId();
+    }
+    if (txClient == null) {
+      throw new FHIRException("Attempt to use Terminology server when no Terminology server is available");      
+    }
     Parameters pOut;
     if (vs == null)
       pOut = txClient.validateCS(pin);

@@ -372,4 +372,48 @@ public class CodeSystemUtilities {
     return false;
   }
 
+  public static boolean hasCode(CodeSystem cs, String code) {
+    for (ConceptDefinitionComponent cc : cs.getConcept()) {
+      if (hasCode(cc, code)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean hasCode(ConceptDefinitionComponent cc, String code) {
+    if (code.equals(cc.getCode())) {
+      return true;
+    }
+    for (ConceptDefinitionComponent c : cc.getConcept()) {
+      if (hasCode(c, code)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static ConceptDefinitionComponent getCode(CodeSystem cs, String code) {
+    for (ConceptDefinitionComponent cc : cs.getConcept()) {
+      ConceptDefinitionComponent cd = getCode(cc, code);
+      if (cd != null) {
+        return cd;
+      }
+    }
+    return null;
+  }
+
+  private static ConceptDefinitionComponent getCode(ConceptDefinitionComponent cc, String code) {
+    if (code.equals(cc.getCode())) {
+      return cc;
+    }
+    for (ConceptDefinitionComponent c : cc.getConcept()) {
+      ConceptDefinitionComponent cd = getCode(c, code);
+      if (cd != null) {
+        return cd;
+      }
+    }
+    return null;
+  }
+
 }

@@ -152,6 +152,7 @@ public class FHIRPathEngine {
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ProfileUtilities profileUtilities;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -249,6 +250,7 @@ public class FHIRPathEngine {
   public FHIRPathEngine(IWorkerContext worker) {
     super();
     this.worker = worker;
+    profileUtilities = new ProfileUtilities(worker, null, null); 
     for (StructureDefinition sd : worker.getStructures()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL)
         allTypes.put(sd.getName(), sd);
@@ -1049,7 +1051,7 @@ public class FHIRPathEngine {
     switch (exp.getFunction()) {
     case Empty: return checkParamCount(lexer, location, exp, 0);
     case Not: return checkParamCount(lexer, location, exp, 0);
-    case Exists: return checkParamCount(lexer, location, exp, 0);
+    case Exists: return checkParamCount(lexer, location, exp, 0, 1);
     case SubsetOf: return checkParamCount(lexer, location, exp, 1);
     case SupersetOf: return checkParamCount(lexer, location, exp, 1);
     case IsDistinct: return checkParamCount(lexer, location, exp, 0);
@@ -2379,8 +2381,10 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Not : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Exists : 
+    case Exists : { 
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    }
     case SubsetOf : {
       checkParamTypes(exp.getFunction().toCode(), paramTypes, focus); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
@@ -3305,9 +3309,19 @@ public class FHIRPathEngine {
   private List<Base> funcExists(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     boolean empty = true;
-    for (Base f : focus)
-      if (!f.isEmpty())
+    List<Base> pc = new ArrayList<Base>();
+    for (Base f : focus) {
+      if (exp.getParameters().size() == 1) {
+        pc.clear();
+        pc.add(f);
+        Equality v = asBool(execute(changeThis(context, f), pc, exp.getParameters().get(0), true));
+        if (v == Equality.True) {
+          empty = false;
+        }
+      } else if (!f.isEmpty()) {
         empty = false;
+      }
+    }
     result.add(new BooleanType(!empty).noExtensions());
     return result;
   }
@@ -4204,14 +4218,14 @@ public class FHIRPathEngine {
         focus = element;
       } else { 
         List<ElementDefinition> childDefinitions;
-        childDefinitions = ProfileUtilities.getChildMap(sd, element);
+        childDefinitions = profileUtilities.getChildMap(sd, element);
         // if that's empty, get the children of the type
         if (childDefinitions.isEmpty()) {
 
           sd = fetchStructureByType(element);
           if (sd == null)
             throw new DefinitionException("Problem with use of resolve() - profile '"+element.getType().get(0).getProfile()+"' on "+element.getId()+" could not be resolved");
-          childDefinitions = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
+          childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }
         for (ElementDefinition t : childDefinitions) {
           if (tailMatches(t, expr.getName())) {
@@ -4237,14 +4251,14 @@ public class FHIRPathEngine {
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
 //        targetUrl = targetUrl.substring(1,targetUrl.length()-1);
-        List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(sd, element);
+        List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
            StructureDefinition exsd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
            while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
            if (exsd.getUrl().equals(targetUrl)) {
-             if (ProfileUtilities.getChildMap(sd, t).isEmpty())
+             if (profileUtilities.getChildMap(sd, t).isEmpty())
                sd = exsd;
              focus = t;
              break;
@@ -4269,7 +4283,7 @@ public class FHIRPathEngine {
   }
 
   private ElementDefinition pickMandatorySlice(StructureDefinition sd, ElementDefinition element) throws DefinitionException {
-    List<ElementDefinition> list = ProfileUtilities.getSliceList(sd, element);
+    List<ElementDefinition> list = profileUtilities.getSliceList(sd, element);
     for (ElementDefinition ed : list) {
       if (ed.getMin() > 0)
         return ed;
