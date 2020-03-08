@@ -655,6 +655,7 @@ public class StructureMapUtilities {
 		lexer.token("map");
 		StructureMap result = new StructureMap();
 		result.setUrl(lexer.readConstant("url"));
+    result.setId(tail(result.getUrl()));
 		lexer.token("=");
 		result.setName(lexer.readConstant("name"));
 		lexer.skipComments();

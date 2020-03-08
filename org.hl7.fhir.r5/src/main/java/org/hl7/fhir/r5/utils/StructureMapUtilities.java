@@ -229,7 +229,8 @@ public class StructureMapUtilities {
 	private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private Map<String, Integer> ids = new HashMap<String, Integer>();
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions(); 
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ProfileUtilities profileUtilities; 
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
 		super();
@@ -238,6 +239,7 @@ public class StructureMapUtilities {
 		this.pkp = pkp;
 		fpe = new FHIRPathEngine(worker);
 		fpe.setHostServices(new FFHIRPathHostServices());
+    profileUtilities = new ProfileUtilities(worker, null, null); 
 	}
 
 	public StructureMapUtilities(IWorkerContext worker, ITransformerServices services) {
@@ -246,6 +248,7 @@ public class StructureMapUtilities {
 		this.services = services;
 		fpe = new FHIRPathEngine(worker);
     fpe.setHostServices(new FFHIRPathHostServices());
+    profileUtilities = new ProfileUtilities(worker, null, null); 
 	}
 
   public StructureMapUtilities(IWorkerContext worker) {
@@ -253,6 +256,8 @@ public class StructureMapUtilities {
     this.worker = worker;
     fpe = new FHIRPathEngine(worker);
     fpe.setHostServices(new FFHIRPathHostServices());
+    profileUtilities = new ProfileUtilities(worker, null, null); 
+
   }
 
 	public static String render(StructureMap map) {
@@ -2934,7 +2939,7 @@ public class StructureMapUtilities {
 
   private void addChildMappings(StringBuilder b, String id, String indent, StructureDefinition sd, ElementDefinition ed, boolean inner) throws DefinitionException {
     boolean first = true;
-    List<ElementDefinition> children = ProfileUtilities.getChildMap(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
     for (ElementDefinition child : children) {
       if (first && inner) {
         b.append(" then {\r\n");

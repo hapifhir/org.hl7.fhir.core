@@ -44,12 +44,14 @@ public class Property {
 	private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
-	private Boolean canBePrimitive; 
+	private Boolean canBePrimitive;
+  private ProfileUtilities profileUtilities; 
 
 	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
 		this.context = context;
 		this.definition = definition;
 		this.structure = structure;
+    profileUtilities = new ProfileUtilities(context, null, null); 
 	}
 
 	public String getName() {
@@ -248,7 +250,7 @@ public class Property {
   protected List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = ProfileUtilities.getChildMap(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
     String url = null;
     if (children.isEmpty() || isElementWithOnlyExtension(ed, children)) {
       // ok, find the right definitions
@@ -313,7 +315,7 @@ public class Property {
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
           throw new DefinitionException("Unable to find type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
-        children = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
       }
     }
     List<Property> properties = new ArrayList<Property>();
@@ -326,7 +328,7 @@ public class Property {
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = ProfileUtilities.getChildMap(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
     if (children.isEmpty()) {
       // ok, find the right definitions
       String t = null;
@@ -352,7 +354,7 @@ public class Property {
         sd = context.fetchResource(StructureDefinition.class, t);
         if (sd == null)
           throw new DefinitionException("Unable to find class '"+t+"' for name '"+ed.getPath()+"' on property "+definition.getPath());
-        children = ProfileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
       }
     }
     List<Property> properties = new ArrayList<Property>();
