@@ -587,6 +587,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
       }
+      // hack around a problem in R4 definitions (somewhere?)
+      for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+        for (ElementDefinitionMappingComponent mm : ed.getMapping()) {
+          mm.setMap(mm.getMap().trim());
+          
+        }
+      }
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           if (!ed.hasBase()) {
@@ -2492,15 +2499,18 @@ public class ProfileUtilities extends TranslatingUtilities {
             for (ElementDefinitionMappingComponent d : base.getMapping()) {
               found = found || (d.getIdentity().equals(s.getIdentity()) && d.getMap().equals(s.getMap()));
             }
-            if (!found)
+            if (!found) {
               base.getMapping().add(s);
+            }
           }
         }
-        else if (trimDifferential)
+        else if (trimDifferential) {
           derived.getMapping().clear();
-        else
-          for (ElementDefinitionMappingComponent t : derived.getMapping())
+        } else { 
+          for (ElementDefinitionMappingComponent t : derived.getMapping()) {
             t.setUserData(DERIVATION_EQUALS, true);
+          }
+        }
       }
       for (ElementDefinitionMappingComponent m : base.getMapping()) {
         if (m.hasMap()) {
@@ -2511,8 +2521,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       // todo: constraints are cumulative. there is no replacing
       for (ElementDefinitionConstraintComponent s : base.getConstraint()) { 
         s.setUserData(IS_DERIVED, true);
-        if (!s.hasSource())
+        if (!s.hasSource()) {
           s.setSource(srcSD.getUrl());
+        }
       }
       if (derived.hasConstraint()) {
         for (ElementDefinitionConstraintComponent s : derived.getConstraint()) {
@@ -2523,19 +2534,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       	}
       }
       for (IdType id : derived.getCondition()) {
-        if (!base.hasCondition(id))
+        if (!base.hasCondition(id)) {
           base.getCondition().add(id);
+        }
       }
       
       // now, check that we still have a bindable type; if not, delete the binding - see task 8477
-      if (dest.hasBinding() && !hasBindableType(dest))
+      if (dest.hasBinding() && !hasBindableType(dest)) {
         dest.setBinding(null);
+      }
         
       // finally, we copy any extensions from source to dest
       for (Extension ex : derived.getExtension()) {
         StructureDefinition sd  = context.fetchResource(StructureDefinition.class, ex.getUrl());
-        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1"))
+        if (sd == null || sd.getSnapshot() == null || sd.getSnapshot().getElementFirstRep().getMax().equals("1")) {
           ToolingExtensions.removeExtension(dest, ex.getUrl());
+        }
         dest.addExtension(ex.copy());
       }
     }
@@ -2624,18 +2638,21 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean hasBindableType(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
-      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code"))
+      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code")) {
         return true;
+      }
     }
     return false;
   }
 
 
   private boolean isLargerMax(String derived, String base) {
-    if ("*".equals(base))
+    if ("*".equals(base)) {
       return false;
-    if ("*".equals(derived))
+    }
+    if ("*".equals(derived)) {
       return true;
+    }
     return Integer.parseInt(derived) > Integer.parseInt(base);
   }
 
@@ -2647,10 +2664,12 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean codesInExpansion(List<ValueSetExpansionContainsComponent> contains, ValueSetExpansionComponent expansion) {
     for (ValueSetExpansionContainsComponent cc : contains) {
-      if (!inExpansion(cc, expansion.getContains()))
+      if (!inExpansion(cc, expansion.getContains())) {
         return false;
-      if (!codesInExpansion(cc.getContains(), expansion))
+      }
+      if (!codesInExpansion(cc.getContains(), expansion)) {
         return false;
+      }
     }
     return true;
   }
@@ -2658,10 +2677,12 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean inExpansion(ValueSetExpansionContainsComponent cc, List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent cc1 : contains) {
-      if (cc.getSystem().equals(cc1.getSystem()) && cc.getCode().equals(cc1.getCode()))
+      if (cc.getSystem().equals(cc1.getSystem()) && cc.getCode().equals(cc1.getCode())) {
         return true;
-      if (inExpansion(cc,  cc1.getContains()))
+      }
+      if (inExpansion(cc,  cc1.getContains())) {
         return true;
+      }
     }
     return false;
   }
@@ -2709,24 +2730,28 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private int findEnd(List<ElementDefinition> list, ElementDefinition ed, int cursor) {
     String path = ed.getPath()+".";
-    while (cursor < list.size() && list.get(cursor).getPath().startsWith(path))
+    while (cursor < list.size() && list.get(cursor).getPath().startsWith(path)) {
       cursor++;
+    }
     return cursor;
   }
 
 
   private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list) {
-    for (ElementDefinition t : list)
-      if (t.getPath().equals(ed.getPath()))
+    for (ElementDefinition t : list) {
+      if (t.getPath().equals(ed.getPath())) {
         return t;
+      }
+    }
     return null;
   }
 
   private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list, int start, int end) {
     for (int i = start; i < end; i++) {
       ElementDefinition t = list.get(i);
-      if (t.getPath().equals(ed.getPath()))
+      if (t.getPath().equals(ed.getPath())) {
         return t;
+      }
     }
     return null;
   }
@@ -2734,8 +2759,9 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean isImmediateChild(ElementDefinition ed) {
     String p = ed.getPath();
-    if (!p.contains("."))
+    if (!p.contains(".")) {
       return false;
+    }
     p = p.substring(p.indexOf(".")+1);
     return !p.contains(".");
   }
@@ -3305,8 +3331,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         s = "@"+s;
       String hint = "";
       hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
-      hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+     if (hasDef && element.hasDefinition()) {
+        hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
+        hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+      }
       Cell left = gen.new Cell(null, ref, s, hint, null);
       row.getCells().add(left);
       Cell gc = gen.new Cell();
