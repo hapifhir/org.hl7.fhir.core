@@ -133,7 +133,21 @@ public class LDContextGenerator {
     String id = elementDefinition.getBase().getPath();
     String idTrimmed = getTrimmedId(id, isBBElement);
 
-    Resource resource = RDFTypeMap.xsd_type_for(idTrimmed, false);
+
+    String elementDefTrimmed = getTrimmedElementDefinition(elementDefinition.toString());
+    String mappedEd = mapElementDefinitionToXSDType(elementDefTrimmed);
+
+    Resource resource = null;
+
+    if (contextObject.equals("value") &&
+            mappedEd != null) {
+      resource = RDFTypeMap.xsd_type_for(mappedEd, false);
+    }
+    else {
+      resource = RDFTypeMap.xsd_type_for(idTrimmed, false);
+    }
+
+    //Resource resource = RDFTypeMap.xsd_type_for(idTrimmed, false);
     String resourceUri = resource != null ? resource.getURI() : null;
 
     String context = null;
@@ -265,6 +279,21 @@ public class LDContextGenerator {
   }
 
   /**
+   * Trim the ElementDefinition name to contain just the name without any "." to the right.
+   * @param id
+   * @return
+   */
+  private String getTrimmedElementDefinition(String id) {
+    String idTrimmed = "";
+    String[] idStrings = id.split("\\.");
+
+    if (idStrings != null && idStrings.length > 0){
+      idTrimmed = idStrings[0];
+    }
+    return idTrimmed;
+  }
+
+  /**
    * Trim the ID to have the correct length based on if its a backbone element.
    * @param id
    * @param isBBElement
@@ -365,6 +394,38 @@ public class LDContextGenerator {
 
     return retVal;
   }
+
+
+  /**
+   * Map the
+   * @param elementDefStr
+   * @return
+   */
+  private String mapElementDefinitionToXSDType(String elementDefStr){
+    String type = null;
+    if (elementDefStr.equals("boolean"))
+      type = "boolean";
+    else if (elementDefStr.equals("integer"))
+      type = "integer";
+//    else if (elementDefStr.equals("integer64"))
+//      type = "long";
+    else if (elementDefStr.equals("unsignedInt"))
+      type = "nonNegativeInteger";
+    else if (elementDefStr.equals("positiveInt"))
+      type = "positiveInteger";
+    else if (elementDefStr.equals("decimal"))
+      type = "decimal";
+    else if (elementDefStr.equals("base64Binary"))
+      type = "base64Binary";
+    else if (elementDefStr.equals("instant"))
+      type = "dateTime";
+    else if (elementDefStr.equals("time"))
+      type = "time";
+
+    return type;
+  }
+
+
 
   /**
    * class to generate context.jsonld JSON file

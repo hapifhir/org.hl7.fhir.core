@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LDContextGeneratorTests {
 
 //  String basePath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir")).toString() + "/";
-  String basePath = "/Users/m091864/TEMP/";
+  String basePath = "/Users/m091864/TEMP/R5/";
 
   private void doTest(String name) throws IOException, FHIRException {
     StructureDefinition sd = TestingUtilities.context().
@@ -76,6 +76,16 @@ public class LDContextGeneratorTests {
   public void testAll() throws FHIRException, IOException, UcumException {
     doTestAll();
   }
+
+//  @Test
+//  public void testUnsignedInt() throws FHIRException, IOException, UcumException {
+//    doTest("positiveInt");
+//  }
+
+//  @Test
+//  public void testMedicationUsage() throws FHIRException, IOException, UcumException {
+//    doTest("MedicationUsage");
+//  }
 
 //    @Test
 //  public void testBundle() throws FHIRException, IOException, UcumException {
