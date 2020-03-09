@@ -163,7 +163,7 @@ public class LDContextGenerator {
         context = context.substring(context.lastIndexOf(".") + 1);
         createNewContextObject(contextObject, contextObject, context,resourceUri);
       }
-      else if (context.equals(CODE_TYPE)  &&
+      else if (context != null && context.equals(CODE_TYPE)  &&
               elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
         context = "string";
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
@@ -176,8 +176,10 @@ public class LDContextGenerator {
         addToBackboneList(context, elementDefinition);
       }
       else {
-        context = context.substring(context.lastIndexOf(".") + 1);
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context,resourceUri);
+        if (context != null) {
+          context = context.substring(context.lastIndexOf(".") + 1);
+          createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
+        }
       }
     }
     else if (type!=null && type.size() > 1) {
@@ -200,6 +202,7 @@ public class LDContextGenerator {
     boolean isElement = false;
 
     if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).getCode().equals("Element")) {
 
       isElement = true;
@@ -211,6 +214,7 @@ public class LDContextGenerator {
     boolean isBackbone = false;
 
     if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).getCode().equals("BackboneElement")) {
 
       isBackbone = true;
