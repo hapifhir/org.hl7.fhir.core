@@ -334,6 +334,8 @@ public interface IWorkerContext {
 
   String formatMessage(String theMessage, Object... theMessageArguments);
 
+  void setValidationMessageLanguage(Locale locale);
+
   class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;

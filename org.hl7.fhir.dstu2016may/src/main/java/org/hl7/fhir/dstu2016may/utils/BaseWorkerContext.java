@@ -23,11 +23,15 @@ package org.hl7.fhir.dstu2016may.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.hl7.fhir.dstu2016may.model.BooleanType;
@@ -75,6 +79,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
   protected FHIRToolingClient txServer;
   private Bundle bndCodeSystems;
+  private Locale locale;
+  private ResourceBundle i18Nmessages;
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
@@ -441,5 +447,37 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
   }
 
+  @Override
+  public Locale getLocale() {
+    if (Objects.nonNull(locale)){
+      return locale;
+    } else {
+      return Locale.US;
+    }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+    setValidationMessageLanguage(getLocale());
+  }
+
+  @Override
+  public String formatMessage(String theMessage, Object... theMessageArguments) {
+    String message;
+    if (theMessageArguments != null && theMessageArguments.length > 0) {
+      message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+    } else if (i18Nmessages.containsKey(theMessage)) {
+      message = i18Nmessages.getString(theMessage);
+    } else {
+      message = theMessage;
+    }
+    return message;
+  }
+
+  @Override
+  public void setValidationMessageLanguage(Locale locale) {
+    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
+  }
   
 }
