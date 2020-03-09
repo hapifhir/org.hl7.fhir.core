@@ -426,19 +426,6 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)){
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-  }
-  @Override
   public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heirarchical) throws FHIRException {
     ValueSet vs = null;
     vs = fetchResource(ValueSet.class, binding.getValueSet());
@@ -1294,6 +1281,21 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
+  public Locale getLocale() {
+    if (Objects.nonNull(locale)){
+      return locale;
+    } else {
+      return Locale.US;
+    }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+    setValidationMessageLanguage(getLocale());
+  }
+
+  @Override
   public String formatMessage(String theMessage, Object... theMessageArguments) {
     String message;
     if (theMessageArguments != null && theMessageArguments.length > 0) {
@@ -1306,6 +1308,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return message;
   }
 
+  @Override
   public void setValidationMessageLanguage(Locale locale) {
     i18Nmessages = ResourceBundle.getBundle("Messages", locale );
   }

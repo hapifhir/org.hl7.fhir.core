@@ -27,11 +27,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import ca.uhn.fhir.rest.api.Constants;
@@ -122,6 +126,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private int expandCodesLimit = 1000;
   protected ILoggingService logger;
   protected ExpansionProfile expProfile;
+  private Locale locale;
+  private ResourceBundle i18Nmessages;
 
   public Map<String, CodeSystem> getCodeSystems() {
     return codeSystems;
@@ -991,5 +997,37 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
   }
 
+  @Override
+  public Locale getLocale() {
+    if (Objects.nonNull(locale)){
+      return locale;
+    } else {
+      return Locale.US;
+    }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+    setValidationMessageLanguage(getLocale());
+  }
+
+  @Override
+  public String formatMessage(String theMessage, Object... theMessageArguments) {
+    String message;
+    if (theMessageArguments != null && theMessageArguments.length > 0) {
+      message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+    } else if (i18Nmessages.containsKey(theMessage)) {
+      message = i18Nmessages.getString(theMessage);
+    } else {
+      message = theMessage;
+    }
+    return message;
+  }
+
+  @Override
+  public void setValidationMessageLanguage(Locale locale) {
+    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
+  }
 
 }
