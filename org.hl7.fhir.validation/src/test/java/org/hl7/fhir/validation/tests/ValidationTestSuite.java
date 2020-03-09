@@ -324,7 +324,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         }
       }
     }
-    if (TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
+    if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Expected "+Integer.toString(java.get("errorCount").getAsInt())+" errors, but found "+Integer.toString(ec)+".", java.get("errorCount").getAsInt(), ec);
       if (java.has("warningCount"))
         Assert.assertEquals("Expected "+Integer.toString(java.get("warningCount").getAsInt())+" warnings, but found "+Integer.toString(wc)+".", java.get("warningCount").getAsInt(), wc);
