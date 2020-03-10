@@ -254,16 +254,28 @@ public class JsonParser extends ParserBase {
 		JsonElement main = object.has(name) ? object.get(name) : null;
 		JsonElement fork = object.has("_"+name) ? object.get("_"+name) : null;
 		if (main != null || fork != null) {
-			if (property.isList() && ((main == null) || (main instanceof JsonArray)) &&((fork == null) || (fork instanceof JsonArray)) ) {
-				JsonArray arr1 = (JsonArray) main;
-				JsonArray arr2 = (JsonArray) fork;
-				for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
-					JsonElement m = arrI(arr1, i);
-					JsonElement f = arrI(arr2, i);
-					parseChildPrimitiveInstance(context, property, name, npath, m, f);
-				}
-			} else
+			if (property.isList()) {
+			  boolean ok = true;
+			  if (!(main == null || main instanceof JsonArray)) {
+	        logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+	        ok = false;
+			  }
+        if (!(fork == null || fork instanceof JsonArray)) {
+          logError(line(fork), col(fork), npath, IssueType.INVALID, "This base property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+          ok = false;
+        }
+        if (ok) {
+          JsonArray arr1 = (JsonArray) main;
+          JsonArray arr2 = (JsonArray) fork;
+          for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
+            JsonElement m = arrI(arr1, i);
+            JsonElement f = arrI(arr2, i);
+            parseChildPrimitiveInstance(context, property, name, npath, m, f);
+          }
+        }
+			} else {
 				parseChildPrimitiveInstance(context, property, name, npath, main, fork);
+			}
 		}
 	}
 
