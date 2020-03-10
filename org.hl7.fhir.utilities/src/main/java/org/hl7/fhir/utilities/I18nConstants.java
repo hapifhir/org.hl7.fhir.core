@@ -364,5 +364,27 @@ public class I18nConstants {
   public final static String UNRECOGNISED_PROPERTY_ = "Unrecognised_property_";
   public final static String OBJECT_MUST_HAVE_SOME_CONTENT = "Object_must_have_some_content";
   public final static String ERROR_PARSING_JSON_ = "Error_parsing_JSON_";
+  public final static String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
+  public final static String CDATA_IS_NOT_ALLOWED = "CDATA_is_not_allowed";
+  public final static String UNDEFINED_ELEMENT_ = "Undefined_element_";
+  public final static String UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__ = "Undefined_attribute__on__for_type__properties__";
+  public final static String TEXT_SHOULD_NOT_BE_PRESENT = "Text_should_not_be_present";
+  public final static String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
+  public final static String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
+  public final static String NO_PROCESSING_INSTRUCTIONS_ALLOWED_IN_RESOURCES = "No_processing_instructions_allowed_in_resources";
+  public final static String UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE = "Unknown_resource_type_missing_rdfstype";
+  public final static String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
+  public final static String THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_A_ = "This_property_must_be_a_URI_or_bnode_not_a_";
+  public final static String THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_A_ = "This_property_must_be_a_Literal_not_a_";
+  public final static String UNRECOGNISED_PREDICATE_ = "Unrecognised_predicate_";
+  public final static String ERROR_PARSING_TURTLE_ = "Error_parsing_Turtle_";
+  public final static String UNEXPECTED_DATATYPE_FOR_RDFSTYPE = "Unexpected_datatype_for_rdfstype";
+  public final static String ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE = "Attempt_to_replace_element_name_for_a_nonchoice_type";
+  public final static String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";
+  public final static String CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
+  public final static String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
+  public final static String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
+  public final static String NO_TYPE_FOUND_ON_ = "No_type_found_on_";
+  public final static String ERROR_WRITING_NUMBER__TO_JSON = "error_writing_number__to_JSON";
 
 }
