@@ -1297,13 +1297,13 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
   @Override
   public String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message;
-    if (theMessageArguments != null && theMessageArguments.length > 0) {
-      message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-    } else if (i18Nmessages.containsKey(theMessage)) {
-      message = i18Nmessages.getString(theMessage);
-    } else {
-      message = theMessage;
+    String message = theMessage;
+    if (Objects.nonNull(i18Nmessages) && i18Nmessages.containsKey(theMessage)) {
+      if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
+        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+      } else {
+        message = i18Nmessages.getString(theMessage);
+      }
     }
     return message;
   }
