@@ -9,9 +9,9 @@ package org.hl7.fhir.r5.elementmodel;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -91,20 +91,20 @@ public class JsonParser extends ParserBase {
 		map = new IdentityHashMap<JsonElement, LocationData>();
 		String source = TextFile.streamToString(stream);
 		if (policy == ValidationPolicy.EVERYTHING) {
-			JsonObject obj = null; 
+			JsonObject obj = null;
       try {
 			  obj = JsonTrackingParser.parse(source, map);
-      } catch (Exception e) {  
+      } catch (Exception e) {
 				logError(-1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       	return null;
       }
 		  assert (map.containsKey(obj));
-			return parse(obj);	
+			return parse(obj);
 		} else {
 			JsonObject obj = JsonTrackingParser.parse(source, null); // (JsonObject) new com.google.gson.JsonParser().parse(source);
 //			assert (map.containsKey(obj));
-			return parse(obj);	
-		} 
+			return parse(obj);
+		}
 	}
 
 	public Element parse(JsonObject object, Map<JsonElement, LocationData> map) throws FHIRException {
@@ -233,10 +233,10 @@ public class JsonParser extends ParserBase {
 				parseResource(npath, child, n, property);
 			else
 				parseChildren(npath, child, n, false);
-		} else 
+		} else
 			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e)), IssueSeverity.ERROR);
 	}
-	
+
 	private String describe(JsonElement e) {
 	  if (e instanceof JsonArray) {
 	    return "an array";
@@ -251,7 +251,7 @@ public class JsonParser extends ParserBase {
 		String npath = path+"."+property.getName();
 		processed.add(name);
 		processed.add("_"+name);
-		JsonElement main = object.has(name) ? object.get(name) : null; 
+		JsonElement main = object.has(name) ? object.get(name) : null;
 		JsonElement fork = object.has("_"+name) ? object.get("_"+name) : null;
 		if (main != null || fork != null) {
 			if (property.isList() && ((main == null) || (main instanceof JsonArray)) &&((fork == null) || (fork instanceof JsonArray)) ) {
@@ -329,7 +329,7 @@ public class JsonParser extends ParserBase {
 			String name = rt.getAsString();
 			StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, context.getOverrideVersionNs()));
 			if (sd == null)
-				throw new FHIRFormatError("Contained resource does not appear to be a FHIR resource (unknown name '"+name+"')");
+				throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name));
 			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
 			parent.setType(name);
 			parseChildren(npath, res, parent, true);
@@ -369,7 +369,7 @@ public class JsonParser extends ParserBase {
 
 	protected void open(String name, String link) throws IOException {
 	  json.link(link);
-		if (name != null) 
+		if (name != null)
 			json.name(name);
 		json.beginObject();
 	}
@@ -380,7 +380,7 @@ public class JsonParser extends ParserBase {
 
 	protected void openArray(String name, String link) throws IOException {
     json.link(link);
-		if (name != null) 
+		if (name != null)
 			json.name(name);
 		json.beginArray();
 	}
@@ -412,7 +412,7 @@ public class JsonParser extends ParserBase {
   public void compose(Element e, JsonCreator json) throws Exception {
     this.json = json;
     json.beginObject();
-    
+
     prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
@@ -440,7 +440,7 @@ public class JsonParser extends ParserBase {
 		if (list.get(0).isPrimitive()) {
 			boolean prim = false;
 			complex = false;
-			for (Element item : list) { 
+			for (Element item : list) {
 				if (item.hasValue())
 					prim = true;
 				if (item.hasChildren())
@@ -448,19 +448,19 @@ public class JsonParser extends ParserBase {
 			}
 			if (prim) {
 				openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-				for (Element item : list) { 
+				for (Element item : list) {
 					if (item.hasValue())
 						primitiveValue(null, item);
 					else
 						json.nullValue();
-				}				
+				}
 				closeArray();
 			}
 			name = "_"+name;
 		}
 		if (complex) {
 			openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-			for (Element item : list) { 
+			for (Element item : list) {
 				if (item.hasChildren()) {
 					open(null,null);
 					if (item.getProperty().isResource()) {
@@ -473,9 +473,9 @@ public class JsonParser extends ParserBase {
 					close();
 				} else
 					json.nullValue();
-			}				
+			}
 			closeArray();
-		}		
+		}
 	}
 
 	private void primitiveValue(String name, Element item) throws IOException {
@@ -493,10 +493,10 @@ public class JsonParser extends ParserBase {
 		  try {
   			json.value(new BigDecimal(item.getValue()));
 		  } catch (Exception e) {
-		    throw new NumberFormatException("error writing number '"+item.getValue()+"' to JSON");
+				throw new NumberFormatException(context.formatMessage(I18nConstants.ERROR_WRITING_NUMBER__TO_JSON, item.getValue()));
 		  }
 		else
-			json.value(item.getValue());	
+			json.value(item.getValue());
 	}
 
 	private void compose(String path, Element element) throws IOException {
