@@ -82,6 +82,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.I18nConstants;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
@@ -237,7 +238,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
-          throw new DefinitionException("Duplicate Resource " + url);
+          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
         }
         if (r instanceof StructureDefinition)
           structures.see((StructureDefinition) m);
@@ -311,7 +312,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         return laterVersion(newParts[i], oldParts[i]);
     }
     // This should never happen
-    throw new Error("Delimited versions have exact match for delimiter '"+delimiter+"' : "+newParts+" vs "+oldParts);
+    throw new Error(formatMessage(I18nConstants.DELIMITED_VERSIONS_HAVE_EXACT_MATCH_FOR_DELIMITER____VS_, delimiter, newParts, oldParts));
   }
   
   protected <T extends CanonicalResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
@@ -430,7 +431,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     ValueSet vs = null;
     vs = fetchResource(ValueSet.class, binding.getValueSet());
     if (vs == null)
-      throw new FHIRException("Unable to resolve value Set "+binding.getValueSet());
+      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, binding.getValueSet()));
     return expandVS(vs, cacheOk, heirarchical);
   }
   
@@ -449,7 +450,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     p.setParameter("excludeNested", !hierarchical);
     
     if (noTerminologyServer)
-      return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
@@ -469,19 +470,19 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical) {
     if (expParameters == null)
-      throw new Error("No Expansion Parameters provided");
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
     Parameters p = expParameters.copy(); 
     return expandVS(vs, cacheOk, heirarchical, p);
   }
   
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, Parameters p)  {
     if (p == null)
-      throw new Error("No Parameters provided to expandVS");
+      throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
     if (!vs.hasUrl())
-      throw new Error("no value set");
+      throw new Error(formatMessage(I18nConstants.NO_VALUE_SET));
     
       CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
       ValueSetExpansionOutcome res;
@@ -498,7 +499,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
         res = vse.doExpand(vs, p);
         if (!res.getValueset().hasUrl())
-          throw new Error("no url in expand value set");
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
         txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
       } catch (Exception e) {
@@ -506,7 +507,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       
       // if that failed, we try to expand on the server
       if (noTerminologyServer)
-        return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
       Map<String, String> params = new HashMap<String, String>();
       params.put("_limit", Integer.toString(expandCodesLimit ));
       params.put("_incomplete", "true");
@@ -516,7 +517,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         if (!result.hasUrl())
           result.setUrl(vs.getUrl());
         if (!result.hasUrl())
-          throw new Error("no url in expand value set 2");
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
       } catch (Exception e) {
         res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -576,12 +577,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     }
     
     if (!options.isUseServer()) {
-      return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);      
+      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
     }
     
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
-      return new ValidationResult(IssueSeverity.ERROR,  "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
     }
     String csumm =  txCache != null ? txCache.summary(code) : null;
     if (txCache != null) {
@@ -656,15 +657,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       pin.addParameter().setName("valueSet").setResource(vs);
     for (ParametersParameterComponent pp : pin.getParameter())
       if (pp.getName().equals("profile"))
-        throw new Error("Can only specify profile in the context");
+        throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
     if (expParameters == null)
-      throw new Error("No ExpansionProfile provided");
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     pin.addParameter().setName("profile").setResource(expParameters);
     if (txLog != null) {
       txLog.clearLastId();
     }
     if (txClient == null) {
-      throw new FHIRException("Attempt to use Terminology server when no Terminology server is available");      
+      throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
     }
     Parameters pOut;
     if (vs == null)
@@ -871,7 +872,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       }    
       if (supportedCodeSystems.contains(uri))
         return null;
-      throw new FHIRException("not done yet: can't fetch "+uri);
+      throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
     }
   }
 
@@ -917,10 +918,10 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (parts.length >= 2) {
         if (!Utilities.noString(type))
           if (!type.equals(parts[parts.length-2])) 
-            throw new Error("Resource type mismatch for "+type+" / "+uri);
+            throw new Error(formatMessage(I18nConstants.RESOURCE_TYPE_MISMATCH_FOR___, type, uri));
         return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]);
       } else
-        throw new Error("Unable to process request for resource for "+type+" / "+uri);
+        throw new Error(formatMessage(I18nConstants.UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___, type, uri));
     }
   }
 
