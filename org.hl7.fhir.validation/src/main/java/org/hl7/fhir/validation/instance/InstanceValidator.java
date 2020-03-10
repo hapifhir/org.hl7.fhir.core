@@ -3335,7 +3335,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
 
-    List<String> res = new ArrayList<>();
     Element meta = element.getNamedChild("meta");
     if (meta != null) {
       List<Element> profiles = new ArrayList<Element>();
