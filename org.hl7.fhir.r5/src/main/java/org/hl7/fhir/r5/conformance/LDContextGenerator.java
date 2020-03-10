@@ -13,7 +13,6 @@ import org.apache.jena.rdf.model.Resource;
 import java.io.*;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -407,8 +406,8 @@ public class LDContextGenerator {
       type = "boolean";
     else if (elementDefStr.equals("integer"))
       type = "integer";
-//    else if (elementDefStr.equals("integer64"))
-//      type = "long";
+    else if (elementDefStr.equals("integer64"))
+      type = "long";
     else if (elementDefStr.equals("unsignedInt"))
       type = "nonNegativeInteger";
     else if (elementDefStr.equals("positiveInt"))

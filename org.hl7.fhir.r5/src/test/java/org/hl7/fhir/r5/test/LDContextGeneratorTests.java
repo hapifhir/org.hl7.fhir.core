@@ -71,11 +71,17 @@ public class LDContextGeneratorTests {
       }
     }
   }
-
+//
   @Test
   public void testAll() throws FHIRException, IOException, UcumException {
     doTestAll();
   }
+
+//  @Test
+//  public void testInteger64() throws FHIRException, IOException, UcumException {
+//    doTest("integer64");
+//  }
+
 
 //  @Test
 //  public void testUnsignedInt() throws FHIRException, IOException, UcumException {

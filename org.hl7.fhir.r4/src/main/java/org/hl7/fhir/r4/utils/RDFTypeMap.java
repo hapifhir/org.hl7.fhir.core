@@ -42,6 +42,7 @@ public class RDFTypeMap {
     ptMap.put("token", RDFNamespace.FHIR.resourceRef("token"));
     ptMap.put("nonNegativeInteger", XSD.nonNegativeInteger);
     ptMap.put("positiveInteger", XSD.positiveInteger);
+    ptMap.put("long", XSD.xlong);
 
     owlTypeMap.put(XSD.gYear, XSD.dateTime);
     owlTypeMap.put(XSD.gYearMonth, XSD.dateTime);
