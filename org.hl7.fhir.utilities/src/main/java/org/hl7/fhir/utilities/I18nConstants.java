@@ -348,4 +348,9 @@ public class I18nConstants {
   public final static String PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__ = "Profile__does_not_match_for__because_of_the_following_profile_issues__";
   public final static String THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_ = "This_element_does_not_match_any_known_slice_";
   public final static String DEFINED_IN_THE_PROFILE = "defined_in_the_profile";
+  public final static String THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "This_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
+  public final static String THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME = "This_cannot_be_parsed_as_a_FHIR_object_no_name";
+  public final static String THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_ = "This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_";
+  public final static String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
+
 }
