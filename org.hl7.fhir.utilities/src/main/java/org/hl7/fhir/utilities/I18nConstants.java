@@ -352,5 +352,17 @@ public class I18nConstants {
   public final static String THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME = "This_cannot_be_parsed_as_a_FHIR_object_no_name";
   public final static String THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_ = "This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_";
   public final static String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
+  public final static String UNABLE_TO_FIND_RESOURCETYPE_PROPERTY = "Unable_to_find_resourceType_property";
+  public final static String ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_STRING = "Error_parsing_JSON_the_primitive_value_must_be_a_string";
+  public final static String ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_NUMBER = "Error_parsing_JSON_the_primitive_value_must_be_a_number";
+  public final static String ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_BOOLEAN = "Error_parsing_JSON_the_primitive_value_must_be_a_boolean";
+  public final static String ERROR_PARSING_XHTML_ = "Error_parsing_XHTML_";
+  public final static String THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_ = "This_property_must_be_an_object_not_";
+  public final static String THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_ = "This_property_must_be_an_simple_value_not_";
+  public final static String THIS_PROPERTY_MUST_BE__NOT_ = "This_property_must_be__not_";
+  public final static String THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_ = "This_property_must_be_an_Array_not_";
+  public final static String UNRECOGNISED_PROPERTY_ = "Unrecognised_property_";
+  public final static String OBJECT_MUST_HAVE_SOME_CONTENT = "Object_must_have_some_content";
+  public final static String ERROR_PARSING_JSON_ = "Error_parsing_JSON_";
 
 }
