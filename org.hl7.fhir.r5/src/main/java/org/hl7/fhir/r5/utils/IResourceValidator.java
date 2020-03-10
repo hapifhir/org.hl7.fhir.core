@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import java.util.Locale;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -68,7 +69,9 @@ public interface IResourceValidator {
 
     Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException; 
+    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException;
+
+    void setLocale(Locale locale);
   }
   
   public enum BestPracticeWarningLevel {
