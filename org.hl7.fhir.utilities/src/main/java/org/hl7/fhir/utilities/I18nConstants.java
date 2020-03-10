@@ -426,5 +426,8 @@ public class I18nConstants {
   public final static String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION = "Unable_to_resolve_system__value_set_has_no_includes_or_expansion";
   public final static String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_EXCLUDES = "Unable_to_resolve_system__value_set_has_excludes";
   public final static String UNABLE_TO_RESOLVE_SYSTEM__NO_VALUE_SET = "Unable_to_resolve_system__no_value_set";
+  public final static String THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_base_property_must_be_an_Array_not_a_";
+  public final static String THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_property_must_be_an_Array_not_a_";
+  public final static String DOCUMENT = "document";
 
 }
