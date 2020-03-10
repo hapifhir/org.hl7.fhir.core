@@ -95,7 +95,7 @@ public class JsonParser extends ParserBase {
       try {
 			  obj = JsonTrackingParser.parse(source, map);
       } catch (Exception e) {
-				logError(-1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
+				logError(-1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       	return null;
       }
 		  assert (map.containsKey(obj));
@@ -247,7 +247,7 @@ public class JsonParser extends ParserBase {
     return "a primitive property";
   }
 
-  private void parseChildPrimitive(JsonObject object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
+  private void parseChildPrimitive(JsonObject object, Element element, Set<String> processed, Property property, String path, String name) throws FHIRException {
 		String npath = path+"."+property.getName();
 		processed.add(name);
 		processed.add("_"+name);
@@ -257,11 +257,11 @@ public class JsonParser extends ParserBase {
 			if (property.isList()) {
 			  boolean ok = true;
 			  if (!(main == null || main instanceof JsonArray)) {
-	        logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
 	        ok = false;
 			  }
         if (!(fork == null || fork instanceof JsonArray)) {
-          logError(line(fork), col(fork), npath, IssueType.INVALID, "This base property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
           ok = false;
         }
         if (ok) {
@@ -270,11 +270,11 @@ public class JsonParser extends ParserBase {
           for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
             JsonElement m = arrI(arr1, i);
             JsonElement f = arrI(arr2, i);
-            parseChildPrimitiveInstance(context, property, name, npath, m, f);
+            parseChildPrimitiveInstance(element, property, name, npath, m, f);
           }
         }
 			} else {
-				parseChildPrimitiveInstance(context, property, name, npath, main, fork);
+				parseChildPrimitiveInstance(element, property, name, npath, main, fork);
 			}
 		}
 	}
