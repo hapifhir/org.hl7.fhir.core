@@ -428,6 +428,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   }
 
   @Override
+  public void setLocale(Locale locale) {
+  //do nothing
+  }
+
+  @Override
   public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
     IResourceValidator val = TestingUtilities.context(version).newValidator();
     List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
