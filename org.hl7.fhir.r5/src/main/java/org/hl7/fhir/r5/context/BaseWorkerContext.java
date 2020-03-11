@@ -1311,6 +1311,6 @@ public abstract class BaseWorkerContext implements IWorkerContext {
 
   @Override
   public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
+    i18Nmessages = ResourceBundle.getBundle("Messages", locale);
   }
 }
