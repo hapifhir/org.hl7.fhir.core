@@ -9,9 +9,9 @@ package org.hl7.fhir.r5.elementmodel;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.I18nConstants;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -90,20 +91,20 @@ public class JsonParser extends ParserBase {
 		map = new IdentityHashMap<JsonElement, LocationData>();
 		String source = TextFile.streamToString(stream);
 		if (policy == ValidationPolicy.EVERYTHING) {
-			JsonObject obj = null; 
+			JsonObject obj = null;
       try {
 			  obj = JsonTrackingParser.parse(source, map);
-      } catch (Exception e) {  
-				logError(-1, -1, "(document)", IssueType.INVALID, "Error parsing JSON: "+e.getMessage(), IssueSeverity.FATAL);
+      } catch (Exception e) {
+				logError(-1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       	return null;
       }
 		  assert (map.containsKey(obj));
-			return parse(obj);	
+			return parse(obj);
 		} else {
 			JsonObject obj = JsonTrackingParser.parse(source, null); // (JsonObject) new com.google.gson.JsonParser().parse(source);
 //			assert (map.containsKey(obj));
-			return parse(obj);	
-		} 
+			return parse(obj);
+		}
 	}
 
 	public Element parse(JsonObject object, Map<JsonElement, LocationData> map) throws FHIRException {
@@ -114,7 +115,7 @@ public class JsonParser extends ParserBase {
   public Element parse(JsonObject object) throws FHIRException {
 		JsonElement rt = object.get("resourceType");
 		if (rt == null) {
-			logError(line(object), col(object), "$", IssueType.INVALID, "Unable to find resourceType property", IssueSeverity.FATAL);
+			logError(line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
 			return null;
 		} else {
 			String name = rt.getAsString();
@@ -144,13 +145,13 @@ public class JsonParser extends ParserBase {
 				//    		}
 			}
 			if (!found)
-				logError(line(object), col(object), path, IssueType.INVALID, "Object must have some content", IssueSeverity.ERROR);
+				logError(line(object), col(object), path, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
 		}
 	}
 
-	private void parseChildren(String path, JsonObject object, Element context, boolean hasResourceType) throws FHIRException {
-		reapComments(object, context);
-		List<Property> properties = context.getProperty().getChildProperties(context.getName(), null);
+	private void parseChildren(String path, JsonObject object, Element element, boolean hasResourceType) throws FHIRException {
+		reapComments(object, element);
+		List<Property> properties = element.getProperty().getChildProperties(element.getName(), null);
 		Set<String> processed = new HashSet<String>();
 		if (hasResourceType)
 			processed.add("resourceType");
@@ -159,14 +160,14 @@ public class JsonParser extends ParserBase {
 		// note that we do not trouble ourselves to maintain the wire format order here - we don't even know what it was anyway
 		// first pass: process the properties
 		for (Property property : properties) {
-			parseChildItem(path, object, context, processed, property);
+			parseChildItem(path, object, element, processed, property);
 		}
 
 		// second pass: check for things not processed
 		if (policy != ValidationPolicy.NONE) {
 			for (Entry<String, JsonElement> e : object.entrySet()) {
 				if (!processed.contains(e.getKey())) {
-					logError(line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, "Unrecognised property '@"+e.getKey()+"'", IssueSeverity.ERROR);      		
+					logError(line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getKey()), IssueSeverity.ERROR);
 				}
 			}
 		}
@@ -191,7 +192,7 @@ public class JsonParser extends ParserBase {
     }
   }
 
-	private void parseChildComplex(String path, JsonObject object, Element context, Set<String> processed, Property property, String name) throws FHIRException {
+	private void parseChildComplex(String path, JsonObject object, Element element, Set<String> processed, Property property, String name) throws FHIRException {
 		processed.add(name);
 		String npath = path+"."+property.getName();
 		JsonElement e = object.get(name);
@@ -199,14 +200,14 @@ public class JsonParser extends ParserBase {
 			JsonArray arr = (JsonArray) e;
 			int c = 0;
 			for (JsonElement am : arr) {
-				parseChildComplexInstance(npath+"["+c+"]", object, context, property, name, am);
+				parseChildComplexInstance(npath+"["+c+"]", object, element, property, name, am);
 				c++;
 			}
 		} else {
 		  if (property.isList()) {
-	      logError(line(e), col(e), npath, IssueType.INVALID, "This property must be an Array, not "+describeType(e), IssueSeverity.ERROR);
+	      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e)), IssueSeverity.ERROR);
 		  }
-			parseChildComplexInstance(npath, object, context, property, name, e);
+			parseChildComplexInstance(npath, object, element, property, name, e);
 		}
 	}
 
@@ -222,20 +223,20 @@ public class JsonParser extends ParserBase {
     return null;
   }
 
-  private void parseChildComplexInstance(String npath, JsonObject object, Element context, Property property, String name, JsonElement e) throws FHIRException {
+  private void parseChildComplexInstance(String npath, JsonObject object, Element element, Property property, String name, JsonElement e) throws FHIRException {
 		if (e instanceof JsonObject) {
 			JsonObject child = (JsonObject) e;
 			Element n = new Element(name, property).markLocation(line(child), col(child));
 			checkObject(child, npath);
-			context.getChildren().add(n);
+			element.getChildren().add(n);
 			if (property.isResource())
 				parseResource(npath, child, n, property);
 			else
 				parseChildren(npath, child, n, false);
-		} else 
-			logError(line(e), col(e), npath, IssueType.INVALID, "This property must be "+(property.isList() ? "an Array" : "an Object")+", not "+describe(e), IssueSeverity.ERROR);
+		} else
+			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e)), IssueSeverity.ERROR);
 	}
-	
+
 	private String describe(JsonElement e) {
 	  if (e instanceof JsonArray) {
 	    return "an array";
@@ -246,21 +247,21 @@ public class JsonParser extends ParserBase {
     return "a primitive property";
   }
 
-  private void parseChildPrimitive(JsonObject object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
+  private void parseChildPrimitive(JsonObject object, Element element, Set<String> processed, Property property, String path, String name) throws FHIRException {
 		String npath = path+"."+property.getName();
 		processed.add(name);
 		processed.add("_"+name);
-		JsonElement main = object.has(name) ? object.get(name) : null; 
+		JsonElement main = object.has(name) ? object.get(name) : null;
 		JsonElement fork = object.has("_"+name) ? object.get("_"+name) : null;
 		if (main != null || fork != null) {
 			if (property.isList()) {
 			  boolean ok = true;
 			  if (!(main == null || main instanceof JsonArray)) {
-	        logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
 	        ok = false;
 			  }
         if (!(fork == null || fork instanceof JsonArray)) {
-          logError(line(fork), col(fork), npath, IssueType.INVALID, "This base property must be an Array, not a "+describe(main), IssueSeverity.ERROR);
+					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
           ok = false;
         }
         if (ok) {
@@ -269,11 +270,11 @@ public class JsonParser extends ParserBase {
           for (int i = 0; i < Math.max(arrC(arr1), arrC(arr2)); i++) {
             JsonElement m = arrI(arr1, i);
             JsonElement f = arrI(arr2, i);
-            parseChildPrimitiveInstance(context, property, name, npath, m, f);
+            parseChildPrimitiveInstance(element, property, name, npath, m, f);
           }
         }
 			} else {
-				parseChildPrimitiveInstance(context, property, name, npath, main, fork);
+				parseChildPrimitiveInstance(element, property, name, npath, main, fork);
 			}
 		}
 	}
@@ -286,15 +287,16 @@ public class JsonParser extends ParserBase {
   	return arr == null ? 0 : arr.size();
 	}
 
-	private void parseChildPrimitiveInstance(Element context, Property property, String name, String npath,
+	private void parseChildPrimitiveInstance(Element element, Property property, String name, String npath,
 	    JsonElement main, JsonElement fork) throws FHIRException {
 			if (main != null && !(main instanceof JsonPrimitive))
-				logError(line(main), col(main), npath, IssueType.INVALID, "This property must be an simple value, not "+describe(main), IssueSeverity.ERROR);
+				logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(
+          I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main)), IssueSeverity.ERROR);
 			else if (fork != null && !(fork instanceof JsonObject))
-				logError(line(fork), col(fork), npath, IssueType.INVALID, "This property must be an object, not "+describe(fork), IssueSeverity.ERROR);
+				logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork)), IssueSeverity.ERROR);
 			else {
 				Element n = new Element(name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
-				context.getChildren().add(n);
+				element.getChildren().add(n);
 				if (main != null) {
 					JsonPrimitive p = (JsonPrimitive) main;
 					if (p.isNumber() && p.getAsNumber() instanceof JsonTrackingParser.PresentedBigDecimal) {
@@ -307,19 +309,19 @@ public class JsonParser extends ParserBase {
 						try {
           	  n.setXhtml(new XhtmlParser().setValidatorMode(policy == ValidationPolicy.EVERYTHING).parse(n.getValue(), null).getDocumentElement());
 						} catch (Exception e) {
-							logError(line(main), col(main), npath, IssueType.INVALID, "Error parsing XHTML: "+e.getMessage(), IssueSeverity.ERROR);
+							logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
 						}
 					}
 					if (policy == ValidationPolicy.EVERYTHING) {
 						// now we cross-check the primitive format against the stated type
 						if (Utilities.existsInList(n.getType(), "boolean")) {
 							if (!p.isBoolean())
-								logError(line(main), col(main), npath, IssueType.INVALID, "Error parsing JSON: the primitive value must be a boolean", IssueSeverity.ERROR);
+								logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_BOOLEAN), IssueSeverity.ERROR);
 						} else if (Utilities.existsInList(n.getType(), "integer", "unsignedInt", "positiveInt", "decimal")) {
 							if (!p.isNumber())
-								logError(line(main), col(main), npath, IssueType.INVALID, "Error parsing JSON: the primitive value must be a number", IssueSeverity.ERROR);
+								logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_NUMBER), IssueSeverity.ERROR);
 						} else if (!p.isString())
-				  logError(line(main), col(main), npath, IssueType.INVALID, "Error parsing JSON: the primitive value must be a string", IssueSeverity.ERROR);
+				  logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_STRING), IssueSeverity.ERROR);
 					}
 				}
 				if (fork != null) {
@@ -334,12 +336,12 @@ public class JsonParser extends ParserBase {
 	private void parseResource(String npath, JsonObject res, Element parent, Property elementProperty) throws FHIRException {
 		JsonElement rt = res.get("resourceType");
 		if (rt == null) {
-			logError(line(res), col(res), npath, IssueType.INVALID, "Unable to find resourceType property", IssueSeverity.FATAL);
+			logError(line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
 		} else {
 			String name = rt.getAsString();
 			StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, context.getOverrideVersionNs()));
 			if (sd == null)
-				throw new FHIRFormatError("Contained resource does not appear to be a FHIR resource (unknown name '"+name+"')");
+				throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name));
 			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
 			parent.setType(name);
 			parseChildren(npath, res, parent, true);
@@ -379,7 +381,7 @@ public class JsonParser extends ParserBase {
 
 	protected void open(String name, String link) throws IOException {
 	  json.link(link);
-		if (name != null) 
+		if (name != null)
 			json.name(name);
 		json.beginObject();
 	}
@@ -390,7 +392,7 @@ public class JsonParser extends ParserBase {
 
 	protected void openArray(String name, String link) throws IOException {
     json.link(link);
-		if (name != null) 
+		if (name != null)
 			json.name(name);
 		json.beginArray();
 	}
@@ -422,7 +424,7 @@ public class JsonParser extends ParserBase {
   public void compose(Element e, JsonCreator json) throws Exception {
     this.json = json;
     json.beginObject();
-    
+
     prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
@@ -450,7 +452,7 @@ public class JsonParser extends ParserBase {
 		if (list.get(0).isPrimitive()) {
 			boolean prim = false;
 			complex = false;
-			for (Element item : list) { 
+			for (Element item : list) {
 				if (item.hasValue())
 					prim = true;
 				if (item.hasChildren())
@@ -458,19 +460,19 @@ public class JsonParser extends ParserBase {
 			}
 			if (prim) {
 				openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-				for (Element item : list) { 
+				for (Element item : list) {
 					if (item.hasValue())
 						primitiveValue(null, item);
 					else
 						json.nullValue();
-				}				
+				}
 				closeArray();
 			}
 			name = "_"+name;
 		}
 		if (complex) {
 			openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-			for (Element item : list) { 
+			for (Element item : list) {
 				if (item.hasChildren()) {
 					open(null,null);
 					if (item.getProperty().isResource()) {
@@ -483,9 +485,9 @@ public class JsonParser extends ParserBase {
 					close();
 				} else
 					json.nullValue();
-			}				
+			}
 			closeArray();
-		}		
+		}
 	}
 
 	private void primitiveValue(String name, Element item) throws IOException {
@@ -503,10 +505,10 @@ public class JsonParser extends ParserBase {
 		  try {
   			json.value(new BigDecimal(item.getValue()));
 		  } catch (Exception e) {
-		    throw new NumberFormatException("error writing number '"+item.getValue()+"' to JSON");
+				throw new NumberFormatException(context.formatMessage(I18nConstants.ERROR_WRITING_NUMBER__TO_JSON, item.getValue()));
 		  }
 		else
-			json.value(item.getValue());	
+			json.value(item.getValue());
 	}
 
 	private void compose(String path, Element element) throws IOException {

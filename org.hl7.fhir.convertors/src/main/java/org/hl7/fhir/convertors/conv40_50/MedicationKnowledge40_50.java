@@ -24,6 +24,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes;
+import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -148,7 +149,7 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
     private static Enumeration<MedicationKnowledgeStatusCodes> convertMedicationKnowledgeStatus(CodeType src) {
         if (src == null)
             return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes>();
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationKnowledgeStatusCodesEnumFactory());
         copyElement(src, tgt);
         tgt.setValue(MedicationKnowledgeStatusCodes.fromCode(src.getCode()));
         return tgt;
