@@ -66,7 +66,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      objects.add(new Object[] { id, examples.get(id)});
+      //if (id.equals("bundle-documentation-bad.json"))
+        objects.add(new Object[] { id, examples.get(id)});
     }
     return objects;
   }
