@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodesEnumFactory;
 
 public class MedicationDispense10_50 {
 
@@ -127,7 +128,7 @@ public class MedicationDispense10_50 {
     public static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> convertMedicationDispenseStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseStatus> src) throws FHIRException {
         if (src == null)
             return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes>();
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationDispenseStatusCodesEnumFactory());
         VersionConvertor_10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case COMPLETED:
