@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -195,6 +196,8 @@ public class Validator {
       System.out.println("     Produce additional information about the loading/validation process");
       System.out.println("-recurse");
       System.out.println("     Look in subfolders when -ig refers to a folder");
+      System.out.println("-locale");
+      System.out.println("     Specifies the locale/language of the validation result messages (eg.: de-DE");
       System.out.println("-sct");
       System.out.println("     Specify the edition of SNOMED CT to use. Valid Choices:");
       System.out.println("       intl | us | uk | au | nl | ca | se | dk | es");
@@ -399,6 +402,7 @@ public class Validator {
       boolean anyExtensionsAllowed = true;
       boolean hintAboutNonMustSupport = false;
       boolean recursive = false;
+      Locale locale = null;
       List<String> profiles = new ArrayList<String>();
       EngineMode mode = EngineMode.VALIDATION;
       String output = null;
@@ -477,6 +481,12 @@ public class Validator {
             throw new Error("Snomed edition '"+s+"' not known");            
         } else if (args[i].equals("-recurse")) {
           recursive = true;
+        } else if (args[i].equals("-locale")) {
+          if (i+1 == args.length) {
+            throw new Error("Specified -locale without indicating locale");
+          } else {
+            locale = new Locale(args[++i]);
+          }
         } else if (args[i].equals("-strictExtensions")) {
           anyExtensionsAllowed = false;
         } else if (args[i].equals("-hintAboutNonMustSupport")) {
@@ -585,6 +595,7 @@ public class Validator {
       validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
       validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
       validator.setLanguage(lang);
+      validator.setLocale(locale);
       validator.setSnomedExtension(snomedCT);
       validator.setAssumeValidRestReferences(assumeValidRestReferences);
 

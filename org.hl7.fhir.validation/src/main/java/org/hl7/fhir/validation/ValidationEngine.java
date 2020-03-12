@@ -139,6 +139,8 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 public class ValidationEngine implements IValidatorResourceFetcher {
 
+
+
   public class ScanOutputItem {
     private String ref;
     private ImplementationGuide ig;
@@ -240,6 +242,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private Set<String> loadedIgs = new HashSet<>();
   private IValidatorResourceFetcher fetcher;
   private boolean assumeValidRestReferences;
+  private Locale locale;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1269,6 +1272,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
+    validator.getContext().setLocale(locale);
     validator.setFetcher(this);
     return validator;
   }
@@ -1590,6 +1594,11 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return fetcher.resolveURL(appContext, path, url);
     };
     return false;
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.locale = locale;
   }
 
   public void handleOutput(Resource r, String output, String version) throws Exception {

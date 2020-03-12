@@ -22,6 +22,7 @@ package org.hl7.fhir.dstu2016may.utils;
 
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.hl7.fhir.dstu2016may.formats.IParser;
@@ -204,7 +205,15 @@ public interface IWorkerContext {
    * @return
    */
   public ValueSetExpansionComponent expandVS(ConceptSetComponent inc);
-  
+
+  Locale getLocale();
+
+  void setLocale(Locale locale);
+
+  String formatMessage(String theMessage, Object... theMessageArguments);
+
+  void setValidationMessageLanguage(Locale locale);
+
   public class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;
