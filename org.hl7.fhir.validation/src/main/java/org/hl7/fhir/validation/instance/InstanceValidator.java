@@ -126,7 +126,6 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.XVerExtensionManager;
@@ -142,6 +141,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.instance.utils.*;
+import org.hl7.fhir.validation.utils.I18nConstants;
 import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
@@ -197,17 +197,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     @Override
     public FunctionDetails resolveFunction(String functionName) {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
+      throw new Error(formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
     }
 
     @Override
     public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
+      throw new Error(formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
     }
 
     @Override
     public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
+      throw new Error(formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
     }
 
     @Override
@@ -240,7 +240,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           throw new FHIRException(e);
         }
       else
-        throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET__RESOLVE__LOCALLY_2, url));
+        throw new Error(formatMessage(I18nConstants.NOT_DONE_YET__RESOLVE__LOCALLY_2, url));
 
     }
 
@@ -269,7 +269,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ValidatorHostContext ctxt = (ValidatorHostContext) appContext;
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       if (sd == null) {
-        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_, url));
+        throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_, url));
       }
       InstanceValidator self = InstanceValidator.this;
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
@@ -285,10 +285,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (e.isResource()) {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(e));
         } else {
-          throw new FHIRException(context.formatMessage(I18nConstants.NOT_SUPPORTED_YET));
+          throw new FHIRException(formatMessage(I18nConstants.NOT_SUPPORTED_YET));
         }
       } else
-        throw new NotImplementedException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
+        throw new NotImplementedException(formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
       boolean ok = true;
       List<ValidationMessage> record = new ArrayList<>();
       for (ValidationMessage v : valerrors) {
@@ -312,7 +312,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (r instanceof ValueSet)
               return (ValueSet) r;
             else
-              throw new FHIRException(context.formatMessage(I18nConstants.REFERENCE__REFERS_TO_A__NOT_A_VALUESET, url, r.fhirType()));
+              throw new FHIRException(formatMessage(I18nConstants.REFERENCE__REFERS_TO_A__NOT_A_VALUESET, url, r.fhirType()));
           }
         }
         return null;
@@ -515,7 +515,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private StructureDefinition getSpecifiedProfile(String profile) {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile);
     if (sd == null) {
-      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_LOCATE_THE_PROFILE__IN_ORDER_TO_VALIDATE_AGAINST_IT, profile));
+      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_LOCATE_THE_PROFILE__IN_ORDER_TO_VALIDATE_AGAINST_IT, profile));
     }
     return sd;
   }
@@ -1568,7 +1568,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = true;
         }
       } else {
-        throw new Error(context.formatMessage(I18nConstants.UNRECOGNISED_EXTENSION_CONTEXT_, ctxt.getTypeElement().asStringValue()));
+        throw new Error(formatMessage(I18nConstants.UNRECOGNISED_EXTENSION_CONTEXT_, ctxt.getTypeElement().asStringValue()));
       }
     }
     if (!ok) {
@@ -2095,7 +2095,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (we == null) {
         if (fetcher == null) {
           if (!refType.equals("contained"))
-            throw new FHIRException(context.formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
+            throw new FHIRException(formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
         } else {
           Element ext = null;
           if (fetchCache.containsKey(ref)) {
@@ -2190,8 +2190,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles), I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
-                    context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + ref + " matching against Profile" + sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() == 1, I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile()));
@@ -2207,7 +2206,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + ref + " matching against Profile" + sd.getUrl(), errorSummaryForSlicingAsHtml(badProfiles.get(sd)));
                 }
               } else {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
@@ -2481,7 +2480,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String id = p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT) ? p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT) : null;
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
         if (sd == null)
-          throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE_, p));
+          throw new DefinitionException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE_, p));
         profile = sd;
         if (id == null)
           element = sd.getSnapshot().getElementFirstRep();
@@ -2492,7 +2491,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               element = t;
           }
           if (element == null)
-            throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_, id, p));
+            throw new DefinitionException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_, id, p));
         }
         expr = fpe.parse(fixExpr(discriminator));
         t2 = System.nanoTime();
@@ -2643,20 +2642,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (focus.fhirType().equals("Reference") && d.equals("reference")) {
         String url = focus.getChildValue("reference");
         if (Utilities.noString(url))
-          throw new FHIRException(context.formatMessage(I18nConstants.NO_REFERENCE_RESOLVING_DISCRIMINATOR__FROM_, discriminator, element.getProperty().getName()));
+          throw new FHIRException(formatMessage(I18nConstants.NO_REFERENCE_RESOLVING_DISCRIMINATOR__FROM_, discriminator, element.getProperty().getName()));
         // Note that we use the passed in stack here. This might be a problem if the discriminator is deep enough?
         Element target = resolve(appContext, url, stack, errors, p);
         if (target == null)
-          throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCE__AT__RESOLVING_DISCRIMINATOR__FROM_, url, d, discriminator, element.getProperty().getName()));
+          throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCE__AT__RESOLVING_DISCRIMINATOR__FROM_, url, d, discriminator, element.getProperty().getName()));
         focus = target;
       } else if (d.equals("value") && focus.isPrimitive()) {
         return focus;
       } else {
         List<Element> children = focus.getChildren(d);
         if (children.isEmpty())
-          throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_FIND__RESOLVING_DISCRIMINATOR__FROM_, d, discriminator, element.getProperty().getName()));
+          throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_FIND__RESOLVING_DISCRIMINATOR__FROM_, d, discriminator, element.getProperty().getName()));
         if (children.size() > 1)
-          throw new FHIRException(context.formatMessage(I18nConstants.FOUND__ITEMS_FOR__RESOLVING_DISCRIMINATOR__FROM_, Integer.toString(children.size()), d, discriminator, element.getProperty().getName()));
+          throw new FHIRException(formatMessage(I18nConstants.FOUND__ITEMS_FOR__RESOLVING_DISCRIMINATOR__FROM_, Integer.toString(children.size()), d, discriminator, element.getProperty().getName()));
         focus = children.get(0);
         p = p + "." + d;
       }
@@ -3081,23 +3080,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
               type = criteriaElement.getType().get(0).getWorkingCode();
             } else if (criteriaElement.getType().size() > 1) {
-              throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
+              throw new DefinitionException(formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
             } else
-              throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
+              throw new DefinitionException(formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
             if (discriminator.isEmpty())
               expression.append(" and $this is " + type);
             else
               expression.append(" and " + discriminator + " is " + type);
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0) {
-              throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
+              throw new DefinitionException(formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
             }
             if (criteriaElement.getType().size() != 1) {
-              throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
+              throw new DefinitionException(formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
             }
             List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0) {
-              throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
+              throw new DefinitionException(formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
             } else if (list.size() > 1) {
               CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" or ");
               for (CanonicalType c : list) {
@@ -3113,7 +3112,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             else if (criteriaElement.hasMax() && criteriaElement.getMax().equals("0"))
               expression.append(" and (" + discriminator + ".exists().not())");
             else
-              throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
+              throw new FHIRException(formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
           } else if (criteriaElement.hasFixed()) {
             buildFixedExpression(ed, expression, discriminator, criteriaElement);
           } else if (criteriaElement.hasPattern()) {
@@ -3131,15 +3130,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!anyFound) {
         if (slicer.getSlicing().getDiscriminator().size() > 1)
-          throw new DefinitionException(context.formatMessage(I18nConstants.COULD_NOT_MATCH_ANY_DISCRIMINATORS__FOR_SLICE__IN_PROFILE___NONE_OF_THE_DISCRIMINATOR__HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS, discriminators, ed.getId(), profile.getUrl(), discriminators));
+          throw new DefinitionException(formatMessage(I18nConstants.COULD_NOT_MATCH_ANY_DISCRIMINATORS__FOR_SLICE__IN_PROFILE___NONE_OF_THE_DISCRIMINATOR__HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS, discriminators, ed.getId(), profile.getUrl(), discriminators));
         else
-          throw new DefinitionException(context.formatMessage(I18nConstants.COULD_NOT_MATCH_DISCRIMINATOR__FOR_SLICE__IN_PROFILE___THE_DISCRIMINATOR__DOES_NOT_HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS, discriminators, ed.getId(), profile.getUrl(), discriminators));
+          throw new DefinitionException(formatMessage(I18nConstants.COULD_NOT_MATCH_DISCRIMINATOR__FOR_SLICE__IN_PROFILE___THE_DISCRIMINATOR__DOES_NOT_HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS, discriminators, ed.getId(), profile.getUrl(), discriminators));
       }
 
       try {
         n = fpe.parse(fixExpr(expression.toString()));
       } catch (FHIRLexerException e) {
-        throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getUrl(), path, e.getMessage()));
+        throw new FHIRException(formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getUrl(), path, e.getMessage()));
       }
       fpeTime = fpeTime + (System.nanoTime() - t);
       ed.setUserData("slice.expression.cache", n);
@@ -3148,13 +3147,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName())), "discriminator = " + Utilities.escapeXml(n.toString()));
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Does not match slice'" + ed.getSliceName(), "discriminator = " + Utilities.escapeXml(n.toString()));
       for (String url : shc.getSliceRecords().keySet()) {
-        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false,
-         context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), url),
-          context.formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
-              url,
-              stack.getLiteralPath(), errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url))));
+        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, "Details for " + stack.getLiteralPath() + " against profile " + url,
+          "Profile " + url + " does not match for " + stack.getLiteralPath() + " because of the following profile issues: " + errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url)));
       }
     }
     return pass;
@@ -3170,7 +3166,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       msg = fpe.forLog();
     } catch (Exception ex) {
       ex.printStackTrace();
-      throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_EVALUATING_SLICING_EXPRESSION_FOR_ELEMENT_IN_PROFILE__PATH__FHIRPATH___, profile.getUrl(), path, n, ex.getMessage()));
+      throw new FHIRException(formatMessage(I18nConstants.PROBLEM_EVALUATING_SLICING_EXPRESSION_FOR_ELEMENT_IN_PROFILE__PATH__FHIRPATH___, profile.getUrl(), path, n, ex.getMessage()));
     }
     return ok;
   }
@@ -3189,15 +3185,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Identifier ii = (Identifier) pattern;
       expression.append(" and ");
       buildIdentifierExpression(ed, expression, discriminator, ii);
-    } else {
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.getClass().getName()));
-    }
+    } else
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.getClass().getName()));
   }
 
   private void buildIdentifierExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Identifier ii)
     throws DefinitionException {
     if (ii.hasExtension())
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     boolean first = true;
     expression.append(discriminator + ".where(");
     if (ii.hasSystem()) {
@@ -3231,15 +3226,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void buildCodeableConceptExpression(ElementDefinition ed, StringBuilder expression, String discriminator, CodeableConcept cc)
     throws DefinitionException {
     if (cc.hasText())
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__USING_TEXT__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__USING_TEXT__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     if (!cc.hasCoding())
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__MUST_HAVE_AT_LEAST_ONE_CODING__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__MUST_HAVE_AT_LEAST_ONE_CODING__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     if (cc.hasExtension())
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     boolean firstCoding = true;
     for (Coding c : cc.getCoding()) {
       if (c.hasExtension())
-        throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+        throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
       if (firstCoding) firstCoding = false;
       else expression.append(" and ");
       expression.append(discriminator + ".coding.where(");
@@ -3270,7 +3265,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void buildCodingExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Coding c)
     throws DefinitionException {
     if (c.hasExtension())
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     expression.append(discriminator + ".where(");
     boolean first = true;
     if (c.hasSystem()) {
@@ -3326,7 +3321,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (fixed instanceof BooleanType) {
         expression.append(((BooleanType) fixed).asStringValue());
       } else
-        throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), fixed.getClass().getName()));
+        throw new DefinitionException(formatMessage(I18nConstants.UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), fixed.getClass().getName()));
       expression.append(" in " + discriminator + ")");
     }
   }
@@ -3340,7 +3335,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
 
-    List<String> res = new ArrayList<>();
     Element meta = element.getNamedChild("meta");
     if (meta != null) {
       List<Element> profiles = new ArrayList<Element>();
@@ -3688,7 +3682,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           byte[] json = bs.toByteArray();
           switch (v) {
             case DSTU1:
-              throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R1));
+              throw new FHIRException(formatMessage(I18nConstants.UNSUPPORTED_VERSION_R1));
             case DSTU2:
               org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
               Resource r5 = VersionConvertor_10_50.convertResource(r2);
@@ -4630,7 +4624,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     else
       dt = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + actualType);
     if (dt == null)
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ACTUAL_TYPE_, actualType));
+      throw new DefinitionException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ACTUAL_TYPE_, actualType));
     trackUsage(dt, hostContext, element);
 
     childDefinitions = profileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
@@ -4988,7 +4982,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String errorContext = "profile " + profile.getUrl();
           if (!resource.getChildValue("id").isEmpty())
             errorContext += "; instance " + resource.getChildValue("id");
-          throw new DefinitionException(context.formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));
+          throw new DefinitionException(formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));
         }
         slicer = ed;
         process = false;
@@ -5013,12 +5007,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
             ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false,
-              context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
-                profile == null ? "" : " defined in the profile " + profile.getUrl()),
-              context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : I18nConstants.DEFINED_IN_THE_PROFILE + profile.getUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo));
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl()),
+              "This element does not match any known slice" + (profile == null ? "" : " defined in the profile " + profile.getUrl() + ": " + errorSummaryForSlicingAsHtml(ei.sliceInfo)));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getUrl()), errorSummaryForSlicing(ei.sliceInfo));
+            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getUrl() + " and slicing is CLOSED: " + errorSummaryForSlicing(ei.sliceInfo)));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
@@ -5114,7 +5106,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (tail.equals(t.getId()))
         return t;
     }
-    throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, tail));
+    throw new DefinitionException(formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, tail));
   }
 
   private IdStatus idStatusForEntry(Element ep, ElementInfo ei) {
@@ -5201,7 +5193,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         n = fpe.parse(fixExpr(inv.getExpression()));
       } catch (FHIRLexerException e) {
-        throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage()));
+        throw new FHIRException(formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage()));
       }
       fpeTime = fpeTime + (System.nanoTime() - t);
       inv.setUserData("validator.expression.cache", n);
@@ -5340,9 +5332,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       checkFixedValue(msgs, "{virtual}", value, criteria.getFixed(), profile.getUrl(), "value", null);
       return msgs.size() == 0;
     } else if (criteria.hasBinding() && criteria.getBinding().getStrength() == BindingStrength.REQUIRED && criteria.getBinding().hasValueSet()) {
-      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__SLICE_MATCHING_BY_VALUE_SET_NOT_DONE));
+      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__SLICE_MATCHING_BY_VALUE_SET_NOT_DONE));
     } else {
-      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__NO_FIXED_VALUE_OR_REQUIRED_VALUE_SET));
+      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__NO_FIXED_VALUE_OR_REQUIRED_VALUE_SET));
     }
   }
 
@@ -5601,4 +5593,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void setDebug(boolean debug) {
     this.debug = debug;
   }
+
+
 }

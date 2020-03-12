@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -73,7 +72,6 @@ import org.hl7.fhir.r5.utils.INarrativeGenerator;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.CSFileInputStream;
-import org.hl7.fhir.utilities.I18nConstants;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
@@ -119,18 +117,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
   }
-
-  public SimpleWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
-    super(locale);
-  }
   
   public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
     super();
-    copy(other);
-  }
-
-  public SimpleWorkerContext(SimpleWorkerContext other, Locale locale) throws FileNotFoundException, IOException, FHIRException {
-    super(locale);
     copy(other);
   }
   
@@ -260,7 +249,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       txClient.setLogger(txLog);
       return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
     } catch (Exception e) {
-      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
+      throw new FHIRException("Unable to connect to terminology server. Use parameter '-tx n/a' tun run without using terminology services to validate LOINC, SNOMED, ICD-X etc. Error = "+e.getMessage(), e);
     }
   }
 
@@ -278,9 +267,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		    f = xml.parse(stream);
 		  }
     } catch (DataFormatException e1) {
-      throw new org.hl7.fhir.exceptions.FHIRFormatError(formatMessage(I18nConstants.ERROR_PARSING_, name, e1.getMessage()), e1);
+      throw new org.hl7.fhir.exceptions.FHIRFormatError("Error parsing "+name+":" +e1.getMessage(), e1);
     } catch (Exception e1) {
-			throw new org.hl7.fhir.exceptions.FHIRFormatError(formatMessage(I18nConstants.ERROR_PARSING_, name, e1.getMessage()), e1);
+			throw new org.hl7.fhir.exceptions.FHIRFormatError("Error parsing "+name+":" +e1.getMessage(), e1);
 		}
 		if (f instanceof Bundle) {
 		  Bundle bnd = (Bundle) f;
@@ -336,7 +325,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
        try {
         loadDefinitionItem(s, pi.load("package", s), loader, filter);
       } catch (FHIRException | IOException e) {
-        throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
+        throw new FHIRException("Error reading "+s+" from package "+pi.name()+"#"+pi.version()+": "+e.getMessage(), e);
       }
     }
     for (String s : pi.list("other")) {
@@ -388,7 +377,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (version == null)
         version = s.substring(8);
         else if (!version.equals(s.substring(8))) 
-          throw new DefinitionException(formatMessage(I18nConstants.VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_, version, s.substring(8)));
+          throw new DefinitionException("Version mismatch. The context has version "+version+" loaded, and the new content being loaded is version "+s.substring(8));
       }
       if (s.startsWith("revision="))
         revision = s.substring(9);
@@ -408,7 +397,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		case JSON: return newJsonParser();
 		case XML: return newXmlParser();
 		default:
-			throw new Error(formatMessage(I18nConstants.PARSER_TYPE__NOT_SUPPORTED, type.toString()));
+			throw new Error("Parser Type "+type.toString()+" not supported");
 		}
 	}
 
@@ -418,7 +407,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 			return new JsonParser();
 		if (type.equalsIgnoreCase("XML"))
 			return new XmlParser();
-		throw new Error(formatMessage(I18nConstants.PARSER_TYPE__NOT_SUPPORTED, type.toString()));
+		throw new Error("Parser Type "+type.toString()+" not supported");
 	}
 
 	@Override
@@ -438,7 +427,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	@Override
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
-	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
+	    throw new Error("No validator configured");
 	  return validatorFactory.makeValidator(this);
 	}
 
@@ -666,13 +655,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public void generateSnapshot(StructureDefinition p, boolean logical) throws DefinitionException, FHIRException {
     if (!p.hasSnapshot() && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
-        throw new DefinitionException(formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
+        throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+") has no base and no snapshot");
       StructureDefinition sd = fetchResource(StructureDefinition.class, p.getBaseDefinition());
       if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinition())) {
         sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
       }
       if (sd == null) {
-        throw new DefinitionException(formatMessage(I18nConstants.PROFILE___BASE__COULD_NOT_BE_RESOLVED, p.getName(), p.getUrl(), p.getBaseDefinition()));
+        throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+") base "+p.getBaseDefinition()+" could not be resolved");
       }
       List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
       List<String> errors = new ArrayList<String>();
@@ -688,10 +677,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       pu.generateSnapshot(sd, p, p.getUrl(), Utilities.extractBaseUrl(sd.getUserString("path")), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
-          throw new DefinitionException(formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
+          throw new DefinitionException("Profile "+p.getName()+" ("+p.getUrl()+"), element "+msg.getLocation()+". Error generating snapshot: "+msg.getMessage());
       }
       if (!p.hasSnapshot())
-        throw new FHIRException(formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
+        throw new FHIRException("Profile "+p.getName()+" ("+p.getUrl()+"). Error generating snapshot");
       pu = null;
     }
   }

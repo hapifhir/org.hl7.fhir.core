@@ -326,17 +326,13 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
+  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
 
-  Locale getLocale();
+   Locale getLocale();
 
-  void setLocale(Locale locale);
+   void setLocale(Locale locale);
 
-  String formatMessage(String theMessage, Object... theMessageArguments);
-
-  void setValidationMessageLanguage(Locale locale);
-
-  class ValidationResult {
+  public class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;
     private String message;
