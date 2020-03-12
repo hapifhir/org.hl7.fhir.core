@@ -21,10 +21,6 @@ package org.hl7.fhir.r4.context;
  */
 
 import com.google.gson.JsonObject;
-import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -103,9 +99,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   protected TerminologyCache txCache;
 
   private boolean tlogging = true;
-  private Locale locale;
-  private ResourceBundle i18Nmessages;
-
+  
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
     txCache = new TerminologyCache(lock, null);
@@ -1180,37 +1174,5 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return null;
   }
 
-  @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)){
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-    setValidationMessageLanguage(getLocale());
-  }
-
-  @Override
-  public String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message = theMessage;
-    if (Objects.nonNull(i18Nmessages) && i18Nmessages.containsKey(theMessage)) {
-      if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-      } else {
-        message = i18Nmessages.getString(theMessage);
-      }
-    }
-    return message;
-  }
-
-  @Override
-  public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
-  }
   
 }

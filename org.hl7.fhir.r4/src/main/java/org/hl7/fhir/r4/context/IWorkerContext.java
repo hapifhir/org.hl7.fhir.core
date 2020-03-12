@@ -22,7 +22,6 @@ package org.hl7.fhir.r4.context;
 
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -284,15 +283,7 @@ public interface IWorkerContext {
    * @throws FHIRException 
    */
   public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean heirarchical) throws TerminologyServiceException;
-
-  Locale getLocale();
-
-  void setLocale(Locale locale);
-
-  String formatMessage(String theMessage, Object... theMessageArguments);
-
-  void setValidationMessageLanguage(Locale locale);
-
+  
   public class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;
