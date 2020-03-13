@@ -86,13 +86,14 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-public abstract class BaseWorkerContext implements IWorkerContext {
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   // all maps are to the full URI
   protected Map<String, CodeSystem> codeSystems = new HashMap<String, CodeSystem>();
@@ -1141,38 +1142,4 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return fetchResource(StructureDefinition.class,
       "http://hl7.org/fhir/StructureDefinition/" + typeName);
   }
-
-  @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)) {
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-    setValidationMessageLanguage(getLocale());
-  }
-
-  @Override
-  public String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message = theMessage;
-    if (Objects.nonNull(i18Nmessages) && i18Nmessages.containsKey(theMessage)) {
-      if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-      } else {
-        message = i18Nmessages.getString(theMessage);
-      }
-    }
-    return message;
-  }
-
-  @Override
-  public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale);
-  }
-
 }
