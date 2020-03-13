@@ -153,6 +153,7 @@ public class ValueSetUtilities {
 
   private static ValueSet generateImplicitMimetypesValueSet(String theUri) {
     ValueSet valueSet = new ValueSet();
+    valueSet.setStatus(PublicationStatus.ACTIVE);
     valueSet.setUrl(theUri);
     valueSet.setDescription("This value set includes all possible codes from BCP-13 (http://tools.ietf.org/html/bcp13)");
     valueSet.getCompose()

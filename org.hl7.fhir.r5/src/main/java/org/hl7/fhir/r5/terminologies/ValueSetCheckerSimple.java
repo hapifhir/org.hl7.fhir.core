@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UriType;
@@ -363,6 +364,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
       // make up a transient value set with
       ValueSet vs = new ValueSet();
+      vs.setStatus(PublicationStatus.ACTIVE);
       vs.setUrl(Utilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
