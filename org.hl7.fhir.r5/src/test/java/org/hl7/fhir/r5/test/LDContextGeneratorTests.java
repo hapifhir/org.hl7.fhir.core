@@ -9,9 +9,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.util.HashMap;
+import java.io.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,26 +19,23 @@ public class LDContextGeneratorTests {
   String basePath = "/Users/m091864/TEMP/R5/";
 
   private void doTest(String name) throws IOException, FHIRException {
+
     StructureDefinition sd = TestingUtilities.context().
       fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
 
     if(sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + " was null");
     }
-    //String outPath = basePath + name.toLowerCase() + ".context.jsonld";
 
     LDContextGenerator ldContextGenerator = new LDContextGenerator();
-
-
     ConcurrentHashMap<String, String> renderedJson = ldContextGenerator.generate(sd);
 
     // write each json string to a file
     // may be multiples if there were BackboneElements processed.
     for (String jsonName : renderedJson.keySet()){
-      TextFile.stringToFile(renderedJson.get(jsonName),basePath + jsonName.toLowerCase() + ".context.jsonld");
+      TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
     }
 
-   // TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
   }
 
   /**
@@ -49,6 +44,7 @@ public class LDContextGeneratorTests {
    * @throws FHIRException
    */
   private void doTestAll() throws IOException, FHIRException {
+
     List<StructureDefinition> sds = TestingUtilities.context().allStructures();
     ConcurrentHashMap<String, String> renderedJson;
 
@@ -65,13 +61,14 @@ public class LDContextGeneratorTests {
         // write each json string to a file
         // may be multiples if there were BackboneElements processed.
         for (String jsonName : renderedJson.keySet()) {
-          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld");
+          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
         }
 
       }
     }
   }
-//
+
+
   @Test
   public void testAll() throws FHIRException, IOException, UcumException {
     doTestAll();

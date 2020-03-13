@@ -35,7 +35,7 @@ public class LDContextGeneratorTests {
     // write each json string to a file
     // may be multiples if there were BackboneElements processed.
     for (String jsonName : renderedJson.keySet()){
-      TextFile.stringToFile(renderedJson.get(jsonName),basePath + jsonName.toLowerCase() + ".context.jsonld");
+      TextFile.stringToFile(renderedJson.get(jsonName),basePath + jsonName.toLowerCase() + ".context.jsonld", false);
     }
 
    // TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
@@ -63,7 +63,7 @@ public class LDContextGeneratorTests {
         // write each json string to a file
         // may be multiples if there were BackboneElements processed.
         for (String jsonName : renderedJson.keySet()) {
-          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld");
+          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
         }
 
       }
