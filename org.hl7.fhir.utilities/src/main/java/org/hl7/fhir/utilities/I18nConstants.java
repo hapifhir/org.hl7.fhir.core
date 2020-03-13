@@ -429,5 +429,6 @@ public class I18nConstants {
   public final static String THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_base_property_must_be_an_Array_not_a_";
   public final static String THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_property_must_be_an_Array_not_a_";
   public final static String DOCUMENT = "documentmsg";
+  public final static String DOCUMENT_DATE_REQUIRED = "Document_Date_Missing";
 
 }
