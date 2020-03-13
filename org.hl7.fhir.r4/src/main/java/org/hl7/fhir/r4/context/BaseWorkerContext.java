@@ -51,6 +51,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -65,7 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class BaseWorkerContext implements IWorkerContext {
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   private Object lock = new Object(); // used as a lock for the data that follows
   
