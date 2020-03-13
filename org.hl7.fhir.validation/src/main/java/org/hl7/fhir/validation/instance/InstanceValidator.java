@@ -385,7 +385,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
-    this.context = theContext;
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
     fpe = new FHIRPathEngine(context);
@@ -4295,7 +4294,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = bundle.hasChild(META)
       && bundle.getNamedChild(META).hasChild(LAST_UPDATED)
       && bundle.getNamedChild(META).getNamedChild(LAST_UPDATED).hasValue();
-    rule(errors, IssueType.REQUIRED, stack.literalPath, ok, I18nConstants.DOCUMENT_DATE_REQUIRED, "[(type = 'document') implies (meta.lastUpdated.hasValue())]");
+    rule(errors, IssueType.REQUIRED, stack.literalPath, ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
   }
 
 
