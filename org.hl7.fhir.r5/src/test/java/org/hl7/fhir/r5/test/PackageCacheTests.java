@@ -16,6 +16,7 @@ public class PackageCacheTests {
   public void testPath() throws IOException {
     PackageCacheManager cache = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
+    Assert.assertTrue(false);
     NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
     npm.loadAllFiles();
     Assert.assertNotNull(npm);
