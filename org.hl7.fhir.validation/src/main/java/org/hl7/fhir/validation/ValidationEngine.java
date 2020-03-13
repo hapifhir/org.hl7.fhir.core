@@ -614,6 +614,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       log("Creating Package manager?");
       pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
+    if (version == null) {
+      version = pcm.getLatestVersion(id);
+    }
     NpmPackage pi = null;
     if (version == null) {
       pi = pcm.loadPackageFromCacheOnly(id);

@@ -341,6 +341,21 @@ public class PackageCacheManager {
     return new InputStreamWithSrc(stream, pc.url(id, v), v);
   }
 
+  public String getLatestVersion(String id) throws IOException {
+    PackageClient pc = new PackageClient(PRIMARY_SERVER);
+    try {
+        return pc.getLatestVersion(id);
+    } catch (IOException e) {
+      pc = new PackageClient(SECONDARY_SERVER);
+      try {
+        return pc.getLatestVersion(id);
+      } catch (IOException e1) {
+        return fetchVersionTheOldWay(id);
+      }
+    }
+  }
+
+
 
   private NpmPackage loadPackageFromFile(String id, String folder) throws IOException {
     File f = new File(Utilities.path(folder, id));
@@ -777,6 +792,32 @@ public class PackageCacheManager {
       if (v.equals(JSONUtil.str(vo, "version"))) {
         aurl = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
         return fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
+      }
+    }
+
+    return null;
+  }
+
+  private String fetchVersionTheOldWay(String id) throws IOException {
+    String url = getUrlForPackage(id);
+    if (url == null) {
+      try {
+        url = getPackageUrlFromBuildList(id);
+      } catch (Exception e) {
+        url = null;
+      }
+    }
+    if (url == null) {
+      throw new FHIRException("Unable to resolve package id "+id);
+    }
+    String pu = Utilities.pathURL(url, "package-list.json");
+    JsonObject json = fetchJson(pu);
+    if (!id.equals(JSONUtil.str(json, "package-id")))
+      throw new FHIRException("Package ids do not match in "+pu+": "+id+" vs "+JSONUtil.str(json, "package-id"));
+    for (JsonElement e : json.getAsJsonArray("list")) {
+      JsonObject vo = (JsonObject) e;
+      if (JSONUtil.bool(vo, "current")) {
+        return JSONUtil.str(vo, "version");
       }
     }
 
