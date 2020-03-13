@@ -333,8 +333,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
   }
-
-  private IWorkerContext context;
   private FHIRPathEngine fpe;
 
   // configuration items

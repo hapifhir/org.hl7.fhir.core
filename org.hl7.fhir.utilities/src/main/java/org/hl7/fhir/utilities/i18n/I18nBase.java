@@ -5,6 +5,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+
+/**
+ * Handles the locale, ResourceBundle and String formatting for i18n
+ * This abstract class should be extended when implementing a IWorkerContext Interface.
+ */
 public abstract class I18nBase {
 
 
