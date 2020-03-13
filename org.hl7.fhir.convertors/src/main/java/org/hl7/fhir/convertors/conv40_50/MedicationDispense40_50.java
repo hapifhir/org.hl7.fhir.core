@@ -23,6 +23,7 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes;
+import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodesEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -162,7 +163,7 @@ public class MedicationDispense40_50 extends VersionConvertor_40_50 {
     private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> convertMedicationStatus(org.hl7.fhir.r4.model.CodeType src) {
         if (src == null)
             return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes>();
+        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationDispenseStatusCodesEnumFactory());
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setValue(MedicationDispenseStatusCodes.fromCode(src.getCode()));
