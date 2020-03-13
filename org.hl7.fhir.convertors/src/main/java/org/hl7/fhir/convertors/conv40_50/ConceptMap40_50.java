@@ -256,6 +256,9 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE));
         } else {
             switch(src.getValue()) {
+            case RELATEDTO:
+              tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.RELATEDTO);
+              break;
                 case EQUIVALENT:
                     tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT);
                     break;
@@ -301,6 +304,9 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             case SPECIALIZES:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
                 break;
+            case RELATEDTO:
+              tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
+              break;
             case INEXACT:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
                 break;
