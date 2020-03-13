@@ -22,7 +22,6 @@ package org.hl7.fhir.r5.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -83,7 +81,8 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
-import org.hl7.fhir.utilities.I18nConstants;
+import org.hl7.fhir.utilities.i18n.I18nBase;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
@@ -95,10 +94,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 import com.google.gson.JsonObject;
 
-public abstract class BaseWorkerContext implements IWorkerContext {
-
-  private ResourceBundle i18Nmessages;
-  private Locale locale;
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
@@ -1281,38 +1277,5 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public Map<String, byte[]> getBinaries() {
     return binaries;
-  }
-
-  @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)){
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-    setValidationMessageLanguage(getLocale());
-  }
-
-  @Override
-  public String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message = theMessage;
-    if (Objects.nonNull(i18Nmessages) && i18Nmessages.containsKey(theMessage)) {
-      if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-      } else {
-        message = i18Nmessages.getString(theMessage);
-      }
-    }
-    return message;
-  }
-
-  @Override
-  public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale);
   }
 }
