@@ -54,6 +54,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.NamingSystem;
@@ -438,6 +439,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
+    vs.setStatus(PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().getInclude().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
