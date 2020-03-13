@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities.i18n;
 
 public class I18nConstants {
 

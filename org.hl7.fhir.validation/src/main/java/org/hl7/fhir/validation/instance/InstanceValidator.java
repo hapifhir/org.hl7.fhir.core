@@ -126,7 +126,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.I18nConstants;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.XVerExtensionManager;
