@@ -49,10 +49,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 */
-
-import java.text.MessageFormat;
 import java.util.List;
-import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -70,11 +67,6 @@ public class BaseValidator {
     this.context = context;
   }
 
-//  public void setContext(IWorkerContext context) {
-//    this.context = context;
-//    i18Nmessages = ResourceBundle.getBundle("Messages", context.getLocale() );
-//  }
-
   /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
    * 
@@ -82,7 +74,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  //todo: remove after i18n implementation done
+  @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass) {
 		 addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL);
@@ -105,6 +97,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
+  @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String msg) {
     if (!thePass) {
       String path = toPath(pathParts);
@@ -120,6 +113,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
+  @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String path = toPath(pathParts);
@@ -135,13 +129,14 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
+  @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
     if (!thePass) {
 		 addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.FATAL);
 	 }
     return thePass;
   }
-
+  //TODO: i18n
   protected boolean grammarWord(String w) {
     return w.equals("and") || w.equals("or") || w.equals("a") || w.equals("the") || w.equals("for") || w.equals("this") || w.equals("that") || w.equals("of");
   }
@@ -156,7 +151,7 @@ public class BaseValidator {
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass) {
       String message = context.formatMessage(msg);
-     addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION);
    }
     return thePass;
   }
@@ -168,7 +163,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  
+  //FIXME: formatMessage should be done here
   protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION).setSlicingHint(true).setSliceHtml(html);
@@ -323,7 +318,9 @@ public class BaseValidator {
    */
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
-		 addValidationMessage(errors, type, path, msg, html, IssueSeverity.ERROR);
+      msg = context.formatMessage(msg, null);
+      html = context.formatMessage(html, null);
+		  addValidationMessage(errors, type, path, msg, html, IssueSeverity.ERROR);
 	 }
     return thePass;
   }

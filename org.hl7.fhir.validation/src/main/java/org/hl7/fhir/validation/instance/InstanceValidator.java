@@ -126,7 +126,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.I18nConstants;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.XVerExtensionManager;
@@ -333,8 +333,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
   }
-
-  private IWorkerContext context;
   private FHIRPathEngine fpe;
 
   // configuration items
@@ -385,7 +383,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
-    this.context = theContext;
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
     fpe = new FHIRPathEngine(context);
@@ -4295,7 +4292,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = bundle.hasChild(META)
       && bundle.getNamedChild(META).hasChild(LAST_UPDATED)
       && bundle.getNamedChild(META).getNamedChild(LAST_UPDATED).hasValue();
-    rule(errors, IssueType.REQUIRED, stack.literalPath, ok, I18nConstants.DOCUMENT_DATE_REQUIRED, "[(type = 'document') implies (meta.lastUpdated.hasValue())]");
+    rule(errors, IssueType.REQUIRED, stack.literalPath, ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
   }
 
 
