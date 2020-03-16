@@ -51,6 +51,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -65,7 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class BaseWorkerContext implements IWorkerContext {
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   private Object lock = new Object(); // used as a lock for the data that follows
   
@@ -1179,38 +1180,4 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       return corePath+"snomed.html";
     return null;
   }
-
-  @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)){
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-    setValidationMessageLanguage(getLocale());
-  }
-
-  @Override
-  public String formatMessage(String theMessage, Object... theMessageArguments) {
-    String message = theMessage;
-    if (Objects.nonNull(i18Nmessages) && i18Nmessages.containsKey(theMessage)) {
-      if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
-      } else {
-        message = i18Nmessages.getString(theMessage);
-      }
-    }
-    return message;
-  }
-
-  @Override
-  public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale );
-  }
-  
 }
