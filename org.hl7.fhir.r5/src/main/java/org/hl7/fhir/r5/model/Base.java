@@ -255,7 +255,7 @@ private Map<String, Object> userData;
 	}
 	
 	private static boolean noList(List<? extends Base> list) {
-    return list == null || list.isEmpty();
+    return list == null || list.isEmpty() || (list.size() == 1 && list.get(0).isEmpty());
   }
 
 	public static boolean compareDeep(Base e1, Base e2, boolean allowNull) {
