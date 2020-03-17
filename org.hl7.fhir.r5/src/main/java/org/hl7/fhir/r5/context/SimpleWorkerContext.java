@@ -101,7 +101,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 	private Questionnaire questionnaire;
-  private String version;
   private String revision;
   private String date;
   private IValidatorFactory validatorFactory;
@@ -179,6 +178,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     res.setAllowLoadingDuplicates(true);
     res.version = pi.getNpm().get("version").getAsString();
     res.loadFromPackage(pi, loader, filter);
+    res.finishLoading();
     return res;
   }
 
@@ -540,15 +540,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return result;
   }
 
-  private String tail(String url) {
-    if (Utilities.noString(url)) {
-      return "noname";
-    }
-    if (url.contains("/")) {
-      return url.substring(url.lastIndexOf("/")+1);
-    }
-    return url;
-  }
 
   public void loadBinariesFromFolder(String folder) throws FileNotFoundException, Exception {
     for (String n : new File(folder).list()) {

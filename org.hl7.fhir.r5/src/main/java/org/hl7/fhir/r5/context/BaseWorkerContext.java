@@ -21,6 +21,7 @@ package org.hl7.fhir.r5.context;
  */
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,8 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -50,6 +53,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -67,6 +71,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
@@ -126,6 +131,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private Object lock = new Object(); // used as a lock for the data that follows
+  protected String version;
+
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
@@ -236,9 +243,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
           throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
         }
-        if (r instanceof StructureDefinition)
-          structures.see((StructureDefinition) m);
-        else if (r instanceof ValueSet)
+        if (r instanceof StructureDefinition) {
+          StructureDefinition sd = (StructureDefinition) m;
+          if ("1.4.0".equals(version)) {
+            fixOldSD(sd);
+          }
+          structures.see(sd);
+        } else if (r instanceof ValueSet)
           valueSets.see((ValueSet) m);
         else if (r instanceof CodeSystem)
           codeSystems.see((CodeSystem) m);
@@ -260,6 +271,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m);
         else if (r instanceof NamingSystem)
           systems.add((NamingSystem) r);
+      }
+    }
+  }
+
+  public void fixOldSD(StructureDefinition sd) {
+    if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension") && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+      sd.setSnapshot(null);
+    }
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      if (ed.getPath().equals("Extension.url") || ed.getPath().endsWith(".extension.url") ) {
+        ed.setMin(1);
+        ed.getBase().setMin(1);
+      }
+      if ("extension".equals(ed.getSliceName())) {
+        ed.setSliceName(null);
       }
     }
   }
@@ -1277,4 +1303,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public Map<String, byte[]> getBinaries() {
     return binaries;
   }
+  
+  public void finishLoading() {
+    for (StructureDefinition sd : listStructures()) {
+      try {
+        if (sd.getSnapshot().isEmpty()) { 
+          generateSnapshot(sd);
+//          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+        }
+      } catch (Exception e) {
+//        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+      }
+
+    }  
+  }
+
+
+  protected String tail(String url) {
+  if (Utilities.noString(url)) {
+    return "noname";
+  }
+  if (url.contains("/")) {
+    return url.substring(url.lastIndexOf("/")+1);
+  }
+  return url;
+}
 }

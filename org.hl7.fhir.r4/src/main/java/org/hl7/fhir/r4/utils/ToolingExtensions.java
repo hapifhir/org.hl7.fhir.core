@@ -234,6 +234,14 @@ public class ToolingExtensions {
     }
   }
 
+  public static void addUriExtension(Element e, String url, String uri) {
+    Extension ex = getExtension(e, url);
+    if (ex != null)
+      ex.setValue(new UriType(uri));
+    else
+      e.getExtension().add(Factory.newExtension(url, new UriType(uri), true));   
+  }
+
   public static void addBooleanExtension(Element e, String url, boolean content) {
     Extension ex = getExtension(e, url);
     if (ex != null)
