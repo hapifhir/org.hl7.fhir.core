@@ -84,7 +84,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
  * The two classes are separated to keep generated and manually maintained code apart.
  */
 public abstract class XmlParserBase extends ParserBase implements IParser {
+  
+  public enum XmlVersion { V1_0, V1_1  }
+  private XmlVersion version;
 
+  public XmlParserBase(XmlVersion ver) {
+    super();
+    version = ver;
+  }
+
+
+  public XmlParserBase() {
+    super();
+    version = XmlVersion.V1_0;
+  }
+  
 	@Override
 	public ParserType getType() {
 		return ParserType.XML;
@@ -152,7 +166,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	 */
 	@Override
 	public void compose(OutputStream stream, Resource resource)  throws IOException {
-		XMLWriter writer = new XMLWriter(stream, "UTF-8");
+		XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
 		writer.setPretty(style == OutputStyle.PRETTY);
 		writer.start();
 		compose(writer, resource, writer.isPretty());
@@ -164,7 +178,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	 * @ 
 	 */
 	public void compose(OutputStream stream, Resource resource, boolean htmlPretty)  throws IOException {
-		XMLWriter writer = new XMLWriter(stream, "UTF-8");
+		XMLWriter writer = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
 		writer.setPretty(style == OutputStyle.PRETTY);
 		writer.start();
 		compose(writer, resource, htmlPretty);
@@ -177,7 +191,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	 * @ 
 	 */
 	public void compose(OutputStream stream, String rootName, Type type)  throws IOException {
-		xml = new XMLWriter(stream, "UTF-8");
+		xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
 		xml.setDefaultNamespace(FHIR_NS);
@@ -187,7 +201,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, Type type, String rootName)  throws IOException {
-		xml = new XMLWriter(stream, "UTF-8");
+		xml = new XMLWriter(stream, "UTF-8", version == XmlVersion.V1_1);
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
 		xml.setDefaultNamespace(FHIR_NS);

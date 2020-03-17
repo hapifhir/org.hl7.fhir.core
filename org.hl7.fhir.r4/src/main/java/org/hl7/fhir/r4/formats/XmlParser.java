@@ -65,6 +65,11 @@ public class XmlParser extends XmlParserBase {
     super();
   }
 
+  public XmlParser(XmlVersion ver) {
+    super(ver);
+  }
+
+
   public XmlParser(boolean allowUnknownContent) {
     super();
     setAllowUnknownContent(allowUnknownContent);

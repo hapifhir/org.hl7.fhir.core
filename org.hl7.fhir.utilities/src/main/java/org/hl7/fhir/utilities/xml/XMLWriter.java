@@ -75,14 +75,22 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	private String[] specialAttributeNames = new String[] {"id", "name" };
 	private boolean sortAttributes;
 	private int attributeLineWrap;
+  private boolean xml1_1;
 	
 	public final static int LINE_UNIX = 0;
 	public final static int LINE_WINDOWS = 1;
 
+  public XMLWriter(OutputStream stream, String charset, boolean xml1_1) throws UnsupportedEncodingException {    
+    super(stream, charset);
+    this.stream = stream;
+    this.charset = charset;
+    this.xml1_1 = xml1_1;
+  }
 	public XMLWriter(OutputStream stream, String charset) throws UnsupportedEncodingException {
 		super(stream, charset);
 		this.stream = stream;
 		this.charset = charset;
+    this.xml1_1 = false;
 	}
 
 	protected boolean condition(boolean bTest, String message) throws IOException {
@@ -127,7 +135,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		attributes = null;
 		try {
 			if (xmlHeader) {
-				write("<?xml version=\"1.0\" encoding=\""+getXMLCharsetName(charset)+"\"?>");
+				write("<?xml version=\""+(xml1_1 ? "1.1" : "1.0")+"\" encoding=\""+getXMLCharsetName(charset)+"\"?>");
 				if (prettyBase || prettyHeader)
 					write(lineType == LINE_UNIX ? "\n" : "\r\n");
 			}
