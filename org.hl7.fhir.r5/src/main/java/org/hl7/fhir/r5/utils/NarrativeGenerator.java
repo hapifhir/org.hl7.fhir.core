@@ -3746,6 +3746,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
           if (first) first = false; else td.addText(", ");
           if (pcv.hasValueCoding()) { 
             td.addText(pcv.getValueCoding().getCode());
+          } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
+            td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
           } else {
             td.addText(pcv.getValue().primitiveValue());
           }
