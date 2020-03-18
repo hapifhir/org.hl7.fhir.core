@@ -35,6 +35,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.LocatorImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
 
@@ -120,4 +121,7 @@ public class XmlLocationAnnotator extends XMLFilterImpl  {
           }
       }
   }
+
+  
+  
 }

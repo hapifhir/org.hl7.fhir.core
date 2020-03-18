@@ -23,6 +23,7 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,6 +72,7 @@ import org.xml.sax.XMLReader;
 
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
+  private String version;
 
   public XmlParser(IWorkerContext context) {
     super(context);
@@ -99,6 +101,13 @@ public class XmlParser extends ParserBase {
   			
   		factory.setNamespaceAware(true);
   		if (policy == ValidationPolicy.EVERYTHING) {
+  		  // The SAX interface appears to not work when reporting the correct version/encoding.
+  		  // if we can, we'll inspect the header/encoding ourselves 
+  		  if (stream.markSupported()) {
+  		    stream.mark(1024);
+  		    version = checkHeader(stream);
+  		    stream.reset();
+  		  }
   			// use a slower parser that keeps location data
   			TransformerFactory transformerFactory = TransformerFactory.newInstance();
   			Transformer nullTransformer = transformerFactory.newTransformer();
@@ -134,6 +143,7 @@ public class XmlParser extends ParserBase {
   	else
       return parse(doc);
   }
+
 
   private void checkForProcessingInstruction(Document document) throws FHIRFormatError {
     if (policy == ValidationPolicy.EVERYTHING && FormatUtilities.FHIR_NS.equals(document.getDocumentElement().getNamespaceURI())) {
@@ -264,6 +274,10 @@ public class XmlParser extends ParserBase {
     
     for (int i = 0; i < node.getAttributes().getLength(); i++) {
     	Node attr = node.getAttributes().item(i);
+    	String value = attr.getNodeValue();
+    	if (!validAttrValue(value)) {
+        logError(line(node), col(node), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
+    	}
     	if (!(attr.getNodeName().equals("xmlns") || attr.getNodeName().startsWith("xmlns:"))) {
       	Property property = getAttrProp(properties, attr.getNodeName());
       	if (property != null) {
@@ -344,6 +358,23 @@ public class XmlParser extends ParserBase {
     	child = child.getNextSibling();
     }
   }
+
+  private boolean validAttrValue(String value) {
+    if (version == null) {
+      return true;
+    }
+    if (version.equals("1.0")) {
+      boolean ok = true;
+      for (char ch : value.toCharArray()) {
+        if (ch <= 0x1F && !Utilities.existsInList(ch, '\r', '\n', '\t')) {
+          ok = false;
+        }
+      }
+      return ok;
+    } else
+      return true;
+  }
+
 
   private Property getElementProp(List<Property> properties, String nodeName) {
 		List<Property> propsSortedByLongestFirst = new ArrayList<Property>(properties);
@@ -581,6 +612,62 @@ public class XmlParser extends ParserBase {
         xml.exit(element.getType());
       xml.exit(elementName);
     }
+  }
+
+  private String checkHeader(InputStream stream) throws IOException {
+    try {
+      // the stream will either start with the UTF-8 BOF or with <xml
+      int i0 = stream.read();
+      int i1 = stream.read();
+      int i2 = stream.read();
+      
+      StringBuilder b = new StringBuilder();
+      if (i0 == 0xEF && i1 == 0xBB && i2 == 0xBF) {
+        // ok, it's UTF-8
+      } else if (i0 == 0x3C && i1 == 0x3F && i2 == 0x78) { // <xm
+        b.append((char) i0);
+        b.append((char) i1);
+        b.append((char) i2);
+      } else if (i0 == 60) { // just plain old XML with no header
+        return "1.0";        
+      } else {
+        throw new Exception(context.formatMessage(I18nConstants.XML_ENCODING_INVALID));
+      }
+      int i = stream.read();
+      do {
+        b.append((char) i);
+        i = stream.read();
+      } while (i != 0x3E);
+      String header = b.toString();
+      String e = null;
+      i = header.indexOf("encoding=\"");
+      if (i > -1) {
+        e = header.substring(i+10, i+15);
+      } else {
+        i = header.indexOf("encoding='");
+        if (i > -1) {
+          e = header.substring(i+10, i+15);
+        } 
+      }
+      if (e != null && !"UTF-8".equalsIgnoreCase(e)) {
+        logError(0, 0, "XML", IssueType.INVALID, context.formatMessage(I18nConstants.XML_ENCODING_INVALID), IssueSeverity.ERROR);
+      }
+
+      i = header.indexOf("version=\"");
+      if (i > -1) {
+        return header.substring(i+9, i+12);
+      } else {
+        i = header.indexOf("version='");
+        if (i > -1) {
+          return header.substring(i+9, i+12);          
+        } 
+      }
+      return "??";
+    } catch (Exception e) {
+      // suppress this error 
+      logError(0, 0, "XML", IssueType.INVALID, e.getMessage(), IssueSeverity.ERROR);
+    }
+    return "??";
   }
 
 }
