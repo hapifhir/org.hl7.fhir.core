@@ -428,5 +428,8 @@ public class I18nConstants {
   public final static String DOCUMENT = "documentmsg";
   public final static String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
   public final static String DOCUMENT_DATE_REQUIRED_HTML = "Bundle_Document_Date_Missing_html";
+  public final static String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";
+  public final static String XML_ENCODING_INVALID = "xml_encoding_invalid";
+  public final static String XML_STATED_ENCODING_INVALID = "xml_stated_encoding_invalid";
 
 }
