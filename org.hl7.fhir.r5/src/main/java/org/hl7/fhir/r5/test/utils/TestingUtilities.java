@@ -67,23 +67,23 @@ public class TestingUtilities {
     return context("4.0.1");
   }
 	public static IWorkerContext context(String version) {
-	  version = VersionUtilities.getMajMin(version);
+	  String v = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
     }
-	  if (!fcontexts.containsKey(version)) {
+	  if (!fcontexts.containsKey(v)) {
 	    PackageCacheManager pcm;
 	    try {
 	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
 	      IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
-	      fcontexts.put(version, fcontext);
+	      fcontexts.put(v, fcontext);
 	    } catch (Exception e) {
 	      throw new Error(e);
 	    }
 	  }
-	  return fcontexts.get(version);
+	  return fcontexts.get(v);
 	}
 	static public boolean silent;
 
