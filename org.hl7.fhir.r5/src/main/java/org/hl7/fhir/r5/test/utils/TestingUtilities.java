@@ -67,6 +67,7 @@ public class TestingUtilities {
     return context("4.0.1");
   }
 	public static IWorkerContext context(String version) {
+	  version = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
     }
