@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.Coding;
@@ -38,25 +40,109 @@ import org.hl7.fhir.utilities.json.JSONUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class ICD11CodeSystemGenerator {
+public class ICD11Generator {
 
   public static void main(String[] args) throws IOException {
-    new ICD11CodeSystemGenerator().execute(args[0], args[1]);
+    new ICD11Generator().execute(args[0], args[1]);
   }
   
   private void execute(String base, String dest) throws IOException {
-    CodeSystem cs = makeCodeSystem();
+    CodeSystem cs = makeMMSCodeSystem();
     JsonObject version = fetchJson(Utilities.pathURL(base, "/icd/release/11/mms"));
     String[] p = version.get("latestRelease").getAsString().split("\\/");
     cs.setVersion(p[6]);
     JsonObject root = fetchJson(url(base, version.get("latestRelease").getAsString()));
     cs.setDateElement(new DateTimeType(root.get("releaseDate").getAsString()));
     for (JsonElement child : root.getAsJsonArray("child")) {
-      processEntity(cs, base, child.getAsString(), cs.addConcept(), dest);
+      processMMSEntity(cs, base, child.getAsString(), cs.addConcept(), dest);
       System.out.println();
     }
     new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-mms.xml")), cs);
     makeFullVs(dest, cs);
+    
+    cs = makeEntityCodeSystem();
+    root = fetchJson(Utilities.pathURL(base, "/icd/entity"));
+    cs.setVersion(root.get("releaseId").getAsString());
+    cs.setDateElement(new DateTimeType(root.get("releaseDate").getAsString()));
+    cs.setTitle(readString(root,  "title"));
+    Set<String> ids = new HashSet<>();    
+    for (JsonElement child : root.getAsJsonArray("child")) {
+       processEntity(cs, ids, base, tail(child.getAsString()), dest);
+       System.out.println();
+    }
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-foundation.xml")), cs);
+    makeFullVs2(dest, cs);
+    System.out.println("finished");
+  }
+
+  private void processEntity(CodeSystem cs, Set<String> ids, String base, String id, String dest) throws IOException {
+    if (!ids.contains(id)) {
+      System.out.print(".");     
+      ids.add(id);
+      org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent cc = cs.addConcept().setCode(id);
+      JsonObject entity = fetchJson(Utilities.pathURL(base, "icd", "entity", id));
+      cc.setDisplay(readString(entity, "title"));
+      String d = readString(entity, "definition");
+      if (d != null) {
+        cc.setDefinition(d);
+      }
+      if (entity.has("inclusion")) {
+        for (JsonElement child : entity.getAsJsonArray("inclusion")) {
+          JsonObject co = (JsonObject) child;
+          String v = readString(co, "label");
+          if (v != null) {
+            if (co.has("foundationReference")) {
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("inclusion");
+            }
+          }
+        }
+      }
+      if (entity.has("exclusion")) {
+        for (JsonElement child : entity.getAsJsonArray("exclusion")) {
+          JsonObject co = (JsonObject) child;
+          String v = readString(co, "label");
+          if (v != null) {
+            if (co.has("foundationReference")) {
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("exclusion");
+            }
+          }
+        }
+      }
+      if (entity.has("narrowerTerm")) {
+        for (JsonElement child : entity.getAsJsonArray("narrowerTerm")) {
+          JsonObject co = (JsonObject) child;
+          String v = readString(co, "label");
+          if (v != null) {
+            if (co.has("narrowerTerm")) {
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("narrowerTerm");
+            }
+          }
+        }
+      }
+      addDesignation(readString(entity, "longDefinition"), cc, "http://id.who.int/icd11/mms/designation", "longDefinition");
+      addDesignation(readString(entity, "fullySpecifiedName"), cc, "http://snomed.info/sct", "900000000000003001");
+      if (entity.has("synonym")) {
+        for (JsonElement j : entity.getAsJsonArray("synonym")) {
+          String v = readString((JsonObject) j, "label");
+          if (v != null && !v.equals(cc.getDisplay())) {
+            addDesignation(v, cc, "http://id.who.int/icd11/mms/designation", "synonym");
+          }
+        }
+      }
+      for (JsonElement j : entity.getAsJsonArray("parent")) {
+        String v = j.getAsString();
+        if (!"http://id.who.int/icd/entity".equals(v)) {
+          cc.addProperty().setValue(new CodeType(tail(v))).setCode("narrowerTerm");
+        }
+      }     
+      if (entity.has("child")) {
+        for (JsonElement j : entity.getAsJsonArray("child")) {
+          String v = j.getAsString();
+          cc.addProperty().setValue(new CodeType(tail(v))).setCode("child");
+          processEntity(cs, ids, base, tail(v), dest);
+        }      
+      }
+    }
   }
 
   private void makeFullVs(String dest, CodeSystem cs) throws FileNotFoundException, IOException {
@@ -64,8 +150,8 @@ public class ICD11CodeSystemGenerator {
     ValueSet vs = new ValueSet();
     vs.setId("all-MMS");
     vs.setUrl(url);
-    vs.setName("VSMMSAll");
-    vs.setTitle("Value Set for all MMS Codes");
+    vs.setName("ICDMMSAll");
+    vs.setTitle("Value Set for all ICD MMS Codes");
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setExperimental(false);
     vs.setDate(cs.getDate());
@@ -78,7 +164,26 @@ public class ICD11CodeSystemGenerator {
     new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-all-MMS.xml")), vs);
   }
 
-  private void processEntity(CodeSystem cs, String base, String ref, org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent cc, String dest) throws IOException {
+  private void makeFullVs2(String dest, CodeSystem cs) throws FileNotFoundException, IOException {
+    String url = "http://id.who.int/icd11/ValueSet/all-foundation";
+    ValueSet vs = new ValueSet();
+    vs.setId("all-foundation");
+    vs.setUrl(url);
+    vs.setName("ICDFoundationAll");
+    vs.setTitle("Value Set for all ICD Foundation Concepts");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.setExperimental(false);
+    vs.setDate(cs.getDate());
+    vs.setPublisher("WHO");
+    vs.setCopyright("Consult WHO For terms of use");
+    vs.setVersion(cs.getVersion());
+    vs.setStatus(cs.getStatus());
+    ConceptSetComponent inc = vs.getCompose().addInclude();
+    inc.setSystem(cs.getUrl());
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-all-foundation.xml")), vs);
+  }
+
+  private void processMMSEntity(CodeSystem cs, String base, String ref, org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent cc, String dest) throws IOException {
     System.out.print(".");
     JsonObject entity = fetchJson(url(base, ref));
     cc.setId(tail(ref));
@@ -128,7 +233,6 @@ public class ICD11CodeSystemGenerator {
     cc.setDefinition(defn.toString());
     addDesignation(readString(entity, "longDefinition"), cc, "http://id.who.int/icd11/mms/designation", "longDefinition");
     addDesignation(readString(entity, "fullySpecifiedName"), cc, "http://snomed.info/sct", "900000000000003001");
-    addExtension(readString(entity, "fullySpecifiedName"), cc, "http://hl7.org/fhir/StructureDefinition/codesystem-concept-comments");
     addProperty(readString(entity, "codingNote"), cc, "codingNote");
     if (entity.has("indexTerm")) {
 //      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
@@ -158,7 +262,7 @@ public class ICD11CodeSystemGenerator {
     }
     if (entity.has("child")) {
       for (JsonElement child : entity.getAsJsonArray("child")) {
-        processEntity(cs, base, child.getAsString(), cc.addConcept(), dest);
+        processMMSEntity(cs, base, child.getAsString(), cc.addConcept(), dest);
       }
     }
   }
@@ -243,7 +347,7 @@ public class ICD11CodeSystemGenerator {
     return u.replace("http://id.who.int", base);
   }
 
-  private CodeSystem makeCodeSystem() {
+  private CodeSystem makeMMSCodeSystem() {
     CodeSystem cs = new CodeSystem();
     cs.setId("icd11-mms");
     cs.setUrl("http://id.who.int/icd11/mms");
@@ -260,15 +364,40 @@ public class ICD11CodeSystemGenerator {
     cs.setVersionNeeded(true);
     cs.setValueSet("http://id.who.int/icd11/ValueSet/all-MMS");
     cs.setContent(CodeSystemContentMode.COMPLETE);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "kind", "The kind of artifact this concept represents", PropertyType.CODE);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "terms", "Other keywords for searching", PropertyType.STRING);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "codingNote", "Coding advice for this concept", PropertyType.STRING);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "exclusion", "References to diseases that are excluded from this concept", PropertyType.CODING);
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "kind", "The kind of artifact this concept represents", PropertyType.CODE).setUri("http://id.who.int/icd11/properties#kind");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "terms", "Other keywords for searching", PropertyType.STRING).setUri("http://id.who.int/icd11/properties#terms");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "codingNote", "Coding advice for this concept", PropertyType.STRING).setUri("http://id.who.int/icd11/properties#codingNote");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "exclusion", "References to diseases that are excluded from this concept", PropertyType.CODING).setUri("http://id.who.int/icd11/properties#exclusion");
     CodeSystemUtilities.defineCodeSystemProperty(cs, "abstract", "If concept is abstract", PropertyType.BOOLEAN);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "abstract", "If concept is abstract", PropertyType.BOOLEAN);
-    CodeSystemUtilities.defineCodeSystemProperty(cs, "postcoordinationScale", "", PropertyType.CODE);
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "postcoordinationScale", "", PropertyType.CODE).setUri("http://id.who.int/icd11/properties#postcoordinationScale");
     return cs;
   }
+
+  private CodeSystem makeEntityCodeSystem() {
+    CodeSystem cs = new CodeSystem();
+    cs.setId("icd11-foundation");
+    cs.setUrl("http://id.who.int/icd11/foundation");
+    cs.setName("ICD11Entity");
+    cs.setTitle("ICD-11 Entities (Foundation)");
+    cs.setStatus(PublicationStatus.ACTIVE);
+    cs.setExperimental(false);
+    cs.setDate(new Date());
+    cs.setPublisher("WHO");
+    cs.setCopyright("Consult WHO For terms of use");
+    cs.setCaseSensitive(true);
+    cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA); // though we aren't going to have a heirarchy
+//    cs.setCompositional(true);
+//    cs.setVersionNeeded(true);
+    cs.setValueSet("http://id.who.int/icd11/ValueSet/all-foundation");
+    cs.setContent(CodeSystemContentMode.COMPLETE);
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "exclusion", "References to diseases that are excluded from this concept", PropertyType.CODING).setUri("http://id.who.int/icd11/properties#exclusion");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "inclusion", "References to diseases that are included from this concept", PropertyType.CODING).setUri("http://id.who.int/icd11/properties#inclusion");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "narrowerTerm", "Narrower terms for this entity", PropertyType.CODE).setUri("http://id.who.int/icd11/properties#narrowerTerm");
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "parent", "Parent for this concept", PropertyType.CODE);
+    CodeSystemUtilities.defineCodeSystemProperty(cs, "child", "Child for this concept", PropertyType.CODE);
+    return cs;
+  }
+
 
   private JsonObject fetchJson(String source) throws IOException {
     URL url = new URL(source);
