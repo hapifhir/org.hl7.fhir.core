@@ -147,12 +147,14 @@ public class CodeSystemUtilities {
     return isInactive(cs, def);
   }
 
-  public static void defineCodeSystemProperty(CodeSystem cs, String code, String description, PropertyType type) {
+  public static PropertyComponent defineCodeSystemProperty(CodeSystem cs, String code, String description, PropertyType type) {
     for (PropertyComponent p : cs.getProperty()) {
       if (p.getCode().equals(code))
-        return;
+        return p;
     }
-    cs.addProperty().setCode(code).setDescription(description).setType(type).setUri("http://hl7.org/fhir/concept-properties#"+code);
+    PropertyComponent p = cs.addProperty();
+    p.setCode(code).setDescription(description).setType(type).setUri("http://hl7.org/fhir/concept-properties#"+code);
+    return p;
   }
 
   public static String getCodeDefinition(CodeSystem cs, String code) {
