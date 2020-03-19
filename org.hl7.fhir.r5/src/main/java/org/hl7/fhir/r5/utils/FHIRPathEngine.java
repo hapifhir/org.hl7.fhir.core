@@ -4228,7 +4228,7 @@ public class FHIRPathEngine {
           childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }
         for (ElementDefinition t : childDefinitions) {
-          if (tailMatches(t, expr.getName())) {
+          if (tailMatches(t, expr.getName()) && !t.hasSlicing()) { // GG: slicing is a problem here. This is for an exetnsion with a fixed value (type slicing) 
             focus = t;
             break;
           }
