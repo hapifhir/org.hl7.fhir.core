@@ -2019,7 +2019,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     try {
       for (char ch : value.toCharArray()) {
-        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%'))) {
+        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*'))) {
           return false;
         }
       }
