@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -1950,6 +1951,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, ns);
         // check that no illegal elements and attributes have been used
         checkInnerNames(errors, e, path, xhtml.getChildNodes());
+        checkUrls(errors, e, path, xhtml.getChildNodes());
       }
     }
 
@@ -1995,6 +1997,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         checkInnerNames(errors, e, path, node.getChildNodes());
       }
+    }
+  }
+
+  private void checkUrls(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
+    for (XhtmlNode node : list) {
+      if (node.getNodeType() == NodeType.Element) {
+        if ("a".equals(node.getName())) {
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("href")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"));
+        } else if ("img".equals(node.getName())) {
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("src")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"));
+        }
+        checkUrls(errors, e, path, node.getChildNodes());
+      }
+    }
+  }
+
+  private boolean isValidUrl(String value) {
+    if (value == null) {
+      return true;
+    }
+    try {
+      for (char ch : value.toCharArray()) {
+        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%'))) {
+          return false;
+        }
+      }
+      return true;
+    } catch (Exception e) {
+      return false;
     }
   }
 

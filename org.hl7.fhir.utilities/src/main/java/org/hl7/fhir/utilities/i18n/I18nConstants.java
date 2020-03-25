@@ -225,6 +225,7 @@ public class I18nConstants {
   public final static String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
   public final static String XHTML_XHTML_NAME_INVALID = "XHTML_XHTML_Name_Invalid";
   public final static String XHTML_XHTML_NS_INVALID = "XHTML_XHTML_NS_InValid";
+  public final static String XHTML_URL_INVALID = "XHTML_URL_INVALID";
   public final static String _DT_FIXED_WRONG = "_DT_Fixed_Wrong";
   public final static String ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD = "All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod";
   public final static String ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER = "All_observations_should_have_a_performer";
