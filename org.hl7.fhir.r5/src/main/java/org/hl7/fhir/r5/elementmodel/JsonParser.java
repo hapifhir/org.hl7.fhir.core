@@ -243,6 +243,9 @@ public class JsonParser extends ParserBase {
     if (e instanceof JsonObject) {
       return "an object";
     }
+    if (e instanceof JsonNull) {
+      return "null";
+    }
     return "a primitive property";
   }
 
