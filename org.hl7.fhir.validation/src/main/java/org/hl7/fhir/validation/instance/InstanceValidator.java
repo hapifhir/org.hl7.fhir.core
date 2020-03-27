@@ -1529,7 +1529,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ctxt.getType() == ExtensionContextType.ELEMENT) {
         String en = ctxt.getExpression();
         contexts.append("e:" + en);
-        if ("Element".equals(en)) {
+        if (Utilities.existsInList(en, "Element", "Any")) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
@@ -2019,7 +2019,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     try {
       for (char ch : value.toCharArray()) {
-        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*'))) {
+        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
           return false;
         }
       }
