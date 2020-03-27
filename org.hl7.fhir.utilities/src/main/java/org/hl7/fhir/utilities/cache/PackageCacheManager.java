@@ -458,9 +458,9 @@ public class PackageCacheManager {
       System.out.println("Installing "+id+"#"+(version == null ? "?" : version)+" to the package cache");
       System.out.print("  Fetching:");
     }
-    
+
     NpmPackage npm = NpmPackage.fromPackage(tgz, sourceDesc, true);
-       
+
     if (progress ) {
       System.out.println();
       System.out.print("  Installing: ");
@@ -472,61 +472,71 @@ public class PackageCacheManager {
     }
     if (version == null)
       version = npm.version();
-    
+
     String packRoot = Utilities.path(cacheFolder, id+"#"+version);
-    Utilities.createDirectory(packRoot);
-    Utilities.clearDirectory(packRoot);
-      
-    int i = 0;
-    int c = 0;
-    int size = 0;
-    for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
-      String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
-      if (!(new File(dir).exists()))
-        Utilities.createDirectory(dir);
-      for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-        String fn = Utilities.path(dir, fe.getKey());
-        byte[] cnt = fe.getValue();
-        TextFile.bytesToFile(cnt, fn);
-        size = size + cnt.length;
-        i++;
-        if (progress && i % 50 == 0) {
-          c++;
-          System.out.print(".");
-          if (c == 120) {
-            System.out.println("");
-            System.out.print("  ");
-            c = 2;
-          }
-        }    
-      }
-    }
- 
-    
-    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-    ini.setTimeStampFormat("yyyyMMddhhmmss");
-    ini.setTimestampProperty("packages", id+"#"+version, Timestamp.from(Instant.now()), null);
-    ini.setIntegerProperty("package-sizes", id+"#"+version, size, null);
-    ini.save();
-    if (progress)
-      System.out.println(" done.");
+    try {
+      Utilities.createDirectory(packRoot);
+      Utilities.clearDirectory(packRoot);
 
-    NpmPackage pck = loadPackageInfo(packRoot);
-    if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-      if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
-        npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
-        npm.getNpm().remove("name");
-        npm.getNpm().addProperty("name", id);
+      int i = 0;
+      int c = 0;
+      int size = 0;
+      for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
+        String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
+        if (!(new File(dir).exists()))
+          Utilities.createDirectory(dir);
+        for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
+          String fn = Utilities.path(dir, fe.getKey());
+          byte[] cnt = fe.getValue();
+          TextFile.bytesToFile(cnt, fn);
+          size = size + cnt.length;
+          i++;
+          if (progress && i % 50 == 0) {
+            c++;
+            System.out.print(".");
+            if (c == 120) {
+              System.out.println("");
+              System.out.print("  ");
+              c = 2;
+            }
+          }    
+        }
       }
-      if (!version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-        npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
-        npm.getNpm().remove("version");
-        npm.getNpm().addProperty("version", version);
-      }
-      TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id+"#"+version, "package", "package.json"), false);
-    }
 
-    return pck;
+
+      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+      ini.setTimeStampFormat("yyyyMMddhhmmss");
+      ini.setTimestampProperty("packages", id+"#"+version, Timestamp.from(Instant.now()), null);
+      ini.setIntegerProperty("package-sizes", id+"#"+version, size, null);
+      ini.save();
+      if (progress)
+        System.out.println(" done.");
+
+      NpmPackage pck = loadPackageInfo(packRoot);
+      if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+        if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
+          npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
+          npm.getNpm().remove("name");
+          npm.getNpm().addProperty("name", id);
+        }
+        if (!version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+          npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
+          npm.getNpm().remove("version");
+          npm.getNpm().addProperty("version", version);
+        }
+        TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id+"#"+version, "package", "package.json"), false);
+      }
+      return pck;
+    } catch (Exception e) {
+      try {
+        // don't leave a half extracted package behind
+        Utilities.clearDirectory(packRoot);
+        new File(packRoot).delete();
+      } catch (Exception ei) {
+        // nothing
+      }
+      throw e;
+    }
   }
 
   public String getPackageId(String canonical) throws IOException {
