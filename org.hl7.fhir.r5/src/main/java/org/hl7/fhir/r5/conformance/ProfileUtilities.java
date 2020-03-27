@@ -3354,7 +3354,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (extDefn == null) {
             genCardinality(gen, element, row, hasDef, used, null);
             row.getCells().add(gen.new Cell(null, null, "?? "+element.getType().get(0).getProfile(), null, null));
-            generateDescription(gen, row, element, null, used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
+            generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
             String name = urltail(eurl);
             left.getPieces().get(0).setText(name);
@@ -3375,7 +3375,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             row.getCells().add(gen.new Cell());            
           else
             genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
-          generateDescription(gen, row, element, null, used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
+          generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
         }
       } else {
         genCardinality(gen, element, row, hasDef, used, null);
@@ -3385,7 +3385,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
         else
           row.getCells().add(gen.new Cell());
-        generateDescription(gen, row, element, null, used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
+        generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
       }
       if (element.hasSlicing()) {
         if (standardExtensionSlicing(element)) {
@@ -3738,7 +3738,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.addPiece(checkForNoChange(definition.getShortElement(), gen.new Piece(null, gt(definition.getShortElement()), null)));
         } else if (fallback != null && fallback.hasShort()) {
           if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
-          c.addPiece(checkForNoChange(fallback.getShortElement(), gen.new Piece(null, gt(fallback.getShortElement()), null)));
+          c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: 0.5"));
         }
         if (url != null) {
           if (!c.getPieces().isEmpty()) 
@@ -4588,7 +4588,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     ElementDefinition ed = cmp.snapshot.get(child.getBaseIndex());
     ElementDefinitionComparer ccmp;
     if (ed.getType().isEmpty() || isAbstract(ed.getType().get(0).getWorkingCode()) || ed.getType().get(0).getWorkingCode().equals(ed.getPath())) {
-      if (ed.hasType() && "Resource".equals(ed.getType().get(0).getWorkingCode()) && child.getSelf().getType().get(0).hasProfile()) {
+      if (ed.hasType() && "Resource".equals(ed.getType().get(0).getWorkingCode()) && (child.getSelf().hasType() && child.getSelf().getType().get(0).hasProfile())) {
         if (child.getSelf().getType().get(0).getProfile().size() > 1) {
           throw new FHIRException(context.formatMessage(I18nConstants.UNHANDLED_SITUATION_RESOURCE_IS_PROFILED_TO_MORE_THAN_ONE_OPTION__CANNOT_SORT_PROFILE));
         }
