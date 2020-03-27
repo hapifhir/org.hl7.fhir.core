@@ -72,6 +72,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 /**
@@ -134,6 +135,16 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     return parseAnyType(json, type);
   }
 
+  protected JsonObject getJObject(JsonObject parent, String name) throws IOException {
+    JsonElement j = parent.get(name);
+    if (j == null) { 
+      return null;
+    }
+    if (!(j instanceof JsonObject)) {
+      throw new IOException("property "+name+" is a "+j.getClass()+" looking for an object");
+    }
+    return (JsonObject) j;
+  }
   /**
    * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
    * @throws IOException 
