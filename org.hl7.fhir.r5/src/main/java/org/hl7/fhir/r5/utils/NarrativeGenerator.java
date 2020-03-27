@@ -2434,6 +2434,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
             td.tx(" ("+display+")");
           if (comment)
             tr.td().addText(ccm.getComment());
+          addUnmapped(tbl, grp);
         }
       } else {
         XhtmlNode tbl = x.table( "grid");
@@ -2544,12 +2545,20 @@ public class NarrativeGenerator implements INarrativeGenerator {
             if (comment)
               tr.td().addText(ccm.getComment());
           }
+          addUnmapped(tbl, grp);
         }
       }
     }
 
     inject(cm, x, NarrativeStatus.GENERATED);
     return true;
+  }
+
+  private void addUnmapped(XhtmlNode tbl, ConceptMapGroupComponent grp) {
+    if (grp.hasUnmapped()) {
+//      throw new Error("not done yet");
+    }
+    
   }
 
   private String presentRelationshipCode(String code) {
