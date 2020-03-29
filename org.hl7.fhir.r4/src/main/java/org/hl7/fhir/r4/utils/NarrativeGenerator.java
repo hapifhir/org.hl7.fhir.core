@@ -63,6 +63,9 @@ import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -2882,20 +2885,28 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
-    StringBuilder b = new StringBuilder();
+    boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
-        if (b.length() > 0)
-          b.append("<br>");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
         if (!versions.isEmpty()) {
+          StringBuilder b = new StringBuilder();
+          if (firstVersion) {
+            // the first version
+            // set the <p> tag and style attribute
+            x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px");
+        	  firstVersion = false;
+          } else {
+            // the second (or greater) version
+            x.br(); // add line break before the version text
+          }
           b.append("Expansion based on ");
-          boolean first = true;
+          boolean firstPart = true;
           for (String s : versions.keySet()) {
-            if (first)
-              first = false;
+            if (firstPart)
+              firstPart = false;
             else
               b.append(", ");
             if (!s.equals("http://snomed.info/sct"))
@@ -2912,11 +2923,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
                 b.append(describeSystem(s)+" version "+versions.get(s));
             }
           }
+          x.addText(b.toString()); // add the version text
         }
       }
     }
-    if (b.length() > 0)
-      x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px").addText(b.toString());
   }
 
   private String formatSCTDate(String ds) {
