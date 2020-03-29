@@ -2727,39 +2727,41 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
+    StringBuilder b = new StringBuilder();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
+        if (b.length() > 0)
+          b.append("<br>");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
-      }
-    }
-    if (!versions.isEmpty()) {
-      StringBuilder b = new StringBuilder();
-      b.append("Expansion based on ");
-      boolean first = true;
-      for (String s : versions.keySet()) {
-        if (first)
-          first = false;
-        else
-          b.append(", ");
-        if (!s.equals("http://snomed.info/sct"))
-          b.append(describeSystem(s)+" version "+versions.get(s));
-        else {
-          String[] parts = versions.get(s).split("\\/");
-          if (parts.length >= 5) {
-            String m = describeModule(parts[4]);
-            if (parts.length == 7)
-              b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+        if (!versions.isEmpty()) {
+          b.append("Expansion based on ");
+          boolean first = true;
+          for (String s : versions.keySet()) {
+            if (first)
+              first = false;
             else
-              b.append("SNOMED CT "+m+" edition");
-          } else
-            b.append(describeSystem(s)+" version "+versions.get(s));
+              b.append(", ");
+            if (!s.equals("http://snomed.info/sct"))
+              b.append(describeSystem(s)+" version "+versions.get(s));
+            else {
+              parts = versions.get(s).split("\\/");
+              if (parts.length >= 5) {
+                String m = describeModule(parts[4]);
+                if (parts.length == 7)
+                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+                else
+                  b.append("SNOMED CT "+m+" edition");
+              } else
+                b.append(describeSystem(s)+" version "+versions.get(s));
+            }
+          }
         }
       }
-
-      x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px").addText(b.toString());
     }
+    if (b.length() > 0)
+      x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px").addText(b.toString());
   }
 
   private String formatSCTDate(String ds) {
