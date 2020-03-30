@@ -317,12 +317,14 @@ public class PackageCacheManager {
 
   private InputStreamWithSrc loadFromPackageServer(String id, String v) {
     PackageClient pc = new PackageClient(PRIMARY_SERVER);
+    String u = null;
     InputStream stream;
     try {
       if (Utilities.noString(v)) {
         v = pc.getLatestVersion(id);
       }
       stream = pc.fetch(id, v);
+      u = pc.url(id, v);
     } catch (IOException e) {
       pc = new PackageClient(SECONDARY_SERVER);
       try {
@@ -330,12 +332,10 @@ public class PackageCacheManager {
           v = pc.getLatestVersion(id);
         }
         stream = pc.fetch(id, v);
+        u = pc.url(id, v);
       } catch (IOException e1) {
         // ok, well, we'll try the old way
-        stream = fetchTheOldWay(id, v);
-        if (stream == null) {
-          throw new FHIRException("The package '"+id+"#"+v+"' is not known to the package server ('"+PRIMARY_SERVER+"')");
-        }
+        return fetchTheOldWay(id, v);
       }
     }
     return new InputStreamWithSrc(stream, pc.url(id, v), v);
@@ -769,7 +769,7 @@ public class PackageCacheManager {
   }
 
   // ----- the old way, from before package server, while everything gets onto the package server
-  private InputStream fetchTheOldWay(String id, String v) {
+  private InputStreamWithSrc fetchTheOldWay(String id, String v) {
     String url = getUrlForPackage(id);
     if (url == null) {
       try {
@@ -781,6 +781,9 @@ public class PackageCacheManager {
     if (url == null) {
       throw new FHIRException("Unable to resolve package id "+id);
     }
+    if (url.contains("/ImplementationGuide/")) {
+      url = url.substring(0, url.indexOf("/ImplementationGuide/"));
+    }
     String pu = Utilities.pathURL(url, "package-list.json");
     String aurl = pu;
     JsonObject json;
@@ -790,7 +793,8 @@ public class PackageCacheManager {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
         aurl = pv;
-        return fetchFromUrlSpecific(pv, true);
+        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, true), pv, v);
+        return src;
       } catch (Exception e1) {
         throw new FHIRException("Error fetching package directly ("+pv+"), or fetching package list for "+id+" from "+pu+": "+e1.getMessage(), e1);
       }  
@@ -801,7 +805,8 @@ public class PackageCacheManager {
       JsonObject vo = (JsonObject) e;
       if (v.equals(JSONUtil.str(vo, "version"))) {
         aurl = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
-        return fetchFromUrlSpecific(Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz"), true);
+        String u = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
+        return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
       }
     }
 
