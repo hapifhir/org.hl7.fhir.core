@@ -95,6 +95,7 @@ import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -130,6 +131,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.EnableWhenEvaluator.MStack;
 import org.hl7.fhir.validation.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -3491,6 +3493,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       validateQuestionannaireItem(errors, element, element, stack, parents);
     } else if (element.getType().equals("QuestionnaireResponse")) {
       validateQuestionannaireResponse(hostContext, errors, element, stack);
+    } else if (element.getType().equals("MeasureReport")) {
+      validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
@@ -3717,6 +3721,77 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private void validateMeasureReport(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
+    Element m = element.getNamedChild("measure");
+    String measure = null;
+    if (m != null) {
+      /*
+       * q.getValue() is correct for R4 content, but we'll also accept the second
+       * option just in case we're validating raw STU3 content. Being lenient here
+       * isn't the end of the world since if someone is actually doing the reference
+       * wrong in R4 content it'll get flagged elsewhere by the validator too
+       */
+      if (isNotBlank(m.getValue())) {
+        measure = m.getValue();
+      } else if (isNotBlank(m.getChildValue("reference"))) {
+        measure = m.getChildValue("reference");
+      }
+    }
+    if (hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), measure != null, I18nConstants.MEASURE_MR_M_NONE)) {
+      long t = System.nanoTime();
+      Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure);
+      sdTime = sdTime + (System.nanoTime() - t);
+      if (warning(errors, IssueType.REQUIRED, m.line(), m.col(), stack.getLiteralPath(), msrc != null, I18nConstants.MEASURE_MR_M_NOTFOUND, measure)) {
+        boolean inComplete = !"complete".equals(element.getNamedChildValue("status"));
+        //validateMeasureReportGroup(hostContext, msrc, msrc.getGroup(), errors, element, stack, inComplete, element, new MStack(msrc, element));
+      }
+    }
+  }
+
+  private Measure loadMeasure(Element resource, String id) throws FHIRException {
+    try {
+      for (Element contained : resource.getChildren("contained")) {
+        if (contained.getIdBase().equals(id)) {
+          FhirPublication v = FhirPublication.fromCode(context.getVersion());
+          ByteArrayOutputStream bs = new ByteArrayOutputStream();
+          new JsonParser(context).compose(contained, bs, OutputStyle.NORMAL, id);
+          byte[] json = bs.toByteArray();
+          switch (v) {
+            case DSTU1:
+              throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R1));
+            case DSTU2:
+              throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R2));
+            case DSTU2016May:
+              throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R2B));
+            case STU3:
+              org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
+              Resource r5 = VersionConvertor_30_50.convertResource(r3, false);
+              if (r5 instanceof Measure)
+                return (Measure) r5;
+              else
+                return null;
+            case R4:
+              org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
+              r5 = VersionConvertor_40_50.convertResource(r4);
+              if (r5 instanceof Measure)
+                return (Measure) r5;
+              else
+                return null;
+            case R5:
+              r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
+              if (r5 instanceof Measure)
+                return (Measure) r5;
+              else
+                return null;
+          }
+        }
+      }
+      return null;
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
   private Questionnaire loadQuestionnaire(Element resource, String id) throws FHIRException {
     try {
       for (Element contained : resource.getChildren("contained")) {
@@ -3782,7 +3857,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     else if (myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe)) {
       rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
     } else if (!answers.isEmpty()) { // items without answers should be allowed, but not items with answers to questions that are disabled
-      // it appears that this is always a duplicate error - it will always already have beeb reported, so no need to report it again?
+      // it appears that this is always a duplicate error - it will always already have been reported, so no need to report it again?
       // GDG 2019-07-13
 //      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), !isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED, qItem.getLinkId());
     }
@@ -3866,7 +3941,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             break;
         }
       }
-      validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
+      if (qItem.getType() != QuestionnaireItemType.GROUP) {
+        // if it's a group, we already have an error before getting here, so no need to hammer away on that 
+        validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
+      }
     }
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTYPE, qItem.getLinkId());
@@ -3874,8 +3952,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       List<Element> items = new ArrayList<Element>();
       element.getNamedChildren("item", items);
       rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_DISPLAY, qItem.getLinkId());
+    } else if (qItem.getType() != QuestionnaireItemType.GROUP) {
+      List<Element> items = new ArrayList<Element>();
+      element.getNamedChildren("item", items);
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP_ANSWER, qItem.getLinkId());
     } else {
-      validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack);
+       validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack);
     }
   }
 
@@ -3960,7 +4042,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       // item is missing, is the question enabled?
       if (enabled && qItem.getRequired()) {
-        String message = "No response found for required item with id = '" + qItem.getLinkId() + "'";
+        String message = context.formatMessage(I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
         if (inProgress) {
           warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
         } else {
@@ -4510,7 +4592,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     }
 
-    if (ref != null && !Utilities.noString(reference)) {
+    if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
       Element target = resolveInBundle(entries, reference, fullUrl, type, id);
       rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
     }
@@ -4620,6 +4702,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       composition.getNamedChildren(propName, list);
       int i = 1;
       for (Element elem : list) {
+        
         validateBundleReference(errors, entries, elem, title + "." + propName, stack.push(elem, i, null, null), fullUrl, "Composition", id);
         i++;
       }

@@ -146,6 +146,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       String contents = TestingUtilities.loadTestResource("validator", filename);
       vCurr.getContext().cacheResource(loadResource(filename, contents));
     }
+    if (content.has("measure")) {
+      String filename = content.get("measure").getAsString();
+      String contents = TestingUtilities.loadTestResource("validator", filename);
+      vCurr.getContext().cacheResource(loadResource(filename, contents));
+    }
     if (content.has("codesystems")) {
       for (JsonElement je : content.getAsJsonArray("codesystems")) {
         String filename = je.getAsString();

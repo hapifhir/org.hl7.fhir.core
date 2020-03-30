@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
@@ -142,6 +143,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false);
   private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false);
+  private CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false);
   private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false);
   private CanonicalResourceManager<CapabilityStatement> capstmts = new CanonicalResourceManager<CapabilityStatement>(false);
   private CanonicalResourceManager<SearchParameter> searchParameters = new CanonicalResourceManager<SearchParameter>(false);
@@ -207,6 +209,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       systems.addAll(other.systems);
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
+      measures.copy(other.measures);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       tsServer = other.tsServer;
@@ -257,6 +260,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           guides.see((ImplementationGuide) m);
         else if (r instanceof CapabilityStatement)
           capstmts.see((CapabilityStatement) m);
+        else if (r instanceof Measure)
+          measures.see((Measure) m);
         else if (r instanceof SearchParameter)
           searchParameters.see((SearchParameter) m);
         else if (r instanceof PlanDefinition)
@@ -817,6 +822,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) guides.get(uri);
         if (capstmts.has(uri))
           return (T) capstmts.get(uri);
+        if (measures.has(uri))
+          return (T) measures.get(uri);
         if (valueSets.has(uri))
           return (T) valueSets.get(uri);
         if (codeSystems.has(uri))
@@ -847,6 +854,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) guides.get(uri);
       } else if (class_ == CapabilityStatement.class) {
         return (T) capstmts.get(uri);
+      } else if (class_ == Measure.class) {
+        return (T) measures.get(uri);
       } else if (class_ == StructureDefinition.class) {
         return (T) structures.get(uri);
       } else if (class_ == StructureMap.class) {
@@ -1024,6 +1033,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       json.addProperty("structures-count", structures.size());
       json.addProperty("guides-count", guides.size());
       json.addProperty("statements-count", capstmts.size());
+      json.addProperty("measures-count", measures.size());
     }
   }
 
@@ -1049,6 +1059,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         guides.drop(id);
       else if (fhirType.equals("CapabilityStatement"))
         capstmts.drop(id);
+      else if (fhirType.equals("Measure"))
+        measures.drop(id);
       else if (fhirType.equals("ValueSet"))
         valueSets.drop(id);
       else if (fhirType.equals("CodeSystem"))
@@ -1088,6 +1100,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       structures.listAllM(result);
       guides.listAllM(result);
       capstmts.listAllM(result);
+      measures.listAllM(result);
       codeSystems.listAllM(result);
       valueSets.listAllM(result);
       maps.listAllM(result);
@@ -1269,6 +1282,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     if (capstmts.has(url))
       return capstmts.get(url).getUserString("path");
+    
+    if (measures.has(url))
+      return measures.get(url).getUserString("path");
 
     if (searchParameters.has(url))
       return searchParameters.get(url).getUserString("path");
