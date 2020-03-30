@@ -26,6 +26,7 @@ import java.util.stream.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent;
 import org.hl7.fhir.r5.model.Questionnaire.*;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
@@ -89,6 +90,58 @@ public class EnableWhenEvaluator {
       QStack self = new QStack(this.q, this.a);
       self.addAll(this);
       self.add(new QuestionnaireAnswerPair(q, a));
+      return self;
+    }
+  }
+
+  public static class MeasurePair {
+    private MeasureReportGroupComponent g;
+    private Element a;
+
+    public MeasurePair(MeasureReportGroupComponent g, Element a) {
+      super();
+      this.g = g;
+      this.a = a;
+    }
+
+    public MeasureReportGroupComponent getGroup() {
+      return g;
+    }
+
+    public Element getA() {
+      return a;
+    }
+
+  }
+
+
+  public static class MStack extends ArrayList<MeasurePair> {
+
+    private static final long serialVersionUID = 1L;
+    private Measure m;
+    private Element a;
+
+    public MStack(Measure m, Element a) {
+      super();
+      this.m = m;
+      this.a = a;
+    }
+
+
+    public Measure getM() {
+      return m;
+    }
+
+
+    public Element getA() {
+      return a;
+    }
+
+
+    public MStack push(MeasureReportGroupComponent g, Element a) {
+      MStack self = new MStack(this.m, this.a);
+      self.addAll(this);
+      self.add(new MeasurePair(g, a));
       return self;
     }
   }
