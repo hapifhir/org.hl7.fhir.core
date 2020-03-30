@@ -2329,8 +2329,21 @@ public class FHIRPathEngine {
       }
     }
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0))) {// special case for start up
-      if (item.isResource() && item.fhirType().equals(exp.getName()))  
-        result.add(item);
+      StructureDefinition sd = worker.fetchTypeDefinition(item.fhirType());
+      if (sd == null) {
+        // logical model
+        if (exp.getName().equals(item.fhirType())) {
+          result.add(item);          
+        }
+      } else {
+        while (sd != null) {
+          if (sd.getType().equals(exp.getName())) {  
+            result.add(item);
+            break;
+          }
+          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        }
+      }
     } else 
       getChildrenByName(item, exp.getName(), result);
     if (atEntry && context.appInfo != null && hostServices != null && result.isEmpty()) {
@@ -2343,6 +2356,11 @@ public class FHIRPathEngine {
     }
     return result;
   }	
+
+  private String getParent(String rn) {
+    return null;
+  }
+
 
   private TypeDetails executeContextType(ExecutionTypeContext context, String name) throws PathEngineException, DefinitionException {
     if (hostServices == null)
