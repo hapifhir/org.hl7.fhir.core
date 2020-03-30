@@ -66,6 +66,7 @@ public class I18nConstants {
   public final static String QUESTIONNAIRE_QR_ITEM_DATENOOPTIONS = "Questionnaire_QR_Item_DateNoOptions";
   public final static String QUESTIONNAIRE_QR_ITEM_DISPLAY = "Questionnaire_QR_Item_Display";
   public final static String QUESTIONNAIRE_QR_ITEM_GROUP = "Questionnaire_QR_Item_Group";
+  public final static String QUESTIONNAIRE_QR_ITEM_GROUP_ANSWER = "Questionnaire_QR_Item_GroupAnswer";
   public final static String QUESTIONNAIRE_QR_ITEM_INTNOOPTIONS = "Questionnaire_QR_Item_IntNoOptions";
   public final static String QUESTIONNAIRE_QR_ITEM_MISSING = "Questionnaire_QR_Item_Missing";
   public final static String QUESTIONNAIRE_QR_ITEM_NOCODING = "Questionnaire_QR_Item_NoCoding";
@@ -99,6 +100,8 @@ public class I18nConstants {
   public final static String QUESTIONNAIRE_Q_ENABLEWHEN_NOLINK = "Questionnaire_Q_EnableWhen_NoLink";
   public final static String QUESTIONNAIRE_Q_ENABLEWHEN_NOTARGET = "Questionnaire_Q_EnableWhen_NoTarget";
   public final static String QUESTIONNAIRE_Q_ENABLEWHEN_SELF = "Questionnaire_Q_EnableWhen_Self";
+  public final static String MEASURE_MR_M_NONE = "Measure_MR_M_None";
+  public final static String MEASURE_MR_M_NOTFOUND = "Measure_MR_M_NotFound";
   public final static String REFERENCE_REF_AGGREGATION = "Reference_REF_Aggregation";
   public final static String REFERENCE_REF_BADTARGETTYPE = "Reference_REF_BadTargetType";
   public final static String REFERENCE_REF_BADTARGETTYPE2 = "Reference_REF_BadTargetType2";
@@ -237,6 +240,8 @@ public class I18nConstants {
   public final static String SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___ = "Slice_encountered_midway_through_set_path___id___";
   public final static String UNABLE_TO_RESOLVE_ACTUAL_TYPE_ = "Unable_to_resolve_actual_type_";
   public final static String UNSUPPORTED_VERSION_R1 = "Unsupported_version_R1";
+  public final static String UNSUPPORTED_VERSION_R2 = "Unsupported_version_R2";
+  public final static String UNSUPPORTED_VERSION_R2B = "Unsupported_version_R2B";
   public final static String UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_value_type_for_discriminator_for_slice__";
   public final static String UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_CodeableConcept_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
   public final static String UNSUPPORTED_CODEABLECONCEPT_PATTERN__MUST_HAVE_AT_LEAST_ONE_CODING__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_CodeableConcept_pattern__must_have_at_least_one_coding__for_discriminator_for_slice_";

@@ -285,7 +285,12 @@ public class NpmPackage {
   }
 
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
-    GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(tgz);
+    GzipCompressorInputStream gzipIn;
+    try {
+      gzipIn = new GzipCompressorInputStream(tgz);
+    } catch (Exception e) {
+      throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
+    }
     try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
