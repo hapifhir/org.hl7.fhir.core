@@ -633,7 +633,7 @@ public class ExpressionNode {
 	}
 
 	private String location() {
-		return Integer.toString(start.line)+", "+Integer.toString(start.column);
+		return Integer.toString(start.getLine())+", "+Integer.toString(start.getColumn());
 	}
 
 	public TypeDetails getTypes() {

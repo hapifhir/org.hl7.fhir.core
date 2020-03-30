@@ -3213,38 +3213,47 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
+    boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
-      }
-    }
-    if (!versions.isEmpty()) {
-      StringBuilder b = new StringBuilder();
-      b.append("Expansion based on ");
-      boolean first = true;
-      for (String s : versions.keySet()) {
-        if (first)
-          first = false;
-        else
-          b.append(", ");
-        if (!s.equals("http://snomed.info/sct"))
-          b.append(describeSystem(s)+" version "+versions.get(s));
-        else {
-          String[] parts = versions.get(s).split("\\/");
-          if (parts.length >= 5) {
-            String m = describeModule(parts[4]);
-            if (parts.length == 7)
-              b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+        if (!versions.isEmpty()) {
+          StringBuilder b = new StringBuilder();
+          if (firstVersion) {
+            // the first version
+            // set the <p> tag and style attribute
+            x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px");
+        	  firstVersion = false;
+          } else {
+            // the second (or greater) version
+            x.br(); // add line break before the version text
+          }
+          b.append("Expansion based on ");
+          boolean firstPart = true;
+          for (String s : versions.keySet()) {
+            if (firstPart)
+              firstPart = false;
             else
-              b.append("SNOMED CT "+m+" edition");
-          } else
-            b.append(describeSystem(s)+" version "+versions.get(s));
+              b.append(", ");
+            if (!s.equals("http://snomed.info/sct"))
+              b.append(describeSystem(s)+" version "+versions.get(s));
+            else {
+              parts = versions.get(s).split("\\/");
+              if (parts.length >= 5) {
+                String m = describeModule(parts[4]);
+                if (parts.length == 7)
+                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+                else
+                  b.append("SNOMED CT "+m+" edition");
+              } else
+                b.append(describeSystem(s)+" version "+versions.get(s));
+            }
+          }
+          x.addText(b.toString()); // add the version text
         }
       }
-
-      x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px").addText(b.toString());
     }
   }
 
