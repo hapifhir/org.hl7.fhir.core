@@ -73,6 +73,11 @@ public class JsonParser extends JsonParserBase {
     setAllowUnknownContent(allowUnknownContent);
   }
 
+  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
+    super();
+    setAllowUnknownContent(allowUnknownContent);
+    setAllowComments(allowComments);
+  }
 
   protected void parseElementProperties(JsonObject json, Element element) throws IOException, FHIRFormatError {
     super.parseElementProperties(json, element);
