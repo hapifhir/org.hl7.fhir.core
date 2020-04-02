@@ -63,6 +63,7 @@ public class JsonParser extends ParserBase {
 
 	private JsonCreator json;
 	private Map<JsonElement, LocationData> map;
+	private boolean allowComments;
 
 	public JsonParser(IWorkerContext context) {
 		super(context);
@@ -92,7 +93,7 @@ public class JsonParser extends ParserBase {
 		if (policy == ValidationPolicy.EVERYTHING) {
 			JsonObject obj = null;
       try {
-			  obj = JsonTrackingParser.parse(source, map);
+			  obj = JsonTrackingParser.parse(source, map, false, allowComments);
       } catch (Exception e) {
 				logError(-1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       	return null;
@@ -535,4 +536,14 @@ public class JsonParser extends ParserBase {
 		}
 	}
 
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public JsonParser setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
+    return this;
+  }
+
+	
 }

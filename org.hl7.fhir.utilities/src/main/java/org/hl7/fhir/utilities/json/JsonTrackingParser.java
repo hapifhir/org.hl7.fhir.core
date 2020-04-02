@@ -62,7 +62,6 @@ public class JsonTrackingParser {
       return presentation;
     }
 
-    
   }
 
   public enum TokenType {
@@ -243,6 +242,16 @@ public class JsonTrackingParser {
     	char ch;
     	do {
     		ch = getNextChar();
+    		if (allowComments && ch == '/') {
+    		  char ch1 = getNextChar();
+    		  if (ch1 == '/') {
+    		    while (more() && !Utilities.charInSet(ch, '\r', '\n')) {
+    		      ch = getNextChar();
+    		    }
+    		  } else {
+    		    push(ch1);
+    		  }    		  
+    		}
     	} while (more() && Utilities.charInSet(ch, ' ', '\r', '\n', '\t'));
     	lastLocationAWS = location.copy();
 
@@ -322,7 +331,7 @@ public class JsonTrackingParser {
 
     public String consume(TokenType type) throws IOException {
       if (this.type != type)
-        throw error("JSON syntax error - found "+type.toString()+" expecting "+type.toString());
+        throw error("JSON syntax error - found "+this.type.toString()+" expecting "+type.toString());
       String result = value;
       next();
       return result;
@@ -339,6 +348,7 @@ public class JsonTrackingParser {
   private String itemName;
   private String itemValue;
   private boolean errorOnDuplicates = true;
+  private boolean allowComments = false;
 
   public static JsonObject parseJson(String source) throws IOException {
     return parse(source, null);
@@ -369,9 +379,14 @@ public class JsonTrackingParser {
   }
     
   public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates) throws IOException {
+    return parse(source, map, allowDuplicates, false);
+  }
+  
+  public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates, boolean allowComments) throws IOException {
 		JsonTrackingParser self = new JsonTrackingParser();
 		self.map = map;
 		self.setErrorOnDuplicates(!allowDuplicates);
+		self.setAllowComments(allowComments);
     return self.parse(Utilities.stripBOM(source));
 	}
 
@@ -619,6 +634,15 @@ public class JsonTrackingParser {
 
   public void setErrorOnDuplicates(boolean errorOnDuplicates) {
     this.errorOnDuplicates = errorOnDuplicates;
+  }
+
+  
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public void setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
   }
 
   public static void write(JsonObject json, File file) throws IOException {

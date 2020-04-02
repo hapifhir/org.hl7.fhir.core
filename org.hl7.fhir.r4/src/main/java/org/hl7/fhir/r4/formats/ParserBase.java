@@ -146,6 +146,11 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   protected boolean allowUnknownContent;
   
   /**
+   * whether to allow comments in the json (special case for IG publisher source)
+   */
+  protected boolean allowComments;
+  
+  /**
    * @return Whether to throw an exception if unknown content is found (or just skip it) 
    */
   public boolean isAllowUnknownContent() {
@@ -158,7 +163,15 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     this.allowUnknownContent = allowUnknownContent;
     return this;
   }
-    
+  
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public void setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
+  }
+
   protected OutputStyle style = OutputStyle.NORMAL;
   
   public OutputStyle getOutputStyle() {

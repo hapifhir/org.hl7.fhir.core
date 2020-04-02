@@ -198,7 +198,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private boolean htmlPretty;
   
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
-    return JsonTrackingParser.parse(TextFile.streamToString(input), null);
+    return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);
     // return parser.parse(TextFile.streamToString(input)).getAsJsonObject();
   }
   
