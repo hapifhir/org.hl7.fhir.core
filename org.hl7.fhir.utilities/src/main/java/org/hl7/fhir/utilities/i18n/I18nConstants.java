@@ -164,6 +164,7 @@ public class I18nConstants {
   public final static String TERMINOLOGY_TX_SYSTEM_INVALID = "Terminology_TX_System_Invalid";
   public final static String TERMINOLOGY_TX_SYSTEM_NOTKNOWN = "Terminology_TX_System_NotKnown";
   public final static String TERMINOLOGY_TX_SYSTEM_RELATIVE = "Terminology_TX_System_Relative";
+  public final static String TERMINOLOGY_TX_SYSTEM_NO_CODE = "TERMINOLOGY_TX_SYSTEM_NO_CODE";
   public final static String TERMINOLOGY_TX_SYSTEM_UNKNOWN = "Terminology_TX_System_Unknown";
   public final static String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public final static String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
@@ -437,5 +438,28 @@ public class I18nConstants {
   public final static String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";
   public final static String XML_ENCODING_INVALID = "xml_encoding_invalid";
   public final static String XML_STATED_ENCODING_INVALID = "xml_stated_encoding_invalid";
-
+  public static final String MEASURE_MR_GRP_NO_CODE = "MEASURE_MR_GRP_NO_CODE";
+  public static final String MEASURE_MR_GRP_UNK_CODE = "MEASURE_MR_GRP_UNK_CODE";
+  public static final String MEASURE_MR_GRP_DUPL_CODE = "MEASURE_MR_GRP_DUPL_CODE";
+  public static final String MEASURE_MR_GRP_MISSING_BY_CODE = "MEASURE_MR_GRP_MISSING_BY_CODE";
+  public static final String MEASURE_MR_GRP_POP_NO_CODE = "MEASURE_MR_GRP_POP_NO_CODE";
+  public static final String MEASURE_MR_GRP_POP_UNK_CODE = "MEASURE_MR_GRP_POP_UNK_CODE";
+  public static final String MEASURE_MR_GRP_POP_DUPL_CODE = "MEASURE_MR_GRP_POP_DUPL_CODE";
+  public static final String MEASURE_MR_GRP_POP_MISSING_BY_CODE = "MEASURE_MR_GRP_POP_MISSING_BY_CODE";
+  public static final String MEASURE_MR_GRP_NO_USABLE_CODE = "MEASURE_MR_GRP_NO_USABLE_CODE";
+  public static final String MEASURE_MR_GRP_NO_WRONG_CODE = "MEASURE_MR_GRP_NO_WRONG_CODE";
+  public static final String DUPLICATE_ID = "DUPLICATE_ID";
+  public static final String MEASURE_MR_GRP_POP_COUNT_MISMATCH = "MEASURE_MR_GRP_POP_COUNT_MISMATCH";
+  public static final String MEASURE_MR_GRP_POP_NO_SUBJECTS = "MEASURE_MR_GRP_POP_NO_SUBJECTS";
+  public static final String MEASURE_MR_GRP_POP_NO_COUNT = "MEASURE_MR_GRP_POP_NO_COUNT";
+  public static final String MEASURE_M_GROUP_CODE = "MEASURE_M_GROUP_CODE";
+  public static final String MEASURE_M_GROUP_POP_NO_CODE = "MEASURE_M_GROUP_POP_NO_CODE";
+  public static final String MEASURE_M_GROUP_STRATA_NO_CODE = "MEASURE_M_GROUP_STRATA_NO_CODE";
+  public static final String MEASURE_M_GROUP_STRATA_COMP_NO_CODE = "MEASURE_M_GROUP_STRATA_COMP_NO_CODE";
+  public static final String MEASURE_M_NO_GROUPS = "MEASURE_M_NO_GROUPS";
+  public static final String MEASURE_M_GROUP_POP = "MEASURE_M_GROUP_POP";
+  public static final String MEASURE_M_GROUP_STRATA = "MEASURE_M_GROUP_STRATA";
+  public static final String MEASURE_M_LIB_UNKNOWN = "MEASURE_M_LIB_UNKNOWN";
+  public static final String TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE = "TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE";
+  
 }

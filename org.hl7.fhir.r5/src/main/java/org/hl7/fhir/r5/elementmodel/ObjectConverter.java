@@ -125,6 +125,9 @@ public class ObjectConverter  {
   }
 
   public static CodeableConcept readAsCodeableConcept(Element element) {
+    if (element == null) {
+      return null;
+    }
     CodeableConcept cc = new CodeableConcept();
     List<Element> list = new ArrayList<Element>();
     element.getNamedChildren("coding", list);

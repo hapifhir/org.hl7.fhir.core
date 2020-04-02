@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /*-
  * #%L
  * org.hl7.fhir.validation
@@ -52,6 +54,11 @@ POSSIBILITY OF SUCH DAMAGE.
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -61,6 +68,7 @@ public class BaseValidator {
 
   protected Source source;
   protected IWorkerContext context;
+  protected TimeTracker timeTracker = new TimeTracker();
 
 
   public BaseValidator(IWorkerContext context){
@@ -545,4 +553,58 @@ public class BaseValidator {
 	 }
     return thePass;
   }
+  
+  
+  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri) {
+    if (reference != null) {
+      if (reference.startsWith("#")) {
+        for (Resource c : ctxt.getContained()) {
+          if (c.getId().equals(reference.substring(1)) && (c instanceof ValueSet))
+            return (ValueSet) c;
+        }
+        return null;
+      } else {
+        long t = System.nanoTime();
+        ValueSet fr = context.fetchResource(ValueSet.class, reference);
+        if (fr == null) {
+          if (!Utilities.isAbsoluteUrl(reference)) {
+            reference = resolve(uri, reference);
+            fr = context.fetchResource(ValueSet.class, reference);
+          }
+        }
+        if (fr == null)
+          fr = ValueSetUtilities.generateImplicitValueSet(reference);
+        timeTracker.tx(t, System.nanoTime());
+        return fr;
+      }
+    } else
+      return null;
+  }
+
+
+  private String resolve(String uri, String ref) {
+    if (isBlank(uri)) {
+      return ref;
+    }
+    String[] up = uri.split("\\/");
+    String[] rp = ref.split("\\/");
+    if (context.getResourceNames().contains(up[up.length - 2]) && context.getResourceNames().contains(rp[0])) {
+      StringBuilder b = new StringBuilder();
+      for (int i = 0; i < up.length - 2; i++) {
+        b.append(up[i]);
+        b.append("/");
+      }
+      b.append(ref);
+      return b.toString();
+    } else
+      return ref;
+  }
+
+  protected String describeReference(String reference) {
+    if (reference == null)
+      return "null";
+    return reference;
+  }
+
+
 }
