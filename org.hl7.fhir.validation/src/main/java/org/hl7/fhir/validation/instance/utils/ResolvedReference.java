@@ -9,7 +9,7 @@ public class ResolvedReference {
     private Element resource;
     private Element focus;
     private boolean external;
-    private InstanceValidator.NodeStack stack;
+    private NodeStack stack;
 
     public ResolvedReference setResource(Element resource) {
         this.resource = resource;
@@ -34,12 +34,12 @@ public class ResolvedReference {
         return this;
     }
 
-    public ResolvedReference setStack(InstanceValidator.NodeStack stack) {
+    public ResolvedReference setStack(NodeStack stack) {
         this.stack = stack;
         return this;
     }
 
-    public InstanceValidator.NodeStack getStack() {
+    public NodeStack getStack() {
         return stack;
     }
 

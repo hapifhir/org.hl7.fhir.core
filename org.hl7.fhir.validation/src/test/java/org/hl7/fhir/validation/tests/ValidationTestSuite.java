@@ -141,6 +141,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     else
       val.setValidationLanguage(null);
     val.setFetcher(this);
+    if (content.has("packages")) {
+      for (JsonElement e : content.getAsJsonArray("packages")) {
+        vCurr.loadIg(e.getAsString(), true);
+      }
+    }
     if (content.has("questionnaire")) {
       String filename = content.get("questionnaire").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
@@ -148,6 +153,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     if (content.has("measure")) {
       String filename = content.get("measure").getAsString();
+      String contents = TestingUtilities.loadTestResource("validator", filename);
+      vCurr.getContext().cacheResource(loadResource(filename, contents));
+    }
+    if (content.has("library")) {
+      String filename = content.get("library").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
       vCurr.getContext().cacheResource(loadResource(filename, contents));
     }
@@ -320,13 +330,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
       if (vm.getLevel() == IssueSeverity.WARNING) { 
         wc++;
-        System.out.println("warning: "+vm.getDisplay());
+        System.out.println(vm.getDisplay());
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
-        if (java.has("infoCount") || java.has("debug")) {
-          System.out.println("hint: "+vm.getDisplay());          
-        }
+        System.out.println(vm.getDisplay());          
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {

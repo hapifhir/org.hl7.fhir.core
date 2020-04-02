@@ -94,58 +94,6 @@ public class EnableWhenEvaluator {
     }
   }
 
-  public static class MeasurePair {
-    private MeasureReportGroupComponent g;
-    private Element a;
-
-    public MeasurePair(MeasureReportGroupComponent g, Element a) {
-      super();
-      this.g = g;
-      this.a = a;
-    }
-
-    public MeasureReportGroupComponent getGroup() {
-      return g;
-    }
-
-    public Element getA() {
-      return a;
-    }
-
-  }
-
-
-  public static class MStack extends ArrayList<MeasurePair> {
-
-    private static final long serialVersionUID = 1L;
-    private Measure m;
-    private Element a;
-
-    public MStack(Measure m, Element a) {
-      super();
-      this.m = m;
-      this.a = a;
-    }
-
-
-    public Measure getM() {
-      return m;
-    }
-
-
-    public Element getA() {
-      return a;
-    }
-
-
-    public MStack push(MeasureReportGroupComponent g, Element a) {
-      MStack self = new MStack(this.m, this.a);
-      self.addAll(this);
-      self.add(new MeasurePair(g, a));
-      return self;
-    }
-  }
-
   public static class EnableWhenResult {
     private final boolean enabled;
     private final QuestionnaireItemEnableWhenComponent enableWhenCondition;
