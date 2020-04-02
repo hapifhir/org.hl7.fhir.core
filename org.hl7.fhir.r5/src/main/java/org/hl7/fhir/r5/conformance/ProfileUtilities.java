@@ -589,7 +589,18 @@ public class ProfileUtilities extends TranslatingUtilities {
       for (ElementDefinition ed : derived.getSnapshot().getElement()) {
         for (ElementDefinitionMappingComponent mm : ed.getMapping()) {
           mm.setMap(mm.getMap().trim());
-          
+        }
+        for (ElementDefinitionConstraintComponent s : ed.getConstraint()) {
+          if (s.hasSource()) {
+            String ref = s.getSource();
+            if (!Utilities.isAbsoluteUrl(ref)) {
+              if (ref.contains(".")) {
+                s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref.substring(0, ref.indexOf("."))+"#"+ref);
+              } else {
+                s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref);
+              }
+            }  
+          }
         }
       }
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -2521,7 +2532,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         s.setUserData(IS_DERIVED, true);
         if (!s.hasSource()) {
           s.setSource(srcSD.getUrl());
-        }
+        } 
       }
       if (derived.hasConstraint()) {
         for (ElementDefinitionConstraintComponent s : derived.getConstraint()) {
