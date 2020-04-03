@@ -154,5 +154,8 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
     return ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension) && !hasValue();
   }
 
-
+  @Override
+  public String primitiveValue() {
+    return encode(myValue);
+  }
 }
