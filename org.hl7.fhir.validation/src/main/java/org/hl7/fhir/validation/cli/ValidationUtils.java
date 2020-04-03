@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.IParser;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ValidationUtils {
+
   public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
     if (cliContext.getProfiles().size() > 0)
       System.out.println("  .. validate " + cliContext.getSources() + " against " + cliContext.getProfiles().toString());

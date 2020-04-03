@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -7,6 +7,11 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 import java.io.IOException;
 
+/**
+ * Class for displaying output to the cli user.
+ *
+ * TODO - Clean this up for localization
+ */
 public class Display {
 
   public static void printCliArgumentsAndInfo(String[] args) throws IOException {

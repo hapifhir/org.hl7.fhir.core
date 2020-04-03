@@ -1,11 +1,9 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-
-import java.io.File;
 
 public class Common {
 
@@ -77,15 +75,6 @@ public class Common {
     }
   }
 
-  public static String getTerminologyServerLog(String[] args) {
-    String txLog = null;
-    if (Params.hasParam(args, "-txLog")) {
-      txLog = Params.getParam(args, "-txLog");
-      new File(txLog).delete();
-    }
-    return txLog;
-  }
-
   public static ValidationEngine getValidationEngine(String[] args, String txLog) throws Exception {
     String v = Common.getVersion(args);
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
@@ -93,18 +82,4 @@ public class Common {
     return new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(v), v);
   }
 
-  public static void checkIGFileReferences(String[] args) {
-    for (int i = 0; i < args.length; i++) {
-      if ("-ig".equals(args[i])) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -ig without indicating ig file");
-        else {
-          String s = args[++i];
-          if (!s.startsWith("hl7.fhir.core-")) {
-            System.out.println("Load Package: " + s);
-          }
-        }
-      }
-    }
-  }
 }

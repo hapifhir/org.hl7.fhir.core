@@ -1,8 +1,9 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.Validator;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -57,7 +58,7 @@ public class Params {
   }
 
   /**
-   * Fetches the  vlaue for the passed in param from the provided list of params.
+   * Fetches the  value for the passed in param from the provided list of params.
    *
    * @param args  Array of params to search.
    * @param param {@link String} param keyword to search for.
@@ -71,11 +72,7 @@ public class Params {
   }
 
   /**
-   * TODO Don't do this all in one for loop.
-   *
-   * @param args
-   * @return
-   * @throws Exception
+   * TODO Don't do this all in one for loop. Use the above methods.
    */
   public static CliContext loadCliContext(String[] args) throws Exception {
     CliContext cliContext = new CliContext();
@@ -206,5 +203,29 @@ public class Params {
     if (cliContext.getSources().isEmpty())
       throw new Exception("Must provide at least one source file");
     return cliContext;
+  }
+
+  public static String getTerminologyServerLog(String[] args) {
+    String txLog = null;
+    if (hasParam(args, "-txLog")) {
+      txLog = getParam(args, "-txLog");
+      new File(txLog).delete();
+    }
+    return txLog;
+  }
+
+  public static void checkIGFileReferences(String[] args) {
+    for (int i = 0; i < args.length; i++) {
+      if (IMPLEMENTATION_GUIDE.equals(args[i])) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -ig without indicating ig file");
+        else {
+          String s = args[++i];
+          if (!s.startsWith("hl7.fhir.core-")) {
+            System.out.println("Load Package: " + s);
+          }
+        }
+      }
+    }
   }
 }
