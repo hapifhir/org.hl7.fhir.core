@@ -50,7 +50,9 @@ public class Utils {
    * @return
    */
   public static String getVersionFromIGName(String defaultValue, String igFileName) {
-    if (igFileName.startsWith("hl7.fhir.core#")) {
+    if (igFileName.equals("hl7.fhir.core")) {
+      defaultValue = "current";
+    } else if (igFileName.startsWith("hl7.fhir.core#")) {
       defaultValue = VersionUtilities.getCurrentPackageVersion(igFileName.substring(14));
     } else if (igFileName.startsWith("hl7.fhir.r2.core#") || igFileName.equals("hl7.fhir.r2.core")) {
       defaultValue = "1.0";
@@ -65,7 +67,6 @@ public class Utils {
     }
     return defaultValue;
   }
-
 
   /**
    * Triggers the validation engine tests to run.

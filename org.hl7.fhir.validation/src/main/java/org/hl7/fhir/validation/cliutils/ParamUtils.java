@@ -1,8 +1,10 @@
 package org.hl7.fhir.validation.cliutils;
 
+import java.util.Arrays;
+
 public class ParamUtils {
 
-  /** TODO proper error checking, streams
+  /**
    * Checks the list of passed in params to see if it contains the passed in param.
    *
    * @param args Array of params to search.
@@ -10,13 +12,10 @@ public class ParamUtils {
    * @return {@link Boolean#TRUE} if the list contains the given param.
    */
   public static boolean hasParam(String[] args, String param) {
-    for (String a : args)
-      if (a.equals(param))
-        return true;
-    return false;
+    return Arrays.asList(args).contains(param);
   }
 
-  /** TODO proper error checking, streams
+  /**
    * Fetches the  vlaue for the passed in param from the provided list of params.
    *
    * @param args Array of params to search.

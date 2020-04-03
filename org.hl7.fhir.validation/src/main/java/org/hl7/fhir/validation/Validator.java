@@ -88,10 +88,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.cliutils.ComparisonUtils;
-import org.hl7.fhir.validation.cliutils.DisplayUtils;
-import org.hl7.fhir.validation.cliutils.ParamUtils;
-import org.hl7.fhir.validation.cliutils.Utils;
+import org.hl7.fhir.validation.cliutils.*;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -224,7 +221,7 @@ public class Validator {
           doDebug = true;
         } else if (args[i].equals("-sct")) {
           String s = args[++i];
-          snomedCT = resolveSnomedCTCode(s);
+          snomedCT = SnomedVersion.resolveSnomedCTCode(s);
         } else if (args[i].equals("-recurse")) {
           recursive = true;
         } else if (args[i].equals("-locale")) {
@@ -278,22 +275,10 @@ public class Validator {
             throw new Error("Specified " + args[i] + " without indicating ig file");
           else {
             String s = args[++i];
-            if (s.equals("hl7.fhir.core")) {
-              sv = "current";
-            } else if (s.startsWith("hl7.fhir.core#")) {
-              sv = VersionUtilities.getCurrentPackageVersion(s.substring(14));
-            } else if (s.startsWith("hl7.fhir.r2.core#") || s.equals("hl7.fhir.r2.core")) {
-              sv = "1.0";
-            } else if (s.startsWith("hl7.fhir.r2b.core#") || s.equals("hl7.fhir.r2b.core")) {
-              sv = "1.4";
-            } else if (s.startsWith("hl7.fhir.r3.core#") || s.equals("hl7.fhir.r3.core")) {
-              sv = "3.0";
-            } else if (s.startsWith("hl7.fhir.r4.core#") || s.equals("hl7.fhir.r4.core")) {
-              sv = "4.0";
-            } else if (s.startsWith("hl7.fhir.r5.core#") || s.equals("hl7.fhir.r5.core")) {
-              sv = "current";
-            } else
+            sv = Utils.getVersionFromIGName(null, s);
+            if (sv == null) {
               igs.add(s);
+            }
           }
         } else if (args[i].equals("-map")) {
           if (map == null) {
@@ -459,31 +444,6 @@ public class Validator {
         }
       }
     }
-  }
-
-  public static String resolveSnomedCTCode(String s) {
-    String snomedCT;
-    if ("intl".equalsIgnoreCase(s))
-      snomedCT = "900000000000207008";
-    else if ("us".equalsIgnoreCase(s))
-      snomedCT = "731000124108";
-    else if ("uk".equalsIgnoreCase(s))
-      snomedCT = "999000041000000102";
-    else if ("au".equalsIgnoreCase(s))
-      snomedCT = "32506021000036107";
-    else if ("ca".equalsIgnoreCase(s))
-      snomedCT = "20611000087101";
-    else if ("nl".equalsIgnoreCase(s))
-      snomedCT = "11000146104";
-    else if ("se".equalsIgnoreCase(s))
-      snomedCT = "45991000052106";
-    else if ("es".equalsIgnoreCase(s))
-      snomedCT = "449081005";
-    else if ("dk".equalsIgnoreCase(s))
-      snomedCT = "554471000005108";
-    else
-      throw new Error("Snomed edition '" + s + "' not known");
-    return snomedCT;
   }
 
   private static String getGitBuild() {
