@@ -99,6 +99,38 @@
             <version>1.0.2</version>
         </dependency>
 
+        <!-- CQL-to-ELM -->
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>cql</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>model</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>elm</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>cql-to-elm</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>quick</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cqframework</groupId>
+            <artifactId>qdm</artifactId>
+            <version>1.4.9-SNAPSHOT</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.hl7.fhir.testcases</groupId>
