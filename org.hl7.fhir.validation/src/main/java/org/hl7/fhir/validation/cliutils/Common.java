@@ -1,19 +1,16 @@
 package org.hl7.fhir.validation.cliutils;
 
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 
 import java.io.File;
 
-public class Utils {
-
+public class Common {
 
   public static String getVersion(String[] args) {
-    String v = ParamUtils.getParam(args, "-version");
+    String v = Params.getParam(args, "-version");
     if (v == null) {
       v = "current";
       for (int i = 0; i < args.length; i++) {
@@ -22,7 +19,7 @@ public class Utils {
             throw new Error("Specified -ig without indicating ig file");
           else {
             String n = args[i + 1];
-            v = Utils.getVersionFromIGName(v, n);
+            v = Common.getVersionFromIGName(v, n);
           }
         }
       }
@@ -42,11 +39,11 @@ public class Utils {
 
   /**
    * Evaluates the current implementation guide file name and sets the current version accordingly.
-   *
+   * <p>
    * If igFileName is not one of the known patterns, will return whatever value is passed in as default.
    *
    * @param defaultValue Version to return if no associated version can be determined from passed in igFileName
-   * @param igFileName Name of the implementation guide
+   * @param igFileName   Name of the implementation guide
    * @return
    */
   public static String getVersionFromIGName(String defaultValue, String igFileName) {
@@ -82,15 +79,15 @@ public class Utils {
 
   public static String getTerminologyServerLog(String[] args) {
     String txLog = null;
-    if (ParamUtils.hasParam(args, "-txLog")) {
-      txLog = ParamUtils.getParam(args, "-txLog");
+    if (Params.hasParam(args, "-txLog")) {
+      txLog = Params.getParam(args, "-txLog");
       new File(txLog).delete();
     }
     return txLog;
   }
 
   public static ValidationEngine getValidationEngine(String[] args, String txLog) throws Exception {
-    String v = Utils.getVersion(args);
+    String v = Common.getVersion(args);
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     System.out.println("Loading (v = " + v + ", tx server http://tx.fhir.org)");
     return new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(v), v);
@@ -109,22 +106,5 @@ public class Utils {
         }
       }
     }
-  }
-
-  private static Resource loadResource(String[] args, String param, SimpleWorkerContext context) {
-    String resString = ParamUtils.getParam(args, param);
-    Resource resource = context.fetchResource(Resource.class, resString);
-    if (resource == null) {
-      System.out.println("Unable to locate resource for " + param + ", " + resString);
-    }
-    return resource;
-  }
-
-  public static Resource getRightResource(String[] args, SimpleWorkerContext context) {
-    return loadResource(args, "-right", context);
-  }
-
-  public static Resource getLeftResource(String[] args, SimpleWorkerContext context) {
-    return loadResource(args, "-left", context);
   }
 }

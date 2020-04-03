@@ -21,27 +21,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class ComparisonUtils {
+public class Comparison {
 
   public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException {
     // ok now set up the comparison
-    String left = ParamUtils.getParam(args, "-left");
-    String right = ParamUtils.getParam(args, "-right");
+    String left = Params.getParam(args, Params.LEFT);
+    String right = Params.getParam(args, Params.RIGHT);
 
-    Resource resLeft =  validator.getContext().fetchResource(Resource.class, left);
+    Resource resLeft = validator.getContext().fetchResource(Resource.class, left);
     Resource resRight = validator.getContext().fetchResource(Resource.class, right);
     if (resLeft == null) {
-      System.out.println("Unable to locate left resource " +left);
+      System.out.println("Unable to locate left resource " + left);
     }
     if (resRight == null) {
-      System.out.println("Unable to locate right resource " +right);
+      System.out.println("Unable to locate right resource " + right);
     }
 
     if (resLeft != null && resRight != null) {
       if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
-        ComparisonUtils.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
+        Comparison.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
       } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
-        ComparisonUtils.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
+        Comparison.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
       } else
         System.out.println("Unable to compare left resource " + left + " (" + resLeft.fhirType() + ") with right resource " + right + " (" + resRight.fhirType() + ")");
     }
@@ -90,7 +90,7 @@ public class ComparisonUtils {
   }
 
   private static String chooseName(String[] args, String name, CanonicalResource mr) {
-    String s = ParamUtils.getParam(args, "-" + name);
+    String s = Params.getParam(args, "-" + name);
     if (Utilities.noString(s))
       s = mr.present();
     return s;
