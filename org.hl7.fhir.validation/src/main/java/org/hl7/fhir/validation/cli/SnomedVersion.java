@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import java.util.Arrays;
 import java.util.Optional;

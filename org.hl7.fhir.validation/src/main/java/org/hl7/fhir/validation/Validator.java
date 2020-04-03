@@ -54,7 +54,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.cliutils.*;
+import org.hl7.fhir.validation.cli.*;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -114,9 +114,9 @@ public class Validator {
         System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       else {
         // first, prepare the context
-        String txLog = Common.getTerminologyServerLog(args);
+        String txLog = Params.getTerminologyServerLog(args);
         ValidationEngine validator = Common.getValidationEngine(args, txLog);
-        Common.checkIGFileReferences(args);
+        Params.checkIGFileReferences(args);
         Comparison.doLeftRightComparison(args, dest, validator);
       }
     } else {

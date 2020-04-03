@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cliutils;
+package org.hl7.fhir.validation.cli;
 
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
