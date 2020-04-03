@@ -588,7 +588,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       // hack around a problem in R4 definitions (somewhere?)
       for (ElementDefinition ed : derived.getSnapshot().getElement()) {
         for (ElementDefinitionMappingComponent mm : ed.getMapping()) {
-          mm.setMap(mm.getMap().trim());
+          if (mm.hasMap()) {
+            mm.setMap(mm.getMap().trim());
+          }
         }
         for (ElementDefinitionConstraintComponent s : ed.getConstraint()) {
           if (s.hasSource()) {
