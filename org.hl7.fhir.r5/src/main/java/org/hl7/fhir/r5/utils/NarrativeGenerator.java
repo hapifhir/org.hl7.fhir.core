@@ -75,6 +75,7 @@ import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -126,6 +127,7 @@ import org.hl7.fhir.r5.model.DiagnosticReport;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Encounter;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
@@ -137,7 +139,10 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.InstantType;
+import org.hl7.fhir.r5.model.ListResource;
+import org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.MetadataResource;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationDefinition;
@@ -145,6 +150,7 @@ import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterCom
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
@@ -380,6 +386,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return generate(rcontext, (OperationDefinition) r);   // Maintainer = Grahame
     } else if (r instanceof StructureDefinition) {
       return generate(rcontext, (StructureDefinition) r, outputTracker);   // Maintainer = Grahame
+    } else if (r instanceof List) {
+      return generate(rcontext, (ListResource) r);   // Maintainer = Grahame 
     } else if (r instanceof ImplementationGuide) {
       return generate(rcontext, (ImplementationGuide) r);   // Maintainer = Lloyd (until Grahame wants to take over . . . :))
     } else if (r instanceof DiagnosticReport) {
@@ -432,21 +440,67 @@ public class NarrativeGenerator implements INarrativeGenerator {
     public BaseWrapper value();
   }
 
-  private interface ResourceWrapper {
+  private interface WrapperBase {
+    public boolean has(String name);
+    public Base get(String name) throws UnsupportedEncodingException, FHIRException, IOException;
+    public List<BaseWrapper> children(String name) throws UnsupportedEncodingException, FHIRException, IOException;
+    public List<PropertyWrapper> children();
+  }
+  
+  private interface ResourceWrapper extends WrapperBase {
     public List<ResourceWrapper> getContained();
     public String getId();
     public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
     public String getName();
-    public List<PropertyWrapper> children();
+    public void display(XhtmlNode x);
   }
 
-  private interface BaseWrapper {
+  private interface BaseWrapper extends WrapperBase {
     public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException;
-    public List<PropertyWrapper> children();
     public PropertyWrapper getChildByName(String tail);
   }
 
-  private class BaseWrapperElement implements BaseWrapper {
+  private abstract class WrapperBaseImpl implements WrapperBase {
+    @Override
+    public boolean has(String name) {
+      for (PropertyWrapper p : children()) {
+        if (p.getName().equals(name)) {
+          return p.hasValues();
+        }
+      }
+      return false;
+    }
+
+    @Override
+    public Base get(String name) throws UnsupportedEncodingException, FHIRException, IOException {
+      for (PropertyWrapper p : children()) {
+        if (p.getName().equals(name)) {
+          if (p.hasValues()) {
+            return p.getValues().get(0).getBase();
+          } else {
+            return null;
+          }
+        }
+      }
+      return null;
+    }
+
+    @Override
+    public List<BaseWrapper> children(String name) throws UnsupportedEncodingException, FHIRException, IOException {
+      for (PropertyWrapper p : children()) {
+        if (p.getName().equals(name)) {
+          List<BaseWrapper> res = new ArrayList<>();
+          for (BaseWrapper b : p.getValues()) {
+            res.add(b);
+          }
+          return res;
+        }
+      }
+      return null;
+    }
+  }
+  
+  private class BaseWrapperElement extends WrapperBaseImpl implements BaseWrapper {
     private Element element;
     private String type;
     private StructureDefinition structure;
@@ -594,7 +648,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   }
 
-  private class BaseWrapperMetaElement implements BaseWrapper {
+  private class BaseWrapperMetaElement extends WrapperBaseImpl implements BaseWrapper {
     private org.hl7.fhir.r5.elementmodel.Element element;
     private String type;
     private StructureDefinition structure;
@@ -652,7 +706,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
   }
-  public class ResourceWrapperMetaElement implements ResourceWrapper {
+  public class ResourceWrapperMetaElement extends WrapperBaseImpl implements ResourceWrapper {
     private org.hl7.fhir.r5.elementmodel.Element wrapped;
     private List<ResourceWrapper> list;
     private List<PropertyWrapper> list2;
@@ -711,6 +765,11 @@ public class NarrativeGenerator implements INarrativeGenerator {
         }
       }
       return list2;
+    }
+
+    @Override
+    public void display(XhtmlNode x) {
+      throw new Error("Not done yet");
     }
   }
 
@@ -781,7 +840,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   }
 
-  private class ResourceWrapperElement implements ResourceWrapper {
+  private class ResourceWrapperElement extends WrapperBaseImpl implements ResourceWrapper {
 
     private Element wrapped;
     private StructureDefinition definition;
@@ -846,6 +905,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
         }
       }
       return list2;
+    }
+
+
+
+    @Override
+    public void display(XhtmlNode x) {
+      throw new Error("Not done yet");      
     }
   }
 
@@ -917,7 +983,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  private class BaseWrapperDirect implements BaseWrapper {
+  private class BaseWrapperDirect extends WrapperBaseImpl implements BaseWrapper {
     private Base wrapped;
     private List<PropertyWrapper> list;
 
@@ -955,7 +1021,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   }
 
-  public class ResourceWrapperDirect implements ResourceWrapper {
+  public class ResourceWrapperDirect extends WrapperBaseImpl implements ResourceWrapper {
     private Resource wrapped;
 
     public ResourceWrapperDirect(Resource wrapped) {
@@ -1005,6 +1071,17 @@ public class NarrativeGenerator implements INarrativeGenerator {
         list.add(new PropertyWrapperDirect(c));
       }
       return list;
+    }
+
+    @Override
+    public void display(XhtmlNode x) {
+      if (wrapped instanceof CanonicalResource) {
+        x.tx(((CanonicalResource) wrapped).present());
+      } else if (wrapped instanceof Patient) {
+        displayPatient(x, (Patient) wrapped);
+      } else if (wrapped instanceof Encounter) {
+        displayEncounter(x, (Encounter) wrapped);
+      }
     }
   }
 
@@ -1126,26 +1203,30 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   // dom based version, for build program
-  public String generate(org.hl7.fhir.r5.elementmodel.Element er, boolean showCodeDetails, ITypeParser parser) throws IOException, FHIRException {
+  public String generate(org.hl7.fhir.r5.elementmodel.Element er, boolean showCodeDetails, ITypeParser parser) throws IOException, FHIRException, EOperationOutcome {
     return generate(null, er, showCodeDetails, parser);
   }
   
-  public String generate(ResourceContext rcontext, org.hl7.fhir.r5.elementmodel.Element er, boolean showCodeDetails, ITypeParser parser) throws IOException, FHIRException {
+  public String generate(ResourceContext rcontext, org.hl7.fhir.r5.elementmodel.Element er, boolean showCodeDetails, ITypeParser parser) throws IOException, FHIRException, EOperationOutcome {
     if (rcontext == null)
       rcontext = new ResourceContext(null, er);
     this.parser = parser;
     
+    ResourceWrapperMetaElement resw = new ResourceWrapperMetaElement(er);
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
-    try {
-      ResourceWrapperMetaElement resw = new ResourceWrapperMetaElement(er);
-      BaseWrapperMetaElement base = new BaseWrapperMetaElement(er, null, er.getProperty().getStructure(), er.getProperty().getDefinition());
-      base.children();
-      generateByProfile(resw, er.getProperty().getStructure(), base, er.getProperty().getStructure().getSnapshot().getElement(), er.getProperty().getDefinition(), base.children, x, er.fhirType(), showCodeDetails, 0, rcontext);
+    if ("List".equals(resw.getName())) {
+      generateList(x, resw); 
+    } else {
+      x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
+      try {
+        BaseWrapperMetaElement base = new BaseWrapperMetaElement(er, null, er.getProperty().getStructure(), er.getProperty().getDefinition());
+        base.children();
+        generateByProfile(resw, er.getProperty().getStructure(), base, er.getProperty().getStructure().getSnapshot().getElement(), er.getProperty().getDefinition(), base.children, x, er.fhirType(), showCodeDetails, 0, rcontext);
 
-    } catch (Exception e) {
-      e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      } catch (Exception e) {
+        e.printStackTrace();
+        x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      }
     }
     inject(er, x,  NarrativeStatus.GENERATED);
     return new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x);
@@ -4370,6 +4451,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       return displayRange((Range) type);
     return null;
   }
+  
 	private String gen(Extension extension) throws DefinitionException {
 		if (extension.getValue() instanceof CodeType)
 			return ((CodeType) extension.getValue()).getValue();
@@ -4378,6 +4460,21 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
 	  throw new DefinitionException("Unhandled type "+extension.getValue().getClass().getName());
   }
+
+	public String gen(Reference ref) {	  
+    if (ref == null)
+      return null;
+    if (ref.hasDisplay()) {
+      return ref.getDisplay();
+    }
+    if (ref.hasReference()) {
+      return ref.getReference();
+    }
+    if (ref.hasIdentifier()) {
+      return displayIdentifier(ref.getIdentifier());
+    }
+    return "??";
+	}
 
 	public String gen(CodeableConcept code) {
 		if (code == null)
@@ -4406,6 +4503,189 @@ public class NarrativeGenerator implements INarrativeGenerator {
     inject(sd, x, NarrativeStatus.GENERATED);
     return true;
   }
+
+  public boolean generate(ResourceContext rcontext, ListResource list) throws EOperationOutcome, FHIRException, IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (list.hasTitle()) {
+      x.h2().tx(list.getTitle());
+    }
+    XhtmlNode t = x.table("clstu");
+    XhtmlNode tr = t.tr();
+    if (list.hasDate()) {
+      tr.td().tx("Date: "+list.getDate().toLocaleString());
+    }
+    if (list.hasMode()) {
+      tr.td().tx("Mode: "+list.getMode().getDisplay());
+    }
+    if (list.hasStatus()) {
+      tr.td().tx("Status: "+list.getStatus().getDisplay());
+    }
+    if (list.hasCode()) {
+      tr.td().tx("Code: "+gen(list.getCode()));
+    }    
+    tr = t.tr();
+    if (list.hasSubject()) {
+      shortForRef(tr.td().tx("Subject: "), list.getSubject());
+    }
+    if (list.hasEncounter()) {
+      shortForRef(tr.td().tx("Encounter: "), list.getEncounter());
+    }
+    if (list.hasSource()) {
+      shortForRef(tr.td().tx("Source: "), list.getEncounter());
+    }
+    if (list.hasOrderedBy()) {
+      tr.td().tx("Order: "+gen(list.getOrderedBy()));
+    }
+    for (Annotation a : list.getNote()) {
+      renderAnnotation(a, x);
+    }
+    boolean flag = false;
+    boolean deleted = false;
+    boolean date = false;
+    for (ListResourceEntryComponent e : list.getEntry()) {
+      flag = flag || e.hasFlag();
+      deleted = deleted || e.hasDeleted();
+      date = date || e.hasDate();
+    }
+    t = x.table("grid");
+    tr = t.tr().style("backgound-color: #eeeeee");
+    tr.td().b().tx("Items");
+    if (date) {
+      tr.td().tx("Date");      
+    }
+    if (flag) {
+      tr.td().tx("Flag");      
+    }
+    if (deleted) {
+      tr.td().tx("Deleted");      
+    }
+    for (ListResourceEntryComponent e : list.getEntry()) {
+      tr = t.tr();
+      shortForRef(tr.td(), e.getItem());
+      if (date) {
+        tr.td().tx(e.hasDate() ? e.getDate().toLocaleString() : "");      
+      }
+      if (flag) {
+        tr.td().tx(e.hasFlag() ? gen(e.getFlag()) : "");      
+      }
+      if (deleted) {
+        tr.td().tx(e.hasDeleted() ? Boolean.toString(e.getDeleted()) : "");
+      }
+    }    
+    inject(list, x, NarrativeStatus.GENERATED);
+    return false;
+  }
+  
+  public boolean generateList(XhtmlNode x, ResourceWrapper list) throws EOperationOutcome, FHIRException, IOException {
+    if (list.has("title")) {
+      x.h2().tx(list.get("title").primitiveValue());
+    }
+    XhtmlNode t = x.table("clstu");
+    XhtmlNode tr = t.tr();
+    if (list.has("date")) {
+      tr.td().tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
+    }
+    if (list.has("mode")) {
+      tr.td().tx("Mode: "+list.get("mode").primitiveValue());
+    }
+    if (list.has("status")) {
+      tr.td().tx("Status: "+list.get("status").primitiveValue());
+    }
+    if (list.has("code")) {
+      tr.td().tx("Code: "+genCC(list.get("code")));
+    }    
+    tr = t.tr();
+    if (list.has("subject")) {
+      shortForRef(tr.td().tx("Subject: "), list.get("subject"));
+    }
+    if (list.has("encounter")) {
+      shortForRef(tr.td().tx("Encounter: "), list.get("encounter"));
+    }
+    if (list.has("source")) {
+      shortForRef(tr.td().tx("Source: "), list.get("encounter"));
+    }
+    if (list.has("orderedBy")) {
+      tr.td().tx("Order: "+genCC(list.get("orderedBy")));
+    }
+//    for (Annotation a : list.getNote()) {
+//      renderAnnotation(a, x);
+//    }
+    boolean flag = false;
+    boolean deleted = false;
+    boolean date = false;
+    for (BaseWrapper e : list.children("entry")) {
+      flag = flag || e.has("flag");
+      deleted = deleted || e.has("deleted");
+      date = date || e.has("date");
+    }
+    t = x.table("grid");
+    tr = t.tr().style("backgound-color: #eeeeee");
+    tr.td().b().tx("Items");
+    if (date) {
+      tr.td().tx("Date");      
+    }
+    if (flag) {
+      tr.td().tx("Flag");      
+    }
+    if (deleted) {
+      tr.td().tx("Deleted");      
+    }
+    for (BaseWrapper e : list.children("entry")) {
+      tr = t.tr();
+      shortForRef(tr.td(), e.get("item"));
+      if (date) {
+        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
+      }
+      if (flag) {
+        tr.td().tx(e.has("flag") ? genCC(e.get("flag")) : "");      
+      }
+      if (deleted) {
+        tr.td().tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
+      }
+    }    
+    return false;
+  }
+
+  private String genCC(Base base) {
+    if (base instanceof org.hl7.fhir.r5.elementmodel.Element) {
+      CodeableConcept cc = ObjectConverter.readAsCodeableConcept((org.hl7.fhir.r5.elementmodel.Element) base);
+      return gen(cc);
+    } else if (base instanceof CodeableConcept) {
+      return gen((CodeableConcept) base);
+    } else {
+      return "todo";
+    }
+  }
+
+  private void shortForRef(XhtmlNode x, Reference ref) {
+    ResourceWithReference r = resolver.resolve(ref.getReference());
+    if (r == null) {
+      x.tx(gen(ref));
+    } else {
+      r.resource.display(x.ah(r.reference));
+    }
+  }
+
+  private void shortForRef(XhtmlNode x, Base ref) {
+    String disp = ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
+    if (ref.getChildByName("reference").hasValues()) {
+      String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
+      ResourceWithReference r = resolver.resolve(url);
+      if (r == null) {
+        if (disp == null) {
+          disp = url;
+        }
+        x.tx(disp);
+      } else {
+        r.resource.display(x.ah(r.reference));
+      }
+    } else if (disp != null) {
+      x.tx(disp);      
+    } else {
+      x.tx("??");
+    }      
+  }
+
   public boolean generate(ResourceContext rcontext, ImplementationGuide ig) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     x.h2().addText(ig.getName());
@@ -5163,6 +5443,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return codeSystemPropList;
   }
 
+  public void displayEncounter(XhtmlNode x, Encounter wrapped) {
+    throw new Error("Not done yet");    
+  }
 
-  
+  public void displayPatient(XhtmlNode x, Patient wrapped) {
+    throw new Error("Not done yet");    
+  }
+
+
 }
