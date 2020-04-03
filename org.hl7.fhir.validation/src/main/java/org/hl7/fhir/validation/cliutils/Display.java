@@ -7,7 +7,7 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 import java.io.IOException;
 
-public class DisplayUtils {
+public class Display {
 
   public static void printCliArgumentsAndInfo(String[] args) throws IOException {
     System.out.print("Arguments:");
@@ -27,8 +27,8 @@ public class DisplayUtils {
     System.out.println("");
     System.out.println("The FHIR validation tool validates a FHIR resource or bundle.");
     System.out.println("Schema and schematron checking is performed, then some additional checks are performed. ");
-    System.out.println("* XML & Json (FHIR versions 1.0, 1.4, 3.0, 4.0, "+ Constants.VERSION_MM+")");
-    System.out.println("* Turtle (FHIR versions 3.0, 4.0, "+Constants.VERSION_MM+")");
+    System.out.println("* XML & Json (FHIR versions 1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM + ")");
+    System.out.println("* Turtle (FHIR versions 3.0, 4.0, " + Constants.VERSION_MM + ")");
     System.out.println("");
     System.out.println("If requested, instances will also be verified against the appropriate schema");
     System.out.println("W3C XML Schema, JSON schema or ShEx, as appropriate");
@@ -43,8 +43,8 @@ public class DisplayUtils {
     System.out.println("    Patterns are limited to a directory followed by a filename with an embedded");
     System.out.println("    asterisk.  E.g. foo*-examples.xml or someresource.*, etc.");
     System.out.println("-version [ver]: The FHIR version to use. This can only appear once. ");
-    System.out.println("    valid values 1.0 | 1.4 | 3.0 | "+ VersionUtilities.CURRENT_VERSION+" or 1.0.2 | 1.4.0 | 3.0.2 | 4.0.1 | "+VersionUtilities.CURRENT_FULL_VERSION);
-    System.out.println("    Default value is  "+VersionUtilities.CURRENT_VERSION);
+    System.out.println("    valid values 1.0 | 1.4 | 3.0 | " + VersionUtilities.CURRENT_VERSION + " or 1.0.2 | 1.4.0 | 3.0.2 | 4.0.1 | " + VersionUtilities.CURRENT_FULL_VERSION);
+    System.out.println("    Default value is  " + VersionUtilities.CURRENT_VERSION);
     System.out.println("-ig [package|file|folder|url]: an IG or profile definition to load. Can be ");
     System.out.println("     the URL of an implementation guide or a package ([id]-[ver]) for");
     System.out.println("     a built implementation guide or a local folder that contains a");

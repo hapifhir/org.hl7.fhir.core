@@ -24,6 +24,14 @@ public enum SnomedVersion {
     this.code = code;
   }
 
+  public String getLang() {
+    return lang;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
   public static String resolveSnomedCTCode(String s) {
     String foundCode;
     Optional<SnomedVersion> opt = Arrays.stream(values())
