@@ -3946,7 +3946,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     String id = element.getChildValue("id");
     if (!Utilities.noString(id)) {
-      rule(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !stack.getIds().containsKey(id) || stack.getIds().get(id) == element, I18nConstants.DUPLICATE_ID, id);
+      if (stack.getIds().containsKey(id) && stack.getIds().get(id) != element) {
+        rule(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.DUPLICATE_ID, id);
+      }
       stack.getIds().put(id, element);
     }
     if (definition.getPath().equals("StructureDefinition.snapshot")) {
