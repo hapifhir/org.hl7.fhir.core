@@ -235,8 +235,6 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private String getValueSetSystem() throws FHIRException {
     if (valueset == null)
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__NO_VALUE_SET));
-    if (valueset.getCompose().hasExclude())
-      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_EXCLUDES));
     if (valueset.getCompose().getInclude().size() == 0) {
       if (!valueset.hasExpansion() || valueset.getExpansion().getContains().size() == 0)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION));
