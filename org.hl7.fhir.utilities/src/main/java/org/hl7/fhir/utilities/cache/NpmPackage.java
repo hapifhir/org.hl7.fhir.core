@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.NpmPackage.IndexVersionSorter;
 import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JSONUtil;
@@ -75,6 +77,16 @@ import com.google.gson.JsonObject;
  *
  */
 public class NpmPackage {
+
+  public class IndexVersionSorter implements Comparator<JsonObject> {
+
+    @Override
+    public int compare(JsonObject o0, JsonObject o1) {
+      String v0 = JSONUtil.str(o0, "version"); 
+      String v1 = JSONUtil.str(o1, "version"); 
+      return v0.compareTo(v1);
+    }
+  }
 
   public static boolean isValidName(String pid) {
     return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
@@ -452,6 +464,86 @@ public class NpmPackage {
     return new ByteArrayInputStream(folder.fetchFile(file));
   }
 
+  /**
+   * get a stream that contains the contents of a resource in the base folder, by it's canonical URL
+   * 
+   * @param url - the canonical URL of the resource (exact match only)
+   * @return null if it is not found
+   * @throws IOException
+   */
+  public InputStream loadByCanonical(String canonical) throws IOException {
+    return loadByCanonicalVersion("package", canonical, null);    
+  }
+  
+  /**
+   * get a stream that contains the contents of a resource in the nominated folder, by it's canonical URL
+   * 
+   * @param folder - one of the folders in the package (main folder is "package")
+   * @param url - the canonical URL of the resource (exact match only)
+   * @return null if it is not found
+   * @throws IOException
+   */
+  public InputStream loadByCanonical(String folder, String canonical) throws IOException {
+    return loadByCanonicalVersion(folder, canonical, null);    
+  }
+    
+  /**
+   * get a stream that contains the contents of a resource in the base folder, by it's canonical URL
+   * 
+   * @param url - the canonical URL of the resource (exact match only)
+   * @param version - the specified version (or null if the most recent)
+   * 
+   * @return null if it is not found
+   * @throws IOException
+   */
+  public InputStream loadByCanonicalVersion(String canonical, String version) throws IOException {
+    return loadByCanonicalVersion("package", canonical, version);
+  }
+  
+  /**
+   * get a stream that contains the contents of a resource in the nominated folder, by it's canonical URL
+   * 
+   * @param folder - one of the folders in the package (main folder is "package")
+   * @param url - the canonical URL of the resource (exact match only)
+   * @param version - the specified version (or null if the most recent)
+   * 
+   * @return null if it is not found
+   * @throws IOException
+   */
+  public InputStream loadByCanonicalVersion(String folder, String canonical, String version) throws IOException {
+    NpmPackageFolder f = folders.get(folder);
+    List<JsonObject> matches = new ArrayList<>();
+    for (JsonElement e : f.index.getAsJsonArray("files")) {
+      JsonObject file = (JsonObject) e;
+      if (canonical.equals(JSONUtil.str(file, "url"))) {
+        if (version != null && version.equals(JSONUtil.str(file, "version"))) {
+          return load("package", JSONUtil.str(file, "filename"));
+        } else if (version == null) {
+          matches.add(file);
+        }
+      }
+      if (matches.size() > 0) {
+        if (matches.size() == 1) {
+          return load("package", JSONUtil.str(matches.get(0), "filename"));          
+        } else {
+          Collections.sort(matches, new IndexVersionSorter());
+          return load("package", JSONUtil.str(matches.get(matches.size()-1), "filename"));          
+        }
+      }
+    }
+    return null;        
+  }
+    
+  /**
+   * get a stream that contains the contents of one of the files in the base package
+   * 
+   * @param file
+   * @return
+   * @throws IOException
+   */
+  public InputStream load(String file) throws IOException {
+    return load("package", file);
+  }
   /**
    * get a stream that contains the contents of one of the files in a folder
    * 
