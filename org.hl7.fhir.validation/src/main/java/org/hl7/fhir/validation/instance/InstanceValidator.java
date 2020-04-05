@@ -2827,6 +2827,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
             rr.setStack(stack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+stack.getElement().fhirType()+")");
             return rr;
           }
         }
@@ -2861,6 +2862,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setStack(stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
               res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
               res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
             return rr;
           }
         }
@@ -2882,6 +2884,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rr.setStack(new NodeStack(context, hostContext, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
             res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
             res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+          rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
           return rr;
         }
       }
@@ -3832,6 +3835,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         break;
       }
     }
+    stack.qualifyPath(".ofType("+resourceName+")");
     if (trr == null) {
       rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName);
     } else if (isValidResourceType(resourceName, trr)) {
