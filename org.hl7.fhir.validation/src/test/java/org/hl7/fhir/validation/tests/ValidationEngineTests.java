@@ -176,24 +176,6 @@ public class ValidationEngineTests {
       System.out.println("  .. done: "+Integer.toString(e)+" errors, "+Integer.toString(w)+" warnings, "+Integer.toString(h)+" information messages");
   }
 
-//  @Test
-//  public void testTransform() throws Exception {
-//    if (!TestUtilities.silent)
-//      System.out.println("Transform CCDA");
-//    if (!TestUtilities.silent)
-//      System.out.println("  .. load FHIR from " +Utilities.path(TestUtilities.home(),  "publish"));
-//    ValidationEngine ve = new ValidationEngine(Utilities.path(TestUtilities.home(),  "publish"), DEF_TX, null, FhirVersion.R4);
-//    if (!TestUtilities.silent)
-//      System.out.println("  .. load CCDA from " +Utilities.path(TestUtilities.home(),  "guides\\ccda2\\mapping\\logical"));
-//    ve.loadIg(Utilities.path(TestUtilities.home(),  "guides\\ccda2\\mapping\\logical"));
-//    if (!TestUtilities.silent)
-//      System.out.println("  .. load Maps from " +Utilities.path(TestUtilities.home(),  "guides\\ccda2\\mapping\\map"));
-//    ve.loadIg(Utilities.path(TestUtilities.home(),  "guides\\ccda2\\mapping\\map"));
-//    Resource r = ve.transform(Utilities.path(TestUtilities.home(),  "guides\\ccda2\\mapping\\example\\ccd.xml"), "http://hl7.org/fhir/StructureMap/cda");
-//    if (!TestUtilities.silent)
-//      System.out.println("  .. done");
-//  }
-
   private int errors(OperationOutcome op) {
     int i = 0;
     for (OperationOutcomeIssueComponent vm : op.getIssue()) {
@@ -228,7 +210,6 @@ public class ValidationEngineTests {
     self.test102();
     self.test140();
     self.test301USCore();
-//    self.testTransform();
     System.out.println("Finished");
   }
 
