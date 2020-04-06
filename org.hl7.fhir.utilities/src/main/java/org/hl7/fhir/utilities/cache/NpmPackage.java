@@ -587,6 +587,14 @@ public class NpmPackage {
     return JSONUtil.str(npm, "name");
   }
 
+  /**
+   * convenience method for getting the package id (which in NPM language is the same as the name)
+   * @return
+   */
+  public String id() {
+    return JSONUtil.str(npm, "name");
+  }
+
   public String date() {
     return JSONUtil.str(npm, "date");
   }
