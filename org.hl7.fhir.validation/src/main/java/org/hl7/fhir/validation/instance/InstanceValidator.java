@@ -695,10 +695,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     long t = System.nanoTime();
     if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, element, validationLanguage));
+      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
     } else {
       for (StructureDefinition defn : profiles) {
-        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, element, validationLanguage));
+        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
       }
     }
     if (hintAboutNonMustSupport) {
@@ -3953,7 +3953,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (stack.getIds().containsKey(id) && stack.getIds().get(id) != element) {
         rule(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.DUPLICATE_ID, id);
       }
-      stack.getIds().put(id, element);
+      if (!stack.isResetPoint()) {
+        stack.getIds().put(id, element);
+      }
     }
     if (definition.getPath().equals("StructureDefinition.snapshot")) {
       // work around a known issue in the spec, that idsa are duplicated in snapshot and differential 
