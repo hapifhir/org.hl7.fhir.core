@@ -214,8 +214,6 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   private String getValueSetSystem() throws FHIRException {
     if (valueset == null)
       throw new FHIRException("Unable to resolve system - no value set");
-    if (valueset.getCompose().hasExclude())
-      throw new FHIRException("Unable to resolve system - value set has excludes");
     if (valueset.getCompose().getInclude().size() == 0) {
       if (!valueset.hasExpansion() || valueset.getExpansion().getContains().size() == 0)
         throw new FHIRException("Unable to resolve system - value set has no includes or expansion");
