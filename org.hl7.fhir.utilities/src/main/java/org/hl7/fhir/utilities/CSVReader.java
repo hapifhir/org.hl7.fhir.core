@@ -111,7 +111,11 @@ public class CSVReader extends InputStreamReader {
     String s = cells.length >= index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
-    return s;
+    if (s.startsWith("\"") && s.endsWith("\"")) {
+      return s.substring(1, s.length()-2);     
+    } else {
+      return s;
+    }
   }
     
 	protected boolean parseBoolean(String column) {
