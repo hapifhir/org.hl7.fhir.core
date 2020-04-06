@@ -458,6 +458,20 @@ public class XMLUtil {
     return builder.parse(new ByteArrayInputStream(content.getBytes()));
   }
 
+  public static Document parseToDom(byte[] content) throws ParserConfigurationException, SAXException, IOException  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(false);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    return builder.parse(new ByteArrayInputStream(content));
+  }
+
+  public static Document parseToDom(byte[] content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(ns);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    return builder.parse(new ByteArrayInputStream(content));
+  }
+
   public static Document parseFileToDom(String filename) throws ParserConfigurationException, SAXException, IOException  {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
