@@ -2521,22 +2521,23 @@ public class NarrativeGenerator implements INarrativeGenerator {
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
-        tr.td().colspan(Integer.toString(sources.size())).b().tx("Source Concept Details");
+        tr.td().colspan(Integer.toString(1+sources.size())).b().tx("Source Concept Details");
         tr.td().b().tx("Relationship");
-        tr.td().colspan(Integer.toString(targets.size())).b().tx("Destination Concept Details");
-        if (comment)
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
+        if (comment) {
           tr.td().b().tx("Comment");
+        }
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
-          renderCSDetailsLink(tr, url);           
+          renderCSDetailsLink(tr, url, true);           
         } else
           tr.td().b().tx("Code");
         for (String s : sources.keySet()) {
           if (!s.equals("code")) {
             if (sources.get(s).size() == 1) {
               String url = sources.get(s).iterator().next();
-              renderCSDetailsLink(tr, url);           
+              renderCSDetailsLink(tr, url, false);           
             } else
               tr.td().b().addText(getDescForConcept(s));
           }
@@ -2544,14 +2545,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
         tr.td();
         if (targets.get("code").size() == 1) {
           String url = targets.get("code").iterator().next();
-          renderCSDetailsLink(tr, url);           
+          renderCSDetailsLink(tr, url, true);           
         } else
           tr.td().b().tx("Code");
         for (String s : targets.keySet()) {
           if (!s.equals("code")) {
             if (targets.get(s).size() == 1) {
               String url = targets.get(s).iterator().next();
-              renderCSDetailsLink(tr, url);           
+              renderCSDetailsLink(tr, url, false);           
             } else
               tr.td().b().addText(getDescForConcept(s));
           }
@@ -2563,68 +2564,83 @@ public class NarrativeGenerator implements INarrativeGenerator {
           SourceElementComponent ccl = grp.getElement().get(si);
           boolean slast = si == grp.getElement().size()-1;
           boolean first = true;
-          for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
-            TargetElementComponent ccm = ccl.getTarget().get(ti);
-            boolean last = ti == ccl.getTarget().size()-1;
+          if (ccl.hasNoMap() && ccl.getNoMap()) {
             tr = tbl.tr();
-            td = tr.td();
-            if (!first && !last)
-              td.setAttribute("style", "border-top-style: none; border-bottom-style: none");
-            else if (!first)
-              td.setAttribute("style", "border-top-style: none");
-            else if (!last)
-              td.setAttribute("style", "border-bottom-style: none");
-            if (first) {
-              if (sources.get("code").size() == 1)
-                td.addText(ccl.getCode());
+            td = tr.td().style("border-right-width: 0px");
+            if (!first)
+              td.style("border-top-style: none");
+            else 
+              td.style("border-bottom-style: none");
+            if (sources.get("code").size() == 1)
+              td.addText(ccl.getCode());
+            else
+              td.addText(grp.getSource()+" / "+ccl.getCode());
+            display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+            tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+            tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
+
+          } else {
+            for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
+              TargetElementComponent ccm = ccl.getTarget().get(ti);
+              boolean last = ti == ccl.getTarget().size()-1;
+              tr = tbl.tr();
+              td = tr.td().style("border-right-width: 0px");
+              if (!first && !last)
+                td.style("border-top-style: none; border-bottom-style: none");
+              else if (!first)
+                td.style("border-top-style: none");
+              else if (!last)
+                td.style("border-bottom-style: none");
+              if (first) {
+                if (sources.get("code").size() == 1)
+                  td.addText(ccl.getCode());
+                else
+                  td.addText(grp.getSource()+" / "+ccl.getCode());
+                display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+                tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+              }
+              for (String s : sources.keySet()) {
+                if (!s.equals("code")) {
+                  td = tr.td();
+                  if (first) {
+                    td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
+                    display = getDisplay(ccm.getDependsOn(), s);
+                    if (display != null)
+                      td.tx(" ("+display+")");
+                  }
+                }
+              }
+              first = false;
+              if (!ccm.hasRelationship())
+                tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+              else {
+                if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                  String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                  tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+                } else {
+                  tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                }
+              }
+              td = tr.td().style("border-right-width: 0px");
+              if (targets.get("code").size() == 1)
+                td.addText(ccm.getCode());
               else
-                td.addText(grp.getSource()+" / "+ccl.getCode());
-              display = getDisplayForConcept(grp.getSource(), ccl.getCode());
-              if (display != null)
-                td.tx(" ("+display+")");
-            }
-            for (String s : sources.keySet()) {
-              if (!s.equals("code")) {
-                td = tr.td();
-                if (first) {
-                  td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
-                  display = getDisplay(ccm.getDependsOn(), s);
+                td.addText(grp.getTarget()+" / "+ccm.getCode());
+              display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
+              tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+
+              for (String s : targets.keySet()) {
+                if (!s.equals("code")) {
+                  td = tr.td();
+                  td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
+                  display = getDisplay(ccm.getProduct(), s);
                   if (display != null)
                     td.tx(" ("+display+")");
                 }
               }
+              if (comment)
+                tr.td().addText(ccm.getComment());
             }
-            first = false;
-            if (!ccm.hasRelationship())
-              tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-            else {
-              if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
-              } else {
-                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-              }
-            }
-            td = tr.td();
-            if (targets.get("code").size() == 1)
-              td.addText(ccm.getCode());
-            else
-              td.addText(grp.getTarget()+" / "+ccm.getCode());
-            display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
-            if (display != null)
-              td.tx(" ("+display+")");
-
-            for (String s : targets.keySet()) {
-              if (!s.equals("code")) {
-                td = tr.td();
-                td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
-                display = getDisplay(ccm.getProduct(), s);
-                if (display != null)
-                  td.tx(" ("+display+")");
-              }
-            }
-            if (comment)
-              tr.td().addText(ccm.getComment());
           }
           addUnmapped(tbl, grp);
         }
@@ -2684,11 +2700,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  public void renderCSDetailsLink(XhtmlNode tr, String url) {
+  public void renderCSDetailsLink(XhtmlNode tr, String url, boolean span2) {
     CodeSystem cs;
     XhtmlNode td;
     cs = context.fetchCodeSystem(url);
     td = tr.td();
+    if (span2) {
+      td.colspan("2");
+    }
     td.b().tx("Code");
     td.tx(" from ");
     if (cs == null)

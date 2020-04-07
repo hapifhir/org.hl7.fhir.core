@@ -288,6 +288,9 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
   public XhtmlNode setAttribute(String name, String value) {
+    if (nodeType != NodeType.Element) {
+      throw new Error("Attempt to set an attribute on something that is not an element");
+    }
     getAttributes().put(name, value);
     return this;    
   }
@@ -636,7 +639,11 @@ public class XhtmlNode implements IBaseXhtml {
 
 
   public XhtmlNode style(String style) {
-    setAttribute("style", style);
+    if (hasAttribute("style")) {
+      setAttribute("style", getAttribute("style")+"; "+style);
+    } else {
+      setAttribute("style", style);
+    }
     return this;
   }
 
