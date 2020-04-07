@@ -399,7 +399,7 @@ public class MeasureValidator extends BaseValidator {
       i++;
     }
     for (MeasureGroupPopulationComponent mgp : mg.getPopulation()) {
-      if (!pops.contains(mgp)) {
+      if (!pops.contains(mgp) && !mgp.getCode().hasCoding("http://terminology.hl7.org/CodeSystem/measure-population", "measure-observation")) {
         rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), pops.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, gen.gen(mgp.getCode()));
       }
     }
