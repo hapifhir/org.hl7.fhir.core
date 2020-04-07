@@ -193,10 +193,15 @@ public abstract class MetadataResource extends DomainResource {
      * @param value {@link #url} (An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this metadata resource is (or will be) published. The URL SHOULD include the major version of the metadata resource. For more information see [Technical and Business Versions](resource.html#versions).). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public MetadataResource setUrlElement(UriType value) { 
+      checkCanUseUrl();
       this.url = value;
       return this;
     }
 
+    protected void checkCanUseUrl() {
+      // it's fine      
+    }
+    
     /**
      * @return An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this metadata resource is (or will be) published. The URL SHOULD include the major version of the metadata resource. For more information see [Technical and Business Versions](resource.html#versions).
      */
@@ -211,6 +216,7 @@ public abstract class MetadataResource extends DomainResource {
       if (Utilities.noString(value))
         this.url = null;
       else {
+        checkCanUseUrl();
         if (this.url == null)
           this.url = new UriType();
         this.url.setValue(value);
@@ -1048,6 +1054,7 @@ public abstract class MetadataResource extends DomainResource {
       public String toString() {
         return fhirType()+"["+getUrl()+"]";
       }
+
 
 // end addition
 
