@@ -14,6 +14,13 @@
 
     <dependencies>
 
+        <!-- Commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
         <!-- HAPI Dependencies -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
