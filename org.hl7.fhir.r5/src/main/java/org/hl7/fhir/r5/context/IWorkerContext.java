@@ -89,6 +89,8 @@ public interface IWorkerContext {
       if (!source.contains("#")) {
         throw new FHIRException("Source ");        
       }
+      id = source.substring(0, source.indexOf("#"));
+      version = source.substring(source.indexOf("#")+1);
     }
     public PackageVersion(String id, String version) {
       super();

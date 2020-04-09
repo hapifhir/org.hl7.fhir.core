@@ -178,13 +178,17 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
   
   public T get(String system, String version) {
-    if (map.containsKey(system+"|"+version))
-      return map.get(system+"|"+version);
-    String mm = VersionUtilities.getMajMin(version);
-    if (mm != null)
-      return map.get(system+"|"+mm);
-    else
-      return null;
+    if (version == null) {
+      return get(system);
+    } else {
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version);
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null)
+        return map.get(system+"|"+mm);
+      else
+        return null;
+    }
   }
   
   public boolean has(String system, String version) {
