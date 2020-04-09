@@ -159,12 +159,12 @@ public class XmlParser extends ParserBase {
 
   
   private int line(Node node) {
-		XmlLocationData loc = (XmlLocationData) node.getUserData(XmlLocationData.LOCATION_DATA_KEY);
+		XmlLocationData loc = node == null ? null : (XmlLocationData) node.getUserData(XmlLocationData.LOCATION_DATA_KEY);
 		return loc == null ? 0 : loc.getStartLine();
   }
 
   private int col(Node node) {
-		XmlLocationData loc = (XmlLocationData) node.getUserData(XmlLocationData.LOCATION_DATA_KEY);
+		XmlLocationData loc = node == null ? null : (XmlLocationData) node.getUserData(XmlLocationData.LOCATION_DATA_KEY);
 		return loc == null ? 0 : loc.getStartColumn();
   }
 
@@ -253,22 +253,38 @@ public class XmlParser extends ParserBase {
     List<Property> properties = element.getProperty().getChildProperties(element.getName(), XMLUtil.getXsiType(node));
 
   	String text = XMLUtil.getDirectText(node).trim();
+    int line = line(node);
+    int col = col(node);
     if (!Utilities.noString(text)) {
     	Property property = getTextProp(properties);
     	if (property != null) {
         if ("ED.data[x]".equals(property.getDefinition().getId()) || (property.getDefinition()!=null && property.getDefinition().getBase()!=null && "ED.data[x]".equals(property.getDefinition().getBase().getPath()))) {
           if ("B64".equals(node.getAttribute("representation"))) {
-            element.getChildren().add(new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line(node), col(node)));
+            element.getChildren().add(new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col));
           } else {
-            element.getChildren().add(new Element("dataString", property, "string", text).markLocation(line(node), col(node)));
+            element.getChildren().add(new Element("dataString", property, "string", text).markLocation(line, col));
           }
         } else {
           element.getChildren().add(
-              new Element(property.getName(), property, property.getType(), text).markLocation(line(node), col(node)));
+              new Element(property.getName(), property, property.getType(), text).markLocation(line, col));
         }
       } 
     	else {
-        logError(line(node), col(node), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT), IssueSeverity.ERROR);
+    	  Node n = node.getFirstChild();
+        while (n != null) {
+          if (n.getNodeType() == Node.TEXT_NODE && !Utilities.noString(n.getTextContent().trim())) {
+            while (n.getNextSibling() != null && n.getNodeType() != Node.ELEMENT_NODE) {
+              n = n.getNextSibling();
+            }
+            while (n.getPreviousSibling() != null && n.getNodeType() != Node.ELEMENT_NODE) {
+              n = n.getPreviousSibling();
+            }
+            line = line(n);
+            col = col(n);
+            logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT, text), IssueSeverity.ERROR);
+          }
+          n = n.getNextSibling();
+        }
     	}    		
     }
     
@@ -276,7 +292,7 @@ public class XmlParser extends ParserBase {
     	Node attr = node.getAttributes().item(i);
     	String value = attr.getNodeValue();
     	if (!validAttrValue(value)) {
-        logError(line(node), col(node), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
+        logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
     	}
     	if (!(attr.getNodeName().equals("xmlns") || attr.getNodeName().startsWith("xmlns:"))) {
       	Property property = getAttrProp(properties, attr.getNodeName());
@@ -287,7 +303,7 @@ public class XmlParser extends ParserBase {
 	    		if (property.getName().equals("value") && element.isPrimitive())
 	    			element.setValue(av);
 	    		else
-	    	    element.getChildren().add(new Element(property.getName(), property, property.getType(), av).markLocation(line(node), col(node)));
+	    	    element.getChildren().add(new Element(property.getName(), property, property.getType(), av).markLocation(line, col));
         } else {
           boolean ok = false;
           if (FormatUtilities.FHIR_NS.equals(node.getNamespaceURI())) {
@@ -298,7 +314,7 @@ public class XmlParser extends ParserBase {
             ok = ok || (attr.getLocalName().equals("schemaLocation")); // xsi:schemalocation allowed for non FHIR content
           ok = ok || (hasTypeAttr(element) && attr.getLocalName().equals("type") && FormatUtilities.NS_XSI.equals(attr.getNamespaceURI())); // xsi:type allowed if element says so
           if (!ok)  
-            logError(line(node), col(node), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__, attr.getNodeName(), node.getNodeName(), element.fhirType(), properties), IssueSeverity.ERROR);
+            logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__, attr.getNodeName(), node.getNodeName(), element.fhirType(), properties), IssueSeverity.ERROR);
       	}
     	}
     }
