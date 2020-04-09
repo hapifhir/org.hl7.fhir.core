@@ -22,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ShexGeneratorTests.class,
     BaseDateTimeTypeTest.class,
     OpenApiGeneratorTest.class,
-    MetadataResourceManagerTester.class,
+    CanonicalResourceManagerTester.class,
     MetaTest.class,
     UtilitiesTests.class,
     SnapShotGenerationTests.class})

@@ -32,6 +32,7 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -76,6 +77,31 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  * @author Grahame
  */
 public interface IWorkerContext {
+
+  public class PackageVersion {
+    private String id;
+    private String version;
+    
+    public PackageVersion(String source) {
+      if (source == null) {
+        throw new Error("Source cannot be null");
+      }
+      if (!source.contains("#")) {
+        throw new FHIRException("Source ");        
+      }
+    }
+    public PackageVersion(String id, String version) {
+      super();
+      this.id = id;
+      this.version = version;
+    }
+    public String getId() {
+      return id;
+    }
+    public String getVersion() {
+      return version;
+    }
+  }
 
   /**
    * Get the versions of the definitions loaded in context
@@ -172,6 +198,17 @@ public interface IWorkerContext {
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
 
+  /** has the same functionality as fetchResource, but passes in information about the source of the 
+   * reference (this may affect resolution of version)
+   *  
+   * @param <T>
+   * @param class_
+   * @param uri
+   * @param canonicalForSource
+   * @return
+   */
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
+
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
    * 
@@ -204,11 +241,36 @@ public interface IWorkerContext {
    * cache a resource for later retrieval using fetchResource.
    * 
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource 
+   * rseources, and not all need implement cacheResource.
+   * 
+   * If the resource is loaded out of a package, call cacheResourceFromPackage instead
    * @param res
    * @throws FHIRException 
    */
   public void cacheResource(Resource res) throws FHIRException;
+  
+  /**
+   * cache a resource for later retrieval using fetchResource.
+   * 
+   * The package information is used to help manage the cache internally, and to 
+   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
+   *    
+   * Note that various context implementations will have their own ways of loading
+   * rseources, and not all need implement cacheResource
+   * 
+   * @param res
+   * @throws FHIRException 
+   */
+  public void cacheResourceFromPackage(Resource res, PackageVersion packageDetails) throws FHIRException;
+  
+  /**
+   * Inform the cache about package dependencies. This can be used to help resolve references
+   * 
+   * Note that the cache doesn't load dependencies
+   *  
+   * @param packageInfo
+   */
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies);
   
   // -- profile services ---------------------------------------------------------
   

@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -284,11 +285,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public ValidationEngine() throws IOException {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);  
   }
-  
-  public void loadInitialDefinitions(String src) throws Exception {
-    loadDefinitions(src, false);   
-  }
-  
+    
   public void setTerminologyServer(String src, String log, FhirPublication version) throws Exception {
     connectToTSServer(src, log, version);   
   }
@@ -311,7 +308,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws Exception {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    loadInitialDefinitions(src);
+    loadCoreDefinitions(src, false);
     context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);    
     this.version = vString;
@@ -319,13 +316,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws Exception {
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    loadInitialDefinitions(src);
+    loadCoreDefinitions(src, false);
     setTerminologyServer(txsrvr, txLog, version);
     this.version = vString;
   }
   
   public ValidationEngine(String src) throws Exception {
-    loadDefinitions(src, false);
+    loadCoreDefinitions(src, false);
     pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
@@ -337,11 +334,11 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.language = language;
   }
 
-  private void loadDefinitions(String src, boolean recursive) throws Exception {
+  private void loadCoreDefinitions(String src, boolean recursive) throws Exception {
     Map<String, byte[]> source = loadIgSource(src, recursive, true);   
     if (version == null)
       version = getVersionFromPack(source);
-    context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion());
+    context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion(), new PackageVersion(src));
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());
     NpmPackage npm = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.2");

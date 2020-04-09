@@ -146,7 +146,7 @@ public class ToolsHelper {
 		String address = args[1];
 		String definitions = args[3];
 
-		SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
+//		SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
 
 		//    if (address.startsWith("http:") || address.startsWith("http:")) {
 		//    	// this is on a restful interface
