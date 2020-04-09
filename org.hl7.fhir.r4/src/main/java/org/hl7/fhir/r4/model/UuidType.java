@@ -51,6 +51,9 @@ package org.hl7.fhir.r4.model;
 
 import java.net.URI;
 
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+
+@DatatypeDef(name = "uuid", profileOf = UriType.class)
 public class UuidType extends UriType {
 
 	private static final long serialVersionUID = 3L;
