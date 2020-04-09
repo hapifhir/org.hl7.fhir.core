@@ -17,6 +17,11 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.dstu2.model.ClaimResponse.ErrorsComponent;
+import org.hl7.fhir.dstu2.model.Resource;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackageIndexBuilder;
@@ -30,6 +35,39 @@ import com.google.gson.JsonObject;
 
 public class NpmPackageVersionConverter {
 
+  private class PR2Handler implements VersionConvertorAdvisor40 {
+
+    @Override
+    public boolean ignoreEntry(BundleEntryComponent src) {
+      return false;
+    }
+
+    @Override
+    public Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+
+    @Override
+    public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+
+    @Override
+    public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+
+    @Override
+    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+
+    @Override
+    public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+    
+  }
   private static final int BUFFER_SIZE = 1024;
 
   private String source;
@@ -104,7 +142,9 @@ public class NpmPackageVersionConverter {
           }
         } catch (Exception ex) {
         }
-        output.put(e.getKey(), cnv);
+        if (cnv != null && cnv.length > 0) {
+          output.put(e.getKey(), cnv);
+        }
       }
     }
     
@@ -176,8 +216,7 @@ public class NpmPackageVersionConverter {
     json.add("dependencies", dep);
     dep.addProperty(VersionUtilities.packageForVersion(version), version);
     return JsonTrackingParser.write(json).getBytes(Charsets.UTF_8);
-  }
-  
+  }  
 
   private byte[] convertResource(String n, byte[] cnt) {
     try {
@@ -194,7 +233,7 @@ public class NpmPackageVersionConverter {
         } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertor_10_50.convertResource(res));          
         }
-      } else if (VersionUtilities.isR2BVer(version)) {
+      } else if (VersionUtilities.isR2BVer(currentVersion)) {
         org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_30.convertResource(VersionConvertor_14_30.convertResource(res)));
@@ -223,7 +262,7 @@ public class NpmPackageVersionConverter {
       } else if (VersionUtilities.isR4Ver(currentVersion)) {
         org.hl7.fhir.r4.model.Resource res = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt);
         if (VersionUtilities.isR2Ver(version)) {
-          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_40.convertResource(res));
+          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_40.convertResource(res, new PR2Handler()));
         } else if (VersionUtilities.isR2BVer(version)) {
           return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertor_14_40.convertResource(res));
         } else if (VersionUtilities.isR3Ver(version)) {
@@ -249,8 +288,9 @@ public class NpmPackageVersionConverter {
       } 
       throw new Error("Unknown version "+currentVersion+" -> "+version);
     } catch (Exception ex) {
+      ex.printStackTrace();
       errors.add("Error converting "+n+": "+ex.getMessage());
-      return cnt;
+      return null;
     }
   }
 
