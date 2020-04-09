@@ -810,12 +810,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.allowLoadingDuplicates = allowLoadingDuplicates;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
     return fetchResourceWithException(class_, uri, null);
   }
   
+  @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
@@ -834,31 +834,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         uri = uri.substring(0, uri.indexOf("#"));
       if (class_ == Resource.class || class_ == null) {
         if (structures.has(uri))
-          return (T) structures.get(uri);
+          return (T) structures.get(uri, version);
         if (guides.has(uri))
-          return (T) guides.get(uri);
+          return (T) guides.get(uri, version);
         if (capstmts.has(uri))
-          return (T) capstmts.get(uri);
+          return (T) capstmts.get(uri, version);
         if (measures.has(uri))
-          return (T) measures.get(uri);
+          return (T) measures.get(uri, version);
         if (libraries.has(uri))
-          return (T) libraries.get(uri);        
+          return (T) libraries.get(uri, version);        
         if (valueSets.has(uri))
-          return (T) valueSets.get(uri);
+          return (T) valueSets.get(uri, version);
         if (codeSystems.has(uri))
-          return (T) codeSystems.get(uri);
+          return (T) codeSystems.get(uri, version);
         if (operations.has(uri))
-          return (T) operations.get(uri);
+          return (T) operations.get(uri, version);
         if (searchParameters.has(uri))
-          return (T) searchParameters.get(uri);
+          return (T) searchParameters.get(uri, version);
         if (plans.has(uri))
-          return (T) plans.get(uri);
+          return (T) plans.get(uri, version);
         if (maps.has(uri))
-          return (T) maps.get(uri);
+          return (T) maps.get(uri, version);
         if (transforms.has(uri))
-          return (T) transforms.get(uri);
+          return (T) transforms.get(uri, version);
         if (questionnaires.has(uri))
-          return (T) questionnaires.get(uri);
+          return (T) questionnaires.get(uri, version);
         for (Map<String, Resource> rt : allResourcesById.values()) {
           for (Resource r : rt.values()) {
             if (r instanceof CanonicalResource) {
@@ -870,47 +870,41 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         return null;      
       } else if (class_ == ImplementationGuide.class) {
-        return (T) guides.get(uri);
+        return (T) guides.get(uri, version);
       } else if (class_ == CapabilityStatement.class) {
-        return (T) capstmts.get(uri);
+        return (T) capstmts.get(uri, version);
       } else if (class_ == Measure.class) {
-        return (T) measures.get(uri);
+        return (T) measures.get(uri, version);
       } else if (class_ == Library.class) {
-        return (T) libraries.get(uri);
+        return (T) libraries.get(uri, version);
       } else if (class_ == StructureDefinition.class) {
-        return (T) structures.get(uri);
+        return (T) structures.get(uri, version);
       } else if (class_ == StructureMap.class) {
-        return (T) transforms.get(uri);
+        return (T) transforms.get(uri, version);
       } else if (class_ == ValueSet.class) {
-        if (valueSets.has(uri, version))
-          return (T) valueSets.get(uri, version);
-        else
-          return (T) valueSets.get(uri);
+        return (T) valueSets.get(uri, version);
       } else if (class_ == CodeSystem.class) {
-        if (codeSystems.has(uri, version))
           return (T) codeSystems.get(uri, version);
-        else
-          return (T) codeSystems.get(uri);
       } else if (class_ == ConceptMap.class) {
-        return (T) maps.get(uri);
+        return (T) maps.get(uri, version);
       } else if (class_ == PlanDefinition.class) {
-        return (T) plans.get(uri);
+        return (T) plans.get(uri, version);
       } else if (class_ == OperationDefinition.class) {
-        OperationDefinition od = operations.get(uri);
+        OperationDefinition od = operations.get(uri, version);
         return (T) od;
       } else if (class_ == Questionnaire.class) {
-        return (T) questionnaires.get(uri);
+        return (T) questionnaires.get(uri, version);
       } else if (class_ == SearchParameter.class) {
-        SearchParameter res = searchParameters.get(uri);
+        SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }
       if (class_ == CodeSystem.class && codeSystems.has(uri))
-        return (T) codeSystems.get(uri);
+        return (T) codeSystems.get(uri, version);
       if (class_ == ValueSet.class && valueSets.has(uri))
-        return (T) valueSets.get(uri);
+        return (T) valueSets.get(uri, version);
       
       if (class_ == Questionnaire.class)
-        return (T) questionnaires.get(uri);
+        return (T) questionnaires.get(uri, version);
       if (class_ == null) {
         if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet"))
           return null;
