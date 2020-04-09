@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import org.hl7.fhir.exceptions.FHIRException;
+
 /*-
  * #%L
  * org.hl7.fhir.r5
@@ -192,6 +194,25 @@ public class VersionUtilities {
     String[] p = v.split("\\.");
     int[] i = new int[] {Integer.parseInt(p[0]),Integer.parseInt(p[1]),Integer.parseInt(p[2])};
     return i;
+  }
+
+  public static String versionFromCode(String version) {
+    if ("r2".equals(version)) {
+      return "1.0.2";
+    }
+    if ("r2b".equals(version)) {
+      return "1.4.0";
+    }
+    if ("r3".equals(version)) {
+      return "3.0.2";
+    }
+    if ("r4".equals(version)) {
+      return "4.0.1";
+    }
+    if ("r5".equals(version)) {
+      return CURRENT_FULL_VERSION;
+    }
+    throw new FHIRException("Unknown version "+version);
   }
 
 }

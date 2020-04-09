@@ -40,6 +40,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -134,7 +135,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version;
-
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
@@ -230,7 +230,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+    // nothing yet
+  }
+
   public void cacheResource(Resource r) throws FHIRException {
+    cacheResourceFromPackage(r, null);  
+  }
+  
+  public void cacheResourceFromPackage(Resource r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
       Map<String, Resource> map = allResourcesById.get(r.fhirType());
       if (map == null) {
@@ -254,31 +262,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if ("1.4.0".equals(version)) {
             fixOldSD(sd);
           }
-          structures.see(sd);
+          structures.see(sd, packageInfo);
         } else if (r instanceof ValueSet)
-          valueSets.see((ValueSet) m);
+          valueSets.see((ValueSet) m, packageInfo);
         else if (r instanceof CodeSystem)
-          codeSystems.see((CodeSystem) m);
+          codeSystems.see((CodeSystem) m, packageInfo);
         else if (r instanceof ImplementationGuide)
-          guides.see((ImplementationGuide) m);
+          guides.see((ImplementationGuide) m, packageInfo);
         else if (r instanceof CapabilityStatement)
-          capstmts.see((CapabilityStatement) m);
+          capstmts.see((CapabilityStatement) m, packageInfo);
         else if (r instanceof Measure)
-          measures.see((Measure) m);
+          measures.see((Measure) m, packageInfo);
         else if (r instanceof Library)
-          libraries.see((Library) m);        
+          libraries.see((Library) m, packageInfo);        
         else if (r instanceof SearchParameter)
-          searchParameters.see((SearchParameter) m);
+          searchParameters.see((SearchParameter) m, packageInfo);
         else if (r instanceof PlanDefinition)
-          plans.see((PlanDefinition) m);
+          plans.see((PlanDefinition) m, packageInfo);
         else if (r instanceof OperationDefinition)
-          operations.see((OperationDefinition) m);
+          operations.see((OperationDefinition) m, packageInfo);
         else if (r instanceof Questionnaire)
-          questionnaires.see((Questionnaire) m);
+          questionnaires.see((Questionnaire) m, packageInfo);
         else if (r instanceof ConceptMap)
-          maps.see((ConceptMap) m);
+          maps.see((ConceptMap) m, packageInfo);
         else if (r instanceof StructureMap)
-          transforms.see((StructureMap) m);
+          transforms.see((StructureMap) m, packageInfo);
         else if (r instanceof NamingSystem)
           systems.add((NamingSystem) r);
       }
@@ -805,6 +813,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @SuppressWarnings("unchecked")
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
+    return fetchResourceWithException(class_, uri, null);
+  }
+  
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -966,9 +978,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource source) {
+    try {
+      return fetchResourceWithException(class_, uri, source);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }    
+  }
+  
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
-      return fetchResourceWithException(class_, uri);
+      return fetchResourceWithException(class_, uri, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
