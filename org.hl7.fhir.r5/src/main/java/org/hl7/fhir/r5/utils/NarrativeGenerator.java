@@ -422,7 +422,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         throw new FHIRException("Error in template: Root element is not 'div'");
     } catch (FHIRException | IOException e) {
       x = new XhtmlNode(NodeType.Element, "div");
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(r, x,  NarrativeStatus.GENERATED);
     return true;
@@ -1109,6 +1109,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private String basePath;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
+  private String tooCostlyNoteEmptyDependent;
+  private String tooCostlyNoteNotEmptyDependent;
   private IReferenceResolver resolver;
   private int headerLevelContext;
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
@@ -1190,6 +1192,22 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
 
+  public String getTooCostlyNoteEmptyDependent() {
+    return tooCostlyNoteEmptyDependent;
+  }
+
+  public void setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
+    this.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+  }
+
+  public String getTooCostlyNoteNotEmptyDependent() {
+    return tooCostlyNoteNotEmptyDependent;
+  }
+
+  public void setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
+    this.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+  }
+
   // dom based version, for build program
   public String generate(Element doc) throws IOException, org.hl7.fhir.exceptions.FHIRException {
     return generate(null, doc);
@@ -1225,7 +1243,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
       } catch (Exception e) {
         e.printStackTrace();
-        x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+        x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
       }
     }
     inject(er, x,  NarrativeStatus.GENERATED);
@@ -1239,7 +1257,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       generateByProfile(rc.resourceResource, profile, rc.resourceResource, profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rc.resourceResource.getResourceType().toString()), x, rc.resourceResource.getResourceType().toString(), showCodeDetails, rc);
     } catch (Exception e) {
       e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(rc.resourceResource, x,  NarrativeStatus.GENERATED);
     return true;
@@ -1252,7 +1270,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       generateByProfile(er, profile, er, profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), er.getLocalName()), x, er.getLocalName(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(er, x,  NarrativeStatus.GENERATED);
     String b = new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x);
@@ -3240,9 +3258,18 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (vs.hasCopyright())
         generateCopyright(x, vs);
     }
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly"))
-      x.para().setAttribute("style", "border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmpty : tooCostlyNoteNotEmpty );
-    else {
+    if (ToolingExtensions.hasExtension(vs.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly")) {
+      List<Extension> exl = vs.getExpansion().getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/valueset-toocostly");
+      boolean other = false;
+      for (Extension ex : exl) {
+        if (ex.getValue() instanceof BooleanType) {
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmpty : tooCostlyNoteNotEmpty );
+        } else if (!other) {
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmptyDependent : tooCostlyNoteNotEmptyDependent );
+          other = true;
+        }
+      }
+    } else {
       Integer count = countMembership(vs);
       if (count == null)
         x.para().tx("This value set does not contain a fixed number of concepts");
@@ -3313,48 +3340,117 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
-    boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
-        if (!versions.isEmpty()) {
-          StringBuilder b = new StringBuilder();
-          if (firstVersion) {
-            // the first version
-            // set the <p> tag and style attribute
-            x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px");
-        	  firstVersion = false;
-          } else {
-            // the second (or greater) version
-            x.br(); // add line break before the version text
-          }
-          b.append("Expansion based on ");
-          boolean firstPart = true;
-          for (String s : versions.keySet()) {
-            if (firstPart)
-              firstPart = false;
-            else
-              b.append(", ");
-            if (!s.equals("http://snomed.info/sct"))
-              b.append(describeSystem(s)+" version "+versions.get(s));
-            else {
-              parts = versions.get(s).split("\\/");
-              if (parts.length >= 5) {
-                String m = describeModule(parts[4]);
-                if (parts.length == 7)
-                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
-                else
-                  b.append("SNOMED CT "+m+" edition");
-              } else
-                b.append(describeSystem(s)+" version "+versions.get(s));
-            }
-          }
-          x.addText(b.toString()); // add the version text
-        }
       }
     }
+    if (versions.size() > 1) {
+      XhtmlNode div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+      div.para().tx("Expansion based on: ");
+      XhtmlNode ul = div.ul();
+      for (String s : versions.keySet()) { // though there'll only be one
+        expRef(ul.li(), s, versions.get(s));
+      }
+    } else if (versions.size() == 1) {
+      XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+      p.tx("Expansion based on ");
+      for (String s : versions.keySet()) { // though there'll only be one
+        expRef(p, s, versions.get(s));
+      }
+    }      
+  }
+
+  private void expRef(XhtmlNode x, String u, String v) {
+    // TODO Auto-generated method stub
+    if (u.equals("http://snomed.info/sct")) {
+      String[] parts = v.split("\\/");
+      if (parts.length >= 5) {
+        String m = describeModule(parts[4]);
+        if (parts.length == 7) {
+          x.tx("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+        } else {
+          x.tx("SNOMED CT "+m+" edition");
+        }
+      } else {
+        x.tx(describeSystem(u)+" version "+v);
+      }
+    } else if (u.equals("http://loinc.org")) {
+      String vd = describeLoincVer(v);
+      if (vd != null) {
+        x.tx("Loinc v"+v+" ("+vd+")");
+      } else {
+        x.tx("Loinc v"+v);        
+      }
+    } else {
+      CanonicalResource cr = (CanonicalResource) context.fetchResource(Resource.class, u+"|"+v);
+      if (cr != null) {
+        if (cr.hasUserData("path")) {
+          x.ah(cr.getUserString("path")).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+        } else {
+          x.tx(describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
+        }
+      } else {
+        x.tx(describeSystem(u)+" version "+v);
+      }
+    }
+  }
+
+  private String describeLoincVer(String v) {
+    if ("2.67".equals(v))  return "Dec 2019";
+    if ("2.66".equals(v))  return "Jun 2019";
+    if ("2.65".equals(v))  return "Dec 2018";
+    if ("2.64".equals(v))  return "Jun 2018";
+    if ("2.63".equals(v))  return "Dec 2017";
+    if ("2.61".equals(v))  return "Jun 2017";
+    if ("2.59".equals(v))  return "Feb 2017";
+    if ("2.58".equals(v))  return "Dec 2016";
+    if ("2.56".equals(v))  return "Jun 2016";
+    if ("2.54".equals(v))  return "Dec 2015";
+    if ("2.52".equals(v))  return "Jun 2015";
+    if ("2.50".equals(v))  return "Dec 2014";
+    if ("2.48".equals(v))  return "Jun 2014";
+    if ("2.46".equals(v))  return "Dec 2013";
+    if ("2.44".equals(v))  return "Jun 2013";
+    if ("2.42".equals(v))  return "Dec 2012";
+    if ("2.40".equals(v))  return "Jun 2012";
+    if ("2.38".equals(v))  return "Dec 2011";
+    if ("2.36".equals(v))  return "Jun 2011";
+    if ("2.34".equals(v))  return "Dec 2010";
+    if ("2.32".equals(v))  return "Jun 2010";
+    if ("2.30".equals(v))  return "Feb 2010";
+    if ("2.29".equals(v))  return "Dec 2009";
+    if ("2.27".equals(v))  return "Jul 2009";
+    if ("2.26".equals(v))  return "Jan 2009";
+    if ("2.24".equals(v))  return "Jul 2008";
+    if ("2.22".equals(v))  return "Dec 2007";
+    if ("2.21".equals(v))  return "Jun 2007";
+    if ("2.19".equals(v))  return "Dec 2006";
+    if ("2.17".equals(v))  return "Jun 2006";
+    if ("2.16".equals(v))  return "Dec 2005";
+    if ("2.15".equals(v))  return "Jun 2005";
+    if ("2.14".equals(v))  return "Dec 2004";
+    if ("2.13".equals(v))  return "Aug 2004";
+    if ("2.12".equals(v))  return "Feb 2004";
+    if ("2.10".equals(v))  return "Oct 2003";
+    if ("2.09".equals(v))  return "May 2003";
+    if ("2.08 ".equals(v)) return "Sep 2002";
+    if ("2.07".equals(v))  return "Aug 2002";
+    if ("2.05".equals(v))  return "Feb 2002";
+    if ("2.04".equals(v))  return "Jan 2002";
+    if ("2.03".equals(v))  return "Jul 2001";
+    if ("2.02".equals(v))  return "May 2001";
+    if ("2.01".equals(v))  return "Jan 2001";
+    if ("2.00".equals(v))  return "Jan 2001";
+    if ("1.0n".equals(v))  return "Feb 2000";
+    if ("1.0ma".equals(v)) return "Aug 1999";
+    if ("1.0m".equals(v))  return "Jul 1999";
+    if ("1.0l".equals(v))  return "Jan 1998";
+    if ("1.0ja".equals(v)) return "Oct 1997";
+
+    return null;
   }
 
   private String formatSCTDate(String ds) {

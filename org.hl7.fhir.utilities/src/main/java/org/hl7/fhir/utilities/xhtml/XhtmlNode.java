@@ -526,6 +526,10 @@ public class XhtmlNode implements IBaseXhtml {
     return setAttribute("colspan", n);
   }
   
+  public XhtmlNode div() {
+    return addTag("div");
+  }
+
   public XhtmlNode para() {
     return addTag("p");
   }
