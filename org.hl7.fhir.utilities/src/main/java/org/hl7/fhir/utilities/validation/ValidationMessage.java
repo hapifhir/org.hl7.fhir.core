@@ -482,6 +482,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private int col;
   private String location; // fhirPath
   private String message;
+  private String messageId; // source, for grouping
   private IssueType type;
   private IssueSeverity level;
   private String html;
@@ -763,6 +764,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public void setSliceHtml(String sliceHtml) {
     this.sliceHtml = sliceHtml;
+  }
+
+  public String getMessageId() {
+    return messageId;
+  }
+
+  public ValidationMessage setMessageId(String messageId) {
+    this.messageId = messageId;
+    return this;
   }
 
   
