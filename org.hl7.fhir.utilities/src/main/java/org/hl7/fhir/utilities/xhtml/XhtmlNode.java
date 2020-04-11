@@ -156,7 +156,7 @@ public class XhtmlNode implements IBaseXhtml {
   {
 
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
-      throw new Error("Wrong node type. is "+nodeType.toString());
+      throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     childNodes.add(node);

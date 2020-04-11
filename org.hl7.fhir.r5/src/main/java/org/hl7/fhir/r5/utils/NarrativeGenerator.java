@@ -769,7 +769,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     @Override
     public void display(XhtmlNode x) {
-      throw new Error("Not done yet");
+      if (wrapped.hasChild("title") && wrapped.getChildValue("title") != null) {
+        x.tx(wrapped.getChildValue("title"));
+      } else if (wrapped.hasChild("name") && wrapped.getChildValue("name") != null) {
+        x.tx(wrapped.getChildValue("name"));       
+      } else {
+        x.tx("??");
+      }
     }
   }
 
@@ -4697,30 +4703,33 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
+    XhtmlNode td = tr.td();
     if (list.has("date")) {
-      tr.td().tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
+      td.tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
     }
     if (list.has("mode")) {
-      tr.td().tx("Mode: "+list.get("mode").primitiveValue());
+      td.tx("Mode: "+list.get("mode").primitiveValue());
     }
     if (list.has("status")) {
-      tr.td().tx("Status: "+list.get("status").primitiveValue());
+      td.tx("Status: "+list.get("status").primitiveValue());
     }
     if (list.has("code")) {
-      tr.td().tx("Code: "+genCC(list.get("code")));
+      td.tx("Code: "+genCC(list.get("code")));
     }    
     tr = t.tr();
     if (list.has("subject")) {
-      shortForRef(tr.td().tx("Subject: "), list.get("subject"));
+      td.tx("Subject: ");
+      shortForRef(td, list.get("subject"));
     }
     if (list.has("encounter")) {
-      shortForRef(tr.td().tx("Encounter: "), list.get("encounter"));
+      shortForRef(td.tx("Encounter: "), list.get("encounter"));
     }
     if (list.has("source")) {
-      shortForRef(tr.td().tx("Source: "), list.get("encounter"));
+      td.tx("Source: ");
+      shortForRef(td, list.get("encounter"));
     }
     if (list.has("orderedBy")) {
-      tr.td().tx("Order: "+genCC(list.get("orderedBy")));
+      td.tx("Order: "+genCC(list.get("orderedBy")));
     }
 //    for (Annotation a : list.getNote()) {
 //      renderAnnotation(a, x);
@@ -4735,27 +4744,27 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx("Items");
+    td.b().tx("Items");
     if (date) {
-      tr.td().tx("Date");      
+      td.tx("Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");      
+      td.tx("Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");      
+      td.tx("Deleted");      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
-      shortForRef(tr.td(), e.get("item"));
+      shortForRef(td, e.get("item"));
       if (date) {
-        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
+        td.tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
       }
       if (flag) {
-        tr.td().tx(e.has("flag") ? genCC(e.get("flag")) : "");      
+        td.tx(e.has("flag") ? genCC(e.get("flag")) : "");      
       }
       if (deleted) {
-        tr.td().tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
+        td.tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
       }
     }    
     return false;
@@ -4781,24 +4790,29 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  private void shortForRef(XhtmlNode x, Base ref) {
-    String disp = ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
-    if (ref.getChildByName("reference").hasValues()) {
-      String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
-      ResourceWithReference r = resolver.resolve(url);
-      if (r == null) {
-        if (disp == null) {
-          disp = url;
-        }
-        x.tx(disp);
-      } else {
-        r.resource.display(x.ah(r.reference));
-      }
-    } else if (disp != null) {
-      x.tx(disp);      
+  private XhtmlNode shortForRef(XhtmlNode x, Base ref) {
+    if (ref == null) {
+      x.tx("(null)");
     } else {
-      x.tx("??");
-    }      
+      String disp = ref.getChildByName("display") != null && ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
+      if (ref.getChildByName("reference").hasValues()) {
+        String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
+        ResourceWithReference r = resolver.resolve(url);
+        if (r == null) {
+          if (disp == null) {
+            disp = url;
+          }
+          x.tx(disp);
+        } else {
+          r.resource.display(x.ah(r.reference));
+        }
+      } else if (disp != null) {
+        x.tx(disp);      
+      } else {
+        x.tx("??");
+      }     
+    }
+    return x;
   }
 
   public boolean generate(ResourceContext rcontext, ImplementationGuide ig) throws EOperationOutcome, FHIRException, IOException {
