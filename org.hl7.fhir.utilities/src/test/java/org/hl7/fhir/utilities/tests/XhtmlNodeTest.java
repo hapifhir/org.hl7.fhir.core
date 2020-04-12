@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.tests;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -71,4 +74,13 @@ public class XhtmlNodeTest {
     assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><img src=\"http://pbs.twimg.com/profile_images/544507893991485440/r_vo3uj2_bigger.png\" alt=\"Twitter Avatar\"/>@fhirabend</div>", output);
   }
 
+  @Test
+  public void testSerializable() throws IOException {
+    XhtmlNode node = new XhtmlNode();
+    node.setValueAsString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><div xmlns=\"http://www.w3.org/1999/xhtml\">Test</div>");
+
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    ObjectOutputStream oout = new ObjectOutputStream(bout);
+    oout.writeObject(node);
+  }
 }
