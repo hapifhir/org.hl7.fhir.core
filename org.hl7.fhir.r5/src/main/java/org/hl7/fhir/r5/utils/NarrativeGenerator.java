@@ -185,6 +185,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -1126,6 +1127,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private boolean noSlowLookup;
   private List<String> codeSystemPropList = new ArrayList<>();
   private ProfileUtilities profileUtilities;
+  private XVerExtensionManager xverManager;
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -1396,6 +1398,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
             Extension ex  = (Extension) v.getBase();
             String url = ex.getUrl();
             StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
+            if (ed == null) {
+              if (xverManager == null) {
+                xverManager = new XVerExtensionManager(context);
+              }
+              if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
+                ed = xverManager.makeDefinition(url);
+                context.generateSnapshot(ed);
+                context.cacheResource(ed);
+              }
+            }
             if (p.getName().equals("modifierExtension") && ed == null)
               throw new DefinitionException("Unknown modifier extension "+url);
             PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
