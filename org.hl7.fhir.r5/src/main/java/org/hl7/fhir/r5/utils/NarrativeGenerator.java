@@ -59,6 +59,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.HashMultimap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -3357,7 +3359,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
-    Map<String, String> versions = new HashMap<String, String>();
+    Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
@@ -3365,20 +3367,30 @@ public class NarrativeGenerator implements INarrativeGenerator {
           versions.put(parts[0], parts[1]);
       }
     }
-    if (versions.size() > 1) {
-      XhtmlNode div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-      div.para().tx("Expansion based on: ");
-      XhtmlNode ul = div.ul();
-      for (String s : versions.keySet()) { // though there'll only be one
-        expRef(ul.li(), s, versions.get(s));
+    if (versions.size() > 0) {
+    	XhtmlNode div = null;
+    	XhtmlNode ul = null;
+      boolean first = true;
+    	for (String s : versions.keySet()) {
+	      if (versions.size() == 1 && versions.get(s).size() == 1) {
+		      for (String v : versions.get(s)) { // though there'll only be one
+			      XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+			      p.tx("Expansion based on ");
+		        expRef(p, s, v);
+		      }
+		    } else {
+		      for (String v : versions.get(s)) {
+			    	if (first) {
+			        div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+			        div.para().tx("Expansion based on: ");
+			        ul = div.ul();
+			        first = false;
+			    	}
+		        expRef(ul.li(), s, v);
+		      }
+		    }
       }
-    } else if (versions.size() == 1) {
-      XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-      p.tx("Expansion based on ");
-      for (String s : versions.keySet()) { // though there'll only be one
-        expRef(p, s, versions.get(s));
-      }
-    }      
+    }
   }
 
   private void expRef(XhtmlNode x, String u, String v) {
