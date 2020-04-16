@@ -49,12 +49,17 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import java.io.File;
+import java.net.URI;
 
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.cli.*;
+import org.hl7.fhir.validation.cli.ValidatorGui;
+import org.hl7.fhir.validation.cli.services.ComparisonService;
+import org.hl7.fhir.validation.cli.services.ValidationService;
+import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.utils.*;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -75,6 +80,8 @@ public class Validator {
     VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN, CONVERT, FHIRPATH, VERSION
   }
 
+  private static CliContext cliContext;
+
   private static String getNamedParam(String[] args, String param) {
     boolean found = false;
     for (String a : args) {
@@ -91,7 +98,29 @@ public class Validator {
     return Long.toString(maxMemory / (1024 * 1024));
   }
 
+  private static CliContext getCliContext() {
+    if (cliContext == null) {
+      cliContext = new CliContext();
+    }
+    return cliContext;
+  }
+
+  private static void goToWebPage(String url) {
+    try {
+
+      URI uri= new URI(url);
+
+      java.awt.Desktop.getDesktop().browse(uri);
+      System.out.println("Web page opened in browser");
+
+    } catch (Exception e) {
+
+      e.printStackTrace();
+    }
+  }
+
   public static void main(String[] args) throws Exception {
+
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
     System.out.println("Detected Java version: " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
     String proxy = getNamedParam(args, Params.PROXY);
@@ -101,7 +130,13 @@ public class Validator {
       System.setProperty("http.proxyPort", p[1]);
     }
 
-    if (Params.hasParam(args, Params.TEST)) {
+    if (Params.hasParam(args, Params.GUI)) {
+      cliContext = Params.loadCliContext(args);
+      String v = Common.getVersion(args);
+      String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
+      ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
+      ValidatorGui.start(cliContext, validationEngine);
+    }else if (Params.hasParam(args, Params.TEST)) {
       Common.runValidationEngineTests();
     } else if (args.length == 0 || Params.hasParam(args, Params.HELP) || Params.hasParam(args, "?") || Params.hasParam(args, "-?") || Params.hasParam(args, "/?")) {
       Display.displayHelpDetails();
@@ -115,30 +150,32 @@ public class Validator {
       else {
         // first, prepare the context
         String txLog = Params.getTerminologyServerLog(args);
-        ValidationEngine validator = Common.getValidationEngine(args, txLog);
+        String v = Common.getVersion(args);
+        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
+        ValidationEngine validator = Common.getValidationEngine(v, definitions, txLog);
         Params.checkIGFileReferences(args);
-        Comparison.doLeftRightComparison(args, dest, validator);
+        ComparisonService.doLeftRightComparison(args, dest, validator);
       }
     } else {
       Display.printCliArgumentsAndInfo(args);
-      CliContext cliContext = Params.loadCliContext(args);
+      cliContext = Params.loadCliContext(args);
 
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
       String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-      ValidationEngine validator = ValidationUtils.getValidator(cliContext, definitions);
-
+      ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
       if (cliContext.getMode() == EngineMode.VERSION) {
-        ValidationUtils.transformVersion(cliContext, validator);
+
+        ValidationService.transformVersion(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.TRANSFORM) {
-        ValidationUtils.transform(cliContext, validator);
+        ValidationService.transform(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.NARRATIVE) {
-        ValidationUtils.generateNarrative(cliContext, validator);
+        ValidationService.generateNarrative(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.SNAPSHOT) {
-        ValidationUtils.generateSnapshot(cliContext, validator);
+        ValidationService.generateSnapshot(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.CONVERT) {
-        ValidationUtils.convertSources(cliContext, validator);
+        ValidationService.convertSources(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.FHIRPATH) {
-        ValidationUtils.evaluateFhirpath(cliContext, validator);
+        ValidationService.evaluateFhirpath(cliContext, validator);
       } else {
         if (definitions == null) {
           throw new Exception("Must provide a defn when doing validation");
@@ -150,9 +187,9 @@ public class Validator {
           }
         }
         if (cliContext.getMode() == EngineMode.SCAN) {
-          ValidationUtils.validateScan(cliContext, validator);
+          ValidationService.validateScan(cliContext, validator);
         } else {
-          ValidationUtils.validateSources(cliContext, validator);
+          ValidationService.validateSources(cliContext, validator);
         }
       }
     }

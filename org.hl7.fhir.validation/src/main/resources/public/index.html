@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JS For Beginners</title>
+    <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"-->
+
+    <!-- Compiled and minified JavaScript -->
+    <!--link rel="stylesheet" href="style.css"-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<header>
+    <h1>Validator 2.0</h1>
+</header>
+  <div class="container">
+    <section id="main">
+      <div class="">
+        <ul>
+          <li class="line1">
+            <text></text>
+            <button class="delete_button"></button>
+          </li>
+          <li class="line1">
+            <text>Filename Here</text>
+            <svg class="delete_button" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+          </li>
+        </ul>
+        <button id="add_file_button" type="button" name="button">Add File</button>
+      </div>
+
+      <div>
+        <input type="file" style="display:none;" id="files" name="files[]" multiple />
+        <input type="button" id="loadFileXml" value="Add File Please" onclick="document.getElementById('files').click()" />
+        <ul id="list"></ul>
+      </div>
+
+    <template id="file_entry">
+    	<li>
+        <details>
+    	     <summary>
+    		       <span id="file_name_field" class="summary-title">asdasdasd</span>
+    		       <div class="summary-chevron-up">
+    			       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    		       </div>
+    	     </summary>
+    	     <div id="file_content_field" class="summary-content">asdasdasdas</div>
+    	     <div class="summary-chevron-down">
+    		   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+         </details>
+    	</li>
+    </template>
+
+    </section>
+
+  </div>
+  <footer id="main-footer">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </footer>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1070,6 +1070,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return isBundle;
   }
 
+  public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles) throws Exception {
+    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+    InstanceValidator validator = getValidator();
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
+    return messagesToOutcome(messages);
+  }
+
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles) throws Exception {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {

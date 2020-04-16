@@ -1,0 +1,10 @@
+export const EngineMode {
+  VALIDATION,
+  TRANSFORM,
+  NARRATIVE,
+  SNAPSHOT,
+  SCAN,
+  CONVERT, 
+  FHIRPATH,
+  VERSION
+}

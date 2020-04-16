@@ -24,6 +24,8 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -34,22 +36,34 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class Manager {
 
-  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR;
+  //TODO use EnumMap
+  public enum FhirFormat {
+    XML("xml"),
+    JSON("json"),
+    TURTLE("ttl"),
+    TEXT("txt"),
+    VBAR("hl7");
+
+    final String extension;
+
+    FhirFormat(String extension) {
+      this.extension = extension;
+    }
 
     public String getExtension() {
-      switch (this) {
-      case JSON:
-        return "json";
-      case TURTLE:
-        return "ttl";
-      case XML:
-        return "xml";
-      case TEXT:
-        return "txt";
-      case VBAR:
-        return "hl7";
+      return this.extension;
+    }
+
+    private static final Map<String, FhirFormat> lookup = new HashMap<>();
+
+    static {
+      for(FhirFormat ff : FhirFormat.values()) {
+        lookup.put(ff.getExtension(), ff);
       }
-      return null;
+    }
+
+    public static FhirFormat get(String extension) {
+      return lookup.get(extension);
     }
   }
   
