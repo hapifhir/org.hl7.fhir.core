@@ -1,10 +1,36 @@
 import {CliContext} from './model/CliContext.js';
 import {ValidationRequest} from './model/ValidationRequest.js';
 import {FileInfo} from './model/FileInfo.js';
+import {FhirFormat} from './enums/FhirFormat.js';
+import {IssueSeverity} from './enums/IssueSeverity.js';
 
-// Constants
+/*
+  <Constants>
+*/
+
+// Icon Constants
 const jsonIcon = './assets/json-svgrepo-com.svg';
 const xmlIcon = './assets/xml-svgrepo-com.svg';
+
+// HTML classes
+const CLASS_LIST_ITEM_PLAIN = "list-group-item";
+const CLASS_LIST_ITEM_FATAL = "list-group-item list-group-item-dark";
+const CLASS_LIST_ITEM_ERROR = "list-group-item list-group-item-danger";
+const CLASS_LIST_ITEM_WARNING = "list-group-item list-group-item-warning";
+const CLASS_LIST_ITEM_INFORMATION = "list-group-item list-group-item-info";
+
+// HTML IDs
+const ID_FILE_ENTRY_TEMPLATE = '#file_entry_template';
+const ID_FILE_ENTRY_NAME = 'file_entry_name_field';
+const ID_FILE_ENTRY_ICON = 'file_entry_type_icon';
+const ID_FILE_ENTRY_DELETE_BUTTON = 'file_entry_delete_button';
+const ID_FILE_ENTRY_FILE_LIST = 'file_entry_file_list';
+const ID_FILE_ENTRY_OUTCOME_LIST = 'file_entry_outcome_list';
+const ID_FILE_ENTRY_COLLAPSE_SECTION = 'file_entry_collapse_section';
+
+/*
+  </Constants>
+*/
 
 // Data Fields
 const cli = new CliContext();
@@ -29,31 +55,67 @@ function generateFileEntry(file) {
   fr.onload = function(e) {
     // TODO there may be timing issues here
     filesToValidate.push(new FileInfo(file.name, e.target.result, file.type));
-    document.getElementById('loaded_file_list').appendChild(generateNewFileListItemFromTemplate(file));
+    document.getElementById(ID_FILE_ENTRY_FILE_LIST).appendChild(generateNewFileListItemFromTemplate(file, filesToValidate.length - 1));
   };
   fr.readAsText(file);
 }
 
 // File List Template Generation
 
-function generateNewFileListItemFromTemplate(file) {
-  var template = document.querySelector('#loaded_file_entry');
+function generateNewFileListItemFromTemplate(file, index) {
+  var template = document.querySelector(ID_FILE_ENTRY_TEMPLATE);
   var clone = template.content.cloneNode(true);
 
   // Add file name
-  clone.getElementById('file_name_field').textContent = file.name;
+  clone.getElementById(ID_FILE_ENTRY_NAME).textContent = file.name;
 
   // Add appropriate icon for filetype
-  if (file.type.includes("json")) {
-    clone.getElementById('file_type_icon').src = jsonIcon;
-  } else if (file.type.includes("xml")) {
-    clone.getElementById('file_type_icon').src = xmlIcon;
+  if (file.type.includes(FhirFormat.JSON.extension)) {
+    clone.getElementById(ID_FILE_ENTRY_ICON).src = jsonIcon;
+  } else if (file.type.includes(FhirFormat.XML.extension)) {
+    clone.getElementById(ID_FILE_ENTRY_ICON).src = xmlIcon;
   }
 
+  clone.getElementById(ID_FILE_ENTRY_COLLAPSE_SECTION).setAttribute("id", (ID_FILE_ENTRY_COLLAPSE_SECTION + index));
+  clone.getElementById(ID_FILE_ENTRY_NAME).setAttribute("aria-controls", (ID_FILE_ENTRY_COLLAPSE_SECTION + index));
+  clone.getElementById(ID_FILE_ENTRY_NAME).setAttribute("data-target", ('#' + ID_FILE_ENTRY_COLLAPSE_SECTION + index));
+
   // Add delete listener
-  clone.getElementById("delete_button").addEventListener("click", handleDeleteOnFileList);
+  clone.getElementById(ID_FILE_ENTRY_DELETE_BUTTON).addEventListener("click", handleDeleteOnFileList);
 
   return clone;
+}
+
+function addIssueToFileEntryList(index, severity, details) {
+  var ul = document.getElementById(ID_FILE_ENTRY_FILE_LIST);
+  var listItems = ul.children;
+  var fileEntry = listItems[index];
+  console.log(fileEntry);
+  var listOfIssues = fileEntry.querySelector('#' + ID_FILE_ENTRY_OUTCOME_LIST);
+  var issueItem = createIssueListItem(severity, details);
+  listOfIssues.appendChild(issueItem);
+}
+
+function createIssueListItem(severity, details) {
+  var newIssue = document.createElement('li');
+  switch(severity) {
+    case IssueSeverity.FATAL.code:
+      newIssue.setAttribute("class", CLASS_LIST_ITEM_FATAL);
+      break;
+    case IssueSeverity.ERROR.code:
+      newIssue.setAttribute("class", CLASS_LIST_ITEM_ERROR);
+      break;
+    case IssueSeverity.WARNING.code:
+      newIssue.setAttribute("class", CLASS_LIST_ITEM_WARNING);
+      break;
+    case IssueSeverity.INFORMATION.code:
+      newIssue.setAttribute("class", CLASS_LIST_ITEM_INFORMATION);
+      break;
+    default:
+      console.error('Passed in bad severity: ' + severity);
+  }
+  newIssue.innerHTML = details;
+  return newIssue;
 }
 
 function handleDeleteOnFileList(e) {
@@ -88,10 +150,21 @@ function sendFilesToValidate(arrayOfFileInfo) {
 }
 
 function processValidationResponse(validationResponse) {
-  console.log(validationResponse.outcomes[0]);
-  console.log(validationResponse.outcomes[1]);
-    //console.log(validationResponse);
-    //Do something
+  console.log(validationResponse);
+  console.log(validationResponse.length);
+  console.log(validationResponse.outcomes);
+  console.log(validationResponse.outcomes.length);
+
+  for (var i = 0; i < validationResponse.outcomes.length; i++) {
+    console.log(validationResponse.outcomes[i]);
+    var fileInfo = validationResponse.outcomes[i].fileInfo;
+    var issues = validationResponse.outcomes[i].issues;
+    issues.forEach(issue => {
+      console.log(issue);
+      addIssueToFileEntryList(i, issue.severity, issue.details);
+    });
+  }
+
 }
 
 
