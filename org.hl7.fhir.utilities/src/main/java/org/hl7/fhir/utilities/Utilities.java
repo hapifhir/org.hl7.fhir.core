@@ -834,6 +834,15 @@ public class Utilities {
     return ch >= a && ch <= z;
   }
 
+  public static boolean existsInList(String value, List<String> array) {
+    if (value == null)
+      return false;
+    for (String s : array)
+      if (value.equals(s))
+          return true;
+    return false;
+  }
+  
   public static boolean existsInList(String value, String... array) {
     if (value == null)
       return false;

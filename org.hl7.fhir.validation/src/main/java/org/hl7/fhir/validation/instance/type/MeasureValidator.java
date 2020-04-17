@@ -32,10 +32,12 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
+import org.w3c.dom.Document;
 
 import net.sf.saxon.tree.tiny.LargeStringBuffer;
 
@@ -104,12 +106,70 @@ public class MeasureValidator extends BaseValidator {
   }
   
   private void validateMeasureCriteria(ValidatorHostContext hostContext, List<ValidationMessage> errors, MeasureContext mctxt, Element crit, NodeStack nsc) {
-    // TODO Auto-generated method stub
+    String mimeType = crit.getChildValue("language");
+    if (!Utilities.noString(mimeType)) { // that would be an error elsewhere 
+      if ("text/cql".equals(mimeType)) {
+        String cqlRef = crit.getChildValue("expression");
+        Library lib = null;
+        if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), mctxt.libraries().size()> 0, I18nConstants.MEASURE_M_CRITERIA_CQL_NO_LIB)) {
+          if (cqlRef.contains(".")) {
+            String name = cqlRef.substring(0, cqlRef.indexOf(".")); 
+            cqlRef = cqlRef.substring(cqlRef.indexOf(".")+1); 
+            for (Library l : mctxt.libraries()) {
+              if (l.getName().equals(name)) {
+                if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib == null, I18nConstants.MEASURE_M_CRITERIA_CQL_LIB_DUPL)) {
+                  lib = l;
+                }
+              }
+            }
+            rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib != null, I18nConstants.MEASURE_M_CRITERIA_CQL_LIB_NOT_FOUND, name);
+          } else {
+            if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), mctxt.libraries().size() == 1, I18nConstants.MEASURE_M_CRITERIA_CQL_ONLY_ONE_LIB)) {
+              lib = mctxt.libraries().get(0);
+            }
+          }
+        }
+        if (lib != null) {
+          if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
+            if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof String) {
+              rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_CQL_ERROR, lib.getUrl(), lib.getUserString(MeasureContext.USER_DATA_ELM));            
+            } else if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof Document) {
+              org.w3c.dom.Element elm = ((Document)lib.getUserData(MeasureContext.USER_DATA_ELM)).getDocumentElement();
+              if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), isValidElm(elm), I18nConstants.MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID, lib.getUrl(), cqlRef)) {
+                rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), hasCqlTarget(elm, cqlRef), I18nConstants.MEASURE_M_CRITERIA_CQL_NOT_FOUND, lib.getUrl(), cqlRef);
+              }
+            }
+          }
+        }
+      } else if ("text/fhirpath".equals(mimeType)) {
+        warning(errors, IssueType.REQUIRED, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_UNKNOWN, mimeType);
+      } else if ("application/x-fhir-query".equals(mimeType)) {
+        warning(errors, IssueType.REQUIRED, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_UNKNOWN, mimeType);
+      } else {
+        warning(errors, IssueType.REQUIRED, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_UNKNOWN, mimeType);
+      }  
+    }
+  }
     
+  private boolean isValidElm(org.w3c.dom.Element elm) {
+    return elm != null && "library".equals(elm.getNodeName()) && "urn:hl7-org:elm:r1".equals(elm.getNamespaceURI());
   }
 
+  private boolean hasCqlTarget(org.w3c.dom.Element element, String cqlRef) {
+    org.w3c.dom.Element stmts = XMLUtil.getNamedChild(element, "statements");
+    if (stmts != null) {
+      for (org.w3c.dom.Element def : XMLUtil.getNamedChildren(stmts, "def")) {
+        if (cqlRef.equals(def.getAttribute("name"))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------
-  
+
   public void validateMeasureReport(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
     Element m = element.getNamedChild("measure");
     String measure = null;
@@ -339,7 +399,7 @@ public class MeasureValidator extends BaseValidator {
       i++;
     }
     for (MeasureGroupPopulationComponent mgp : mg.getPopulation()) {
-      if (!pops.contains(mgp)) {
+      if (!pops.contains(mgp) && !mgp.getCode().hasCoding("http://terminology.hl7.org/CodeSystem/measure-population", "measure-observation")) {
         rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), pops.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, gen.gen(mgp.getCode()));
       }
     }

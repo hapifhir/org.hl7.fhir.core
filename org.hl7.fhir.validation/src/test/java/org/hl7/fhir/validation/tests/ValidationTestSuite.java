@@ -146,35 +146,12 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         vCurr.loadIg(e.getAsString(), true);
       }
     }
-    if (content.has("questionnaire")) {
-      String filename = content.get("questionnaire").getAsString();
-      String contents = TestingUtilities.loadTestResource("validator", filename);
-      vCurr.getContext().cacheResource(loadResource(filename, contents));
-    }
-    if (content.has("measure")) {
-      String filename = content.get("measure").getAsString();
-      String contents = TestingUtilities.loadTestResource("validator", filename);
-      vCurr.getContext().cacheResource(loadResource(filename, contents));
-    }
-    if (content.has("library")) {
-      String filename = content.get("library").getAsString();
-      String contents = TestingUtilities.loadTestResource("validator", filename);
-      vCurr.getContext().cacheResource(loadResource(filename, contents));
-    }
-    if (content.has("codesystems")) {
-      for (JsonElement je : content.getAsJsonArray("codesystems")) {
-        String filename = je.getAsString();
+    if (content.has("supporting")) {
+      for (JsonElement e : content.getAsJsonArray("supporting")) {
+        String filename =  e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        CodeSystem sd = (CodeSystem) loadResource(filename, contents);
-        val.getContext().cacheResource(sd);
-      }
-    }
-    if (content.has("valuesets")) {
-      for (JsonElement je : content.getAsJsonArray("valuesets")) {
-        String filename = je.getAsString();
-        String contents = TestingUtilities.loadTestResource("validator", filename);
-        ValueSet vs = (ValueSet) loadResource(filename, contents);
-        val.getContext().cacheResource(vs);
+        CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
+        val.getContext().cacheResource(mr);
       }
     }
     if (content.has("profiles")) {

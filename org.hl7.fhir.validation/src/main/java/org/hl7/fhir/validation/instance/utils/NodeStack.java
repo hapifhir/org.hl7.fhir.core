@@ -26,6 +26,7 @@ public class NodeStack {
   private ElementDefinition type;
   private String workingLang;
   private Map<String, Element> ids;
+  private boolean resetPoint = false;
 
   public NodeStack(IWorkerContext context) {
     this.context = context;
@@ -147,6 +148,7 @@ public class NodeStack {
   
   public NodeStack resetIds() {
     ids = new HashMap<>();
+    resetPoint  = true;
     return this;
   }
   public Map<String, Element> getIds() {
@@ -171,6 +173,15 @@ public class NodeStack {
 
   public NodeStack getParent() {
     return parent;
+  }
+
+  public void qualifyPath(String qualifier) {
+    literalPath = literalPath + qualifier;
+    
+  }
+
+  public boolean isResetPoint() {
+    return resetPoint;
   }
 
 

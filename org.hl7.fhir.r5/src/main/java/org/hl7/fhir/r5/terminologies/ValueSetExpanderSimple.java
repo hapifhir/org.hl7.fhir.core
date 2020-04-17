@@ -68,6 +68,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -319,7 +320,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     }
 
     if (source.hasCompose())
-      handleCompose(source.getCompose(), focus.getExpansion().getParameter(), expParams, source.getUrl(), focus.getExpansion().getExtension());
+      handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension());
 
     if (canBeHeirarchy) {
       for (ValueSetExpansionContainsComponent c : roots) {
@@ -372,12 +373,12 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     return null;
   }
 
-  private void handleCompose(ValueSetComposeComponent compose, List<ValueSetExpansionParameterComponent> params, Parameters expParams, String ctxt, List<Extension> extensions)
+  private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions)
       throws ETooCostly, FileNotFoundException, IOException, FHIRException {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
-      excludeCodes(inc, params, ctxt);
+      excludeCodes(inc, exp.getParameter(), ctxt);
     canBeHeirarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty();
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
@@ -385,12 +386,12 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         first = false;
       else
         canBeHeirarchy = false;
-      includeCodes(inc, params, expParams, canBeHeirarchy, extensions);
+      includeCodes(inc, exp, expParams, canBeHeirarchy, extensions);
     }
 
   }
 
-  private ValueSet importValueSet(String value, List<ValueSetExpansionParameterComponent> params, Parameters expParams) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSet(String value, ValueSetExpansionComponent exp, Parameters expParams) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw new TerminologyServiceException("unable to find value set with no identity");
     ValueSet vs = context.fetchResource(ValueSet.class, value);
@@ -400,11 +401,20 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     if (vso.getError() != null)
       throw new TerminologyServiceException("Unable to expand imported value set: " + vso.getError());
     if (vs.hasVersion())
-      if (!existsInParams(params, "version", new UriType(vs.getUrl() + "|" + vs.getVersion())))
-        params.add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
+      if (!existsInParams(exp.getParameter(), "version", new UriType(vs.getUrl() + "|" + vs.getVersion())))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
+    for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
+      if (ex.getUrl().equals("http://hl7.org/fhir/StructureDefinition/valueset-toocostly")) {
+        if (ex.getValue() instanceof BooleanType) {
+          exp.getExtension().add(new Extension("http://hl7.org/fhir/StructureDefinition/valueset-toocostly").setValue(new UriType(value)));
+        } else {
+          exp.getExtension().add(ex);
+        }
+      } 
+    }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
-      if (!existsInParams(params, p.getName(), p.getValue()))
-        params.add(p);
+      if (!existsInParams(exp.getParameter(), p.getName(), p.getValue()))
+        exp.getParameter().add(p);
     }
     canBeHeirarchy = false; // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
     return vso.getValueset();
@@ -418,11 +428,11 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     }
   }
 
-  private void includeCodes(ConceptSetComponent inc, List<ValueSetExpansionParameterComponent> params, Parameters expParams, boolean heirarchical, List<Extension> extensions) throws ETooCostly, FileNotFoundException, IOException, FHIRException {
+  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, List<Extension> extensions) throws ETooCostly, FileNotFoundException, IOException, FHIRException {
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (UriType imp : inc.getValueSet()) {
-      imports.add(importValueSet(imp.getValue(), params, expParams));
+      imports.add(importValueSet(imp.getValue(), exp, expParams));
     }
 
     if (!inc.hasSystem()) {
@@ -435,27 +445,27 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     } else {
       CodeSystem cs = context.fetchCodeSystem(inc.getSystem());
       if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE)) {
-        doServerIncludeCodes(inc, heirarchical, params, imports, expParams, extensions);
+        doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions);
       } else {
-        doInternalIncludeCodes(inc, params, expParams, imports, cs);
+        doInternalIncludeCodes(inc, exp, expParams, imports, cs);
       }
     }
   }
 
-  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, List<ValueSetExpansionParameterComponent> params, List<ValueSet> imports, Parameters expParams, List<Extension> extensions) throws FHIRException {
+  private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions) throws FHIRException {
     ValueSetExpansionOutcome vso = context.expandVS(inc, heirarchical);
     if (vso.getError() != null) {
       throw new TerminologyServiceException("Unable to expand imported value set: " + vso.getError());
     }
     ValueSet vs = vso.getValueset();
     if (vs.hasVersion()) {
-      if (!existsInParams(params, "version", new UriType(vs.getUrl() + "|" + vs.getVersion()))) {
-        params.add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
+      if (!existsInParams(exp.getParameter(), "version", new UriType(vs.getUrl() + "|" + vs.getVersion()))) {
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
       }
     }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
-      if (!existsInParams(params, p.getName(), p.getValue())) {
-        params.add(p);
+      if (!existsInParams(exp.getParameter(), p.getName(), p.getValue())) {
+        exp.getParameter().add(p);
       }
     }
     for (Extension ex : vs.getExpansion().getExtension()) {
@@ -479,7 +489,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     return false;
   }
 
-  public void doInternalIncludeCodes(ConceptSetComponent inc, List<ValueSetExpansionParameterComponent> params, Parameters expParams, List<ValueSet> imports,
+  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports,
       CodeSystem cs) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException {
     if (cs == null) {
       if (context.isNoTerminologyServer())
@@ -491,8 +501,8 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     if (cs.getContent() != CodeSystemContentMode.COMPLETE)
       throw new TerminologyServiceException("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion())
-      if (!existsInParams(params, "version", new UriType(cs.getUrl() + "|" + cs.getVersion())))
-        params.add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(cs.getUrl() + "|" + cs.getVersion())));
+      if (!existsInParams(exp.getParameter(), "version", new UriType(cs.getUrl() + "|" + cs.getVersion())))
+        exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(cs.getUrl() + "|" + cs.getVersion())));
 
     if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
       // special case - add all the code system

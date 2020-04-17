@@ -185,6 +185,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -422,7 +423,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         throw new FHIRException("Error in template: Root element is not 'div'");
     } catch (FHIRException | IOException e) {
       x = new XhtmlNode(NodeType.Element, "div");
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(r, x,  NarrativeStatus.GENERATED);
     return true;
@@ -769,7 +770,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
     @Override
     public void display(XhtmlNode x) {
-      throw new Error("Not done yet");
+      if (wrapped.hasChild("title") && wrapped.getChildValue("title") != null) {
+        x.tx(wrapped.getChildValue("title"));
+      } else if (wrapped.hasChild("name") && wrapped.getChildValue("name") != null) {
+        x.tx(wrapped.getChildValue("name"));       
+      } else {
+        x.tx("??");
+      }
     }
   }
 
@@ -1109,6 +1116,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private String basePath;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
+  private String tooCostlyNoteEmptyDependent;
+  private String tooCostlyNoteNotEmptyDependent;
   private IReferenceResolver resolver;
   private int headerLevelContext;
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
@@ -1118,6 +1127,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   private boolean noSlowLookup;
   private List<String> codeSystemPropList = new ArrayList<>();
   private ProfileUtilities profileUtilities;
+  private XVerExtensionManager xverManager;
 
   public NarrativeGenerator(String prefix, String basePath, IWorkerContext context) {
     super();
@@ -1190,6 +1200,22 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
 
+  public String getTooCostlyNoteEmptyDependent() {
+    return tooCostlyNoteEmptyDependent;
+  }
+
+  public void setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
+    this.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+  }
+
+  public String getTooCostlyNoteNotEmptyDependent() {
+    return tooCostlyNoteNotEmptyDependent;
+  }
+
+  public void setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
+    this.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+  }
+
   // dom based version, for build program
   public String generate(Element doc) throws IOException, org.hl7.fhir.exceptions.FHIRException {
     return generate(null, doc);
@@ -1225,7 +1251,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
 
       } catch (Exception e) {
         e.printStackTrace();
-        x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+        x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
       }
     }
     inject(er, x,  NarrativeStatus.GENERATED);
@@ -1239,7 +1265,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       generateByProfile(rc.resourceResource, profile, rc.resourceResource, profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rc.resourceResource.getResourceType().toString()), x, rc.resourceResource.getResourceType().toString(), showCodeDetails, rc);
     } catch (Exception e) {
       e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(rc.resourceResource, x,  NarrativeStatus.GENERATED);
     return true;
@@ -1252,7 +1278,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       generateByProfile(er, profile, er, profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), er.getLocalName()), x, er.getLocalName(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
-      x.para().b().setAttribute("style", "color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     inject(er, x,  NarrativeStatus.GENERATED);
     String b = new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x);
@@ -1372,6 +1398,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
             Extension ex  = (Extension) v.getBase();
             String url = ex.getUrl();
             StructureDefinition ed = context.fetchResource(StructureDefinition.class, url);
+            if (ed == null) {
+              if (xverManager == null) {
+                xverManager = new XVerExtensionManager(context);
+              }
+              if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
+                ed = xverManager.makeDefinition(url);
+                context.generateSnapshot(ed);
+                context.cacheResource(ed);
+              }
+            }
             if (p.getName().equals("modifierExtension") && ed == null)
               throw new DefinitionException("Unknown modifier extension "+url);
             PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
@@ -2521,22 +2557,23 @@ public class NarrativeGenerator implements INarrativeGenerator {
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
-        tr.td().colspan(Integer.toString(sources.size())).b().tx("Source Concept Details");
+        tr.td().colspan(Integer.toString(1+sources.size())).b().tx("Source Concept Details");
         tr.td().b().tx("Relationship");
-        tr.td().colspan(Integer.toString(targets.size())).b().tx("Destination Concept Details");
-        if (comment)
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
+        if (comment) {
           tr.td().b().tx("Comment");
+        }
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
-          renderCSDetailsLink(tr, url);           
+          renderCSDetailsLink(tr, url, true);           
         } else
           tr.td().b().tx("Code");
         for (String s : sources.keySet()) {
           if (!s.equals("code")) {
             if (sources.get(s).size() == 1) {
               String url = sources.get(s).iterator().next();
-              renderCSDetailsLink(tr, url);           
+              renderCSDetailsLink(tr, url, false);           
             } else
               tr.td().b().addText(getDescForConcept(s));
           }
@@ -2544,14 +2581,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
         tr.td();
         if (targets.get("code").size() == 1) {
           String url = targets.get("code").iterator().next();
-          renderCSDetailsLink(tr, url);           
+          renderCSDetailsLink(tr, url, true);           
         } else
           tr.td().b().tx("Code");
         for (String s : targets.keySet()) {
           if (!s.equals("code")) {
             if (targets.get(s).size() == 1) {
               String url = targets.get(s).iterator().next();
-              renderCSDetailsLink(tr, url);           
+              renderCSDetailsLink(tr, url, false);           
             } else
               tr.td().b().addText(getDescForConcept(s));
           }
@@ -2563,68 +2600,83 @@ public class NarrativeGenerator implements INarrativeGenerator {
           SourceElementComponent ccl = grp.getElement().get(si);
           boolean slast = si == grp.getElement().size()-1;
           boolean first = true;
-          for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
-            TargetElementComponent ccm = ccl.getTarget().get(ti);
-            boolean last = ti == ccl.getTarget().size()-1;
+          if (ccl.hasNoMap() && ccl.getNoMap()) {
             tr = tbl.tr();
-            td = tr.td();
-            if (!first && !last)
-              td.setAttribute("style", "border-top-style: none; border-bottom-style: none");
-            else if (!first)
-              td.setAttribute("style", "border-top-style: none");
-            else if (!last)
-              td.setAttribute("style", "border-bottom-style: none");
-            if (first) {
-              if (sources.get("code").size() == 1)
-                td.addText(ccl.getCode());
+            td = tr.td().style("border-right-width: 0px");
+            if (!first)
+              td.style("border-top-style: none");
+            else 
+              td.style("border-bottom-style: none");
+            if (sources.get("code").size() == 1)
+              td.addText(ccl.getCode());
+            else
+              td.addText(grp.getSource()+" / "+ccl.getCode());
+            display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+            tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+            tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
+
+          } else {
+            for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
+              TargetElementComponent ccm = ccl.getTarget().get(ti);
+              boolean last = ti == ccl.getTarget().size()-1;
+              tr = tbl.tr();
+              td = tr.td().style("border-right-width: 0px");
+              if (!first && !last)
+                td.style("border-top-style: none; border-bottom-style: none");
+              else if (!first)
+                td.style("border-top-style: none");
+              else if (!last)
+                td.style("border-bottom-style: none");
+              if (first) {
+                if (sources.get("code").size() == 1)
+                  td.addText(ccl.getCode());
+                else
+                  td.addText(grp.getSource()+" / "+ccl.getCode());
+                display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+                tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+              }
+              for (String s : sources.keySet()) {
+                if (!s.equals("code")) {
+                  td = tr.td();
+                  if (first) {
+                    td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
+                    display = getDisplay(ccm.getDependsOn(), s);
+                    if (display != null)
+                      td.tx(" ("+display+")");
+                  }
+                }
+              }
+              first = false;
+              if (!ccm.hasRelationship())
+                tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+              else {
+                if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                  String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                  tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+                } else {
+                  tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                }
+              }
+              td = tr.td().style("border-right-width: 0px");
+              if (targets.get("code").size() == 1)
+                td.addText(ccm.getCode());
               else
-                td.addText(grp.getSource()+" / "+ccl.getCode());
-              display = getDisplayForConcept(grp.getSource(), ccl.getCode());
-              if (display != null)
-                td.tx(" ("+display+")");
-            }
-            for (String s : sources.keySet()) {
-              if (!s.equals("code")) {
-                td = tr.td();
-                if (first) {
-                  td.addText(getValue(ccm.getDependsOn(), s, sources.get(s).size() != 1));
-                  display = getDisplay(ccm.getDependsOn(), s);
+                td.addText(grp.getTarget()+" / "+ccm.getCode());
+              display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
+              tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+
+              for (String s : targets.keySet()) {
+                if (!s.equals("code")) {
+                  td = tr.td();
+                  td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
+                  display = getDisplay(ccm.getProduct(), s);
                   if (display != null)
                     td.tx(" ("+display+")");
                 }
               }
+              if (comment)
+                tr.td().addText(ccm.getComment());
             }
-            first = false;
-            if (!ccm.hasRelationship())
-              tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-            else {
-              if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
-              } else {
-                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-              }
-            }
-            td = tr.td();
-            if (targets.get("code").size() == 1)
-              td.addText(ccm.getCode());
-            else
-              td.addText(grp.getTarget()+" / "+ccm.getCode());
-            display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
-            if (display != null)
-              td.tx(" ("+display+")");
-
-            for (String s : targets.keySet()) {
-              if (!s.equals("code")) {
-                td = tr.td();
-                td.addText(getValue(ccm.getProduct(), s, targets.get(s).size() != 1));
-                display = getDisplay(ccm.getProduct(), s);
-                if (display != null)
-                  td.tx(" ("+display+")");
-              }
-            }
-            if (comment)
-              tr.td().addText(ccm.getComment());
           }
           addUnmapped(tbl, grp);
         }
@@ -2684,11 +2736,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  public void renderCSDetailsLink(XhtmlNode tr, String url) {
+  public void renderCSDetailsLink(XhtmlNode tr, String url, boolean span2) {
     CodeSystem cs;
     XhtmlNode td;
     cs = context.fetchCodeSystem(url);
     td = tr.td();
+    if (span2) {
+      td.colspan("2");
+    }
     td.b().tx("Code");
     td.tx(" from ");
     if (cs == null)
@@ -3221,9 +3276,18 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (vs.hasCopyright())
         generateCopyright(x, vs);
     }
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly"))
-      x.para().setAttribute("style", "border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmpty : tooCostlyNoteNotEmpty );
-    else {
+    if (ToolingExtensions.hasExtension(vs.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly")) {
+      List<Extension> exl = vs.getExpansion().getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/valueset-toocostly");
+      boolean other = false;
+      for (Extension ex : exl) {
+        if (ex.getValue() instanceof BooleanType) {
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmpty : tooCostlyNoteNotEmpty );
+        } else if (!other) {
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmptyDependent : tooCostlyNoteNotEmptyDependent );
+          other = true;
+        }
+      }
+    } else {
       Integer count = countMembership(vs);
       if (count == null)
         x.para().tx("This value set does not contain a fixed number of concepts");
@@ -3294,48 +3358,117 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
-    boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
-        if (!versions.isEmpty()) {
-          StringBuilder b = new StringBuilder();
-          if (firstVersion) {
-            // the first version
-            // set the <p> tag and style attribute
-            x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px");
-        	  firstVersion = false;
-          } else {
-            // the second (or greater) version
-            x.br(); // add line break before the version text
-          }
-          b.append("Expansion based on ");
-          boolean firstPart = true;
-          for (String s : versions.keySet()) {
-            if (firstPart)
-              firstPart = false;
-            else
-              b.append(", ");
-            if (!s.equals("http://snomed.info/sct"))
-              b.append(describeSystem(s)+" version "+versions.get(s));
-            else {
-              parts = versions.get(s).split("\\/");
-              if (parts.length >= 5) {
-                String m = describeModule(parts[4]);
-                if (parts.length == 7)
-                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
-                else
-                  b.append("SNOMED CT "+m+" edition");
-              } else
-                b.append(describeSystem(s)+" version "+versions.get(s));
-            }
-          }
-          x.addText(b.toString()); // add the version text
-        }
       }
     }
+    if (versions.size() > 1) {
+      XhtmlNode div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+      div.para().tx("Expansion based on: ");
+      XhtmlNode ul = div.ul();
+      for (String s : versions.keySet()) { // though there'll only be one
+        expRef(ul.li(), s, versions.get(s));
+      }
+    } else if (versions.size() == 1) {
+      XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+      p.tx("Expansion based on ");
+      for (String s : versions.keySet()) { // though there'll only be one
+        expRef(p, s, versions.get(s));
+      }
+    }      
+  }
+
+  private void expRef(XhtmlNode x, String u, String v) {
+    // TODO Auto-generated method stub
+    if (u.equals("http://snomed.info/sct")) {
+      String[] parts = v.split("\\/");
+      if (parts.length >= 5) {
+        String m = describeModule(parts[4]);
+        if (parts.length == 7) {
+          x.tx("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+        } else {
+          x.tx("SNOMED CT "+m+" edition");
+        }
+      } else {
+        x.tx(describeSystem(u)+" version "+v);
+      }
+    } else if (u.equals("http://loinc.org")) {
+      String vd = describeLoincVer(v);
+      if (vd != null) {
+        x.tx("Loinc v"+v+" ("+vd+")");
+      } else {
+        x.tx("Loinc v"+v);        
+      }
+    } else {
+      CanonicalResource cr = (CanonicalResource) context.fetchResource(Resource.class, u+"|"+v);
+      if (cr != null) {
+        if (cr.hasUserData("path")) {
+          x.ah(cr.getUserString("path")).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+        } else {
+          x.tx(describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
+        }
+      } else {
+        x.tx(describeSystem(u)+" version "+v);
+      }
+    }
+  }
+
+  private String describeLoincVer(String v) {
+    if ("2.67".equals(v))  return "Dec 2019";
+    if ("2.66".equals(v))  return "Jun 2019";
+    if ("2.65".equals(v))  return "Dec 2018";
+    if ("2.64".equals(v))  return "Jun 2018";
+    if ("2.63".equals(v))  return "Dec 2017";
+    if ("2.61".equals(v))  return "Jun 2017";
+    if ("2.59".equals(v))  return "Feb 2017";
+    if ("2.58".equals(v))  return "Dec 2016";
+    if ("2.56".equals(v))  return "Jun 2016";
+    if ("2.54".equals(v))  return "Dec 2015";
+    if ("2.52".equals(v))  return "Jun 2015";
+    if ("2.50".equals(v))  return "Dec 2014";
+    if ("2.48".equals(v))  return "Jun 2014";
+    if ("2.46".equals(v))  return "Dec 2013";
+    if ("2.44".equals(v))  return "Jun 2013";
+    if ("2.42".equals(v))  return "Dec 2012";
+    if ("2.40".equals(v))  return "Jun 2012";
+    if ("2.38".equals(v))  return "Dec 2011";
+    if ("2.36".equals(v))  return "Jun 2011";
+    if ("2.34".equals(v))  return "Dec 2010";
+    if ("2.32".equals(v))  return "Jun 2010";
+    if ("2.30".equals(v))  return "Feb 2010";
+    if ("2.29".equals(v))  return "Dec 2009";
+    if ("2.27".equals(v))  return "Jul 2009";
+    if ("2.26".equals(v))  return "Jan 2009";
+    if ("2.24".equals(v))  return "Jul 2008";
+    if ("2.22".equals(v))  return "Dec 2007";
+    if ("2.21".equals(v))  return "Jun 2007";
+    if ("2.19".equals(v))  return "Dec 2006";
+    if ("2.17".equals(v))  return "Jun 2006";
+    if ("2.16".equals(v))  return "Dec 2005";
+    if ("2.15".equals(v))  return "Jun 2005";
+    if ("2.14".equals(v))  return "Dec 2004";
+    if ("2.13".equals(v))  return "Aug 2004";
+    if ("2.12".equals(v))  return "Feb 2004";
+    if ("2.10".equals(v))  return "Oct 2003";
+    if ("2.09".equals(v))  return "May 2003";
+    if ("2.08 ".equals(v)) return "Sep 2002";
+    if ("2.07".equals(v))  return "Aug 2002";
+    if ("2.05".equals(v))  return "Feb 2002";
+    if ("2.04".equals(v))  return "Jan 2002";
+    if ("2.03".equals(v))  return "Jul 2001";
+    if ("2.02".equals(v))  return "May 2001";
+    if ("2.01".equals(v))  return "Jan 2001";
+    if ("2.00".equals(v))  return "Jan 2001";
+    if ("1.0n".equals(v))  return "Feb 2000";
+    if ("1.0ma".equals(v)) return "Aug 1999";
+    if ("1.0m".equals(v))  return "Jul 1999";
+    if ("1.0l".equals(v))  return "Jan 1998";
+    if ("1.0ja".equals(v)) return "Oct 1997";
+
+    return null;
   }
 
   private String formatSCTDate(String ds) {
@@ -4582,30 +4715,33 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
+    XhtmlNode td = tr.td();
     if (list.has("date")) {
-      tr.td().tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
+      td.tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
     }
     if (list.has("mode")) {
-      tr.td().tx("Mode: "+list.get("mode").primitiveValue());
+      td.tx("Mode: "+list.get("mode").primitiveValue());
     }
     if (list.has("status")) {
-      tr.td().tx("Status: "+list.get("status").primitiveValue());
+      td.tx("Status: "+list.get("status").primitiveValue());
     }
     if (list.has("code")) {
-      tr.td().tx("Code: "+genCC(list.get("code")));
+      td.tx("Code: "+genCC(list.get("code")));
     }    
     tr = t.tr();
     if (list.has("subject")) {
-      shortForRef(tr.td().tx("Subject: "), list.get("subject"));
+      td.tx("Subject: ");
+      shortForRef(td, list.get("subject"));
     }
     if (list.has("encounter")) {
-      shortForRef(tr.td().tx("Encounter: "), list.get("encounter"));
+      shortForRef(td.tx("Encounter: "), list.get("encounter"));
     }
     if (list.has("source")) {
-      shortForRef(tr.td().tx("Source: "), list.get("encounter"));
+      td.tx("Source: ");
+      shortForRef(td, list.get("encounter"));
     }
     if (list.has("orderedBy")) {
-      tr.td().tx("Order: "+genCC(list.get("orderedBy")));
+      td.tx("Order: "+genCC(list.get("orderedBy")));
     }
 //    for (Annotation a : list.getNote()) {
 //      renderAnnotation(a, x);
@@ -4620,27 +4756,27 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx("Items");
+    td.b().tx("Items");
     if (date) {
-      tr.td().tx("Date");      
+      td.tx("Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");      
+      td.tx("Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");      
+      td.tx("Deleted");      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
-      shortForRef(tr.td(), e.get("item"));
+      shortForRef(td, e.get("item"));
       if (date) {
-        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
+        td.tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
       }
       if (flag) {
-        tr.td().tx(e.has("flag") ? genCC(e.get("flag")) : "");      
+        td.tx(e.has("flag") ? genCC(e.get("flag")) : "");      
       }
       if (deleted) {
-        tr.td().tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
+        td.tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
       }
     }    
     return false;
@@ -4666,24 +4802,29 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
   }
 
-  private void shortForRef(XhtmlNode x, Base ref) {
-    String disp = ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
-    if (ref.getChildByName("reference").hasValues()) {
-      String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
-      ResourceWithReference r = resolver.resolve(url);
-      if (r == null) {
-        if (disp == null) {
-          disp = url;
-        }
-        x.tx(disp);
-      } else {
-        r.resource.display(x.ah(r.reference));
-      }
-    } else if (disp != null) {
-      x.tx(disp);      
+  private XhtmlNode shortForRef(XhtmlNode x, Base ref) {
+    if (ref == null) {
+      x.tx("(null)");
     } else {
-      x.tx("??");
-    }      
+      String disp = ref.getChildByName("display") != null && ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
+      if (ref.getChildByName("reference").hasValues()) {
+        String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
+        ResourceWithReference r = resolver.resolve(url);
+        if (r == null) {
+          if (disp == null) {
+            disp = url;
+          }
+          x.tx(disp);
+        } else {
+          r.resource.display(x.ah(r.reference));
+        }
+      } else if (disp != null) {
+        x.tx(disp);      
+      } else {
+        x.tx("??");
+      }     
+    }
+    return x;
   }
 
   public boolean generate(ResourceContext rcontext, ImplementationGuide ig) throws EOperationOutcome, FHIRException, IOException {

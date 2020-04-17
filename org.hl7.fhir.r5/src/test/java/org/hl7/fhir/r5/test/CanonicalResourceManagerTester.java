@@ -3,12 +3,13 @@ package org.hl7.fhir.r5.test;
 import static org.junit.Assert.*;
 
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MetadataResourceManagerTester {
+public class CanonicalResourceManagerTester {
 
   
   @Test
@@ -20,13 +21,13 @@ public class MetadataResourceManagerTester {
     // no version
     
     mrm.clear();
-    mrm.see(vs);
+    mrm.see(vs, null);
     
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
     Assert.assertNotNull(mrm.get("2345"));
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.0.0"));
-    mrm.see(vs);    
+    mrm.see(vs, null);    
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
     Assert.assertNotNull(mrm.get("2345"));
@@ -54,7 +55,7 @@ public class MetadataResourceManagerTester {
     vs.setVersion("4.0.1");
     
     mrm.clear();
-    mrm.see(vs);
+    mrm.see(vs, null);
     
     Assert.assertNotNull(mrm.get("2345"));
     Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
@@ -74,7 +75,7 @@ public class MetadataResourceManagerTester {
     vs.setVersion("20140403");
     
     mrm.clear();
-    mrm.see(vs);
+    mrm.see(vs, null);
     
     Assert.assertNotNull(mrm.get("2345"));
     Assert.assertNotNull(mrm.get("http://url/ValueSet/234"));
@@ -99,7 +100,7 @@ public class MetadataResourceManagerTester {
     vs2.setName("2");
     
     mrm.clear();
-    mrm.see(vs1);
+    mrm.see(vs1, null);
     
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("2345"));
@@ -116,7 +117,7 @@ public class MetadataResourceManagerTester {
     Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
 
-    mrm.see(vs2);
+    mrm.see(vs2, null);
 
     Assert.assertEquals(mrm.size(), 2);
     Assert.assertNotNull(mrm.get("2345"));
@@ -180,7 +181,7 @@ public class MetadataResourceManagerTester {
     vs2.setName("2");
     
     mrm.clear();
-    mrm.see(vs1);
+    mrm.see(vs1, null);
     
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("2345"));
@@ -197,7 +198,7 @@ public class MetadataResourceManagerTester {
     Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
 
-    mrm.see(vs2);
+    mrm.see(vs2, null);
 
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("2345"));
@@ -243,7 +244,7 @@ public class MetadataResourceManagerTester {
     vs2.setName("2");
     
     mrm.clear();
-    mrm.see(vs1);
+    mrm.see(vs1, null);
     
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("2345"));
@@ -260,7 +261,7 @@ public class MetadataResourceManagerTester {
     Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
 
-    mrm.see(vs2);
+    mrm.see(vs2, null);
 
     Assert.assertEquals(mrm.size(), 2);
     Assert.assertNotNull(mrm.get("2345"));
@@ -315,7 +316,7 @@ public class MetadataResourceManagerTester {
     vs2.setName("2");
     
     mrm.clear();
-    mrm.see(vs1);
+    mrm.see(vs1, null);
     
     Assert.assertEquals(mrm.size(), 1);
     Assert.assertNotNull(mrm.get("2345"));
@@ -332,7 +333,7 @@ public class MetadataResourceManagerTester {
     Assert.assertEquals(mrm.get("http://url/ValueSet/234", "4.0").getName(), "1");
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
 
-    mrm.see(vs2);
+    mrm.see(vs2, null);
 
     Assert.assertEquals(mrm.size(), 2);
     Assert.assertNotNull(mrm.get("2345"));
@@ -371,4 +372,58 @@ public class MetadataResourceManagerTester {
     Assert.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
   }
 
+  @Test
+  public void testUTG1() {
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    ValueSet vs1 = new ValueSet();
+    vs1.setId("234");
+    vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs1.setVersion("2.0.0");
+    vs1.setName("1");
+    
+    ValueSet vs2 = new ValueSet();
+    vs2.setId("234");
+    vs2.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs2.setVersion("2000.0.0");
+    vs2.setName("2");
+    
+
+    mrm.see(vs1, null);
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assert.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
+
+    mrm.see(vs2, null);   
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
+    Assert.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2000.0.0"));
+  }
+  
+  @Test
+  public void testUTG2() {
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    ValueSet vs1 = new ValueSet();
+    vs1.setId("234");
+    vs1.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs1.setVersion("2.0.0");
+    vs1.setName("1");
+    
+    ValueSet vs2 = new ValueSet();
+    vs2.setId("234");
+    vs2.setUrl("http://terminology.hl7.org/ValueSet/234");
+    vs2.setVersion("2000.0.0");
+    vs2.setName("2");
+    
+
+    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1"));
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
+    Assert.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
+
+    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1"));   
+    Assert.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
+    Assert.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
+    Assert.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
+  }
 }

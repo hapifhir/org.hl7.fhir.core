@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation;
+package org.hl7.fhir.r5.utils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
@@ -38,6 +39,9 @@ public class XVerExtensionManager {
 
   public XVerExtensionStatus status(String url) throws FHIRException {
     String v = url.substring(20, 23);
+    if ("5.0".equals(v)) {
+      v = Constants.VERSION_MM;
+    }
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
       if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
@@ -68,6 +72,9 @@ public class XVerExtensionManager {
 
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
+    if ("5.0".equals(verSource)) {
+      verSource = Constants.VERSION_MM;
+    }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);

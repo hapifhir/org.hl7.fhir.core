@@ -470,4 +470,36 @@ public class I18nConstants {
   public static final String MEASURE_MR_SCORE_VALUE_INVALID_01 = "MEASURE_MR_SCORE_VALUE_INVALID_01";
   public static final String MEASURE_MR_SCORE_FIXED = "MEASURE_MR_SCORE_FIXED";
   public static final String MEASURE_MR_SCORE_UNIT_REQUIRED = "MEASURE_MR_SCORE_UNIT_REQUIRED";
+  public static final String MEASURE_M_CRITERIA_UNKNOWN = "MEASURE_M_CRITERIA_UNKNOWN";
+  public static final String MEASURE_M_CQL_NOT_FOUND = "MEASURE_M_CQL_NOT_FOUND";
+  public static final String MEASURE_M_CRITERIA_CQL_ERROR = "MEASURE_M_CRITERIA_CQL_ERROR";
+  public static final String MEASURE_M_CRITERIA_CQL_ONLY_ONE_LIB = "MEASURE_M_CRITERIA_CQL_ONLY_ONE_LIB";
+  public static final String MEASURE_M_CRITERIA_CQL_NO_LIB = "MEASURE_M_CRITERIA_CQL_NO_LIB";
+  public static final String MEASURE_M_CRITERIA_CQL_LIB_NOT_FOUND = "MEASURE_M_CRITERIA_CQL_LIB_NOT_FOUND"; 
+  public static final String MEASURE_M_CRITERIA_CQL_LIB_DUPL = "MEASURE_M_CRITERIA_CQL_LIB_DUPL"; 
+  public static final String MEASURE_M_CRITERIA_CQL_NO_ELM = "MEASURE_M_CRITERIA_CQL_NO_ELM"; 
+  public static final String MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID = "MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID"; 
+  public static final String MEASURE_M_CRITERIA_CQL_NOT_FOUND = "MEASURE_M_CRITERIA_CQL_NOT_FOUND";
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
+//public static final String 
 }

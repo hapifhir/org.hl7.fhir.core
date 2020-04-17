@@ -1,7 +1,7 @@
 @echo off
 
-set oldver=4.2.12
-set newver=4.2.13
+set oldver=4.2.16
+set newver=4.2.17
 
 echo ..
 echo =========================================================================
@@ -12,6 +12,7 @@ echo ..
 call mvn versions:set -DnewVersion=%newver%-SNAPSHOT
 
 call git commit -t v%newver% -a -m "Release new version %newver%"
+call git tag v%newver%
 
 call git push origin master
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\build" -fileMask "*.xml" -find "%oldver%-SNAPSHOT" -replace "%newver%-SNAPSHOT" -count 8

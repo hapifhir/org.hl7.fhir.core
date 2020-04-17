@@ -50,6 +50,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +68,8 @@ public class XhtmlNode implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
 
 
-  public static class Location {
+  public static class Location implements Serializable {
+    private static final long serialVersionUID = -4079302502900219721L;
     private int line;
     private int column;
     public Location(int line, int column) {
@@ -156,7 +158,7 @@ public class XhtmlNode implements IBaseXhtml {
   {
 
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
-      throw new Error("Wrong node type. is "+nodeType.toString());
+      throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     childNodes.add(node);
@@ -288,6 +290,9 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
   public XhtmlNode setAttribute(String name, String value) {
+    if (nodeType != NodeType.Element) {
+      throw new Error("Attempt to set an attribute on something that is not an element");
+    }
     getAttributes().put(name, value);
     return this;    
   }
@@ -523,6 +528,10 @@ public class XhtmlNode implements IBaseXhtml {
     return setAttribute("colspan", n);
   }
   
+  public XhtmlNode div() {
+    return addTag("div");
+  }
+
   public XhtmlNode para() {
     return addTag("p");
   }
@@ -636,7 +645,11 @@ public class XhtmlNode implements IBaseXhtml {
 
 
   public XhtmlNode style(String style) {
-    setAttribute("style", style);
+    if (hasAttribute("style")) {
+      setAttribute("style", getAttribute("style")+"; "+style);
+    } else {
+      setAttribute("style", style);
+    }
     return this;
   }
 
