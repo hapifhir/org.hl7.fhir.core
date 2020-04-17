@@ -569,7 +569,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   private boolean hasTooCostlyExpansion(ValueSet valueset) {
-    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly");
+    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY);
   }
   // --- validate code -------------------------------------------------------------------------------
   
