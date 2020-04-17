@@ -92,7 +92,6 @@ public class TestingUtilities {
       return s;
     throw new Error("FHIR Home directory not configured");
   }
-  
 
   public static String content() throws IOException {
     if (contentpath != null)
