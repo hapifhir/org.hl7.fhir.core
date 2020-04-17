@@ -7,7 +7,7 @@ public class UIController {
   public UIController() {}
 
   public Handler renderLandingPage = ctx -> {
-    ctx.render("/public/test.html");
+    ctx.render("/public/index.html");
   };
 
 }

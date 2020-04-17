@@ -6,8 +6,15 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Common;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class ValidatorGui {
 
+  private static final int GUI_FRONTEND_PORT = 8080;
+  private static final String PAGE_ADDRESS = "http://localhost:" + GUI_FRONTEND_PORT + "/home";
   private static final String WEB_APP_FILE_LOCATION = "/public";
   private static Javalin app;
 
@@ -25,9 +32,21 @@ public class ValidatorGui {
 
   public static void start(CliContext currentContext, ValidationEngine validationEngine) {
     app = Javalin.create();
-    new RestEndpoints().initRestEndpoints(app, new CliContext(), validationEngine);
+    new RestEndpoints().initRestEndpoints(app, currentContext, validationEngine);
     app.config.addStaticFiles(WEB_APP_FILE_LOCATION);
-    app.start(8080);
+    app.start(GUI_FRONTEND_PORT);
+    openBrowser();
+  }
+
+  public static void openBrowser() {
+    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+      try {
+        Desktop.getDesktop().browse(new URI(PAGE_ADDRESS));
+      } catch (Exception e) {
+        System.out.println("Error opening web browser to validator GUI.\nYou can try to open the page manually at:: "
+          + PAGE_ADDRESS + "\nError:: " + e.getMessage());
+      }
+    }
   }
 
   public static void stop() {

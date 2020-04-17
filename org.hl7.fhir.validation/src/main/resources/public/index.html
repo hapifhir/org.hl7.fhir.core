@@ -1,66 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JS For Beginners</title>
-    <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"-->
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Iantorno">
+  <meta name="generator" content="Jekyll v3.8.6">
+  <title>FHIR HL7 Resrouce Validator GUI</title>
 
-    <!-- Compiled and minified JavaScript -->
-    <!--link rel="stylesheet" href="style.css"-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/offcanvas/">
+  <!-- Favicons -->
+  <meta name="theme-color" content="#563d7c">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  <!-- Custom styles for this template -->
+  <link href="style.css" rel="stylesheet">
 </head>
-<body>
-<header>
-    <h1>Validator 2.0</h1>
-</header>
-  <div class="container">
-    <section id="main">
-      <div class="">
-        <ul>
-          <li class="line1">
-            <text></text>
-            <button class="delete_button"></button>
-          </li>
-          <li class="line1">
-            <text>Filename Here</text>
-            <svg class="delete_button" height="24" viewBox="0 0 24 24" width="24">
-              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-            </svg>
-          </li>
+<body class="bg-light">
+  <main role="main" class="container">
+    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-secondary rounded shadow-sm">
+      <img class="mr-3" src="./assets/fhir-logo-www.png" alt="" height="48">
+      <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100">FHIR Core Validator</h6>
+        <small class="text-white">Experimental</small>
+      </div>
+    </div>
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+      <div class="d-flex border-bottom border-gray justify-content-between align-items-center w-100">
+        <h6 class="pb-2 mb-0">Files to Validate</h6>
+        <button id="validate_button" class="btn btn-secondary mb-1">Validate</button>
+      </div>
+
+      <div class="accordion" id="accordionExample">
+        <ul id="file_entry_file_list" class="list-group border">
         </ul>
-        <button id="add_file_button" type="button" name="button">Add File</button>
       </div>
 
-      <div>
-        <input type="file" style="display:none;" id="files" name="files[]" multiple />
-        <input type="button" id="loadFileXml" value="Add File Please" onclick="document.getElementById('files').click()" />
-        <ul id="list"></ul>
+      <div class="bd-callout bd-callout-info">
+        <small class="d-block text-right mt-3">
+          <input type="file" style="display:none;" id="files" name="files[]" multiple="" >
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('files').click()">Add Files</button>
+        </small>
       </div>
 
-    <template id="file_entry">
-    	<li>
-        <details>
-    	     <summary>
-    		       <span id="file_name_field" class="summary-title">asdasdasd</span>
-    		       <div class="summary-chevron-up">
-    			       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    		       </div>
-    	     </summary>
-    	     <div id="file_content_field" class="summary-content">asdasdasdas</div>
-    	     <div class="summary-chevron-down">
-    		   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-         </details>
-    	</li>
-    </template>
+      <template id="file_entry_template">
+        <li class="list-unstyled">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <div class="d-flex">
+                <div class="d-flex align-items-center">
+                  <img id="file_entry_type_icon" class="bd-placeholder-img mr-2 rounded" src="./assets/json-svgrepo-com.svg" width="32" height="32" preserveaspectratio="xMidYMid slice">
+                  <button id="file_entry_name_field" class="btn btn-link" type="button" data-toggle="collapse" data-target="#file_entry_collapse_section" aria-expanded="true" aria-controls="file_entry_collapse_section">
+                    Collapsible Group Item #1
+                  </button>
+                </div>
+                <div class="ml-auto d-flex">
+                  <svg id="file_entry_delete_button" class="delete_button align-self-center" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
 
-    </section>
-
-  </div>
-  <footer id="main-footer">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-  </footer>
+            <div id="file_entry_collapse_section" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <ul id="file_entry_outcome_list" class="list-group">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+      </template>
+    </div>
+  </main>
   <script type="module" src="./main.js"></script>
-</body>
-</html>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body></html>
