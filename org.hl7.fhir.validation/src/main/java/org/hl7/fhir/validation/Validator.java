@@ -136,7 +136,7 @@ public class Validator {
       String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
       ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
       ValidatorGui.start(cliContext, validationEngine);
-    }else if (Params.hasParam(args, Params.TEST)) {
+    } else if (Params.hasParam(args, Params.TEST)) {
       Common.runValidationEngineTests();
     } else if (args.length == 0 || Params.hasParam(args, Params.HELP) || Params.hasParam(args, "?") || Params.hasParam(args, "-?") || Params.hasParam(args, "/?")) {
       Display.displayHelpDetails();
