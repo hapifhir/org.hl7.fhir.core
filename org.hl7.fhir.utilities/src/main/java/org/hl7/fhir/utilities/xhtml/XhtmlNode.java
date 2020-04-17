@@ -50,6 +50,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +68,8 @@ public class XhtmlNode implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
 
 
-  public static class Location {
+  public static class Location implements Serializable {
+    private static final long serialVersionUID = -4079302502900219721L;
     private int line;
     private int column;
     public Location(int line, int column) {

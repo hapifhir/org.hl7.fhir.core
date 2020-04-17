@@ -50,6 +50,7 @@ package org.hl7.fhir.r4.model;
 
 
 import ca.uhn.fhir.model.api.IElement;
+import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.codec.binary.Base64;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -84,11 +85,17 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
 
   public Base64BinaryType(String theValue) {
     super();
+    // Null values still result in non-null instance being created
+    if (theValue != null) checkValidBase64(theValue);
     setValueAsString(theValue);
   }
 
   protected byte[] parse(String theValue) {
-    return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+    if (theValue != null) {
+      return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+    } else {
+      return null;
+    }
   }
 
   protected String encode(byte[] theValue) {
@@ -129,6 +136,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
 
   @Override
   public void setValueAsString(String theValue) throws IllegalArgumentException {
+    fromStringValue(theValue);
     setValue(parse(theValue));
   }
 
@@ -154,4 +162,16 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
     return ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension) && !hasValue();
   }
 
+  /**
+   * Checks if the passed in String is a valid {@link Base64} encoded String. Will throw a {@link DataFormatException} if not
+   * formatted correctly.
+   *
+   * @param toCheck {@link String} to check if valid {@link Base64}
+   * @throws DataFormatException
+   */
+  public void checkValidBase64(String toCheck) throws DataFormatException {
+    if (!Base64.isBase64(toCheck.getBytes())) {
+      throw new DataFormatException("");
+    }
+  }
 }
