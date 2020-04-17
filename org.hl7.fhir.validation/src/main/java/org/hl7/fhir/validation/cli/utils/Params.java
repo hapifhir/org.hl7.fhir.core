@@ -171,9 +171,11 @@ public class Params {
           throw new Error("Specified " + args[i] + " without indicating ig file");
         else {
           String s = args[++i];
-          cliContext.setSv(Common.getVersionFromIGName(null, s));
-          if (cliContext.getSv() == null) {
+          String version = Common.getVersionFromIGName(null, s);
+          if (version == null) {
             cliContext.addIg(s);
+          } else {
+            cliContext.setSv(version);
           }
         }
       } else if (args[i].equals(MAP)) {

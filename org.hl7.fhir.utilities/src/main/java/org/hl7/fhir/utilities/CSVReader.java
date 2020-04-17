@@ -93,7 +93,11 @@ public class CSVReader extends InputStreamReader {
   }
 
   public boolean has(String name) {
-    return cell(name) != null;
+    for (int i = 0; i < cols.length; i++) {
+      if (name.equals(cols[i].trim()))
+        return cell(name) != null;
+    }
+    return false;
   }
   
   public String cell(String name) {
@@ -103,11 +107,15 @@ public class CSVReader extends InputStreamReader {
         index = i;
     }
     if (index == -1)
-      throw new Error("no cell "+name);
+      throw new FHIRException("no cell "+name);
     String s = cells.length >= index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
-    return s;
+    if (s.startsWith("\"") && s.endsWith("\"")) {
+      return s.substring(1, s.length()-2);     
+    } else {
+      return s;
+    }
   }
     
 	protected boolean parseBoolean(String column) {
@@ -149,7 +157,7 @@ public class CSVReader extends InputStreamReader {
 		StringBuilder b = new StringBuilder();
 		boolean inQuote = false;
 
-		while (inQuote || (peek() != '\r' && peek() != '\n')) {
+		while (ready() && (inQuote || (peek() != '\r' && peek() != '\n'))) {
 			char c = peek();
 			next();
 			if (c == '"') {

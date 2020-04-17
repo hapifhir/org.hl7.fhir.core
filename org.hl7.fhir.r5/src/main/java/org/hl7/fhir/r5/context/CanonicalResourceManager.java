@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalListSorter;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -35,11 +36,39 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
-  public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
+  private class CachedCanonicalResource<T1 extends CanonicalResource> {
+    private T1 resource;
+    private PackageVersion packageInfo;
+    public CachedCanonicalResource(T1 resource, PackageVersion packageInfo) {
+      super();
+      this.resource = resource;
+      this.packageInfo = packageInfo;
+    }
+    public T1 getResource() {
+      return resource;
+    }
+    public PackageVersion getPackageInfo() {
+      return packageInfo;
+    }
+    public String getUrl() {
+      return resource.getUrl();
+    }
+    public String getId() {
+      return resource.getId();
+    }
+    public String getVersion() {
+      return resource.getVersion();
+    }
+    public boolean hasVersion() {
+      return resource.hasVersion();
+    }
+  }
+
+  public class MetadataResourceVersionComparator<T1 extends CachedCanonicalResource<T>> implements Comparator<T1> {
     @Override
-    public int compare(T arg1, T arg2) {
-      String v1 = arg1.getVersion();
-      String v2 = arg2.getVersion();
+    public int compare(T1 arg1, T1 arg2) {
+      String v1 = arg1.getResource().getVersion();
+      String v2 = arg2.getResource().getVersion();
       if (v1 == null && v2 == null) {
         return Integer.compare(list.indexOf(arg1), list.indexOf(arg2)); // retain original order
       } else if (v1 == null) {
@@ -58,9 +87,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
-
   private boolean enforceUniqueId; 
-  private List<T> list = new ArrayList<>();
+  private List<CachedCanonicalResource<T>> list = new ArrayList<>();
   private Map<String, T> map = new HashMap<>();
   
   
@@ -76,14 +104,26 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     map.putAll(source.map);
   }
   
-  public void see(T r) {
+  public void see(T r, PackageVersion packgeInfo) {
     if (!r.hasId()) {
       r.setId(UUID.randomUUID().toString());
     }
     if (enforceUniqueId && map.containsKey(r.getId())) {
       drop(r.getId());      
     }
-    list.add(r);
+    // special case logic for UTG support prior to version 5
+    if (packgeInfo != null && packgeInfo.getId().startsWith("hl7.terminology")) {
+      List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
+      for (CachedCanonicalResource<T> n : list) {
+        if (n.getResource().getUrl().equals(r.getUrl()) && isBasePackage(n.getPackageInfo())) {
+          toDrop.add(n);
+        }
+      }
+      for (CachedCanonicalResource<T> n : toDrop) {
+        drop(n.getId());
+      }
+    }
+    list.add(new CachedCanonicalResource<T>(r, packgeInfo));
     map.put(r.getId(), r); // we do this so we can drop by id
 
     if (r.hasUrl()) {
@@ -95,30 +135,34 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
+  private boolean isBasePackage(PackageVersion packageInfo) {
+    return packageInfo == null ? false : VersionUtilities.isCorePackage(packageInfo.getId());
+  }
+
   private void updateList(String url, String version) {
-    List<T> rl = new ArrayList<T>();
-    for (T t : list) {
+    List<CachedCanonicalResource<T>> rl = new ArrayList<>();
+    for (CachedCanonicalResource<T> t : list) {
       if (url.equals(t.getUrl()) && !rl.contains(t)) {
         rl.add(t);
       }
     }
     if (rl.size() > 0) {
       // sort by version as much as we are able
-      Collections.sort(rl, new MetadataResourceVersionComparator<T>());
+      Collections.sort(rl, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
       // the current is the latest
-      map.put(url, rl.get(rl.size()-1));
+      map.put(url, rl.get(rl.size()-1).getResource());
       // now, also, the latest for major/minor
       if (version != null) {
         T latest = null;
-        for (T t : rl) {
-          if (VersionUtilities.versionsCompatible(t.getVersion(), version)) {
-            latest = t;
+        for (CachedCanonicalResource<T> t : rl) {
+          if (VersionUtilities.versionsCompatible(t.getResource().getVersion(), version)) {
+            latest = t.getResource();
           }
         }
         if (latest != null) { // might be null if it's not using semver
           String lv = VersionUtilities.getMajMin(latest.getVersion());
           if (lv != null && !lv.equals(version))
-            map.put(url+"|"+lv, rl.get(rl.size()-1));
+            map.put(url+"|"+lv, rl.get(rl.size()-1).getResource());
         }
       }
     }
@@ -134,13 +178,17 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
   
   public T get(String system, String version) {
-    if (map.containsKey(system+"|"+version))
-      return map.get(system+"|"+version);
-    String mm = VersionUtilities.getMajMin(version);
-    if (mm != null)
-      return map.get(system+"|"+mm);
-    else
-      return null;
+    if (version == null) {
+      return get(system);
+    } else {
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version);
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null)
+        return map.get(system+"|"+mm);
+      else
+        return null;
+    }
   }
   
   public boolean has(String system, String version) {
@@ -158,10 +206,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
   
   public void drop(String id) {
-    T res = null;
+    CachedCanonicalResource<T> res = null;
     do {
       res = null;
-      for (T t : list) {
+      for (CachedCanonicalResource<T> t : list) {
         if (t.getId().equals(id)) {
           res = t;
         }
@@ -184,11 +232,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   
   
   public void listAll(List<T> result) {
-    result.addAll(list);    
+    for (CachedCanonicalResource<T>  t : list) {
+      result.add(t.getResource()); 
+    }
   }
 
   public void listAllM(List<CanonicalResource> result) {
-    result.addAll(list);    
+    for (CachedCanonicalResource<T>  t : list) {
+      result.add(t.getResource()); 
+    }
   }
 
   public void clear() {
@@ -199,21 +251,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public List<T> getList() {
     List<T> res = new ArrayList<>();
-    for (T t : list) {
-      if (!res.contains(t)) {
-        res.add(t);
+    for (CachedCanonicalResource<T> t : list) {
+      if (!res.contains(t.getResource())) {
+        res.add(t.getResource());
       }
     }
     return res;
   }
 
   public List<T> getSortedList() {
-    List<T> res = new ArrayList<>();
-    for (T t : list) {
-      if (!res.contains(t)) {
-        res.add(t);
-      }
-    }
+    List<T> res = getList();
     Collections.sort(res, new CanonicalListSorter());
     return res;
   }

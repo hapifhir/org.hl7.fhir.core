@@ -2093,6 +2093,11 @@ public class NamingSystem extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
+  @Override
+  protected void checkCanUseUrl() {
+    throw new Error("URL cannot be used on NamingSystem");      
+  }
+
 
 }
 

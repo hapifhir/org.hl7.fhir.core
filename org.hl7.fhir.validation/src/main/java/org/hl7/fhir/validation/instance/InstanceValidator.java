@@ -134,13 +134,13 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
-import org.hl7.fhir.validation.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -695,10 +695,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     long t = System.nanoTime();
     if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, element, validationLanguage));
+      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
     } else {
       for (StructureDefinition defn : profiles) {
-        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, element, validationLanguage));
+        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
       }
     }
     if (hintAboutNonMustSupport) {
@@ -2827,6 +2827,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
             rr.setStack(stack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+stack.getElement().fhirType()+")");
             return rr;
           }
         }
@@ -2861,6 +2862,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setStack(stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
               res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
               res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
             return rr;
           }
         }
@@ -2882,6 +2884,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rr.setStack(new NodeStack(context, hostContext, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
             res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
             res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+          rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
           return rr;
         }
       }
@@ -3832,6 +3835,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         break;
       }
     }
+    stack.qualifyPath(".ofType("+resourceName+")");
     if (trr == null) {
       rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName);
     } else if (isValidResourceType(resourceName, trr)) {
@@ -3949,7 +3953,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (stack.getIds().containsKey(id) && stack.getIds().get(id) != element) {
         rule(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.DUPLICATE_ID, id);
       }
-      stack.getIds().put(id, element);
+      if (!stack.isResetPoint()) {
+        stack.getIds().put(id, element);
+      }
     }
     if (definition.getPath().equals("StructureDefinition.snapshot")) {
       // work around a known issue in the spec, that idsa are duplicated in snapshot and differential 

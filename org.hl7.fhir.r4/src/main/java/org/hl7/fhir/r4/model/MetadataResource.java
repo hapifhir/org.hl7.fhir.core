@@ -192,9 +192,14 @@ public abstract class MetadataResource extends DomainResource {
     /**
      * @param value {@link #url} (An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
-    public MetadataResource setUrlElement(UriType value) { 
+    public MetadataResource setUrlElement(UriType value) {
+      checkCanUseUrl();
       this.url = value;
       return this;
+    }
+
+    protected void checkCanUseUrl() {
+      // it's fine      
     }
 
     /**
@@ -211,6 +216,7 @@ public abstract class MetadataResource extends DomainResource {
       if (Utilities.noString(value))
         this.url = null;
       else {
+        checkCanUseUrl();
         if (this.url == null)
           this.url = new UriType();
         this.url.setValue(value);

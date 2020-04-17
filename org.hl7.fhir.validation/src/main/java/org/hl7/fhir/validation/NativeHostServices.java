@@ -86,6 +86,7 @@ The interface is optimised for JNI.
  *
  */
 public class NativeHostServices {
+  
   private class NH_10_50_Advisor implements VersionConvertorAdvisor50 {
 
     @Override

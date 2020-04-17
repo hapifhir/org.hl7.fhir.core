@@ -364,8 +364,8 @@ public class Element extends Base {
           if (p.getName().equals(e.getName()))
             t = c;
         }
-        if (t > i)
-          i = t;
+        if (t >= i)
+          i = t+1;
         if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
           Element ne = new Element(name, p);
           children.add(i, ne);

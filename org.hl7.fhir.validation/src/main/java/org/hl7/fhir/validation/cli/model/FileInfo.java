@@ -38,7 +38,7 @@ public class FileInfo {
 
   @JsonProperty("fileType")
   public Manager.FhirFormat getFileType() {
-    return Manager.FhirFormat.get(fileType);
+    return Manager.FhirFormat.JSON;
   }
 
   @JsonProperty("fileType")
