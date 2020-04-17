@@ -351,6 +351,10 @@ public class CodeableConcept extends DataType implements ICompositeType {
     }
     return false;
   }
+
+  public boolean hasCoding(Coding coding) {
+    return hasCoding(coding.getSystem(), coding.getCode());
+  }
   
   
 
