@@ -54,6 +54,7 @@ package org.hl7.fhir.r5.formats;
 
 
 
+import ca.uhn.fhir.parser.DataFormatException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -160,8 +161,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected Base64BinaryType parseBase64Binary(String v) throws IOException, FHIRFormatError {
-    Base64BinaryType res = new Base64BinaryType(v);
-    return res;
+      return new Base64BinaryType(v);
   }
 
   protected UnsignedIntType parseUnsignedInt(String v) throws IOException, FHIRFormatError {
