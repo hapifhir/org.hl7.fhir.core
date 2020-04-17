@@ -3276,8 +3276,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
       if (vs.hasCopyright())
         generateCopyright(x, vs);
     }
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly")) {
-      List<Extension> exl = vs.getExpansion().getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/valueset-toocostly");
+    if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
+      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_TOOCOSTLY);
       boolean other = false;
       for (Extension ex : exl) {
         if (ex.getValue() instanceof BooleanType) {
@@ -3293,6 +3293,22 @@ public class NarrativeGenerator implements INarrativeGenerator {
         x.para().tx("This value set does not contain a fixed number of concepts");
       else
         x.para().tx("This value set contains "+count.toString()+" concepts");
+    }
+    if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_FRAGMENT)) {
+      XhtmlNode div = x.div().style("border: maroon 1px solid; background-color: #FFCCCC; padding: 8px");
+      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT);
+      if (exl.size() > 1) {
+        div.para().addText("Warning: this expansion is generated from fragments of the following code systems, and may be missing codes, or include codes that are not valid:");
+        XhtmlNode ul = div.ul();
+        for (Extension ex : exl) {
+          addCSRef(ul.li(), ex.getValue().primitiveValue());
+        }
+      } else {
+        XhtmlNode p = div.para();
+        p.addText("Warning: this expansion is generated from a fragment of the code system ");
+        addCSRef(p, exl.get(0).getValue().primitiveValue());
+        p.addText(" and may be missing codes, or include codes that are not valid");
+      }
     }
 
     generateVersionNotice(x, vs.getExpansion());
@@ -3353,6 +3369,18 @@ public class NarrativeGenerator implements INarrativeGenerator {
     }
 
     return hasExtensions;
+  }
+
+  private void addCSRef(XhtmlNode x, String url) {
+    CodeSystem cs = context.fetchCodeSystem(url);
+    if (cs == null) {
+      x.code(url);
+    } else if (cs.hasUserData("path")) {
+      x.ah(cs.getUserString("path")).tx(cs.present());
+    } else {
+      x.code(url);
+      x.tx(" ("+cs.present()+")");
+    }
   }
 
   @SuppressWarnings("rawtypes")

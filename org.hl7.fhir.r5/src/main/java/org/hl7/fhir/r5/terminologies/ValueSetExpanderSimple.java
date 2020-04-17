@@ -349,19 +349,6 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     return res;
   }
 
-  private void addToHeirarchy(List<ValueSetExpansionContainsComponent> target, List<ValueSetExpansionContainsComponent> source) {
-    for (ValueSetExpansionContainsComponent s : source) {
-      target.add(s);
-    }
-  }
-
-  private String getCodeDisplay(CodeSystem cs, String code) throws TerminologyServiceException {
-    ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), code);
-    if (def == null)
-      throw new TerminologyServiceException("Unable to find code '" + code + "' in code system " + cs.getUrl());
-    return def.getDisplay();
-  }
-
   private ConceptDefinitionComponent getConceptForCode(List<ConceptDefinitionComponent> clist, String code) {
     for (ConceptDefinitionComponent c : clist) {
       if (code.equals(c.getCode()))
@@ -404,9 +391,9 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       if (!existsInParams(exp.getParameter(), "version", new UriType(vs.getUrl() + "|" + vs.getVersion())))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("version").setValue(new UriType(vs.getUrl() + "|" + vs.getVersion())));
     for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
-      if (ex.getUrl().equals("http://hl7.org/fhir/StructureDefinition/valueset-toocostly")) {
+      if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
         if (ex.getValue() instanceof BooleanType) {
-          exp.getExtension().add(new Extension("http://hl7.org/fhir/StructureDefinition/valueset-toocostly").setValue(new UriType(value)));
+          exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new UriType(value)));
         } else {
           exp.getExtension().add(ex);
         }
@@ -444,7 +431,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports);
     } else {
       CodeSystem cs = context.fetchCodeSystem(inc.getSystem());
-      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE)) {
+      if ((cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions);
       } else {
         doInternalIncludeCodes(inc, exp, expParams, imports, cs);
@@ -469,7 +456,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       }
     }
     for (Extension ex : vs.getExpansion().getExtension()) {
-      if (Utilities.existsInList(ex.getUrl(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly", "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
+      if (Utilities.existsInList(ex.getUrl(), ToolingExtensions.EXT_EXP_TOOCOSTLY, "http://hl7.org/fhir/StructureDefinition/valueset-unclosed")) {
         if (!hasExtension(extensions, ex.getUrl())) {
           extensions.add(ex);
         }
@@ -489,16 +476,15 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     return false;
   }
 
-  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports,
-      CodeSystem cs) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException {
+  public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException {
     if (cs == null) {
       if (context.isNoTerminologyServer())
-        throw new NoTerminologyServiceException("unable to find code system " + inc.getSystem().toString());
+        throw new NoTerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
       else
-        throw new TerminologyServiceException("unable to find code system " + inc.getSystem().toString());
+        throw new TerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
     }
     cs.checkNoModifiers("Code System", "expanding");
-    if (cs.getContent() != CodeSystemContentMode.COMPLETE)
+    if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
       throw new TerminologyServiceException("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion())
       if (!existsInParams(exp.getParameter(), "version", new UriType(cs.getUrl() + "|" + cs.getVersion())))
@@ -509,14 +495,27 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
         addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null);
       }
+      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+        addFragmentWarning(exp, cs);
+      }
     }
 
     if (!inc.getConcept().isEmpty()) {
       canBeHeirarchy = false;
       for (ConceptReferenceComponent c : inc.getConcept()) {
         c.checkNoModifiers("Code in Code System", "expanding");
-        addCode(inc.getSystem(), c.getCode(), Utilities.noString(c.getDisplay()) ? getCodeDisplay(cs, c.getCode()) : c.getDisplay(), null, convertDesignations(c.getDesignation()), expParams, false,
-            CodeSystemUtilities.isInactive(cs, c.getCode()), imports);
+        ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), c.getCode());
+        Boolean inactive = false; // default is true if we're a fragment and  
+        if (def == null) {
+          if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+            addFragmentWarning(exp, cs);
+          } else {
+            throw new TerminologyServiceException("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
+          }
+        } else {
+          inactive = CodeSystemUtilities.isInactive(cs, def);
+        }
+        addCode(inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def == null ? null : def.getDisplay(), null, convertDesignations(c.getDesignation()), expParams, false, inactive, imports);
       }
     }
     if (inc.getFilter().size() > 1) {
@@ -524,6 +523,9 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       throw new TerminologyServiceException("Multiple filters not handled yet"); // need to and them, and this isn't done yet. But this shouldn't arise in non loinc and snomed value sets
     }
     if (inc.getFilter().size() == 1) {
+      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+        addFragmentWarning(exp, cs);
+      }
       ConceptSetFilterComponent fc = inc.getFilter().get(0);
       if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISA) {
         // special: all codes in the target code system under the value
@@ -561,6 +563,15 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       } else
         throw new NotImplementedException("Search by property[" + fc.getProperty() + "] and op[" + fc.getOp() + "] is not supported yet");
     }
+  }
+
+  private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
+    for (Extension ex : cs.getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT)) {
+      if (ex.getValue().primitiveValue().equals(cs.getUrl())) {
+        return;
+      }
+    }
+    exp.addExtension(new Extension(ToolingExtensions.EXT_EXP_FRAGMENT).setValue(new UriType(cs.getUrl())));
   }
 
   private List<ConceptDefinitionDesignationComponent> convertDesignations(List<ConceptReferenceDesignationComponent> list) {
