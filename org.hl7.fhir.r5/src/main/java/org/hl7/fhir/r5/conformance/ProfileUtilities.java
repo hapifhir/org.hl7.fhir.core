@@ -91,6 +91,8 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TranslatingUtilities;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -265,6 +267,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean newSlicingProcessing;
   private String defWebRoot;
   private boolean autoFixSliceNames;
+  private XVerExtensionManager xver;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -618,6 +621,11 @@ public class ProfileUtilities extends TranslatingUtilities {
           for (UriType u : t.getProfile()) {
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
             if (sd == null) {
+              if (xver != null && xver.matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                sd = xver.makeDefinition(u.getValue());              
+              }
+            }
+            if (sd == null) {
               if (messages != null) {
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
               }
@@ -876,6 +884,16 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
+            if (sd == null && xver != null && xver.matchingUrl(p.getValue())) {
+              switch (xver.status(p.getValue())) {
+              case BadVersion: throw new FHIRException("Reference to invalid version in extension url "+p.getValue());
+              case Invalid: throw new FHIRException("Reference to invalid extension "+p.getValue());
+              case Unknown: throw new FHIRException("Reference to unknown extension "+p.getValue()); 
+              case Valid: 
+                sd = xver.makeDefinition(p.getValue());
+                generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
+              }
+            }
             if (sd != null) {
               checkNotGenerating(sd, "an extension definition");
               if (!sd.hasSnapshot()) {
@@ -5660,6 +5678,15 @@ public class ProfileUtilities extends TranslatingUtilities {
     e.setMin(0); 
     e.setMax("*"); 
     return base;
+  }
+
+  public XVerExtensionManager getXver() {
+    return xver;
+  }
+
+  public ProfileUtilities setXver(XVerExtensionManager xver) {
+    this.xver = xver;
+    return this;
   }
 
 
