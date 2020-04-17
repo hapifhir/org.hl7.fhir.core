@@ -2012,28 +2012,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         if ("a".equals(node.getName())) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("href")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"));
+          String msg = checkValidUrl(node.getAttribute("href"));
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"), msg);
         } else if ("img".equals(node.getName())) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("src")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"));
+          String msg = checkValidUrl(node.getAttribute("src"));
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"), msg);
         }
         checkUrls(errors, e, path, node.getChildNodes());
       }
     }
   }
 
-  private boolean isValidUrl(String value) {
+  private String checkValidUrl(String value) {
     if (value == null) {
-      return true;
+      return null;
     }
-    try {
-      for (char ch : value.toCharArray()) {
-        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
-          return false;
-        }
+    if (Utilities.noString(value)) {
+      return context.formatMessage(I18nConstants.XHTML_URL_EMPTY);
+    }
+
+    Set<Character> invalidChars = new HashSet<>();
+    for (char ch : value.toCharArray()) {
+      if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
+        invalidChars.add(ch);
       }
-      return true;
-    } catch (Exception e) {
-      return false;
+    }
+    if (invalidChars.isEmpty()) {
+      return null;
+    } else {
+      return  context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
     }
   }
 
