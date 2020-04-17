@@ -502,4 +502,6 @@ public class I18nConstants {
 //public static final String 
 //public static final String 
 //public static final String 
+  public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
+  public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
 }
