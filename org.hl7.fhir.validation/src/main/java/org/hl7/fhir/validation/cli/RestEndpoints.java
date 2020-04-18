@@ -24,6 +24,6 @@ public class RestEndpoints {
     app.get("/context", myCliContextController::handleGetCurrentCliContext);
     app.post("/context", myCliContextController::handleSetCurrentCliContext);
 
-    app.post("/validate", myValidationController.handleValidationRequest);
+    app.post("/validate", myValidationController::handleValidationRequest);
   }
 }

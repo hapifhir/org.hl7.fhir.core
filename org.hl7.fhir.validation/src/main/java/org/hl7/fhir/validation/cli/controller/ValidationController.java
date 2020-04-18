@@ -35,18 +35,4 @@ public class ValidationController {
       ctx.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).result(e.getLocalizedMessage());
     }
   }
-
-  public Handler handleValidationRequest = ctx -> {
-    ValidationRequest request = ctx.bodyAsClass(ValidationRequest.class);
-    ValidationResponse response = ValidationService.validateSources(request, myValidationEngine);
-
-//      File new temp file
-//      DeleteOnShutdown
-
-      ObjectMapper Obj = new ObjectMapper();
-      String jsonStr = Obj.writeValueAsString(response);
-
-      ctx.status(200).json(jsonStr);
-  };
-
 }
