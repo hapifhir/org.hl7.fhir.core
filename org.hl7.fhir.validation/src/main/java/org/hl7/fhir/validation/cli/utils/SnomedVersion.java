@@ -1,6 +1,8 @@
 package org.hl7.fhir.validation.cli.utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public enum SnomedVersion {
@@ -32,15 +34,15 @@ public enum SnomedVersion {
     return code;
   }
 
-  public static String resolveSnomedCTCode(String s) {
-    String foundCode;
-    Optional<SnomedVersion> opt = Arrays.stream(values())
-      .filter(v -> v.lang.equals(s))
-      .findFirst();
-    if (opt.isPresent()) {
-      return opt.get().code;
-    } else {
-      throw new Error("Snomed edition '" + s + "' not known");
+  public static SnomedVersion getFromCode(String code) {
+    return lookup.get(code);
+  }
+
+  private static final Map<String, SnomedVersion> lookup = new HashMap<>();
+
+  static {
+    for (SnomedVersion s : SnomedVersion.values()) {
+      lookup.put(s.getCode(), s);
     }
   }
 }
