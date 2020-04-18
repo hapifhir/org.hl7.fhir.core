@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.controller.CliContextController;
@@ -22,8 +21,8 @@ public class RestEndpoints {
 
     app.get("/home", myUIController.renderLandingPage);
 
-    app.get("/context", myCliContextController.getCurrentCliContext);
-    app.post("/context", myCliContextController.setCurrentCliContext);
+    app.get("/context", myCliContextController::handleGetCurrentCliContext);
+    app.post("/context", myCliContextController::handleSetCurrentCliContext);
 
     app.post("/validate", myValidationController.handleValidationRequest);
   }

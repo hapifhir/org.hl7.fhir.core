@@ -60,7 +60,7 @@ public class CliContext {
   private Validator.EngineMode mode = Validator.EngineMode.VALIDATION;
 
   @JsonProperty("locale")
-  private Locale locale = null;
+  private String locale = Locale.ENGLISH.getDisplayLanguage();
 
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();
@@ -172,21 +172,21 @@ public class CliContext {
 
   @JsonProperty("locale")
   public String getLanguageCode() {
-    return this.locale.getDisplayLanguage();
+    return locale;
   }
 
   public Locale getLocale() {
-    return locale;
+    return Locale.forLanguageTag(this.locale);
   }
 
   @JsonProperty("locale")
   public CliContext setLocale(String languageString) {
-    this.locale = new Locale(languageString);
+    this.locale = languageString;
     return this;
   }
 
   public CliContext setLocale(Locale locale) {
-    this.locale = locale;
+    this.locale = locale.getDisplayLanguage();
     return this;
   }
 
@@ -332,14 +332,18 @@ public class CliContext {
     return this;
   }
 
+  public SnomedVersion getSnomedCT() {
+    return SnomedVersion.getFromCode(snomedCT);
+  }
+
   @JsonProperty("snomedCT")
-  public String getSnomedCT() {
+  public String getSnomedCTCode() {
     return snomedCT;
   }
 
   @JsonProperty("snomedCT")
   public CliContext setSnomedCT(String snomedCT) {
-    this.snomedCT = SnomedVersion.resolveSnomedCTCode(snomedCT);
+    this.snomedCT = snomedCT;
     return this;
   }
 
@@ -404,5 +408,41 @@ public class CliContext {
       ", doDebug=" + doDebug +
       ", assumeValidRestReferences=" + assumeValidRestReferences +
       '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CliContext that = (CliContext) o;
+    return doNative == that.doNative &&
+      anyExtensionsAllowed == that.anyExtensionsAllowed &&
+      hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
+      recursive == that.recursive &&
+      doDebug == that.doDebug &&
+      assumeValidRestReferences == that.assumeValidRestReferences &&
+      canDoNative == that.canDoNative &&
+      Objects.equals(map, that.map) &&
+      Objects.equals(output, that.output) &&
+      Objects.equals(txServer, that.txServer) &&
+      Objects.equals(sv, that.sv) &&
+      Objects.equals(txLog, that.txLog) &&
+      Objects.equals(mapLog, that.mapLog) &&
+      Objects.equals(lang, that.lang) &&
+      Objects.equals(fhirpath, that.fhirpath) &&
+      Objects.equals(snomedCT, that.snomedCT) &&
+      Objects.equals(targetVer, that.targetVer) &&
+      Objects.equals(igs, that.igs) &&
+      Objects.equals(questionnaires, that.questionnaires) &&
+      Objects.equals(profiles, that.profiles) &&
+      Objects.equals(sources, that.sources) &&
+      mode == that.mode &&
+      Objects.equals(locale, that.locale) &&
+      Objects.equals(locations, that.locations);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations);
   }
 }

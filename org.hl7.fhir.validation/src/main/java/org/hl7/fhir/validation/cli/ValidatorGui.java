@@ -18,6 +18,8 @@ public class ValidatorGui {
   private static final String WEB_APP_FILE_LOCATION = "/public";
   private static Javalin app;
 
+  private ValidatorGui(){}
+
   /**
    * N.B. this entry point, is only for testing. Please start from command line using the argument {@code -gui} for
    * actual use.
@@ -27,15 +29,17 @@ public class ValidatorGui {
     String v = Common.getVersion(args);
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
-    start(new CliContext(), validationEngine);
+    start(new CliContext(), validationEngine, false);
   }
 
-  public static void start(CliContext currentContext, ValidationEngine validationEngine) {
+  public static void start(CliContext currentContext, ValidationEngine validationEngine, boolean bootBrowser) {
     app = Javalin.create();
     new RestEndpoints().initRestEndpoints(app, currentContext, validationEngine);
     app.config.addStaticFiles(WEB_APP_FILE_LOCATION);
     app.start(GUI_FRONTEND_PORT);
-    openBrowser();
+    if (bootBrowser) {
+      openBrowser();
+    }
   }
 
   public static void openBrowser() {

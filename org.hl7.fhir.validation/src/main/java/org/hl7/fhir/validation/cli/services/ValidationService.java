@@ -178,7 +178,7 @@ public class ValidationService {
     validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
     validator.setLanguage(cliContext.getLang());
     validator.setLocale(cliContext.getLocale());
-    validator.setSnomedExtension(cliContext.getSnomedCT());
+    validator.setSnomedExtension(cliContext.getSnomedCTCode());
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
     return validator;
   }
