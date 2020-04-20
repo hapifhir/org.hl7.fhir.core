@@ -138,7 +138,6 @@
             <version>${validator_test_case_version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
