@@ -81,6 +81,7 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
@@ -265,9 +266,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           structures.see(sd, packageInfo);
         } else if (r instanceof ValueSet)
           valueSets.see((ValueSet) m, packageInfo);
-        else if (r instanceof CodeSystem)
+        else if (r instanceof CodeSystem) {
+          CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) r);
           codeSystems.see((CodeSystem) m, packageInfo);
-        else if (r instanceof ImplementationGuide)
+        } else if (r instanceof ImplementationGuide)
           guides.see((ImplementationGuide) m, packageInfo);
         else if (r instanceof CapabilityStatement)
           capstmts.see((CapabilityStatement) m, packageInfo);

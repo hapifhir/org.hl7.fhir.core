@@ -3384,7 +3384,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           extDefn = locateExtension(StructureDefinition.class, eurl);
           if (extDefn == null) {
             genCardinality(gen, element, row, hasDef, used, null);
-            row.getCells().add(gen.new Cell(null, null, "?? "+element.getType().get(0).getProfile(), null, null));
+            row.getCells().add(gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null));
             generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
             String name = urltail(eurl);
@@ -3574,7 +3574,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (first) first = false; else typeCell.addPiece(gen.new Piece(null, " | ", null));
             StructureDefinition psd = context.fetchResource(StructureDefinition.class, pt.getValue());
             if (psd == null)
-              typeCell.addPiece(gen.new Piece(null, "??", null));
+              typeCell.addPiece(gen.new Piece(null, "?gen-e2?", null));
             else
               typeCell.addPiece(gen.new Piece(psd.getUserString("path"), psd.getName(), psd.present()));
             
@@ -3932,7 +3932,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (ref != null) {
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
     } else {
-      ref = "??";
+      ref = "?gen-fv?";
     }
     StructureDefinition sd = context.fetchTypeDefinition(value.fhirType());
     
@@ -4254,7 +4254,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     case OPEN : return translate("sd.table", "Open");
     case OPENATEND : return translate("sd.table", "Open At End");
     default:
-      return "??";
+      return "?gen-sr?";
     }
   }
 

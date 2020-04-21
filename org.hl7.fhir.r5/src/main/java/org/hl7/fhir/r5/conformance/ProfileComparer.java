@@ -292,6 +292,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   private List<ProfileComparison> comparisons = new ArrayList<ProfileComparison>();
   private String id; 
   private String title;
+  private String leftPrefix;
+  private String rightPrefix;
   private String leftLink;
   private String leftName;
   private String rightLink;
@@ -774,22 +776,33 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
           try {
             le = context.expandVS(lvs, true, false);
             re = context.expandVS(rvs, true, false);
-            if (!closed(le.getValueset()) || !closed(re.getValueset())) 
-              throw new DefinitionException("unclosed value sets are not handled yet");
-            cvs = intersectByExpansion(path, le.getValueset(), re.getValueset());
-            if (!cvs.getCompose().hasInclude()) {
-              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value sets "+lvs.getUrl()+" and "+rvs.getUrl()+" do not intersect", ValidationMessage.IssueSeverity.ERROR));
-              status(subset, ProfileUtilities.STATUS_ERROR);
-              return false;
+            if (le.getError() != null) {
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+lvs.getUrl()+" could not be expanded", ValidationMessage.IssueSeverity.ERROR));
+            } else if (re.getError() != null) {
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+rvs.getUrl()+" could not be expanded", ValidationMessage.IssueSeverity.ERROR));
+            } else if (!closed(le.getValueset())) { 
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+lvs.getUrl()+" is not closed, so can't be compased", ValidationMessage.IssueSeverity.ERROR));
+            } else if (!closed(re.getValueset())) { 
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+rvs.getUrl()+" is not closed, so can't be compased", ValidationMessage.IssueSeverity.ERROR));
+            } else {
+              cvs = intersectByExpansion(path, le.getValueset(), re.getValueset());
+              if (!cvs.getCompose().hasInclude()) {
+                outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value sets "+lvs.getUrl()+" and "+rvs.getUrl()+" do not intersect", ValidationMessage.IssueSeverity.ERROR));
+                status(subset, ProfileUtilities.STATUS_ERROR);
+                return false;
+              }
             }
           } catch (Exception e){
             outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "Unable to expand or process value sets "+lvs.getUrl()+" and "+rvs.getUrl()+": "+e.getMessage(), ValidationMessage.IssueSeverity.ERROR));
             status(subset, ProfileUtilities.STATUS_ERROR);
+            e.printStackTrace();
             return false;          
           }
         }
-        subBinding.setValueSet("#"+addValueSet(cvs));
-        superBinding.setValueSet("#"+addValueSet(unite(superset, outcome, path, lvs, rvs)));
+        if (cvs != null) {
+          subBinding.setValueSet("#"+addValueSet(cvs));
+          superBinding.setValueSet("#"+addValueSet(unite(superset, outcome, path, lvs, rvs)));
+        }
       }
     }
     return false;
@@ -1335,11 +1348,30 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     this.rightName = rightName;
   }
 
-  private String genPCLink(String leftName, String leftLink) {
-    if (leftLink == null)
-      return leftName;
-    else
-      return "<a href=\""+leftLink+"\">"+Utilities.escapeXml(leftName)+"</a>";
+  public String getLeftPrefix() {
+    return leftPrefix;
+  }
+
+  public void setLeftPrefix(String leftPrefix) {
+    this.leftPrefix = leftPrefix;
+  }
+
+  public String getRightPrefix() {
+    return rightPrefix;
+  }
+
+  public void setRightPrefix(String rightPrefix) {
+    this.rightPrefix = rightPrefix;
+  }
+
+  private String genPCLink(String name, String link, String prefix) {
+    if (link == null) {
+      return name;
+    } else if (!Utilities.isAbsoluteUrl(link) && !Utilities.noString(prefix)) {
+      return "<a href=\""+Utilities.pathURL(prefix, link)+"\">"+Utilities.escapeXml(name)+"</a>";
+    } else {
+      return "<a href=\""+link+"\">"+Utilities.escapeXml(name)+"</a>";
+    }
   }
   
   private String genValueSets(String base) throws IOException {
@@ -1390,8 +1422,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
 
     for (ProfileComparison cmp : getComparisons()) {
       b.append("<tr>");
-      b.append(" <td><a href=\""+cmp.getLeft().getUserString("path")+"\">"+Utilities.escapeXml(cmp.getLeft().getName())+"</a></td>");
-      b.append(" <td><a href=\""+cmp.getRight().getUserString("path")+"\">"+Utilities.escapeXml(cmp.getRight().getName())+"</a></td>");
+      b.append(" <td><a href=\""+fixLink(cmp.getLeft().getUserString("path"), leftPrefix)+"\">"+Utilities.escapeXml(cmp.getLeft().getName())+"</a></td>");
+      b.append(" <td><a href=\""+fixLink(cmp.getRight().getUserString("path"), rightPrefix)+"\">"+Utilities.escapeXml(cmp.getRight().getName())+"</a></td>");
       b.append(" <td><a href=\""+getId()+"."+cmp.getId()+".html\">Click Here</a></td>");
       b.append(" <td>"+cmp.getErrorCount()+"</td>");
       b.append(" <td>"+cmp.getWarningCount()+"</td>");
@@ -1403,6 +1435,10 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     return b.toString();
   }
 
+
+  private String fixLink(String path, String pfx) {
+    return (pfx == null || Utilities.isAbsoluteUrl(path)) ? path : Utilities.pathURL(pfx, path);
+  }
 
   private String genCmpMessages(ProfileComparison cmp) {
     StringBuilder b = new StringBuilder();
@@ -1443,7 +1479,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   private String genCompModel(StructureDefinition sd, String name, String base, String prefix, String dest) throws FHIRException, IOException {
     if (sd == null)
       return "<p style=\"color: maroon\">No "+name+" could be generated</p>\r\n";
-    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("??", sd, false, dest, false, base, true, prefix, prefix, false, false, null, true));
+    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("?gen-cm?", sd, false, dest, false, base, true, prefix, prefix, false, false, null, true));
   }
 
 
@@ -1455,8 +1491,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     // first page we produce is simply the index
     Map<String, String> vars = new HashMap<String, String>();
     vars.put("title", getTitle());
-    vars.put("left", genPCLink(getLeftName(), getLeftLink()));
-    vars.put("right", genPCLink(getRightName(), getRightLink()));
+    vars.put("left", genPCLink(getLeftName(), getLeftLink(), getLeftPrefix()));
+    vars.put("right", genPCLink(getRightName(), getRightLink(), getRightPrefix()));
     vars.put("table", genPCTable());
     vars.put("valuesets", genValueSets(folder+"/"+getId()+"-vs"));
     producePage(summaryTemplate(), Utilities.path(folder, getId()+".html"), vars);
@@ -1465,8 +1501,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     for (ProfileComparison cmp : getComparisons()) {
       vars.clear();
       vars.put("title", getTitle());
-      vars.put("left", genPCLink(getLeftName(), getLeftLink()));
-      vars.put("right", genPCLink(getRightName(), getRightLink()));
+      vars.put("left", genPCLink(getLeftName(), getLeftLink(), getLeftPrefix()));
+      vars.put("right", genPCLink(getRightName(), getRightLink(), getRightPrefix()));
       vars.put("messages", genCmpMessages(cmp));
       vars.put("subset", genCompModel(cmp.getSubset(), "intersection", getId()+"."+cmp.getId(), "", folder));
       vars.put("superset", genCompModel(cmp.getSuperset(), "union", getId()+"."+cmp.getId(), "", folder));
@@ -1488,7 +1524,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       String s1 = src.substring(0, i1);
       String s2 = src.substring(i1 + 2, i2).trim();
       String s3 = src.substring(i2+2);
-      String v = vars.containsKey(s2) ? vars.get(s2) : "???";
+      String v = vars.containsKey(s2) ? vars.get(s2) : "?pp??";
       src = s1+v+s3;
     }
     TextFile.stringToFile(src, path);
@@ -1572,7 +1608,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   @Override
   public String getLinkForProfile(StructureDefinition profile, String url) {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-    return sd == null ? null : sd.getUserString("path");
+    return sd == null ? null : sd.getUserString("path")+"|"+sd.present();
   }
 
   @Override

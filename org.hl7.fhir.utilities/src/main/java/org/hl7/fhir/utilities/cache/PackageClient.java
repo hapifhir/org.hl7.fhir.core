@@ -66,7 +66,7 @@ public class PackageClient {
     }
     @Override
     public String toString() {
-      return id+"#"+(version == null ? "??" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
+      return id+"#"+(version == null ? "?pc-pi?" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
     }    
   }
  
@@ -89,15 +89,15 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, ver));
+    return fetchUrl(Utilities.pathURL(address, id, ver), null);
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, info.getId(), info.getVersion()));
+    return fetchUrl(Utilities.pathURL(address, info.getId(), info.getVersion()), null);
   }
 
   public InputStream fetchNpm(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));    
+    return fetchUrl(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"), null);    
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
@@ -154,20 +154,23 @@ public class PackageClient {
     return null;
   }
  
-  private InputStream fetchUrl(String source) throws IOException {
+  private InputStream fetchUrl(String source, String accept) throws IOException {
     URL url = new URL(source);
     URLConnection c = url.openConnection();
+    if (accept != null) {
+      c.setRequestProperty("accept", accept);
+    }
     return c.getInputStream();
   }
   
   private JsonObject fetchJson(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source));
+    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonObject) new com.google.gson.JsonParser().parse(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source));
+    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonArray) new com.google.gson.JsonParser().parse(src);
   }

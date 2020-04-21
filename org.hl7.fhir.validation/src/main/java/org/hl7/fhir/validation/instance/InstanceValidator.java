@@ -1578,7 +1578,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
         contexts.append("p:" + ctxt.getExpression());
         // The context is all elements that match the FHIRPath query found in the expression.
-        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.getRootResource(), container, fpe.parse(ctxt.getExpression()));
+        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.getRootResource(), resource, fpe.parse(ctxt.getExpression()));
         if (res.contains(container)) {
           ok = true;
         }
