@@ -179,241 +179,241 @@ public class VersionConvertor_10_50 {
     }
 
     public static org.hl7.fhir.r5.model.Base64BinaryType convertBase64Binary(org.hl7.fhir.dstu2.model.Base64BinaryType src) throws FHIRException {
-        org.hl7.fhir.r5.model.Base64BinaryType tgt = new org.hl7.fhir.r5.model.Base64BinaryType(src.getValue());
+        org.hl7.fhir.r5.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Base64BinaryType(src.getValue()) : new org.hl7.fhir.r5.model.Base64BinaryType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.Base64BinaryType convertBase64Binary(org.hl7.fhir.r5.model.Base64BinaryType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.Base64BinaryType tgt = new org.hl7.fhir.dstu2.model.Base64BinaryType(src.getValue());
+        org.hl7.fhir.dstu2.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.Base64BinaryType(src.getValue()) : new org.hl7.fhir.dstu2.model.Base64BinaryType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.BooleanType convertBoolean(org.hl7.fhir.dstu2.model.BooleanType src) throws FHIRException {
-        org.hl7.fhir.r5.model.BooleanType tgt = new org.hl7.fhir.r5.model.BooleanType(src.getValue());
+        org.hl7.fhir.r5.model.BooleanType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.BooleanType(src.getValue()) : new org.hl7.fhir.r5.model.BooleanType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.BooleanType convertBoolean(org.hl7.fhir.r5.model.BooleanType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.BooleanType tgt = new org.hl7.fhir.dstu2.model.BooleanType(src.getValue());
+        org.hl7.fhir.dstu2.model.BooleanType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.BooleanType(src.getValue()) : new org.hl7.fhir.dstu2.model.BooleanType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.CodeType convertCode(org.hl7.fhir.dstu2.model.CodeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType(src.getValue());
+        org.hl7.fhir.r5.model.CodeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.CodeType(src.getValue()) : new org.hl7.fhir.r5.model.CodeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.CodeType convertCode(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.CodeType tgt = new org.hl7.fhir.dstu2.model.CodeType(src.getValue());
+        org.hl7.fhir.dstu2.model.CodeType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.CodeType(src.getValue()) : new org.hl7.fhir.dstu2.model.CodeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.UriType convertCodeToUri(org.hl7.fhir.dstu2.model.CodeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.UriType tgt = new org.hl7.fhir.r5.model.UriType(src.getValue());
+        org.hl7.fhir.r5.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UriType(src.getValue()) : new org.hl7.fhir.r5.model.UriType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.CodeType convertUriToCode(org.hl7.fhir.r5.model.UriType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.CodeType tgt = new org.hl7.fhir.dstu2.model.CodeType(src.getValue());
+        org.hl7.fhir.dstu2.model.CodeType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.CodeType(src.getValue()) : new org.hl7.fhir.dstu2.model.CodeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DateType convertDate(org.hl7.fhir.dstu2.model.DateType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
+        org.hl7.fhir.r5.model.DateType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DateType convertDate(org.hl7.fhir.dstu2.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateType tgt = new org.hl7.fhir.r5.model.DateType(src.getValueAsString());
+        org.hl7.fhir.r5.model.DateType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DateTimeType convertDateToDateTime(org.hl7.fhir.dstu2.model.DateType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateTimeType tgt = new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString());
+        org.hl7.fhir.r5.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateTimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.DateType convertDateTimeToDate(org.hl7.fhir.r5.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.DateType tgt = new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString());
+        org.hl7.fhir.dstu2.model.DateType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.DateType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.DateType convertDate(org.hl7.fhir.r5.model.DateType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.DateType tgt = new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString());
+        org.hl7.fhir.dstu2.model.DateType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.DateType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.DateType convertDate(org.hl7.fhir.r5.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.DateType tgt = new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString());
+        org.hl7.fhir.dstu2.model.DateType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.DateType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.DateType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DateTimeType convertDateTime(org.hl7.fhir.dstu2.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateTimeType tgt = new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString());
+        org.hl7.fhir.r5.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateTimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.DateTimeType convertDateTime(org.hl7.fhir.r5.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.DateTimeType tgt = new org.hl7.fhir.dstu2.model.DateTimeType(src.getValueAsString());
+        org.hl7.fhir.dstu2.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.DateTimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.DecimalType convertDecimal(org.hl7.fhir.dstu2.model.DecimalType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DecimalType tgt = new org.hl7.fhir.r5.model.DecimalType(src.getValue());
+        org.hl7.fhir.r5.model.DecimalType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DecimalType(src.getValue()) : new org.hl7.fhir.r5.model.DecimalType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.DecimalType convertDecimal(org.hl7.fhir.r5.model.DecimalType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.DecimalType tgt = new org.hl7.fhir.dstu2.model.DecimalType(src.getValue());
+        org.hl7.fhir.dstu2.model.DecimalType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.DecimalType(src.getValue()) : new org.hl7.fhir.dstu2.model.DecimalType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.IdType convertId(org.hl7.fhir.dstu2.model.IdType src) throws FHIRException {
-        org.hl7.fhir.r5.model.IdType tgt = new org.hl7.fhir.r5.model.IdType(src.getValue());
+        org.hl7.fhir.r5.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IdType(src.getValue()) : new org.hl7.fhir.r5.model.IdType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.IdType convertId(org.hl7.fhir.r5.model.IdType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.IdType tgt = new org.hl7.fhir.dstu2.model.IdType(src.getValue());
+        org.hl7.fhir.dstu2.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.IdType(src.getValue()) : new org.hl7.fhir.dstu2.model.IdType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.InstantType convertInstant(org.hl7.fhir.dstu2.model.InstantType src) throws FHIRException {
-        org.hl7.fhir.r5.model.InstantType tgt = new org.hl7.fhir.r5.model.InstantType(src.getValue());
+        org.hl7.fhir.r5.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.InstantType(src.getValue()) : new org.hl7.fhir.r5.model.InstantType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.InstantType convertInstant(org.hl7.fhir.r5.model.InstantType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.InstantType tgt = new org.hl7.fhir.dstu2.model.InstantType(src.getValue());
+        org.hl7.fhir.dstu2.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.InstantType(src.getValue()) : new org.hl7.fhir.dstu2.model.InstantType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.IntegerType convertInteger(org.hl7.fhir.dstu2.model.IntegerType src) throws FHIRException {
-        org.hl7.fhir.r5.model.IntegerType tgt = new org.hl7.fhir.r5.model.IntegerType(src.getValue());
+        org.hl7.fhir.r5.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IntegerType(src.getValue()) : new org.hl7.fhir.r5.model.IntegerType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.IntegerType convertInteger(org.hl7.fhir.r5.model.IntegerType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.IntegerType tgt = new org.hl7.fhir.dstu2.model.IntegerType(src.getValue());
+        org.hl7.fhir.dstu2.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.IntegerType(src.getValue()) : new org.hl7.fhir.dstu2.model.IntegerType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MarkdownType convertMarkdown(org.hl7.fhir.dstu2.model.MarkdownType src) throws FHIRException {
-        org.hl7.fhir.r5.model.MarkdownType tgt = new org.hl7.fhir.r5.model.MarkdownType(src.getValue());
+        org.hl7.fhir.r5.model.MarkdownType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.MarkdownType(src.getValue()) : new org.hl7.fhir.r5.model.MarkdownType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.MarkdownType convertMarkdown(org.hl7.fhir.r5.model.MarkdownType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.MarkdownType tgt = new org.hl7.fhir.dstu2.model.MarkdownType(src.getValue());
+        org.hl7.fhir.dstu2.model.MarkdownType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.MarkdownType(src.getValue()) : new org.hl7.fhir.dstu2.model.MarkdownType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.OidType convertOid(org.hl7.fhir.dstu2.model.OidType src) throws FHIRException {
-        org.hl7.fhir.r5.model.OidType tgt = new org.hl7.fhir.r5.model.OidType(src.getValue());
+        org.hl7.fhir.r5.model.OidType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.OidType(src.getValue()) : new org.hl7.fhir.r5.model.OidType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.OidType convertOid(org.hl7.fhir.r5.model.OidType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.OidType tgt = new org.hl7.fhir.dstu2.model.OidType(src.getValue());
+        org.hl7.fhir.dstu2.model.OidType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.OidType(src.getValue()) : new org.hl7.fhir.dstu2.model.OidType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.PositiveIntType convertPositiveInt(org.hl7.fhir.dstu2.model.PositiveIntType src) throws FHIRException {
-        org.hl7.fhir.r5.model.PositiveIntType tgt = new org.hl7.fhir.r5.model.PositiveIntType(src.getValue());
+        org.hl7.fhir.r5.model.PositiveIntType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.PositiveIntType(src.getValue()) : new org.hl7.fhir.r5.model.PositiveIntType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.PositiveIntType convertPositiveInt(org.hl7.fhir.r5.model.PositiveIntType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.PositiveIntType tgt = new org.hl7.fhir.dstu2.model.PositiveIntType(src.getValue());
+        org.hl7.fhir.dstu2.model.PositiveIntType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.PositiveIntType(src.getValue()) : new org.hl7.fhir.dstu2.model.PositiveIntType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.StringType convertString(org.hl7.fhir.dstu2.model.StringType src) throws FHIRException {
-        org.hl7.fhir.r5.model.StringType tgt = new org.hl7.fhir.r5.model.StringType(src.getValue());
+        org.hl7.fhir.r5.model.StringType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.StringType(src.getValue()) : new org.hl7.fhir.r5.model.StringType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.StringType convertString(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.StringType tgt = new org.hl7.fhir.dstu2.model.StringType(src.getValue());
+        org.hl7.fhir.dstu2.model.StringType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.StringType(src.getValue()) : new org.hl7.fhir.dstu2.model.StringType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu2.model.TimeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.TimeType tgt = new org.hl7.fhir.r5.model.TimeType(src.getValue());
+        org.hl7.fhir.r5.model.TimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.TimeType(src.getValue()) : new org.hl7.fhir.r5.model.TimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.TimeType convertTime(org.hl7.fhir.r5.model.TimeType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.TimeType tgt = new org.hl7.fhir.dstu2.model.TimeType(src.getValue());
+        org.hl7.fhir.dstu2.model.TimeType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.TimeType(src.getValue()) : new org.hl7.fhir.dstu2.model.TimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.UnsignedIntType convertUnsignedInt(org.hl7.fhir.dstu2.model.UnsignedIntType src) throws FHIRException {
-        org.hl7.fhir.r5.model.UnsignedIntType tgt = new org.hl7.fhir.r5.model.UnsignedIntType(src.getValue());
+        org.hl7.fhir.r5.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UnsignedIntType(src.getValue()) : new org.hl7.fhir.r5.model.UnsignedIntType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.UnsignedIntType convertUnsignedInt(org.hl7.fhir.r5.model.UnsignedIntType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.UnsignedIntType tgt = new org.hl7.fhir.dstu2.model.UnsignedIntType(src.getValue());
+        org.hl7.fhir.dstu2.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.UnsignedIntType(src.getValue()) : new org.hl7.fhir.dstu2.model.UnsignedIntType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.UriType convertUri(org.hl7.fhir.dstu2.model.UriType src) throws FHIRException {
-        org.hl7.fhir.r5.model.UriType tgt = new org.hl7.fhir.r5.model.UriType(src.getValue());
+        org.hl7.fhir.r5.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UriType(src.getValue()) : new org.hl7.fhir.r5.model.UriType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.UriType convertUri(org.hl7.fhir.r5.model.UriType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.UriType tgt = new org.hl7.fhir.dstu2.model.UriType(src.getValue());
+        org.hl7.fhir.dstu2.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.UriType(src.getValue()) : new org.hl7.fhir.dstu2.model.UriType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.UuidType convertUuid(org.hl7.fhir.dstu2.model.UuidType src) throws FHIRException {
-        org.hl7.fhir.r5.model.UuidType tgt = new org.hl7.fhir.r5.model.UuidType(src.getValue());
+        org.hl7.fhir.r5.model.UuidType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UuidType(src.getValue()) : new org.hl7.fhir.r5.model.UuidType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.dstu2.model.UuidType convertUuid(org.hl7.fhir.r5.model.UuidType src) throws FHIRException {
-        org.hl7.fhir.dstu2.model.UuidType tgt = new org.hl7.fhir.dstu2.model.UuidType(src.getValue());
+        org.hl7.fhir.dstu2.model.UuidType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.UuidType(src.getValue()) : new org.hl7.fhir.dstu2.model.UuidType();
         copyElement(src, tgt);
         return tgt;
     }
