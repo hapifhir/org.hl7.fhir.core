@@ -39,7 +39,7 @@ public class TypesUtilities {
       case PRIMITIVE: return "Primitive Type";
       case SPECIAL: return "Special Type";
       }
-      return "??";
+      return "?tu-class?";
     }
   }
 
