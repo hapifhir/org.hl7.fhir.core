@@ -678,12 +678,12 @@ public class XmlParser extends ParserBase {
           return header.substring(i+9, i+12);          
         } 
       }
-      return "??";
+      return "?xml-p1?";
     } catch (Exception e) {
       // suppress this error 
       logError(0, 0, "XML", IssueType.INVALID, e.getMessage(), IssueSeverity.ERROR);
     }
-    return "??";
+    return "?xml-p2?";
   }
 
 }

@@ -536,17 +536,17 @@ public class FHIRPathEngine {
    * evaluate a path and return the matching elements
    * 
    * @param base - the object against which the path is being evaluated
-   * @param ExpressionNode - the parsed ExpressionNode statement to use
+   * @param expressionNode - the parsed ExpressionNode statement to use
    * @return
    * @throws FHIRException 
    * @
    */
-  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode expressionNode) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, expressionNode, true);
   }
 
   /**
