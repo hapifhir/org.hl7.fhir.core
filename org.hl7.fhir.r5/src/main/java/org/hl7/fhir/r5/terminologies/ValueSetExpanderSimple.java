@@ -116,7 +116,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   public void setMaxExpansionSize(int theMaxExpansionSize) {
     maxExpansionSize = theMaxExpansionSize;
   }
-
+  
   private ValueSetExpansionContainsComponent addCode(String system, String code, String display, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, boolean isAbstract, boolean inactive, List<ValueSet> filters) {
  
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code))
@@ -215,11 +215,23 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       boolean inc = CodeSystemUtilities.isInactive(cs, def);
       if (canBeHeirarchy || !abs)
         np = addCode(system, def.getCode(), def.getDisplay(), parent, def.getDesignation(), expParams, abs, inc, filters);
-      for (ConceptDefinitionComponent c : def.getConcept())
+      for (ConceptDefinitionComponent c : def.getConcept()) {
         addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion);
+      }
+      if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
+        for (ConceptDefinitionComponent c : children)
+          addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion);
+      }
     } else {
-      for (ConceptDefinitionComponent c : def.getConcept())
+      for (ConceptDefinitionComponent c : def.getConcept()) {
         addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion);
+      }
+      if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
+        for (ConceptDefinitionComponent c : children)
+          addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion);
+      }
     }
 
   }

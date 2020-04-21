@@ -777,7 +777,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       } else if (wrapped.hasChild("name") && wrapped.getChildValue("name") != null) {
         x.tx(wrapped.getChildValue("name"));       
       } else {
-        x.tx("??");
+        x.tx("?ngen-1?");
       }
     }
   }
@@ -1734,7 +1734,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } else if (e instanceof Period) {
       Period p = (Period) e;
       x.addText(name+": ");
-      x.addText(!p.hasStart() ? "??" : p.getStartElement().toHumanDisplay());
+      x.addText(!p.hasStart() ? "?ngen-2?" : p.getStartElement().toHumanDisplay());
       x.tx(" --> ");
       x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
       return true;
@@ -1744,9 +1744,9 @@ public class NarrativeGenerator implements INarrativeGenerator {
         x.addText(r.getDisplay());
       else if (r.hasReferenceElement()) {
         ResourceWithReference tr = resolveReference(res, r.getReference(), rc);
-        x.addText(tr == null ? r.getReference() : "????"); // getDisplayForReference(tr.getReference()));
+        x.addText(tr == null ? r.getReference() : "?ngen-3"); // getDisplayForReference(tr.getReference()));
       } else
-        x.tx("??");
+        x.tx("?ngen-4?");
       return true;
     } else if (e instanceof Narrative) {
       return false;
@@ -1794,7 +1794,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   public static String displayPeriod(Period p) {
-    String s = !p.hasStart() ? "??" : p.getStartElement().toHumanDisplay();
+    String s = !p.hasStart() ? "?ngen-5?" : p.getStartElement().toHumanDisplay();
     s = s + " --> ";
     return s + (!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }
@@ -2296,13 +2296,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
     case PCM: return "after breakfast";
     case PCV: return "after dinner";
     case WAKE: return "after waking";
-    default: return "??";
+    default: return "?ngen-6?";
     }
   }
 
   private String displayTimeUnits(UnitsOfTime units) {
   	if (units == null)
-  		return "??";
+  		return "?ngen-7?";
     switch (units) {
     case A: return "years";
     case D: return "days";
@@ -2311,7 +2311,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     case MO: return "months";
     case S: return "seconds";
     case WK: return "weeks";
-    default: return "??";
+    default: return "?ngen-8?";
     }
   }
 
@@ -2391,7 +2391,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private String displayIdentifier(Identifier ii) {
-    String s = Utilities.noString(ii.getValue()) ? "??" : ii.getValue();
+    String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
 
     if (ii.hasType()) {
     	if (ii.getType().hasText())
@@ -2455,7 +2455,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       p.addText(Utilities.capitalize(cm.getStatus().toString())+" (not intended for production usage). ");
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx("Published on "+(cm.hasDate() ? cm.getDateElement().toHumanDisplay() : "??")+" by "+cm.getPublisher());
+    p.tx("Published on "+(cm.hasDate() ? cm.getDateElement().toHumanDisplay() : "?ngen-10?")+" by "+cm.getPublisher());
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -3893,7 +3893,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         return vc.getDisplay();
       }
     }
-    return "??Lang";
+    return "?ngen-lang?";
   }
  
   private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, String lang, List<PropertyComponent> properties, CodeSystemNavigator csNav) throws FHIRFormatError, DefinitionException, IOException {
@@ -4236,14 +4236,14 @@ public class NarrativeGenerator implements INarrativeGenerator {
       String ref = (String) vs.getUserData("path");
       
       ref = adjustForPath(ref);
-      XhtmlNode a = li.ah(ref == null ? "??" : ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
       a.addText(value);
     } else {
     	CodeSystem cs = context.fetchCodeSystem(value);
     	if (cs != null) {
         String ref = (String) cs.getUserData("path");
         ref = adjustForPath(ref);
-        XhtmlNode a = li.ah(ref == null ? "??" : ref.replace("\\", "/"));
+        XhtmlNode a = li.ah(ref == null ? "?ngen-12?" : ref.replace("\\", "/"));
         a.addText(value);
 	    } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
 	      XhtmlNode a = li.ah(value);
@@ -4397,7 +4397,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     case ISA: return " is-a ";
     case ISNOTA: return " is-not-a ";
     case REGEX: return " matches (by regex) ";
-		case NULL: return " ?? ";
+		case NULL: return " ?ngen-13? ";
 		case IN: return " in ";
 		case NOTIN: return " not in ";
     case DESCENDENTOF: return " descends from ";
@@ -4534,7 +4534,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (ref == null)
       ref = (String) cs.getUserData("path");
     if (ref == null)
-      return "??.html";
+      return "?ngen-14?.html";
     if (!ref.contains(".html"))
       ref = ref + ".html";
     return ref.replace("\\", "/");
@@ -4646,7 +4646,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (ref.hasIdentifier()) {
       return displayIdentifier(ref.getIdentifier());
     }
-    return "??";
+    return "?ngen-15?";
 	}
 
 	public String gen(CodeableConcept code) {
@@ -4861,7 +4861,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       } else if (disp != null) {
         x.tx(disp);      
       } else {
-        x.tx("??");
+        x.tx("?ngen-16?");
       }     
     }
     return x;

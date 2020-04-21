@@ -49,6 +49,8 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
 
+  public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
+
   public static class CodeSystemNavigator {
 
     private CodeSystem cs;
@@ -344,6 +346,17 @@ public class CodeSystemUtilities {
         return p; 
     return null;
   }
+  
+  public static List<ConceptPropertyComponent> getPropertyValues(ConceptDefinitionComponent concept, String code) {
+    List<ConceptPropertyComponent> res = new ArrayList<>();
+    for (ConceptPropertyComponent p : concept.getProperty()) {
+      if (p.getCode().equals(code)) {
+        res.add(p); 
+      }
+    }
+    return res;
+  }
+
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
   // returns additional parents not in the heirarchy
@@ -416,4 +429,40 @@ public class CodeSystemUtilities {
     return null;
   }
 
+  public static void crossLinkCodeSystem(CodeSystem cs) {
+    String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
+    if ((parent != null)) {
+      crossLinkConcepts(cs.getConcept(), cs.getConcept(), parent);
+    }
+  }
+
+  private static String getPropertyByUrl(CodeSystem cs, String url) {
+    for (PropertyComponent pc : cs.getProperty()) {
+      if (url.equals(pc.getUri())) {
+        return pc.getCode();
+      }
+    }
+    return null;
+  }
+
+  private static void crossLinkConcepts(List<ConceptDefinitionComponent> root, List<ConceptDefinitionComponent> focus, String parent) {
+    for (ConceptDefinitionComponent def : focus) {
+      List<ConceptPropertyComponent> pcl = getPropertyValues(def, parent);
+      for (ConceptPropertyComponent pc : pcl) {
+        String code = pc.getValue().primitiveValue();
+        ConceptDefinitionComponent tgt = findCode(root, code);
+        if (!tgt.hasUserData(USER_DATA_CROSS_LINK)) {
+          tgt.setUserData(USER_DATA_CROSS_LINK, new ArrayList<>());
+        }
+        @SuppressWarnings("unchecked")
+        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) tgt.getUserData(USER_DATA_CROSS_LINK);
+        children.add(def);
+      }      
+      if (def.hasConcept()) {
+        crossLinkConcepts(root, def.getConcept(), parent);
+      }
+    }
+    
+  }
+  
 }

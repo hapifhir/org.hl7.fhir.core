@@ -627,7 +627,7 @@ public class CapabilityStatementUtilities {
       return cc.getText();
     if (cc.hasCoding())
       return gen(cc.getCoding().get(0));
-    return "??";
+    return "?gen-cc?";
   }
 
   private String gen(Coding coding) {
@@ -635,7 +635,7 @@ public class CapabilityStatementUtilities {
       return coding.getDisplay();
     if (coding.hasCode())
       return coding.getCode();
-    return "???";
+    return "?gen-c?";
   }
 
 

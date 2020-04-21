@@ -217,7 +217,7 @@ public class ExpressionNode {
       case ConvertsToDateTime : return "convertsToDateTime";
       case ConvertsToTime : return "isTime";
       case ConformsTo : return "conformsTo";
-      default: return "??";
+      default: return "?custom?";
       }
     }
   }
@@ -309,7 +309,7 @@ public class ExpressionNode {
       case In : return "in";
       case Contains : return "contains";
       case MemberOf : return "memberOf";
-			default: return "??";
+			default: return "?custom?";
 			}
 		}
 	}
@@ -534,7 +534,7 @@ public class ExpressionNode {
 		case Constant: return uniqueId+": "+constant;
 		case Group: return uniqueId+": (Group)";
 		}
-		return "??";
+		return "?exp-kind?";
 	}
 
 	private void write(StringBuilder b) {
