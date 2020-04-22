@@ -9,7 +9,6 @@ import java.util.List;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -21,8 +20,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class ProfileUtilitiesTests {
 
@@ -811,7 +809,4 @@ public class ProfileUtilitiesTests {
     builder.directory(new CSFile("c:\\temp"));
     builder.start();
   }
-  
-  
-  
 }

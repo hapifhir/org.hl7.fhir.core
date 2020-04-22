@@ -7,19 +7,21 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class PackageCacheTests {
 
   @Test
+  @Disabled // This test is currently set to always fail.
   public void testPath() throws IOException {
     PackageCacheManager cache = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
-    Assert.assertTrue(false);
+    Assertions.assertTrue(false);
     NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
     npm.loadAllFiles();
-    Assert.assertNotNull(npm);
+    Assertions.assertNotNull(npm);
     File dir = new File(Utilities.path("[tmp]", "cache"));
     if (dir.exists()) {
       Utilities.clearDirectory(dir.getAbsolutePath());
@@ -28,10 +30,7 @@ public class PackageCacheTests {
     }
     npm.save(dir);
     NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:"+dir.getAbsolutePath());
-    Assert.assertNotNull(npm2);
-    
+    Assertions.assertNotNull(npm2);
   }
-
-
 }
 
