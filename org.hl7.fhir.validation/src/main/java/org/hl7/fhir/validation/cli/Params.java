@@ -92,18 +92,19 @@ public class Params {
         i++; // ignore next parameter
       } else if (args[i].equals(PROFILE)) {
         String p = null;
-        if (i + 1 == args.length)
+        if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
-        else {
+        } else {
           p = args[++i];
-          cliContext.addProfile(args[++i]);
+          cliContext.addProfile(args[i++]);
         }
         if (p != null && i + 1 < args.length && args[i + 1].equals("@")) {
           i++;
-          if (i + 1 == args.length)
+          if (i + 1 == args.length) {
             throw new Error("Specified -profile with @ without indicating profile location");
-          else
+          } else {
             cliContext.addLocation(p, args[++i]);
+          }
         }
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
