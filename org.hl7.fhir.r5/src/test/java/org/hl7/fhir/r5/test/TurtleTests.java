@@ -5,15 +5,11 @@ import java.io.IOException;
 
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.formats.Turtle;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.junit.Test;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.Test;
 
 public class TurtleTests {
-
-
 
   private void doTest(String s, boolean ok) throws Exception {
     try {

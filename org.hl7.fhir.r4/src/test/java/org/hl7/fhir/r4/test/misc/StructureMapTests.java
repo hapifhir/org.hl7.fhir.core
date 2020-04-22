@@ -1,34 +1,25 @@
 package org.hl7.fhir.r4.test.misc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.model.StructureMap;
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.StructureMapUtilities;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import junit.framework.Assert;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(Parameterized.class)
 public class StructureMapTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError {
-    
+
     List<String> files = new ArrayList<>();
 //    File dir = new File(Utilities.path(TestingUtilities.home(), "implementations",  "r3maps", "R3toR4"));
 //    for (File f : dir.listFiles())
@@ -45,14 +36,16 @@ public class StructureMapTests {
 //    }
     return objects;
   }
+
   private String filename;
 
   public StructureMapTests(String name, String filename) {
     this.filename = filename;
   }
-  
+
   @SuppressWarnings("deprecation")
   @Test
+  @Ignore
   public void test() throws FHIRException, FileNotFoundException, IOException {
 //    if (TestingUtilities.context == null) {
 //      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
@@ -68,7 +61,7 @@ public class StructureMapTests {
 //    String s = TestingUtilities.checkTextIsSame(source, output);
 //    Assert.assertTrue(s, s == null);
   }
-  
+
 //  private void testParse(String path) throws FileNotFoundException, IOException, FHIRException {
 //    if (TestingUtilities.context == null)
 //    	TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
@@ -77,7 +70,7 @@ public class StructureMapTests {
 //    StructureMap map = scm.parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), path)), path);
 //    TextFile.stringToFile(scm.render(map), Utilities.path(TestingUtilities.home(), path+".out"));
 //  }
-  
+
 //  @Test
 //  public void testParseAny() throws FHIRException, IOException {
 //    testParse("guides\\ccda2\\mapping\\map\\any.map");

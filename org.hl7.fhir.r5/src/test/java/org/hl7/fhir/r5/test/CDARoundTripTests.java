@@ -1,33 +1,20 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
+import junit.framework.Assert;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.Assert;
+import java.io.IOException;
 
 public class CDARoundTripTests {
 
@@ -42,7 +29,7 @@ public class CDARoundTripTests {
 // old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.cda", "dev"), null, "StructureDefinition");
 // old-test     fp = new FHIRPathEngine(context);
   }
-  
+
 // old-test    
 //  @Test
 //  public void testCDA() throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
@@ -184,9 +171,10 @@ public class CDARoundTripTests {
 //            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.ttl"),
 //        FhirFormat.TURTLE, OutputStyle.PRETTY, null);
 //  }
-  
-  
+
+
   @Test
+  @Disabled
   public void testSimple() throws IOException {
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     SimpleWorkerContext context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
@@ -197,14 +185,14 @@ public class CDARoundTripTests {
     context.loadFromFile(TestingUtilities.loadTestResourceStream("r5", "cda", "cda.xml"), "cda.xml", null);
     for (StructureDefinition sd : context.getStructures()) {
       if (!sd.hasSnapshot()) {
-        System.out.println("generate snapshot for "+sd.getUrl());
+        System.out.println("generate snapshot for " + sd.getUrl());
         context.generateSnapshot(sd, true);
       }
     }
     Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "cda", "example.xml"), FhirFormat.XML);
     FHIRPathEngine fp = new FHIRPathEngine(context);
     Assert.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
-   
+
   }
-  
+
 }

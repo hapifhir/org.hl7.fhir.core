@@ -1,21 +1,21 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.hl7.fhir.utilities.cache.PackageClient;
 import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 public class PackageClientTests {
 
   @Test
   public void testExists() throws IOException {
     PackageClient client = new PackageClient("http://packages.fhir.org");
-    Assert.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
-    Assert.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
-    Assert.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
+    Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
+    Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
+    Assertions.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
   }
 
   @Test
@@ -25,15 +25,14 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
-    Assert.assertTrue(matches.size() > 0);
+    Assertions.assertTrue(matches.size() > 0);
   }
-  
 
   @Test
   public void testSearchNoMatches() throws IOException {
     PackageClient client = new PackageClient("http://packages.fhir.org");
     List<PackageInfo> matches = client.search("corezxxx", null, null, false);
-    Assert.assertTrue(matches.size() == 0);
+    Assertions.assertTrue(matches.size() == 0);
   }
 
   @Test
@@ -43,23 +42,23 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
-    Assert.assertTrue(matches.size() > 0);
+    Assertions.assertTrue(matches.size() > 0);
   }
-  
+
   @Test
   public void testVersionsNone() throws IOException {
     PackageClient client = new PackageClient("http://packages.fhir.org");
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3X");
-    Assert.assertTrue(matches.size() == 0);
+    Assertions.assertTrue(matches.size() == 0);
   }
-  
+
 
   @Test
   public void testExists2() throws IOException {
     PackageClient client = new PackageClient("http://test.fhir.org/packages");
-    Assert.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
-    Assert.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
-    Assert.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
+    Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
+    Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
+    Assertions.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
   }
 
   @Test
@@ -69,14 +68,14 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
-    Assert.assertTrue(matches.size() > 0);
+    Assertions.assertTrue(matches.size() > 0);
   }
 
   @Test
   public void testSearchNoMatches2() throws IOException {
     PackageClient client = new PackageClient("http://test.fhir.org/packages");
     List<PackageInfo> matches = client.search("corezxxx", null, null, false);
-    Assert.assertTrue(matches.size() == 0);
+    Assertions.assertTrue(matches.size() == 0);
   }
 
   @Test
@@ -86,9 +85,9 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
-    Assert.assertTrue(matches.size() == 0);
+    Assertions.assertTrue(matches.size() == 0);
   }
-  
+
   @Test
   public void testVersions2A() throws IOException {
     PackageClient client = new PackageClient("http://test.fhir.org/packages");
@@ -96,15 +95,13 @@ public class PackageClientTests {
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
     }
-    Assert.assertTrue(matches.size() > 0);
+    Assertions.assertTrue(matches.size() > 0);
   }
-  
+
   @Test
   public void testVersionsNone2() throws IOException {
     PackageClient client = new PackageClient("http://test.fhir.org/packages");
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3X");
-    Assert.assertTrue(matches.size() == 0);
+    Assertions.assertTrue(matches.size() == 0);
   }
-  
-  
 }

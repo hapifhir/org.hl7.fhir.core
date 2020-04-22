@@ -1,24 +1,14 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.Assert;
+import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class NpmPackageTests {
 
@@ -67,46 +57,43 @@ public class NpmPackageTests {
 
 
   private void checkNpm(NpmPackage npm) throws IOException {
-    Assert.assertEquals(1, npm.list("other").size());
-    Assert.assertEquals("help.png", npm.list("other").get(0));
-    Assert.assertEquals(1, npm.list("package").size());
-    Assert.assertEquals("StructureDefinition-Definition.json", npm.list("package").get(0));
-    
+    Assertions.assertEquals(1, npm.list("other").size());
+    Assertions.assertEquals("help.png", npm.list("other").get(0));
+    Assertions.assertEquals(1, npm.list("package").size());
+    Assertions.assertEquals("StructureDefinition-Definition.json", npm.list("package").get(0));
   }
 
   private static void unzip(InputStream source, File destDir) throws IOException {
     Utilities.createDirectory(destDir.getAbsolutePath());
-    
+
     byte[] buffer = new byte[1024];
-    
     ZipInputStream zis = new ZipInputStream(source);
     ZipEntry zipEntry = zis.getNextEntry();
     while (zipEntry != null) {
-        File newFile = newFile(destDir, zipEntry);
-        if (zipEntry.isDirectory()) {
-          Utilities.createDirectory(newFile.getAbsolutePath());          
-        } else {
-          FileOutputStream fos = new FileOutputStream(newFile);
-          int len;
-          while ((len = zis.read(buffer)) > 0) {
-            fos.write(buffer, 0, len);
-          }
-          fos.close();
+      File newFile = newFile(destDir, zipEntry);
+      if (zipEntry.isDirectory()) {
+        Utilities.createDirectory(newFile.getAbsolutePath());
+      } else {
+        FileOutputStream fos = new FileOutputStream(newFile);
+        int len;
+        while ((len = zis.read(buffer)) > 0) {
+          fos.write(buffer, 0, len);
         }
-        zipEntry = zis.getNextEntry();
+        fos.close();
+      }
+      zipEntry = zis.getNextEntry();
     }
     zis.closeEntry();
     zis.close();
   }
-  
+
   public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
     File destFile = new File(destinationDir, zipEntry.getName());
-     
     String destDirPath = destinationDir.getCanonicalPath();
     String destFilePath = destFile.getCanonicalPath();
     if (!destFilePath.startsWith(destDirPath + File.separator)) {
-        throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
-    }    
+      throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+    }
     return destFile;
-}
+  }
 }

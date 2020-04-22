@@ -1,17 +1,13 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.*;
-
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CanonicalResourceManagerTester {
 
-  
   @Test
   public void testSingleNoVersion() {
     CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(true);

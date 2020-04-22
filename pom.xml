@@ -84,6 +84,12 @@
             <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -173,14 +179,26 @@
                     <testFailureIgnore>false</testFailureIgnore>
                     <argLine>-Xmx4096m</argLine>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                    <includes>
-                        <include>**/All*</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*dstu*/**</exclude>
-                        <exclude>**/*r4*/**</exclude>
-                    </excludes>
+<!--                    <includes>-->
+<!--                        <include>**/All*</include>-->
+<!--                    </includes>-->
+<!--                    <excludes>-->
+<!--                        <exclude>**/*dstu*/**</exclude>-->
+<!--                        <exclude>**/*r4*/**</exclude>-->
+<!--                    </excludes>-->
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit_jupiter_version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                        <version>${junit_jupiter_version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.basepom.maven</groupId>
