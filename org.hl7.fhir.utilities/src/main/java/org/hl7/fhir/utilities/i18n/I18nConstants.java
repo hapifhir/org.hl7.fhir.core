@@ -419,6 +419,7 @@ public class I18nConstants {
   public final static String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ = "Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__";
   public final static String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_ = "Display_Name_for__should_be_one_of__instead_of_";
   public final static String UNKNOWN_CODE__IN_ = "Unknown_Code__in_";
+  public final static String UNKNOWN_CODE__IN_FRAGMENT = "UNKNOWN_CODE__IN_FRAGMENT";
   public final static String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public final static String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set_";
   public final static String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
