@@ -560,6 +560,12 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
           throw new TerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         for (ConceptDefinitionComponent c : def.getConcept())
           addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null);
+        if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+          List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
+          for (ConceptDefinitionComponent c : children)
+            addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null);
+        }
+
       } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
         // gg; note: wtf is this: if the filter is display=v, look up the code 'v', and see if it's diplsay is 'v'?
         canBeHeirarchy = false;
