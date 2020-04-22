@@ -32,6 +32,8 @@ public class CliContext {
   private String snomedCT = SnomedVersion.INTL.getCode();
   private String targetVer = null;
   private boolean doDebug = false;
+  private boolean noInternalCaching = false; // internal, for when debugging terminology validation
+  private boolean noExtensibleBindingMessages = false;
   private boolean assumeValidRestReferences = false;
 
   public String getMap() {
@@ -286,4 +288,24 @@ public class CliContext {
     this.assumeValidRestReferences = assumeValidRestReferences;
     return this;
   }
+
+  public boolean isNoInternalCaching() {
+    return noInternalCaching;
+  }
+
+  public CliContext setNoInternalCaching(boolean noInternalCaching) {
+    this.noInternalCaching = noInternalCaching;
+    return this;
+  }
+
+  public boolean isNoExtensibleBindingMessages() {
+    return noExtensibleBindingMessages;
+  }
+
+  public CliContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+  
+  
 }

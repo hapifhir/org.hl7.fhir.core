@@ -45,6 +45,8 @@ public class Params {
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
+  public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
+  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -126,6 +128,10 @@ public class Params {
         }
       } else if (args[i].equals(STRICT_EXTENSIONS)) {
         cliContext.setAnyExtensionsAllowed(false);
+      } else if (args[i].equals(NO_INTERNAL_CACHING)) {
+        cliContext.setNoInternalCaching(true);        
+      } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
+        cliContext.setNoExtensibleBindingMessages(true);        
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         cliContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
