@@ -87,6 +87,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -5467,7 +5468,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private String summarizeCoding(Coding value) {
     String uri = value.getSystem();
-    String system = NarrativeGenerator.describeSystem(uri);
+    String system = TerminologyRenderer.describeSystem(uri);
     if (Utilities.isURL(system)) {
       if (system.equals("http://cap.org/protocols"))
         system = "CAP Code";
