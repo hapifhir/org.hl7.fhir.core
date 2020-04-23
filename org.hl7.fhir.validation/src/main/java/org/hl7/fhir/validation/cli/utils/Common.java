@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli;
+package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
@@ -75,11 +75,9 @@ public class Common {
     }
   }
 
-  public static ValidationEngine getValidationEngine(String[] args, String txLog) throws Exception {
-    String v = Common.getVersion(args);
-    String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    System.out.println("Loading (v = " + v + ", tx server http://tx.fhir.org)");
-    return new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(v), v);
+  public static ValidationEngine getValidationEngine(String version, String definitions, String txLog) throws Exception {
+    System.out.println("Loading (v = " + version + ", tx server http://tx.fhir.org)");
+    return new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(version), version);
   }
 
 }

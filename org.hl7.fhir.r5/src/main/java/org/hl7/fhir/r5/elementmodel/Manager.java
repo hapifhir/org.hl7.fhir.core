@@ -24,6 +24,9 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -34,23 +37,41 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class Manager {
 
+  //TODO use EnumMap
   public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR;
 
     public String getExtension() {
       switch (this) {
-      case JSON:
-        return "json";
-      case TURTLE:
-        return "ttl";
-      case XML:
-        return "xml";
-      case TEXT:
-        return "txt";
-      case VBAR:
-        return "hl7";
+        case JSON:
+          return "json";
+        case TURTLE:
+          return "ttl";
+        case XML:
+          return "xml";
+        case TEXT:
+          return "txt";
+        case VBAR:
+          return "hl7";
       }
       return null;
     }
+
+    public static FhirFormat getFhirFormat(String code) {
+      switch (code) {
+        case "json":
+          return JSON;
+        case "ttl":
+          return TURTLE;
+        case "xml":
+          return XML;
+        case "txt":
+          return TEXT;
+        case "hl7":
+          return VBAR;
+      }
+      return null;
+    }
+
   }
   
   public static Element parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {

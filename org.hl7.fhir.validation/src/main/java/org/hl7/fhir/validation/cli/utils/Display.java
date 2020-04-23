@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli;
+package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.VersionUtilities;

@@ -1,7 +1,8 @@
-package org.hl7.fhir.validation.cli;
+package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.Validator;
+import org.hl7.fhir.validation.cli.model.CliContext;
 
 import java.io.File;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Locale;
 
 public class Params {
 
+  public static final String GUI = "-gui";
   public static final String VERSION = "-version";
   public static final String OUTPUT = "-output";
   public static final String PROXY = "-proxy";

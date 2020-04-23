@@ -51,6 +51,7 @@ package org.hl7.fhir.utilities.validation;
  */
 
 import java.util.Comparator;
+import java.util.EnumMap;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

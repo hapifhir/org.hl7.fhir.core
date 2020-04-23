@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli;
+package org.hl7.fhir.validation.cli.services;
 
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
@@ -14,6 +14,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.utils.Params;
 
 import java.awt.*;
 import java.io.File;
@@ -21,7 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class Comparison {
+public class ComparisonService {
 
   public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException {
     // ok now set up the comparison
@@ -39,9 +40,9 @@ public class Comparison {
 
     if (resLeft != null && resRight != null) {
       if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
-        Comparison.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
+        ComparisonService.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
       } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
-        Comparison.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
+        ComparisonService.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
       } else
         System.out.println("Unable to compare left resource " + left + " (" + resLeft.fhirType() + ") with right resource " + right + " (" + resRight.fhirType() + ")");
     }
@@ -71,7 +72,7 @@ public class Comparison {
     new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "CapabilityStatement-intersection.json")), output.getSubset());
     new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "OperationOutcome-issues.json")), output.getOutcome());
 
-    String destHtml = Utilities.path(dest, "index.html");
+    String destHtml = Utilities.path(dest, "public/index.html");
     File htmlFile = new File(destHtml);
     Desktop.getDesktop().browse(htmlFile.toURI());
     System.out.println("Done");
