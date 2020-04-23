@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -161,23 +162,23 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
     hierarchy = hierarchy || csNav.isRestructure();
     
-    Set<String> langs = new HashSet<>();
+    List<String> langs = new ArrayList<>();
     addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, true, commentS, version, deprecated, properties), maps);
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
       hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs) || hasExtensions;
     }
-//    if (langs.size() > 0) {
-//      Collections.sort(langs);
-//      x.para().b().tx("Additional Language Displays");
-//      t = x.table( "codes");
-//      XhtmlNode tr = t.tr();
-//      tr.td().b().tx("Code");
-//      for (String lang : langs)
-//        tr.td().b().addText(describeLang(lang));
-//      for (ConceptDefinitionComponent c : cs.getConcept()) {
-//        addLanguageRow(c, t, langs);
-//      }
-//    }
+    if (langs.size() > 0) {
+      Collections.sort(langs);
+      x.para().b().tx("Additional Language Displays");
+      t = x.table( "codes");
+      XhtmlNode tr = t.tr();
+      tr.td().b().tx("Code");
+      for (String lang : langs)
+        tr.td().b().addText(describeLang(lang));
+      for (ConceptDefinitionComponent c : cs.getConcept()) {
+        addLanguageRow(c, t, langs);
+      }
+    }
     return hasExtensions;
   }
 
@@ -267,7 +268,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
 
 
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, Set<String> langs) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
@@ -281,6 +282,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     XhtmlNode a;
     if (c.hasCodeElement()) {
       td.an(cs.getId()+"-" + Utilities.nmtokenize(c.getCode()));
+    }
+
+    for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+      if (cd.hasLanguage() && !langs.contains(cd.getLanguage())) {
+        langs.add(cd.getLanguage());
+      }
+        
     }
 
     if (hasDisplay) {
@@ -485,5 +493,19 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
 
+  private void addLanguageRow(ConceptDefinitionComponent c, XhtmlNode t, List<String> langs) {
+    XhtmlNode tr = t.tr();
+    tr.td().addText(c.getCode());
+    for (String lang : langs) {
+      ConceptDefinitionDesignationComponent d = null;
+      for (ConceptDefinitionDesignationComponent designation : c.getDesignation()) {
+        if (designation.hasLanguage()) {
+          if (lang.equals(designation.getLanguage()))
+            d = designation;
+        }
+      }
+      tr.td().addText(d == null ? "" : d.getValue());
+    }
+  }
  
 }

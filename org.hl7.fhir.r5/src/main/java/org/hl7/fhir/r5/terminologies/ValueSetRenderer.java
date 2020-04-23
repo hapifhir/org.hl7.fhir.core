@@ -295,21 +295,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
 
-  private void addLanguageRow(ConceptDefinitionComponent c, XhtmlNode t, List<String> langs) {
-    XhtmlNode tr = t.tr();
-    tr.td().addText(c.getCode());
-    for (String lang : langs) {
-      ConceptDefinitionDesignationComponent d = null;
-      for (ConceptDefinitionDesignationComponent designation : c.getDesignation()) {
-        if (designation.hasLanguage()) {
-          if (lang.equals(designation.getLanguage()))
-            d = designation;
-        }
-      }
-      tr.td().addText(d == null ? "" : d.getValue());
-    }
-  }
-
+ 
   
   private ConceptMapRenderInstructions findByTarget(DataType source) {
     if (source == null) {
@@ -656,39 +642,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
-  private String describeLang(String lang) {
-    ValueSet v = context.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
-    if (v != null) {
-      ConceptReferenceComponent l = null;
-      for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-        if (cc.getCode().equals(lang))
-          l = cc;
-      }
-      if (l == null) {
-        if (lang.contains("-"))
-          lang = lang.substring(0, lang.indexOf("-"));
-        for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-          if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
-            l = cc;
-        }
-      }
-      if (l != null) {
-        if (lang.contains("-"))
-          lang = lang.substring(0, lang.indexOf("-"));
-        String en = l.getDisplay();
-        String nativelang = null;
-        for (ConceptReferenceDesignationComponent cd : l.getDesignation()) {
-          if (cd.getLanguage().equals(lang))
-            nativelang = cd.getValue();
-        }
-        if (nativelang == null)
-          return en+" ("+lang+")";
-        else
-          return nativelang+" ("+en+", "+lang+")";
-      }
-    }
-    return lang;
-  }
+
 
 
 
