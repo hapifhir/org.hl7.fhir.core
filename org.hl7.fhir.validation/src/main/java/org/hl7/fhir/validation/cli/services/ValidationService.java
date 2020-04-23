@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli;
+package org.hl7.fhir.validation.cli.services;
 
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,13 +18,37 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ValidationUtils {
+public class ValidationService {
+
+  public static ValidationResponse validateSources(ValidationRequest request, ValidationEngine validator) throws Exception {
+    if (request.getCliContext().getProfiles().size() > 0) {
+      System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
+    } else {
+      System.out.println("  .. validate " + request.listSourceFiles());
+    }
+    validator.prepare(); // generate any missing snapshots
+
+    ValidationResponse response = new ValidationResponse();
+    for (FileInfo fp : request.getFilesToValidate()) {
+      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), fp.getFileType(),
+        request.getCliContext().getProfiles());
+      ValidationOutcome outcome = new ValidationOutcome();
+
+      // Need to set file content to null as server can't handle json in json
+      fp.setFileContent(null);
+      outcome.setFileInfo(fp);
+      operationOutcome.getIssue().forEach(outcome::addIssue);
+      response.addOutcome(outcome);
+    }
+    return response;
+  }
 
   public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (cliContext.getProfiles().size() > 0)
+    if (cliContext.getProfiles().size() > 0) {
       System.out.println("  .. validate " + cliContext.getSources() + " against " + cliContext.getProfiles().toString());
-    else
+    } else {
       System.out.println("  .. validate " + cliContext.getSources());
+    }
     validator.prepare(); // generate any missing snapshots
     Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles());
     int ec = 0;
@@ -154,7 +179,7 @@ public class ValidationUtils {
     validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
     validator.setLanguage(cliContext.getLang());
     validator.setLocale(cliContext.getLocale());
-    validator.setSnomedExtension(cliContext.getSnomedCT());
+    validator.setSnomedExtension(cliContext.getSnomedCTCode());
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
     validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
