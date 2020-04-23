@@ -11,10 +11,12 @@ import org.hl7.fhir.dstu2016may.metamodel.Manager.FhirFormat;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.dstu2016may.utils.SimpleWorkerContext;
 import org.hl7.fhir.utilities.Utilities;
-import org.junit.Test;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+@Disabled
 public class ParserTests {
 
 	private String root = "C:\\work\\org.hl7.fhir.2016May\\build\\publish";

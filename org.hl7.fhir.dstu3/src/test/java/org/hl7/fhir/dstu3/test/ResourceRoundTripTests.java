@@ -14,14 +14,11 @@ import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.EOperationOutcome;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+@Disabled
 public class ResourceRoundTripTests {
-
-  @Before
-  public void setUp() throws Exception {
-  }
 
   @Test
   public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome {

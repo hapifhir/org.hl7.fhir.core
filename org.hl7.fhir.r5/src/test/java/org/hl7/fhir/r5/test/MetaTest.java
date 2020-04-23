@@ -2,7 +2,7 @@ package org.hl7.fhir.r5.test;
 
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Meta;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
