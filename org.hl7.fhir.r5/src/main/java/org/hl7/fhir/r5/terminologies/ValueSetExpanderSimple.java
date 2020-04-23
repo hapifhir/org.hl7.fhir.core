@@ -101,6 +101,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   private Map<String, ValueSetExpansionContainsComponent> map = new HashMap<String, ValueSet.ValueSetExpansionContainsComponent>();
   private IWorkerContext context;
   private boolean canBeHeirarchy = true;
+  private boolean includeAbstract = true;
   private Set<String> excludeKeys = new HashSet<String>();
   private Set<String> excludeSystems = new HashSet<String>();
   private ValueSet focus;
@@ -213,7 +214,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       ValueSetExpansionContainsComponent np = null;
       boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
       boolean inc = CodeSystemUtilities.isInactive(cs, def);
-      if (canBeHeirarchy || !abs)
+      if (includeAbstract || !abs)
         np = addCode(system, def.getCode(), def.getDisplay(), parent, def.getDesignation(), expParams, abs, inc, filters);
       for (ConceptDefinitionComponent c : def.getConcept()) {
         addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion);
@@ -340,7 +341,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       }
     } else {
       for (ValueSetExpansionContainsComponent c : codes) {
-        if (map.containsKey(key(c)) && !c.getAbstract()) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
+        if (map.containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
           focus.getExpansion().getContains().add(c);
           c.getContains().clear(); // make sure any heirarchy is wiped
         }
@@ -379,6 +380,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(inc, exp.getParameter(), ctxt);
     canBeHeirarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty();
+    includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
       if (first == true)
