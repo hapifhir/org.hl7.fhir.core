@@ -30,10 +30,12 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.junit.Test;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+@Disabled
 public class FluentPathTests {
 
   static private Patient patient;
@@ -935,6 +937,5 @@ public class FluentPathTests {
   public void testDoubleEntryPoint() throws FileNotFoundException, IOException, FHIRException {
     testBoolean(patient(), "(Patient.name | Patient.address).count() = 3", true);
   }
-
 }
 

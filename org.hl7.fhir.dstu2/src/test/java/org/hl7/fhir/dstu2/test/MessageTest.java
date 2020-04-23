@@ -10,7 +10,7 @@ import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.model.Bundle;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MessageTest {
 
@@ -30,8 +30,7 @@ public class MessageTest {
 		JsonParser parser = new JsonParser();
 		InputStream is = new ByteArrayInputStream(json.getBytes("UTF-8"));
 		Resource result = parser.parse(is);
-		if (result == null)
-			throw new FHIRException("Bundle was null");
+		if (result == null) throw new FHIRException("Bundle was null");
 	}
 
 }

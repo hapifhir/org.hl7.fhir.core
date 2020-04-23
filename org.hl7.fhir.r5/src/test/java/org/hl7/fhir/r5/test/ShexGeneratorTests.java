@@ -10,11 +10,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ShExGenerator;
 import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ShexGeneratorTests {
 

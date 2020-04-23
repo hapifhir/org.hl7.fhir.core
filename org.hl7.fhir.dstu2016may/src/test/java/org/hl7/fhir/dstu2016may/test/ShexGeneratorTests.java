@@ -11,11 +11,13 @@ import org.hl7.fhir.dstu2016may.utils.ShExGenerator.HTMLLinkPolicy;
 import org.hl7.fhir.dstu2016may.utils.SimpleWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+@Disabled
 public class ShexGeneratorTests {
 
-  private void doTest(String name) throws FileNotFoundException, IOException, FHIRException {
+  private void doTest(String name) throws IOException, FHIRException {
     String workingDirectory = "C:\\work\\org.hl7.fhir.2016May\\build\\publish"; // FileSystems.getDefault().getPath(System.getProperty("user.dir"), "data").toString();
     if (TestingUtilities.context == null) {
       // For the time being, put the validation entry in org/hl7/fhir/dstu3/data
