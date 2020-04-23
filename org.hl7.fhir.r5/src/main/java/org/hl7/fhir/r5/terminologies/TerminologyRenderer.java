@@ -24,6 +24,8 @@ import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -457,4 +459,37 @@ public class TerminologyRenderer {
 
 
 
+  protected String describeLang(String lang) {
+    ValueSet v = context.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
+    if (v != null) {
+      ConceptReferenceComponent l = null;
+      for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
+        if (cc.getCode().equals(lang))
+          l = cc;
+      }
+      if (l == null) {
+        if (lang.contains("-"))
+          lang = lang.substring(0, lang.indexOf("-"));
+        for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
+          if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
+            l = cc;
+        }
+      }
+      if (l != null) {
+        if (lang.contains("-"))
+          lang = lang.substring(0, lang.indexOf("-"));
+        String en = l.getDisplay();
+        String nativelang = null;
+        for (ConceptReferenceDesignationComponent cd : l.getDesignation()) {
+          if (cd.getLanguage().equals(lang))
+            nativelang = cd.getValue();
+        }
+        if (nativelang == null)
+          return en+" ("+lang+")";
+        else
+          return nativelang+" ("+en+", "+lang+")";
+      }
+    }
+    return lang;
+  }
 }
