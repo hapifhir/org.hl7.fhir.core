@@ -25,6 +25,10 @@ public class CliContext {
   private boolean assumeValidRestReferences = false;
   @JsonProperty("canDoNative")
   private boolean canDoNative = false;
+  @JsonProperty("noInternalCaching")
+  private boolean noInternalCaching = false; // internal, for when debugging terminology validation
+  @JsonProperty("noExtensibleBindingMessages")
+  private boolean noExtensibleBindingMessages = false;
 
   @JsonProperty("map")
   private String map = null;
@@ -380,69 +384,26 @@ public class CliContext {
     return this;
   }
 
-  @Override
-  public String toString() {
-    return "CliContext{" +
-      "map='" + map + '\'' +
-      ", igs=" + igs +
-      ", questionnaires=" + questionnaires +
-      ", txServer='" + txServer + '\'' +
-      ", doNative=" + doNative +
-      ", anyExtensionsAllowed=" + anyExtensionsAllowed +
-      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
-      ", recursive=" + recursive +
-      ", locale=" + locale +
-      ", profiles=" + profiles +
-      ", mode=" + mode +
-      ", output='" + output + '\'' +
-      ", canDoNative=" + canDoNative +
-      ", sources=" + sources +
-      ", locations=" + locations +
-      ", sv='" + sv + '\'' +
-      ", txLog='" + txLog + '\'' +
-      ", mapLog='" + mapLog + '\'' +
-      ", lang='" + lang + '\'' +
-      ", fhirpath='" + fhirpath + '\'' +
-      ", snomedCT='" + snomedCT + '\'' +
-      ", targetVer='" + targetVer + '\'' +
-      ", doDebug=" + doDebug +
-      ", assumeValidRestReferences=" + assumeValidRestReferences +
-      '}';
+  @JsonProperty("noInternalCaching")
+  public boolean isNoInternalCaching() {
+    return noInternalCaching;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CliContext that = (CliContext) o;
-    return doNative == that.doNative &&
-      anyExtensionsAllowed == that.anyExtensionsAllowed &&
-      hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
-      recursive == that.recursive &&
-      doDebug == that.doDebug &&
-      assumeValidRestReferences == that.assumeValidRestReferences &&
-      canDoNative == that.canDoNative &&
-      Objects.equals(map, that.map) &&
-      Objects.equals(output, that.output) &&
-      Objects.equals(txServer, that.txServer) &&
-      Objects.equals(sv, that.sv) &&
-      Objects.equals(txLog, that.txLog) &&
-      Objects.equals(mapLog, that.mapLog) &&
-      Objects.equals(lang, that.lang) &&
-      Objects.equals(fhirpath, that.fhirpath) &&
-      Objects.equals(snomedCT, that.snomedCT) &&
-      Objects.equals(targetVer, that.targetVer) &&
-      Objects.equals(igs, that.igs) &&
-      Objects.equals(questionnaires, that.questionnaires) &&
-      Objects.equals(profiles, that.profiles) &&
-      Objects.equals(sources, that.sources) &&
-      mode == that.mode &&
-      Objects.equals(locale, that.locale) &&
-      Objects.equals(locations, that.locations);
+  @JsonProperty("noInternalCaching")
+  public CliContext setNoInternalCaching(boolean noInternalCaching) {
+    this.noInternalCaching = noInternalCaching;
+    return this;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations);
+  @JsonProperty("noExtensibleBindingMessages")
+  public boolean isNoExtensibleBindingMessages() {
+    return noExtensibleBindingMessages;
   }
+
+  @JsonProperty("noExtensibleBindingMessages")
+  public CliContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+  
 }

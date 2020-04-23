@@ -112,10 +112,17 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
         system = systemForCodeInValueSet(code.getCode());
       }
-      if (!code.hasSystem())
+      if (!code.hasSystem()) {
+        if (options.isGuessSystem() && system == null && Utilities.isAbsoluteUrl(code.getCode())) {
+          system = "urn:ietf:rfc:3986"; // this arises when using URIs bound to value sets
+        }
         code.setSystem(system);
+      }
       inExpansion = checkExpansion(code);
       CodeSystem cs = context.fetchCodeSystem(system);
+      if (cs == null) {
+        cs = findSpecialCodeSystem(system);
+      }
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system+" - system is not specified or implicit";
         if (!inExpansion)
@@ -123,7 +130,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
         warningMessage = "Unable to resolve system "+system+" - system is not complete";
-        if (!inExpansion)
+        if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
       }
 
@@ -147,6 +154,17 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     return res;
   }
 
+  private CodeSystem findSpecialCodeSystem(String system) {
+    if ("urn:ietf:rfc:3986".equals(system)) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl(system);
+      cs.setUserData("tx.cs.special", new URICodeSystem());
+      cs.setContent(CodeSystemContentMode.COMPLETE);
+      return cs; 
+    }
+    return null;
+  }
+
   boolean checkExpansion(Coding code) {
     if (valueset==null || !valueset.hasExpansion())
       return false;
@@ -164,9 +182,14 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   }
 
   private ValidationResult validateCode(Coding code, CodeSystem cs) {
-    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code.getCode());
-    if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
+    ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
+    if (cc == null) {
+      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
+      } else {
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
+      }
+    }
     if (code.getDisplay() == null)
       return new ValidationResult(cc);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();

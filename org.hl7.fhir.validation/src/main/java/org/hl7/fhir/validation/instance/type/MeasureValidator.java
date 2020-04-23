@@ -116,7 +116,7 @@ public class MeasureValidator extends BaseValidator {
             String name = cqlRef.substring(0, cqlRef.indexOf(".")); 
             cqlRef = cqlRef.substring(cqlRef.indexOf(".")+1); 
             for (Library l : mctxt.libraries()) {
-              if (l.getName().equals(name)) {
+              if (name.equals(l.getName())) {
                 if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib == null, I18nConstants.MEASURE_M_CRITERIA_CQL_LIB_DUPL)) {
                   lib = l;
                 }

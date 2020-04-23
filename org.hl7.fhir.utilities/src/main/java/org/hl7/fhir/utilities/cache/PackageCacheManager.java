@@ -779,7 +779,7 @@ public class PackageCacheManager {
       }
     }
     if (url == null) {
-      throw new FHIRException("Unable to resolve package id "+id);
+      throw new FHIRException("Unable to resolve package id "+id+"#"+v);
     }
     if (url.contains("/ImplementationGuide/")) {
       url = url.substring(0, url.indexOf("/ImplementationGuide/"));

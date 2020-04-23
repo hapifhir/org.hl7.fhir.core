@@ -87,10 +87,13 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TranslatingUtilities;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -265,6 +268,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean newSlicingProcessing;
   private String defWebRoot;
   private boolean autoFixSliceNames;
+  private XVerExtensionManager xver;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
@@ -618,6 +622,11 @@ public class ProfileUtilities extends TranslatingUtilities {
           for (UriType u : t.getProfile()) {
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
             if (sd == null) {
+              if (xver != null && xver.matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                sd = xver.makeDefinition(u.getValue());              
+              }
+            }
+            if (sd == null) {
               if (messages != null) {
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
               }
@@ -876,6 +885,16 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
+            if (sd == null && xver != null && xver.matchingUrl(p.getValue())) {
+              switch (xver.status(p.getValue())) {
+              case BadVersion: throw new FHIRException("Reference to invalid version in extension url "+p.getValue());
+              case Invalid: throw new FHIRException("Reference to invalid extension "+p.getValue());
+              case Unknown: throw new FHIRException("Reference to unknown extension "+p.getValue()); 
+              case Valid: 
+                sd = xver.makeDefinition(p.getValue());
+                generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
+              }
+            }
             if (sd != null) {
               checkNotGenerating(sd, "an extension definition");
               if (!sd.hasSnapshot()) {
@@ -2440,7 +2459,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
               else if (expDerived.getValueset() == null)
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
-              else if (ToolingExtensions.hasExtension(expBase.getValueset().getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly"))
+              else if (ToolingExtensions.hasExtension(expBase.getValueset().getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY))
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Unable to check if "+derived.getBinding().getValueSet()+" is a proper subset of " +base.getBinding().getValueSet()+" - base value set is too large to check", ValidationMessage.IssueSeverity.WARNING));
               else if (!isSubset(expBase.getValueset(), expDerived.getValueset()))
                 messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
@@ -3366,7 +3385,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           extDefn = locateExtension(StructureDefinition.class, eurl);
           if (extDefn == null) {
             genCardinality(gen, element, row, hasDef, used, null);
-            row.getCells().add(gen.new Cell(null, null, "?? "+element.getType().get(0).getProfile(), null, null));
+            row.getCells().add(gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null));
             generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
             String name = urltail(eurl);
@@ -3556,7 +3575,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (first) first = false; else typeCell.addPiece(gen.new Piece(null, " | ", null));
             StructureDefinition psd = context.fetchResource(StructureDefinition.class, pt.getValue());
             if (psd == null)
-              typeCell.addPiece(gen.new Piece(null, "??", null));
+              typeCell.addPiece(gen.new Piece(null, "?gen-e2?", null));
             else
               typeCell.addPiece(gen.new Piece(psd.getUserString("path"), psd.getName(), psd.present()));
             
@@ -3914,7 +3933,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (ref != null) {
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
     } else {
-      ref = "??";
+      ref = "?gen-fv?";
     }
     StructureDefinition sd = context.fetchTypeDefinition(value.fhirType());
     
@@ -4236,7 +4255,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     case OPEN : return translate("sd.table", "Open");
     case OPENATEND : return translate("sd.table", "Open At End");
     default:
-      return "??";
+      return "?gen-sr?";
     }
   }
 
@@ -5449,7 +5468,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private String summarizeCoding(Coding value) {
     String uri = value.getSystem();
-    String system = NarrativeGenerator.describeSystem(uri);
+    String system = TerminologyRenderer.describeSystem(uri);
     if (Utilities.isURL(system)) {
       if (system.equals("http://cap.org/protocols"))
         system = "CAP Code";
@@ -5660,6 +5679,15 @@ public class ProfileUtilities extends TranslatingUtilities {
     e.setMin(0); 
     e.setMax("*"); 
     return base;
+  }
+
+  public XVerExtensionManager getXver() {
+    return xver;
+  }
+
+  public ProfileUtilities setXver(XVerExtensionManager xver) {
+    this.xver = xver;
+    return this;
   }
 
 

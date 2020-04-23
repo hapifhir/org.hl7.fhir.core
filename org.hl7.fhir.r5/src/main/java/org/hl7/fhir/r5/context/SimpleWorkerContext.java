@@ -90,12 +90,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   }
 
-  public interface IContextResourceLoader {
-    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-
-    String[] getTypes();
-  }
-
   public interface IValidatorFactory {
     IResourceValidator makeValidator(IWorkerContext ctxts) throws FHIRException;
   }
@@ -106,6 +100,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private IValidatorFactory validatorFactory;
   private boolean ignoreProfileErrors;
   private boolean progress;
+  private List<String> loadedPackages = new ArrayList<String>();
   
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -324,6 +319,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
+    loadedPackages.add(pi.id()+"#"+pi.version());
     for (String s : pi.listResources(loader.getTypes())) {
        try {
         loadDefinitionItem(s, pi.load("package", s), loader, filter, new PackageVersion(pi.id(), pi.version()));
@@ -339,10 +335,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
+  @Override
 	public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
 	  if (progress) {
 	    System.out.println("Load Package "+pi.name()+"#"+pi.version());
 	  }
+    loadedPackages.add(pi.id()+"#"+pi.version());
 	  if (types.length == 0)
 	    types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
 	  for (String s : pi.listResources(types)) {
@@ -697,6 +695,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setProgress(boolean progress) {
     this.progress = progress;
+  }
+
+  @Override
+  public boolean hasPackage(String id, String ver) {
+    return loadedPackages.contains(id+"#"+ver);
   }
 
 

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.context;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.EnumSet;
 
 /*-
@@ -41,6 +44,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -53,6 +57,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.INarrativeGenerator;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -104,6 +109,13 @@ public interface IWorkerContext {
       return version;
     }
   }
+
+  public interface IContextResourceLoader {
+    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+
+    String[] getTypes();
+  }
+
 
   /**
    * Get the versions of the definitions loaded in context
@@ -617,6 +629,10 @@ public interface IWorkerContext {
 
   public String getLinkForUrl(String corePath, String s);
   public Map<String, byte[]> getBinaries();
+
+  void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+
+  public boolean hasPackage(String id, String ver);
 
 
 }

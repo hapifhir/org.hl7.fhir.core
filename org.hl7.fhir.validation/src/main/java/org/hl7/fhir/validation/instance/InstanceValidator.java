@@ -139,6 +139,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -806,7 +807,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET, system);
           // Lloyd: This error used to prohibit checking for downstream issues, but there are some cases where that checking needs to occur.  Please talk to me before changing the code back.
         }
-        hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+        boolean done = false;
+        if (system.startsWith("https:") && system.length() > 7) {
+          String ns = "http:"+system.substring(6);
+          CodeSystem cs = getCodeSystem(ns);
+          if (cs != null || Utilities.existsInList(system, "https://loinc.org", "https://unitsofmeasure.org", "https://snomed.info/sct", "https://www.nlm.nih.gov/research/umls/rxnorm")) {
+            rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_HTTPS, system);
+            done = true;
+          }           
+        } 
+        hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
         return true;
       } catch (Exception e) {
         return true;
@@ -1578,7 +1588,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
         contexts.append("p:" + ctxt.getExpression());
         // The context is all elements that match the FHIRPath query found in the expression.
-        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.getRootResource(), container, fpe.parse(ctxt.getExpression()));
+        List<Base> res = fpe.evaluate(hostContext, resource, hostContext.getRootResource(), resource, fpe.parse(ctxt.getExpression()));
         if (res.contains(container)) {
           ok = true;
         }
@@ -1612,6 +1622,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
       list.get(1).setExpression("ElementDefinition.type");
+    }
+    if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
+      list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
     }
     return list;
   }
@@ -2012,28 +2025,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         if ("a".equals(node.getName())) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("href")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"));
+          String msg = checkValidUrl(node.getAttribute("href"));
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"), msg);
         } else if ("img".equals(node.getName())) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, isValidUrl(node.getAttribute("src")), I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"));
+          String msg = checkValidUrl(node.getAttribute("src"));
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"), msg);
         }
         checkUrls(errors, e, path, node.getChildNodes());
       }
     }
   }
 
-  private boolean isValidUrl(String value) {
+  private String checkValidUrl(String value) {
     if (value == null) {
-      return true;
+      return null;
     }
-    try {
-      for (char ch : value.toCharArray()) {
-        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
-          return false;
-        }
+    if (Utilities.noString(value)) {
+      return context.formatMessage(I18nConstants.XHTML_URL_EMPTY);
+    }
+
+    Set<Character> invalidChars = new HashSet<>();
+    for (char ch : value.toCharArray()) {
+      if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
+        invalidChars.add(ch);
       }
-      return true;
-    } catch (Exception e) {
-      return false;
+    }
+    if (invalidChars.isEmpty()) {
+      return null;
+    } else {
+      return  context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
     }
   }
 
@@ -3459,7 +3479,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      validateCodeSystem(errors, element, stack);
+      new CodeSystemValidator(context, timeTracker).validateCodeSystem(errors, element, stack);
     }
   }
 
@@ -3542,28 +3562,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       iRest++;
     }
   }
-
-  private void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
-    String url = cs.getNamedChildValue("url");
-    String vsu = cs.getNamedChildValue("valueSet");
-    if (!Utilities.noString(vsu)) {
-      ValueSet vs;
-      try {
-        vs = context.fetchResourceWithException(ValueSet.class, vsu);
-      } catch (FHIRException e) {
-        vs = null;
-      }
-      if (vs != null) {
-        if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.hasCompose() && !vs.hasExpansion(), I18nConstants.CODESYSTEM_CS_VS_MISMATCH, url, vsu))
-          if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().size() == 1, I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu))
-            if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().get(0).getSystem().equals(url), I18nConstants.CODESYSTEM_CS_VS_WRONGSYSTEM, url, vsu, vs.getCompose().getInclude().get(0).getSystem())) {
-              rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
-                && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu);
-            }
-      }
-    } // todo... try getting the value set the other way...
-  }
-
 
   private void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials) {
     List<Element> entries = new ArrayList<Element>();
