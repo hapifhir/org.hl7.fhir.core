@@ -243,6 +243,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private Set<String> loadedIgs = new HashSet<>();
   private IValidatorResourceFetcher fetcher;
   private boolean assumeValidRestReferences;
+  private boolean noExtensibleBindingMessages;
   private Locale locale;
 
   private class AsteriskFilter implements FilenameFilter {
@@ -1272,6 +1273,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setValidationLanguage(language);
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
+    validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.getContext().setLocale(locale);
     validator.setFetcher(this);
     return validator;
@@ -1699,6 +1701,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
+  }
+
+  public boolean isNoExtensibleBindingMessages() {
+    return noExtensibleBindingMessages;
+  }
+
+  public void setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
   }
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {

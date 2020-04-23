@@ -103,6 +103,7 @@ public class TerminologyCache {
   private Object lock;
   private String folder;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+  private static boolean noCaching;
   
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
@@ -245,6 +246,9 @@ public class TerminologyCache {
   }
 
   public void store(CacheToken cacheToken, boolean persistent, NamedCache nc, CacheEntry e) {
+    if (noCaching) {
+      return;
+    }
     boolean n = nc.map.containsKey(cacheToken.key);
     nc.map.put(cacheToken.key, e);
     if (persistent) {
@@ -426,7 +430,6 @@ public class TerminologyCache {
     return code.getSystem()+"#"+code.getCode()+": \""+code.getDisplay()+"\"";
   }
 
-
   public String summary(CodeableConcept code) {
     StringBuilder b = new StringBuilder();
     b.append("{");
@@ -440,5 +443,14 @@ public class TerminologyCache {
     b.append("\"");
     return b.toString();
   }
+
+  public static boolean isNoCaching() {
+    return noCaching;
+  }
+
+  public static void setNoCaching(boolean noCaching) {
+    TerminologyCache.noCaching = noCaching;
+  }
+ 
   
 }

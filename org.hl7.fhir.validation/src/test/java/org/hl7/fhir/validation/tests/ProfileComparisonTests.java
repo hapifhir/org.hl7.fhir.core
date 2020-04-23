@@ -3,10 +3,13 @@ package org.hl7.fhir.validation.tests;
 import java.io.File;
 import java.util.UUID;
 
+import org.hl7.fhir.convertors.R5ToR5Loader;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.KeyGenerator;
+import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -22,7 +25,8 @@ public class ProfileComparisonTests {
       System.out.println("Compare US Patient Core with AU Patient Base");
     ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2");
     ve.loadIg("hl7.fhir.us.core#1.0.1", false);
-    ve.loadIg("hl7.fhir.au.base#dev", false);
+    ve.loadIg("hl7.fhir.au.base#current", false);
+    ve.getContext().loadFromPackage(new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.pubpack", "0.0.4"), new R5ToR5Loader(new String[] {"Binary"}), "Binary");
 
 
     String left = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
