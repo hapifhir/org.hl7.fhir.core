@@ -88,13 +88,10 @@ public class TestingUtilities {
     if (!Utilities.noString(s))
       return s;
     s = "C:\\work\\org.hl7.fhir\\build";
-    // FIXME: change this back
-	  s = "/Users/jamesagnew/git/fhir";
     if (new File(s).exists())
       return s;
     throw new Error("FHIR Home directory not configured");
   }
-  
 
   public static String content() throws IOException {
     if (contentpath != null)
