@@ -505,4 +505,6 @@ public class I18nConstants {
 //public static final String 
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
+  public static final String TERMINOLOGY_TX_SYSTEM_HTTPS = "TERMINOLOGY_TX_SYSTEM_HTTPS";
+  public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
 }
