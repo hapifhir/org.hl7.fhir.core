@@ -47,6 +47,8 @@ public class Params {
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
+  public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
+  public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -92,18 +94,19 @@ public class Params {
         i++; // ignore next parameter
       } else if (args[i].equals(PROFILE)) {
         String p = null;
-        if (i + 1 == args.length)
+        if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
-        else {
+        } else {
           p = args[++i];
-          cliContext.addProfile(args[++i]);
+          cliContext.addProfile(args[i++]);
         }
         if (p != null && i + 1 < args.length && args[i + 1].equals("@")) {
           i++;
-          if (i + 1 == args.length)
+          if (i + 1 == args.length) {
             throw new Error("Specified -profile with @ without indicating profile location");
-          else
+          } else {
             cliContext.addLocation(p, args[++i]);
+          }
         }
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
@@ -128,6 +131,10 @@ public class Params {
         }
       } else if (args[i].equals(STRICT_EXTENSIONS)) {
         cliContext.setAnyExtensionsAllowed(false);
+      } else if (args[i].equals(NO_INTERNAL_CACHING)) {
+        cliContext.setNoInternalCaching(true);        
+      } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
+        cliContext.setNoExtensibleBindingMessages(true);        
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         cliContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {

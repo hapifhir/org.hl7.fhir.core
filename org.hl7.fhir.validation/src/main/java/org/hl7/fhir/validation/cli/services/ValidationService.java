@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -180,6 +181,8 @@ public class ValidationService {
     validator.setLocale(cliContext.getLocale());
     validator.setSnomedExtension(cliContext.getSnomedCTCode());
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
+    validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+    TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }
 

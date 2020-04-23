@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,11 +23,13 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
@@ -43,6 +46,7 @@ import org.hl7.fhir.r5.model.TestScript.TestActionComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent;
 import org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent;
 import org.hl7.fhir.r5.test.SnapShotGenerationTests.TestFetchMode;
+import org.hl7.fhir.r5.test.SnapShotGenerationTests.TestLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -52,8 +56,12 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -69,6 +77,26 @@ import junit.framework.Assert;
 
 @RunWith(Parameterized.class)
 public class SnapShotGenerationTests {
+
+  public class TestLoader implements IContextResourceLoader {
+
+    private String[] types;
+
+    public TestLoader(String[] types) {
+      this.types = types;
+    }
+
+    @Override
+    public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
+      return null;
+    }
+
+    @Override
+    public String[] getTypes() {
+      return types;
+    }
+
+  }
 
   public enum TestFetchMode {
     INPUT,
@@ -499,6 +527,11 @@ public class SnapShotGenerationTests {
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
+    if (!TestingUtilities.context().hasPackage("hl7.fhir.xver-extensions", "0.0.3")) {
+      NpmPackage npm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.3");
+      TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[] {"StructureDefinition"}), new String[] {"StructureDefinition"});
+    }
+    pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();
