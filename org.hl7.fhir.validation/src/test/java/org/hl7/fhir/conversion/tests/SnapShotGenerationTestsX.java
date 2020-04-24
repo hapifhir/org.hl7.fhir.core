@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -37,17 +38,14 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import junit.framework.Assert;
-
-@RunWith(Parameterized.class)
 public class SnapShotGenerationTestsX {
 
   public enum TestFetchMode {
@@ -369,76 +367,66 @@ public class SnapShotGenerationTestsX {
 
   private static FHIRPathEngine fp;
 
-  @Parameters(name = "{index}: file {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-
+  public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
     Document tests = XMLUtil.parseToDom(TestingUtilitiesX.loadTestResource("rX", "snapshot-generation", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
-    List<Object[]> objects = new ArrayList<Object[]>();
+    List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
       context.tests.add(t);
       t.load();
-      objects.add(new Object[] {t.getId(), t, context });
+      objects.add(Arguments.of(t.getId(), t, context));
       test = XMLUtil.getNextSibling(test);
     }
-    return objects;
-
+    return objects.stream();
   }
 
-
-  private final TestDetails test;
-  private SnapShotGenerationTestsContext context;
+  //private TestDetails test;
   private List<ValidationMessage> messages;
   private static String version;
-  
-  public SnapShotGenerationTestsX(String id, TestDetails test, SnapShotGenerationTestsContext context) {
-    this.test = test;
-    this.context = context;
-  }
 
-  @SuppressWarnings("deprecation")
-  @Test
-  public void test() throws Exception {
-    version = test.version;
+  @ParameterizedTest(name = "{index}: file {0}")
+  @MethodSource("data")
+  public void test(String id, TestDetails testDetails, SnapShotGenerationTestsContext context) throws Exception {
+    version = testDetails.version;
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilitiesX.context(version));
     fp.setHostServices(context);
     messages = new ArrayList<ValidationMessage>();
     
-    if (test.isFail()) {
+    if (testDetails.isFail()) {
       try {
-        if (test.isGen())
-          testGen(true);
+        if (testDetails.isGen())
+          testGen(true, testDetails, context);
         else
-          testSort();
-        Assert.assertTrue("Should have failed", false);
+          testSort(testDetails, context);
+        Assertions.assertTrue(false, "Should have failed");
       } catch (Throwable e) {
         System.out.println("Error running test: "+e.getMessage());
-        if (!Utilities.noString(test.regex)) {
-          Assert.assertTrue("correct error message", e.getMessage().matches(test.regex));
+        if (!Utilities.noString(testDetails.regex)) {
+          Assertions.assertTrue(e.getMessage().matches(testDetails.regex), "correct error message");
         } else if ("Should have failed".equals(e.getMessage())) {
           throw e;
         } else {
-          Assert.assertTrue("all ok", true);
+          Assertions.assertTrue(true,"all ok");
         }
         
       }
-    } else if (test.isGen())
-      testGen(false);
+    } else if (testDetails.isGen())
+      testGen(false, testDetails, context);
     else
-      testSort();
-    for (Rule r : test.getRules()) {
+      testSort(testDetails, context);
+    for (Rule r : testDetails.getRules()) {
       StructureDefinition sdn = new StructureDefinition();
       boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
-      Assert.assertTrue(r.description, ok);
+      Assertions.assertTrue(ok, r.description);
     }
   }
 
 
-  private void testSort() throws DefinitionException, FHIRException, IOException {
-    StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
+  private void testSort(TestDetails test, SnapShotGenerationTestsContext context) throws FHIRException, IOException {
+    StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
     test.setOutput(test.getSource().copy());
     ProfileUtilities pu = new ProfileUtilities(TestingUtilitiesX.context(version), null, null);
     pu.setIds(test.getSource(), false);
@@ -448,10 +436,10 @@ public class SnapShotGenerationTestsX {
       throw new FHIRException(errors.get(0));
     IOUtils.copy(TestingUtilitiesX.loadTestResourceStream("rX", "snapshot-generation", test.getId()+"-expected.xml"), new FileOutputStream(TestingUtilitiesX.tempFile("snapshot", test.getId()+"-expected.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilitiesX.tempFile("snapshot", test.getId()+"-actual.xml")), test.getOutput());
-    Assert.assertTrue("Output does not match expected", test.expected.equalsDeep(test.output));
+    Assertions.assertTrue( test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
-  private void testGen(boolean fail) throws Exception {
+  private void testGen(boolean fail, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();          
       ProfileUtilities pu = new ProfileUtilities(TestingUtilitiesX.context(version), messages, null);
@@ -473,7 +461,7 @@ public class SnapShotGenerationTestsX {
       if (ec > 0)
         throw new FHIRException("register gen failed: "+messages.toString());
     }
-    StructureDefinition base = getSD(test.getSource().getBaseDefinition()); 
+    StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
     if (!base.getUrl().equals(test.getSource().getBaseDefinition()))
       throw new Exception("URL mismatch on base: "+base.getUrl()+" wanting "+test.getSource().getBaseDefinition());
     
@@ -484,7 +472,7 @@ public class SnapShotGenerationTestsX {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (test.isSort()) {
-      List<String> errors = new ArrayList<String>();
+      List<String> errors = new ArrayList<>();
       int lastCount = output.getDifferential().getElement().size();
       pu.sortDifferential(base, output, test.getSource().getName(), errors, false);
       if (errors.size() > 0)
@@ -520,16 +508,16 @@ public class SnapShotGenerationTestsX {
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
       t2.setText(null);
-      Assert.assertTrue("Output does not match expected", t1.equalsDeep(t2));
+      Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");
     }
   }
 
-  private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {
+  private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
     if (sd == null)
       sd = TestingUtilitiesX.context(version).fetchResource(StructureDefinition.class, url);
     if (!sd.hasSnapshot()) {
-      StructureDefinition base = getSD(sd.getBaseDefinition());
+      StructureDefinition base = getSD(sd.getBaseDefinition(), context);
       ProfileUtilities pu = new ProfileUtilities(TestingUtilitiesX.context(version), messages , new TestPKP());
       pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();          

@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 public class ValidatorGui {
 
-  private static final int GUI_FRONTEND_PORT = 8080;
+  public static final int GUI_FRONTEND_PORT = 8082;
   private static final String PAGE_ADDRESS = "http://localhost:" + GUI_FRONTEND_PORT + "/home";
   private static final String WEB_APP_FILE_LOCATION = "/public";
   private static Javalin app;

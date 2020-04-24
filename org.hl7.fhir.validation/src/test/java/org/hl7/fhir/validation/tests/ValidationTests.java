@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
   public static Stream<Arguments> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
@@ -71,14 +71,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   private static JsonObject manifest;
 
-  private String name;
   private JsonObject content;
   private String version;
-
-  public ValidationTestSuite(String name, JsonObject content) {
-    this.name = name;
-    this.content = content;
-  }
 
   private static final String DEF_TX = "http://tx.fhir.org";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
@@ -86,17 +80,20 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
-  public void test() throws Exception {
+  public void test(String name, JsonObject jsonObject) throws Exception {
     System.out.println("---- " + name + " ----------------------------------------------------------------");
     System.out.println("** Core: ");
+
+    this.content = jsonObject;
+
     String txLog = null;
-    if (content.has("txLog")) {
-      txLog = content.get("txLog").getAsString();
+    if (jsonObject.has("txLog")) {
+      txLog = jsonObject.get("txLog").getAsString();
     }
     version = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    if (content.has("version")) {
-      version = content.get("version").getAsString();
+    if (jsonObject.has("version")) {
+      version = jsonObject.get("version").getAsString();
     }
 
     version = VersionUtilities.getMajMin(version);
@@ -121,38 +118,38 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
-    if (content.has("use-test") && !content.get("use-test").getAsBoolean())
+    if (jsonObject.has("use-test") && !jsonObject.get("use-test").getAsBoolean())
       return;
 
     String testCaseContent = TestingUtilities.loadTestResource("validator", name);
 
     InstanceValidator val = vCurr.getValidator();
     val.setDebug(false);
-    if (content.has("allowed-extension-domain"))
-      val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
-    if (content.has("allowed-extension-domains"))
-      for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
+    if (jsonObject.has("allowed-extension-domain"))
+      val.getExtensionDomains().add(jsonObject.get("allowed-extension-domain").getAsString());
+    if (jsonObject.has("allowed-extension-domains"))
+      for (JsonElement a : jsonObject.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
-    if (content.has("language"))
-      val.setValidationLanguage(content.get("language").getAsString());
+    if (jsonObject.has("language"))
+      val.setValidationLanguage(jsonObject.get("language").getAsString());
     else
       val.setValidationLanguage(null);
     val.setFetcher(this);
-    if (content.has("packages")) {
-      for (JsonElement e : content.getAsJsonArray("packages")) {
+    if (jsonObject.has("packages")) {
+      for (JsonElement e : jsonObject.getAsJsonArray("packages")) {
         vCurr.loadIg(e.getAsString(), true);
       }
     }
-    if (content.has("supporting")) {
-      for (JsonElement e : content.getAsJsonArray("supporting")) {
+    if (jsonObject.has("supporting")) {
+      for (JsonElement e : jsonObject.getAsJsonArray("supporting")) {
         String filename = e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
         val.getContext().cacheResource(mr);
       }
     }
-    if (content.has("profiles")) {
-      for (JsonElement je : content.getAsJsonArray("profiles")) {
+    if (jsonObject.has("profiles")) {
+      for (JsonElement je : jsonObject.getAsJsonArray("profiles")) {
         String filename = je.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         StructureDefinition sd = loadProfile(filename, contents, messages);
@@ -160,26 +157,26 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
     }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-    if (content.getAsJsonObject("java").has("debug")) {
-      val.setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
+    if (jsonObject.getAsJsonObject("java").has("debug")) {
+      val.setDebug(jsonObject.getAsJsonObject("java").get("debug").getAsBoolean());
     } else {
       val.setDebug(false);
     }
-    if (content.has("examples")) {
-      val.setAllowExamples(content.get("examples").getAsBoolean());
+    if (jsonObject.has("examples")) {
+      val.setAllowExamples(jsonObject.get("examples").getAsBoolean());
     } else {
       val.setAllowExamples(true);
     }
-    val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
+    val.setAssumeValidRestReferences(jsonObject.has("assumeValidRestReferences") ? jsonObject.get("assumeValidRestReferences").getAsBoolean() : false);
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
     System.out.println(val.reportTimes());
-    checkOutcomes(errors, content);
-    if (content.has("profile")) {
+    checkOutcomes(errors, jsonObject);
+    if (jsonObject.has("profile")) {
       System.out.print("** Profile: ");
-      JsonObject profile = content.getAsJsonObject("profile");
+      JsonObject profile = jsonObject.getAsJsonObject("profile");
       if (profile.getAsJsonObject("java").has("debug")) {
         val.setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
       }
@@ -194,7 +191,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       String filename = profile.get("source").getAsString();
       String contents = TestingUtilities.loadTestResource("validator", filename);
       System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
-      version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
+      version = jsonObject.has("version") ? jsonObject.get("version").getAsString() : Constants.VERSION;
       StructureDefinition sd = loadProfile(filename, contents, messages);
       val.getContext().cacheResource(sd);
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
@@ -206,8 +203,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       System.out.println(val.reportTimes());
       checkOutcomes(errorsProfile, profile);
     }
-    if (content.has("logical")) {
-      JsonObject logical = content.getAsJsonObject("logical");
+    if (jsonObject.has("logical")) {
+      JsonObject logical = jsonObject.getAsJsonObject("logical");
       if (logical.has("supporting")) {
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
           String filename = e.getAsString();
