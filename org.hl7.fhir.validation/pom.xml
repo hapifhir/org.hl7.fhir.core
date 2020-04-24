@@ -164,12 +164,6 @@
             <artifactId>thymeleaf</artifactId>
             <version>3.0.9.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- End to end -->
         <dependency>
