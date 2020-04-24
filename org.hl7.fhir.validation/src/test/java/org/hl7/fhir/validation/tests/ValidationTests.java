@@ -36,8 +36,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
+import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -59,7 +59,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       examples.put(e.getKey(), e.getValue().getAsJsonObject());
     }
 
-    List<String> names = new ArrayList<>(examples.keySet());
+    List<String> names = new ArrayList<String>(examples.size());
+    names.addAll(examples.keySet());
     Collections.sort(names);
 
     List<Arguments> objects = new ArrayList<>();
@@ -75,17 +76,16 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String version;
 
   private static final String DEF_TX = "http://tx.fhir.org";
+  //  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
   public void test(String name, JsonObject jsonObject) throws Exception {
+    content = jsonObject;
     System.out.println("---- " + name + " ----------------------------------------------------------------");
     System.out.println("** Core: ");
-
-    this.content = jsonObject;
-
     String txLog = null;
     if (jsonObject.has("txLog")) {
       txLog = jsonObject.get("txLog").getAsString();
@@ -222,7 +222,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
           String exp = e.getAsString();
-          Assertions.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
+          Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
       checkOutcomes(errorsLogical, logical);
@@ -309,17 +309,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assertions.assertEquals(java.get("errorCount").getAsInt(), ec, "Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".");
+      Assert.assertEquals("Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
       if (java.has("warningCount"))
-        Assertions.assertEquals(java.get("warningCount").getAsInt(), wc, "Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".");
+        Assert.assertEquals("Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
       if (java.has("infoCount"))
-        Assertions.assertEquals(java.get("infoCount").getAsInt(), hc, "Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".");
+        Assert.assertEquals("Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");
-      Assertions.assertEquals(errLocs.size(), el.size(), "locations count is not correct");
+      Assert.assertEquals("locations count is not correct", errLocs.size(), el.size());
       for (int i = 0; i < errLocs.size(); i++) {
-        Assertions.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
+        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
       }
     }
     if (focus.has("output")) {
@@ -434,9 +434,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
-  @AfterAll
+  @AfterClass
   public static void saveWhenDone() throws IOException {
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
     TextFile.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+
   }
 }
