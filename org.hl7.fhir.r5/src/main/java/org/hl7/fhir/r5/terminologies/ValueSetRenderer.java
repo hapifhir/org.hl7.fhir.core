@@ -248,7 +248,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       tr.td().b().tx("System");
     tr.td().b().tx("Display");
     if (doDefinition)
-      tr.td().b().tx("Definition");
+      tr.td().b().tx("Logical Definition (CLD)");
 
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
