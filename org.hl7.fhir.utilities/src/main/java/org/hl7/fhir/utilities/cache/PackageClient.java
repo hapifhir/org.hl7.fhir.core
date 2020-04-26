@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.cache;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,11 +73,17 @@ public class PackageClient {
   }
  
   private String address;
+  private String cacheFolder;
 
 
   public PackageClient(String address) {
     super();
     this.address = address;
+    try {
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "package-client");
+      Utilities.createDirectory(cacheFolder);
+    } catch (IOException e) {
+    }
   }
 
   public boolean exists(String id, String ver) throws IOException {
@@ -89,15 +97,29 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, ver), null);
+    return fetchCached(Utilities.pathURL(address, id, ver));
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, info.getId(), info.getVersion()), null);
+    return fetchCached(Utilities.pathURL(address, info.getId(), info.getVersion()));
   }
 
   public InputStream fetchNpm(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"), null);    
+    return fetchCached(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));
+  }
+
+  public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
+    File cacheFile = new File(Utilities.path(cacheFolder, fn(url)));
+    if (cacheFile.exists()) {
+      return new FileInputStream(cacheFile);
+    }
+    TextFile.bytesToFile(TextFile.streamToBytes(fetchUrl(url, null)), cacheFile);
+    return new FileInputStream(cacheFile);
+  }
+
+  private String fn(String url) {
+    String[] p = url.split("\\/");
+    return p[2]+"-"+p[p.length-2]+"-"+p[p.length-1]+".tgz";
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
