@@ -583,7 +583,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public boolean hasCache() {
-    return false;
+    return true;
   }
 
   @Override
