@@ -722,7 +722,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       if (files.containsKey(filename))
         return files.get(filename);
       StringBuilder b = new StringBuilder();
-      b.append("data: image/png;base64,");
+      b.append("data:image/png;base64,");
       byte[] bytes;
       File file = new File(Utilities.path(dest, filename));
       if (!file.exists()) // because sometime this is called real early before the files exist. it will be built again later because of this
@@ -785,7 +785,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         return files.get(filename);
       ByteArrayOutputStream bytes = new ByteArrayOutputStream();
       genImage(indents, hasChildren, lineColor, bytes);
-      b.append("data: image/png;base64,");
+      b.append("data:image/png;base64,");
       byte[] encodeBase64 = Base64.encodeBase64(bytes.toByteArray());
       b.append(new String(encodeBase64));
       files.put(filename, b.toString());
