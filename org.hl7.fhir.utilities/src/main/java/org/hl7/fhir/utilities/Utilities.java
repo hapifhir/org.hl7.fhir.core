@@ -582,6 +582,8 @@ public class Utilities {
           String ev = System.getenv(a.replace("[", "").replace("]", ""));
           if (ev != null) {
             a = ev;
+          } else {
+            a = "null";
           }
         }
       }
