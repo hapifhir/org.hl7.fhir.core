@@ -54,7 +54,7 @@ public class UtilitiesTests {
       return OSX_JAVA_HOME;
     } else if (os.contains(LINUX)) {
       return LINUX_JAVA_HOME;
-    } else if (os.contains(WINDOWS)) {
+    } else if (os.toUpperCase().contains(WINDOWS)) {
       return WIN_JAVA_HOME;
     } else {
       throw new IllegalStateException("OS not recognized...cannot verify created directories.");
@@ -67,7 +67,7 @@ public class UtilitiesTests {
       return OSX_USER_DIR;
     } else if (os.contains(LINUX)) {
       return LINUX_USER_DIR;
-    } else if (os.contains(WINDOWS)) {
+    } else if (os.toUpperCase().contains(WINDOWS)) {
       return WIN_USER_DIR;
     } else {
       throw new IllegalStateException("OS not recognized...cannot verify created directories.");
@@ -80,7 +80,7 @@ public class UtilitiesTests {
       return getOsxTempDir();
     } else if (os.contains(LINUX)) {
       return LINUX_TEMP_DIR;
-    } else if (os.contains(WINDOWS)) {
+    } else if (os.toUpperCase().contains(WINDOWS)) {
       return WIN_TEMP_DIR;
     } else {
       throw new IllegalStateException("OS not recognized...cannot verify created directories.");

@@ -302,16 +302,16 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     for (ValidationMessage vm : errors) {
       if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
         ec++;
-        System.out.println(vm.getDisplay());
+//        System.out.println(vm.getDisplay());
         errLocs.add(vm.getLocation());
       }
       if (vm.getLevel() == IssueSeverity.WARNING) { 
         wc++;
-        System.out.println(vm.getDisplay());
+//        System.out.println(vm.getDisplay());
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
-        System.out.println(vm.getDisplay());          
+//        System.out.println(vm.getDisplay());          
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
