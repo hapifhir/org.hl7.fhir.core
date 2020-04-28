@@ -49,17 +49,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
-<<<<<<< HEAD:org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/ValidationTests.java
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
-=======
-@RunWith(Parameterized.class)
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
-
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = false;
-  
-  @Parameters(name = "{index}: id {0}")
-  public static Iterable<Object[]> data() throws IOException {
->>>>>>> 353e520226eae7a8a7a00e13b5b8e316fef04a47:org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/ValidationTestSuite.java
 
   public static Stream<Arguments> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
@@ -306,26 +296,16 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     for (ValidationMessage vm : errors) {
       if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
         ec++;
-        if (PRINT_OUTPUT_TO_CONSOLE ) {
-          System.out.println(vm.getDisplay());
-        }
+//        System.out.println(vm.getDisplay());
         errLocs.add(vm.getLocation());
       }
       if (vm.getLevel() == IssueSeverity.WARNING) {
         wc++;
-        if (PRINT_OUTPUT_TO_CONSOLE ) {
-          System.out.println(vm.getDisplay());
-        }
+//        System.out.println(vm.getDisplay());
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) {
         hc++;
-<<<<<<< HEAD:org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/ValidationTests.java
-        System.out.println(vm.getDisplay());
-=======
-        if (PRINT_OUTPUT_TO_CONSOLE ) {
-          System.out.println(vm.getDisplay());
-        }
->>>>>>> 353e520226eae7a8a7a00e13b5b8e316fef04a47:org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/ValidationTestSuite.java
+//        System.out.println(vm.getDisplay());
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
