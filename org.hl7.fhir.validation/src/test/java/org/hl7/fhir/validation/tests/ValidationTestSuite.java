@@ -53,7 +53,6 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
