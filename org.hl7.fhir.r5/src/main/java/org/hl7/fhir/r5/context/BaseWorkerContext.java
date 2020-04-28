@@ -141,6 +141,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
+  private Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
   private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false);
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false);
@@ -622,6 +623,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!options.isUseServer()) {
       return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
     }
+    if (unsupportedCodeSystems.contains(code.getSystem())) {
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);      
+    }
     
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
@@ -643,7 +647,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    if (txCache != null)
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+      unsupportedCodeSystems.add(code.getSystem());
+    } else if (txCache != null) // we never cache unsuppoted code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
   }
@@ -731,6 +737,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
           if (it == IssueType.UNKNOWN)
             err = TerminologyServiceErrorClass.UNKNOWN;
+          else if (it == IssueType.NOTFOUND)
+            err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
           else if (it == IssueType.NOTSUPPORTED)
             err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
         } catch (FHIRException e) {
