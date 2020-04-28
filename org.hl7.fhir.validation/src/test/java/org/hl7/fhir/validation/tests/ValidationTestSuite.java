@@ -49,6 +49,8 @@ import java.util.Map.Entry;
 @RunWith(Parameterized.class)
 public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
 
+  public final static boolean PRINT_OUTPUT_TO_CONSOLE = false;
+  
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
@@ -302,16 +304,22 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     for (ValidationMessage vm : errors) {
       if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
         ec++;
-//        System.out.println(vm.getDisplay());
+        if (PRINT_OUTPUT_TO_CONSOLE ) {
+          System.out.println(vm.getDisplay());
+        }
         errLocs.add(vm.getLocation());
       }
       if (vm.getLevel() == IssueSeverity.WARNING) { 
         wc++;
-//        System.out.println(vm.getDisplay());
+        if (PRINT_OUTPUT_TO_CONSOLE ) {
+          System.out.println(vm.getDisplay());
+        }
       }
       if (vm.getLevel() == IssueSeverity.INFORMATION) { 
         hc++;
-//        System.out.println(vm.getDisplay());          
+        if (PRINT_OUTPUT_TO_CONSOLE ) {
+          System.out.println(vm.getDisplay());
+        }
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
