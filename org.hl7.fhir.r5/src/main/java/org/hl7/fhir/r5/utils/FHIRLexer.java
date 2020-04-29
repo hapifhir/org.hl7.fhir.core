@@ -80,9 +80,9 @@ public class FHIRLexer {
   }
 
   public boolean isConstant() {
-    return current != null && (current.charAt(0) == '\'' || current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
+    return !Utilities.noString(current) && ((current.charAt(0) == '\'' || current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
         current.charAt(0) == '-' || current.charAt(0) == '+' || (current.charAt(0) >= '0' && current.charAt(0) <= '9') || 
-        current.equals("true") || current.equals("false") || current.equals("{}");
+        current.equals("true") || current.equals("false") || current.equals("{}"));
   }
 
   public boolean isFixedName() {
