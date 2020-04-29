@@ -3102,7 +3102,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else if (!criteriaElement.hasType() || criteriaElement.getType().size() == 1) {
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
-              type = criteriaElement.getType().get(0).getWorkingCode();
+              if (criteriaElement.hasType()) {
+                type = criteriaElement.getType().get(0).getWorkingCode();
+              } else if (!criteriaElement.getPath().contains(".")) {
+                type = criteriaElement.getPath();
+              } else {
+                throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
+              }
             } else if (criteriaElement.getType().size() > 1) {
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
             } else
