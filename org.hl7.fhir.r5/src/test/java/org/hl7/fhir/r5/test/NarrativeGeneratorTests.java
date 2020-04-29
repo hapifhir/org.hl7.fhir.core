@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -23,7 +22,7 @@ public class NarrativeGeneratorTests {
   private NarrativeGenerator gen;
 
   @BeforeAll
-  public void setUp() throws FileNotFoundException, IOException, FHIRException, UcumException {
+  public void setUp() throws FHIRException {
     gen = new NarrativeGenerator("", null, TestingUtilities.context());
   }
 
