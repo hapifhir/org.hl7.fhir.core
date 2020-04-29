@@ -783,7 +783,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
       return true;
     } else if (system.startsWith("http://hl7.org/fhir")) {
-      if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/icd-10-cm", "http://hl7.org/fhir/sid/icd-9", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/srt"))
+      if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/icd-10-cm", 
+               "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/sid/icd-9", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/srt"))
         return true; // else don't check these (for now)
       else if (system.startsWith("http://hl7.org/fhir/test"))
         return true; // we don't validate these
@@ -796,7 +797,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         return false;
       }
-    } else if (context.isNoTerminologyServer() && Utilities.existsInList(system, "http://loinc.org", "http://unitsofmeasure.org", "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm")) {
+    } else if (context.isNoTerminologyServer() && Utilities.existsInList(system, "http://loinc.org", "http://unitsofmeasure.org", "http://hl7.org/fhir/sid/icd-9-cm", "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm")) {
       return true; // no checks in this case
     } else if (startsWithButIsNot(system, "http://snomed.info/sct", "http://loinc.org", "http://unitsofmeasure.org", "http://www.nlm.nih.gov/research/umls/rxnorm")) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_INVALID, system);
@@ -4805,6 +4806,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // waiting for 4.0.2
     if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
       return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
+    }
+    if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
+      return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }
 
     // handled in 4.0.1
