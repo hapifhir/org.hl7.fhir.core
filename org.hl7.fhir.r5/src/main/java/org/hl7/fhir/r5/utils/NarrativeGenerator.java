@@ -1542,6 +1542,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
       renderAddress((Address) e, x);
     } else if (e instanceof ContactPoint) {
       renderContactPoint((ContactPoint) e, x);
+    } else if (e instanceof ContactDetail) {
+      ContactDetail cd = (ContactDetail) e;
+      if (cd.hasName()) {
+        x.tx(cd.getName()+": ");
+      }
+      boolean first = true;
+      for (ContactPoint c : cd.getTelecom()) {
+        if (first) first = false; else x.tx(",");
+        renderContactPoint(c, x);
+      }
     } else if (e instanceof UriType) {
       renderUri((UriType) e, x, defn.getPath(), rc != null && rc.resourceResource != null ? rc.resourceResource.getId() : null);
     } else if (e instanceof Timing) {
@@ -1709,7 +1719,16 @@ public class NarrativeGenerator implements INarrativeGenerator {
     } else if (e instanceof Resource) {
       return false;
     } else if (e instanceof ContactDetail) {
-      return false;
+      ContactDetail cd = (ContactDetail) e;
+      if (cd.hasName()) {
+        x.tx(cd.getName()+": ");
+      }
+      boolean first = true;
+      for (ContactPoint c : cd.getTelecom()) {
+        if (first) first = false; else x.tx(",");
+        renderContactPoint(c, x);
+      }
+      return true;
     } else if (e instanceof Range) {
       return false;
     } else if (e instanceof Meta) {

@@ -567,6 +567,10 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
           base = base+": "+getDisplay();
         return base;
         
+      }
+
+      public boolean matches(Coding other) {
+        return other.hasCode() && this.hasCode() && other.hasSystem() && this.hasSystem() && this.getCode().equals(other.getCode()) && this.getSystem().equals(other.getSystem()) ;
       } 
       
 
