@@ -47,7 +47,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 @RunWith(Parameterized.class)
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = false;
   
@@ -78,7 +78,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private JsonObject content;
   private String version;
   
-  public ValidationTestSuite(String name, JsonObject content) {
+  public ValidationTests(String name, JsonObject content) {
     this.name = name;
     this.content = content;
   }

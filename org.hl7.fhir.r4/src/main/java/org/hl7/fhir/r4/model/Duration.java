@@ -9,9 +9,9 @@ package org.hl7.fhir.r4.model;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,119 +50,130 @@ package org.hl7.fhir.r4.model;
 */
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.List;
 
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import java.util.List;
+
 /**
  * A length of time.
  */
-@DatatypeDef(name="Duration")
+@DatatypeDef(name = "Duration")
 public class Duration extends Quantity implements ICompositeType {
 
-    private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-    public Duration() {
-      super();
+  public Duration() {
+    super();
+  }
+
+  protected void listChildren(List<Property> children) {
+    super.listChildren(children);
+  }
+
+  @Override
+  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+    switch (_hash) {
+      default:
+        return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
-      protected void listChildren(List<Property> children) {
-        super.listChildren(children);
-      }
+  }
 
-      @Override
-      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-        switch (_hash) {
-        default: return super.getNamedProperty(_hash, _name, _checkValid);
-        }
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+      default:
+        return super.getProperty(hash, name, checkValid);
+    }
 
-      }
+  }
 
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        default: return super.getProperty(hash, name, checkValid);
-        }
+  @Override
+  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+      default:
+        return super.setProperty(hash, name, value);
+    }
 
-      }
+  }
 
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        default: return super.setProperty(hash, name, value);
-        }
+  @Override
+  public Base setProperty(String name, Base value) throws FHIRException {
+    return super.setProperty(name, value);
+  }
 
-      }
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+      default:
+        return super.makeProperty(hash, name);
+    }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-          return super.setProperty(name, value);
-      }
+  }
 
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        default: return super.makeProperty(hash, name);
-        }
+  @Override
+  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+      default:
+        return super.getTypesForProperty(hash, name);
+    }
 
-      }
+  }
 
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-          return super.addChild(name);
-      }
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    return super.addChild(name);
+  }
 
   public String fhirType() {
     return "Duration";
 
   }
 
-      public Duration copy() {
-        Duration dst = new Duration();
-        copyValues(dst);
-        return dst;
-      }
+  public Duration copy() {
+    Duration dst = new Duration();
+    copyValues(dst);
+    dst.value = value == null ? null : value.copy();
+    dst.comparator = comparator == null ? null : comparator.copy();
+    dst.unit = unit == null ? null : unit.copy();
+    dst.system = system == null ? null : system.copy();
+    dst.code = code == null ? null : code.copy();
+    return dst;
+  }
 
-      protected Duration typedCopy() {
-        return copy();
-      }
+  protected Duration typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof Duration))
-          return false;
-        Duration o = (Duration) other_;
-        return true;
-      }
+  @Override
+  public boolean equalsDeep(Base other_) {
+    if (!super.equalsDeep(other_))
+      return false;
+    if (!(other_ instanceof Duration))
+      return false;
+    Duration o = (Duration) other_;
+    return true;
+  }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof Duration))
-          return false;
-        Duration o = (Duration) other_;
-        return true;
-      }
+  @Override
+  public boolean equalsShallow(Base other_) {
+    if (!super.equalsShallow(other_))
+      return false;
+    if (!(other_ instanceof Duration))
+      return false;
+    Duration o = (Duration) other_;
+    return true;
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
-      }
+  public boolean isEmpty() {
+    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
+  }
 
 
 }
