@@ -1,15 +1,30 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import junit.framework.Assert;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType30_50Test {
 
+  private static final String AUDIT_EVENT_SOURCE = "{\"resourceType\" : \"AuditEvent\",\"id\" : \"example\",\"text\" : {\"status\" : \"generated\",\"div\" : \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Application Start for under service login &quot;Grahame&quot; (id: Grahame's Test HL7Connect)</div>\"},\"type\" : {\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110100\",\"display\" : \"Application Activity\"},\"subtype\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110120\",\"display\" : \"Application Start\"}],\"action\" : \"E\",\"recorded\" : \"2012-10-25T22:04:27+11:00\",\"outcome\" : \"0\",\"agent\" : [{\"role\" : [{\"text\" : \"Service User (Logon)\"}],\"userId\" : {\"value\" : \"Grahame\"},\"requestor\" : false,\"network\" : {\"address\" : \"127.0.0.1\",\"type\" : \"2\"}},{\"role\" : [{\"coding\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110153\",\"display\" : \"Source Role ID\"}]}],\"userId\" : {\"value\" : \"2.16.840.1.113883.4.2|2.16.840.1.113883.4.2\"},\"altId\" : \"6580\",\"requestor\" : false,\"network\" : {\"address\" : \"Workstation1.ehr.familyclinic.com\",\"type\" : \"1\"}}],\"source\" : {\"site\" : \"Development\",\"identifier\" : {\"value\" : \"Grahame's Laptop\"},\"type\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110122\",\"display\" : \"Login\"}]},\"entity\" : [{\"identifier\" : {\"type\" : {\"coding\" : [{\"system\" : \"http://hl7.org/fhir/identifier-type\",\"code\" : \"SNO\"}],\"text\" : \"Dell Serial Number\"},\"value\" : \"ABCDEF\"},\"type\" : {\"system\" : \"http://hl7.org/fhir/object-type\",\"code\" : \"4\",\"display\" : \"Other\"},\"role\" : {\"system\" : \"http://hl7.org/fhir/object-role\",\"code\" : \"4\",\"display\" : \"Domain Resource\"},\"lifecycle\" : {\"system\" : \"http://hl7.org/fhir/dicom-audit-lifecycle\",\"code\" : \"6\",\"display\" : \"Access / Use\"},\"name\" : \"Grahame's Laptop\"}]}";
+
+  @Test
+  public void testAuditEvent() throws FHIRFormatError, IOException {
+    org.hl7.fhir.dstu3.model.AuditEvent ae3 = (org.hl7.fhir.dstu3.model.AuditEvent) new org.hl7.fhir.dstu3.formats.JsonParser().parse(AUDIT_EVENT_SOURCE);
+    org.hl7.fhir.r5.model.AuditEvent ae5 = (org.hl7.fhir.r5.model.AuditEvent) VersionConvertor_30_50.convertResource(ae3, false);
+    Assert.assertEquals(ae5.getId(), ae3.getId());
+  }
+  
   @ParameterizedTest(name = "Testing dstu3 -> r5 conversion of null value {0}.")
   @MethodSource("dstu3PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {
