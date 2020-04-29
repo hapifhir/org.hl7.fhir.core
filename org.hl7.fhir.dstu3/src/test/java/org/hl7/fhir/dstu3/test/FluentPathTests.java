@@ -1,9 +1,12 @@
 package org.hl7.fhir.dstu3.test;
 
-import junit.framework.Assert;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Base;
+import org.hl7.fhir.dstu3.model.BooleanType;
+import org.hl7.fhir.dstu3.model.ExpressionNode;
+import org.hl7.fhir.dstu3.model.PrimitiveType;
+import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -36,8 +39,8 @@ public class FluentPathTests {
 
   @BeforeAll
   public void setup() throws IOException {
-      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\definitions.xml.zip");
-      this.fp = new FHIRPathEngine(TestingUtilities.context);
+    TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\definitions.xml.zip");
+    this.fp = new FHIRPathEngine(TestingUtilities.context);
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

@@ -12,7 +12,6 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,11 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Disabled //Test case 1 doesn't pass in r5 yet
+@Disabled //Test case 1 doesn't pass
 public class NarrativeGenerationTests {
 
-  private IWorkerContext context;
+  private static IWorkerContext context;
 
   public static class TestDetails {
     private String id;
@@ -60,8 +58,8 @@ public class NarrativeGenerationTests {
   }
 
   @BeforeAll
-  public void setUp() {
-    this.context = TestingUtilities.context();
+  public static void setUp() {
+    context = TestingUtilities.context();
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

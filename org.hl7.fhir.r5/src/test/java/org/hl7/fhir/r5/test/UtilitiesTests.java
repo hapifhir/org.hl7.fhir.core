@@ -1,11 +1,6 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import org.apache.commons.lang3.SystemUtils;
-
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -13,6 +8,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class UtilitiesTests {
 
@@ -108,7 +106,7 @@ public class UtilitiesTests {
   @Test
   public void testXhtmlLangAttributes() throws IOException {
     run(XHTML_SIMPLE);
-    run(XHTML_LANGS);    
+    run(XHTML_LANGS);
   }
 
   public void run(String src) throws IOException {

@@ -37,7 +37,6 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FHIRMappingLanguageTests implements ITransformerServices {
 
   private List<Resource> outputs = new ArrayList<Resource>();
@@ -45,7 +44,6 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   static private SimpleWorkerContext context;
   static private JsonParser jsonParser;
 
-  @Parameters
   public static Stream<Arguments> data()
     throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fml", "manifest.xml"));
@@ -60,7 +58,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   }
 
   @BeforeAll
-  public void setUp() throws Exception {
+  public static void setUp() throws Exception {
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.1"));
     jsonParser = new JsonParser();

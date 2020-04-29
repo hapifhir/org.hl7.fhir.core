@@ -2,24 +2,20 @@ package org.hl7.fhir.r4.test.misc;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-@RunWith(Parameterized.class)
 public class StructureMapTests {
 
-  @Parameters(name = "{index}: file {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, IOException, FHIRFormatError {
-
+  public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError {
     List<String> files = new ArrayList<>();
 //    File dir = new File(Utilities.path(TestingUtilities.home(), "implementations",  "r3maps", "R3toR4"));
 //    for (File f : dir.listFiles())
@@ -29,24 +25,18 @@ public class StructureMapTests {
 //    for (File f : dir.listFiles())
 //      if (f.getName().endsWith(".map"))
 //        files.add(f.getAbsolutePath());
-    List<Object[]> objects = new ArrayList<Object[]>(files.size());
+    List<Arguments> objects = new ArrayList<>();
 //
 //    for (String fn : files) {
 //      objects.add(new Object[] { new File(fn).getName(), fn });
 //    }
-    return objects;
-  }
-
-  private String filename;
-
-  public StructureMapTests(String name, String filename) {
-    this.filename = filename;
+    return objects.stream();
   }
 
   @SuppressWarnings("deprecation")
-  @Test
-  @Ignore
-  public void test() throws FHIRException, FileNotFoundException, IOException {
+  @ParameterizedTest(name = "{index}: file {0}")
+  @MethodSource("data")
+  public void test(String name, String filename) throws FHIRException, FileNotFoundException, IOException {
 //    if (TestingUtilities.context == null) {
 //      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.content(), "definitions.xml.zip"));
 //    }

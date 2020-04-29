@@ -1,12 +1,13 @@
 package org.hl7.fhir.utilities.tests;
 
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +30,6 @@ public class XhtmlNodeTest {
     node = new XhtmlNode();
     node.setValueAsString("<div>&lt;</div>");
     assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">&lt;</div>", node.getValueAsString());
-
   }
 
   /**

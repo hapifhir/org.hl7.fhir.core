@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import junit.framework.Assert;
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -12,6 +11,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -156,9 +156,9 @@ public class FHIRPathTests {
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
       }
       outcome = fp.evaluate(res, node);
-      Assert.assertTrue(String.format("Expected exception parsing %s", expression), !fail);
+      Assertions.assertFalse(fail, String.format("Expected exception parsing %s", expression));
     } catch (Exception e) {
-      Assert.assertTrue(String.format("Unexpected exception parsing %s: " + e.getMessage(), expression), fail);
+      Assertions.assertTrue(fail, String.format("Unexpected exception parsing %s: " + e.getMessage(), expression));
     }
 
     if ("true".equals(test.getAttribute("predicate"))) {
@@ -171,7 +171,7 @@ public class FHIRPathTests {
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(test, "output", expected);
-    Assert.assertTrue(String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression), outcome.size() == expected.size());
+    Assertions.assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
     if ("false".equals(test.getAttribute("ordered"))) {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = outcome.get(i).fhirType();
@@ -186,22 +186,22 @@ public class FHIRPathTests {
             (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
             found = true;
         }
-        Assert.assertTrue(String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression), found);
+        Assertions.assertTrue(found, String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression));
       }
     } else {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = expected.get(i).getAttribute("type");
         if (!Utilities.noString(tn)) {
-          Assert.assertTrue(String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()), tn.equals(outcome.get(i).fhirType()));
+          Assertions.assertEquals(tn, outcome.get(i).fhirType(), String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
         }
         String v = expected.get(i).getTextContent();
         if (!Utilities.noString(v)) {
           if (outcome.get(i) instanceof Quantity) {
             Quantity q = fp.parseQuantityString(v);
-            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()), outcome.get(i).equalsDeep(q));
+            Assertions.assertTrue(outcome.get(i).equalsDeep(q), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
           } else {
-            Assert.assertTrue(String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()), outcome.get(i) instanceof PrimitiveType);
-            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression), v.equals(((PrimitiveType) outcome.get(i)).asStringValue()));
+            Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
+            Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
           }
         }
       }
