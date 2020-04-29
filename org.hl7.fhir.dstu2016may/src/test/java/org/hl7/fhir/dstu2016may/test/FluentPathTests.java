@@ -1,10 +1,5 @@
 package org.hl7.fhir.dstu2016may.test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.model.Appointment;
 import org.hl7.fhir.dstu2016may.model.Base;
@@ -30,10 +25,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 @Disabled
 public class FluentPathTests {
@@ -77,7 +76,7 @@ public class FluentPathTests {
   @SuppressWarnings("deprecation")
   private void test(Resource resource, String expression, int count, String... types) throws FileNotFoundException, IOException, FHIRException {
     if (TestingUtilities.context == null)
-    	TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     FHIRPathEngine fp = new FHIRPathEngine(TestingUtilities.context);
 
     ExpressionNode node = fp.parse(expression);
@@ -86,7 +85,7 @@ public class FluentPathTests {
     if (fp.hasLog())
       System.out.println(fp.takeLog());
 
-    Assert.assertTrue(String.format("Expected %d objects but found %d", count, outcome.size()), outcome.size() == count);
+    Assertions.assertTrue(outcome.size() == count, String.format("Expected %d objects but found %d", count, outcome.size()));
     CommaSeparatedStringBuilder msg = new CommaSeparatedStringBuilder();
     for (String t : types)
       msg.append(t);
@@ -94,16 +93,16 @@ public class FluentPathTests {
       boolean found = false;
       String type = b.fhirType();
       for (String t : types)
-        if (type.equals(t)) 
+        if (type.equals(t))
           found = true;
-      Assert.assertTrue(String.format("Object type %s not ok from %s", type, msg), found);
+      Assertions.assertTrue(found, String.format("Object type %s not ok from %s", type, msg));
     }
   }
 
   @SuppressWarnings("deprecation")
   private void testBoolean(Resource resource, String expression, boolean value) throws FileNotFoundException, IOException, FHIRException {
     if (TestingUtilities.context == null)
-    	TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     FHIRPathEngine fp = new FHIRPathEngine(TestingUtilities.context);
 
     ExpressionNode node = fp.parse(expression);
@@ -112,13 +111,13 @@ public class FluentPathTests {
     if (fp.hasLog())
       System.out.println(fp.takeLog());
 
-    Assert.assertTrue("Wrong answer", fp.convertToBoolean(outcome) == value);
+    Assertions.assertEquals(fp.convertToBoolean(outcome), value, "Wrong answer");
   }
 
   @SuppressWarnings("deprecation")
   private void testBoolean(Resource resource, Base focus, String focusType, String expression, boolean value) throws FileNotFoundException, IOException, FHIRException {
     if (TestingUtilities.context == null)
-    	TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     FHIRPathEngine fp = new FHIRPathEngine(TestingUtilities.context);
 
     ExpressionNode node = fp.parse(expression);
@@ -127,12 +126,12 @@ public class FluentPathTests {
     if (fp.hasLog())
       System.out.println(fp.takeLog());
 
-    Assert.assertTrue("Wrong answer", fp.convertToBoolean(outcome) == value);
+    Assertions.assertEquals(fp.convertToBoolean(outcome), value, "Wrong answer");
   }
 
   private void testWrong(Resource resource, String expression) throws FileNotFoundException, IOException, FHIRException {
     if (TestingUtilities.context == null)
-    	TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     FHIRPathEngine fp = new FHIRPathEngine(TestingUtilities.context);
 
     try {
@@ -141,7 +140,7 @@ public class FluentPathTests {
       fp.evaluate(null, null, resource, node);
       if (fp.hasLog())
         System.out.println(fp.takeLog());
-      Assert.assertTrue("Fail expected", false);
+      Assertions.fail("Fail expected");
     } catch (PathEngineException e) {
       // ok  
     }
@@ -713,7 +712,7 @@ public class FluentPathTests {
     testBoolean(patient(), "(1 | 2 | 3).count() = 3", true);
     testBoolean(patient(), "(1 | 2 | 2).count() = 2", true); // merge duplicates
   }
-  
+
   @Test
   public void testIn() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 in (1 | 2 | 3)", true);
@@ -735,7 +734,7 @@ public class FluentPathTests {
     testBoolean(patient(), "(true and true) = true", true);
     testBoolean(patient(), "(true and false) = false", true);
     testBoolean(patient(), "(true and {}) = {}", true);
-    
+
     testBoolean(patient(), "(false and true) = false", true);
     testBoolean(patient(), "(false and false) = false", true);
     testBoolean(patient(), "(false and {}) = false", true);
@@ -750,7 +749,7 @@ public class FluentPathTests {
     testBoolean(patient(), "(true or true) = true", true);
     testBoolean(patient(), "(true or false) = true", true);
     testBoolean(patient(), "(true or {}) = true", true);
-    
+
     testBoolean(patient(), "(false or true) = true", true);
     testBoolean(patient(), "(false or false) = false", true);
     testBoolean(patient(), "(false or {}) = {}", true);
@@ -765,7 +764,7 @@ public class FluentPathTests {
     testBoolean(patient(), "(true xor true) = false", true);
     testBoolean(patient(), "(true xor false) = true", true);
     testBoolean(patient(), "(true xor {}) = {}", true);
-    
+
     testBoolean(patient(), "(false xor true) = true", true);
     testBoolean(patient(), "(false xor false) = false", true);
     testBoolean(patient(), "(false xor {}) = {}", true);
@@ -774,13 +773,13 @@ public class FluentPathTests {
     testBoolean(patient(), "({} xor false) = {}", true);
     testBoolean(patient(), "({} xor {}) = {}", true);
   }
-  
+
   @Test
   public void testBooleanImplies() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "(true implies true) = true", true);
     testBoolean(patient(), "(true implies false) = false", true);
     testBoolean(patient(), "(true implies {}) = {}", true);
-    
+
     testBoolean(patient(), "(false implies true) = true", true);
     testBoolean(patient(), "(false implies false) = true", true);
     testBoolean(patient(), "(false implies {}) = true", true);
@@ -789,12 +788,12 @@ public class FluentPathTests {
     testBoolean(patient(), "({} implies false) = true", true);
     testBoolean(patient(), "({} implies {}) = true", true);
   }
-  
+
   @Test
   public void testPlus() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 + 1 = 2", true);
     testBoolean(patient(), "1 + 0 = 1", true);
-    testBoolean(patient(), "1.2 + 1.8 = 3.0", true);    
+    testBoolean(patient(), "1.2 + 1.8 = 3.0", true);
     testBoolean(patient(), "'a'+'b' = 'ab'", true);
   }
 
@@ -802,56 +801,56 @@ public class FluentPathTests {
   public void testConcatenate() throws FileNotFoundException, IOException, FHIRException {
     testBoolean(patient(), "1 & 1 = '11'", true);
     testBoolean(patient(), "1 & 'a' = '1a'", true);
-    testBoolean(patient(), "{} & 'b' = 'b'", true);    
-    testBoolean(patient(), "(1 | 2 | 3) & 'b' = '1,2,3b'", true);    
+    testBoolean(patient(), "{} & 'b' = 'b'", true);
+    testBoolean(patient(), "(1 | 2 | 3) & 'b' = '1,2,3b'", true);
     testBoolean(patient(), "'a'&'b' = 'ab'", true);
   }
-  
+
 
   @Test
   public void testMinus() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 - 1 = 0", true);
     testBoolean(patient(), "1 - 0 = 1", true);
-    testBoolean(patient(), "1.8 - 1.2 = 0.6", true);    
+    testBoolean(patient(), "1.8 - 1.2 = 0.6", true);
     testWrong(patient(), "'a'-'b' = 'ab'");
   }
-  
+
   @Test
   public void testMultiply() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 * 1 = 1", true);
     testBoolean(patient(), "1 * 0 = 0", true);
-    testBoolean(patient(), "1.2 * 1.8 = 2.16", true);    
+    testBoolean(patient(), "1.2 * 1.8 = 2.16", true);
   }
-  
+
   @Test
   public void testDivide() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 / 1 = 1", true);
     testBoolean(patient(), "4 / 2 = 2", true);
     testBoolean(patient(), "1 / 2 = 0.5", true);
-    testBoolean(patient(), "1.2 / 1.8 = 0.67", true);    
+    testBoolean(patient(), "1.2 / 1.8 = 0.67", true);
   }
-  
+
   @Test
   public void testDiv() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 div 1 = 1", true);
     testBoolean(patient(), "4 div 2 = 2", true);
     testBoolean(patient(), "5 div 2 = 2", true);
-    testBoolean(patient(), "2.2 div 1.8 = 1", true);    
+    testBoolean(patient(), "2.2 div 1.8 = 1", true);
   }
-  
+
   @Test
   public void testMod() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1 mod 1 = 0", true);
     testBoolean(patient(), "4 mod 2 = 0", true);
     testBoolean(patient(), "5 mod 2 = 1", true);
-    testBoolean(patient(), "2.2 mod 1.8 = 0.4", true);    
+    testBoolean(patient(), "2.2 mod 1.8 = 0.4", true);
   }
-  
+
   @Test
   public void testPrecedence() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "1+2*3+4 = 11", true);
   }
-  
+
   @Test
   public void testVariables() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "%sct = 'http://snomed.info/sct'", true);
@@ -859,28 +858,28 @@ public class FluentPathTests {
     testBoolean(patient(), "%ucum = 'http://unitsofmeasure.org'", true);
     testBoolean(patient(), "%\"vs-administrative-gender\" = 'http://hl7.org/fhir/ValueSet/administrative-gender'", true);
   }
-  
+
   @Test
   public void testExtension() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), "Patient.birthDate.extension('http://hl7.org/fhir/StructureDefinition/patient-birthTime').exists()", true);
     testBoolean(patient(), "Patient.birthDate.extension(%\"ext-patient-birthTime\").exists()", true);
     testBoolean(patient(), "Patient.birthDate.extension('http://hl7.org/fhir/StructureDefinition/patient-birthTime1').empty()", true);
   }
-  
+
   @Test
   public void testDollarResource() throws FileNotFoundException, FHIRFormatError, IOException, FHIRException {
     testBoolean(patient(), patient().getManagingOrganization(), "Reference", "reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))", true);
     testBoolean(patient(), patient(), "Patient", "contained.select(('#'+id in %resource.descendents().reference).not()).empty()", true);
     testWrong(patient(), "contained.select(('#'+id in %resource.descendents().reference).not()).empty()");
   }
-  
+
   @Test
   public void testTyping() throws FileNotFoundException, IOException, FHIRException {
     ElementDefinition ed = new ElementDefinition();
     ed.getBinding().setValueSet(new UriType("http://test.org"));
     testBoolean(null, ed.getBinding().getValueSet(), "ElementDefinition.binding.valueSetUri", "startsWith('http:') or startsWith('https') or startsWith('urn:')", true);
   }
-  
+
   @Test
   public void testDecimalRA() throws FileNotFoundException, IOException, FHIRException {
     RiskAssessment r = new RiskAssessment();
@@ -895,20 +894,20 @@ public class FluentPathTests {
     sq1.setCode("%");
     sq1.setSystem("http://unitsofmeasure.org");
     r.addPrediction().setProbability(new Range().setLow(sq).setHigh(sq1));
-    testBoolean(r, r.getPrediction().get(0).getProbability(), "RiskAssessment.prediction.probabilityRange", 
-        "(low.empty() or ((low.code = '%') and (low.system = %ucum))) and (high.empty() or ((high.code = '%') and (high.system = %ucum)))", true);
+    testBoolean(r, r.getPrediction().get(0).getProbability(), "RiskAssessment.prediction.probabilityRange",
+      "(low.empty() or ((low.code = '%') and (low.system = %ucum))) and (high.empty() or ((high.code = '%') and (high.system = %ucum)))", true);
     testBoolean(r, r.getPrediction().get(0), "RiskAssessment.prediction", "probability is decimal implies probability.as(decimal) <= 100", true);
     r.getPrediction().get(0).setProbability(new DecimalType(80));
     testBoolean(r, r.getPrediction().get(0), "RiskAssessment.prediction", "probability.as(decimal) <= 100", true);
   }
-  
-  
+
+
   @Test
   public void testAppointment() throws FileNotFoundException, IOException, FHIRException {
     testBoolean(appointment(), "(start and end) or status = 'proposed' or status = 'cancelled'", true);
     testBoolean(appointment(), "start.empty() xor end.exists()", true);
   }
-  
+
   @Test
   public void testQuestionnaire() throws FileNotFoundException, IOException, FHIRException {
     Questionnaire q = (Questionnaire) new JsonParser().parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/questionnaire-example-gcs.json"));
@@ -920,7 +919,7 @@ public class FluentPathTests {
   private void testQItem(QuestionnaireItemComponent qi) throws FileNotFoundException, IOException, FHIRException {
     testBoolean(null, qi, "Questionnaire.item", "(type = 'choice' or type = 'open-choice') or (options.empty() and option.empty())", true);
   }
-   
+
   @Test
   public void testExtensionDefinitions() throws FileNotFoundException, IOException, FHIRException {
     Bundle b = (Bundle) new JsonParser().parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/extension-definitions.json"));
@@ -930,7 +929,7 @@ public class FluentPathTests {
   }
 
   private void testStructureDefinition(StructureDefinition sd) throws FileNotFoundException, IOException, FHIRException {
-    testBoolean(sd, sd, "StructureDefinition", "snapshot.element.tail().all(path.startsWith(%resource.snapshot.element.first().path&'.')) and differential.element.tail().all(path.startsWith(%resource.differential.element.first().path&'.'))", true); 
+    testBoolean(sd, sd, "StructureDefinition", "snapshot.element.tail().all(path.startsWith(%resource.snapshot.element.first().path&'.')) and differential.element.tail().all(path.startsWith(%resource.differential.element.first().path&'.'))", true);
   }
 
   @Test

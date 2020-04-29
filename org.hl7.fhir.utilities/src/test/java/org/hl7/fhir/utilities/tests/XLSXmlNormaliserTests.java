@@ -7,10 +7,9 @@ import javax.xml.transform.TransformerException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.xls.XLSXmlNormaliser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
-
 
 public class XLSXmlNormaliserTests {
 
@@ -20,7 +19,6 @@ public class XLSXmlNormaliserTests {
     n.go();
 //    n = new XLSXmlNormaliser("C:\\work\\org.hl7.fhir\\build\\source\\observation\\observation-spreadsheet.before.xml", "C:\\\\work\\\\org.hl7.fhir\\\\build\\\\source\\\\observation\\\\observation-spreadsheet.before.out.xml", true);
 //    n.go();
-    Assert.assertTrue(true);
+    Assertions.assertTrue(true);
   }
-
 }

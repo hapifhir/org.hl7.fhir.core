@@ -47,7 +47,5 @@ public class SnomedExpressionsTests {
 
   private void p(String expression) throws FHIRException {
     Assertions.assertNotNull(SnomedExpressions.parse(expression), "must be present");
-
   }
-
 }

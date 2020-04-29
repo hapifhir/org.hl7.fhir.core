@@ -13,7 +13,7 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ProfileComparisonTests {
 

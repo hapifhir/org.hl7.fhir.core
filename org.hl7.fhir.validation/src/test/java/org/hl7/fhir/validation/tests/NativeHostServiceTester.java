@@ -3,7 +3,7 @@ package org.hl7.fhir.validation.tests;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.validation.NativeHostServices;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NativeHostServiceTester {
 

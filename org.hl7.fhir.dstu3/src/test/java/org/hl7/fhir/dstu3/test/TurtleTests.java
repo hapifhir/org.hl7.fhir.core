@@ -1,8 +1,8 @@
 package org.hl7.fhir.dstu3.test;
 
-import junit.framework.Assert;
 import org.hl7.fhir.dstu3.utils.formats.Turtle;
 import org.hl7.fhir.utilities.TextFile;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +17,9 @@ public class TurtleTests {
       String s = TextFile.fileToString(filename);
       Turtle ttl = new Turtle();
       ttl.parse(s);
-      Assert.assertTrue(ok);
+      Assertions.assertTrue(ok);
     } catch (Exception e) {
-      Assert.assertTrue(e.getMessage(), !ok);
+      Assertions.assertFalse(ok, e.getMessage());
     }
   }
 
