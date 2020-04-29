@@ -1,10 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
@@ -15,14 +10,19 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
 public class ShexGeneratorTests {
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
     StructureDefinition sd = TestingUtilities.context().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if(sd == null) {
+    if (sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase()+".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
     TextFile.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 
@@ -35,7 +35,6 @@ public class ShexGeneratorTests {
   public void testUri() throws FHIRException, IOException, UcumException {
     doTest("uri");
   }
-
 
   @Test
   public void testObservation() throws FHIRException, IOException, UcumException {

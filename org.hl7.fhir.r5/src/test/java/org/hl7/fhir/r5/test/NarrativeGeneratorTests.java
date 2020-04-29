@@ -8,7 +8,6 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.FileNotFoundException;
@@ -16,13 +15,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NarrativeGeneratorTests {
 
-  private NarrativeGenerator gen;
+  private static NarrativeGenerator gen;
 
   @BeforeAll
-  public void setUp() throws FHIRException {
+  public static void setUp() throws FHIRException {
     gen = new NarrativeGenerator("", null, TestingUtilities.context());
   }
 

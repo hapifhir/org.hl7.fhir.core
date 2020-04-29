@@ -1,18 +1,22 @@
 package org.hl7.fhir.dstu3.test;
 
-import junit.framework.Assert;
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Base;
 import org.hl7.fhir.dstu3.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.dstu3.model.MetadataResource;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.model.TestScript;
 import org.hl7.fhir.dstu3.model.TestScript.SetupActionAssertComponent;
 import org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationComponent;
 import org.hl7.fhir.dstu3.model.TestScript.TestScriptFixtureComponent;
 import org.hl7.fhir.dstu3.model.TestScript.TestScriptTestComponent;
+import org.hl7.fhir.dstu3.model.TypeDetails;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.CodingUtilities;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine;
@@ -22,6 +26,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,7 +34,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Disabled
@@ -82,7 +92,7 @@ public class SnapShotGenerationTests {
     //ok, now the asserts:
     for (int i = 1; i < test.getAction().size(); i++) {
       SetupActionAssertComponent a = test.getAction().get(i).getAssert();
-      Assert.assertTrue(a.getLabel() + ": " + a.getDescription(), fp.evaluateToBoolean(source, source, a.getExpression()));
+      Assertions.assertTrue(fp.evaluateToBoolean(source, source, a.getExpression()), a.getLabel() + ": " + a.getDescription());
     }
   }
 

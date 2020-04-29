@@ -1,8 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
@@ -10,6 +7,9 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class PackageCacheTests {
 
@@ -29,7 +29,7 @@ public class PackageCacheTests {
       Utilities.createDirectory(dir.getAbsolutePath());
     }
     npm.save(dir);
-    NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:"+dir.getAbsolutePath());
+    NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:" + dir.getAbsolutePath());
     Assertions.assertNotNull(npm2);
   }
 }
