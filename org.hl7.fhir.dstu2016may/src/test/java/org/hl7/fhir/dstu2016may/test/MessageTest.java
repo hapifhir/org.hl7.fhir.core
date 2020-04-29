@@ -10,7 +10,7 @@ import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.model.Bundle;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MessageTest {
 

@@ -1,6 +1,22 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.dstu2.model.*;
+import org.hl7.fhir.dstu2.model.Base64BinaryType;
+import org.hl7.fhir.dstu2.model.BooleanType;
+import org.hl7.fhir.dstu2.model.CodeType;
+import org.hl7.fhir.dstu2.model.DateTimeType;
+import org.hl7.fhir.dstu2.model.DateType;
+import org.hl7.fhir.dstu2.model.DecimalType;
+import org.hl7.fhir.dstu2.model.InstantType;
+import org.hl7.fhir.dstu2.model.IntegerType;
+import org.hl7.fhir.dstu2.model.MarkdownType;
+import org.hl7.fhir.dstu2.model.OidType;
+import org.hl7.fhir.dstu2.model.PositiveIntType;
+import org.hl7.fhir.dstu2.model.PrimitiveType;
+import org.hl7.fhir.dstu2.model.StringType;
+import org.hl7.fhir.dstu2.model.TimeType;
+import org.hl7.fhir.dstu2.model.UnsignedIntType;
+import org.hl7.fhir.dstu2.model.UriType;
+import org.hl7.fhir.dstu2.model.UuidType;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,10 +24,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import junit.framework.Assert;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType10_50Test {
@@ -22,10 +35,10 @@ public class VersionConvertorPrimitiveType10_50Test {
   public void testAuditEvent() throws FHIRFormatError, IOException {
     org.hl7.fhir.dstu2.model.AuditEvent ae2 = (org.hl7.fhir.dstu2.model.AuditEvent) new org.hl7.fhir.dstu2.formats.JsonParser().parse(AUDIT_EVENT_SOURCE);
     org.hl7.fhir.r5.model.AuditEvent ae5 = (org.hl7.fhir.r5.model.AuditEvent) VersionConvertor_10_50.convertResource(ae2);
-    Assert.assertEquals(ae5.getId(), ae2.getId());
+    Assertions.assertEquals(ae5.getId(), ae2.getId());
   }
-  
-  
+
+
   @ParameterizedTest(name = "Testing dstu2 -> r5 conversion of null value {0}.")
   @MethodSource("dstu2PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {

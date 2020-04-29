@@ -52,7 +52,6 @@ public class PackageClientTests {
     Assertions.assertTrue(matches.size() == 0);
   }
 
-
   @Test
   public void testExists2() throws IOException {
     PackageClient client = new PackageClient("http://test.fhir.org/packages");

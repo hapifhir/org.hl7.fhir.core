@@ -19,6 +19,7 @@
         <hapi_fhir_version>4.2.0</hapi_fhir_version>
         <validator_test_case_version>1.1.10-SNAPSHOT</validator_test_case_version>
         <junit_jupiter_version>5.6.2</junit_jupiter_version>
+        <maven_surefire_version>3.0.0-M4</maven_surefire_version>
     </properties>
 
     <artifactId>org.hl7.fhir.core</artifactId>
@@ -71,25 +72,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -174,24 +156,13 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven_surefire_version}</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
                     <testFailureIgnore>false</testFailureIgnore>
                     <argLine>-Xmx4096m</argLine>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit_jupiter_version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                        <version>${junit_jupiter_version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.basepom.maven</groupId>

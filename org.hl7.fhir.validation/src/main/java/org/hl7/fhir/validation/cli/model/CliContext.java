@@ -405,5 +405,42 @@ public class CliContext {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
-  
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CliContext that = (CliContext) o;
+    return doNative == that.doNative &&
+      anyExtensionsAllowed == that.anyExtensionsAllowed &&
+      hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
+      recursive == that.recursive &&
+      doDebug == that.doDebug &&
+      assumeValidRestReferences == that.assumeValidRestReferences &&
+      canDoNative == that.canDoNative &&
+      noInternalCaching == that.noInternalCaching &&
+      noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
+      Objects.equals(map, that.map) &&
+      Objects.equals(output, that.output) &&
+      Objects.equals(txServer, that.txServer) &&
+      Objects.equals(sv, that.sv) &&
+      Objects.equals(txLog, that.txLog) &&
+      Objects.equals(mapLog, that.mapLog) &&
+      Objects.equals(lang, that.lang) &&
+      Objects.equals(fhirpath, that.fhirpath) &&
+      Objects.equals(snomedCT, that.snomedCT) &&
+      Objects.equals(targetVer, that.targetVer) &&
+      Objects.equals(igs, that.igs) &&
+      Objects.equals(questionnaires, that.questionnaires) &&
+      Objects.equals(profiles, that.profiles) &&
+      Objects.equals(sources, that.sources) &&
+      mode == that.mode &&
+      Objects.equals(locale, that.locale) &&
+      Objects.equals(locations, that.locations);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations);
+  }
 }

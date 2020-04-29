@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import junit.framework.Assert;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -11,11 +10,15 @@ import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r4.model.TypeDetails;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
@@ -36,7 +39,11 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -399,9 +406,9 @@ public class SnapShotGenerationTests {
           testGen(test, context);
         else
           testSort(test, context);
-        Assert.assertTrue("Should have failed", false);
+        Assertions.assertTrue(false, "Should have failed");
       } catch (Throwable e) {
-        Assert.assertTrue("all ok", true);
+        Assertions.assertTrue(true, "all ok");
 
       }
     } else if (test.isGen())
@@ -411,7 +418,7 @@ public class SnapShotGenerationTests {
     for (Rule r : test.getRules()) {
       StructureDefinition sdn = new StructureDefinition();
       boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
-      Assert.assertTrue(r.description, ok);
+      Assertions.assertTrue(ok, r.description);
     }
   }
 

@@ -20,29 +20,21 @@ import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.graphql.NameValue;
 import org.hl7.fhir.utilities.graphql.Parser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
 
 public class GraphQLEngineTests implements IGraphQLStorageServices {
 
@@ -91,7 +83,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       msg = e.getMessage();
     }
     if (ok) {
-      assertTrue("Expected to fail, but didn't", !output.equals("$error"));
+      Assertions.assertTrue(!output.equals("$error"), "Expected to fail, but didn't");
       StringBuilder str = new StringBuilder();
       gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
@@ -99,10 +91,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "graphql", output), new FileOutputStream(TestingUtilities.tempFile("graphql", output)));
       TextFile.stringToFile(str.toString(), TestingUtilities.tempFile("graphql", output+".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.tempFile("graphql", output+".out"), TestingUtilities.tempFile("graphql", output));
-      assertTrue(msg, Utilities.noString(msg));
+      Assertions.assertTrue(Utilities.noString(msg), msg);
     }
     else
-      assertTrue("Error, but proper output was expected ("+msg+")", output.equals("$error"));
+      Assertions.assertTrue(output.equals("$error"), "Error, but proper output was expected ("+msg+")");
   }
 
   @Override

@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import junit.framework.Assert;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -10,7 +9,8 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ public class CDARoundTripTests {
 //  private SimpleWorkerContext context;
 // old-test  private FHIRPathEngine fp;
 
-  @Before
+  @BeforeAll
   public void setUp() throws Exception {
 // old-test     context = new SimpleWorkerContext();
 // old-test     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
@@ -191,8 +191,7 @@ public class CDARoundTripTests {
     }
     Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "cda", "example.xml"), FhirFormat.XML);
     FHIRPathEngine fp = new FHIRPathEngine(context);
-    Assert.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
-
+    Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
   }
 
 }
