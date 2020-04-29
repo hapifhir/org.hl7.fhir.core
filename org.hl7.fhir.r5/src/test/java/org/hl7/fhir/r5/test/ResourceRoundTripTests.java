@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.test;
 
 import org.apache.commons.io.IOUtils;
-import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -20,7 +19,7 @@ import java.io.*;
 public class ResourceRoundTripTests {
 
   @Test
-  public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome, UcumException {
+  public void test() throws IOException, FHIRException, EOperationOutcome {
     Resource res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
     new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
