@@ -22,7 +22,7 @@ public class CDARoundTripTests {
 // old-test  private FHIRPathEngine fp;
 
   @BeforeAll
-  public void setUp() throws Exception {
+  public static void setUp() throws Exception {
 // old-test     context = new SimpleWorkerContext();
 // old-test     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
 // old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "dev"), null, "StructureDefinition");
