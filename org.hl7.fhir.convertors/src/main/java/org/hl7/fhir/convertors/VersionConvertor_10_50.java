@@ -65,6 +65,7 @@ import org.hl7.fhir.convertors.conv10_50.Parameters10_50;
 import org.hl7.fhir.convertors.conv10_50.Patient10_50;
 import org.hl7.fhir.convertors.conv10_50.Person10_50;
 import org.hl7.fhir.convertors.conv10_50.Practitioner10_50;
+import org.hl7.fhir.convertors.conv10_50.Provenance10_50;
 import org.hl7.fhir.convertors.conv10_50.Questionnaire10_50;
 import org.hl7.fhir.convertors.conv10_50.QuestionnaireResponse10_50;
 import org.hl7.fhir.convertors.conv10_50.RiskAssessment10_50;
@@ -3307,7 +3308,9 @@ public class VersionConvertor_10_50 {
         if (src instanceof org.hl7.fhir.dstu2.model.Person)
             return Person10_50.convertPerson((org.hl7.fhir.dstu2.model.Person) src);
         if (src instanceof org.hl7.fhir.dstu2.model.Practitioner)
-            return Practitioner10_50.convertPractitioner((org.hl7.fhir.dstu2.model.Practitioner) src);
+          return Practitioner10_50.convertPractitioner((org.hl7.fhir.dstu2.model.Practitioner) src);
+        if (src instanceof org.hl7.fhir.dstu2.model.Provenance)
+          return Provenance10_50.convertProvenance((org.hl7.fhir.dstu2.model.Provenance) src);
         if (src instanceof org.hl7.fhir.dstu2.model.Questionnaire)
             return Questionnaire10_50.convertQuestionnaire((org.hl7.fhir.dstu2.model.Questionnaire) src);
         if (src instanceof org.hl7.fhir.dstu2.model.QuestionnaireResponse)
@@ -3420,6 +3423,8 @@ public class VersionConvertor_10_50 {
             return Person10_50.convertPerson((org.hl7.fhir.r5.model.Person) src);
         if (src instanceof org.hl7.fhir.r5.model.Practitioner)
             return Practitioner10_50.convertPractitioner((org.hl7.fhir.r5.model.Practitioner) src);
+        if (src instanceof org.hl7.fhir.r5.model.Provenance)
+          return Provenance10_50.convertProvenance((org.hl7.fhir.r5.model.Provenance) src);
         if (src instanceof org.hl7.fhir.r5.model.Questionnaire)
             return Questionnaire10_50.convertQuestionnaire((org.hl7.fhir.r5.model.Questionnaire) src);
         if (src instanceof org.hl7.fhir.r5.model.QuestionnaireResponse)

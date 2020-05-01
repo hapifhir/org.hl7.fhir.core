@@ -156,6 +156,8 @@ import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Provenance;
+import org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Range;
@@ -335,25 +337,27 @@ public class NarrativeGenerator implements INarrativeGenerator {
       }
     }
     if (r instanceof ConceptMap) {
-      return generate(rcontext, (ConceptMap) r); // Maintainer = Grahame
+      return generate(rcontext, (ConceptMap) r); 
     } else if (r instanceof ValueSet) {
-      return generate(rcontext, (ValueSet) r, true); // Maintainer = Grahame
+      return generate(rcontext, (ValueSet) r, true); 
     } else if (r instanceof CodeSystem) {
-      return generate(rcontext, (CodeSystem) r, true, null); // Maintainer = Grahame
+      return generate(rcontext, (CodeSystem) r, true, null); 
     } else if (r instanceof OperationOutcome) {
-      return generate(rcontext, (OperationOutcome) r); // Maintainer = Grahame
+      return generate(rcontext, (OperationOutcome) r); 
     } else if (r instanceof CapabilityStatement) {
-      return generate(rcontext, (CapabilityStatement) r);   // Maintainer = Grahame
+      return generate(rcontext, (CapabilityStatement) r);   
     } else if (r instanceof CompartmentDefinition) {
-      return generate(rcontext, (CompartmentDefinition) r);   // Maintainer = Grahame
+      return generate(rcontext, (CompartmentDefinition) r); 
     } else if (r instanceof OperationDefinition) {
-      return generate(rcontext, (OperationDefinition) r);   // Maintainer = Grahame
+      return generate(rcontext, (OperationDefinition) r);   
     } else if (r instanceof StructureDefinition) {
-      return generate(rcontext, (StructureDefinition) r, outputTracker);   // Maintainer = Grahame
+      return generate(rcontext, (StructureDefinition) r, outputTracker);   
     } else if (r instanceof List) {
-      return generate(rcontext, (ListResource) r);   // Maintainer = Grahame 
+      return generate(rcontext, (ListResource) r);    
     } else if (r instanceof ImplementationGuide) {
-      return generate(rcontext, (ImplementationGuide) r);   // Maintainer = Lloyd (until Grahame wants to take over . . . :))
+      return generate(rcontext, (ImplementationGuide) r);   
+    } else if (r instanceof Provenance) {
+      return generate(rcontext, new ResourceWrapperDirect(r), (Provenance) r);   
     } else if (r instanceof DiagnosticReport) {
       inject(r, generateDiagnosticReport(new ResourceWrapperDirect(r)),  NarrativeStatus.GENERATED);   // Maintainer = Grahame
       return true;
@@ -373,6 +377,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         return false;
     }
   }
+
 
   private boolean generateByLiquid(ResourceContext rcontext, DomainResource r, String liquidTemplate, Set<String> outputTracker) {
 
@@ -1511,8 +1516,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     else if (e instanceof InstantType)
       x.addText(((InstantType) e).toHumanDisplay());
     else if (e instanceof DateTimeType) {
-      if (e.hasPrimitiveValue())
-        x.addText(((DateTimeType) e).toHumanDisplay());
+      renderDateTime(x, e);
     } else if (e instanceof Base64BinaryType)
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
     else if (e instanceof org.hl7.fhir.r5.model.DateType)
@@ -1566,35 +1570,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
       renderQuantity(((Ratio) e).getDenominator(), x, showCodeDetails);
     } else if (e instanceof Period) {
       Period p = (Period) e;
-      x.addText(!p.hasStart() ? "??" : p.getStartElement().toHumanDisplay());
-      x.tx(" --> ");
-      x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
+      renderPeriod(x, p);
     } else if (e instanceof Reference) {
       Reference r = (Reference) e;
-      XhtmlNode c = x;
-      ResourceWithReference tr = null;
-      if (r.hasReferenceElement()) {
-        tr = resolveReference(res, r.getReference(), rc);
-
-        if (!r.getReference().startsWith("#")) {
-          if (tr != null && tr.getReference() != null)
-            c = x.ah(tr.getReference());
-          else
-            c = x.ah(r.getReference());
-        }
-      }
-      // what to display: if text is provided, then that. if the reference was resolved, then show the generated narrative
-      if (r.hasDisplayElement()) {
-        c.addText(r.getDisplay());
-        if (tr != null && tr.getResource() != null) {
-          c.tx(". Generated Summary: ");
-          generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"), rc);
-        }
-      } else if (tr != null && tr.getResource() != null) {
-        generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"), rc);
-      } else {
-        c.addText(r.getReference());
-      }
+      renderReference(rc, res, x, r);
     } else if (e instanceof Resource) {
       return;
     } else if (e instanceof ElementDefinition) {
@@ -1607,6 +1586,44 @@ public class NarrativeGenerator implements INarrativeGenerator {
         generateByProfile(res, sd, ew, sd.getSnapshot().getElement(), sd.getSnapshot().getElementFirstRep(),
             getChildrenForPath(sd.getSnapshot().getElement(), sd.getSnapshot().getElementFirstRep().getPath()), x, path, showCodeDetails, indent + 1, rc);
     }
+  }
+
+  public void renderReference(ResourceContext rc, ResourceWrapper res, XhtmlNode x, Reference r) throws UnsupportedEncodingException, IOException {
+    XhtmlNode c = x;
+    ResourceWithReference tr = null;
+    if (r.hasReferenceElement()) {
+      tr = resolveReference(res, r.getReference(), rc);
+
+      if (!r.getReference().startsWith("#")) {
+        if (tr != null && tr.getReference() != null)
+          c = x.ah(tr.getReference());
+        else
+          c = x.ah(r.getReference());
+      }
+    }
+    // what to display: if text is provided, then that. if the reference was resolved, then show the generated narrative
+    if (r.hasDisplayElement()) {
+      c.addText(r.getDisplay());
+      if (tr != null && tr.getResource() != null) {
+        c.tx(". Generated Summary: ");
+        generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"), rc);
+      }
+    } else if (tr != null && tr.getResource() != null) {
+      generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"), rc);
+    } else {
+      c.addText(r.getReference());
+    }
+  }
+
+  public void renderDateTime(XhtmlNode x, Base e) {
+    if (e.hasPrimitiveValue())
+      x.addText(((DateTimeType) e).toHumanDisplay());
+  }
+
+  public void renderPeriod(XhtmlNode x, Period p) {
+    x.addText(!p.hasStart() ? "??" : p.getStartElement().toHumanDisplay());
+    x.tx(" --> ");
+    x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }
 
   private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails, ResourceContext rc) throws FHIRException, UnsupportedEncodingException, IOException {
@@ -1870,6 +1887,10 @@ public class NarrativeGenerator implements INarrativeGenerator {
   }
 
   private void renderCodeableConcept(CodeableConcept cc, XhtmlNode x, boolean showCodeDetails) {
+    if (cc.isEmpty()) {
+      return;
+    }
+
     String s = cc.getText();
     if (Utilities.noString(s)) {
       for (Coding c : cc.getCoding()) {
@@ -2111,6 +2132,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
     x.addText(displayContactPoint(contact));
   }
 
+  private void renderUri(XhtmlNode x, UriType uri) {
+    if (uri.getValue().startsWith("mailto:"))
+      x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+    else
+      x.ah(uri.getValue()).addText(uri.getValue());
+  }
+  
   private void renderUri(UriType uri, XhtmlNode x, String path, String id) {
     String url = uri.getValue();
     if (isCanonical(path)) {
@@ -2425,8 +2453,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     return XMLUtil.getNamedChild(txt, "div");
   }
 
-
-  private void inject(Element er, XhtmlNode x, NarrativeStatus status) {
+  public void inject(Element er, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
     Element le = XMLUtil.getNamedChild(er, "language");
@@ -2468,7 +2495,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     new XhtmlComposer(XhtmlComposer.XML, pretty).compose(div, x);
   }
 
-  private void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status) throws IOException, FHIRException {
+  public void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status) throws IOException, FHIRException {
     if (!x.hasAttribute("xmlns"))
       x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
     String l = er.getChildValue("language");
@@ -2500,6 +2527,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       txt.getChildren().add(div);
       div.setValue(new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x));
     }
+    div.setValue(x.toString());
     div.setXhtml(x);
   }
 
@@ -3715,5 +3743,127 @@ public class NarrativeGenerator implements INarrativeGenerator {
         p.br();
       p.addText(lines[i]);
     }
+  }
+  
+  private boolean generate(ResourceContext rcontext, ResourceWrapper res, Provenance r) throws UnsupportedEncodingException, IOException {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    boolean hasExtensions = false;
+    
+    if (!r.getTarget().isEmpty()) {
+      if (r.getTarget().size() == 1) {
+        XhtmlNode p = x.para();
+        p.tx("This provenance relates to ");
+        renderReference(rcontext, res, p, r.getTargetFirstRep());
+      } else {
+        x.para().tx("This provenance relates to:");
+        XhtmlNode ul = x.ul();
+        for (Reference ref : r.getTarget()) {
+          renderReference(rcontext, res, ul.li(), r.getTargetFirstRep());
+        }
+      }
+    }
+    // summary table
+    x.para().tx("Summary");
+    XhtmlNode t = x.table("grid");
+    XhtmlNode tr;
+    if (r.hasOccurred()) {
+      tr = t.tr();
+      tr.td().tx("Occurrence");
+      if (r.hasOccurredPeriod()) {
+        renderPeriod(tr.td(), r.getOccurredPeriod());
+      } else {
+        renderDateTime(tr.td(), r.getOccurredDateTimeType());        
+      }
+    }
+    if (r.hasRecorded()) {
+      tr = t.tr();
+      tr.td().tx("Recorded");
+      tr.td().addText(r.getRecordedElement().toHumanDisplay());
+    }
+    if (r.hasPolicy()) {
+      tr = t.tr();
+      tr.td().tx("Policy");
+      if (r.getPolicy().size() == 1) {
+        renderUri(tr.td(), r.getPolicy().get(0));
+      } else {
+        XhtmlNode ul = tr.td().ul();
+        for (UriType u : r.getPolicy()) {
+          renderUri(ul.li(), u);
+        }
+      }
+    }
+    if (r.hasLocation()) {
+      tr = t.tr();
+      tr.td().tx("Location");
+      renderReference(rcontext, res, tr.td(), r.getLocation());      
+    }
+    if (r.hasActivity()) {
+      tr = t.tr();
+      tr.td().tx("Activity");
+      renderCodeableConcept(r.getActivity(), tr.td(), false);
+    }
+
+    boolean hasType = false;
+    boolean hasRole = false;
+    boolean hasOnBehalfOf = false;
+    for (ProvenanceAgentComponent a : r.getAgent()) {
+      hasType = hasType || a.hasType(); 
+      hasRole = hasRole || a.hasRole(); 
+      hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf(); 
+    }    
+    x.para().tx("Agents");
+    t = x.table("grid");
+    tr = t.tr();
+    if (hasType) {
+      tr.td().b().tx("type");
+    }
+    if (hasRole) {
+      tr.td().b().tx("role");
+    }
+    tr.td().b().tx("who");
+    if (hasOnBehalfOf) {
+      tr.td().b().tx("onBehalfOf");
+    }
+    for (ProvenanceAgentComponent a : r.getAgent()) {
+      tr = t.tr();
+      if (hasType) {
+        if (a.hasType()) {
+          renderCodeableConcept(a.getType(), tr.td(), false);         
+        } else {
+          tr.td();
+        }
+      }        
+      if (hasRole) {
+        if (a.hasRole()) {
+          if (a.getRole().size() == 1) {
+            renderCodeableConcept(a.getType(), tr.td(), false);
+          } else {
+            XhtmlNode ul = tr.td().ul();
+            for (CodeableConcept cc : a.getRole()) {
+              renderCodeableConcept(cc, ul.li(), false);
+            }
+          }
+        } else {
+          tr.td();
+        }
+      }
+      if (a.hasWho()) {
+        renderReference(rcontext, res, tr.td(), a.getWho());         
+      } else {
+        tr.td();
+      }
+      if (hasOnBehalfOf) {
+        if (a.hasOnBehalfOf()) {
+          renderReference(rcontext, res, tr.td(), a.getOnBehalfOf());         
+        } else {
+          tr.td();
+        }
+      }
+    }
+    // agent table
+    
+    inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+    return hasExtensions;
+    
   }
 }
