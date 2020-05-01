@@ -262,10 +262,10 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
                 case EQUIVALENT:
                     tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT);
                     break;
-                case BROADER:
+                case SOURCENARROWERTARGET:
                     tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER);
                     break;
-                case NARROWER:
+                case SOURCEBROADERTARGET:
                     tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NARROWER);
                     break;
                 case NOTRELATEDTO:
@@ -293,16 +293,16 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
                 break;
             case WIDER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCENARROWERTARGET);
                 break;
             case SUBSUMES:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.BROADER);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCENARROWERTARGET);
                 break;
             case NARROWER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEBROADERTARGET);
                 break;
             case SPECIALIZES:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NARROWER);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEBROADERTARGET);
                 break;
             case RELATEDTO:
               tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
