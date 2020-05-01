@@ -30,11 +30,20 @@ import java.util.stream.Stream;
 public class VersionConvertorPrimitiveType30_50Test {
 
   private static final String AUDIT_EVENT_SOURCE = "{\"resourceType\" : \"AuditEvent\",\"id\" : \"example\",\"text\" : {\"status\" : \"generated\",\"div\" : \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Application Start for under service login &quot;Grahame&quot; (id: Grahame's Test HL7Connect)</div>\"},\"type\" : {\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110100\",\"display\" : \"Application Activity\"},\"subtype\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110120\",\"display\" : \"Application Start\"}],\"action\" : \"E\",\"recorded\" : \"2012-10-25T22:04:27+11:00\",\"outcome\" : \"0\",\"agent\" : [{\"role\" : [{\"text\" : \"Service User (Logon)\"}],\"userId\" : {\"value\" : \"Grahame\"},\"requestor\" : false,\"network\" : {\"address\" : \"127.0.0.1\",\"type\" : \"2\"}},{\"role\" : [{\"coding\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110153\",\"display\" : \"Source Role ID\"}]}],\"userId\" : {\"value\" : \"2.16.840.1.113883.4.2|2.16.840.1.113883.4.2\"},\"altId\" : \"6580\",\"requestor\" : false,\"network\" : {\"address\" : \"Workstation1.ehr.familyclinic.com\",\"type\" : \"1\"}}],\"source\" : {\"site\" : \"Development\",\"identifier\" : {\"value\" : \"Grahame's Laptop\"},\"type\" : [{\"system\" : \"http://dicom.nema.org/resources/ontology/DCM\",\"code\" : \"110122\",\"display\" : \"Login\"}]},\"entity\" : [{\"identifier\" : {\"type\" : {\"coding\" : [{\"system\" : \"http://hl7.org/fhir/identifier-type\",\"code\" : \"SNO\"}],\"text\" : \"Dell Serial Number\"},\"value\" : \"ABCDEF\"},\"type\" : {\"system\" : \"http://hl7.org/fhir/object-type\",\"code\" : \"4\",\"display\" : \"Other\"},\"role\" : {\"system\" : \"http://hl7.org/fhir/object-role\",\"code\" : \"4\",\"display\" : \"Domain Resource\"},\"lifecycle\" : {\"system\" : \"http://hl7.org/fhir/dicom-audit-lifecycle\",\"code\" : \"6\",\"display\" : \"Access / Use\"},\"name\" : \"Grahame's Laptop\"}]}";
-
+  private static final String PROVENANCE_SOURCE = "{\"resourceType\" : \"Provenance\",\"id\" : \"example\",\"text\" : {\"status\" : \"generated\",\"div\" : \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">procedure record authored on 27-June 2015 by Harold Hippocrates, MD Content extracted from XDS managed CDA Referral received 26-June</div>\"},\"target\" : [{\"reference\" : \"Procedure/example/_history/1\"}],\"period\" : {\"start\" : \"2015-06-27\",\"end\" : \"2015-06-28\"},\"recorded\" : \"2015-06-27T08:39:24+10:00\",\"policy\" : [\"http://acme.com/fhir/Consent/25\"],\"location\" : {\"reference\" : \"Location/1\"},\"reason\" : [{\"system\" : \"http://snomed.info/sct\",\"code\" : \"3457005\",\"display\" : \"Referral\"}],\"agent\" : [{\"role\" : [{\"coding\" : [{\"system\" : \"http://hl7.org/fhir/v3/ParticipationType\",\"code\" : \"AUT\"}]}],\"whoReference\" : {\"reference\" : \"Practitioner/xcda-author\"},\"onBehalfOfUri\" : \"#a1\",\"relatedAgentType\" : {\"text\" : \"used\"}},{\"id\" : \"a1\",\"role\" : [{\"coding\" : [{\"system\" : \"http://hl7.org/fhir/v3/ParticipationType\",\"code\" : \"DEV\"}]}],\"whoReference\" : {\"reference\" : \"Device/software\"}}],\"entity\" : [{\"role\" : \"source\",\"whatReference\" : {\"reference\" : \"DocumentReference/example\",\"display\" : \"CDA Document in XDS repository\"}}]}";
+  
   @Test
   public void testAuditEvent() throws FHIRFormatError, IOException {
     org.hl7.fhir.dstu3.model.AuditEvent ae3 = (org.hl7.fhir.dstu3.model.AuditEvent) new org.hl7.fhir.dstu3.formats.JsonParser().parse(AUDIT_EVENT_SOURCE);
     org.hl7.fhir.r5.model.AuditEvent ae5 = (org.hl7.fhir.r5.model.AuditEvent) VersionConvertor_30_50.convertResource(ae3, false);
+    Assertions.assertEquals(ae5.getId(), ae3.getId());
+  }
+  
+
+  @Test
+  public void testProvenance() throws FHIRFormatError, IOException {
+    org.hl7.fhir.dstu3.model.Provenance ae3 = (org.hl7.fhir.dstu3.model.Provenance) new org.hl7.fhir.dstu3.formats.JsonParser().parse(PROVENANCE_SOURCE);
+    org.hl7.fhir.r5.model.Provenance ae5 = (org.hl7.fhir.r5.model.Provenance) VersionConvertor_30_50.convertResource(ae3, false);
     Assertions.assertEquals(ae5.getId(), ae3.getId());
   }
 

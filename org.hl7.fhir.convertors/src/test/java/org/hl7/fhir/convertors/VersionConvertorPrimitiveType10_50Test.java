@@ -38,7 +38,6 @@ public class VersionConvertorPrimitiveType10_50Test {
     Assertions.assertEquals(ae5.getId(), ae2.getId());
   }
 
-
   @ParameterizedTest(name = "Testing dstu2 -> r5 conversion of null value {0}.")
   @MethodSource("dstu2PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {

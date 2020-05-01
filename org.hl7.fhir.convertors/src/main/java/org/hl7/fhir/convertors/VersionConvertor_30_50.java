@@ -85,6 +85,7 @@ import org.hl7.fhir.convertors.conv30_50.Person30_50;
 import org.hl7.fhir.convertors.conv30_50.PlanDefinition30_50;
 import org.hl7.fhir.convertors.conv30_50.Practitioner30_50;
 import org.hl7.fhir.convertors.conv30_50.PractitionerRole30_50;
+import org.hl7.fhir.convertors.conv30_50.Provenance30_50;
 import org.hl7.fhir.convertors.conv30_50.Questionnaire30_50;
 import org.hl7.fhir.convertors.conv30_50.QuestionnaireResponse30_50;
 import org.hl7.fhir.convertors.conv30_50.RelatedPerson30_50;
@@ -5324,6 +5325,8 @@ public class VersionConvertor_30_50 {
             return Practitioner30_50.convertPractitioner((org.hl7.fhir.dstu3.model.Practitioner) src);
         if (src instanceof org.hl7.fhir.dstu3.model.PractitionerRole)
             return PractitionerRole30_50.convertPractitionerRole((org.hl7.fhir.dstu3.model.PractitionerRole) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.Provenance)
+          return Provenance30_50.convertProvenance((org.hl7.fhir.dstu3.model.Provenance) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Questionnaire)
             return Questionnaire30_50.convertQuestionnaire((org.hl7.fhir.dstu3.model.Questionnaire) src);
         if (src instanceof org.hl7.fhir.dstu3.model.QuestionnaireResponse)
@@ -5491,6 +5494,8 @@ public class VersionConvertor_30_50 {
             return Practitioner30_50.convertPractitioner((org.hl7.fhir.r5.model.Practitioner) src);
         if (src instanceof org.hl7.fhir.r5.model.PractitionerRole)
             return PractitionerRole30_50.convertPractitionerRole((org.hl7.fhir.r5.model.PractitionerRole) src);
+        if (src instanceof org.hl7.fhir.r5.model.Provenance)
+          return Provenance30_50.convertProvenance((org.hl7.fhir.r5.model.Provenance) src);
         if (src instanceof org.hl7.fhir.r5.model.Questionnaire)
             return Questionnaire30_50.convertQuestionnaire((org.hl7.fhir.r5.model.Questionnaire) src);
         if (src instanceof org.hl7.fhir.r5.model.QuestionnaireResponse)
