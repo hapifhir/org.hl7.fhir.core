@@ -1888,7 +1888,11 @@ public class Enumerations {
           return ConceptMapRelationship.EQUIVALENT;
         if ("source-is-narrower-than-target".equals(codeString))
           return ConceptMapRelationship.SOURCENARROWERTARGET;
+        if ("broader".equals(codeString))
+          return ConceptMapRelationship.SOURCENARROWERTARGET;
         if ("source-is-broader-than-target".equals(codeString))
+          return ConceptMapRelationship.SOURCEBROADERTARGET;
+        if ("narrower".equals(codeString))
           return ConceptMapRelationship.SOURCEBROADERTARGET;
         if ("not-related-to".equals(codeString))
           return ConceptMapRelationship.NOTRELATEDTO;
