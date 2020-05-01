@@ -304,10 +304,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "is related to";
     } else if ("equivalent".equals(code)) {
       return "is equivalent to";
-    } else if ("broader".equals(code)) {
+    } else if ("source-is-narrower-than-target".equals(code)) {
       return "maps to wider concept";
-    } else if ("narrower".equals(code)) {
-      return "maps to narrower concept";
+    } else if ("source-is-broader-than-target".equals(code)) {
+      return "maps to source-is-broader-than-target concept";
     } else if ("not-related-to".equals(code)) {
       return "is not related to";
     } else {
@@ -326,8 +326,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "maps to wider concept";
     } else if ("subsumes".equals(code)) {
       return "is subsumed by";
-    } else if ("narrower".equals(code)) {
-      return "maps to narrower concept";
+    } else if ("source-is-broader-than-target".equals(code)) {
+      return "maps to source-is-broader-than-target concept";
     } else if ("specializes".equals(code)) {
       return "has specialization";
     } else if ("inexact".equals(code)) {
