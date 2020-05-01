@@ -1119,10 +1119,10 @@ public class ConceptMap extends CanonicalResource {
         protected StringType display;
 
         /**
-         * The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).
          */
         @Child(name = "relationship", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=false)
-        @Description(shortDefinition="related-to | equivalent | broader | narrower | not-related-to", formalDefinition="The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source)." )
+        @Description(shortDefinition="related-to | equivalent | source-is-narrower-than-target | source-is-broader-than-target | not-related-to", formalDefinition="The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/concept-map-relationship")
         protected Enumeration<ConceptMapRelationship> relationship;
 
@@ -1263,7 +1263,7 @@ public class ConceptMap extends CanonicalResource {
         }
 
         /**
-         * @return {@link #relationship} (The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
+         * @return {@link #relationship} (The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
         public Enumeration<ConceptMapRelationship> getRelationshipElement() { 
           if (this.relationship == null)
@@ -1283,7 +1283,7 @@ public class ConceptMap extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #relationship} (The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
+         * @param value {@link #relationship} (The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
         public TargetElementComponent setRelationshipElement(Enumeration<ConceptMapRelationship> value) { 
           this.relationship = value;
@@ -1291,14 +1291,14 @@ public class ConceptMap extends CanonicalResource {
         }
 
         /**
-         * @return The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * @return The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).
          */
         public ConceptMapRelationship getRelationship() { 
           return this.relationship == null ? null : this.relationship.getValue();
         }
 
         /**
-         * @param value The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).
+         * @param value The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).
          */
         public TargetElementComponent setRelationship(ConceptMapRelationship value) { 
             if (this.relationship == null)
@@ -1466,7 +1466,7 @@ public class ConceptMap extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "Identity (code or path) or the element/item that the map refers to.", 0, 1, code));
           children.add(new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display));
-          children.add(new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship));
+          children.add(new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).", 0, 1, relationship));
           children.add(new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment));
           children.add(new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified element can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
           children.add(new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product));
@@ -1477,7 +1477,7 @@ public class ConceptMap extends CanonicalResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "Identity (code or path) or the element/item that the map refers to.", 0, 1, code);
           case 1671764162: /*display*/  return new Property("display", "string", "The display for the code. The display is only provided to help editors when editing the concept map.", 0, 1, display);
-          case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from target to source (e.g. the target is 'broader' than the source).", 0, 1, relationship);
+          case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship between the source and target concepts. The relationship is read from source to target (e.g. source-is-narrower-than-target).", 0, 1, relationship);
           case 950398559: /*comment*/  return new Property("comment", "string", "A description of status/issues in mapping that conveys additional information not represented in  the structured data.", 0, 1, comment);
           case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "A set of additional dependencies for this mapping to hold. This mapping is only applicable if the specified element can be resolved, and it has the specified value.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
           case -309474065: /*product*/  return new Property("product", "@ConceptMap.group.element.target.dependsOn", "A set of additional outcomes from this mapping to other elements. To properly execute this mapping, the specified element must be mapped to some data element or source that is in context. The mapping may still be useful without a place for the additional data elements, but the relationship (e.g., equivalent) cannot be relied on.", 0, java.lang.Integer.MAX_VALUE, product);
