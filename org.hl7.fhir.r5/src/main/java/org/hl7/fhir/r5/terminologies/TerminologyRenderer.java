@@ -283,8 +283,8 @@ public class TerminologyRenderer {
       return "";
     switch (mapping.getRelationship()) {
     case EQUIVALENT : return "~";
-    case BROADER : return "<";
-    case NARROWER : return ">";
+    case SOURCENARROWERTARGET : return "<";
+    case SOURCEBROADERTARGET : return ">";
     case NOTRELATEDTO : return "!=";
     default: return "?";
     }
