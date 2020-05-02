@@ -316,6 +316,8 @@ public class PackageCacheManager {
   }
 
   private InputStreamWithSrc loadFromPackageServer(String id, String v) {
+    // release hack:
+    if ("4.4.0".equals(v)) {v = "4.2.0"; };
     PackageClient pc = new PackageClient(PRIMARY_SERVER);
     String u = null;
     InputStream stream;
