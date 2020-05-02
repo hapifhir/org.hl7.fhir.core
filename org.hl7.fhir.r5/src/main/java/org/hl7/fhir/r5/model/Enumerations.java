@@ -6299,6 +6299,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_2_0, 
         /**
+         * R5 Preview #2.
+         */
+        _4_4_0, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -6353,6 +6357,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_0_1;
         if ("4.2.0".equals(codeString))
           return _4_2_0;
+        if ("4.4.0".equals(codeString))
+          return _4_4_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6381,6 +6387,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_2_0: return "4.2.0";
+            case _4_4_0: return "4.4.0";
             default: return "?";
           }
         }
@@ -6468,6 +6475,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_2_0: return "4.2.0";
+            case _4_4_0: return "4.4.0";
             default: return "?";
           }
         }
@@ -6526,6 +6534,8 @@ The primary difference between a medicationusage and a medicationadministration 
       if ("4.0.0".equals(codeString))
         return true;
       if ("4.2.0".equals(codeString))
+        return true;
+      if ("4.4.0".equals(codeString))
         return true;
       return false;
       }
@@ -6591,6 +6601,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._4_0_1;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
+        if ("4.4.0".equals(codeString))
+          return FHIRVersion._4_4_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6649,6 +6661,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -6700,6 +6714,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "4.0.1";
       if (code == FHIRVersion._4_2_0)
         return "4.2.0";
+      if (code == FHIRVersion._4_4_0)
+        return "4.4.0";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
