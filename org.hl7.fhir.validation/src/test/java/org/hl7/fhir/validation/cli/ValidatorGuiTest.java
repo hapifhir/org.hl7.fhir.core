@@ -24,7 +24,7 @@ class ValidatorGuiTest {
     options.addArguments("--headless");
     options.addArguments("--disable-gpu");
     WebDriver driver = new ChromeDriver(options);
-    driver.get("http://localhost:8080/home");
+    driver.get("http://localhost:" + ValidatorGui.getPort() + "/home");
 
     Assertions.assertTrue(driver.getPageSource().contains(HTML_TITLE_TAG));
     driver.quit();
