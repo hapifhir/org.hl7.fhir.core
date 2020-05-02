@@ -64,7 +64,7 @@ import java.util.stream.Stream;
 
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = false;
+  public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
   public static Stream<Arguments> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
