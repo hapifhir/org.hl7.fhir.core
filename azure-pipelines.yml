@@ -1,18 +1,7 @@
-<<<<<<< HEAD
-# Maven
-
-=======
->>>>>>> 18b5b3b16654f9f583227bddce9ea209a64aa47f
 trigger:
   branches:
     include:
       - '*'
-<<<<<<< HEAD
-  # pr:
-  # - master
-  # - release
-=======
->>>>>>> 18b5b3b16654f9f583227bddce9ea209a64aa47f
 
 strategy:
   matrix:
