@@ -1,19 +1,59 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- master
+  branches:
+    include:
+      - '*'
+
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+    mac:
+      imageName: "macos-10.14"
+    windows:
+      imageName: "vs2017-win2016"
+  maxParallel: 3
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: $(imageName)
+
+variables:
+  currentImage: $(imageName)
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        [xml]$pomXml = Get-Content .\pom.xml
+        # version
+        Write-Host $pomXml.project.version
+        $version=$pomXml.project.version
+        Write-Host "##vso[task.setvariable variable=version]$version"
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package cobertura:cobertura'
+
+  - bash: echo Current version => $(version)
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: "Cobertura"
+      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/**/site/jacoco-aggregate/jacoco.xml"
+      failIfCoverageEmpty: true
+
+  # - task: PublishPipelineArtifact@1
+  #   condition: eq(variables.currentImage, 'ubuntu-16.04')
+  #   inputs:
+  #     targetPath: "$(System.DefaultWorkingDirectory)/target/ProjectA-$(version).jar"
+  #     artifactName: ProjectAOutput
+
+
