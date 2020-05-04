@@ -7,10 +7,10 @@ strategy:
   matrix:
     linux:
       imageName: "ubuntu-16.04"
-    mac:
-      imageName: "macos-10.14"
-    windows:
-      imageName: "vs2017-win2016"
+    # mac:
+    #   imageName: "macos-10.14"
+    # windows:
+    #   imageName: "vs2017-win2016"
   maxParallel: 3
 
 pool:
@@ -47,7 +47,7 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: "Jacoco"
-      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/**/site/jacoco-aggregate/jacoco.xml"
+      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
       failIfCoverageEmpty: true
 
   # - task: PublishPipelineArtifact@1
