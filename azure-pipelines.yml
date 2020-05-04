@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 # Maven
 
+=======
+>>>>>>> 18b5b3b16654f9f583227bddce9ea209a64aa47f
 trigger:
   branches:
     include:
       - '*'
+<<<<<<< HEAD
   # pr:
   # - master
   # - release
+=======
+>>>>>>> 18b5b3b16654f9f583227bddce9ea209a64aa47f
 
 strategy:
   matrix:
@@ -47,19 +53,19 @@ steps:
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package cobertura:cobertura'
 
-  - bash: echo $(version)
-  - bash: echo $(variables.currentImage)
+  - bash: echo Current version => $(version)
 
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: "Cobertura"
-      summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/site/cobertura/coverage.xml"
+      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/**/site/jacoco-aggregate/jacoco.xml"
       failIfCoverageEmpty: true
 
-  - task: PublishPipelineArtifact@1
-    condition: eq(variables.currentImage, 'ubuntu-16.04')
-    inputs:
-      targetPath: "$(System.DefaultWorkingDirectory)/target/ProjectA-$(version).jar"
-      artifactName: ProjectAOutput
+  # - task: PublishPipelineArtifact@1
+  #   condition: eq(variables.currentImage, 'ubuntu-16.04')
+  #   inputs:
+  #     targetPath: "$(System.DefaultWorkingDirectory)/target/ProjectA-$(version).jar"
+  #     artifactName: ProjectAOutput
+
 
 
