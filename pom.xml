@@ -290,6 +290,10 @@
                         <exclude>org/hl7/fhir/r5/formats/XmlParser</exclude>
                         <exclude>org/hl7/fhir/r4/formats/JsonParser</exclude>
                         <exclude>org/hl7/fhir/r4/formats/XmlParser</exclude>
+                        <exclude>org/hl7/fhir/r4/**/*</exclude>
+                        <exclude>org/hl7/fhir/dstu3/**/*</exclude>
+                        <exclude>org/hl7/fhir/dstu2/**/*</exclude>
+                        <exclude>org/hl7/fhir/dstu2016may/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
