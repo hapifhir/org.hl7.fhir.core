@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -12,7 +12,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -21,6 +20,7 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -35,12 +36,16 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.terminologies.TerminologyRenderer.ConceptMapRenderInstructions;
+import org.hl7.fhir.r5.renderers.TerminologyRenderer.ConceptMapRenderInstructions;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ResourceContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -49,81 +54,59 @@ import com.google.common.collect.Multimap;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
+  public ValueSetRenderer(RenderingContext context) {
+    super(context);
+  }
+
+  public ValueSetRenderer(RenderingContext context, ResourceContext rcontext) {
+    super(context, rcontext);
+  }
+
   private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
 
-  private String tooCostlyNoteEmpty;
-  private String tooCostlyNoteNotEmpty;
-  private String tooCostlyNoteEmptyDependent;
-  private String tooCostlyNoteNotEmptyDependent;
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
-  /**
-   * 
-   * @param mode - whether we are rendering for a resource directly, or for an IG
-   * @param context - common services (terminology server, code system cache etc)
-   * @param markdown - markdown processing engine of the correct sort for the version applicable 
-   * @param prefix - the path to the base FHIR specification
-   * @param lang - the language to use (null for the default)
-   */
-  public ValueSetRenderer(TerminologyRendererMode mode, IWorkerContext context, MarkDownProcessor markdown, String prefix, String lang) {
-    super(mode, context, markdown, prefix, lang);
-    renderingMaps.add(new ConceptMapRenderInstructions("Canonical Status", "http://hl7.org/fhir/ValueSet/resource-status", false));
+  public void render(ValueSet vs) throws FHIRFormatError, DefinitionException, IOException {   
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    boolean hasExtensions = render(x, vs);
+    inject(vs, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
-  public String getTooCostlyNoteEmpty() {
-    return tooCostlyNoteEmpty;
+  public boolean render(XhtmlNode x, ValueSet vs) throws FHIRFormatError, DefinitionException, IOException {
+    return render(x, vs, false);
   }
-
-  public void setTooCostlyNoteEmpty(String tooCostlyNoteEmpty) {
-    this.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
-  }
-
-  public String getTooCostlyNoteNotEmpty() {
-    return tooCostlyNoteNotEmpty;
-  }
-
-  public void setTooCostlyNoteNotEmpty(String tooCostlyNoteNotEmpty) {
-    this.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
-  }
-
-  public String getTooCostlyNoteEmptyDependent() {
-    return tooCostlyNoteEmptyDependent;
-  }
-
-  public void setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
-    this.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
-  }
-
-  public String getTooCostlyNoteNotEmptyDependent() {
-    return tooCostlyNoteNotEmptyDependent;
-  }
-
-  public void setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
-    this.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
-  }
-
-  public boolean render(ResourceContext rcontext, XhtmlNode x, ValueSet vs, ValueSet src, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+  
+  public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
    List<UsedConceptMap> maps = findReleventMaps(vs);
     
     boolean hasExtensions;
     if (vs.hasExpansion()) {
       // for now, we just accept an expansion if there is one
-      hasExtensions = generateExpansion(x, vs, src, header, maps);
+      hasExtensions = generateExpansion(x, vs, header, maps);
     } else {
-      hasExtensions = generateComposition(rcontext, x, vs, header, maps);
+      hasExtensions = generateComposition(x, vs, header, maps);
     }
     return hasExtensions;
   }
+
+  public void describe(XhtmlNode x, ValueSet vs) {
+    x.tx(display(vs));
+  }
+
+  public String display(ValueSet vs) {
+    return vs.present();
+  }
+
   
   private List<UsedConceptMap> findReleventMaps(ValueSet vs) throws FHIRException {
     List<UsedConceptMap> res = new ArrayList<UsedConceptMap>();
-    for (CanonicalResource md : context.allConformanceResources()) {
+    for (CanonicalResource md : getContext().getWorker().allConformanceResources()) {
       if (md instanceof ConceptMap) {
         ConceptMap cm = (ConceptMap) md;
         if (isSource(vs, cm.getSource())) {
           ConceptMapRenderInstructions re = findByTarget(cm.getTarget());
           if (re != null) {
-            ValueSet vst = cm.hasTarget() ? context.fetchResource(ValueSet.class, cm.hasTargetCanonicalType() ? cm.getTargetCanonicalType().getValue() : cm.getTargetUriType().asStringValue()) : null;
+            ValueSet vst = cm.hasTarget() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetCanonicalType() ? cm.getTargetCanonicalType().getValue() : cm.getTargetUriType().asStringValue()) : null;
             res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
           }
         }
@@ -131,17 +114,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     return res;
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
-//  for (ConceptMap a : context.findMapsForSource(vs.getUrl())) {
+//  for (ConceptMap a : context.getWorker().findMapsForSource(vs.getUrl())) {
 //    String url = "";
-//    ValueSet vsr = context.fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
+//    ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
 //    if (vsr != null)
 //      url = (String) vsr.getUserData("filename");
 //    mymaps.put(a, url);
 //  }
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
-//  for (ConceptMap a : context.findMapsForSource(cs.getValueSet())) {
+//  for (ConceptMap a : context.getWorker().findMapsForSource(cs.getValueSet())) {
 //    String url = "";
-//    ValueSet vsr = context.fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
+//    ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
 //    if (vsr != null)
 //      url = (String) vsr.getUserData("filename");
 //    mymaps.put(a, url);
@@ -152,7 +135,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //        ConceptMap cm = (ConceptMap) r;
 //        if (((Reference) cm.getSource()).getReference().equals(cs.getValueSet())) {
 //          String url = "";
-//          ValueSet vsr = context.fetchResource(ValueSet.class, ((Reference) cm.getTarget()).getReference());
+//          ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) cm.getTarget()).getReference());
 //          if (vsr != null)
 //              url = (String) vsr.getUserData("filename");
 //        mymaps.put(cm, url);
@@ -165,7 +148,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }  
   
-  private boolean generateExpansion(XhtmlNode x, ValueSet vs, ValueSet src, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean generateExpansion(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
 
@@ -183,9 +166,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       boolean other = false;
       for (Extension ex : exl) {
         if (ex.getValue() instanceof BooleanType) {
-          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmpty : tooCostlyNoteNotEmpty );
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmpty() : getContext().getTooCostlyNoteNotEmpty());
         } else if (!other) {
-          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? tooCostlyNoteEmptyDependent : tooCostlyNoteNotEmptyDependent );
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmptyDependent() : getContext().getTooCostlyNoteNotEmptyDependent());
           other = true;
         }
       }
@@ -230,14 +213,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       doSystem = false;
       XhtmlNode p = x.para();
       p.tx("All codes from system ");
-      allCS = context.fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
+      allCS = getContext().getWorker().fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
       String ref = null;
       if (allCS != null)
         ref = getCsRef(allCS);
       if (ref == null)
         p.code(vs.getExpansion().getContains().get(0).getSystem());
       else
-        p.ah(prefix+ref).code(vs.getExpansion().getContains().get(0).getSystem());
+        p.ah(getContext().getPrefix()+ref).code(vs.getExpansion().getContains().get(0).getSystem());
     }
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
@@ -319,7 +302,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.hasCompose()) {
         if (vs.getCompose().hasExclude()) {
           try {
-            ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
+            ValueSetExpansionOutcome vse = getContext().getWorker().expandVS(vs, true, false);
             count = 0;
             count += conceptCount(vse.getValueset().getExpansion().getContains());
             return count;
@@ -350,7 +333,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void addCSRef(XhtmlNode x, String url) {
-    CodeSystem cs = context.fetchCodeSystem(url);
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem(url);
     if (cs == null) {
       x.code(url);
     } else if (cs.hasUserData("path")) {
@@ -419,7 +402,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx("Loinc v"+v);        
       }
     } else {
-      CanonicalResource cr = (CanonicalResource) context.fetchResource(Resource.class, u+"|"+v);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v);
       if (cr != null) {
         if (cr.hasUserData("path")) {
           x.ah(cr.getUserString("path")).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
@@ -548,7 +531,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   
   private boolean checkDoDefinition(List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent c : contains) {
-      CodeSystem cs = context.fetchCodeSystem(c.getSystem());
+      CodeSystem cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       if (cs != null)
         return true;
       if (checkDoDefinition(c.getContains()))
@@ -570,7 +553,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private String getCsRef(String system) {
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem(system);
     return getCsRef(cs);
   }
 
@@ -610,7 +593,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (doDefinition) {
       CodeSystem cs = allCS;
       if (cs == null)
-        cs = context.fetchCodeSystem(c.getSystem());
+        cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       td = tr.td();
       if (cs != null)
         td.addText(CodeSystemUtilities.getCodeDefinition(cs, c.getCode()));
@@ -657,7 +640,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void addCodeToTable(boolean isAbstract, String system, String code, String display, XhtmlNode td) {
-    CodeSystem e = context.fetchCodeSystem(system);
+    CodeSystem e = getContext().getWorker().fetchCodeSystem(system);
     if (e == null || e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE) {
       if (isAbstract)
         td.i().setAttribute("title", ABSTRACT_CODE_HINT).addText(code);
@@ -668,7 +651,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else        
         td.addText(code);
     } else {
-      String href = prefix+getCsRef(e);
+      String href = getContext().getPrefix()+getCsRef(e);
       if (href.contains("#"))
         href = href + "-"+Utilities.nmtokenize(code);
       else
@@ -688,17 +671,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void addRefToCode(XhtmlNode td, String target, String vslink, String code) {
-    CodeSystem cs = context.fetchCodeSystem(target);
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem(target);
     String cslink = getCsRef(cs);
     XhtmlNode a = null;
     if (cslink != null) 
-      a = td.ah(prefix+cslink+"#"+cs.getId()+"-"+code);
+      a = td.ah(getContext().getPrefix()+cslink+"#"+cs.getId()+"-"+code);
     else
-      a = td.ah(prefix+vslink+"#"+code);
+      a = td.ah(getContext().getPrefix()+vslink+"#"+code);
     a.addText(code);
   }
 
-  private boolean generateComposition(ResourceContext rcontext, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
+  private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
 
@@ -711,17 +694,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     XhtmlNode ul = x.ul();
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
-      hasExtensions = genInclude(rcontext, ul, vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
+      hasExtensions = genInclude(ul, vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
       p.tx("This value set includes codes based on the following rules:");
 
       XhtmlNode li;
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(rcontext, ul, inc, "Include", langs, maps) || hasExtensions;
+        hasExtensions = genInclude(ul, inc, "Include", langs, maps) || hasExtensions;
       }
       for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-        hasExtensions = genInclude(rcontext, ul, exc, "Exclude", langs, maps) || hasExtensions;
+        hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
       }
     }
     
@@ -745,11 +728,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return hasExtensions;
   }
 
-  private boolean genInclude(ResourceContext rcontext, XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, List<UsedConceptMap> maps) throws FHIRException, IOException {
+  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, List<UsedConceptMap> maps) throws FHIRException, IOException {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
-    CodeSystem e = context.fetchCodeSystem(inc.getSystem());
+    CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
 
     if (inc.hasSystem()) {
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
@@ -823,7 +806,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             } else {
               li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
-                String href = prefix+getCsRef(e);
+                String href = getContext().getPrefix()+getCsRef(e);
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
@@ -831,7 +814,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.ah(href).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
                 li.addText(f.getValue());
-                ValidationResult vr = context.validateCode(terminologyServiceOptions, inc.getSystem(), f.getValue(), null);
+                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), f.getValue(), null);
                 if (vr.isOk()) {
                   li.tx(" ("+vr.getDisplay()+")");
                 }
@@ -853,7 +836,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          AddVsRef(rcontext, vs.asStringValue(), li);
+          AddVsRef(vs.asStringValue(), li);
         }
       }
     } else {
@@ -864,7 +847,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           first = false;
         else
           li.tx(", ");
-        AddVsRef(rcontext, vs.asStringValue(), li);
+        AddVsRef(vs.asStringValue(), li);
       }
     }
     return hasExtensions;
@@ -877,7 +860,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     // first, look in the code systems
     if (e == null)
-    e = context.fetchCodeSystem(inc.getSystem());
+    e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
     if (e != null) {
       ConceptDefinitionComponent v = getConceptForCode(e.getConcept(), code);
       if (v != null)
@@ -887,10 +870,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (noSlowLookup)
       return null;
     
-    if (!context.hasCache()) {
+    if (!getContext().getWorker().hasCache()) {
       ValueSetExpansionComponent vse;
       try {
-        ValueSetExpansionOutcome vso = context.expandVS(inc, false);   
+        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false);   
         ValueSet valueset = vso.getValueset();
         if (valueset == null)
           throw new TerminologyServiceException("Error Expanding ValueSet: "+vso.getError());
@@ -906,7 +889,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     }
 
-    return context.validateCode(terminologyServiceOptions, inc.getSystem(), code, null).asConceptDefinition();
+    return getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), code, null).asConceptDefinition();
   }
 
   private ConceptDefinitionComponent getConceptForCode(List<ConceptDefinitionComponent> list, String code) {
