@@ -45,9 +45,6 @@ steps:
   - bash: echo Current version => $(version)
     displayName: 'version'
 
-  - bash: echo codecov => $(codecov)
-    displayName: 'codecov'
-
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
     displayName: 'codecov'
   - task: PublishCodeCoverageResults@1
