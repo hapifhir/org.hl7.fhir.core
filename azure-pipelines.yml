@@ -45,21 +45,21 @@ steps:
   - bash: echo Current version => $(version)
     displayName: 'version'
 
-  - bash: <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
-    displayName: 'codecov'
+#  - script: bash <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
+#    displayName: 'codecov'
 
-
-  # - task: PublishCodeCoverageResults@1
-  #   inputs:
-  #     codeCoverageTool: "Jacoco"
-  #     summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
-  #     failIfCoverageEmpty: true
+   - task: PublishCodeCoverageResults@1
+     inputs:
+       codeCoverageTool: "Jacoco"
+       summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
+       failIfCoverageEmpty: true
 
   # - task: PublishPipelineArtifact@1
   #   condition: eq(variables.currentImage, 'ubuntu-16.04')
   #   inputs:
   #     targetPath: "$(System.DefaultWorkingDirectory)/target/ProjectA-$(version).jar"
   #     artifactName: ProjectAOutput
-
+https://codecov:
+  io/bash:
 
 
