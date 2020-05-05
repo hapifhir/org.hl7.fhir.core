@@ -518,8 +518,8 @@ public class SnapShotGenerationTests {
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
-    if (!TestingUtilities.context().hasPackage("hl7.fhir.xver-extensions", "0.0.3")) {
-      NpmPackage npm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.3");
+    if (!TestingUtilities.context().hasPackage("hl7.fhir.xver-extensions", "0.0.4")) {
+      NpmPackage npm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.4");
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
