@@ -43,12 +43,16 @@ steps:
       goals: 'clean package'
 
   - bash: echo Current version => $(version)
+    displayName: 'version'
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: "Jacoco"
-      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
-      failIfCoverageEmpty: true
+  - bash: <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
+    displayName: 'codecov'
+
+  # - task: PublishCodeCoverageResults@1
+  #   inputs:
+  #     codeCoverageTool: "Jacoco"
+  #     summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
+  #     failIfCoverageEmpty: true
 
   # - task: PublishPipelineArtifact@1
   #   condition: eq(variables.currentImage, 'ubuntu-16.04')
