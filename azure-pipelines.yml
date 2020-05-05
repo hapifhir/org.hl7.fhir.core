@@ -48,6 +48,7 @@ steps:
   - bash: <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
     displayName: 'codecov'
 
+
   # - task: PublishCodeCoverageResults@1
   #   inputs:
   #     codeCoverageTool: "Jacoco"
