@@ -45,7 +45,7 @@ steps:
   - bash: echo Current version => $(version)
     displayName: 'version'
 
-  - bash: <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
+  - bash: <(curl https://codecov.io/bash) -t $CODECOV_TOKEN
     displayName: 'codecov'
 
 
