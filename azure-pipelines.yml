@@ -18,9 +18,9 @@ pool:
 
 variables:
   currentImage: $(imageName)
+  codecov: $(CODECOV_TOKEN)
 
 steps:
-
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
@@ -30,7 +30,6 @@ steps:
         Write-Host $pomXml.project.version
         $version=$pomXml.project.version
         Write-Host "##vso[task.setvariable variable=version]$version"
-
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
@@ -41,13 +40,15 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean package'
-
+      
   - bash: echo Current version => $(version)
     displayName: 'version'
 
-#  - script: bash <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN)
-#    displayName: 'codecov'
+  - bash: echo codecov => $(codecov)
+    displayName: 'codecov'
 
+  - script: bash <(curl https://codecov.io/bash) -t $(codecov)
+    displayName: 'codecov'
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'JaCoCo'
