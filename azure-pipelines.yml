@@ -50,9 +50,9 @@ steps:
 
   - task: PublishCodeCoverageResults@1
     inputs:
-      codeCoverageTool: "Jacoco"
-      summaryFileLocation: "$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml"
-      failIfCoverageEmpty: true
+      codeCoverageTool: 'JaCoCo'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/'
 
   # - task: PublishPipelineArtifact@1
   #   condition: eq(variables.currentImage, 'ubuntu-16.04')
