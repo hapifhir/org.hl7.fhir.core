@@ -59,7 +59,5 @@ steps:
   #   inputs:
   #     targetPath: "$(System.DefaultWorkingDirectory)/target/ProjectA-$(version).jar"
   #     artifactName: ProjectAOutput
-https://codecov:
-  io/bash:
 
 
