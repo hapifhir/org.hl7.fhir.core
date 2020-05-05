@@ -59,7 +59,7 @@ steps:
   - task: PublishPipelineArtifact@1
     condition: eq(variables.currentImage, 'ubuntu-16.04')
     inputs:
-      targetPath: "$(System.DefaultWorkingDirectory)/org/hl7/fhir/validation/target/org.hl7.fhir.validation-$(version).jar"
+      targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
       artifactName: ProjectAOutput
 
 
