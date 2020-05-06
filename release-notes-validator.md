@@ -6,6 +6,11 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
+(no changes yet)
+
+## v4.2.26 (2020-05-06)
+
+
 * Check proper use of urn:ietf:rfc:3986 identifiers
 * Support new version of R5 extensions
 
@@ -165,4 +170,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* This release
+* This releas
