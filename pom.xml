@@ -133,7 +133,7 @@
         <module>org.hl7.fhir.validation</module>
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
-        <module>report</module>
+        <module>org.hl7.fhir.report</module>
     </modules>
 
     <build>
