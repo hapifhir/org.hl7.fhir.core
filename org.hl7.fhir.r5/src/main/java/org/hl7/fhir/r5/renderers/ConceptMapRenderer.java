@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,50 +8,53 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ResourceContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ConceptMapRenderer extends TerminologyRenderer {
 
-  /**
-   * 
-   * @param mode - whether we are rendering for a resource directly, or for an IG
-   * @param context - common services (terminology server, code system cache etc)
-   * @param markdown - markdown processing engine of the correct sort for the version applicable 
-   * @param prefix - the path to the base FHIR specification
-   * @param lang - the language to use (null for the default)
-   */
-  public ConceptMapRenderer(TerminologyRendererMode mode, IWorkerContext context, MarkDownProcessor markdown, String prefix, String lang) {
-    super(mode, context, markdown, prefix, lang);
+  public ConceptMapRenderer(RenderingContext context) {
+    super(context);
   }
 
-  public boolean generate(ResourceContext rcontext, ConceptMap cm, XhtmlNode x) throws FHIRFormatError, DefinitionException, IOException {
+  public ConceptMapRenderer(RenderingContext context, ResourceContext rcontext) {
+    super(context, rcontext);
+  }
+  
+  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+    return render(x, (ConceptMap) dr);
+  }
+
+  public boolean render(XhtmlNode x, ConceptMap cm) throws FHIRFormatError, DefinitionException, IOException {
     x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
 
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
     if (cm.hasSource())
-      AddVsRef(rcontext, cm.getSource().primitiveValue(), p);
+      AddVsRef(cm.getSource().primitiveValue(), p);
     else
       p.tx("(not specified)");
     p.tx(" to ");
     if (cm.hasTarget())
-      AddVsRef(rcontext, cm.getTarget().primitiveValue(), p);
+      AddVsRef(cm.getTarget().primitiveValue(), p);
     else 
       p.tx("(not specified)");
 
@@ -89,9 +92,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
     x.br();
     
-    CodeSystem cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
-      cs = context.fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
+      cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
     String eqpath = cs == null ? null : cs.getUserString("path");
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
@@ -240,7 +243,22 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else
                   td.addText(grp.getSource()+" / "+ccl.getCode());
                 display = getDisplayForConcept(grp.getSource(), ccl.getCode());
-                tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
+                td = tr.td();
+                if (!first)
+                  td.style("border-left-width: 0px; border-top-style: none");
+                else if (!last)
+                  td.style("border-left-width: 0px; border-bottom-style: none");
+                else
+                  td.style("border-left-width: 0px");
+                td.tx(display == null ? "" : display);
+              } else {
+                td = tr.td(); // for display
+                if (!first)
+                  td.style("border-left-width: 0px; border-top-style: none");
+                else if (!last)
+                  td.style("border-left-width: 0px; border-bottom-style: none");
+                else
+                  td.style("border-left-width: 0px");
               }
               for (String s : sources.keySet()) {
                 if (!s.equals("code")) {
@@ -292,6 +310,14 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return true;
   }
 
+  public void describe(XhtmlNode x, ConceptMap cm) {
+    x.tx(display(cm));
+  }
+
+  public String display(ConceptMap cm) {
+    return cm.present();
+  }
+
   private boolean isSameCodeAndDisplay(String code, String display) {
     String c = code.replace(" ", "").replace("-", "").toLowerCase();
     String d = display.replace(" ", "").replace("-", "").toLowerCase();
@@ -304,10 +330,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "is related to";
     } else if ("equivalent".equals(code)) {
       return "is equivalent to";
-    } else if ("broader".equals(code)) {
+    } else if ("source-is-narrower-than-target".equals(code)) {
       return "maps to wider concept";
-    } else if ("narrower".equals(code)) {
-      return "maps to narrower concept";
+    } else if ("source-is-broader-than-target".equals(code)) {
+      return "maps to narrower target";
     } else if ("not-related-to".equals(code)) {
       return "is not related to";
     } else {
@@ -326,7 +352,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "maps to wider concept";
     } else if ("subsumes".equals(code)) {
       return "is subsumed by";
-    } else if ("narrower".equals(code)) {
+    } else if ("source-is-broader-than-target".equals(code)) {
       return "maps to narrower concept";
     } else if ("specializes".equals(code)) {
       return "has specialization";
@@ -344,7 +370,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   public void renderCSDetailsLink(XhtmlNode tr, String url, boolean span2) {
     CodeSystem cs;
     XhtmlNode td;
-    cs = context.fetchCodeSystem(url);
+    cs = getContext().getWorker().fetchCodeSystem(url);
     td = tr.td();
     if (span2) {
       td.colspan("2");

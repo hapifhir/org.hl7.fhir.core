@@ -1,7 +1,7 @@
 @echo off
 
-set oldver=4.2.22
-set newver=4.2.23
+set oldver=4.2.25
+set newver=4.2.26
 
 echo ..
 echo =========================================================================
@@ -11,10 +11,6 @@ echo ..
 
 call mvn versions:set -DnewVersion=%newver%-SNAPSHOT
 
-call git commit -t v%newver% -a -m "Release new version %newver%"
-call git tag v%newver%
-
-call git push origin master
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\build" -fileMask "*.xml" -find "%oldver%-SNAPSHOT" -replace "%newver%-SNAPSHOT" -count 8
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\fhir-ig-publisher" -fileMask "*.xml" -find "%oldver%-SNAPSHOT" -replace "%newver%-SNAPSHOT" -count 2
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\latest-ig-publisher" -fileMask "*.html" -find "%oldver%" -replace "%newver%" -count 1
@@ -24,7 +20,11 @@ IF %ERRORLEVEL% NEQ 0 (
   GOTO DONE
 )
 
-call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\latest-ig-publisher\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
+call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\org.hl7.fhir.core\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
+
+call git commit -t v%newver% -a -m "Release new version %newver%"
+call git tag v%newver%
+call git push origin master
 
 call gsutil cp -a public-read org.hl7.fhir.validation.cli\target\org.hl7.fhir.validation.cli-%newver%-SNAPSHOT.jar gs://ig-build/org.hl7.fhir.validator.jar
 
