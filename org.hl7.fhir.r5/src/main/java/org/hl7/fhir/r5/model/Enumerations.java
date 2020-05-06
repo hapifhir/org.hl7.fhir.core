@@ -1805,13 +1805,13 @@ public class Enumerations {
          */
         EQUIVALENT, 
         /**
-         * The target concept is broader in meaning than the source concept.
+         * The source concept is narrower in meaning than the target concept.
          */
-        BROADER, 
+        SOURCENARROWERTARGET, 
         /**
-         * The target concept is narrower in meaning than the source concept.
+         * The source concept is broader in meaning than the target concept.
          */
-        NARROWER, 
+        SOURCEBROADERTARGET, 
         /**
          * This is an explicit assertion that the target concept is not related to the source concept.
          */
@@ -1827,10 +1827,10 @@ public class Enumerations {
           return RELATEDTO;
         if ("equivalent".equals(codeString))
           return EQUIVALENT;
-        if ("broader".equals(codeString))
-          return BROADER;
-        if ("narrower".equals(codeString))
-          return NARROWER;
+        if ("source-is-narrower-than-target".equals(codeString))
+          return SOURCENARROWERTARGET;
+        if ("source-is-broader-than-target".equals(codeString))
+          return SOURCEBROADERTARGET;
         if ("not-related-to".equals(codeString))
           return NOTRELATEDTO;
         throw new FHIRException("Unknown ConceptMapRelationship code '"+codeString+"'");
@@ -1839,8 +1839,8 @@ public class Enumerations {
           switch (this) {
             case RELATEDTO: return "related-to";
             case EQUIVALENT: return "equivalent";
-            case BROADER: return "broader";
-            case NARROWER: return "narrower";
+            case SOURCENARROWERTARGET: return "source-is-narrower-than-target";
+            case SOURCEBROADERTARGET: return "source-is-broader-than-target";
             case NOTRELATEDTO: return "not-related-to";
             default: return "?";
           }
@@ -1849,8 +1849,8 @@ public class Enumerations {
           switch (this) {
             case RELATEDTO: return "http://hl7.org/fhir/concept-map-relationship";
             case EQUIVALENT: return "http://hl7.org/fhir/concept-map-relationship";
-            case BROADER: return "http://hl7.org/fhir/concept-map-relationship";
-            case NARROWER: return "http://hl7.org/fhir/concept-map-relationship";
+            case SOURCENARROWERTARGET: return "http://hl7.org/fhir/concept-map-relationship";
+            case SOURCEBROADERTARGET: return "http://hl7.org/fhir/concept-map-relationship";
             case NOTRELATEDTO: return "http://hl7.org/fhir/concept-map-relationship";
             default: return "?";
           }
@@ -1859,8 +1859,8 @@ public class Enumerations {
           switch (this) {
             case RELATEDTO: return "The concepts are related to each other, but the exact relationship is not known.";
             case EQUIVALENT: return "The definitions of the concepts mean the same thing.";
-            case BROADER: return "The target concept is broader in meaning than the source concept.";
-            case NARROWER: return "The target concept is narrower in meaning than the source concept.";
+            case SOURCENARROWERTARGET: return "The source concept is narrower in meaning than the target concept.";
+            case SOURCEBROADERTARGET: return "The source concept is broader in meaning than the target concept.";
             case NOTRELATEDTO: return "This is an explicit assertion that the target concept is not related to the source concept.";
             default: return "?";
           }
@@ -1869,8 +1869,8 @@ public class Enumerations {
           switch (this) {
             case RELATEDTO: return "Related To";
             case EQUIVALENT: return "Equivalent";
-            case BROADER: return "Broader";
-            case NARROWER: return "Narrower";
+            case SOURCENARROWERTARGET: return "Source Is Narrower Than Target";
+            case SOURCEBROADERTARGET: return "Source Is Broader Than Target";
             case NOTRELATEDTO: return "Not Related To";
             default: return "?";
           }
@@ -1886,10 +1886,14 @@ public class Enumerations {
           return ConceptMapRelationship.RELATEDTO;
         if ("equivalent".equals(codeString))
           return ConceptMapRelationship.EQUIVALENT;
+        if ("source-is-narrower-than-target".equals(codeString))
+          return ConceptMapRelationship.SOURCENARROWERTARGET;
         if ("broader".equals(codeString))
-          return ConceptMapRelationship.BROADER;
+          return ConceptMapRelationship.SOURCENARROWERTARGET;
+        if ("source-is-broader-than-target".equals(codeString))
+          return ConceptMapRelationship.SOURCEBROADERTARGET;
         if ("narrower".equals(codeString))
-          return ConceptMapRelationship.NARROWER;
+          return ConceptMapRelationship.SOURCEBROADERTARGET;
         if ("not-related-to".equals(codeString))
           return ConceptMapRelationship.NOTRELATEDTO;
         throw new IllegalArgumentException("Unknown ConceptMapRelationship code '"+codeString+"'");
@@ -1906,10 +1910,10 @@ public class Enumerations {
           return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.RELATEDTO);
         if ("equivalent".equals(codeString))
           return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.EQUIVALENT);
-        if ("broader".equals(codeString))
-          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.BROADER);
-        if ("narrower".equals(codeString))
-          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.NARROWER);
+        if ("source-is-narrower-than-target".equals(codeString))
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.SOURCENARROWERTARGET);
+        if ("source-is-broader-than-target".equals(codeString))
+          return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.SOURCEBROADERTARGET);
         if ("not-related-to".equals(codeString))
           return new Enumeration<ConceptMapRelationship>(this, ConceptMapRelationship.NOTRELATEDTO);
         throw new FHIRException("Unknown ConceptMapRelationship code '"+codeString+"'");
@@ -1919,10 +1923,10 @@ public class Enumerations {
         return "related-to";
       if (code == ConceptMapRelationship.EQUIVALENT)
         return "equivalent";
-      if (code == ConceptMapRelationship.BROADER)
-        return "broader";
-      if (code == ConceptMapRelationship.NARROWER)
-        return "narrower";
+      if (code == ConceptMapRelationship.SOURCENARROWERTARGET)
+        return "source-is-narrower-than-target";
+      if (code == ConceptMapRelationship.SOURCEBROADERTARGET)
+        return "source-is-broader-than-target";
       if (code == ConceptMapRelationship.NOTRELATEDTO)
         return "not-related-to";
       return "?";
@@ -6295,6 +6299,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_2_0, 
         /**
+         * R5 Preview #2.
+         */
+        _4_4_0, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -6349,6 +6357,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_0_1;
         if ("4.2.0".equals(codeString))
           return _4_2_0;
+        if ("4.4.0".equals(codeString))
+          return _4_4_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6377,6 +6387,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_2_0: return "4.2.0";
+            case _4_4_0: return "4.4.0";
             default: return "?";
           }
         }
@@ -6464,6 +6475,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_2_0: return "4.2.0";
+            case _4_4_0: return "4.4.0";
             default: return "?";
           }
         }
@@ -6522,6 +6534,8 @@ The primary difference between a medicationusage and a medicationadministration 
       if ("4.0.0".equals(codeString))
         return true;
       if ("4.2.0".equals(codeString))
+        return true;
+      if ("4.4.0".equals(codeString))
         return true;
       return false;
       }
@@ -6587,6 +6601,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._4_0_1;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
+        if ("4.4.0".equals(codeString))
+          return FHIRVersion._4_4_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6645,6 +6661,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -6696,6 +6714,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "4.0.1";
       if (code == FHIRVersion._4_2_0)
         return "4.2.0";
+      if (code == FHIRVersion._4_4_0)
+        return "4.4.0";
       return "?";
       }
     public String toSystem(FHIRVersion code) {

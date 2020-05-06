@@ -1,22 +1,23 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
@@ -29,20 +30,29 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.NarrativeGenerator.ResourceContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-public class TerminologyRenderer {
+public abstract class TerminologyRenderer extends ResourceRenderer {
+  
+  public TerminologyRenderer(RenderingContext context) {
+    super(context);
+  }
 
-  public enum TerminologyRendererMode {
-    RESOURCE, IG
+  public TerminologyRenderer(RenderingContext context, ResourceContext rcontext) {
+    super(context, rcontext);
+  }
+
+  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+    return ((CanonicalResource) r).present();
   }
 
   protected class TargetElementComponentWrapper {
@@ -100,52 +110,7 @@ public class TerminologyRenderer {
 
   }
 
-  protected TerminologyRendererMode mode;
-  protected IWorkerContext context;
-  protected MarkDownProcessor markdown;
-  protected String lang;
-  protected String prefix;
-  protected int headerLevelContext;
-  protected ValidationOptions terminologyServiceOptions = new ValidationOptions();
   protected boolean noSlowLookup;
-
-  /**
-   * 
-   * @param mode - whether we are rendering for a resource directly, or for an IG
-   * @param context - common services (terminology server, code system cache etc)
-   * @param markdown - markdown processing engine of the correct sort for the version applicable 
-   * @param prefix - the path to the base FHIR specification
-   * @param lang - the language to use (null for the default)
-   */
-  public TerminologyRenderer(TerminologyRendererMode mode, IWorkerContext context, MarkDownProcessor markdown, String prefix, String lang) {
-    super();
-    this.mode = mode;
-    this.context = context;
-    this.markdown = markdown;
-    this.lang = lang;
-    this.prefix = prefix;
-  }
-
-  public TerminologyRendererMode getMode() {
-    return mode;
-  }
-
-  public int getHeaderLevelContext() {
-    return headerLevelContext;
-  }
-
-  public void setHeaderLevelContext(int headerLevelContext) {
-    this.headerLevelContext = headerLevelContext;
-  }
-
-  public ValidationOptions getTerminologyServiceOptions() {
-    return terminologyServiceOptions;
-  }
-
-  public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
-    this.terminologyServiceOptions = terminologyServiceOptions;
-  }
-
   
   
   public boolean isNoSlowLookup() {
@@ -156,66 +121,11 @@ public class TerminologyRenderer {
     this.noSlowLookup = noSlowLookup;
   }
 
-  protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException {
-    if (text != null) {
-      // 1. custom FHIR extensions
-      while (text.contains("[[[")) {
-        String left = text.substring(0, text.indexOf("[[["));
-        String link = text.substring(text.indexOf("[[[")+3, text.indexOf("]]]"));
-        String right = text.substring(text.indexOf("]]]")+3);
-        String url = link;
-        String[] parts = link.split("\\#");
-        StructureDefinition p = context.fetchResource(StructureDefinition.class, parts[0]);
-        if (p == null)
-          p = context.fetchTypeDefinition(parts[0]);
-        if (p == null)
-          p = context.fetchResource(StructureDefinition.class, link);
-        if (p != null) {
-          url = p.getUserString("path");
-          if (url == null)
-            url = p.getUserString("filename");
-        } else
-          throw new DefinitionException("Unable to resolve markdown link "+link);
-
-        text = left+"["+link+"]("+url+")"+right;
-      }
-
-      // 2. markdown
-      String s = markdown.process(Utilities.escapeXml(text), "narrative generator");
-      XhtmlParser p = new XhtmlParser();
-      XhtmlNode m;
-      try {
-        m = p.parse("<div>"+s+"</div>", "div");
-      } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
-        throw new FHIRFormatError(e.getMessage(), e);
-      }
-      x.getChildNodes().addAll(m.getChildNodes());
-    }
-  }
-
-  protected void generateCopyright(XhtmlNode x, CanonicalResource cs) {
-    XhtmlNode p = x.para();
-    p.b().tx(context.translator().translate("xhtml-gen-cs", "Copyright Statement:", lang));
-    smartAddText(p, " " + cs.getCopyright());
-  }
-
-  protected void smartAddText(XhtmlNode p, String text) {
-    if (text == null)
-      return;
-
-    String[] lines = text.split("\\r\\n");
-    for (int i = 0; i < lines.length; i++) {
-      if (i > 0)
-        p.br();
-      p.addText(lines[i]);
-    }
-  }
-
   protected void addMapHeaders(XhtmlNode tr, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(prefix+m.getLink());
+      XhtmlNode a = b.ah(getContext().getPrefix()+m.getLink());
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -224,43 +134,11 @@ public class TerminologyRenderer {
 
   protected String getHeader() {
     int i = 3;
-    while (i <= headerLevelContext)
+    while (i <= getContext().getHeaderLevelContext())
       i++;
     if (i > 6)
       i = 6;
     return "h"+Integer.toString(i);
-  }
-
-  public static String describeSystem(String system) {
-    if (system == null)
-      return "[not stated]";
-    if (system.equals("http://loinc.org"))
-      return "LOINC";
-    if (system.startsWith("http://snomed.info"))
-      return "SNOMED CT";
-    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-      return "RxNorm";
-    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
-      return "ICD-9";
-    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-      return "DICOM";
-    if (system.equals("http://unitsofmeasure.org"))
-      return "UCUM";
-
-    return system;
-  }
-
-
-  protected String makeAnchor(String codeSystem, String code) {
-    String s = codeSystem+'-'+code;
-    StringBuilder b = new StringBuilder();
-    for (char c : s.toCharArray()) {
-      if (Character.isAlphabetic(c) || Character.isDigit(c) || c == '.')
-        b.append(c);
-      else
-        b.append('-');
-    }
-    return b.toString();
   }
 
   protected List<TargetElementComponentWrapper> findMappingsForCode(String code, ConceptMap map) {
@@ -283,8 +161,8 @@ public class TerminologyRenderer {
       return "";
     switch (mapping.getRelationship()) {
     case EQUIVALENT : return "~";
-    case BROADER : return "<";
-    case NARROWER : return ">";
+    case SOURCENARROWERTARGET : return "<";
+    case SOURCEBROADERTARGET : return ">";
     case NOTRELATEDTO : return "!=";
     default: return "?";
     }
@@ -307,11 +185,11 @@ public class TerminologyRenderer {
       XhtmlNode a = li.ah(spec);
       a.code(inc.getSystem());
     } else if (cs != null && ref != null) {
-      if (!Utilities.noString(prefix) && ref.startsWith("http://hl7.org/fhir/"))
+      if (!Utilities.noString(getContext().getPrefix()) && ref.startsWith("http://hl7.org/fhir/"))
         ref = ref.substring(20)+"/index.html";
       else if (addHtml && !ref.contains(".html"))
         ref = ref + ".html";
-      XhtmlNode a = li.ah(prefix+ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(getContext().getPrefix()+ref.replace("\\", "/"));
       a.code(inc.getSystem());
     } else {
       li.code(inc.getSystem());
@@ -335,17 +213,17 @@ public class TerminologyRenderer {
     XhtmlNode tr = t.tr();
     if (hasHierarchy)
       tr.td().b().tx("Lvl");
-    tr.td().attribute("style", "white-space:nowrap").b().tx(context.translator().translate("xhtml-gen-cs", "Code", lang));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
     if (hasDisplay)
-      tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Display", lang));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
     if (definitions)
-      tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Definition", lang));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
     if (deprecated)
-      tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Deprecated", lang));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
     if (comments)
-      tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Comments", lang));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
     if (version)
-      tr.td().b().tx(context.translator().translate("xhtml-gen-cs", "Version", lang));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
     if (properties != null) {
       for (PropertyComponent pc : properties) {
         String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
@@ -355,7 +233,7 @@ public class TerminologyRenderer {
             display = pc.getCode();
           }
         }
-        tr.td().b().tx(context.translator().translate("xhtml-gen-cs", display, lang));      
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
       }
     }
     return tr;
@@ -371,7 +249,7 @@ public class TerminologyRenderer {
       code = uri.substring(uri.indexOf("#")+1);
       uri = uri.substring(0, uri.indexOf("#"));
     }
-    CodeSystem cs = context.fetchCodeSystem(uri);
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
     if (cs == null) {
       return null;
     }
@@ -380,7 +258,7 @@ public class TerminologyRenderer {
   }
 
 
-  protected void AddVsRef(ResourceContext rcontext, String value, XhtmlNode li) {
+  protected void AddVsRef(String value, XhtmlNode li) {
     Resource res = null;
     if (rcontext != null) {
       BundleEntryComponent be = rcontext.resolve(value);
@@ -394,13 +272,13 @@ public class TerminologyRenderer {
     }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = context.fetchResource(ValueSet.class, value);
+      vs = getContext().getWorker().fetchResource(ValueSet.class, value);
     if (vs == null)
-      vs = context.fetchResource(StructureDefinition.class, value);
+      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value);
     //    if (vs == null)
-    //      vs = context.fetchResource(DataElement.class, value);
+    //      vs = context.getWorker().fetchResource(DataElement.class, value);
     if (vs == null)
-      vs = context.fetchResource(Questionnaire.class, value);
+      vs = getContext().getWorker().fetchResource(Questionnaire.class, value);
     if (vs != null) {
       String ref = (String) vs.getUserData("path");
 
@@ -408,7 +286,7 @@ public class TerminologyRenderer {
       XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
       a.addText(value);
     } else {
-      CodeSystem cs = context.fetchCodeSystem(value);
+      CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {
         String ref = (String) cs.getUserData("path");
         ref = adjustForPath(ref);
@@ -427,69 +305,19 @@ public class TerminologyRenderer {
   }
 
   private String adjustForPath(String ref) {
-    if (prefix == null)
+    if (getContext().getPrefix() == null)
       return ref;
     else
-      return prefix+ref;
+      return getContext().getPrefix()+ref;
   }
 
-
-  protected void addTelecom(XhtmlNode p, ContactPoint c) {
-    if (c.getSystem() == ContactPointSystem.PHONE) {
-      p.tx("Phone: "+c.getValue());
-    } else if (c.getSystem() == ContactPointSystem.FAX) {
-      p.tx("Fax: "+c.getValue());
-    } else if (c.getSystem() == ContactPointSystem.EMAIL) {
-      p.ah( "mailto:"+c.getValue()).addText(c.getValue());
-    } else if (c.getSystem() == ContactPointSystem.URL) {
-      if (c.getValue().length() > 30)
-        p.ah(c.getValue()).addText(c.getValue().substring(0, 30)+"...");
-      else
-        p.ah(c.getValue()).addText(c.getValue());
-    }
-  }
 
 
   protected String getDisplayForConcept(String system, String value) {
     if (value == null || system == null)
       return null;
-    ValidationResult cl = context.validateCode(terminologyServiceOptions, system, value, null);
+    ValidationResult cl = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), system, value, null);
     return cl == null ? null : cl.getDisplay();
   }
 
-
-
-  protected String describeLang(String lang) {
-    ValueSet v = context.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
-    if (v != null) {
-      ConceptReferenceComponent l = null;
-      for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-        if (cc.getCode().equals(lang))
-          l = cc;
-      }
-      if (l == null) {
-        if (lang.contains("-"))
-          lang = lang.substring(0, lang.indexOf("-"));
-        for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-          if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
-            l = cc;
-        }
-      }
-      if (l != null) {
-        if (lang.contains("-"))
-          lang = lang.substring(0, lang.indexOf("-"));
-        String en = l.getDisplay();
-        String nativelang = null;
-        for (ConceptReferenceDesignationComponent cd : l.getDesignation()) {
-          if (cd.getLanguage().equals(lang))
-            nativelang = cd.getValue();
-        }
-        if (nativelang == null)
-          return en+" ("+lang+")";
-        else
-          return nativelang+" ("+en+", "+lang+")";
-      }
-    }
-    return lang;
-  }
 }

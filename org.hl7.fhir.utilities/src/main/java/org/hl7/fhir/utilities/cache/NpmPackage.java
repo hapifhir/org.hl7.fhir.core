@@ -631,7 +631,10 @@ public class NpmPackage {
         }
       }
       if (npm.has("fhirVersions")) {
-        return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
+        JsonElement e = npm.get("fhirVersions");
+        if (e.isJsonArray() && e.getAsJsonArray().size() > 0) {
+          return npm.getAsJsonArray("fhirVersions").get(0).getAsString();
+        }
       }
       if (dep != null) {
         // legacy simplifier support:
