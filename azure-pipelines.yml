@@ -50,13 +50,13 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/jacoco.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/report/target/site/jacoco-aggregate/'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
 
   - task: PublishPipelineArtifact@1
     condition: eq(variables.currentImage, 'ubuntu-16.04')
     inputs:
       targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
-      artifactName: ProjectAOutput
+      artifactName: Validator
 
 
