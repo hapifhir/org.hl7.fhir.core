@@ -20,28 +20,28 @@
         <jacoco_version>0.8.5</jacoco_version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.convertors</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.r5</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.utilities</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.validation</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
+<!--            <artifactId>org.hl7.fhir.convertors</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
+<!--            <artifactId>org.hl7.fhir.r5</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
+<!--            <artifactId>org.hl7.fhir.utilities</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
+<!--            <artifactId>org.hl7.fhir.validation</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
 
     <build>
         <plugins>
