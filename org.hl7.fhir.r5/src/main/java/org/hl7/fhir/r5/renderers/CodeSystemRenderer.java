@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -53,15 +54,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   public List<String> getCodeSystemPropList() {
     return codeSystemPropList;
   }
-  
-  public void render(CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {  
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean hasExtensions = render(x, cs);
-    inject(cs, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
-  }
 
-  public boolean render(XhtmlNode x, CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, cs, false);
+  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+    return render(x, (CodeSystem) dr, false);
   }
   
   public boolean render(XhtmlNode x, CodeSystem cs, boolean header) throws FHIRFormatError, DefinitionException, IOException {

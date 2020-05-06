@@ -107,7 +107,7 @@ public class DataRenderer {
     }
   }
  
-  // -- 3. Gener Purpose Terminology Support -----------------------------------------
+  // -- 3. General Purpose Terminology Support -----------------------------------------
 
   public static String describeSystem(String system) {
     if (system == null)

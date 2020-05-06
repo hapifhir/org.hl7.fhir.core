@@ -181,6 +181,7 @@ public class I18nConstants {
   public final static String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE = "Type_Specific_Checks_DT_Decimal_Range";
   public final static String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID = "Type_Specific_Checks_DT_Decimal_Valid";
   public final static String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM = "Type_Specific_Checks_DT_Identifier_System";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE = "TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE";
   public final static String TYPE_SPECIFIC_CHECKS_DT_ID_VALID = "Type_Specific_Checks_DT_ID_Valid";
   public final static String TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID = "Type_Specific_Checks_DT_Instant_Valid";
   public final static String TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID = "Type_Specific_Checks_DT_Integer64_Valid";

@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -66,14 +67,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
-  public void render(ValueSet vs) throws FHIRFormatError, DefinitionException, IOException {   
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean hasExtensions = render(x, vs);
-    inject(vs, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
-  }
-
-  public boolean render(XhtmlNode x, ValueSet vs) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, vs, false);
+  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+    return render(x, (ValueSet) dr, false);
   }
   
   public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
@@ -231,7 +226,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       tr.td().b().tx("System");
     tr.td().b().tx("Display");
     if (doDefinition)
-      tr.td().b().tx("Logical Definition (CLD)");
+      tr.td().b().tx("Definition");
 
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
@@ -692,14 +687,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.hasCopyrightElement())
         generateCopyright(x, vs);
     }
-    XhtmlNode ul = x.ul();
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
-      hasExtensions = genInclude(ul, vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
+      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
       p.tx("This value set includes codes based on the following rules:");
-
-      XhtmlNode li;
+      XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         hasExtensions = genInclude(ul, inc, "Include", langs, maps) || hasExtensions;
       }

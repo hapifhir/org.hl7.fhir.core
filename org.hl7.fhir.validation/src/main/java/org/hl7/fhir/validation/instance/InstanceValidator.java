@@ -1764,6 +1764,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkIdentifier(List<ValidationMessage> errors, String path, Element element, ElementDefinition context) {
     String system = element.getNamedChildValue("system");
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM);
+    if ("urn:ietf:rfc:3986".equals(system)) {
+      String value = element.getNamedChildValue("value");
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE); 
+    }
   }
 
   private void checkIdentifier(List<ValidationMessage> errors, String path, Element focus, Identifier fixed, String fixedSource, boolean pattern) {

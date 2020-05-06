@@ -43,7 +43,7 @@ public class BaseWrappers {
     public String getId();
     public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
     public String getName();
-    public void describe(XhtmlNode x);
+    public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
   }
 
   public interface BaseWrapper extends WrapperBase {
