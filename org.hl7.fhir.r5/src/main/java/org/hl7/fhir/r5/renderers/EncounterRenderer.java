@@ -1,6 +1,10 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Encounter;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -17,22 +21,12 @@ public class EncounterRenderer extends ResourceRenderer {
     super(context);
   }
 
-  public void render(Encounter enc) {  
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean hasExtensions = render(x, enc);
-    inject(enc, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
-  }
-
-  public boolean render(XhtmlNode x, Encounter enc) {
-    describe(x, enc);
+  public boolean render(XhtmlNode x, DomainResource dr) throws UnsupportedEncodingException, IOException {
+    describe(x, dr);
     return false;
   }
 
-  public void describe(XhtmlNode x, Encounter enc) {
-    x.tx(display(enc));
-  }
-
-  public String display(Encounter enc) {
+  public String display(DomainResource dr) {
     return "Not done yet";
   }
 

@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.renderers.utils;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -187,7 +189,7 @@ public class DirectWrappers {
     }
 
     @Override
-    public void describe(XhtmlNode x) {
+    public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException {
       if (wrapped instanceof CanonicalResource) {
         x.tx(((CanonicalResource) wrapped).present());
       } else if (wrapped instanceof Patient) {

@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
@@ -38,10 +39,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     super(context, rcontext);
   }
   
-  public void render(ConceptMap cm) throws FHIRFormatError, DefinitionException, IOException {  
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean hasExtensions = render(x, cm);
-    inject(cm, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+    return render(x, (ConceptMap) dr);
   }
 
   public boolean render(XhtmlNode x, ConceptMap cm) throws FHIRFormatError, DefinitionException, IOException {

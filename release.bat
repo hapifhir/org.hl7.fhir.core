@@ -24,7 +24,7 @@ IF %ERRORLEVEL% NEQ 0 (
   GOTO DONE
 )
 
-call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\latest-ig-publisher\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
+call "C:\tools\versionNotes.exe" -fileName C:\work\org.hl7.fhir\org.hl7.fhir.core\release-notes-validator.md -version %newver% -fileDest C:\temp\current-release-notes-validator.md -url https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar -maven https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation.cli&v=%newver%-SNAPSHOT&e=jar
 
 call gsutil cp -a public-read org.hl7.fhir.validation.cli\target\org.hl7.fhir.validation.cli-%newver%-SNAPSHOT.jar gs://ig-build/org.hl7.fhir.validator.jar
 

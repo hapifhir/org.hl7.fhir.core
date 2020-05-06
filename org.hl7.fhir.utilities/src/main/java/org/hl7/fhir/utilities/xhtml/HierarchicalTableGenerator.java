@@ -199,6 +199,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   
   public class Cell {
     private List<Piece> pieces = new ArrayList<HierarchicalTableGenerator.Piece>();
+    private String cellStyle;
+    protected int span = 1;
 
     public Cell() {
       
@@ -321,9 +323,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         throw new Error("Unhandled type "+c.getNodeType().toString());
 
     }
-    public void addStyle(String style) {
+    public Cell addStyle(String style) {
       for (Piece p : pieces)
-        p.addStyle(style);      
+        p.addStyle(style);
+      return this;
     }
     public void addToHint(String text) {
       for (Piece p : pieces)
@@ -355,7 +358,20 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     @Override
     public String toString() {
-      return text();
+      if (span != 1) {
+        return text()+" {"+span+"}";
+      } else {
+        return text();
+      }
+    }
+    public Cell setStyle(String value) {
+      cellStyle = value;
+      return this;
+    }
+    
+    public Cell span(int value) {
+      span = value;
+      return this;
     }
     
     
@@ -368,6 +384,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       super(prefix, reference, text, hint, suffix);
       this.width = width;
     }
+
+    public Title(String prefix, String reference, String text, String hint, String suffix, int width, int span) {
+      super(prefix, reference, text, hint, suffix);
+      this.width = width;
+      this.span = span;
+    }
+
   }
   
   public class Row {
@@ -469,6 +492,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     public boolean isAlternating() {
       return alternating;
     }
+    public void setAlternating(boolean alternating) {
+      this.alternating = alternating;
+    }
     
   }
 
@@ -505,7 +531,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive) {
     TableModel model = new TableModel(id, isActive);
     
-    model.alternating = alternating;
+    model.setAlternating(alternating);
     model.setDocoImg(prefix+"help16.png");
     model.setDocoRef(prefix+"formats.html#table");
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
@@ -579,7 +605,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     String color = "white";
     if (r.getColor() != null)
       color = r.getColor();
-    else if (model.alternating  && counter.isOdd())
+    else if (model.isAlternating()  && counter.isOdd())
       color = BACKGROUND_ALT_COLOR;
     
     tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+";");
@@ -610,9 +636,12 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private XhtmlNode renderCell(XhtmlNode tr, Cell c, String name, String icon, String hint, List<Integer> indents, boolean hasChildren, String anchor, String color, int lineColor, String imagePath, int border, Set<String> outputTracker, TableModel table, Row row) throws IOException  {
     XhtmlNode tc = tr.addTag(name);
     tc.setAttribute("class", "hierarchy");
+    if (c.span > 1) {
+      tc.colspan(Integer.toString(c.span));
+    }
     if (indents != null) {
       tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
-      tc.setAttribute("style", "vertical-align: top; text-align : left; background-color: "+color+"; border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")");
+      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
       for (int i = 0; i < indents.size()-1; i++) {
         switch (indents.get(i)) {
           case NEW_REGULAR:
@@ -664,7 +693,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       }
     }
     else
-      tc.setAttribute("style", "vertical-align: top; text-align : left; background-color: "+color+"; border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px");
+      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
     if (!Utilities.noString(icon)) {
       XhtmlNode img = tc.addTag("img").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
       if (hint != null)
@@ -740,11 +769,14 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private void checkModel(TableModel model) throws FHIRException  {
     check(!model.getRows().isEmpty(), "Must have rows");
     check(!model.getTitles().isEmpty(), "Must have titles");
-    for (Cell c : model.getTitles())
+    int tc = 0;
+    for (Cell c : model.getTitles()) {
       check(c);
+      tc = tc + c.span;
+    }
     int i = 0;
     for (Row r : model.getRows()) { 
-      check(r, "rows", model.getTitles().size(), "", i, model.getRows().size());
+      check(r, "rows", tc, "", i, model.getRows().size());
       i++;
     }
   }
@@ -767,7 +799,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     path = path + id;
     r.setId(path);
-    check(r.getCells().size() == size, "All rows must have the same number of columns ("+Integer.toString(size)+") as the titles but row "+path+" doesn't ("+r.getCells().get(0).text()+"): "+r.getCells());
+    int tc = 0;
+    for (Cell c : r.getCells()) {
+      tc = tc + c.span;
+    }
+    check(tc == size, "All rows must have the same number of columns as the titles  ("+Integer.toString(size)+") but row "+path+" doesn't - it has "+tc+" ("+r.getCells().get(0).text()+"): "+r.getCells());
     int i = 0;
     for (Row c : r.getSubRows()) {
       check(c, "rows", size, path, i, r.getSubRows().size());

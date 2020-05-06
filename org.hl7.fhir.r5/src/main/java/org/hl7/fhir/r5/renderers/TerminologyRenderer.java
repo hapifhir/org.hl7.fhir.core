@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -39,7 +41,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-public class TerminologyRenderer extends ResourceRenderer {
+public abstract class TerminologyRenderer extends ResourceRenderer {
   
   public TerminologyRenderer(RenderingContext context) {
     super(context);
@@ -47,6 +49,10 @@ public class TerminologyRenderer extends ResourceRenderer {
 
   public TerminologyRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
+  }
+
+  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+    return ((CanonicalResource) r).present();
   }
 
   protected class TargetElementComponentWrapper {
