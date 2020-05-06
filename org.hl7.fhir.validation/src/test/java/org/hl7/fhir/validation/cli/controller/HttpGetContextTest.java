@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.hl7.fhir.validation.cli.BaseRestTest;
+import org.hl7.fhir.validation.cli.ValidatorGui;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 class HttpGetContextTest extends BaseRestTest {
 
-  private final String GET_CONTEXT_URL = "http://localhost:8080/context";
+  private final String GET_CONTEXT_URL = "http://localhost:" + ValidatorGui.getPort() + "/context";
 
   @Test
   @DisplayName("Testing status code on get context endpoint.")

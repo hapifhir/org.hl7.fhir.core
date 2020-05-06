@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 public class ValidatorGui {
 
-  private static final int GUI_FRONTEND_PORT = 8080;
+  private static final int GUI_FRONTEND_PORT = 8081;
   private static final String PAGE_ADDRESS = "http://localhost:" + GUI_FRONTEND_PORT + "/home";
   private static final String WEB_APP_FILE_LOCATION = "/public";
   private static Javalin app;
@@ -30,6 +30,10 @@ public class ValidatorGui {
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
     start(new CliContext(), validationEngine, false);
+  }
+
+  public static int getPort() {
+    return GUI_FRONTEND_PORT;
   }
 
   public static void start(CliContext currentContext, ValidationEngine validationEngine, boolean bootBrowser) {
