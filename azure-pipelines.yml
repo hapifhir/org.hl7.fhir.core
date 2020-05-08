@@ -1,0 +1,62 @@
+trigger:
+  branches:
+    include:
+      - '*'
+
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+#     mac:
+#       imageName: "macos-10.14"
+#     windows:
+#       imageName: "vs2017-win2016"
+  maxParallel: 3
+
+pool:
+  vmImage: $(imageName)
+
+variables:
+  currentImage: $(imageName)
+  codecov: $(CODECOV_TOKEN)
+
+steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        [xml]$pomXml = Get-Content .\pom.xml
+        # version
+        Write-Host $pomXml.project.version
+        $version=$pomXml.project.version
+        Write-Host "##vso[task.setvariable variable=version]$version"
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'clean package'
+      
+  - bash: echo Current version => $(version)
+    displayName: 'version'
+
+  - script: bash <(curl https://codecov.io/bash) -t $(codecov)
+    displayName: 'codecov'
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'JaCoCo'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
+
+  - task: PublishPipelineArtifact@1
+    condition: eq(variables.currentImage, 'ubuntu-16.04')
+    inputs:
+      targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
+      artifactName: Validator
+
+
