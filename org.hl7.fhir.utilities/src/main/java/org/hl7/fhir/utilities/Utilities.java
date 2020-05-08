@@ -1265,6 +1265,18 @@ public class Utilities {
     }
   }
 
+  public static boolean startsWithInList(String s, String... list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.startsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 
 }
