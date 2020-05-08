@@ -204,9 +204,12 @@ public class PackageCacheManager {
   }
 
   public void loadFromFolder(String packagesFolder) throws IOException {
-    for (File f : new File(packagesFolder).listFiles()) {
-      if (f.getName().endsWith(".tgz")) {
-        temporaryPackages.add(NpmPackage.fromPackage(new FileInputStream(f)));
+    File[] files = new File(packagesFolder).listFiles();
+    if (files != null) {
+      for (File f : files) {
+        if (f.getName().endsWith(".tgz")) {
+          temporaryPackages.add(NpmPackage.fromPackage(new FileInputStream(f)));
+        }
       }
     }
   }

@@ -245,5 +245,8 @@ public class TextFile {
       return streamToString(new ByteArrayInputStream(bs));
   }
 
-
+  public static void streamToFile(InputStream stream, String filename) throws IOException {
+    byte[] cnt = streamToBytes(stream);
+    bytesToFile(cnt, filename);
+  }
 }

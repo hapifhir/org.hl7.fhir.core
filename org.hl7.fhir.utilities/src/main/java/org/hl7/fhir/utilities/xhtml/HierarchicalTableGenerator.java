@@ -100,6 +100,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
   public static boolean ACTIVE_TABLES = false;
     
+  public enum TextAlignment {
+    LEFT, CENTER, RIGHT;  
+  }
+  
   private static Map<String, String> files = new HashMap<String, String>();
 
   private class Counter {
@@ -201,6 +205,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private List<Piece> pieces = new ArrayList<HierarchicalTableGenerator.Piece>();
     private String cellStyle;
     protected int span = 1;
+    private TextAlignment alignment = TextAlignment.LEFT;
 
     public Cell() {
       
@@ -371,6 +376,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     
     public Cell span(int value) {
       span = value;
+      return this;
+    }
+    public Cell center() {
+      alignment = TextAlignment.CENTER;
       return this;
     }
     
