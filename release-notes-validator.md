@@ -6,6 +6,11 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
+(no changes yet)
+
+## v4.2.28 (2020-05-10)
+
+
 * Change to use different secondary package server
 
 ## v4.2.27 (2020-05-08)
@@ -173,4 +178,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* This relea
+* This rele
