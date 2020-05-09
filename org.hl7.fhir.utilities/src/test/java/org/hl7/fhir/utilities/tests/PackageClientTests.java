@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.test;
+package org.hl7.fhir.utilities.tests;
 
 import org.hl7.fhir.utilities.cache.PackageClient;
 import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
