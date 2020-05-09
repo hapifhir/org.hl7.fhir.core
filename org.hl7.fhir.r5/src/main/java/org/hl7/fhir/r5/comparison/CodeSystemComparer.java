@@ -54,9 +54,8 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
   private CodeSystem right;
 
-  public CodeSystemComparer(IWorkerContext context) {
-    super(context);
-    this.context = context;
+  public CodeSystemComparer(ComparisonSession session) {
+    super(session);
   }
 
   public CodeSystemComparison compare(CodeSystem left, CodeSystem right) {    
@@ -67,10 +66,10 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     
     
     CodeSystemComparison res = new CodeSystemComparison(left, right);
+    session.identify(res);
     CodeSystem cs = new CodeSystem();
     res.setUnion(cs);
-    cs.setId(UUID.randomUUID().toString().toLowerCase());
-    cs.setUrl("urn:uuid:"+cs.getId());
+    session.identify(cs);
     cs.setName("Union"+left.getName()+"And"+right.getName());
     cs.setTitle("Union of "+left.getTitle()+" And "+right.getTitle());
     cs.setStatus(left.getStatus());
@@ -90,8 +89,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
     CodeSystem cs1 = new CodeSystem();
     res.setIntersection(cs1);
-    cs1.setId(UUID.randomUUID().toString().toLowerCase());
-    cs1.setUrl("urn:uuid:"+cs1.getId());
+    session.identify(cs1);
     cs1.setName("Intersection"+left.getName()+"And"+right.getName());
     cs1.setTitle("Intersection of "+left.getTitle()+" And "+right.getTitle());
     cs1.setStatus(left.getStatus());
@@ -144,7 +142,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
       ConceptDefinitionComponent r = findInList(right, l);
       if (r == null) {
         union.add(l);
-        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, vm(IssueSeverity.INFORMATION, "Removed this concept", path)));
+        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
       } else {
         matchR.add(r);
         ConceptDefinitionComponent cdM = merge(l, r, csU.getProperty(), res);
@@ -160,7 +158,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     for (ConceptDefinitionComponent r : right) {
       if (!matchR.contains(r)) {
         union.add(r);
-        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vm(IssueSeverity.INFORMATION, "Added this concept", path), r));        
+        combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));        
       }
     }
   }
@@ -182,15 +180,15 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   private void compareStrings(String path, List<ValidationMessage> msgs, String left, String right, String name, IssueSeverity level, CodeSystemComparison res) {
     if (!Utilities.noString(right)) {
       if (Utilities.noString(left)) {
-        msgs.add(vm(level, "Value for "+name+" added", path));
+        msgs.add(vmI(level, "Value for "+name+" added", path));
       } else if (!left.equals(right)) {
         if (level != IssueSeverity.NULL) {
           res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+"."+name, "Changed value for "+name+": '"+left+"' vs '"+right+"'", level));
         }
-        msgs.add(vm(level, name+" changed from left to right", path));
+        msgs.add(vmI(level, name+" changed from left to right", path));
       }
     } else if (!Utilities.noString(left)) {
-      msgs.add(vm(level, "Value for "+name+" removed", path));
+      msgs.add(vmI(level, "Value for "+name+" removed", path));
     }
   }
 

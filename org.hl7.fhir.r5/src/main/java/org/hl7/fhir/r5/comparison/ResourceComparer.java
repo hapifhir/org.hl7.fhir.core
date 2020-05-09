@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.comparison;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -18,12 +19,28 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
 public class ResourceComparer {
 
-  public class ResourceCmparison {
+  public class ResourceComparison {
+    private String id;
+    
     protected List<ValidationMessage> messages = new ArrayList<>();
+    
+    public ResourceComparison() {
+      super();
+    }
 
     public List<ValidationMessage> getMessages() {
       return messages;
     }
+
+    public String getId() {
+      return id;
+    }
+
+    public void setId(String id) {
+      this.id = id;
+    }
+    
+    
   }
   
   public final static String COLOR_NO_ROW_LEFT = "#ffffb3";
@@ -33,11 +50,11 @@ public class ResourceComparer {
   public final static String COLOR_DIFFERENT = "#f0b3ff";
   public final static String COLOR_ISSUE = "#ffad99";
 
-  protected IWorkerContext context;
+  protected ComparisonSession session;
   
-  public ResourceComparer(IWorkerContext context) {
+  public ResourceComparer(ComparisonSession session) {
     super();
-    this.context = context;
+    this.session = session;
   }
 
   public Cell missingCell(HierarchicalTableGenerator gen) {
@@ -53,7 +70,7 @@ public class ResourceComparer {
     return c;
   }
 
-  public XhtmlNode renderErrors(ResourceCmparison csc) {
+  public XhtmlNode renderErrors(ResourceComparison csc) {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode tbl = div.table("grid");
     for (ValidationMessage vm : csc.messages) {
@@ -66,8 +83,17 @@ public class ResourceComparer {
   }
 
 
-  protected ValidationMessage vm(IssueSeverity level, String message, String path) {
-    return new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, message, level == IssueSeverity.NULL ? IssueSeverity.INFORMATION : level);
+  protected ValidationMessage vmI(IssueSeverity level, String message, String path) {
+    ValidationMessage vm = new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, message, level == IssueSeverity.NULL ? IssueSeverity.INFORMATION : level);
+    return vm;    
+  }
+  
+  protected void vm(IssueSeverity level, String message, String path, List<ValidationMessage> genMessages, List<ValidationMessage> specMessages) {
+    ValidationMessage vm = new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, message, level == IssueSeverity.NULL ? IssueSeverity.INFORMATION : level);
+    genMessages.add(vm);
+    if (specMessages != null) {
+      specMessages.add(vm);
+    }
   }
 
   private String colorForLevel(IssueSeverity level) {

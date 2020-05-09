@@ -32,7 +32,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
-  public class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceCmparison {
+  public class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
 
     protected T left;
     protected T right;
@@ -91,8 +91,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   }
 
-  public CanonicalResourceComparer(IWorkerContext context) {
-    super(context);
+  public CanonicalResourceComparer(ComparisonSession session) {
+    super(session);
   }
 
   protected void compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res) {
@@ -115,19 +115,19 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     if (l.isEmpty() && r.isEmpty()) {
       match = new StructuralMatch<>(null, null, null);
     } else if (l.isEmpty()) {
-      match = new StructuralMatch<>(null, r.primitiveValue(), vm(IssueSeverity.INFORMATION, "Added this item", fhirType()+"."+name));
+      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "Added this item", fhirType()+"."+name));
     } else if (r.isEmpty()) {
-      match = new StructuralMatch<>(l.primitiveValue(), null, vm(IssueSeverity.INFORMATION, "Removed this item", fhirType()+"."+name));
+      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "Removed this item", fhirType()+"."+name));
     } else if (!l.hasValue() && !r.hasValue()) {
-      match = new StructuralMatch<>(null, null, vm(IssueSeverity.INFORMATION, "No Value", fhirType()+"."+name));
+      match = new StructuralMatch<>(null, null, vmI(IssueSeverity.INFORMATION, "No Value", fhirType()+"."+name));
     } else if (!l.hasValue()) {
-      match = new StructuralMatch<>(null, r.primitiveValue(), vm(IssueSeverity.INFORMATION, "No Value on Left", fhirType()+"."+name));
+      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "No Value on Left", fhirType()+"."+name));
     } else if (!r.hasValue()) {
-      match = new StructuralMatch<>(l.primitiveValue(), null, vm(IssueSeverity.INFORMATION, "No Value on Right", fhirType()+"."+name));
+      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "No Value on Right", fhirType()+"."+name));
     } else if (l.getValue().equals(r.getValue())) {
       match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), null);
     } else {
-      match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), vm(level, "Values Differ", fhirType()+"."+name));
+      match = new StructuralMatch<>(l.primitiveValue(), r.primitiveValue(), vmI(level, "Values Differ", fhirType()+"."+name));
       if (level != IssueSeverity.NULL) {
         res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, fhirType()+"."+name, "Values for "+name+" differ: '"+l.primitiveValue()+"' vs '"+r.primitiveValue()+"'", level));
       }
