@@ -177,7 +177,7 @@ public class PackageCacheManager {
   }
 
   private static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  private static final String SECONDARY_SERVER = "http://test.fhir.org/packages";
+  private static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
 //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";

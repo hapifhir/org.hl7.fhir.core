@@ -17,6 +17,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
+import org.hl7.fhir.r5.comparison.ComparisonSession;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
@@ -136,9 +137,11 @@ public class ComparisonTests {
     System.out.println("---- " + name + " ----------------------------------------------------------------");    
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
-
+    
+    ComparisonSession session = new ComparisonSession(context);
+    
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
-      CodeSystemComparer cs = new CodeSystemComparer(context);
+      CodeSystemComparer cs = new CodeSystemComparer(session );
       CodeSystemComparison csc = cs.compare((CodeSystem) left, (CodeSystem) right);
       Assertions.assertTrue(csc.getUnion().getConcept().size() > csc.getIntersection().getConcept().size());
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-union.json")), csc.getUnion());
@@ -150,7 +153,7 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER+hd("Messages")+xmle+BREAK+hd("Metadata")+xml1+BREAK+hd("Concepts")+xml2+FOOTER, Utilities.path("[tmp]", "comparison", name+".html"));
       checkOutcomes(csc.getMessages(), content);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
-      ValueSetComparer cs = new ValueSetComparer(context);
+      ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-union.json")), csc.getUnion());
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-intersection.json")), csc.getIntersection());
