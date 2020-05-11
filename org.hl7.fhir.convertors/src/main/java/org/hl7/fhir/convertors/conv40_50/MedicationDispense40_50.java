@@ -156,26 +156,84 @@ public class MedicationDispense40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    private static CodeType convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> src) {
+    private static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> convertStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> src) {
         if (src == null)
             return null;
-        CodeType tgt = new CodeType();
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
         copyElement(src, tgt);
-        if (src.getValue() == MedicationDispenseStatusCodes.DECLINED)
-            tgt.setValue("stopped");
-        else
-            tgt.setValue(src.getValueAsString());
+        switch(src.getValue()) {
+        case CANCELLED:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.CANCELLED);
+          break;
+        case COMPLETED:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.COMPLETED);
+          break;
+        case DECLINED:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.DECLINED);
+          break;
+        case ENTEREDINERROR:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.ENTEREDINERROR);
+          break;
+        case INPROGRESS:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.INPROGRESS);
+          break;
+        case NULL:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.NULL);
+          break;
+        case ONHOLD:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.ONHOLD);
+          break;
+        case PREPARATION:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.PREPARATION);
+          break;
+        case STOPPED:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
+          break;
+        case UNKNOWN:
+          tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.UNKNOWN);
+          break;
+      }
         return tgt;
     }
 
-    private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> convertMedicationStatus(org.hl7.fhir.r4.model.CodeType src) {
+    private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> convertMedicationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> src) {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationDispenseStatusCodesEnumFactory());
         copyElement(src, tgt);
-        if (src.hasCode())
-            tgt.setValue(MedicationDispenseStatusCodes.fromCode(src.getCode()));
-        return tgt;
+        switch(src.getValue()) {
+        case CANCELLED:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.CANCELLED);
+          break;
+        case COMPLETED:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.COMPLETED);
+          break;
+        case DECLINED:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.DECLINED);
+          break;
+        case ENTEREDINERROR:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.ENTEREDINERROR);
+          break;
+        case INPROGRESS:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.INPROGRESS);
+          break;
+        case NULL:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.NULL);
+          break;
+        case ONHOLD:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.ONHOLD);
+          break;
+        case PREPARATION:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.PREPARATION);
+          break;
+        case STOPPED:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.STOPPED);
+          break;
+        case UNKNOWN:
+          tgt.setValue(org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodes.UNKNOWN);
+          break;
+      }
+      return tgt;
     }
 
     public static org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent convertMedicationDispensePerformerComponent(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent src) throws FHIRException {

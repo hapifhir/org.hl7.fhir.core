@@ -49,17 +49,19 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.
  */
@@ -466,6 +468,11 @@ public class Basic extends DomainResource {
       public Basic copy() {
         Basic dst = new Basic();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Basic dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -475,7 +482,6 @@ public class Basic extends DomainResource {
         dst.subject = subject == null ? null : subject.copy();
         dst.created = created == null ? null : created.copy();
         dst.author = author == null ? null : author.copy();
-        return dst;
       }
 
       protected Basic typedCopy() {
