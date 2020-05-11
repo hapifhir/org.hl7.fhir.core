@@ -184,5 +184,10 @@ public class NodeStack {
     return resetPoint;
   }
 
+  @Override
+  public String toString() {
+    return literalPath;
+  }
+
 
 }

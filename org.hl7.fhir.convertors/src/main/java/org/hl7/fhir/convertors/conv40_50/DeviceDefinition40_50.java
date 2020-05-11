@@ -79,8 +79,6 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasOwner())
             tgt.setOwner(convertReference(src.getOwner()));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
-        if (src.hasUrl())
-            tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasOnlineInformation())
             tgt.setOnlineInformationElement(convertUri(src.getOnlineInformationElement()));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
@@ -118,8 +116,6 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasOwner())
             tgt.setOwner(convertReference(src.getOwner()));
         for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
-        if (src.hasUrl())
-            tgt.setUrlElement(convertUri(src.getUrlElement()));
         if (src.hasOnlineInformation())
             tgt.setOnlineInformationElement(convertUri(src.getOnlineInformationElement()));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));

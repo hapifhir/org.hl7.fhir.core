@@ -66,8 +66,13 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.hasItem()) {
+          if (src.hasItemCodeableConcept()) {
+            tgt.getItem().setConcept(convertCodeableConcept(src.getItemCodeableConcept()));
+          } else {
+            tgt.getItem().setReference(convertReference(src.getItemReference()));
+          }
+        }
         if (src.hasQuantity())
             tgt.setQuantity(convertQuantity(src.getQuantity()));
         for (org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));
@@ -99,8 +104,13 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getCategory()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.hasItem()) {
+            if (src.getItem().hasReference()) {
+              tgt.setItem(convertType(src.getItem().getReference()));
+            } else {
+              tgt.setItem(convertType(src.getItem().getConcept()));
+            }
+        }
         if (src.hasQuantity())
             tgt.setQuantity(convertQuantity(src.getQuantity()));
         for (org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertSupplyRequestParameterComponent(t));

@@ -76,7 +76,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     generateComposer(analysis);
     if (!analysis.isAbstract()) {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        pregt.append("    } else if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getRootType().getName()+"(json.getAsJsonObject(prefix+\""+analysis.getName()+"\"));\r\n");
+        pregt.append("    } else if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+analysis.getName()+"\"));\r\n");
         pregt2.append("   } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getName()+"(json);\r\n");
         cregtn.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+analysis.getName()+"\", ("+analysis.getClassName()+") type);\r\n");
         cregti.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"Properties(("+analysis.getName()+") type);\r\n");
@@ -212,7 +212,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         if (tn.equals("XhtmlNode")) {
           prsr = "parseXhtml(json.get(\""+name+"\").getAsString())";
         } else if (tn.contains("Reference(")) {
-          prsr = "parseReference(json.getAsJsonObject(\""+name+"\"))";
+          prsr = "parseReference(getJObject(json, \""+name+"\"))";
           aprsr = "parseReference(array.get(i).getAsJsonObject())";
           anprsr = "parseReference(null)";
         } else if (tn.contains("canonical(")) {
@@ -231,7 +231,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if ((ed.isInlineType() || ed.hasContentReference()) && !pn.startsWith(analysis.getClassName())) {
             pn = analysis.getClassName()+pn;            
           }
-          prsr = "parse"+pn+"(json.getAsJsonObject(\""+name+"\"))";
+          prsr = "parse"+pn+"(getJObject(json, \""+name+"\"))";
           aprsr = "parse"+pn+"(array.get(i).getAsJsonObject())";
           anprsr = "parse"+pn+"(null)";
         }
@@ -276,7 +276,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.add"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
           parser.append("    if (json.has(\"_"+name+"\"))\r\n");
-          parser.append("      parseElementProperties(json.getAsJsonObject(\"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"ElementFirstRep());\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"ElementFirstRep());\r\n");
         } else {
           parser.append("      res.add"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }        
@@ -285,7 +285,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
           parser.append("    if (json.has(\"_"+name+"\"))\r\n");
-          parser.append("      parseElementProperties(json.getAsJsonObject(\"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
         } else {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }

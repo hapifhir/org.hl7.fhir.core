@@ -65,7 +65,7 @@ public class Consent40_50 extends VersionConvertor_40_50 {
             tgt.setScope(convertCodeableConcept(src.getScope()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasPatient())
-            tgt.setPatient(convertReference(src.getPatient()));
+            tgt.setSubject(convertReference(src.getPatient()));
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
@@ -94,8 +94,8 @@ public class Consent40_50 extends VersionConvertor_40_50 {
         if (src.hasScope())
             tgt.setScope(convertCodeableConcept(src.getScope()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        if (src.hasPatient())
-            tgt.setPatient(convertReference(src.getPatient()));
+        if (src.hasSubject())
+            tgt.setPatient(convertReference(src.getSubject()));
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));

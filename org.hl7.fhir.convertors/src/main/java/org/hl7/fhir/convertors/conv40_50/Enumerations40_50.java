@@ -457,16 +457,16 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
                 break;
             case WIDER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCENARROWERTARGET);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEISNARROWERTHANTARGET);
                 break;
             case SUBSUMES:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCENARROWERTARGET);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEISNARROWERTHANTARGET);
                 break;
             case NARROWER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEBROADERTARGET);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEISBROADERTHANTARGET);
                 break;
             case SPECIALIZES:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEBROADERTARGET);
+                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.SOURCEISBROADERTHANTARGET);
                 break;
             case INEXACT:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
@@ -496,10 +496,10 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
             case EQUIVALENT:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.EQUIVALENT);
                 break;
-            case SOURCENARROWERTARGET:
+            case SOURCEISNARROWERTHANTARGET:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.WIDER);
                 break;
-            case SOURCEBROADERTARGET:
+            case SOURCEISBROADERTHANTARGET:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.NARROWER);
                 break;
             case NOTRELATEDTO:

@@ -65,12 +65,16 @@ public class MedicationDispense40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(convertType(src.getStatusReason()));
+        if (src.hasStatusReasonCodeableConcept())
+            tgt.getStatusReason().setConcept(convertCodeableConcept(src.getStatusReasonCodeableConcept()));
+        if (src.hasStatusReasonReference())
+          tgt.getStatusReason().setReference(convertReference(src.getStatusReasonReference()));
         if (src.hasCategory())
             tgt.addCategory(convertCodeableConcept(src.getCategory()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept())
+            tgt.getMedication().setConcept(convertCodeableConcept(src.getMedicationCodeableConcept()));
+        if (src.hasMedicationReference())
+          tgt.getMedication().setReference(convertReference(src.getMedicationReference()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasContext())
@@ -111,12 +115,16 @@ public class MedicationDispense40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(convertReference(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertStatus(src.getStatusElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(convertType(src.getStatusReason()));
+        if (src.getStatusReason().hasConcept())
+            tgt.setStatusReason(convertType(src.getStatusReason().getConcept()));
+        if (src.getStatusReason().hasReference())
+          tgt.setStatusReason(convertType(src.getStatusReason().getReference()));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.getMedication().hasConcept())
+            tgt.setMedication(convertType(src.getMedication().getConcept()));
+        if (src.getMedication().hasReference())
+          tgt.setMedication(convertType(src.getMedication().getReference()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())

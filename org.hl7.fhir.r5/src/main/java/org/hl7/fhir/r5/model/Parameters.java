@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1429,33 +1429,38 @@ public class Parameters extends Resource implements IBaseParameters {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, resource, part);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, resource, part
+          );
       }
 
-      public String fhirType() {
-        return "Parameters.parameter";
-      }
+  public String fhirType() {
+    return "Parameters.parameter";
 
-      public String toString() {
-        String s = getName() + " = ";
-        if (hasValue()) {
-          if (getValue().isPrimitive()) {
-            s = s + getValue().primitiveValue();
-          } else {
-            s = s + "["+getValue().fhirType()+"]";
-          }
-        } else if (hasResource()) {
-          s = s + "["+getResource().fhirType()+"]";
-        } else {
-          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-          for (ParametersParameterComponent p : getPart()) {
-            b.append(p.getName());
-          }
-          s = s + "{"+b.toString()+"}";
-        }
-        return s;
+  }
+
+// added from java-adornments.txt:
+  public String toString() {
+    String s = getName() + " = ";
+    if (hasValue()) {
+      if (getValue().isPrimitive()) {
+        s = s + getValue().primitiveValue();
+      } else {
+        s = s + "["+getValue().fhirType()+"]";
       }
+    } else if (hasResource()) {
+      s = s + "["+getResource().fhirType()+"]";
+    } else {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (ParametersParameterComponent p : getPart()) {
+        b.append(p.getName());
+      }
+      s = s + "{"+b.toString()+"}";
     }
+    return s;
+  }
+
+// end addition
+  }
 
     /**
      * A parameter passed to or received from the operation.
@@ -1741,14 +1746,6 @@ public class Parameters extends Resource implements IBaseParameters {
       }
     }
     return false;
-  }
-
-  public String toString() {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (ParametersParameterComponent p : parameter) {
-      b.append(p.getName());
-    }
-    return "{"+b.toString()+"}";
   }
 
 // end addition

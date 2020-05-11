@@ -256,8 +256,8 @@ public class CarePlan30_50 {
                 tgt.setScheduled(VersionConvertor_30_50.convertType(src.getScheduled()));
         }
         if (src.hasLocation()) {
-            if (src.hasLocation())
-                tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+            if (src.getLocation().hasReference())
+                tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation().getReference()));
         }
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) {
             tgt.addPerformer(VersionConvertor_30_50.convertReference(t));
@@ -325,7 +325,7 @@ public class CarePlan30_50 {
         }
         if (src.hasLocation()) {
             if (src.hasLocation())
-                tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+                tgt.getLocation().setReference(VersionConvertor_30_50.convertReference(src.getLocation()));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer()) {
             tgt.addPerformer(VersionConvertor_30_50.convertReference(t));

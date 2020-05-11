@@ -32,7 +32,15 @@
     return b.toString();
   }
   
-
+  public String typeSummaryVB() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        b.append(tr.getWorkingCode());
+    }
+    return b.toString().replace(" ", "");
+  }
+  
   public TypeRefComponent getType(String code) {
     for (TypeRefComponent tr : getType()) 
       if (tr.getCode().equals(code))

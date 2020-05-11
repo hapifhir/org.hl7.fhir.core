@@ -48,7 +48,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 
   
@@ -97,6 +97,8 @@ public class ResourceFactory extends Factory {
             return new ChargeItem();
         if ("ChargeItemDefinition".equals(name))
             return new ChargeItemDefinition();
+        if ("Citation".equals(name))
+            return new Citation();
         if ("Claim".equals(name))
             return new Claim();
         if ("ClaimResponse".equals(name))
@@ -163,6 +165,8 @@ public class ResourceFactory extends Factory {
             return new EventDefinition();
         if ("Evidence".equals(name))
             return new Evidence();
+        if ("EvidenceFocus".equals(name))
+            return new EvidenceFocus();
         if ("EvidenceVariable".equals(name))
             return new EvidenceVariable();
         if ("ExampleScenario".equals(name))
@@ -239,6 +243,8 @@ public class ResourceFactory extends Factory {
             return new NutritionIntake();
         if ("NutritionOrder".equals(name))
             return new NutritionOrder();
+        if ("NutritionProduct".equals(name))
+            return new NutritionProduct();
         if ("Observation".equals(name))
             return new Observation();
         if ("ObservationDefinition".equals(name))
@@ -261,6 +267,8 @@ public class ResourceFactory extends Factory {
             return new PaymentNotice();
         if ("PaymentReconciliation".equals(name))
             return new PaymentReconciliation();
+        if ("Permission".equals(name))
+            return new Permission();
         if ("Person".equals(name))
             return new Person();
         if ("PlanDefinition".equals(name))
@@ -307,6 +315,10 @@ public class ResourceFactory extends Factory {
             return new StructureMap();
         if ("Subscription".equals(name))
             return new Subscription();
+        if ("SubscriptionStatus".equals(name))
+            return new SubscriptionStatus();
+        if ("SubscriptionTopic".equals(name))
+            return new SubscriptionTopic();
         if ("Substance".equals(name))
             return new Substance();
         if ("SubstanceDefinition".equals(name))
@@ -333,8 +345,6 @@ public class ResourceFactory extends Factory {
             return new TestReport();
         if ("TestScript".equals(name))
             return new TestScript();
-        if ("Topic".equals(name))
-            return new Topic();
         if ("ValueSet".equals(name))
             return new ValueSet();
         if ("VerificationResult".equals(name))
@@ -516,6 +526,7 @@ public class ResourceFactory extends Factory {
         case -1007602695: return new CatalogEntry();
         case -883723257: return new ChargeItem();
         case -315725638: return new ChargeItemDefinition();
+        case -1378062585: return new Citation();
         case 65189916: return new Claim();
         case 1488475261: return new ClaimResponse();
         case -1268501092: return new ClinicalImpression();
@@ -549,6 +560,7 @@ public class ResourceFactory extends Factory {
         case -1093178557: return new EpisodeOfCare();
         case 1851868013: return new EventDefinition();
         case 447611511: return new Evidence();
+        case -1696443231: return new EvidenceFocus();
         case -1162161645: return new EvidenceVariable();
         case 1175230202: return new ExampleScenario();
         case -1001676601: return new ExplanationOfBenefit();
@@ -587,6 +599,7 @@ public class ResourceFactory extends Factory {
         case 369315063: return new NamingSystem();
         case -146918204: return new NutritionIntake();
         case 1247831734: return new NutritionOrder();
+        case 1768059479: return new NutritionProduct();
         case 1790214156: return new Observation();
         case 673706623: return new ObservationDefinition();
         case -2140710406: return new OperationDefinition();
@@ -598,6 +611,7 @@ public class ResourceFactory extends Factory {
         case 873235173: return new Patient();
         case 2082457694: return new PaymentNotice();
         case 28778089: return new PaymentReconciliation();
+        case 1475846639: return new Permission();
         case -1907849355: return new Person();
         case 1401244028: return new PlanDefinition();
         case 738893626: return new Practitioner();
@@ -621,6 +635,8 @@ public class ResourceFactory extends Factory {
         case 1133777670: return new StructureDefinition();
         case 1958247177: return new StructureMap();
         case 505523517: return new Subscription();
+        case 108709775: return new SubscriptionStatus();
+        case 835579378: return new SubscriptionTopic();
         case -1760959152: return new Substance();
         case 1971491523: return new SubstanceDefinition();
         case -300807236: return new SubstanceNucleicAcid();
@@ -634,7 +650,6 @@ public class ResourceFactory extends Factory {
         case -549565975: return new TerminologyCapabilities();
         case -616289146: return new TestReport();
         case -589453283: return new TestScript();
-        case 80993551: return new Topic();
         case -1345530543: return new ValueSet();
         case 957089336: return new VerificationResult();
         case -555387838: return new VisionPrescription();

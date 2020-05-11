@@ -74,8 +74,10 @@ public class MedicationRequest40_50 extends VersionConvertor_40_50 {
             tgt.setReportedElement(convertBoolean(src.getReportedBooleanType()));
         if (src.hasReportedReference())
             tgt.setInformationSource(convertReference(src.getReportedReference()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept())
+          tgt.getMedication().setConcept(convertCodeableConcept(src.getMedicationCodeableConcept()));
+        if (src.hasMedicationReference())
+          tgt.getMedication().setReference(convertReference(src.getMedicationReference()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -135,8 +137,10 @@ public class MedicationRequest40_50 extends VersionConvertor_40_50 {
             tgt.setReported(convertBoolean(src.getReportedElement()));
         if (src.hasInformationSource())
             tgt.setReported(convertReference(src.getInformationSource()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.getMedication().hasReference())
+          tgt.setMedication(convertType(src.getMedication().getReference()));
+        if (src.getMedication().hasConcept())
+          tgt.setMedication(convertType(src.getMedication().getConcept()));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())

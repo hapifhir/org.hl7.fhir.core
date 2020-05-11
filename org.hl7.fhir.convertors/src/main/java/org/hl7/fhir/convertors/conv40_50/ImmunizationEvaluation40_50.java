@@ -79,9 +79,9 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
         if (src.hasSeries())
             tgt.setSeriesElement(convertString(src.getSeriesElement()));
         if (src.hasDoseNumber())
-            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+            tgt.setDoseNumber(src.getDoseNumber().primitiveValue());
         if (src.hasSeriesDoses())
-            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+            tgt.setSeriesDoses(src.getSeriesDoses().primitiveValue());
         return tgt;
     }
 
@@ -111,9 +111,9 @@ public class ImmunizationEvaluation40_50 extends VersionConvertor_40_50 {
         if (src.hasSeries())
             tgt.setSeriesElement(convertString(src.getSeriesElement()));
         if (src.hasDoseNumber())
-            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+            tgt.setDoseNumber(convertType(src.getDoseNumberElement()));
         if (src.hasSeriesDoses())
-            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+            tgt.setSeriesDoses(convertType(src.getSeriesDosesElement()));
         return tgt;
     }
 

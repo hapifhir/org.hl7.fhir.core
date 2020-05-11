@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -313,16 +313,16 @@ public class SubstancePolymer extends DomainResource {
         /**
          * Todo.
          */
-        @Child(name = "material", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept material;
+        protected CodeableConcept code;
 
         /**
          * Todo.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept type;
+        protected CodeableConcept category;
 
         /**
          * Todo.
@@ -338,7 +338,7 @@ public class SubstancePolymer extends DomainResource {
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected SubstanceAmount amount;
 
-        private static final long serialVersionUID = 589614045L;
+        private static final long serialVersionUID = -254439457L;
 
     /**
      * Constructor
@@ -348,50 +348,50 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #material} (Todo.)
+         * @return {@link #code} (Todo.)
          */
-        public CodeableConcept getMaterial() { 
-          if (this.material == null)
+        public CodeableConcept getCode() { 
+          if (this.code == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerMonomerSetStartingMaterialComponent.material");
+              throw new Error("Attempt to auto-create SubstancePolymerMonomerSetStartingMaterialComponent.code");
             else if (Configuration.doAutoCreate())
-              this.material = new CodeableConcept(); // cc
-          return this.material;
+              this.code = new CodeableConcept(); // cc
+          return this.code;
         }
 
-        public boolean hasMaterial() { 
-          return this.material != null && !this.material.isEmpty();
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
         }
 
         /**
-         * @param value {@link #material} (Todo.)
+         * @param value {@link #code} (Todo.)
          */
-        public SubstancePolymerMonomerSetStartingMaterialComponent setMaterial(CodeableConcept value) { 
-          this.material = value;
+        public SubstancePolymerMonomerSetStartingMaterialComponent setCode(CodeableConcept value) { 
+          this.code = value;
           return this;
         }
 
         /**
-         * @return {@link #type} (Todo.)
+         * @return {@link #category} (Todo.)
          */
-        public CodeableConcept getType() { 
-          if (this.type == null)
+        public CodeableConcept getCategory() { 
+          if (this.category == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerMonomerSetStartingMaterialComponent.type");
+              throw new Error("Attempt to auto-create SubstancePolymerMonomerSetStartingMaterialComponent.category");
             else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
+              this.category = new CodeableConcept(); // cc
+          return this.category;
         }
 
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
+        public boolean hasCategory() { 
+          return this.category != null && !this.category.isEmpty();
         }
 
         /**
-         * @param value {@link #type} (Todo.)
+         * @param value {@link #category} (Todo.)
          */
-        public SubstancePolymerMonomerSetStartingMaterialComponent setType(CodeableConcept value) { 
-          this.type = value;
+        public SubstancePolymerMonomerSetStartingMaterialComponent setCategory(CodeableConcept value) { 
+          this.category = value;
           return this;
         }
 
@@ -466,8 +466,8 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("material", "CodeableConcept", "Todo.", 0, 1, material));
-          children.add(new Property("type", "CodeableConcept", "Todo.", 0, 1, type));
+          children.add(new Property("code", "CodeableConcept", "Todo.", 0, 1, code));
+          children.add(new Property("category", "CodeableConcept", "Todo.", 0, 1, category));
           children.add(new Property("isDefining", "boolean", "Todo.", 0, 1, isDefining));
           children.add(new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount));
         }
@@ -475,8 +475,8 @@ public class SubstancePolymer extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 299066663: /*material*/  return new Property("material", "CodeableConcept", "Todo.", 0, 1, material);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Todo.", 0, 1, type);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Todo.", 0, 1, code);
+          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Todo.", 0, 1, category);
           case -141812990: /*isDefining*/  return new Property("isDefining", "boolean", "Todo.", 0, 1, isDefining);
           case -1413853096: /*amount*/  return new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -487,8 +487,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 299066663: /*material*/ return this.material == null ? new Base[0] : new Base[] {this.material}; // CodeableConcept
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -141812990: /*isDefining*/ return this.isDefining == null ? new Base[0] : new Base[] {this.isDefining}; // BooleanType
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // SubstanceAmount
         default: return super.getProperty(hash, name, checkValid);
@@ -499,11 +499,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 299066663: // material
-          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 50511102: // category
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -141812990: // isDefining
           this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
@@ -518,10 +518,10 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("material")) {
-          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("category")) {
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("isDefining")) {
           this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("amount")) {
@@ -534,8 +534,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 299066663:  return getMaterial();
-        case 3575610:  return getType();
+        case 3059181:  return getCode();
+        case 50511102:  return getCategory();
         case -141812990:  return getIsDefiningElement();
         case -1413853096:  return getAmount();
         default: return super.makeProperty(hash, name);
@@ -546,8 +546,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 299066663: /*material*/ return new String[] {"CodeableConcept"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -141812990: /*isDefining*/ return new String[] {"boolean"};
         case -1413853096: /*amount*/ return new String[] {"SubstanceAmount"};
         default: return super.getTypesForProperty(hash, name);
@@ -557,13 +557,13 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("material")) {
-          this.material = new CodeableConcept();
-          return this.material;
+        if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
         }
-        else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+        else if (name.equals("category")) {
+          this.category = new CodeableConcept();
+          return this.category;
         }
         else if (name.equals("isDefining")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.monomerSet.startingMaterial.isDefining");
@@ -584,8 +584,8 @@ public class SubstancePolymer extends DomainResource {
 
       public void copyValues(SubstancePolymerMonomerSetStartingMaterialComponent dst) {
         super.copyValues(dst);
-        dst.material = material == null ? null : material.copy();
-        dst.type = type == null ? null : type.copy();
+        dst.code = code == null ? null : code.copy();
+        dst.category = category == null ? null : category.copy();
         dst.isDefining = isDefining == null ? null : isDefining.copy();
         dst.amount = amount == null ? null : amount.copy();
       }
@@ -597,7 +597,7 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerMonomerSetStartingMaterialComponent))
           return false;
         SubstancePolymerMonomerSetStartingMaterialComponent o = (SubstancePolymerMonomerSetStartingMaterialComponent) other_;
-        return compareDeep(material, o.material, true) && compareDeep(type, o.type, true) && compareDeep(isDefining, o.isDefining, true)
+        return compareDeep(code, o.code, true) && compareDeep(category, o.category, true) && compareDeep(isDefining, o.isDefining, true)
            && compareDeep(amount, o.amount, true);
       }
 
@@ -612,7 +612,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(material, type, isDefining
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, category, isDefining
           , amount);
       }
 
@@ -1001,16 +1001,16 @@ public class SubstancePolymer extends DomainResource {
         /**
          * Todo.
          */
-        @Child(name = "orientationOfPolymerisation", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "unit", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept orientationOfPolymerisation;
+        protected StringType unit;
 
         /**
          * Todo.
          */
-        @Child(name = "repeatUnit", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "orientation", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected StringType repeatUnit;
+        protected CodeableConcept orientation;
 
         /**
          * Todo.
@@ -1033,7 +1033,7 @@ public class SubstancePolymer extends DomainResource {
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected List<SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent> structuralRepresentation;
 
-        private static final long serialVersionUID = -1823741061L;
+        private static final long serialVersionUID = -1739084500L;
 
     /**
      * Constructor
@@ -1043,75 +1043,75 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #orientationOfPolymerisation} (Todo.)
+         * @return {@link #unit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
          */
-        public CodeableConcept getOrientationOfPolymerisation() { 
-          if (this.orientationOfPolymerisation == null)
+        public StringType getUnitElement() { 
+          if (this.unit == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitComponent.orientationOfPolymerisation");
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitComponent.unit");
             else if (Configuration.doAutoCreate())
-              this.orientationOfPolymerisation = new CodeableConcept(); // cc
-          return this.orientationOfPolymerisation;
+              this.unit = new StringType(); // bb
+          return this.unit;
         }
 
-        public boolean hasOrientationOfPolymerisation() { 
-          return this.orientationOfPolymerisation != null && !this.orientationOfPolymerisation.isEmpty();
+        public boolean hasUnitElement() { 
+          return this.unit != null && !this.unit.isEmpty();
         }
 
-        /**
-         * @param value {@link #orientationOfPolymerisation} (Todo.)
-         */
-        public SubstancePolymerRepeatRepeatUnitComponent setOrientationOfPolymerisation(CodeableConcept value) { 
-          this.orientationOfPolymerisation = value;
-          return this;
+        public boolean hasUnit() { 
+          return this.unit != null && !this.unit.isEmpty();
         }
 
         /**
-         * @return {@link #repeatUnit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getRepeatUnit" gives direct access to the value
+         * @param value {@link #unit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
          */
-        public StringType getRepeatUnitElement() { 
-          if (this.repeatUnit == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitComponent.repeatUnit");
-            else if (Configuration.doAutoCreate())
-              this.repeatUnit = new StringType(); // bb
-          return this.repeatUnit;
-        }
-
-        public boolean hasRepeatUnitElement() { 
-          return this.repeatUnit != null && !this.repeatUnit.isEmpty();
-        }
-
-        public boolean hasRepeatUnit() { 
-          return this.repeatUnit != null && !this.repeatUnit.isEmpty();
-        }
-
-        /**
-         * @param value {@link #repeatUnit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getRepeatUnit" gives direct access to the value
-         */
-        public SubstancePolymerRepeatRepeatUnitComponent setRepeatUnitElement(StringType value) { 
-          this.repeatUnit = value;
+        public SubstancePolymerRepeatRepeatUnitComponent setUnitElement(StringType value) { 
+          this.unit = value;
           return this;
         }
 
         /**
          * @return Todo.
          */
-        public String getRepeatUnit() { 
-          return this.repeatUnit == null ? null : this.repeatUnit.getValue();
+        public String getUnit() { 
+          return this.unit == null ? null : this.unit.getValue();
         }
 
         /**
          * @param value Todo.
          */
-        public SubstancePolymerRepeatRepeatUnitComponent setRepeatUnit(String value) { 
+        public SubstancePolymerRepeatRepeatUnitComponent setUnit(String value) { 
           if (Utilities.noString(value))
-            this.repeatUnit = null;
+            this.unit = null;
           else {
-            if (this.repeatUnit == null)
-              this.repeatUnit = new StringType();
-            this.repeatUnit.setValue(value);
+            if (this.unit == null)
+              this.unit = new StringType();
+            this.unit.setValue(value);
           }
+          return this;
+        }
+
+        /**
+         * @return {@link #orientation} (Todo.)
+         */
+        public CodeableConcept getOrientation() { 
+          if (this.orientation == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitComponent.orientation");
+            else if (Configuration.doAutoCreate())
+              this.orientation = new CodeableConcept(); // cc
+          return this.orientation;
+        }
+
+        public boolean hasOrientation() { 
+          return this.orientation != null && !this.orientation.isEmpty();
+        }
+
+        /**
+         * @param value {@link #orientation} (Todo.)
+         */
+        public SubstancePolymerRepeatRepeatUnitComponent setOrientation(CodeableConcept value) { 
+          this.orientation = value;
           return this;
         }
 
@@ -1247,8 +1247,8 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("orientationOfPolymerisation", "CodeableConcept", "Todo.", 0, 1, orientationOfPolymerisation));
-          children.add(new Property("repeatUnit", "string", "Todo.", 0, 1, repeatUnit));
+          children.add(new Property("unit", "string", "Todo.", 0, 1, unit));
+          children.add(new Property("orientation", "CodeableConcept", "Todo.", 0, 1, orientation));
           children.add(new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount));
           children.add(new Property("degreeOfPolymerisation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation));
           children.add(new Property("structuralRepresentation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation));
@@ -1257,8 +1257,8 @@ public class SubstancePolymer extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1795817828: /*orientationOfPolymerisation*/  return new Property("orientationOfPolymerisation", "CodeableConcept", "Todo.", 0, 1, orientationOfPolymerisation);
-          case 1159607743: /*repeatUnit*/  return new Property("repeatUnit", "string", "Todo.", 0, 1, repeatUnit);
+          case 3594628: /*unit*/  return new Property("unit", "string", "Todo.", 0, 1, unit);
+          case -1439500848: /*orientation*/  return new Property("orientation", "CodeableConcept", "Todo.", 0, 1, orientation);
           case -1413853096: /*amount*/  return new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount);
           case -159251872: /*degreeOfPolymerisation*/  return new Property("degreeOfPolymerisation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation);
           case 14311178: /*structuralRepresentation*/  return new Property("structuralRepresentation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation);
@@ -1270,8 +1270,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 1795817828: /*orientationOfPolymerisation*/ return this.orientationOfPolymerisation == null ? new Base[0] : new Base[] {this.orientationOfPolymerisation}; // CodeableConcept
-        case 1159607743: /*repeatUnit*/ return this.repeatUnit == null ? new Base[0] : new Base[] {this.repeatUnit}; // StringType
+        case 3594628: /*unit*/ return this.unit == null ? new Base[0] : new Base[] {this.unit}; // StringType
+        case -1439500848: /*orientation*/ return this.orientation == null ? new Base[0] : new Base[] {this.orientation}; // CodeableConcept
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // SubstanceAmount
         case -159251872: /*degreeOfPolymerisation*/ return this.degreeOfPolymerisation == null ? new Base[0] : this.degreeOfPolymerisation.toArray(new Base[this.degreeOfPolymerisation.size()]); // SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent
         case 14311178: /*structuralRepresentation*/ return this.structuralRepresentation == null ? new Base[0] : this.structuralRepresentation.toArray(new Base[this.structuralRepresentation.size()]); // SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent
@@ -1283,11 +1283,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 1795817828: // orientationOfPolymerisation
-          this.orientationOfPolymerisation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 3594628: // unit
+          this.unit = TypeConvertor.castToString(value); // StringType
           return value;
-        case 1159607743: // repeatUnit
-          this.repeatUnit = TypeConvertor.castToString(value); // StringType
+        case -1439500848: // orientation
+          this.orientation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
           this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
@@ -1305,10 +1305,10 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("orientationOfPolymerisation")) {
-          this.orientationOfPolymerisation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("repeatUnit")) {
-          this.repeatUnit = TypeConvertor.castToString(value); // StringType
+        if (name.equals("unit")) {
+          this.unit = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("orientation")) {
+          this.orientation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
           this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
         } else if (name.equals("degreeOfPolymerisation")) {
@@ -1323,8 +1323,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1795817828:  return getOrientationOfPolymerisation();
-        case 1159607743:  return getRepeatUnitElement();
+        case 3594628:  return getUnitElement();
+        case -1439500848:  return getOrientation();
         case -1413853096:  return getAmount();
         case -159251872:  return addDegreeOfPolymerisation(); 
         case 14311178:  return addStructuralRepresentation(); 
@@ -1336,8 +1336,8 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1795817828: /*orientationOfPolymerisation*/ return new String[] {"CodeableConcept"};
-        case 1159607743: /*repeatUnit*/ return new String[] {"string"};
+        case 3594628: /*unit*/ return new String[] {"string"};
+        case -1439500848: /*orientation*/ return new String[] {"CodeableConcept"};
         case -1413853096: /*amount*/ return new String[] {"SubstanceAmount"};
         case -159251872: /*degreeOfPolymerisation*/ return new String[] {};
         case 14311178: /*structuralRepresentation*/ return new String[] {};
@@ -1348,12 +1348,12 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("orientationOfPolymerisation")) {
-          this.orientationOfPolymerisation = new CodeableConcept();
-          return this.orientationOfPolymerisation;
+        if (name.equals("unit")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.unit");
         }
-        else if (name.equals("repeatUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.repeatUnit");
+        else if (name.equals("orientation")) {
+          this.orientation = new CodeableConcept();
+          return this.orientation;
         }
         else if (name.equals("amount")) {
           this.amount = new SubstanceAmount();
@@ -1377,8 +1377,8 @@ public class SubstancePolymer extends DomainResource {
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitComponent dst) {
         super.copyValues(dst);
-        dst.orientationOfPolymerisation = orientationOfPolymerisation == null ? null : orientationOfPolymerisation.copy();
-        dst.repeatUnit = repeatUnit == null ? null : repeatUnit.copy();
+        dst.unit = unit == null ? null : unit.copy();
+        dst.orientation = orientation == null ? null : orientation.copy();
         dst.amount = amount == null ? null : amount.copy();
         if (degreeOfPolymerisation != null) {
           dst.degreeOfPolymerisation = new ArrayList<SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent>();
@@ -1399,9 +1399,9 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitComponent o = (SubstancePolymerRepeatRepeatUnitComponent) other_;
-        return compareDeep(orientationOfPolymerisation, o.orientationOfPolymerisation, true) && compareDeep(repeatUnit, o.repeatUnit, true)
-           && compareDeep(amount, o.amount, true) && compareDeep(degreeOfPolymerisation, o.degreeOfPolymerisation, true)
-           && compareDeep(structuralRepresentation, o.structuralRepresentation, true);
+        return compareDeep(unit, o.unit, true) && compareDeep(orientation, o.orientation, true) && compareDeep(amount, o.amount, true)
+           && compareDeep(degreeOfPolymerisation, o.degreeOfPolymerisation, true) && compareDeep(structuralRepresentation, o.structuralRepresentation, true)
+          ;
       }
 
       @Override
@@ -1411,12 +1411,12 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitComponent o = (SubstancePolymerRepeatRepeatUnitComponent) other_;
-        return compareValues(repeatUnit, o.repeatUnit, true);
+        return compareValues(unit, o.unit, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(orientationOfPolymerisation
-          , repeatUnit, amount, degreeOfPolymerisation, structuralRepresentation);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(unit, orientation, amount
+          , degreeOfPolymerisation, structuralRepresentation);
       }
 
   public String fhirType() {
@@ -1646,11 +1646,18 @@ public class SubstancePolymer extends DomainResource {
         /**
          * Todo.
          */
-        @Child(name = "attachment", type = {Attachment.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "format", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        protected CodeableConcept format;
+
+        /**
+         * Todo.
+         */
+        @Child(name = "attachment", type = {Attachment.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Todo", formalDefinition="Todo." )
         protected Attachment attachment;
 
-        private static final long serialVersionUID = 167954495L;
+        private static final long serialVersionUID = -1385695515L;
 
     /**
      * Constructor
@@ -1733,6 +1740,30 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
+         * @return {@link #format} (Todo.)
+         */
+        public CodeableConcept getFormat() { 
+          if (this.format == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent.format");
+            else if (Configuration.doAutoCreate())
+              this.format = new CodeableConcept(); // cc
+          return this.format;
+        }
+
+        public boolean hasFormat() { 
+          return this.format != null && !this.format.isEmpty();
+        }
+
+        /**
+         * @param value {@link #format} (Todo.)
+         */
+        public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setFormat(CodeableConcept value) { 
+          this.format = value;
+          return this;
+        }
+
+        /**
          * @return {@link #attachment} (Todo.)
          */
         public Attachment getAttachment() { 
@@ -1760,6 +1791,7 @@ public class SubstancePolymer extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Todo.", 0, 1, type));
           children.add(new Property("representation", "string", "Todo.", 0, 1, representation));
+          children.add(new Property("format", "CodeableConcept", "Todo.", 0, 1, format));
           children.add(new Property("attachment", "Attachment", "Todo.", 0, 1, attachment));
         }
 
@@ -1768,6 +1800,7 @@ public class SubstancePolymer extends DomainResource {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Todo.", 0, 1, type);
           case -671065907: /*representation*/  return new Property("representation", "string", "Todo.", 0, 1, representation);
+          case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "Todo.", 0, 1, format);
           case -1963501277: /*attachment*/  return new Property("attachment", "Attachment", "Todo.", 0, 1, attachment);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1779,6 +1812,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -671065907: /*representation*/ return this.representation == null ? new Base[0] : new Base[] {this.representation}; // StringType
+        case -1268779017: /*format*/ return this.format == null ? new Base[0] : new Base[] {this.format}; // CodeableConcept
         case -1963501277: /*attachment*/ return this.attachment == null ? new Base[0] : new Base[] {this.attachment}; // Attachment
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1794,6 +1828,9 @@ public class SubstancePolymer extends DomainResource {
         case -671065907: // representation
           this.representation = TypeConvertor.castToString(value); // StringType
           return value;
+        case -1268779017: // format
+          this.format = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -1963501277: // attachment
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
@@ -1808,6 +1845,8 @@ public class SubstancePolymer extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("representation")) {
           this.representation = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("format")) {
+          this.format = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("attachment")) {
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
         } else
@@ -1820,6 +1859,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3575610:  return getType();
         case -671065907:  return getRepresentationElement();
+        case -1268779017:  return getFormat();
         case -1963501277:  return getAttachment();
         default: return super.makeProperty(hash, name);
         }
@@ -1831,6 +1871,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -671065907: /*representation*/ return new String[] {"string"};
+        case -1268779017: /*format*/ return new String[] {"CodeableConcept"};
         case -1963501277: /*attachment*/ return new String[] {"Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1845,6 +1886,10 @@ public class SubstancePolymer extends DomainResource {
         }
         else if (name.equals("representation")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.structuralRepresentation.representation");
+        }
+        else if (name.equals("format")) {
+          this.format = new CodeableConcept();
+          return this.format;
         }
         else if (name.equals("attachment")) {
           this.attachment = new Attachment();
@@ -1864,6 +1909,7 @@ public class SubstancePolymer extends DomainResource {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.representation = representation == null ? null : representation.copy();
+        dst.format = format == null ? null : format.copy();
         dst.attachment = attachment == null ? null : attachment.copy();
       }
 
@@ -1874,8 +1920,8 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent o = (SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(representation, o.representation, true) && compareDeep(attachment, o.attachment, true)
-          ;
+        return compareDeep(type, o.type, true) && compareDeep(representation, o.representation, true) && compareDeep(format, o.format, true)
+           && compareDeep(attachment, o.attachment, true);
       }
 
       @Override
@@ -1889,8 +1935,8 @@ public class SubstancePolymer extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, representation, attachment
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, representation, format
+          , attachment);
       }
 
   public String fhirType() {
@@ -1903,52 +1949,83 @@ public class SubstancePolymer extends DomainResource {
     /**
      * Todo.
      */
-    @Child(name = "class", type = {CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    protected Identifier identifier;
+
+    /**
+     * Todo.
+     */
+    @Child(name = "class", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected CodeableConcept class_;
 
     /**
      * Todo.
      */
-    @Child(name = "geometry", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "geometry", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected CodeableConcept geometry;
 
     /**
      * Todo.
      */
-    @Child(name = "copolymerConnectivity", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "copolymerConnectivity", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected List<CodeableConcept> copolymerConnectivity;
 
     /**
-     * Todo.
+     * Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
      */
-    @Child(name = "modification", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
-    protected List<StringType> modification;
+    @Child(name = "modification", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder", formalDefinition="Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder." )
+    protected StringType modification;
 
     /**
      * Todo.
      */
-    @Child(name = "monomerSet", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "monomerSet", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected List<SubstancePolymerMonomerSetComponent> monomerSet;
 
     /**
      * Todo.
      */
-    @Child(name = "repeat", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "repeat", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected List<SubstancePolymerRepeatComponent> repeat;
 
-    private static final long serialVersionUID = -58301650L;
+    private static final long serialVersionUID = 11937102L;
 
   /**
    * Constructor
    */
     public SubstancePolymer() {
       super();
+    }
+
+    /**
+     * @return {@link #identifier} (Todo.)
+     */
+    public Identifier getIdentifier() { 
+      if (this.identifier == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SubstancePolymer.identifier");
+        else if (Configuration.doAutoCreate())
+          this.identifier = new Identifier(); // cc
+      return this.identifier;
+    }
+
+    public boolean hasIdentifier() { 
+      return this.identifier != null && !this.identifier.isEmpty();
+    }
+
+    /**
+     * @param value {@link #identifier} (Todo.)
+     */
+    public SubstancePolymer setIdentifier(Identifier value) { 
+      this.identifier = value;
+      return this;
     }
 
     /**
@@ -2053,64 +2130,52 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #modification} (Todo.)
+     * @return {@link #modification} (Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
      */
-    public List<StringType> getModification() { 
+    public StringType getModificationElement() { 
       if (this.modification == null)
-        this.modification = new ArrayList<StringType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SubstancePolymer.modification");
+        else if (Configuration.doAutoCreate())
+          this.modification = new StringType(); // bb
       return this.modification;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public SubstancePolymer setModification(List<StringType> theModification) { 
-      this.modification = theModification;
-      return this;
+    public boolean hasModificationElement() { 
+      return this.modification != null && !this.modification.isEmpty();
     }
 
     public boolean hasModification() { 
-      if (this.modification == null)
-        return false;
-      for (StringType item : this.modification)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.modification != null && !this.modification.isEmpty();
     }
 
     /**
-     * @return {@link #modification} (Todo.)
+     * @param value {@link #modification} (Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
      */
-    public StringType addModificationElement() {//2 
-      StringType t = new StringType();
-      if (this.modification == null)
-        this.modification = new ArrayList<StringType>();
-      this.modification.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #modification} (Todo.)
-     */
-    public SubstancePolymer addModification(String value) { //1
-      StringType t = new StringType();
-      t.setValue(value);
-      if (this.modification == null)
-        this.modification = new ArrayList<StringType>();
-      this.modification.add(t);
+    public SubstancePolymer setModificationElement(StringType value) { 
+      this.modification = value;
       return this;
     }
 
     /**
-     * @param value {@link #modification} (Todo.)
+     * @return Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
      */
-    public boolean hasModification(String value) { 
-      if (this.modification == null)
-        return false;
-      for (StringType v : this.modification)
-        if (v.getValue().equals(value)) // string
-          return true;
-      return false;
+    public String getModification() { 
+      return this.modification == null ? null : this.modification.getValue();
+    }
+
+    /**
+     * @param value Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
+     */
+    public SubstancePolymer setModification(String value) { 
+      if (Utilities.noString(value))
+        this.modification = null;
+      else {
+        if (this.modification == null)
+          this.modification = new StringType();
+        this.modification.setValue(value);
+      }
+      return this;
     }
 
     /**
@@ -2221,10 +2286,11 @@ public class SubstancePolymer extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
+        children.add(new Property("identifier", "Identifier", "Todo.", 0, 1, identifier));
         children.add(new Property("class", "CodeableConcept", "Todo.", 0, 1, class_));
         children.add(new Property("geometry", "CodeableConcept", "Todo.", 0, 1, geometry));
         children.add(new Property("copolymerConnectivity", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity));
-        children.add(new Property("modification", "string", "Todo.", 0, java.lang.Integer.MAX_VALUE, modification));
+        children.add(new Property("modification", "string", "Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification));
         children.add(new Property("monomerSet", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, monomerSet));
         children.add(new Property("repeat", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeat));
       }
@@ -2232,10 +2298,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Todo.", 0, 1, identifier);
         case 94742904: /*class*/  return new Property("class", "CodeableConcept", "Todo.", 0, 1, class_);
         case 1846020210: /*geometry*/  return new Property("geometry", "CodeableConcept", "Todo.", 0, 1, geometry);
         case 997107577: /*copolymerConnectivity*/  return new Property("copolymerConnectivity", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity);
-        case -684600932: /*modification*/  return new Property("modification", "string", "Todo.", 0, java.lang.Integer.MAX_VALUE, modification);
+        case -684600932: /*modification*/  return new Property("modification", "string", "Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification);
         case -1622483765: /*monomerSet*/  return new Property("monomerSet", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, monomerSet);
         case -934531685: /*repeat*/  return new Property("repeat", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeat);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2246,10 +2313,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case 94742904: /*class*/ return this.class_ == null ? new Base[0] : new Base[] {this.class_}; // CodeableConcept
         case 1846020210: /*geometry*/ return this.geometry == null ? new Base[0] : new Base[] {this.geometry}; // CodeableConcept
         case 997107577: /*copolymerConnectivity*/ return this.copolymerConnectivity == null ? new Base[0] : this.copolymerConnectivity.toArray(new Base[this.copolymerConnectivity.size()]); // CodeableConcept
-        case -684600932: /*modification*/ return this.modification == null ? new Base[0] : this.modification.toArray(new Base[this.modification.size()]); // StringType
+        case -684600932: /*modification*/ return this.modification == null ? new Base[0] : new Base[] {this.modification}; // StringType
         case -1622483765: /*monomerSet*/ return this.monomerSet == null ? new Base[0] : this.monomerSet.toArray(new Base[this.monomerSet.size()]); // SubstancePolymerMonomerSetComponent
         case -934531685: /*repeat*/ return this.repeat == null ? new Base[0] : this.repeat.toArray(new Base[this.repeat.size()]); // SubstancePolymerRepeatComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -2260,6 +2328,9 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case -1618432855: // identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          return value;
         case 94742904: // class
           this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
@@ -2270,7 +2341,7 @@ public class SubstancePolymer extends DomainResource {
           this.getCopolymerConnectivity().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -684600932: // modification
-          this.getModification().add(TypeConvertor.castToString(value)); // StringType
+          this.modification = TypeConvertor.castToString(value); // StringType
           return value;
         case -1622483765: // monomerSet
           this.getMonomerSet().add((SubstancePolymerMonomerSetComponent) value); // SubstancePolymerMonomerSetComponent
@@ -2285,14 +2356,16 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("class")) {
+        if (name.equals("identifier")) {
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("class")) {
           this.class_ = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("geometry")) {
           this.geometry = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("copolymerConnectivity")) {
           this.getCopolymerConnectivity().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("modification")) {
-          this.getModification().add(TypeConvertor.castToString(value));
+          this.modification = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("monomerSet")) {
           this.getMonomerSet().add((SubstancePolymerMonomerSetComponent) value);
         } else if (name.equals("repeat")) {
@@ -2305,10 +2378,11 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1618432855:  return getIdentifier();
         case 94742904:  return getClass_();
         case 1846020210:  return getGeometry();
         case 997107577:  return addCopolymerConnectivity(); 
-        case -684600932:  return addModificationElement();
+        case -684600932:  return getModificationElement();
         case -1622483765:  return addMonomerSet(); 
         case -934531685:  return addRepeat(); 
         default: return super.makeProperty(hash, name);
@@ -2319,6 +2393,7 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 94742904: /*class*/ return new String[] {"CodeableConcept"};
         case 1846020210: /*geometry*/ return new String[] {"CodeableConcept"};
         case 997107577: /*copolymerConnectivity*/ return new String[] {"CodeableConcept"};
@@ -2332,7 +2407,11 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("class")) {
+        if (name.equals("identifier")) {
+          this.identifier = new Identifier();
+          return this.identifier;
+        }
+        else if (name.equals("class")) {
           this.class_ = new CodeableConcept();
           return this.class_;
         }
@@ -2369,6 +2448,7 @@ public class SubstancePolymer extends DomainResource {
 
       public void copyValues(SubstancePolymer dst) {
         super.copyValues(dst);
+        dst.identifier = identifier == null ? null : identifier.copy();
         dst.class_ = class_ == null ? null : class_.copy();
         dst.geometry = geometry == null ? null : geometry.copy();
         if (copolymerConnectivity != null) {
@@ -2376,11 +2456,7 @@ public class SubstancePolymer extends DomainResource {
           for (CodeableConcept i : copolymerConnectivity)
             dst.copolymerConnectivity.add(i.copy());
         };
-        if (modification != null) {
-          dst.modification = new ArrayList<StringType>();
-          for (StringType i : modification)
-            dst.modification.add(i.copy());
-        };
+        dst.modification = modification == null ? null : modification.copy();
         if (monomerSet != null) {
           dst.monomerSet = new ArrayList<SubstancePolymerMonomerSetComponent>();
           for (SubstancePolymerMonomerSetComponent i : monomerSet)
@@ -2404,9 +2480,9 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymer))
           return false;
         SubstancePolymer o = (SubstancePolymer) other_;
-        return compareDeep(class_, o.class_, true) && compareDeep(geometry, o.geometry, true) && compareDeep(copolymerConnectivity, o.copolymerConnectivity, true)
-           && compareDeep(modification, o.modification, true) && compareDeep(monomerSet, o.monomerSet, true)
-           && compareDeep(repeat, o.repeat, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(class_, o.class_, true) && compareDeep(geometry, o.geometry, true)
+           && compareDeep(copolymerConnectivity, o.copolymerConnectivity, true) && compareDeep(modification, o.modification, true)
+           && compareDeep(monomerSet, o.monomerSet, true) && compareDeep(repeat, o.repeat, true);
       }
 
       @Override
@@ -2420,8 +2496,8 @@ public class SubstancePolymer extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(class_, geometry, copolymerConnectivity
-          , modification, monomerSet, repeat);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, class_, geometry
+          , copolymerConnectivity, modification, monomerSet, repeat);
       }
 
   @Override

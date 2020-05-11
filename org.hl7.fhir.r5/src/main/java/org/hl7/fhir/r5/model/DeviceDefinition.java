@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -396,10 +396,10 @@ public class DeviceDefinition extends DomainResource {
     @Block()
     public static class DeviceDefinitionDeviceNameComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The name of the device.
+         * A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.
          */
         @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The name of the device", formalDefinition="The name of the device." )
+        @Description(shortDefinition="A name that is used to refer to the device", formalDefinition="A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other." )
         protected StringType name;
 
         /**
@@ -430,7 +430,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       }
 
         /**
-         * @return {@link #name} (The name of the device.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @return {@link #name} (A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public StringType getNameElement() { 
           if (this.name == null)
@@ -450,7 +450,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @param value {@link #name} (The name of the device.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @param value {@link #name} (A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public DeviceDefinitionDeviceNameComponent setNameElement(StringType value) { 
           this.name = value;
@@ -458,14 +458,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return The name of the device.
+         * @return A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.
          */
         public String getName() { 
           return this.name == null ? null : this.name.getValue();
         }
 
         /**
-         * @param value The name of the device.
+         * @param value A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.
          */
         public DeviceDefinitionDeviceNameComponent setName(String value) { 
             if (this.name == null)
@@ -525,14 +525,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("name", "string", "The name of the device.", 0, 1, name));
+          children.add(new Property("name", "string", "A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.", 0, 1, name));
           children.add(new Property("type", "code", "The type of deviceName.\nUDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.", 0, 1, type));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3373707: /*name*/  return new Property("name", "string", "The name of the device.", 0, 1, name);
+          case 3373707: /*name*/  return new Property("name", "string", "A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.", 0, 1, name);
           case 3575610: /*type*/  return new Property("type", "code", "The type of deviceName.\nUDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.", 0, 1, type);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -907,17 +907,17 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     @Block()
     public static class DeviceDefinitionCapabilityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Type of capability.
+         * The type of capability - whether it is a physical attribute, a customization needed. For exampl e "water ingress protection".
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Type of capability", formalDefinition="Type of capability." )
+        @Description(shortDefinition="The type of capability - whether it is a physical attribute, a customization needed", formalDefinition="The type of capability - whether it is a physical attribute, a customization needed. For exampl e \"water ingress protection\"." )
         protected CodeableConcept type;
 
         /**
-         * Description of capability.
+         * The actual capability of the device e.g. IP67.
          */
         @Child(name = "description", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Description of capability", formalDefinition="Description of capability." )
+        @Description(shortDefinition="The actual capability of the device", formalDefinition="The actual capability of the device e.g. IP67." )
         protected List<CodeableConcept> description;
 
         private static final long serialVersionUID = -192945344L;
@@ -938,7 +938,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       }
 
         /**
-         * @return {@link #type} (Type of capability.)
+         * @return {@link #type} (The type of capability - whether it is a physical attribute, a customization needed. For exampl e "water ingress protection".)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -954,7 +954,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @param value {@link #type} (Type of capability.)
+         * @param value {@link #type} (The type of capability - whether it is a physical attribute, a customization needed. For exampl e "water ingress protection".)
          */
         public DeviceDefinitionCapabilityComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -962,7 +962,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return {@link #description} (Description of capability.)
+         * @return {@link #description} (The actual capability of the device e.g. IP67.)
          */
         public List<CodeableConcept> getDescription() { 
           if (this.description == null)
@@ -1016,15 +1016,15 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Type of capability.", 0, 1, type));
-          children.add(new Property("description", "CodeableConcept", "Description of capability.", 0, java.lang.Integer.MAX_VALUE, description));
+          children.add(new Property("type", "CodeableConcept", "The type of capability - whether it is a physical attribute, a customization needed. For exampl e \"water ingress protection\".", 0, 1, type));
+          children.add(new Property("description", "CodeableConcept", "The actual capability of the device e.g. IP67.", 0, java.lang.Integer.MAX_VALUE, description));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of capability.", 0, 1, type);
-          case -1724546052: /*description*/  return new Property("description", "CodeableConcept", "Description of capability.", 0, java.lang.Integer.MAX_VALUE, description);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of capability - whether it is a physical attribute, a customization needed. For exampl e \"water ingress protection\".", 0, 1, type);
+          case -1724546052: /*description*/  return new Property("description", "CodeableConcept", "The actual capability of the device e.g. IP67.", 0, java.lang.Integer.MAX_VALUE, description);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1469,10 +1469,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     @Block()
     public static class DeviceDefinitionMaterialComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The substance.
+         * A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.
          */
         @Child(name = "substance", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The substance", formalDefinition="The substance." )
+        @Description(shortDefinition="A relevant substance that the device contains, may contain, or is made of", formalDefinition="A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials." )
         protected CodeableConcept substance;
 
         /**
@@ -1507,7 +1507,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       }
 
         /**
-         * @return {@link #substance} (The substance.)
+         * @return {@link #substance} (A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.)
          */
         public CodeableConcept getSubstance() { 
           if (this.substance == null)
@@ -1523,7 +1523,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @param value {@link #substance} (The substance.)
+         * @param value {@link #substance} (A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.)
          */
         public DeviceDefinitionMaterialComponent setSubstance(CodeableConcept value) { 
           this.substance = value;
@@ -1622,7 +1622,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("substance", "CodeableConcept", "The substance.", 0, 1, substance));
+          children.add(new Property("substance", "CodeableConcept", "A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.", 0, 1, substance));
           children.add(new Property("alternate", "boolean", "Indicates an alternative material of the device.", 0, 1, alternate));
           children.add(new Property("allergenicIndicator", "boolean", "Whether the substance is a known or suspected allergen.", 0, 1, allergenicIndicator));
         }
@@ -1630,7 +1630,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 530040176: /*substance*/  return new Property("substance", "CodeableConcept", "The substance.", 0, 1, substance);
+          case 530040176: /*substance*/  return new Property("substance", "CodeableConcept", "A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.", 0, 1, substance);
           case -1408024454: /*alternate*/  return new Property("alternate", "boolean", "Indicates an alternative material of the device.", 0, 1, alternate);
           case 75406931: /*allergenicIndicator*/  return new Property("allergenicIndicator", "boolean", "Whether the substance is a known or suspected allergen.", 0, 1, allergenicIndicator);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1779,24 +1779,24 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<DeviceDefinitionUdiDeviceIdentifierComponent> udiDeviceIdentifier;
 
     /**
-     * A name of the manufacturer.
+     * A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.
      */
     @Child(name = "manufacturer", type = {StringType.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer." )
+    @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction." )
     protected DataType manufacturer;
 
     /**
-     * A name given to the device to identify it.
+     * The name or names of the device as given by the manufacturer.
      */
     @Child(name = "deviceName", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A name given to the device to identify it", formalDefinition="A name given to the device to identify it." )
+    @Description(shortDefinition="The name or names of the device as given by the manufacturer", formalDefinition="The name or names of the device as given by the manufacturer." )
     protected List<DeviceDefinitionDeviceNameComponent> deviceName;
 
     /**
-     * The model number for the device.
+     * The model number for the device for example as defined by the manufacturer or labeler, or other agency.
      */
     @Child(name = "modelNumber", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The model number for the device", formalDefinition="The model number for the device." )
+    @Description(shortDefinition="The catalog or model number for the device for example as defined by the manufacturer", formalDefinition="The model number for the device for example as defined by the manufacturer or labeler, or other agency." )
     protected StringType modelNumber;
 
     /**
@@ -1837,10 +1837,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<ProductShelfLife> shelfLifeStorage;
 
     /**
-     * Dimensions, color etc.
+     * Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering.
      */
     @Child(name = "physicalCharacteristics", type = {ProdCharacteristic.class}, order=10, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Dimensions, color etc.", formalDefinition="Dimensions, color etc." )
+    @Description(shortDefinition="Physical characteristics to define or specify the product - for example dimensions, color etc.", formalDefinition="Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering." )
     protected ProdCharacteristic physicalCharacteristics;
 
     /**
@@ -1851,10 +1851,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<CodeableConcept> languageCode;
 
     /**
-     * Device capabilities.
+     * Additional capabilities that the device is defined or required to have e.g. "water resistant", "long life".
      */
     @Child(name = "capability", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Device capabilities", formalDefinition="Device capabilities." )
+    @Description(shortDefinition="Additional capabilities of the device", formalDefinition="Additional capabilities that the device is defined or required to have e.g. \"water resistant\", \"long life\"." )
     protected List<DeviceDefinitionCapabilityComponent> capability;
 
     /**
@@ -1879,48 +1879,41 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<ContactPoint> contact;
 
     /**
-     * A network address on which the device may be contacted directly.
-     */
-    @Child(name = "url", type = {UriType.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Network address to contact device", formalDefinition="A network address on which the device may be contacted directly." )
-    protected UriType url;
-
-    /**
      * Access to on-line information about the device.
      */
-    @Child(name = "onlineInformation", type = {UriType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "onlineInformation", type = {UriType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Access to on-line information", formalDefinition="Access to on-line information about the device." )
     protected UriType onlineInformation;
 
     /**
      * Descriptive information, usage information or implantation information that is not captured in an existing element.
      */
-    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Device notes and comments", formalDefinition="Descriptive information, usage information or implantation information that is not captured in an existing element." )
     protected List<Annotation> note;
 
     /**
      * The quantity of the device present in the packaging (e.g. the number of devices present in a pack, or the number of devices in the same package of the medicinal product).
      */
-    @Child(name = "quantity", type = {Quantity.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "quantity", type = {Quantity.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The quantity of the device present in the packaging (e.g. the number of devices present in a pack, or the number of devices in the same package of the medicinal product)", formalDefinition="The quantity of the device present in the packaging (e.g. the number of devices present in a pack, or the number of devices in the same package of the medicinal product)." )
     protected Quantity quantity;
 
     /**
      * The parent device it can be part of.
      */
-    @Child(name = "parentDevice", type = {DeviceDefinition.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "parentDevice", type = {DeviceDefinition.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The parent device it can be part of", formalDefinition="The parent device it can be part of." )
     protected Reference parentDevice;
 
     /**
      * A substance used to create the material(s) of which the device is made.
      */
-    @Child(name = "material", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "material", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A substance used to create the material(s) of which the device is made", formalDefinition="A substance used to create the material(s) of which the device is made." )
     protected List<DeviceDefinitionMaterialComponent> material;
 
-    private static final long serialVersionUID = 740460962L;
+    private static final long serialVersionUID = 330387501L;
 
   /**
    * Constructor
@@ -2036,14 +2029,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #manufacturer} (A name of the manufacturer.)
+     * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
     public DataType getManufacturer() { 
       return this.manufacturer;
     }
 
     /**
-     * @return {@link #manufacturer} (A name of the manufacturer.)
+     * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
     public StringType getManufacturerStringType() throws FHIRException { 
       if (this.manufacturer == null)
@@ -2058,7 +2051,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #manufacturer} (A name of the manufacturer.)
+     * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
     public Reference getManufacturerReference() throws FHIRException { 
       if (this.manufacturer == null)
@@ -2077,7 +2070,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @param value {@link #manufacturer} (A name of the manufacturer.)
+     * @param value {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
     public DeviceDefinition setManufacturer(DataType value) { 
       if (value != null && !(value instanceof StringType || value instanceof Reference))
@@ -2087,7 +2080,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #deviceName} (A name given to the device to identify it.)
+     * @return {@link #deviceName} (The name or names of the device as given by the manufacturer.)
      */
     public List<DeviceDefinitionDeviceNameComponent> getDeviceName() { 
       if (this.deviceName == null)
@@ -2140,7 +2133,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #modelNumber} (The model number for the device.). This is the underlying object with id, value and extensions. The accessor "getModelNumber" gives direct access to the value
+     * @return {@link #modelNumber} (The model number for the device for example as defined by the manufacturer or labeler, or other agency.). This is the underlying object with id, value and extensions. The accessor "getModelNumber" gives direct access to the value
      */
     public StringType getModelNumberElement() { 
       if (this.modelNumber == null)
@@ -2160,7 +2153,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @param value {@link #modelNumber} (The model number for the device.). This is the underlying object with id, value and extensions. The accessor "getModelNumber" gives direct access to the value
+     * @param value {@link #modelNumber} (The model number for the device for example as defined by the manufacturer or labeler, or other agency.). This is the underlying object with id, value and extensions. The accessor "getModelNumber" gives direct access to the value
      */
     public DeviceDefinition setModelNumberElement(StringType value) { 
       this.modelNumber = value;
@@ -2168,14 +2161,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The model number for the device.
+     * @return The model number for the device for example as defined by the manufacturer or labeler, or other agency.
      */
     public String getModelNumber() { 
       return this.modelNumber == null ? null : this.modelNumber.getValue();
     }
 
     /**
-     * @param value The model number for the device.
+     * @param value The model number for the device for example as defined by the manufacturer or labeler, or other agency.
      */
     public DeviceDefinition setModelNumber(String value) { 
       if (Utilities.noString(value))
@@ -2433,7 +2426,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #physicalCharacteristics} (Dimensions, color etc.)
+     * @return {@link #physicalCharacteristics} (Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering.)
      */
     public ProdCharacteristic getPhysicalCharacteristics() { 
       if (this.physicalCharacteristics == null)
@@ -2449,7 +2442,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @param value {@link #physicalCharacteristics} (Dimensions, color etc.)
+     * @param value {@link #physicalCharacteristics} (Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering.)
      */
     public DeviceDefinition setPhysicalCharacteristics(ProdCharacteristic value) { 
       this.physicalCharacteristics = value;
@@ -2510,7 +2503,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #capability} (Device capabilities.)
+     * @return {@link #capability} (Additional capabilities that the device is defined or required to have e.g. "water resistant", "long life".)
      */
     public List<DeviceDefinitionCapabilityComponent> getCapability() { 
       if (this.capability == null)
@@ -2690,55 +2683,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         addContact();
       }
       return getContact().get(0);
-    }
-
-    /**
-     * @return {@link #url} (A network address on which the device may be contacted directly.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public UriType getUrlElement() { 
-      if (this.url == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceDefinition.url");
-        else if (Configuration.doAutoCreate())
-          this.url = new UriType(); // bb
-      return this.url;
-    }
-
-    public boolean hasUrlElement() { 
-      return this.url != null && !this.url.isEmpty();
-    }
-
-    public boolean hasUrl() { 
-      return this.url != null && !this.url.isEmpty();
-    }
-
-    /**
-     * @param value {@link #url} (A network address on which the device may be contacted directly.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public DeviceDefinition setUrlElement(UriType value) { 
-      this.url = value;
-      return this;
-    }
-
-    /**
-     * @return A network address on which the device may be contacted directly.
-     */
-    public String getUrl() { 
-      return this.url == null ? null : this.url.getValue();
-    }
-
-    /**
-     * @param value A network address on which the device may be contacted directly.
-     */
-    public DeviceDefinition setUrl(String value) { 
-      if (Utilities.noString(value))
-        this.url = null;
-      else {
-        if (this.url == null)
-          this.url = new UriType();
-        this.url.setValue(value);
-      }
-      return this;
     }
 
     /**
@@ -2948,21 +2892,20 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier));
-        children.add(new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer));
-        children.add(new Property("deviceName", "", "A name given to the device to identify it.", 0, java.lang.Integer.MAX_VALUE, deviceName));
-        children.add(new Property("modelNumber", "string", "The model number for the device.", 0, 1, modelNumber));
+        children.add(new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer));
+        children.add(new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName));
+        children.add(new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber));
         children.add(new Property("type", "CodeableConcept", "What kind of device or device system this is.", 0, 1, type));
         children.add(new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization));
         children.add(new Property("version", "string", "The available versions of the device, e.g., software versions.", 0, java.lang.Integer.MAX_VALUE, version));
         children.add(new Property("safety", "CodeableConcept", "Safety characteristics of the device.", 0, java.lang.Integer.MAX_VALUE, safety));
         children.add(new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage));
-        children.add(new Property("physicalCharacteristics", "ProdCharacteristic", "Dimensions, color etc.", 0, 1, physicalCharacteristics));
+        children.add(new Property("physicalCharacteristics", "ProdCharacteristic", "Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering.", 0, 1, physicalCharacteristics));
         children.add(new Property("languageCode", "CodeableConcept", "Language code for the human-readable text strings produced by the device (all supported).", 0, java.lang.Integer.MAX_VALUE, languageCode));
-        children.add(new Property("capability", "", "Device capabilities.", 0, java.lang.Integer.MAX_VALUE, capability));
+        children.add(new Property("capability", "", "Additional capabilities that the device is defined or required to have e.g. \"water resistant\", \"long life\".", 0, java.lang.Integer.MAX_VALUE, capability));
         children.add(new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner));
         children.add(new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact));
-        children.add(new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url));
         children.add(new Property("onlineInformation", "uri", "Access to on-line information about the device.", 0, 1, onlineInformation));
         children.add(new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("quantity", "Quantity", "The quantity of the device present in the packaging (e.g. the number of devices present in a pack, or the number of devices in the same package of the medicinal product).", 0, 1, quantity));
@@ -2975,24 +2918,23 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
-        case 418079503: /*manufacturer[x]*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
-        case -1969347631: /*manufacturer*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
-        case -630681790: /*manufacturerString*/  return new Property("manufacturer[x]", "string", "A name of the manufacturer.", 0, 1, manufacturer);
-        case 1104934522: /*manufacturerReference*/  return new Property("manufacturer[x]", "Reference(Organization)", "A name of the manufacturer.", 0, 1, manufacturer);
-        case 780988929: /*deviceName*/  return new Property("deviceName", "", "A name given to the device to identify it.", 0, java.lang.Integer.MAX_VALUE, deviceName);
-        case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device.", 0, 1, modelNumber);
+        case 418079503: /*manufacturer[x]*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
+        case -1969347631: /*manufacturer*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
+        case -630681790: /*manufacturerString*/  return new Property("manufacturer[x]", "string", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
+        case 1104934522: /*manufacturerReference*/  return new Property("manufacturer[x]", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
+        case 780988929: /*deviceName*/  return new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName);
+        case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "What kind of device or device system this is.", 0, 1, type);
         case 682815883: /*specialization*/  return new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization);
         case 351608024: /*version*/  return new Property("version", "string", "The available versions of the device, e.g., software versions.", 0, java.lang.Integer.MAX_VALUE, version);
         case -909893934: /*safety*/  return new Property("safety", "CodeableConcept", "Safety characteristics of the device.", 0, java.lang.Integer.MAX_VALUE, safety);
         case 172049237: /*shelfLifeStorage*/  return new Property("shelfLifeStorage", "ProductShelfLife", "Shelf Life and storage information.", 0, java.lang.Integer.MAX_VALUE, shelfLifeStorage);
-        case -1599676319: /*physicalCharacteristics*/  return new Property("physicalCharacteristics", "ProdCharacteristic", "Dimensions, color etc.", 0, 1, physicalCharacteristics);
+        case -1599676319: /*physicalCharacteristics*/  return new Property("physicalCharacteristics", "ProdCharacteristic", "Physical characteristics to define or specify the product - for example dimensions, color etc. These can be defined by the manufacturer or labeler, or can be used to specify characteristics when ordering.", 0, 1, physicalCharacteristics);
         case -2092349083: /*languageCode*/  return new Property("languageCode", "CodeableConcept", "Language code for the human-readable text strings produced by the device (all supported).", 0, java.lang.Integer.MAX_VALUE, languageCode);
-        case -783669992: /*capability*/  return new Property("capability", "", "Device capabilities.", 0, java.lang.Integer.MAX_VALUE, capability);
+        case -783669992: /*capability*/  return new Property("capability", "", "Additional capabilities that the device is defined or required to have e.g. \"water resistant\", \"long life\".", 0, java.lang.Integer.MAX_VALUE, capability);
         case -993141291: /*property*/  return new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner);
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
-        case 116079: /*url*/  return new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url);
         case -788511527: /*onlineInformation*/  return new Property("onlineInformation", "uri", "Access to on-line information about the device.", 0, 1, onlineInformation);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The quantity of the device present in the packaging (e.g. the number of devices present in a pack, or the number of devices in the same package of the medicinal product).", 0, 1, quantity);
@@ -3022,7 +2964,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // DeviceDefinitionPropertyComponent
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
-        case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -788511527: /*onlineInformation*/ return this.onlineInformation == null ? new Base[0] : new Base[] {this.onlineInformation}; // UriType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
@@ -3084,9 +3025,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case 951526432: // contact
           this.getContact().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
-        case 116079: // url
-          this.url = TypeConvertor.castToUri(value); // UriType
-          return value;
         case -788511527: // onlineInformation
           this.onlineInformation = TypeConvertor.castToUri(value); // UriType
           return value;
@@ -3141,8 +3079,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
           this.getContact().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("url")) {
-          this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("onlineInformation")) {
           this.onlineInformation = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("note")) {
@@ -3178,7 +3114,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case -993141291:  return addProperty(); 
         case 106164915:  return getOwner();
         case 951526432:  return addContact(); 
-        case 116079:  return getUrlElement();
         case -788511527:  return getOnlineInformationElement();
         case 3387378:  return addNote(); 
         case -1285004149:  return getQuantity();
@@ -3208,7 +3143,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case -993141291: /*property*/ return new String[] {};
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ContactPoint"};
-        case 116079: /*url*/ return new String[] {"uri"};
         case -788511527: /*onlineInformation*/ return new String[] {"uri"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
@@ -3276,9 +3210,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
         else if (name.equals("contact")) {
           return addContact();
-        }
-        else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.url");
         }
         else if (name.equals("onlineInformation")) {
           throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.onlineInformation");
@@ -3374,7 +3305,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (ContactPoint i : contact)
             dst.contact.add(i.copy());
         };
-        dst.url = url == null ? null : url.copy();
         dst.onlineInformation = onlineInformation == null ? null : onlineInformation.copy();
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -3407,7 +3337,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
            && compareDeep(version, o.version, true) && compareDeep(safety, o.safety, true) && compareDeep(shelfLifeStorage, o.shelfLifeStorage, true)
            && compareDeep(physicalCharacteristics, o.physicalCharacteristics, true) && compareDeep(languageCode, o.languageCode, true)
            && compareDeep(capability, o.capability, true) && compareDeep(property, o.property, true) && compareDeep(owner, o.owner, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(url, o.url, true) && compareDeep(onlineInformation, o.onlineInformation, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(onlineInformation, o.onlineInformation, true)
            && compareDeep(note, o.note, true) && compareDeep(quantity, o.quantity, true) && compareDeep(parentDevice, o.parentDevice, true)
            && compareDeep(material, o.material, true);
       }
@@ -3419,15 +3349,15 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         if (!(other_ instanceof DeviceDefinition))
           return false;
         DeviceDefinition o = (DeviceDefinition) other_;
-        return compareValues(modelNumber, o.modelNumber, true) && compareValues(version, o.version, true) && compareValues(url, o.url, true)
-           && compareValues(onlineInformation, o.onlineInformation, true);
+        return compareValues(modelNumber, o.modelNumber, true) && compareValues(version, o.version, true) && compareValues(onlineInformation, o.onlineInformation, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, udiDeviceIdentifier
           , manufacturer, deviceName, modelNumber, type, specialization, version, safety
           , shelfLifeStorage, physicalCharacteristics, languageCode, capability, property, owner
-          , contact, url, onlineInformation, note, quantity, parentDevice, material);
+          , contact, onlineInformation, note, quantity, parentDevice, material);
       }
 
   @Override

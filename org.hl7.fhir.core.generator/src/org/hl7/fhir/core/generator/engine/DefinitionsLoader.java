@@ -23,28 +23,28 @@ public class DefinitionsLoader {
     Definitions res = new Definitions();
     
     for (String t : npm.listResources("CodeSystem")) {
-      res.getCodeSystems().see((CodeSystem) load(npm, t));
+      res.getCodeSystems().see((CodeSystem) load(npm, t), null);
     }
     for (String t : npm.listResources("ValueSet")) {
-      res.getValuesets().see((ValueSet) load(npm, t));
+      res.getValuesets().see((ValueSet) load(npm, t), null);
     }
     for (String t : npm.listResources("ConceptMap")) {
-      res.getConceptMaps().see((ConceptMap) load(npm, t));
+      res.getConceptMaps().see((ConceptMap) load(npm, t), null);
     }
     for (String t : npm.listResources("CapabilityStatement")) {
-      res.getStatements().see((CapabilityStatement) load(npm, t));
+      res.getStatements().see((CapabilityStatement) load(npm, t), null);
     }
     for (String t : npm.listResources("StructureDefinition")) {
-      res.getStructures().see((StructureDefinition) load(npm, t));
+      res.getStructures().see((StructureDefinition) load(npm, t), null);
     }
     for (String t : npm.listResources("OperationDefinition")) {
-      res.getOperations().see((OperationDefinition) load(npm, t));
+      res.getOperations().see((OperationDefinition) load(npm, t), null);
     }
     for (String t : npm.listResources("SearchParameter")) {
-      res.getSearchParams().see((SearchParameter) load(npm, t));
+      res.getSearchParams().see((SearchParameter) load(npm, t), null);
     }
     for (String t : npm.listResources("CompartmentDefinition")) {
-      res.getCompartments().see((CompartmentDefinition) load(npm, t));
+      res.getCompartments().see((CompartmentDefinition) load(npm, t), null);
     }
     return res;
   }

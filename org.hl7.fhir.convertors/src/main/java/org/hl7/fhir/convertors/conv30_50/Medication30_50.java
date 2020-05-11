@@ -48,8 +48,10 @@ public class Medication30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(VersionConvertor_30_50.convertType(src.getItem()));
+        if (src.getItem().hasConcept())
+          tgt.setItem(VersionConvertor_30_50.convertType(src.getItem().getConcept()));
+        if (src.getItem().hasReference())
+          tgt.setItem(VersionConvertor_30_50.convertType(src.getItem().getReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(VersionConvertor_30_50.convertBoolean(src.getIsActiveElement()));
         if (src.hasStrengthRatio())
@@ -62,8 +64,10 @@ public class Medication30_50 {
             return null;
         org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(VersionConvertor_30_50.convertType(src.getItem()));
+        if (src.hasItemCodeableConcept())
+            tgt.getItem().setConcept(VersionConvertor_30_50.convertCodeableConcept(src.getItemCodeableConcept()));
+        if (src.hasItemReference())
+          tgt.getItem().setReference(VersionConvertor_30_50.convertReference(src.getItemReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(VersionConvertor_30_50.convertBoolean(src.getIsActiveElement()));
         if (src.hasAmount())

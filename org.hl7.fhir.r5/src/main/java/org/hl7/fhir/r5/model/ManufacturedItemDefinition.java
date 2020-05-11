@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,59 +73,59 @@ import ca.uhn.fhir.model.api.annotation.Block;
 public class ManufacturedItemDefinition extends DomainResource {
 
     @Block()
-    public static class ManufacturedItemDefinitionCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ManufacturedItemDefinitionPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A code expressing the type of characteristic.
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A code expressing the type of characteristic", formalDefinition="A code expressing the type of characteristic." )
-        protected CodeableConcept code;
+        protected CodeableConcept type;
 
         /**
          * A value for the characteristic.
          */
-        @Child(name = "value", type = {Coding.class, Quantity.class, StringType.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
         protected DataType value;
 
-        private static final long serialVersionUID = -1950789033L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
      */
-      public ManufacturedItemDefinitionCharacteristicComponent() {
+      public ManufacturedItemDefinitionPropertyComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ManufacturedItemDefinitionCharacteristicComponent(CodeableConcept code) {
+      public ManufacturedItemDefinitionPropertyComponent(CodeableConcept type) {
         super();
-        this.setCode(code);
+        this.setType(type);
       }
 
         /**
-         * @return {@link #code} (A code expressing the type of characteristic.)
+         * @return {@link #type} (A code expressing the type of characteristic.)
          */
-        public CodeableConcept getCode() { 
-          if (this.code == null)
+        public CodeableConcept getType() { 
+          if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ManufacturedItemDefinitionCharacteristicComponent.code");
+              throw new Error("Attempt to auto-create ManufacturedItemDefinitionPropertyComponent.type");
             else if (Configuration.doAutoCreate())
-              this.code = new CodeableConcept(); // cc
-          return this.code;
+              this.type = new CodeableConcept(); // cc
+          return this.type;
         }
 
-        public boolean hasCode() { 
-          return this.code != null && !this.code.isEmpty();
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
         }
 
         /**
-         * @param value {@link #code} (A code expressing the type of characteristic.)
+         * @param value {@link #type} (A code expressing the type of characteristic.)
          */
-        public ManufacturedItemDefinitionCharacteristicComponent setCode(CodeableConcept value) { 
-          this.code = value;
+        public ManufacturedItemDefinitionPropertyComponent setType(CodeableConcept value) { 
+          this.type = value;
           return this;
         }
 
@@ -139,16 +139,16 @@ public class ManufacturedItemDefinition extends DomainResource {
         /**
          * @return {@link #value} (A value for the characteristic.)
          */
-        public Coding getValueCoding() throws FHIRException { 
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
           if (this.value == null)
-            this.value = new Coding();
-          if (!(this.value instanceof Coding))
-            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Coding) this.value;
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
         }
 
         /**
@@ -164,21 +164,6 @@ public class ManufacturedItemDefinition extends DomainResource {
 
         public boolean hasValueQuantity() { 
           return this != null && this.value instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #value} (A value for the characteristic.)
-         */
-        public StringType getValueStringType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new StringType();
-          if (!(this.value instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (StringType) this.value;
-        }
-
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
         }
 
         /**
@@ -233,28 +218,27 @@ public class ManufacturedItemDefinition extends DomainResource {
         /**
          * @param value {@link #value} (A value for the characteristic.)
          */
-        public ManufacturedItemDefinitionCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Coding || value instanceof Quantity || value instanceof StringType || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
-            throw new Error("Not the right type for ManufacturedItemDefinition.characteristic.value[x]: "+value.fhirType());
+        public ManufacturedItemDefinitionPropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+            throw new Error("Not the right type for ManufacturedItemDefinition.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, code));
-          children.add(new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
+          children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, code);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Coding|Quantity|string|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "A value for the characteristic.", 0, 1, value);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "A value for the characteristic.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "A value for the characteristic.", 0, 1, value);
           case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
@@ -266,7 +250,7 @@ public class ManufacturedItemDefinition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -276,8 +260,8 @@ public class ManufacturedItemDefinition extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToType(value); // DataType
@@ -289,8 +273,8 @@ public class ManufacturedItemDefinition extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("value[x]")) {
           this.value = TypeConvertor.castToType(value); // DataType
         } else
@@ -301,7 +285,7 @@ public class ManufacturedItemDefinition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCode();
+        case 3575610:  return getType();
         case -1410166417:  return getValue();
         case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
@@ -312,8 +296,8 @@ public class ManufacturedItemDefinition extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"Coding", "Quantity", "string", "date", "boolean", "Attachment"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -321,20 +305,16 @@ public class ManufacturedItemDefinition extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("code")) {
-          this.code = new CodeableConcept();
-          return this.code;
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("valueCoding")) {
-          this.value = new Coding();
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
           return this.value;
         }
         else if (name.equals("valueQuantity")) {
           this.value = new Quantity();
-          return this.value;
-        }
-        else if (name.equals("valueString")) {
-          this.value = new StringType();
           return this.value;
         }
         else if (name.equals("valueDate")) {
@@ -353,15 +333,15 @@ public class ManufacturedItemDefinition extends DomainResource {
           return super.addChild(name);
       }
 
-      public ManufacturedItemDefinitionCharacteristicComponent copy() {
-        ManufacturedItemDefinitionCharacteristicComponent dst = new ManufacturedItemDefinitionCharacteristicComponent();
+      public ManufacturedItemDefinitionPropertyComponent copy() {
+        ManufacturedItemDefinitionPropertyComponent dst = new ManufacturedItemDefinitionPropertyComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ManufacturedItemDefinitionCharacteristicComponent dst) {
+      public void copyValues(ManufacturedItemDefinitionPropertyComponent dst) {
         super.copyValues(dst);
-        dst.code = code == null ? null : code.copy();
+        dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
       }
 
@@ -369,28 +349,28 @@ public class ManufacturedItemDefinition extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ManufacturedItemDefinitionCharacteristicComponent))
+        if (!(other_ instanceof ManufacturedItemDefinitionPropertyComponent))
           return false;
-        ManufacturedItemDefinitionCharacteristicComponent o = (ManufacturedItemDefinitionCharacteristicComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true);
+        ManufacturedItemDefinitionPropertyComponent o = (ManufacturedItemDefinitionPropertyComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ManufacturedItemDefinitionCharacteristicComponent))
+        if (!(other_ instanceof ManufacturedItemDefinitionPropertyComponent))
           return false;
-        ManufacturedItemDefinitionCharacteristicComponent o = (ManufacturedItemDefinitionCharacteristicComponent) other_;
+        ManufacturedItemDefinitionPropertyComponent o = (ManufacturedItemDefinitionPropertyComponent) other_;
         return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
       }
 
   public String fhirType() {
-    return "ManufacturedItemDefinition.characteristic";
+    return "ManufacturedItemDefinition.property";
 
   }
 
@@ -434,11 +414,11 @@ public class ManufacturedItemDefinition extends DomainResource {
     /**
      * General characteristics of this item.
      */
-    @Child(name = "characteristic", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General characteristics of this item", formalDefinition="General characteristics of this item." )
-    protected List<ManufacturedItemDefinitionCharacteristicComponent> characteristic;
+    protected List<ManufacturedItemDefinitionPropertyComponent> property;
 
-    private static final long serialVersionUID = -2112474361L;
+    private static final long serialVersionUID = 604232519L;
 
   /**
    * Constructor
@@ -663,56 +643,56 @@ public class ManufacturedItemDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #characteristic} (General characteristics of this item.)
+     * @return {@link #property} (General characteristics of this item.)
      */
-    public List<ManufacturedItemDefinitionCharacteristicComponent> getCharacteristic() { 
-      if (this.characteristic == null)
-        this.characteristic = new ArrayList<ManufacturedItemDefinitionCharacteristicComponent>();
-      return this.characteristic;
+    public List<ManufacturedItemDefinitionPropertyComponent> getProperty() { 
+      if (this.property == null)
+        this.property = new ArrayList<ManufacturedItemDefinitionPropertyComponent>();
+      return this.property;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ManufacturedItemDefinition setCharacteristic(List<ManufacturedItemDefinitionCharacteristicComponent> theCharacteristic) { 
-      this.characteristic = theCharacteristic;
+    public ManufacturedItemDefinition setProperty(List<ManufacturedItemDefinitionPropertyComponent> theProperty) { 
+      this.property = theProperty;
       return this;
     }
 
-    public boolean hasCharacteristic() { 
-      if (this.characteristic == null)
+    public boolean hasProperty() { 
+      if (this.property == null)
         return false;
-      for (ManufacturedItemDefinitionCharacteristicComponent item : this.characteristic)
+      for (ManufacturedItemDefinitionPropertyComponent item : this.property)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ManufacturedItemDefinitionCharacteristicComponent addCharacteristic() { //3
-      ManufacturedItemDefinitionCharacteristicComponent t = new ManufacturedItemDefinitionCharacteristicComponent();
-      if (this.characteristic == null)
-        this.characteristic = new ArrayList<ManufacturedItemDefinitionCharacteristicComponent>();
-      this.characteristic.add(t);
+    public ManufacturedItemDefinitionPropertyComponent addProperty() { //3
+      ManufacturedItemDefinitionPropertyComponent t = new ManufacturedItemDefinitionPropertyComponent();
+      if (this.property == null)
+        this.property = new ArrayList<ManufacturedItemDefinitionPropertyComponent>();
+      this.property.add(t);
       return t;
     }
 
-    public ManufacturedItemDefinition addCharacteristic(ManufacturedItemDefinitionCharacteristicComponent t) { //3
+    public ManufacturedItemDefinition addProperty(ManufacturedItemDefinitionPropertyComponent t) { //3
       if (t == null)
         return this;
-      if (this.characteristic == null)
-        this.characteristic = new ArrayList<ManufacturedItemDefinitionCharacteristicComponent>();
-      this.characteristic.add(t);
+      if (this.property == null)
+        this.property = new ArrayList<ManufacturedItemDefinitionPropertyComponent>();
+      this.property.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
      */
-    public ManufacturedItemDefinitionCharacteristicComponent getCharacteristicFirstRep() { 
-      if (getCharacteristic().isEmpty()) {
-        addCharacteristic();
+    public ManufacturedItemDefinitionPropertyComponent getPropertyFirstRep() { 
+      if (getProperty().isEmpty()) {
+        addProperty();
       }
-      return getCharacteristic().get(0);
+      return getProperty().get(0);
     }
 
       protected void listChildren(List<Property> children) {
@@ -722,7 +702,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         children.add(new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation));
         children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient));
-        children.add(new Property("characteristic", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, characteristic));
+        children.add(new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property));
       }
 
       @Override
@@ -733,7 +713,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient);
-        case 366313883: /*characteristic*/  return new Property("characteristic", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, characteristic);
+        case -993141291: /*property*/  return new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -747,7 +727,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1427765963: /*unitOfPresentation*/ return this.unitOfPresentation == null ? new Base[0] : new Base[] {this.unitOfPresentation}; // CodeableConcept
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // Reference
-        case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // ManufacturedItemDefinitionCharacteristicComponent
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // ManufacturedItemDefinitionPropertyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -771,8 +751,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -206409263: // ingredient
           this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case 366313883: // characteristic
-          this.getCharacteristic().add((ManufacturedItemDefinitionCharacteristicComponent) value); // ManufacturedItemDefinitionCharacteristicComponent
+        case -993141291: // property
+          this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value); // ManufacturedItemDefinitionPropertyComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -791,8 +771,8 @@ public class ManufacturedItemDefinition extends DomainResource {
           this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
           this.getIngredient().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((ManufacturedItemDefinitionCharacteristicComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -806,7 +786,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1427765963:  return getUnitOfPresentation();
         case -1969347631:  return addManufacturer(); 
         case -206409263:  return addIngredient(); 
-        case 366313883:  return addCharacteristic(); 
+        case -993141291:  return addProperty(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -820,7 +800,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1427765963: /*unitOfPresentation*/ return new String[] {"CodeableConcept"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case -206409263: /*ingredient*/ return new String[] {"Reference"};
-        case 366313883: /*characteristic*/ return new String[] {};
+        case -993141291: /*property*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -845,8 +825,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         else if (name.equals("ingredient")) {
           return addIngredient();
         }
-        else if (name.equals("characteristic")) {
-          return addCharacteristic();
+        else if (name.equals("property")) {
+          return addProperty();
         }
         else
           return super.addChild(name);
@@ -882,10 +862,10 @@ public class ManufacturedItemDefinition extends DomainResource {
           for (Reference i : ingredient)
             dst.ingredient.add(i.copy());
         };
-        if (characteristic != null) {
-          dst.characteristic = new ArrayList<ManufacturedItemDefinitionCharacteristicComponent>();
-          for (ManufacturedItemDefinitionCharacteristicComponent i : characteristic)
-            dst.characteristic.add(i.copy());
+        if (property != null) {
+          dst.property = new ArrayList<ManufacturedItemDefinitionPropertyComponent>();
+          for (ManufacturedItemDefinitionPropertyComponent i : property)
+            dst.property.add(i.copy());
         };
       }
 
@@ -902,8 +882,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         ManufacturedItemDefinition o = (ManufacturedItemDefinition) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(manufacturedDoseForm, o.manufacturedDoseForm, true)
            && compareDeep(unitOfPresentation, o.unitOfPresentation, true) && compareDeep(manufacturer, o.manufacturer, true)
-           && compareDeep(ingredient, o.ingredient, true) && compareDeep(characteristic, o.characteristic, true)
-          ;
+           && compareDeep(ingredient, o.ingredient, true) && compareDeep(property, o.property, true);
       }
 
       @Override
@@ -918,7 +897,7 @@ public class ManufacturedItemDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, manufacturedDoseForm
-          , unitOfPresentation, manufacturer, ingredient, characteristic);
+          , unitOfPresentation, manufacturer, ingredient, property);
       }
 
   @Override

@@ -13,3 +13,16 @@
   }
   
   
+  public boolean matches(CodeableConcept other) {
+    for (Coding c : other.getCoding()) {
+      if (hasCoding(c.getSystem(), c.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasCoding(Coding coding) {
+    return hasCoding(coding.getSystem(), coding.getCode());
+  }
+  

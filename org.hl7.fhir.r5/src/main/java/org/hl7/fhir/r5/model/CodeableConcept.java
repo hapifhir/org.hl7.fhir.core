@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -342,7 +342,8 @@ public class CodeableConcept extends DataType implements ICompositeType {
     super();
     addCoding(code);
   }
-
+  
+  
   public boolean matches(CodeableConcept other) {
     for (Coding c : other.getCoding()) {
       if (hasCoding(c.getSystem(), c.getCode())) {
@@ -355,9 +356,25 @@ public class CodeableConcept extends DataType implements ICompositeType {
   public boolean hasCoding(Coding coding) {
     return hasCoding(coding.getSystem(), coding.getCode());
   }
-  
-  
 
+  public boolean hasCoding(String system) {
+    for (Coding c : getCoding()) {
+      if (system.equals(c.getSystem())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public String getCode(String system) {
+    for (Coding c : getCoding()) {
+      if (system.equals(c.getSystem())) {
+        return c.getCode();
+      }
+    }
+    return null;
+  }
+  
 // end addition
 
 }

@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -349,130 +349,6 @@ public class AuditEvent extends DomainResource {
       return "?";
       }
     public String toSystem(AuditEventAgentNetworkType code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum AuditEventOutcome {
-        /**
-         * The operation completed successfully (whether with warnings or not).
-         */
-        _0, 
-        /**
-         * The action was not successful due to some kind of minor failure (often equivalent to an HTTP 400 response).
-         */
-        _4, 
-        /**
-         * The action was not successful due to some kind of unexpected error (often equivalent to an HTTP 500 response).
-         */
-        _8, 
-        /**
-         * An error of such magnitude occurred that the system is no longer available for use (i.e. the system died).
-         */
-        _12, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static AuditEventOutcome fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("0".equals(codeString))
-          return _0;
-        if ("4".equals(codeString))
-          return _4;
-        if ("8".equals(codeString))
-          return _8;
-        if ("12".equals(codeString))
-          return _12;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown AuditEventOutcome code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _0: return "0";
-            case _4: return "4";
-            case _8: return "8";
-            case _12: return "12";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case _0: return "http://hl7.org/fhir/audit-event-outcome";
-            case _4: return "http://hl7.org/fhir/audit-event-outcome";
-            case _8: return "http://hl7.org/fhir/audit-event-outcome";
-            case _12: return "http://hl7.org/fhir/audit-event-outcome";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _0: return "The operation completed successfully (whether with warnings or not).";
-            case _4: return "The action was not successful due to some kind of minor failure (often equivalent to an HTTP 400 response).";
-            case _8: return "The action was not successful due to some kind of unexpected error (often equivalent to an HTTP 500 response).";
-            case _12: return "An error of such magnitude occurred that the system is no longer available for use (i.e. the system died).";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _0: return "Success";
-            case _4: return "Minor failure";
-            case _8: return "Serious failure";
-            case _12: return "Major failure";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class AuditEventOutcomeEnumFactory implements EnumFactory<AuditEventOutcome> {
-    public AuditEventOutcome fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("0".equals(codeString))
-          return AuditEventOutcome._0;
-        if ("4".equals(codeString))
-          return AuditEventOutcome._4;
-        if ("8".equals(codeString))
-          return AuditEventOutcome._8;
-        if ("12".equals(codeString))
-          return AuditEventOutcome._12;
-        throw new IllegalArgumentException("Unknown AuditEventOutcome code '"+codeString+"'");
-        }
-        public Enumeration<AuditEventOutcome> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<AuditEventOutcome>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("0".equals(codeString))
-          return new Enumeration<AuditEventOutcome>(this, AuditEventOutcome._0);
-        if ("4".equals(codeString))
-          return new Enumeration<AuditEventOutcome>(this, AuditEventOutcome._4);
-        if ("8".equals(codeString))
-          return new Enumeration<AuditEventOutcome>(this, AuditEventOutcome._8);
-        if ("12".equals(codeString))
-          return new Enumeration<AuditEventOutcome>(this, AuditEventOutcome._12);
-        throw new FHIRException("Unknown AuditEventOutcome code '"+codeString+"'");
-        }
-    public String toCode(AuditEventOutcome code) {
-      if (code == AuditEventOutcome._0)
-        return "0";
-      if (code == AuditEventOutcome._4)
-        return "4";
-      if (code == AuditEventOutcome._8)
-        return "8";
-      if (code == AuditEventOutcome._12)
-        return "12";
-      return "?";
-      }
-    public String toSystem(AuditEventOutcome code) {
       return code.getSystem();
       }
     }
@@ -2943,24 +2819,17 @@ public class AuditEvent extends DomainResource {
     protected InstantType recorded;
 
     /**
-     * Indicates whether the event succeeded or failed.
+     * Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.
      */
-    @Child(name = "outcome", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Whether the event succeeded or failed", formalDefinition="Indicates whether the event succeeded or failed." )
+    @Child(name = "outcome", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Whether the event succeeded or failed", formalDefinition="Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/audit-event-outcome")
-    protected Enumeration<AuditEventOutcome> outcome;
-
-    /**
-     * A free text description of the outcome of the event.
-     */
-    @Child(name = "outcomeDesc", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Description of the event outcome", formalDefinition="A free text description of the outcome of the event." )
-    protected StringType outcomeDesc;
+    protected CodeableConcept outcome;
 
     /**
      * The purposeOfUse (reason) that was used during the event being recorded.
      */
-    @Child(name = "purposeOfEvent", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "purposeOfEvent", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The purposeOfUse of the event", formalDefinition="The purposeOfUse (reason) that was used during the event being recorded." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-PurposeOfUse")
     protected List<CodeableConcept> purposeOfEvent;
@@ -2968,25 +2837,25 @@ public class AuditEvent extends DomainResource {
     /**
      * An actor taking an active role in the event or activity that is logged.
      */
-    @Child(name = "agent", type = {}, order=9, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "agent", type = {}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Actor involved in the event", formalDefinition="An actor taking an active role in the event or activity that is logged." )
     protected List<AuditEventAgentComponent> agent;
 
     /**
      * The system that is reporting the event.
      */
-    @Child(name = "source", type = {}, order=10, min=1, max=1, modifier=false, summary=false)
+    @Child(name = "source", type = {}, order=9, min=1, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Audit Event Reporter", formalDefinition="The system that is reporting the event." )
     protected AuditEventSourceComponent source;
 
     /**
      * Specific instances of data or objects that have been accessed.
      */
-    @Child(name = "entity", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "entity", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Data or objects used", formalDefinition="Specific instances of data or objects that have been accessed." )
     protected List<AuditEventEntityComponent> entity;
 
-    private static final long serialVersionUID = 778790159L;
+    private static final long serialVersionUID = -446219294L;
 
   /**
    * Constructor
@@ -3251,19 +3120,15 @@ public class AuditEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #outcome} (Indicates whether the event succeeded or failed.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
+     * @return {@link #outcome} (Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.)
      */
-    public Enumeration<AuditEventOutcome> getOutcomeElement() { 
+    public CodeableConcept getOutcome() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create AuditEvent.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<AuditEventOutcome>(new AuditEventOutcomeEnumFactory()); // bb
+          this.outcome = new CodeableConcept(); // cc
       return this.outcome;
-    }
-
-    public boolean hasOutcomeElement() { 
-      return this.outcome != null && !this.outcome.isEmpty();
     }
 
     public boolean hasOutcome() { 
@@ -3271,80 +3136,10 @@ public class AuditEvent extends DomainResource {
     }
 
     /**
-     * @param value {@link #outcome} (Indicates whether the event succeeded or failed.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
+     * @param value {@link #outcome} (Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.)
      */
-    public AuditEvent setOutcomeElement(Enumeration<AuditEventOutcome> value) { 
+    public AuditEvent setOutcome(CodeableConcept value) { 
       this.outcome = value;
-      return this;
-    }
-
-    /**
-     * @return Indicates whether the event succeeded or failed.
-     */
-    public AuditEventOutcome getOutcome() { 
-      return this.outcome == null ? null : this.outcome.getValue();
-    }
-
-    /**
-     * @param value Indicates whether the event succeeded or failed.
-     */
-    public AuditEvent setOutcome(AuditEventOutcome value) { 
-      if (value == null)
-        this.outcome = null;
-      else {
-        if (this.outcome == null)
-          this.outcome = new Enumeration<AuditEventOutcome>(new AuditEventOutcomeEnumFactory());
-        this.outcome.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #outcomeDesc} (A free text description of the outcome of the event.). This is the underlying object with id, value and extensions. The accessor "getOutcomeDesc" gives direct access to the value
-     */
-    public StringType getOutcomeDescElement() { 
-      if (this.outcomeDesc == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AuditEvent.outcomeDesc");
-        else if (Configuration.doAutoCreate())
-          this.outcomeDesc = new StringType(); // bb
-      return this.outcomeDesc;
-    }
-
-    public boolean hasOutcomeDescElement() { 
-      return this.outcomeDesc != null && !this.outcomeDesc.isEmpty();
-    }
-
-    public boolean hasOutcomeDesc() { 
-      return this.outcomeDesc != null && !this.outcomeDesc.isEmpty();
-    }
-
-    /**
-     * @param value {@link #outcomeDesc} (A free text description of the outcome of the event.). This is the underlying object with id, value and extensions. The accessor "getOutcomeDesc" gives direct access to the value
-     */
-    public AuditEvent setOutcomeDescElement(StringType value) { 
-      this.outcomeDesc = value;
-      return this;
-    }
-
-    /**
-     * @return A free text description of the outcome of the event.
-     */
-    public String getOutcomeDesc() { 
-      return this.outcomeDesc == null ? null : this.outcomeDesc.getValue();
-    }
-
-    /**
-     * @param value A free text description of the outcome of the event.
-     */
-    public AuditEvent setOutcomeDesc(String value) { 
-      if (Utilities.noString(value))
-        this.outcomeDesc = null;
-      else {
-        if (this.outcomeDesc == null)
-          this.outcomeDesc = new StringType();
-        this.outcomeDesc.setValue(value);
-      }
       return this;
     }
 
@@ -3539,8 +3334,7 @@ public class AuditEvent extends DomainResource {
         children.add(new Property("severity", "code", "Indicates and enables segmentation of various severity including debugging from critical.", 0, 1, severity));
         children.add(new Property("period", "Period", "The period during which the activity occurred.", 0, 1, period));
         children.add(new Property("recorded", "instant", "The time when the event was recorded.", 0, 1, recorded));
-        children.add(new Property("outcome", "code", "Indicates whether the event succeeded or failed.", 0, 1, outcome));
-        children.add(new Property("outcomeDesc", "string", "A free text description of the outcome of the event.", 0, 1, outcomeDesc));
+        children.add(new Property("outcome", "CodeableConcept", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome));
         children.add(new Property("purposeOfEvent", "CodeableConcept", "The purposeOfUse (reason) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, purposeOfEvent));
         children.add(new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent));
         children.add(new Property("source", "", "The system that is reporting the event.", 0, 1, source));
@@ -3556,8 +3350,7 @@ public class AuditEvent extends DomainResource {
         case 1478300413: /*severity*/  return new Property("severity", "code", "Indicates and enables segmentation of various severity including debugging from critical.", 0, 1, severity);
         case -991726143: /*period*/  return new Property("period", "Period", "The period during which the activity occurred.", 0, 1, period);
         case -799233872: /*recorded*/  return new Property("recorded", "instant", "The time when the event was recorded.", 0, 1, recorded);
-        case -1106507950: /*outcome*/  return new Property("outcome", "code", "Indicates whether the event succeeded or failed.", 0, 1, outcome);
-        case 1062502659: /*outcomeDesc*/  return new Property("outcomeDesc", "string", "A free text description of the outcome of the event.", 0, 1, outcomeDesc);
+        case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome);
         case -341917691: /*purposeOfEvent*/  return new Property("purposeOfEvent", "CodeableConcept", "The purposeOfUse (reason) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, purposeOfEvent);
         case 92750597: /*agent*/  return new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent);
         case -896505829: /*source*/  return new Property("source", "", "The system that is reporting the event.", 0, 1, source);
@@ -3576,8 +3369,7 @@ public class AuditEvent extends DomainResource {
         case 1478300413: /*severity*/ return this.severity == null ? new Base[0] : new Base[] {this.severity}; // Enumeration<AuditEventSeverity>
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case -799233872: /*recorded*/ return this.recorded == null ? new Base[0] : new Base[] {this.recorded}; // InstantType
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<AuditEventOutcome>
-        case 1062502659: /*outcomeDesc*/ return this.outcomeDesc == null ? new Base[0] : new Base[] {this.outcomeDesc}; // StringType
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
         case -341917691: /*purposeOfEvent*/ return this.purposeOfEvent == null ? new Base[0] : this.purposeOfEvent.toArray(new Base[this.purposeOfEvent.size()]); // CodeableConcept
         case 92750597: /*agent*/ return this.agent == null ? new Base[0] : this.agent.toArray(new Base[this.agent.size()]); // AuditEventAgentComponent
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // AuditEventSourceComponent
@@ -3611,11 +3403,7 @@ public class AuditEvent extends DomainResource {
           this.recorded = TypeConvertor.castToInstant(value); // InstantType
           return value;
         case -1106507950: // outcome
-          value = new AuditEventOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<AuditEventOutcome>
-          return value;
-        case 1062502659: // outcomeDesc
-          this.outcomeDesc = TypeConvertor.castToString(value); // StringType
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -341917691: // purposeOfEvent
           this.getPurposeOfEvent().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -3651,10 +3439,7 @@ public class AuditEvent extends DomainResource {
         } else if (name.equals("recorded")) {
           this.recorded = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("outcome")) {
-          value = new AuditEventOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<AuditEventOutcome>
-        } else if (name.equals("outcomeDesc")) {
-          this.outcomeDesc = TypeConvertor.castToString(value); // StringType
+          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("purposeOfEvent")) {
           this.getPurposeOfEvent().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("agent")) {
@@ -3677,8 +3462,7 @@ public class AuditEvent extends DomainResource {
         case 1478300413:  return getSeverityElement();
         case -991726143:  return getPeriod();
         case -799233872:  return getRecordedElement();
-        case -1106507950:  return getOutcomeElement();
-        case 1062502659:  return getOutcomeDescElement();
+        case -1106507950:  return getOutcome();
         case -341917691:  return addPurposeOfEvent(); 
         case 92750597:  return addAgent(); 
         case -896505829:  return getSource();
@@ -3697,8 +3481,7 @@ public class AuditEvent extends DomainResource {
         case 1478300413: /*severity*/ return new String[] {"code"};
         case -991726143: /*period*/ return new String[] {"Period"};
         case -799233872: /*recorded*/ return new String[] {"instant"};
-        case -1106507950: /*outcome*/ return new String[] {"code"};
-        case 1062502659: /*outcomeDesc*/ return new String[] {"string"};
+        case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
         case -341917691: /*purposeOfEvent*/ return new String[] {"CodeableConcept"};
         case 92750597: /*agent*/ return new String[] {};
         case -896505829: /*source*/ return new String[] {};
@@ -3731,10 +3514,8 @@ public class AuditEvent extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.recorded");
         }
         else if (name.equals("outcome")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.outcome");
-        }
-        else if (name.equals("outcomeDesc")) {
-          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.outcomeDesc");
+          this.outcome = new CodeableConcept();
+          return this.outcome;
         }
         else if (name.equals("purposeOfEvent")) {
           return addPurposeOfEvent();
@@ -3777,7 +3558,6 @@ public class AuditEvent extends DomainResource {
         dst.period = period == null ? null : period.copy();
         dst.recorded = recorded == null ? null : recorded.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
-        dst.outcomeDesc = outcomeDesc == null ? null : outcomeDesc.copy();
         if (purposeOfEvent != null) {
           dst.purposeOfEvent = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : purposeOfEvent)
@@ -3809,7 +3589,7 @@ public class AuditEvent extends DomainResource {
         AuditEvent o = (AuditEvent) other_;
         return compareDeep(type, o.type, true) && compareDeep(subtype, o.subtype, true) && compareDeep(action, o.action, true)
            && compareDeep(severity, o.severity, true) && compareDeep(period, o.period, true) && compareDeep(recorded, o.recorded, true)
-           && compareDeep(outcome, o.outcome, true) && compareDeep(outcomeDesc, o.outcomeDesc, true) && compareDeep(purposeOfEvent, o.purposeOfEvent, true)
+           && compareDeep(outcome, o.outcome, true) && compareDeep(purposeOfEvent, o.purposeOfEvent, true)
            && compareDeep(agent, o.agent, true) && compareDeep(source, o.source, true) && compareDeep(entity, o.entity, true)
           ;
       }
@@ -3822,13 +3602,12 @@ public class AuditEvent extends DomainResource {
           return false;
         AuditEvent o = (AuditEvent) other_;
         return compareValues(action, o.action, true) && compareValues(severity, o.severity, true) && compareValues(recorded, o.recorded, true)
-           && compareValues(outcome, o.outcome, true) && compareValues(outcomeDesc, o.outcomeDesc, true);
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, subtype, action, severity
-          , period, recorded, outcome, outcomeDesc, purposeOfEvent, agent, source, entity
-          );
+          , period, recorded, outcome, purposeOfEvent, agent, source, entity);
       }
 
   @Override
@@ -4050,7 +3829,7 @@ public class AuditEvent extends DomainResource {
    * Path: <b>AuditEvent.entity.what</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Topic.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_ENTITY = "entity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>entity</b>

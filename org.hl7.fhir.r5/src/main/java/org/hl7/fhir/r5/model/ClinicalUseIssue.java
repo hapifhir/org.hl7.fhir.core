@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,9 +91,9 @@ public class ClinicalUseIssue extends DomainResource {
          */
         UNDESIRABLEEFFECT, 
         /**
-         * Other.
+         * A general warning or issue that is not specifically one of the other types.
          */
-        OTHER, 
+        WARNING, 
         /**
          * added to help the parsers with the generic types
          */
@@ -109,8 +109,8 @@ public class ClinicalUseIssue extends DomainResource {
           return INTERACTION;
         if ("undesirable-effect".equals(codeString))
           return UNDESIRABLEEFFECT;
-        if ("other".equals(codeString))
-          return OTHER;
+        if ("warning".equals(codeString))
+          return WARNING;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -122,7 +122,7 @@ public class ClinicalUseIssue extends DomainResource {
             case CONTRAINDICATION: return "contraindication";
             case INTERACTION: return "interaction";
             case UNDESIRABLEEFFECT: return "undesirable-effect";
-            case OTHER: return "other";
+            case WARNING: return "warning";
             default: return "?";
           }
         }
@@ -132,7 +132,7 @@ public class ClinicalUseIssue extends DomainResource {
             case CONTRAINDICATION: return "http://hl7.org/fhir/clinical-use-issue-type";
             case INTERACTION: return "http://hl7.org/fhir/clinical-use-issue-type";
             case UNDESIRABLEEFFECT: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case OTHER: return "http://hl7.org/fhir/clinical-use-issue-type";
+            case WARNING: return "http://hl7.org/fhir/clinical-use-issue-type";
             default: return "?";
           }
         }
@@ -142,7 +142,7 @@ public class ClinicalUseIssue extends DomainResource {
             case CONTRAINDICATION: return "A reason for not giving the medicaition.";
             case INTERACTION: return "Interactions between the medication and other substances.";
             case UNDESIRABLEEFFECT: return "Side effects or adverse effects associated with the medication.";
-            case OTHER: return "Other.";
+            case WARNING: return "A general warning or issue that is not specifically one of the other types.";
             default: return "?";
           }
         }
@@ -152,7 +152,7 @@ public class ClinicalUseIssue extends DomainResource {
             case CONTRAINDICATION: return "Contraindication";
             case INTERACTION: return "Interaction";
             case UNDESIRABLEEFFECT: return "Undesirable Effect";
-            case OTHER: return "Other";
+            case WARNING: return "Warning";
             default: return "?";
           }
         }
@@ -171,8 +171,8 @@ public class ClinicalUseIssue extends DomainResource {
           return ClinicalUseIssueType.INTERACTION;
         if ("undesirable-effect".equals(codeString))
           return ClinicalUseIssueType.UNDESIRABLEEFFECT;
-        if ("other".equals(codeString))
-          return ClinicalUseIssueType.OTHER;
+        if ("warning".equals(codeString))
+          return ClinicalUseIssueType.WARNING;
         throw new IllegalArgumentException("Unknown ClinicalUseIssueType code '"+codeString+"'");
         }
         public Enumeration<ClinicalUseIssueType> fromType(Base code) throws FHIRException {
@@ -191,8 +191,8 @@ public class ClinicalUseIssue extends DomainResource {
           return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INTERACTION);
         if ("undesirable-effect".equals(codeString))
           return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.UNDESIRABLEEFFECT);
-        if ("other".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.OTHER);
+        if ("warning".equals(codeString))
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.WARNING);
         throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
         }
     public String toCode(ClinicalUseIssueType code) {
@@ -204,8 +204,8 @@ public class ClinicalUseIssue extends DomainResource {
         return "interaction";
       if (code == ClinicalUseIssueType.UNDESIRABLEEFFECT)
         return "undesirable-effect";
-      if (code == ClinicalUseIssueType.OTHER)
-        return "other";
+      if (code == ClinicalUseIssueType.WARNING)
+        return "warning";
       return "?";
       }
     public String toSystem(ClinicalUseIssueType code) {
@@ -2257,70 +2257,77 @@ public class ClinicalUseIssue extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * indication | contraindication | interaction | undesirable-effect | other.
+     * indication | contraindication | interaction | undesirable-effect | warning.
      */
     @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="indication | contraindication | interaction | undesirable-effect | other", formalDefinition="indication | contraindication | interaction | undesirable-effect | other." )
+    @Description(shortDefinition="indication | contraindication | interaction | undesirable-effect | warning", formalDefinition="indication | contraindication | interaction | undesirable-effect | warning." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-use-issue-type")
     protected Enumeration<ClinicalUseIssueType> type;
 
     /**
+     * A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".
+     */
+    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\"", formalDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\"." )
+    protected CodeableConcept category;
+
+    /**
      * The medication or procedure for which this is an indication.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class, Medication.class, ActivityDefinition.class, PlanDefinition.class, Device.class, DeviceDefinition.class, Substance.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "subject", type = {MedicinalProductDefinition.class, Medication.class, ActivityDefinition.class, PlanDefinition.class, Device.class, DeviceDefinition.class, Substance.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The medication or procedure for which this is an indication", formalDefinition="The medication or procedure for which this is an indication." )
     protected List<Reference> subject;
 
     /**
      * General description.
      */
-    @Child(name = "status", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "status", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General description", formalDefinition="General description." )
     protected CodeableConcept status;
 
     /**
      * General description.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General description", formalDefinition="General description." )
     protected MarkdownType description;
 
     /**
      * Specifics for when this is a contraindication.
      */
-    @Child(name = "contraindication", type = {}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "contraindication", type = {}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specifics for when this is a contraindication", formalDefinition="Specifics for when this is a contraindication." )
     protected ClinicalUseIssueContraindicationComponent contraindication;
 
     /**
      * Specifics for when this is an indication.
      */
-    @Child(name = "indication", type = {}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "indication", type = {}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specifics for when this is an indication", formalDefinition="Specifics for when this is an indication." )
     protected ClinicalUseIssueIndicationComponent indication;
 
     /**
      * Specifics for when this is an interaction.
      */
-    @Child(name = "interaction", type = {}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "interaction", type = {}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specifics for when this is an interaction", formalDefinition="Specifics for when this is an interaction." )
     protected ClinicalUseIssueInteractionComponent interaction;
 
     /**
      * The population group to which this applies.
      */
-    @Child(name = "population", type = {Population.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "population", type = {Population.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The population group to which this applies", formalDefinition="The population group to which this applies." )
     protected List<Population> population;
 
     /**
      * Describe the undesirable effects of the medicinal product.
      */
-    @Child(name = "undesirableEffect", type = {}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "undesirableEffect", type = {}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="A possible negative outcome from the use of this treatment", formalDefinition="Describe the undesirable effects of the medicinal product." )
     protected ClinicalUseIssueUndesirableEffectComponent undesirableEffect;
 
-    private static final long serialVersionUID = -1817506487L;
+    private static final long serialVersionUID = 681484438L;
 
   /**
    * Constructor
@@ -2391,7 +2398,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #type} (indication | contraindication | interaction | undesirable-effect | other.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     * @return {@link #type} (indication | contraindication | interaction | undesirable-effect | warning.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
     public Enumeration<ClinicalUseIssueType> getTypeElement() { 
       if (this.type == null)
@@ -2411,7 +2418,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @param value {@link #type} (indication | contraindication | interaction | undesirable-effect | other.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     * @param value {@link #type} (indication | contraindication | interaction | undesirable-effect | warning.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
     public ClinicalUseIssue setTypeElement(Enumeration<ClinicalUseIssueType> value) { 
       this.type = value;
@@ -2419,19 +2426,43 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return indication | contraindication | interaction | undesirable-effect | other.
+     * @return indication | contraindication | interaction | undesirable-effect | warning.
      */
     public ClinicalUseIssueType getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
-     * @param value indication | contraindication | interaction | undesirable-effect | other.
+     * @param value indication | contraindication | interaction | undesirable-effect | warning.
      */
     public ClinicalUseIssue setType(ClinicalUseIssueType value) { 
         if (this.type == null)
           this.type = new Enumeration<ClinicalUseIssueType>(new ClinicalUseIssueTypeEnumFactory());
         this.type.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".)
+     */
+    public CodeableConcept getCategory() { 
+      if (this.category == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ClinicalUseIssue.category");
+        else if (Configuration.doAutoCreate())
+          this.category = new CodeableConcept(); // cc
+      return this.category;
+    }
+
+    public boolean hasCategory() { 
+      return this.category != null && !this.category.isEmpty();
+    }
+
+    /**
+     * @param value {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".)
+     */
+    public ClinicalUseIssue setCategory(CodeableConcept value) { 
+      this.category = value;
       return this;
     }
 
@@ -2713,7 +2744,8 @@ public class ClinicalUseIssue extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | other.", 0, 1, type));
+        children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type));
+        children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\".", 0, 1, category));
         children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("status", "CodeableConcept", "General description.", 0, 1, status));
         children.add(new Property("description", "markdown", "General description.", 0, 1, description));
@@ -2728,7 +2760,8 @@ public class ClinicalUseIssue extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | other.", 0, 1, type);
+        case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\".", 0, 1, category);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "General description.", 0, 1, status);
         case -1724546052: /*description*/  return new Property("description", "markdown", "General description.", 0, 1, description);
@@ -2747,6 +2780,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ClinicalUseIssueType>
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
@@ -2769,6 +2803,9 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610: // type
           value = new ClinicalUseIssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ClinicalUseIssueType>
+          return value;
+        case 50511102: // category
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1867885268: // subject
           this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
@@ -2806,6 +2843,8 @@ public class ClinicalUseIssue extends DomainResource {
         } else if (name.equals("type")) {
           value = new ClinicalUseIssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ClinicalUseIssueType>
+        } else if (name.equals("category")) {
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
@@ -2832,6 +2871,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case 3575610:  return getTypeElement();
+        case 50511102:  return getCategory();
         case -1867885268:  return addSubject(); 
         case -892481550:  return getStatus();
         case -1724546052:  return getDescriptionElement();
@@ -2850,6 +2890,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
@@ -2870,6 +2911,10 @@ public class ClinicalUseIssue extends DomainResource {
         }
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClinicalUseIssue.type");
+        }
+        else if (name.equals("category")) {
+          this.category = new CodeableConcept();
+          return this.category;
         }
         else if (name.equals("subject")) {
           return addSubject();
@@ -2923,6 +2968,7 @@ public class ClinicalUseIssue extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
+        dst.category = category == null ? null : category.copy();
         if (subject != null) {
           dst.subject = new ArrayList<Reference>();
           for (Reference i : subject)
@@ -2952,11 +2998,11 @@ public class ClinicalUseIssue extends DomainResource {
         if (!(other_ instanceof ClinicalUseIssue))
           return false;
         ClinicalUseIssue o = (ClinicalUseIssue) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(status, o.status, true) && compareDeep(description, o.description, true) && compareDeep(contraindication, o.contraindication, true)
-           && compareDeep(indication, o.indication, true) && compareDeep(interaction, o.interaction, true)
-           && compareDeep(population, o.population, true) && compareDeep(undesirableEffect, o.undesirableEffect, true)
-          ;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(category, o.category, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(status, o.status, true) && compareDeep(description, o.description, true)
+           && compareDeep(contraindication, o.contraindication, true) && compareDeep(indication, o.indication, true)
+           && compareDeep(interaction, o.interaction, true) && compareDeep(population, o.population, true)
+           && compareDeep(undesirableEffect, o.undesirableEffect, true);
       }
 
       @Override
@@ -2970,9 +3016,9 @@ public class ClinicalUseIssue extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, subject
-          , status, description, contraindication, indication, interaction, population, undesirableEffect
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, category
+          , subject, status, description, contraindication, indication, interaction, population
+          , undesirableEffect);
       }
 
   @Override
@@ -3135,17 +3181,17 @@ public class ClinicalUseIssue extends DomainResource {
  /**
    * Search parameter: <b>type</b>
    * <p>
-   * Description: <b>indication | contraindication | interaction | undesirable-effect | other</b><br>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="type", path="ClinicalUseIssue.type", description="indication | contraindication | interaction | undesirable-effect | other", type="token" )
+  @SearchParamDefinition(name="type", path="ClinicalUseIssue.type", description="indication | contraindication | interaction | undesirable-effect | warning", type="token" )
   public static final String SP_TYPE = "type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>type</b>
    * <p>
-   * Description: <b>indication | contraindication | interaction | undesirable-effect | other</b><br>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.type</b><br>
    * </p>
