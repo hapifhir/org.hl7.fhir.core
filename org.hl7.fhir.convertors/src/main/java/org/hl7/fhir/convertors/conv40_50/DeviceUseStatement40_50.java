@@ -69,15 +69,15 @@ public class DeviceUseStatement40_50 extends VersionConvertor_40_50 {
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
         if (src.hasRecordedOn())
-            tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
+            tgt.setDateAssertedElement(convertDateTime(src.getRecordedOnElement()));
         if (src.hasSource())
-            tgt.setSource(convertReference(src.getSource()));
+            tgt.setInformationSource(convertReference(src.getSource()));
         if (src.hasDevice())
-            tgt.setDevice(convertReference(src.getDevice()));
+            tgt.getDevice().setReference(convertReference(src.getDevice()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasBodySite())
-            tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+            tgt.getBodySite().setConcept(convertCodeableConcept(src.getBodySite()));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
@@ -96,18 +96,18 @@ public class DeviceUseStatement40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(convertReference(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
-        if (src.hasRecordedOn())
-            tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
-        if (src.hasSource())
-            tgt.setSource(convertReference(src.getSource()));
-        if (src.hasDevice())
-            tgt.setDevice(convertReference(src.getDevice()));
+        if (src.hasDateAsserted())
+            tgt.setRecordedOnElement(convertDateTime(src.getDateAssertedElement()));
+        if (src.hasInformationSource())
+            tgt.setSource(convertReference(src.getInformationSource()));
+        if (src.getDevice().hasReference())
+            tgt.setDevice(convertReference(src.getDevice().getReference()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasBodySite())
-            tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+        if (src.getBodySite().hasConcept())
+            tgt.setBodySite(convertCodeableConcept(src.getBodySite().getConcept()));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }

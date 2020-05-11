@@ -83,7 +83,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasPartNumber())
             tgt.setPartNumberElement(convertString(src.getPartNumberElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.addType(convertCodeableConcept(src.getType()));
         for (org.hl7.fhir.r4.model.Device.DeviceSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceSpecializationComponent(t));
         for (org.hl7.fhir.r4.model.Device.DeviceVersionComponent t : src.getVersion()) tgt.addVersion(convertDeviceVersionComponent(t));
         for (org.hl7.fhir.r4.model.Device.DevicePropertyComponent t : src.getProperty()) tgt.addProperty(convertDevicePropertyComponent(t));
@@ -133,7 +133,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasPartNumber())
             tgt.setPartNumberElement(convertString(src.getPartNumberElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setType(convertCodeableConcept(src.getTypeFirstRep()));
         for (org.hl7.fhir.r5.model.Device.DeviceSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceSpecializationComponent(t));
         for (org.hl7.fhir.r5.model.Device.DeviceVersionComponent t : src.getVersion()) tgt.addVersion(convertDeviceVersionComponent(t));
         for (org.hl7.fhir.r5.model.Device.DevicePropertyComponent t : src.getProperty()) tgt.addProperty(convertDevicePropertyComponent(t));

@@ -52,13 +52,15 @@ package org.hl7.fhir.r5.model;
  */
 
 
+import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
- * Primitive type "integer" in FHIR: A signed 64-bit integer
+ * Primitive type "integer" in FHIR: A signed 32-bit integer
  */
-@DatatypeDef(name = "integer64")
-public class Integer64Type extends PrimitiveType<Long> {
+@DatatypeDef(name = "integer")
+public class Integer64Type extends PrimitiveType<Long> /* implements IBaseInteger64Datatype */ {
 
 	private static final long serialVersionUID = 3L;
 
@@ -95,8 +97,12 @@ public class Integer64Type extends PrimitiveType<Long> {
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
 	public Integer64Type(Long theValue) {
+	    if (theValue < java.lang.Long.MIN_VALUE || theValue > java.lang.Long.MAX_VALUE) {
+	        throw new IllegalArgumentException
+	            (theValue + " cannot be cast to int without changing its value.");
+	    }
 	    if(theValue!=null) {
-	    	setValue(theValue);
+	    	setValue((long)theValue.longValue());
 	    }
 	}
 

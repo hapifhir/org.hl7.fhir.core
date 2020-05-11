@@ -161,8 +161,8 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       return "";
     switch (mapping.getRelationship()) {
     case EQUIVALENT : return "~";
-    case SOURCENARROWERTARGET : return "<";
-    case SOURCEBROADERTARGET : return ">";
+    case SOURCEISNARROWERTHANTARGET : return "<";
+    case SOURCEISBROADERTHANTARGET : return ">";
     case NOTRELATEDTO : return "!=";
     default: return "?";
     }

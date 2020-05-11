@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Jan 20, 2020 14:31+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;

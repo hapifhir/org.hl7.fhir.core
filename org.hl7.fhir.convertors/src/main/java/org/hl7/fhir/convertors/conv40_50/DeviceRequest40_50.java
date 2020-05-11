@@ -72,8 +72,11 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasCode())
-            tgt.setCode(convertType(src.getCode()));
+        if (src.hasCodeCodeableConcept())
+            tgt.getCode().setConcept(convertCodeableConcept(src.getCodeCodeableConcept()));
+        else if (src.hasCodeReference())
+          tgt.getCode().setReference(convertReference(src.getCodeReference()));
+       
         for (org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
@@ -116,8 +119,10 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasCode())
-            tgt.setCode(convertType(src.getCode()));
+        if (src.getCode().hasConcept())
+            tgt.setCode(convertType(src.getCode().getConcept()));
+        if (src.getCode().hasReference())
+            tgt.setCode(convertType(src.getCode().getReference()));
         for (org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));

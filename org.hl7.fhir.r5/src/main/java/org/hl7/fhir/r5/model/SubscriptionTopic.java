@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,8 +70,8 @@ import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
  */
-@ResourceDef(name="Topic", profile="http://hl7.org/fhir/StructureDefinition/Topic")
-public class Topic extends DomainResource {
+@ResourceDef(name="SubscriptionTopic", profile="http://hl7.org/fhir/StructureDefinition/SubscriptionTopic")
+public class SubscriptionTopic extends DomainResource {
 
     public enum InteractionTrigger {
         /**
@@ -181,160 +181,20 @@ public class Topic extends DomainResource {
       }
     }
 
-    public enum TopicFilterByMatchType {
-        /**
-         * Used to match a value according to FHIR Search rules (e.g., Patient/123, Encounter/2002).
-         */
-        EQUAL, 
-        /**
-         * The key value in the topic stream is an active members of the reference set identified by the concept provided as the filter value.
-         */
-        IN, 
-        /**
-         * The key value in the topic stream is NOT an active members of the reference set identified by the concept provided as the filter value.
-         */
-        NOTIN, 
-        /**
-         * The key value is subsumes the value in the filter value.
-         */
-        ABOVE, 
-        /**
-         * The key value is subsumed by the value in the filter value.
-         */
-        BELOW, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static TopicFilterByMatchType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("=".equals(codeString))
-          return EQUAL;
-        if ("in".equals(codeString))
-          return IN;
-        if ("not-in".equals(codeString))
-          return NOTIN;
-        if ("above".equals(codeString))
-          return ABOVE;
-        if ("below".equals(codeString))
-          return BELOW;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown TopicFilterByMatchType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case EQUAL: return "=";
-            case IN: return "in";
-            case NOTIN: return "not-in";
-            case ABOVE: return "above";
-            case BELOW: return "below";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case EQUAL: return "http://hl7.org/fhir/topic-match-operator";
-            case IN: return "http://hl7.org/fhir/topic-match-operator";
-            case NOTIN: return "http://hl7.org/fhir/topic-match-operator";
-            case ABOVE: return "http://hl7.org/fhir/topic-match-operator";
-            case BELOW: return "http://hl7.org/fhir/topic-match-operator";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case EQUAL: return "Used to match a value according to FHIR Search rules (e.g., Patient/123, Encounter/2002).";
-            case IN: return "The key value in the topic stream is an active members of the reference set identified by the concept provided as the filter value.";
-            case NOTIN: return "The key value in the topic stream is NOT an active members of the reference set identified by the concept provided as the filter value.";
-            case ABOVE: return "The key value is subsumes the value in the filter value.";
-            case BELOW: return "The key value is subsumed by the value in the filter value.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case EQUAL: return "=";
-            case IN: return "in";
-            case NOTIN: return "not-in";
-            case ABOVE: return "above";
-            case BELOW: return "below";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class TopicFilterByMatchTypeEnumFactory implements EnumFactory<TopicFilterByMatchType> {
-    public TopicFilterByMatchType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("=".equals(codeString))
-          return TopicFilterByMatchType.EQUAL;
-        if ("in".equals(codeString))
-          return TopicFilterByMatchType.IN;
-        if ("not-in".equals(codeString))
-          return TopicFilterByMatchType.NOTIN;
-        if ("above".equals(codeString))
-          return TopicFilterByMatchType.ABOVE;
-        if ("below".equals(codeString))
-          return TopicFilterByMatchType.BELOW;
-        throw new IllegalArgumentException("Unknown TopicFilterByMatchType code '"+codeString+"'");
-        }
-        public Enumeration<TopicFilterByMatchType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<TopicFilterByMatchType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("=".equals(codeString))
-          return new Enumeration<TopicFilterByMatchType>(this, TopicFilterByMatchType.EQUAL);
-        if ("in".equals(codeString))
-          return new Enumeration<TopicFilterByMatchType>(this, TopicFilterByMatchType.IN);
-        if ("not-in".equals(codeString))
-          return new Enumeration<TopicFilterByMatchType>(this, TopicFilterByMatchType.NOTIN);
-        if ("above".equals(codeString))
-          return new Enumeration<TopicFilterByMatchType>(this, TopicFilterByMatchType.ABOVE);
-        if ("below".equals(codeString))
-          return new Enumeration<TopicFilterByMatchType>(this, TopicFilterByMatchType.BELOW);
-        throw new FHIRException("Unknown TopicFilterByMatchType code '"+codeString+"'");
-        }
-    public String toCode(TopicFilterByMatchType code) {
-      if (code == TopicFilterByMatchType.EQUAL)
-        return "=";
-      if (code == TopicFilterByMatchType.IN)
-        return "in";
-      if (code == TopicFilterByMatchType.NOTIN)
-        return "not-in";
-      if (code == TopicFilterByMatchType.ABOVE)
-        return "above";
-      if (code == TopicFilterByMatchType.BELOW)
-        return "below";
-      return "?";
-      }
-    public String toSystem(TopicFilterByMatchType code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
-    public static class TopicResourceTriggerComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class SubscriptionTopicResourceTriggerComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The human readable description of what triggers inclusion into this topic -  for example, "Beginning of a clinical encounter".
+         * The human readable description of what triggers inclusion into this subscription topic -  for example, "Beginning of a clinical encounter".
          */
         @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Text representation of the trigger", formalDefinition="The human readable description of what triggers inclusion into this topic -  for example, \"Beginning of a clinical encounter\"." )
+        @Description(shortDefinition="Text representation of the trigger", formalDefinition="The human readable description of what triggers inclusion into this subscription topic -  for example, \"Beginning of a clinical encounter\"." )
         protected StringType description;
 
         /**
-         * The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.
+         * The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.
          */
         @Child(name = "resourceType", type = {CodeType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Candidate types for this topic", formalDefinition="The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic." )
+        @Description(shortDefinition="Candidate types for this subscription topic", formalDefinition="The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/resource-types")
         protected List<CodeType> resourceType;
 
@@ -347,35 +207,35 @@ public class Topic extends DomainResource {
         protected List<Enumeration<InteractionTrigger>> methodCriteria;
 
         /**
-         * The FHIR query based rules that the server should use to determine when to trigger a notification for this topic.
+         * The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic.
          */
         @Child(name = "queryCriteria", type = {}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Query based trigger rule", formalDefinition="The FHIR query based rules that the server should use to determine when to trigger a notification for this topic." )
-        protected TopicResourceTriggerQueryCriteriaComponent queryCriteria;
+        @Description(shortDefinition="Query based trigger rule", formalDefinition="The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic." )
+        protected SubscriptionTopicResourceTriggerQueryCriteriaComponent queryCriteria;
 
         /**
-         * The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.
+         * The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.
          */
-        @Child(name = "fhirPathCriteria", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="FHIRPath based trigger rule", formalDefinition="The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic." )
-        protected StringType fhirPathCriteria;
+        @Child(name = "fhirPathCriteria", type = {StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="FHIRPath based trigger rule", formalDefinition="The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND." )
+        protected List<StringType> fhirPathCriteria;
 
-        private static final long serialVersionUID = 1020326735L;
+        private static final long serialVersionUID = -265026948L;
 
     /**
      * Constructor
      */
-      public TopicResourceTriggerComponent() {
+      public SubscriptionTopicResourceTriggerComponent() {
         super();
       }
 
         /**
-         * @return {@link #description} (The human readable description of what triggers inclusion into this topic -  for example, "Beginning of a clinical encounter".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #description} (The human readable description of what triggers inclusion into this subscription topic -  for example, "Beginning of a clinical encounter".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
         public StringType getDescriptionElement() { 
           if (this.description == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerComponent.description");
+              throw new Error("Attempt to auto-create SubscriptionTopicResourceTriggerComponent.description");
             else if (Configuration.doAutoCreate())
               this.description = new StringType(); // bb
           return this.description;
@@ -390,24 +250,24 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @param value {@link #description} (The human readable description of what triggers inclusion into this topic -  for example, "Beginning of a clinical encounter".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #description} (The human readable description of what triggers inclusion into this subscription topic -  for example, "Beginning of a clinical encounter".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
-        public TopicResourceTriggerComponent setDescriptionElement(StringType value) { 
+        public SubscriptionTopicResourceTriggerComponent setDescriptionElement(StringType value) { 
           this.description = value;
           return this;
         }
 
         /**
-         * @return The human readable description of what triggers inclusion into this topic -  for example, "Beginning of a clinical encounter".
+         * @return The human readable description of what triggers inclusion into this subscription topic -  for example, "Beginning of a clinical encounter".
          */
         public String getDescription() { 
           return this.description == null ? null : this.description.getValue();
         }
 
         /**
-         * @param value The human readable description of what triggers inclusion into this topic -  for example, "Beginning of a clinical encounter".
+         * @param value The human readable description of what triggers inclusion into this subscription topic -  for example, "Beginning of a clinical encounter".
          */
-        public TopicResourceTriggerComponent setDescription(String value) { 
+        public SubscriptionTopicResourceTriggerComponent setDescription(String value) { 
           if (Utilities.noString(value))
             this.description = null;
           else {
@@ -419,7 +279,7 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @return {@link #resourceType} (The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.)
+         * @return {@link #resourceType} (The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.)
          */
         public List<CodeType> getResourceType() { 
           if (this.resourceType == null)
@@ -430,7 +290,7 @@ public class Topic extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TopicResourceTriggerComponent setResourceType(List<CodeType> theResourceType) { 
+        public SubscriptionTopicResourceTriggerComponent setResourceType(List<CodeType> theResourceType) { 
           this.resourceType = theResourceType;
           return this;
         }
@@ -445,7 +305,7 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @return {@link #resourceType} (The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.)
+         * @return {@link #resourceType} (The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.)
          */
         public CodeType addResourceTypeElement() {//2 
           CodeType t = new CodeType();
@@ -456,9 +316,9 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @param value {@link #resourceType} (The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.)
+         * @param value {@link #resourceType} (The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.)
          */
-        public TopicResourceTriggerComponent addResourceType(String value) { //1
+        public SubscriptionTopicResourceTriggerComponent addResourceType(String value) { //1
           CodeType t = new CodeType();
           t.setValue(value);
           if (this.resourceType == null)
@@ -468,7 +328,7 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @param value {@link #resourceType} (The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.)
+         * @param value {@link #resourceType} (The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.)
          */
         public boolean hasResourceType(String value) { 
           if (this.resourceType == null)
@@ -491,7 +351,7 @@ public class Topic extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TopicResourceTriggerComponent setMethodCriteria(List<Enumeration<InteractionTrigger>> theMethodCriteria) { 
+        public SubscriptionTopicResourceTriggerComponent setMethodCriteria(List<Enumeration<InteractionTrigger>> theMethodCriteria) { 
           this.methodCriteria = theMethodCriteria;
           return this;
         }
@@ -519,7 +379,7 @@ public class Topic extends DomainResource {
         /**
          * @param value {@link #methodCriteria} (The REST interaction based rules that the server should use to determine when to trigger a notification for this topic.)
          */
-        public TopicResourceTriggerComponent addMethodCriteria(InteractionTrigger value) { //1
+        public SubscriptionTopicResourceTriggerComponent addMethodCriteria(InteractionTrigger value) { //1
           Enumeration<InteractionTrigger> t = new Enumeration<InteractionTrigger>(new InteractionTriggerEnumFactory());
           t.setValue(value);
           if (this.methodCriteria == null)
@@ -541,14 +401,14 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @return {@link #queryCriteria} (The FHIR query based rules that the server should use to determine when to trigger a notification for this topic.)
+         * @return {@link #queryCriteria} (The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic.)
          */
-        public TopicResourceTriggerQueryCriteriaComponent getQueryCriteria() { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent getQueryCriteria() { 
           if (this.queryCriteria == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerComponent.queryCriteria");
+              throw new Error("Attempt to auto-create SubscriptionTopicResourceTriggerComponent.queryCriteria");
             else if (Configuration.doAutoCreate())
-              this.queryCriteria = new TopicResourceTriggerQueryCriteriaComponent(); // cc
+              this.queryCriteria = new SubscriptionTopicResourceTriggerQueryCriteriaComponent(); // cc
           return this.queryCriteria;
         }
 
@@ -557,79 +417,91 @@ public class Topic extends DomainResource {
         }
 
         /**
-         * @param value {@link #queryCriteria} (The FHIR query based rules that the server should use to determine when to trigger a notification for this topic.)
+         * @param value {@link #queryCriteria} (The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic.)
          */
-        public TopicResourceTriggerComponent setQueryCriteria(TopicResourceTriggerQueryCriteriaComponent value) { 
+        public SubscriptionTopicResourceTriggerComponent setQueryCriteria(SubscriptionTopicResourceTriggerQueryCriteriaComponent value) { 
           this.queryCriteria = value;
           return this;
         }
 
         /**
-         * @return {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.). This is the underlying object with id, value and extensions. The accessor "getFhirPathCriteria" gives direct access to the value
+         * @return {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.)
          */
-        public StringType getFhirPathCriteriaElement() { 
+        public List<StringType> getFhirPathCriteria() { 
           if (this.fhirPathCriteria == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerComponent.fhirPathCriteria");
-            else if (Configuration.doAutoCreate())
-              this.fhirPathCriteria = new StringType(); // bb
+            this.fhirPathCriteria = new ArrayList<StringType>();
           return this.fhirPathCriteria;
         }
 
-        public boolean hasFhirPathCriteriaElement() { 
-          return this.fhirPathCriteria != null && !this.fhirPathCriteria.isEmpty();
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SubscriptionTopicResourceTriggerComponent setFhirPathCriteria(List<StringType> theFhirPathCriteria) { 
+          this.fhirPathCriteria = theFhirPathCriteria;
+          return this;
         }
 
         public boolean hasFhirPathCriteria() { 
-          return this.fhirPathCriteria != null && !this.fhirPathCriteria.isEmpty();
+          if (this.fhirPathCriteria == null)
+            return false;
+          for (StringType item : this.fhirPathCriteria)
+            if (!item.isEmpty())
+              return true;
+          return false;
         }
 
         /**
-         * @param value {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.). This is the underlying object with id, value and extensions. The accessor "getFhirPathCriteria" gives direct access to the value
+         * @return {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.)
          */
-        public TopicResourceTriggerComponent setFhirPathCriteriaElement(StringType value) { 
-          this.fhirPathCriteria = value;
+        public StringType addFhirPathCriteriaElement() {//2 
+          StringType t = new StringType();
+          if (this.fhirPathCriteria == null)
+            this.fhirPathCriteria = new ArrayList<StringType>();
+          this.fhirPathCriteria.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.)
+         */
+        public SubscriptionTopicResourceTriggerComponent addFhirPathCriteria(String value) { //1
+          StringType t = new StringType();
+          t.setValue(value);
+          if (this.fhirPathCriteria == null)
+            this.fhirPathCriteria = new ArrayList<StringType>();
+          this.fhirPathCriteria.add(t);
           return this;
         }
 
         /**
-         * @return The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.
+         * @param value {@link #fhirPathCriteria} (The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.)
          */
-        public String getFhirPathCriteria() { 
-          return this.fhirPathCriteria == null ? null : this.fhirPathCriteria.getValue();
-        }
-
-        /**
-         * @param value The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.
-         */
-        public TopicResourceTriggerComponent setFhirPathCriteria(String value) { 
-          if (Utilities.noString(value))
-            this.fhirPathCriteria = null;
-          else {
-            if (this.fhirPathCriteria == null)
-              this.fhirPathCriteria = new StringType();
-            this.fhirPathCriteria.setValue(value);
-          }
-          return this;
+        public boolean hasFhirPathCriteria(String value) { 
+          if (this.fhirPathCriteria == null)
+            return false;
+          for (StringType v : this.fhirPathCriteria)
+            if (v.getValue().equals(value)) // string
+              return true;
+          return false;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("description", "string", "The human readable description of what triggers inclusion into this topic -  for example, \"Beginning of a clinical encounter\".", 0, 1, description));
-          children.add(new Property("resourceType", "code", "The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.", 0, java.lang.Integer.MAX_VALUE, resourceType));
+          children.add(new Property("description", "string", "The human readable description of what triggers inclusion into this subscription topic -  for example, \"Beginning of a clinical encounter\".", 0, 1, description));
+          children.add(new Property("resourceType", "code", "The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.", 0, java.lang.Integer.MAX_VALUE, resourceType));
           children.add(new Property("methodCriteria", "code", "The REST interaction based rules that the server should use to determine when to trigger a notification for this topic.", 0, java.lang.Integer.MAX_VALUE, methodCriteria));
-          children.add(new Property("queryCriteria", "", "The FHIR query based rules that the server should use to determine when to trigger a notification for this topic.", 0, 1, queryCriteria));
-          children.add(new Property("fhirPathCriteria", "string", "The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.", 0, 1, fhirPathCriteria));
+          children.add(new Property("queryCriteria", "", "The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic.", 0, 1, queryCriteria));
+          children.add(new Property("fhirPathCriteria", "string", "The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.", 0, java.lang.Integer.MAX_VALUE, fhirPathCriteria));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "The human readable description of what triggers inclusion into this topic -  for example, \"Beginning of a clinical encounter\".", 0, 1, description);
-          case -384364440: /*resourceType*/  return new Property("resourceType", "code", "The list of resource types that are candidates for this topic.  For example, the Encounter resource is updated in an 'admission' topic.", 0, java.lang.Integer.MAX_VALUE, resourceType);
+          case -1724546052: /*description*/  return new Property("description", "string", "The human readable description of what triggers inclusion into this subscription topic -  for example, \"Beginning of a clinical encounter\".", 0, 1, description);
+          case -384364440: /*resourceType*/  return new Property("resourceType", "code", "The list of resource types that are candidates for this subscription topic.  For example, the Encounter resource is updated in an 'admission' subscription topic.", 0, java.lang.Integer.MAX_VALUE, resourceType);
           case -1924160672: /*methodCriteria*/  return new Property("methodCriteria", "code", "The REST interaction based rules that the server should use to determine when to trigger a notification for this topic.", 0, java.lang.Integer.MAX_VALUE, methodCriteria);
-          case -545123257: /*queryCriteria*/  return new Property("queryCriteria", "", "The FHIR query based rules that the server should use to determine when to trigger a notification for this topic.", 0, 1, queryCriteria);
-          case 1929785263: /*fhirPathCriteria*/  return new Property("fhirPathCriteria", "string", "The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.", 0, 1, fhirPathCriteria);
+          case -545123257: /*queryCriteria*/  return new Property("queryCriteria", "", "The FHIR query based rules that the server should use to determine when to trigger a notification for this subscription topic.", 0, 1, queryCriteria);
+          case 1929785263: /*fhirPathCriteria*/  return new Property("fhirPathCriteria", "string", "The FHIRPath based rules that the server should use to determine when to trigger a notification for this topic.  If there are multiple, FHIRPath filters are joined with AND.", 0, java.lang.Integer.MAX_VALUE, fhirPathCriteria);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -641,8 +513,8 @@ public class Topic extends DomainResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -384364440: /*resourceType*/ return this.resourceType == null ? new Base[0] : this.resourceType.toArray(new Base[this.resourceType.size()]); // CodeType
         case -1924160672: /*methodCriteria*/ return this.methodCriteria == null ? new Base[0] : this.methodCriteria.toArray(new Base[this.methodCriteria.size()]); // Enumeration<InteractionTrigger>
-        case -545123257: /*queryCriteria*/ return this.queryCriteria == null ? new Base[0] : new Base[] {this.queryCriteria}; // TopicResourceTriggerQueryCriteriaComponent
-        case 1929785263: /*fhirPathCriteria*/ return this.fhirPathCriteria == null ? new Base[0] : new Base[] {this.fhirPathCriteria}; // StringType
+        case -545123257: /*queryCriteria*/ return this.queryCriteria == null ? new Base[0] : new Base[] {this.queryCriteria}; // SubscriptionTopicResourceTriggerQueryCriteriaComponent
+        case 1929785263: /*fhirPathCriteria*/ return this.fhirPathCriteria == null ? new Base[0] : this.fhirPathCriteria.toArray(new Base[this.fhirPathCriteria.size()]); // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -662,10 +534,10 @@ public class Topic extends DomainResource {
           this.getMethodCriteria().add((Enumeration) value); // Enumeration<InteractionTrigger>
           return value;
         case -545123257: // queryCriteria
-          this.queryCriteria = (TopicResourceTriggerQueryCriteriaComponent) value; // TopicResourceTriggerQueryCriteriaComponent
+          this.queryCriteria = (SubscriptionTopicResourceTriggerQueryCriteriaComponent) value; // SubscriptionTopicResourceTriggerQueryCriteriaComponent
           return value;
         case 1929785263: // fhirPathCriteria
-          this.fhirPathCriteria = TypeConvertor.castToString(value); // StringType
+          this.getFhirPathCriteria().add(TypeConvertor.castToString(value)); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -682,9 +554,9 @@ public class Topic extends DomainResource {
           value = new InteractionTriggerEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.getMethodCriteria().add((Enumeration) value);
         } else if (name.equals("queryCriteria")) {
-          this.queryCriteria = (TopicResourceTriggerQueryCriteriaComponent) value; // TopicResourceTriggerQueryCriteriaComponent
+          this.queryCriteria = (SubscriptionTopicResourceTriggerQueryCriteriaComponent) value; // SubscriptionTopicResourceTriggerQueryCriteriaComponent
         } else if (name.equals("fhirPathCriteria")) {
-          this.fhirPathCriteria = TypeConvertor.castToString(value); // StringType
+          this.getFhirPathCriteria().add(TypeConvertor.castToString(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -697,7 +569,7 @@ public class Topic extends DomainResource {
         case -384364440:  return addResourceTypeElement();
         case -1924160672:  return addMethodCriteriaElement();
         case -545123257:  return getQueryCriteria();
-        case 1929785263:  return getFhirPathCriteriaElement();
+        case 1929785263:  return addFhirPathCriteriaElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -719,32 +591,32 @@ public class Topic extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.description");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.description");
         }
         else if (name.equals("resourceType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.resourceType");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.resourceType");
         }
         else if (name.equals("methodCriteria")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.methodCriteria");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.methodCriteria");
         }
         else if (name.equals("queryCriteria")) {
-          this.queryCriteria = new TopicResourceTriggerQueryCriteriaComponent();
+          this.queryCriteria = new SubscriptionTopicResourceTriggerQueryCriteriaComponent();
           return this.queryCriteria;
         }
         else if (name.equals("fhirPathCriteria")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.fhirPathCriteria");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.fhirPathCriteria");
         }
         else
           return super.addChild(name);
       }
 
-      public TopicResourceTriggerComponent copy() {
-        TopicResourceTriggerComponent dst = new TopicResourceTriggerComponent();
+      public SubscriptionTopicResourceTriggerComponent copy() {
+        SubscriptionTopicResourceTriggerComponent dst = new SubscriptionTopicResourceTriggerComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TopicResourceTriggerComponent dst) {
+      public void copyValues(SubscriptionTopicResourceTriggerComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         if (resourceType != null) {
@@ -758,16 +630,20 @@ public class Topic extends DomainResource {
             dst.methodCriteria.add(i.copy());
         };
         dst.queryCriteria = queryCriteria == null ? null : queryCriteria.copy();
-        dst.fhirPathCriteria = fhirPathCriteria == null ? null : fhirPathCriteria.copy();
+        if (fhirPathCriteria != null) {
+          dst.fhirPathCriteria = new ArrayList<StringType>();
+          for (StringType i : fhirPathCriteria)
+            dst.fhirPathCriteria.add(i.copy());
+        };
       }
 
       @Override
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TopicResourceTriggerComponent))
+        if (!(other_ instanceof SubscriptionTopicResourceTriggerComponent))
           return false;
-        TopicResourceTriggerComponent o = (TopicResourceTriggerComponent) other_;
+        SubscriptionTopicResourceTriggerComponent o = (SubscriptionTopicResourceTriggerComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(resourceType, o.resourceType, true)
            && compareDeep(methodCriteria, o.methodCriteria, true) && compareDeep(queryCriteria, o.queryCriteria, true)
            && compareDeep(fhirPathCriteria, o.fhirPathCriteria, true);
@@ -777,9 +653,9 @@ public class Topic extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TopicResourceTriggerComponent))
+        if (!(other_ instanceof SubscriptionTopicResourceTriggerComponent))
           return false;
-        TopicResourceTriggerComponent o = (TopicResourceTriggerComponent) other_;
+        SubscriptionTopicResourceTriggerComponent o = (SubscriptionTopicResourceTriggerComponent) other_;
         return compareValues(description, o.description, true) && compareValues(resourceType, o.resourceType, true)
            && compareValues(methodCriteria, o.methodCriteria, true) && compareValues(fhirPathCriteria, o.fhirPathCriteria, true)
           ;
@@ -791,14 +667,14 @@ public class Topic extends DomainResource {
       }
 
   public String fhirType() {
-    return "Topic.resourceTrigger";
+    return "SubscriptionTopic.resourceTrigger";
 
   }
 
   }
 
     @Block()
-    public static class TopicResourceTriggerQueryCriteriaComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class SubscriptionTopicResourceTriggerQueryCriteriaComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The FHIR query based rules are applied to the previous resource state.
          */
@@ -825,7 +701,7 @@ public class Topic extends DomainResource {
     /**
      * Constructor
      */
-      public TopicResourceTriggerQueryCriteriaComponent() {
+      public SubscriptionTopicResourceTriggerQueryCriteriaComponent() {
         super();
       }
 
@@ -835,7 +711,7 @@ public class Topic extends DomainResource {
         public StringType getPreviousElement() { 
           if (this.previous == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerQueryCriteriaComponent.previous");
+              throw new Error("Attempt to auto-create SubscriptionTopicResourceTriggerQueryCriteriaComponent.previous");
             else if (Configuration.doAutoCreate())
               this.previous = new StringType(); // bb
           return this.previous;
@@ -852,7 +728,7 @@ public class Topic extends DomainResource {
         /**
          * @param value {@link #previous} (The FHIR query based rules are applied to the previous resource state.). This is the underlying object with id, value and extensions. The accessor "getPrevious" gives direct access to the value
          */
-        public TopicResourceTriggerQueryCriteriaComponent setPreviousElement(StringType value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setPreviousElement(StringType value) { 
           this.previous = value;
           return this;
         }
@@ -867,7 +743,7 @@ public class Topic extends DomainResource {
         /**
          * @param value The FHIR query based rules are applied to the previous resource state.
          */
-        public TopicResourceTriggerQueryCriteriaComponent setPrevious(String value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setPrevious(String value) { 
           if (Utilities.noString(value))
             this.previous = null;
           else {
@@ -884,7 +760,7 @@ public class Topic extends DomainResource {
         public StringType getCurrentElement() { 
           if (this.current == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerQueryCriteriaComponent.current");
+              throw new Error("Attempt to auto-create SubscriptionTopicResourceTriggerQueryCriteriaComponent.current");
             else if (Configuration.doAutoCreate())
               this.current = new StringType(); // bb
           return this.current;
@@ -901,7 +777,7 @@ public class Topic extends DomainResource {
         /**
          * @param value {@link #current} (The FHIR query based rules are applied to the current resource state.). This is the underlying object with id, value and extensions. The accessor "getCurrent" gives direct access to the value
          */
-        public TopicResourceTriggerQueryCriteriaComponent setCurrentElement(StringType value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setCurrentElement(StringType value) { 
           this.current = value;
           return this;
         }
@@ -916,7 +792,7 @@ public class Topic extends DomainResource {
         /**
          * @param value The FHIR query based rules are applied to the current resource state.
          */
-        public TopicResourceTriggerQueryCriteriaComponent setCurrent(String value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setCurrent(String value) { 
           if (Utilities.noString(value))
             this.current = null;
           else {
@@ -933,7 +809,7 @@ public class Topic extends DomainResource {
         public BooleanType getRequireBothElement() { 
           if (this.requireBoth == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicResourceTriggerQueryCriteriaComponent.requireBoth");
+              throw new Error("Attempt to auto-create SubscriptionTopicResourceTriggerQueryCriteriaComponent.requireBoth");
             else if (Configuration.doAutoCreate())
               this.requireBoth = new BooleanType(); // bb
           return this.requireBoth;
@@ -950,7 +826,7 @@ public class Topic extends DomainResource {
         /**
          * @param value {@link #requireBoth} (If set to true, both current and previous criteria must evaluate true to  trigger a notification for this topic.  Otherwise a notification for this topic will be triggered if either one evaluates to true.). This is the underlying object with id, value and extensions. The accessor "getRequireBoth" gives direct access to the value
          */
-        public TopicResourceTriggerQueryCriteriaComponent setRequireBothElement(BooleanType value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setRequireBothElement(BooleanType value) { 
           this.requireBoth = value;
           return this;
         }
@@ -965,7 +841,7 @@ public class Topic extends DomainResource {
         /**
          * @param value If set to true, both current and previous criteria must evaluate true to  trigger a notification for this topic.  Otherwise a notification for this topic will be triggered if either one evaluates to true.
          */
-        public TopicResourceTriggerQueryCriteriaComponent setRequireBoth(boolean value) { 
+        public SubscriptionTopicResourceTriggerQueryCriteriaComponent setRequireBoth(boolean value) { 
             if (this.requireBoth == null)
               this.requireBoth = new BooleanType();
             this.requireBoth.setValue(value);
@@ -1056,25 +932,25 @@ public class Topic extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("previous")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.queryCriteria.previous");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.previous");
         }
         else if (name.equals("current")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.queryCriteria.current");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.current");
         }
         else if (name.equals("requireBoth")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.resourceTrigger.queryCriteria.requireBoth");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.resourceTrigger.queryCriteria.requireBoth");
         }
         else
           return super.addChild(name);
       }
 
-      public TopicResourceTriggerQueryCriteriaComponent copy() {
-        TopicResourceTriggerQueryCriteriaComponent dst = new TopicResourceTriggerQueryCriteriaComponent();
+      public SubscriptionTopicResourceTriggerQueryCriteriaComponent copy() {
+        SubscriptionTopicResourceTriggerQueryCriteriaComponent dst = new SubscriptionTopicResourceTriggerQueryCriteriaComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TopicResourceTriggerQueryCriteriaComponent dst) {
+      public void copyValues(SubscriptionTopicResourceTriggerQueryCriteriaComponent dst) {
         super.copyValues(dst);
         dst.previous = previous == null ? null : previous.copy();
         dst.current = current == null ? null : current.copy();
@@ -1085,9 +961,9 @@ public class Topic extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TopicResourceTriggerQueryCriteriaComponent))
+        if (!(other_ instanceof SubscriptionTopicResourceTriggerQueryCriteriaComponent))
           return false;
-        TopicResourceTriggerQueryCriteriaComponent o = (TopicResourceTriggerQueryCriteriaComponent) other_;
+        SubscriptionTopicResourceTriggerQueryCriteriaComponent o = (SubscriptionTopicResourceTriggerQueryCriteriaComponent) other_;
         return compareDeep(previous, o.previous, true) && compareDeep(current, o.current, true) && compareDeep(requireBoth, o.requireBoth, true)
           ;
       }
@@ -1096,9 +972,9 @@ public class Topic extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TopicResourceTriggerQueryCriteriaComponent))
+        if (!(other_ instanceof SubscriptionTopicResourceTriggerQueryCriteriaComponent))
           return false;
-        TopicResourceTriggerQueryCriteriaComponent o = (TopicResourceTriggerQueryCriteriaComponent) other_;
+        SubscriptionTopicResourceTriggerQueryCriteriaComponent o = (SubscriptionTopicResourceTriggerQueryCriteriaComponent) other_;
         return compareValues(previous, o.previous, true) && compareValues(current, o.current, true) && compareValues(requireBoth, o.requireBoth, true)
           ;
       }
@@ -1109,28 +985,28 @@ public class Topic extends DomainResource {
       }
 
   public String fhirType() {
-    return "Topic.resourceTrigger.queryCriteria";
+    return "SubscriptionTopic.resourceTrigger.queryCriteria";
 
   }
 
   }
 
     @Block()
-    public static class TopicCanFilterByComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class SubscriptionTopicCanFilterByComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A search parameter (like "patient") which is a label for the filter.
          */
-        @Child(name = "name", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "searchParamName", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Search parameter that serves as filter key", formalDefinition="A search parameter (like \"patient\") which is a label for the filter." )
-        protected StringType name;
+        protected StringType searchParamName;
 
         /**
          * Allowable operators to apply when determining matches (Search Modifiers).
          */
-        @Child(name = "matchType", type = {CodeType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="= | in | not-in | above | below", formalDefinition="Allowable operators to apply when determining matches (Search Modifiers)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/topic-match-operator")
-        protected List<Enumeration<TopicFilterByMatchType>> matchType;
+        @Child(name = "searchModifier", type = {CodeType.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="= | eq | ne | gt | lt | ge | le | sa | eb | ap | above | below | in | not-in | of-type", formalDefinition="Allowable operators to apply when determining matches (Search Modifiers)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-search-modifier")
+        protected List<Enumeration<SubscriptionSearchModifier>> searchModifier;
 
         /**
          * Description of how this filter parameter is intended to be used.
@@ -1139,120 +1015,120 @@ public class Topic extends DomainResource {
         @Description(shortDefinition="Description of this filter parameter", formalDefinition="Description of how this filter parameter is intended to be used." )
         protected MarkdownType documentation;
 
-        private static final long serialVersionUID = -9356414L;
+        private static final long serialVersionUID = 482273720L;
 
     /**
      * Constructor
      */
-      public TopicCanFilterByComponent() {
+      public SubscriptionTopicCanFilterByComponent() {
         super();
       }
 
         /**
-         * @return {@link #name} (A search parameter (like "patient") which is a label for the filter.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @return {@link #searchParamName} (A search parameter (like "patient") which is a label for the filter.). This is the underlying object with id, value and extensions. The accessor "getSearchParamName" gives direct access to the value
          */
-        public StringType getNameElement() { 
-          if (this.name == null)
+        public StringType getSearchParamNameElement() { 
+          if (this.searchParamName == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicCanFilterByComponent.name");
+              throw new Error("Attempt to auto-create SubscriptionTopicCanFilterByComponent.searchParamName");
             else if (Configuration.doAutoCreate())
-              this.name = new StringType(); // bb
-          return this.name;
+              this.searchParamName = new StringType(); // bb
+          return this.searchParamName;
         }
 
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
+        public boolean hasSearchParamNameElement() { 
+          return this.searchParamName != null && !this.searchParamName.isEmpty();
         }
 
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
+        public boolean hasSearchParamName() { 
+          return this.searchParamName != null && !this.searchParamName.isEmpty();
         }
 
         /**
-         * @param value {@link #name} (A search parameter (like "patient") which is a label for the filter.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @param value {@link #searchParamName} (A search parameter (like "patient") which is a label for the filter.). This is the underlying object with id, value and extensions. The accessor "getSearchParamName" gives direct access to the value
          */
-        public TopicCanFilterByComponent setNameElement(StringType value) { 
-          this.name = value;
+        public SubscriptionTopicCanFilterByComponent setSearchParamNameElement(StringType value) { 
+          this.searchParamName = value;
           return this;
         }
 
         /**
          * @return A search parameter (like "patient") which is a label for the filter.
          */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
+        public String getSearchParamName() { 
+          return this.searchParamName == null ? null : this.searchParamName.getValue();
         }
 
         /**
          * @param value A search parameter (like "patient") which is a label for the filter.
          */
-        public TopicCanFilterByComponent setName(String value) { 
+        public SubscriptionTopicCanFilterByComponent setSearchParamName(String value) { 
           if (Utilities.noString(value))
-            this.name = null;
+            this.searchParamName = null;
           else {
-            if (this.name == null)
-              this.name = new StringType();
-            this.name.setValue(value);
+            if (this.searchParamName == null)
+              this.searchParamName = new StringType();
+            this.searchParamName.setValue(value);
           }
           return this;
         }
 
         /**
-         * @return {@link #matchType} (Allowable operators to apply when determining matches (Search Modifiers).)
+         * @return {@link #searchModifier} (Allowable operators to apply when determining matches (Search Modifiers).)
          */
-        public List<Enumeration<TopicFilterByMatchType>> getMatchType() { 
-          if (this.matchType == null)
-            this.matchType = new ArrayList<Enumeration<TopicFilterByMatchType>>();
-          return this.matchType;
+        public List<Enumeration<SubscriptionSearchModifier>> getSearchModifier() { 
+          if (this.searchModifier == null)
+            this.searchModifier = new ArrayList<Enumeration<SubscriptionSearchModifier>>();
+          return this.searchModifier;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TopicCanFilterByComponent setMatchType(List<Enumeration<TopicFilterByMatchType>> theMatchType) { 
-          this.matchType = theMatchType;
+        public SubscriptionTopicCanFilterByComponent setSearchModifier(List<Enumeration<SubscriptionSearchModifier>> theSearchModifier) { 
+          this.searchModifier = theSearchModifier;
           return this;
         }
 
-        public boolean hasMatchType() { 
-          if (this.matchType == null)
+        public boolean hasSearchModifier() { 
+          if (this.searchModifier == null)
             return false;
-          for (Enumeration<TopicFilterByMatchType> item : this.matchType)
+          for (Enumeration<SubscriptionSearchModifier> item : this.searchModifier)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
         /**
-         * @return {@link #matchType} (Allowable operators to apply when determining matches (Search Modifiers).)
+         * @return {@link #searchModifier} (Allowable operators to apply when determining matches (Search Modifiers).)
          */
-        public Enumeration<TopicFilterByMatchType> addMatchTypeElement() {//2 
-          Enumeration<TopicFilterByMatchType> t = new Enumeration<TopicFilterByMatchType>(new TopicFilterByMatchTypeEnumFactory());
-          if (this.matchType == null)
-            this.matchType = new ArrayList<Enumeration<TopicFilterByMatchType>>();
-          this.matchType.add(t);
+        public Enumeration<SubscriptionSearchModifier> addSearchModifierElement() {//2 
+          Enumeration<SubscriptionSearchModifier> t = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory());
+          if (this.searchModifier == null)
+            this.searchModifier = new ArrayList<Enumeration<SubscriptionSearchModifier>>();
+          this.searchModifier.add(t);
           return t;
         }
 
         /**
-         * @param value {@link #matchType} (Allowable operators to apply when determining matches (Search Modifiers).)
+         * @param value {@link #searchModifier} (Allowable operators to apply when determining matches (Search Modifiers).)
          */
-        public TopicCanFilterByComponent addMatchType(TopicFilterByMatchType value) { //1
-          Enumeration<TopicFilterByMatchType> t = new Enumeration<TopicFilterByMatchType>(new TopicFilterByMatchTypeEnumFactory());
+        public SubscriptionTopicCanFilterByComponent addSearchModifier(SubscriptionSearchModifier value) { //1
+          Enumeration<SubscriptionSearchModifier> t = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory());
           t.setValue(value);
-          if (this.matchType == null)
-            this.matchType = new ArrayList<Enumeration<TopicFilterByMatchType>>();
-          this.matchType.add(t);
+          if (this.searchModifier == null)
+            this.searchModifier = new ArrayList<Enumeration<SubscriptionSearchModifier>>();
+          this.searchModifier.add(t);
           return this;
         }
 
         /**
-         * @param value {@link #matchType} (Allowable operators to apply when determining matches (Search Modifiers).)
+         * @param value {@link #searchModifier} (Allowable operators to apply when determining matches (Search Modifiers).)
          */
-        public boolean hasMatchType(TopicFilterByMatchType value) { 
-          if (this.matchType == null)
+        public boolean hasSearchModifier(SubscriptionSearchModifier value) { 
+          if (this.searchModifier == null)
             return false;
-          for (Enumeration<TopicFilterByMatchType> v : this.matchType)
+          for (Enumeration<SubscriptionSearchModifier> v : this.searchModifier)
             if (v.getValue().equals(value)) // code
               return true;
           return false;
@@ -1264,7 +1140,7 @@ public class Topic extends DomainResource {
         public MarkdownType getDocumentationElement() { 
           if (this.documentation == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TopicCanFilterByComponent.documentation");
+              throw new Error("Attempt to auto-create SubscriptionTopicCanFilterByComponent.documentation");
             else if (Configuration.doAutoCreate())
               this.documentation = new MarkdownType(); // bb
           return this.documentation;
@@ -1281,7 +1157,7 @@ public class Topic extends DomainResource {
         /**
          * @param value {@link #documentation} (Description of how this filter parameter is intended to be used.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
          */
-        public TopicCanFilterByComponent setDocumentationElement(MarkdownType value) { 
+        public SubscriptionTopicCanFilterByComponent setDocumentationElement(MarkdownType value) { 
           this.documentation = value;
           return this;
         }
@@ -1296,7 +1172,7 @@ public class Topic extends DomainResource {
         /**
          * @param value Description of how this filter parameter is intended to be used.
          */
-        public TopicCanFilterByComponent setDocumentation(String value) { 
+        public SubscriptionTopicCanFilterByComponent setDocumentation(String value) { 
           if (value == null)
             this.documentation = null;
           else {
@@ -1309,16 +1185,16 @@ public class Topic extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("name", "string", "A search parameter (like \"patient\") which is a label for the filter.", 0, 1, name));
-          children.add(new Property("matchType", "code", "Allowable operators to apply when determining matches (Search Modifiers).", 0, java.lang.Integer.MAX_VALUE, matchType));
+          children.add(new Property("searchParamName", "string", "A search parameter (like \"patient\") which is a label for the filter.", 0, 1, searchParamName));
+          children.add(new Property("searchModifier", "code", "Allowable operators to apply when determining matches (Search Modifiers).", 0, java.lang.Integer.MAX_VALUE, searchModifier));
           children.add(new Property("documentation", "markdown", "Description of how this filter parameter is intended to be used.", 0, 1, documentation));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3373707: /*name*/  return new Property("name", "string", "A search parameter (like \"patient\") which is a label for the filter.", 0, 1, name);
-          case 614036127: /*matchType*/  return new Property("matchType", "code", "Allowable operators to apply when determining matches (Search Modifiers).", 0, java.lang.Integer.MAX_VALUE, matchType);
+          case 83857392: /*searchParamName*/  return new Property("searchParamName", "string", "A search parameter (like \"patient\") which is a label for the filter.", 0, 1, searchParamName);
+          case 1540924575: /*searchModifier*/  return new Property("searchModifier", "code", "Allowable operators to apply when determining matches (Search Modifiers).", 0, java.lang.Integer.MAX_VALUE, searchModifier);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Description of how this filter parameter is intended to be used.", 0, 1, documentation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1328,8 +1204,8 @@ public class Topic extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case 614036127: /*matchType*/ return this.matchType == null ? new Base[0] : this.matchType.toArray(new Base[this.matchType.size()]); // Enumeration<TopicFilterByMatchType>
+        case 83857392: /*searchParamName*/ return this.searchParamName == null ? new Base[0] : new Base[] {this.searchParamName}; // StringType
+        case 1540924575: /*searchModifier*/ return this.searchModifier == null ? new Base[0] : this.searchModifier.toArray(new Base[this.searchModifier.size()]); // Enumeration<SubscriptionSearchModifier>
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1339,12 +1215,12 @@ public class Topic extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 3373707: // name
-          this.name = TypeConvertor.castToString(value); // StringType
+        case 83857392: // searchParamName
+          this.searchParamName = TypeConvertor.castToString(value); // StringType
           return value;
-        case 614036127: // matchType
-          value = new TopicFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getMatchType().add((Enumeration) value); // Enumeration<TopicFilterByMatchType>
+        case 1540924575: // searchModifier
+          value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getSearchModifier().add((Enumeration) value); // Enumeration<SubscriptionSearchModifier>
           return value;
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -1356,11 +1232,11 @@ public class Topic extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("matchType")) {
-          value = new TopicFilterByMatchTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getMatchType().add((Enumeration) value);
+        if (name.equals("searchParamName")) {
+          this.searchParamName = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("searchModifier")) {
+          value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getSearchModifier().add((Enumeration) value);
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
@@ -1371,8 +1247,8 @@ public class Topic extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3373707:  return getNameElement();
-        case 614036127:  return addMatchTypeElement();
+        case 83857392:  return getSearchParamNameElement();
+        case 1540924575:  return addSearchModifierElement();
         case 1587405498:  return getDocumentationElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1382,8 +1258,8 @@ public class Topic extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3373707: /*name*/ return new String[] {"string"};
-        case 614036127: /*matchType*/ return new String[] {"code"};
+        case 83857392: /*searchParamName*/ return new String[] {"string"};
+        case 1540924575: /*searchModifier*/ return new String[] {"code"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1392,32 +1268,32 @@ public class Topic extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.canFilterBy.name");
+        if (name.equals("searchParamName")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.searchParamName");
         }
-        else if (name.equals("matchType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.canFilterBy.matchType");
+        else if (name.equals("searchModifier")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.searchModifier");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.canFilterBy.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.canFilterBy.documentation");
         }
         else
           return super.addChild(name);
       }
 
-      public TopicCanFilterByComponent copy() {
-        TopicCanFilterByComponent dst = new TopicCanFilterByComponent();
+      public SubscriptionTopicCanFilterByComponent copy() {
+        SubscriptionTopicCanFilterByComponent dst = new SubscriptionTopicCanFilterByComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TopicCanFilterByComponent dst) {
+      public void copyValues(SubscriptionTopicCanFilterByComponent dst) {
         super.copyValues(dst);
-        dst.name = name == null ? null : name.copy();
-        if (matchType != null) {
-          dst.matchType = new ArrayList<Enumeration<TopicFilterByMatchType>>();
-          for (Enumeration<TopicFilterByMatchType> i : matchType)
-            dst.matchType.add(i.copy());
+        dst.searchParamName = searchParamName == null ? null : searchParamName.copy();
+        if (searchModifier != null) {
+          dst.searchModifier = new ArrayList<Enumeration<SubscriptionSearchModifier>>();
+          for (Enumeration<SubscriptionSearchModifier> i : searchModifier)
+            dst.searchModifier.add(i.copy());
         };
         dst.documentation = documentation == null ? null : documentation.copy();
       }
@@ -1426,91 +1302,91 @@ public class Topic extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TopicCanFilterByComponent))
+        if (!(other_ instanceof SubscriptionTopicCanFilterByComponent))
           return false;
-        TopicCanFilterByComponent o = (TopicCanFilterByComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(matchType, o.matchType, true) && compareDeep(documentation, o.documentation, true)
-          ;
+        SubscriptionTopicCanFilterByComponent o = (SubscriptionTopicCanFilterByComponent) other_;
+        return compareDeep(searchParamName, o.searchParamName, true) && compareDeep(searchModifier, o.searchModifier, true)
+           && compareDeep(documentation, o.documentation, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TopicCanFilterByComponent))
+        if (!(other_ instanceof SubscriptionTopicCanFilterByComponent))
           return false;
-        TopicCanFilterByComponent o = (TopicCanFilterByComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(matchType, o.matchType, true) && compareValues(documentation, o.documentation, true)
-          ;
+        SubscriptionTopicCanFilterByComponent o = (SubscriptionTopicCanFilterByComponent) other_;
+        return compareValues(searchParamName, o.searchParamName, true) && compareValues(searchModifier, o.searchModifier, true)
+           && compareValues(documentation, o.documentation, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, matchType, documentation
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(searchParamName, searchModifier
+          , documentation);
       }
 
   public String fhirType() {
-    return "Topic.canFilterBy";
+    return "SubscriptionTopic.canFilterBy";
 
   }
 
   }
 
     /**
-     * An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
+     * An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Logical canonical URL to reference this Topic (globally unique)", formalDefinition="An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions)." )
+    @Description(shortDefinition="Logical canonical URL to reference this SubscriptionTopic (globally unique)", formalDefinition="An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions)." )
     protected UriType url;
 
     /**
-     * Business identifiers assigned to this Topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.
+     * Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Business Identifier for Topic", formalDefinition="Business identifiers assigned to this Topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server." )
+    @Description(shortDefinition="Business Identifier for SubscriptionTopic", formalDefinition="Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server." )
     protected List<Identifier> identifier;
 
     /**
-     * The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
+     * The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
      */
     @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Business version of the Topic", formalDefinition="The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable." )
+    @Description(shortDefinition="Business version of the SubscriptionTopic", formalDefinition="The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable." )
     protected StringType version;
 
     /**
-     * A short, descriptive, user-friendly title for the Topic, for example, "admission".
+     * A short, descriptive, user-friendly title for the SubscriptionTopic, for example, "admission".
      */
     @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name for this Topic (Human friendly)", formalDefinition="A short, descriptive, user-friendly title for the Topic, for example, \"admission\"." )
+    @Description(shortDefinition="Name for this SubscriptionTopic (Human friendly)", formalDefinition="A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\"." )
     protected StringType title;
 
     /**
-     * The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.
+     * The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.
      */
     @Child(name = "derivedFromCanonical", type = {CanonicalType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Based on FHIR protocol or definition", formalDefinition="The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic." )
+    @Description(shortDefinition="Based on FHIR protocol or definition", formalDefinition="The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic." )
     protected List<CanonicalType> derivedFromCanonical;
 
     /**
-     * The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.
+     * The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.
      */
     @Child(name = "derivedFromUri", type = {UriType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Based on external protocol or definition", formalDefinition="The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition." )
+    @Description(shortDefinition="Based on external protocol or definition", formalDefinition="The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition." )
     protected List<UriType> derivedFromUri;
 
     /**
-     * The current state of the Topic.
+     * The current state of the SubscriptionTopic.
      */
     @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the Topic." )
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the SubscriptionTopic." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
 
     /**
-     * A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
+     * A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
     @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
+    @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
@@ -1521,10 +1397,10 @@ public class Topic extends DomainResource {
     protected DateTimeType date;
 
     /**
-     * Helps establish the "authority/credibility" of the Topic.  May also allow for contact.
+     * Helps establish the "authority/credibility" of the SubscriptionTopic.  May also allow for contact.
      */
     @Child(name = "publisher", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The name of the individual or organization that published the Topic", formalDefinition="Helps establish the \"authority/credibility\" of the Topic.  May also allow for contact." )
+    @Description(shortDefinition="The name of the individual or organization that published the SubscriptionTopic", formalDefinition="Helps establish the \"authority/credibility\" of the SubscriptionTopic.  May also allow for contact." )
     protected Reference publisher;
 
     /**
@@ -1538,7 +1414,7 @@ public class Topic extends DomainResource {
      * A free text natural language description of the Topic from the consumer's perspective.
      */
     @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Natural language description of the Topic", formalDefinition="A free text natural language description of the Topic from the consumer's perspective." )
+    @Description(shortDefinition="Natural language description of the ToSubscriptionTopicpic", formalDefinition="A free text natural language description of the Topic from the consumer's perspective." )
     protected MarkdownType description;
 
     /**
@@ -1560,75 +1436,75 @@ public class Topic extends DomainResource {
      * Explains why this Topic is needed and why it has been designed as it has.
      */
     @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why this Topic is defined", formalDefinition="Explains why this Topic is needed and why it has been designed as it has." )
+    @Description(shortDefinition="Why this SubscriptionTopic is defined", formalDefinition="Explains why this Topic is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
-     * A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.
+     * A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.
      */
     @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic." )
+    @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
     @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When Topic approved by publisher", formalDefinition="The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
+    @Description(shortDefinition="When SubscriptionTopic is/was approved by publisher", formalDefinition="The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
     @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Last review date for the Topic", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
+    @Description(shortDefinition="Last review date for the SubscriptionTopic", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
-     * The period during which the Topic content was or is planned to be effective.
+     * The period during which the SubscriptionTopic content was or is planned to be effective.
      */
     @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The effective date range for the Topic", formalDefinition="The period during which the Topic content was or is planned to be effective." )
+    @Description(shortDefinition="The effective date range for the SubscriptionTopic", formalDefinition="The period during which the SubscriptionTopic content was or is planned to be effective." )
     protected Period effectivePeriod;
 
     /**
-     * The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.
+     * The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.
      */
     @Child(name = "resourceTrigger", type = {}, order=19, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Criteria for including a resource update in the topic", formalDefinition="The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression." )
-    protected TopicResourceTriggerComponent resourceTrigger;
+    @Description(shortDefinition="Criteria for including a resource update in the subscription topic", formalDefinition="The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression." )
+    protected SubscriptionTopicResourceTriggerComponent resourceTrigger;
 
     /**
-     * List of properties by which Subscriptions on the topic can be filtered.
+     * List of properties by which Subscriptions on the subscription topic can be filtered.
      */
     @Child(name = "canFilterBy", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Properties by which a Subscription can further filter a Topic", formalDefinition="List of properties by which Subscriptions on the topic can be filtered." )
-    protected List<TopicCanFilterByComponent> canFilterBy;
+    @Description(shortDefinition="Properties by which a Subscription can further filter a SubscriptionTopic", formalDefinition="List of properties by which Subscriptions on the subscription topic can be filtered." )
+    protected List<SubscriptionTopicCanFilterByComponent> canFilterBy;
 
-    private static final long serialVersionUID = -1683916811L;
+    private static final long serialVersionUID = 2064987797L;
 
   /**
    * Constructor
    */
-    public Topic() {
+    public SubscriptionTopic() {
       super();
     }
 
   /**
    * Constructor
    */
-    public Topic(PublicationStatus status) {
+    public SubscriptionTopic(PublicationStatus status) {
       super();
       this.setStatus(status);
     }
 
     /**
-     * @return {@link #url} (An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.url");
+          throw new Error("Attempt to auto-create SubscriptionTopic.url");
         else if (Configuration.doAutoCreate())
           this.url = new UriType(); // bb
       return this.url;
@@ -1643,24 +1519,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
-    public Topic setUrlElement(UriType value) { 
+    public SubscriptionTopic setUrlElement(UriType value) { 
       this.url = value;
       return this;
     }
 
     /**
-     * @return An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
+     * @return An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
+     * @param value An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
      */
-    public Topic setUrl(String value) { 
+    public SubscriptionTopic setUrl(String value) { 
       if (Utilities.noString(value))
         this.url = null;
       else {
@@ -1672,7 +1548,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Business identifiers assigned to this Topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.)
+     * @return {@link #identifier} (Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1683,7 +1559,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setIdentifier(List<Identifier> theIdentifier) { 
+    public SubscriptionTopic setIdentifier(List<Identifier> theIdentifier) { 
       this.identifier = theIdentifier;
       return this;
     }
@@ -1705,7 +1581,7 @@ public class Topic extends DomainResource {
       return t;
     }
 
-    public Topic addIdentifier(Identifier t) { //3
+    public SubscriptionTopic addIdentifier(Identifier t) { //3
       if (t == null)
         return this;
       if (this.identifier == null)
@@ -1725,12 +1601,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #version} (The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     * @return {@link #version} (The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
     public StringType getVersionElement() { 
       if (this.version == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.version");
+          throw new Error("Attempt to auto-create SubscriptionTopic.version");
         else if (Configuration.doAutoCreate())
           this.version = new StringType(); // bb
       return this.version;
@@ -1745,24 +1621,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #version} (The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     * @param value {@link #version} (The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
-    public Topic setVersionElement(StringType value) { 
+    public SubscriptionTopic setVersionElement(StringType value) { 
       this.version = value;
       return this;
     }
 
     /**
-     * @return The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
+     * @return The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
      */
     public String getVersion() { 
       return this.version == null ? null : this.version.getValue();
     }
 
     /**
-     * @param value The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
+     * @param value The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.
      */
-    public Topic setVersion(String value) { 
+    public SubscriptionTopic setVersion(String value) { 
       if (Utilities.noString(value))
         this.version = null;
       else {
@@ -1774,12 +1650,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for the Topic, for example, "admission".). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @return {@link #title} (A short, descriptive, user-friendly title for the SubscriptionTopic, for example, "admission".). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public StringType getTitleElement() { 
       if (this.title == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.title");
+          throw new Error("Attempt to auto-create SubscriptionTopic.title");
         else if (Configuration.doAutoCreate())
           this.title = new StringType(); // bb
       return this.title;
@@ -1794,24 +1670,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for the Topic, for example, "admission".). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @param value {@link #title} (A short, descriptive, user-friendly title for the SubscriptionTopic, for example, "admission".). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
-    public Topic setTitleElement(StringType value) { 
+    public SubscriptionTopic setTitleElement(StringType value) { 
       this.title = value;
       return this;
     }
 
     /**
-     * @return A short, descriptive, user-friendly title for the Topic, for example, "admission".
+     * @return A short, descriptive, user-friendly title for the SubscriptionTopic, for example, "admission".
      */
     public String getTitle() { 
       return this.title == null ? null : this.title.getValue();
     }
 
     /**
-     * @param value A short, descriptive, user-friendly title for the Topic, for example, "admission".
+     * @param value A short, descriptive, user-friendly title for the SubscriptionTopic, for example, "admission".
      */
-    public Topic setTitle(String value) { 
+    public SubscriptionTopic setTitle(String value) { 
       if (Utilities.noString(value))
         this.title = null;
       else {
@@ -1823,7 +1699,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.)
+     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
     public List<CanonicalType> getDerivedFromCanonical() { 
       if (this.derivedFromCanonical == null)
@@ -1834,7 +1710,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) { 
+    public SubscriptionTopic setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) { 
       this.derivedFromCanonical = theDerivedFromCanonical;
       return this;
     }
@@ -1849,7 +1725,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.)
+     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
     public CanonicalType addDerivedFromCanonicalElement() {//2 
       CanonicalType t = new CanonicalType();
@@ -1860,9 +1736,9 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.)
+     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
-    public Topic addDerivedFromCanonical(String value) { //1
+    public SubscriptionTopic addDerivedFromCanonical(String value) { //1
       CanonicalType t = new CanonicalType();
       t.setValue(value);
       if (this.derivedFromCanonical == null)
@@ -1872,7 +1748,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.)
+     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
     public boolean hasDerivedFromCanonical(String value) { 
       if (this.derivedFromCanonical == null)
@@ -1884,7 +1760,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.)
+     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
      */
     public List<UriType> getDerivedFromUri() { 
       if (this.derivedFromUri == null)
@@ -1895,7 +1771,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setDerivedFromUri(List<UriType> theDerivedFromUri) { 
+    public SubscriptionTopic setDerivedFromUri(List<UriType> theDerivedFromUri) { 
       this.derivedFromUri = theDerivedFromUri;
       return this;
     }
@@ -1910,7 +1786,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.)
+     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
      */
     public UriType addDerivedFromUriElement() {//2 
       UriType t = new UriType();
@@ -1921,9 +1797,9 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.)
+     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
      */
-    public Topic addDerivedFromUri(String value) { //1
+    public SubscriptionTopic addDerivedFromUri(String value) { //1
       UriType t = new UriType();
       t.setValue(value);
       if (this.derivedFromUri == null)
@@ -1933,7 +1809,7 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.)
+     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
      */
     public boolean hasDerivedFromUri(String value) { 
       if (this.derivedFromUri == null)
@@ -1945,12 +1821,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The current state of the Topic.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The current state of the SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<PublicationStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.status");
+          throw new Error("Attempt to auto-create SubscriptionTopic.status");
         else if (Configuration.doAutoCreate())
           this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
       return this.status;
@@ -1965,24 +1841,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The current state of the Topic.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The current state of the SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Topic setStatusElement(Enumeration<PublicationStatus> value) { 
+    public SubscriptionTopic setStatusElement(Enumeration<PublicationStatus> value) { 
       this.status = value;
       return this;
     }
 
     /**
-     * @return The current state of the Topic.
+     * @return The current state of the SubscriptionTopic.
      */
     public PublicationStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The current state of the Topic.
+     * @param value The current state of the SubscriptionTopic.
      */
-    public Topic setStatus(PublicationStatus value) { 
+    public SubscriptionTopic setStatus(PublicationStatus value) { 
         if (this.status == null)
           this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
         this.status.setValue(value);
@@ -1990,12 +1866,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #experimental} (A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     * @return {@link #experimental} (A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
      */
     public BooleanType getExperimentalElement() { 
       if (this.experimental == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.experimental");
+          throw new Error("Attempt to auto-create SubscriptionTopic.experimental");
         else if (Configuration.doAutoCreate())
           this.experimental = new BooleanType(); // bb
       return this.experimental;
@@ -2010,24 +1886,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #experimental} (A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     * @param value {@link #experimental} (A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
      */
-    public Topic setExperimentalElement(BooleanType value) { 
+    public SubscriptionTopic setExperimentalElement(BooleanType value) { 
       this.experimental = value;
       return this;
     }
 
     /**
-     * @return A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
+     * @return A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
     public boolean getExperimental() { 
       return this.experimental == null || this.experimental.isEmpty() ? false : this.experimental.getValue();
     }
 
     /**
-     * @param value A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
+     * @param value A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
-    public Topic setExperimental(boolean value) { 
+    public SubscriptionTopic setExperimental(boolean value) { 
         if (this.experimental == null)
           this.experimental = new BooleanType();
         this.experimental.setValue(value);
@@ -2040,7 +1916,7 @@ public class Topic extends DomainResource {
     public DateTimeType getDateElement() { 
       if (this.date == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.date");
+          throw new Error("Attempt to auto-create SubscriptionTopic.date");
         else if (Configuration.doAutoCreate())
           this.date = new DateTimeType(); // bb
       return this.date;
@@ -2057,7 +1933,7 @@ public class Topic extends DomainResource {
     /**
      * @param value {@link #date} (For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
-    public Topic setDateElement(DateTimeType value) { 
+    public SubscriptionTopic setDateElement(DateTimeType value) { 
       this.date = value;
       return this;
     }
@@ -2072,7 +1948,7 @@ public class Topic extends DomainResource {
     /**
      * @param value For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.
      */
-    public Topic setDate(Date value) { 
+    public SubscriptionTopic setDate(Date value) { 
       if (value == null)
         this.date = null;
       else {
@@ -2084,12 +1960,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #publisher} (Helps establish the "authority/credibility" of the Topic.  May also allow for contact.)
+     * @return {@link #publisher} (Helps establish the "authority/credibility" of the SubscriptionTopic.  May also allow for contact.)
      */
     public Reference getPublisher() { 
       if (this.publisher == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.publisher");
+          throw new Error("Attempt to auto-create SubscriptionTopic.publisher");
         else if (Configuration.doAutoCreate())
           this.publisher = new Reference(); // cc
       return this.publisher;
@@ -2100,9 +1976,9 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #publisher} (Helps establish the "authority/credibility" of the Topic.  May also allow for contact.)
+     * @param value {@link #publisher} (Helps establish the "authority/credibility" of the SubscriptionTopic.  May also allow for contact.)
      */
-    public Topic setPublisher(Reference value) { 
+    public SubscriptionTopic setPublisher(Reference value) { 
       this.publisher = value;
       return this;
     }
@@ -2119,7 +1995,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setContact(List<ContactDetail> theContact) { 
+    public SubscriptionTopic setContact(List<ContactDetail> theContact) { 
       this.contact = theContact;
       return this;
     }
@@ -2141,7 +2017,7 @@ public class Topic extends DomainResource {
       return t;
     }
 
-    public Topic addContact(ContactDetail t) { //3
+    public SubscriptionTopic addContact(ContactDetail t) { //3
       if (t == null)
         return this;
       if (this.contact == null)
@@ -2166,7 +2042,7 @@ public class Topic extends DomainResource {
     public MarkdownType getDescriptionElement() { 
       if (this.description == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.description");
+          throw new Error("Attempt to auto-create SubscriptionTopic.description");
         else if (Configuration.doAutoCreate())
           this.description = new MarkdownType(); // bb
       return this.description;
@@ -2183,7 +2059,7 @@ public class Topic extends DomainResource {
     /**
      * @param value {@link #description} (A free text natural language description of the Topic from the consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public Topic setDescriptionElement(MarkdownType value) { 
+    public SubscriptionTopic setDescriptionElement(MarkdownType value) { 
       this.description = value;
       return this;
     }
@@ -2198,7 +2074,7 @@ public class Topic extends DomainResource {
     /**
      * @param value A free text natural language description of the Topic from the consumer's perspective.
      */
-    public Topic setDescription(String value) { 
+    public SubscriptionTopic setDescription(String value) { 
       if (value == null)
         this.description = null;
       else {
@@ -2221,7 +2097,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setUseContext(List<UsageContext> theUseContext) { 
+    public SubscriptionTopic setUseContext(List<UsageContext> theUseContext) { 
       this.useContext = theUseContext;
       return this;
     }
@@ -2243,7 +2119,7 @@ public class Topic extends DomainResource {
       return t;
     }
 
-    public Topic addUseContext(UsageContext t) { //3
+    public SubscriptionTopic addUseContext(UsageContext t) { //3
       if (t == null)
         return this;
       if (this.useContext == null)
@@ -2274,7 +2150,7 @@ public class Topic extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setJurisdiction(List<CodeableConcept> theJurisdiction) { 
+    public SubscriptionTopic setJurisdiction(List<CodeableConcept> theJurisdiction) { 
       this.jurisdiction = theJurisdiction;
       return this;
     }
@@ -2296,7 +2172,7 @@ public class Topic extends DomainResource {
       return t;
     }
 
-    public Topic addJurisdiction(CodeableConcept t) { //3
+    public SubscriptionTopic addJurisdiction(CodeableConcept t) { //3
       if (t == null)
         return this;
       if (this.jurisdiction == null)
@@ -2321,7 +2197,7 @@ public class Topic extends DomainResource {
     public MarkdownType getPurposeElement() { 
       if (this.purpose == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.purpose");
+          throw new Error("Attempt to auto-create SubscriptionTopic.purpose");
         else if (Configuration.doAutoCreate())
           this.purpose = new MarkdownType(); // bb
       return this.purpose;
@@ -2338,7 +2214,7 @@ public class Topic extends DomainResource {
     /**
      * @param value {@link #purpose} (Explains why this Topic is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
-    public Topic setPurposeElement(MarkdownType value) { 
+    public SubscriptionTopic setPurposeElement(MarkdownType value) { 
       this.purpose = value;
       return this;
     }
@@ -2353,7 +2229,7 @@ public class Topic extends DomainResource {
     /**
      * @param value Explains why this Topic is needed and why it has been designed as it has.
      */
-    public Topic setPurpose(String value) { 
+    public SubscriptionTopic setPurpose(String value) { 
       if (value == null)
         this.purpose = null;
       else {
@@ -2365,12 +2241,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #copyright} (A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     * @return {@link #copyright} (A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public MarkdownType getCopyrightElement() { 
       if (this.copyright == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.copyright");
+          throw new Error("Attempt to auto-create SubscriptionTopic.copyright");
         else if (Configuration.doAutoCreate())
           this.copyright = new MarkdownType(); // bb
       return this.copyright;
@@ -2385,24 +2261,24 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #copyright} (A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     * @param value {@link #copyright} (A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
-    public Topic setCopyrightElement(MarkdownType value) { 
+    public SubscriptionTopic setCopyrightElement(MarkdownType value) { 
       this.copyright = value;
       return this;
     }
 
     /**
-     * @return A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.
+     * @return A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.
      */
     public String getCopyright() { 
       return this.copyright == null ? null : this.copyright.getValue();
     }
 
     /**
-     * @param value A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.
+     * @param value A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.
      */
-    public Topic setCopyright(String value) { 
+    public SubscriptionTopic setCopyright(String value) { 
       if (value == null)
         this.copyright = null;
       else {
@@ -2419,7 +2295,7 @@ public class Topic extends DomainResource {
     public DateType getApprovalDateElement() { 
       if (this.approvalDate == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.approvalDate");
+          throw new Error("Attempt to auto-create SubscriptionTopic.approvalDate");
         else if (Configuration.doAutoCreate())
           this.approvalDate = new DateType(); // bb
       return this.approvalDate;
@@ -2436,7 +2312,7 @@ public class Topic extends DomainResource {
     /**
      * @param value {@link #approvalDate} (The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
-    public Topic setApprovalDateElement(DateType value) { 
+    public SubscriptionTopic setApprovalDateElement(DateType value) { 
       this.approvalDate = value;
       return this;
     }
@@ -2451,7 +2327,7 @@ public class Topic extends DomainResource {
     /**
      * @param value The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public Topic setApprovalDate(Date value) { 
+    public SubscriptionTopic setApprovalDate(Date value) { 
       if (value == null)
         this.approvalDate = null;
       else {
@@ -2468,7 +2344,7 @@ public class Topic extends DomainResource {
     public DateType getLastReviewDateElement() { 
       if (this.lastReviewDate == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.lastReviewDate");
+          throw new Error("Attempt to auto-create SubscriptionTopic.lastReviewDate");
         else if (Configuration.doAutoCreate())
           this.lastReviewDate = new DateType(); // bb
       return this.lastReviewDate;
@@ -2485,7 +2361,7 @@ public class Topic extends DomainResource {
     /**
      * @param value {@link #lastReviewDate} (The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
-    public Topic setLastReviewDateElement(DateType value) { 
+    public SubscriptionTopic setLastReviewDateElement(DateType value) { 
       this.lastReviewDate = value;
       return this;
     }
@@ -2500,7 +2376,7 @@ public class Topic extends DomainResource {
     /**
      * @param value The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    public Topic setLastReviewDate(Date value) { 
+    public SubscriptionTopic setLastReviewDate(Date value) { 
       if (value == null)
         this.lastReviewDate = null;
       else {
@@ -2512,12 +2388,12 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @return {@link #effectivePeriod} (The period during which the Topic content was or is planned to be effective.)
+     * @return {@link #effectivePeriod} (The period during which the SubscriptionTopic content was or is planned to be effective.)
      */
     public Period getEffectivePeriod() { 
       if (this.effectivePeriod == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.effectivePeriod");
+          throw new Error("Attempt to auto-create SubscriptionTopic.effectivePeriod");
         else if (Configuration.doAutoCreate())
           this.effectivePeriod = new Period(); // cc
       return this.effectivePeriod;
@@ -2528,22 +2404,22 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #effectivePeriod} (The period during which the Topic content was or is planned to be effective.)
+     * @param value {@link #effectivePeriod} (The period during which the SubscriptionTopic content was or is planned to be effective.)
      */
-    public Topic setEffectivePeriod(Period value) { 
+    public SubscriptionTopic setEffectivePeriod(Period value) { 
       this.effectivePeriod = value;
       return this;
     }
 
     /**
-     * @return {@link #resourceTrigger} (The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.)
+     * @return {@link #resourceTrigger} (The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.)
      */
-    public TopicResourceTriggerComponent getResourceTrigger() { 
+    public SubscriptionTopicResourceTriggerComponent getResourceTrigger() { 
       if (this.resourceTrigger == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Topic.resourceTrigger");
+          throw new Error("Attempt to auto-create SubscriptionTopic.resourceTrigger");
         else if (Configuration.doAutoCreate())
-          this.resourceTrigger = new TopicResourceTriggerComponent(); // cc
+          this.resourceTrigger = new SubscriptionTopicResourceTriggerComponent(); // cc
       return this.resourceTrigger;
     }
 
@@ -2552,26 +2428,26 @@ public class Topic extends DomainResource {
     }
 
     /**
-     * @param value {@link #resourceTrigger} (The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.)
+     * @param value {@link #resourceTrigger} (The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.)
      */
-    public Topic setResourceTrigger(TopicResourceTriggerComponent value) { 
+    public SubscriptionTopic setResourceTrigger(SubscriptionTopicResourceTriggerComponent value) { 
       this.resourceTrigger = value;
       return this;
     }
 
     /**
-     * @return {@link #canFilterBy} (List of properties by which Subscriptions on the topic can be filtered.)
+     * @return {@link #canFilterBy} (List of properties by which Subscriptions on the subscription topic can be filtered.)
      */
-    public List<TopicCanFilterByComponent> getCanFilterBy() { 
+    public List<SubscriptionTopicCanFilterByComponent> getCanFilterBy() { 
       if (this.canFilterBy == null)
-        this.canFilterBy = new ArrayList<TopicCanFilterByComponent>();
+        this.canFilterBy = new ArrayList<SubscriptionTopicCanFilterByComponent>();
       return this.canFilterBy;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Topic setCanFilterBy(List<TopicCanFilterByComponent> theCanFilterBy) { 
+    public SubscriptionTopic setCanFilterBy(List<SubscriptionTopicCanFilterByComponent> theCanFilterBy) { 
       this.canFilterBy = theCanFilterBy;
       return this;
     }
@@ -2579,25 +2455,25 @@ public class Topic extends DomainResource {
     public boolean hasCanFilterBy() { 
       if (this.canFilterBy == null)
         return false;
-      for (TopicCanFilterByComponent item : this.canFilterBy)
+      for (SubscriptionTopicCanFilterByComponent item : this.canFilterBy)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public TopicCanFilterByComponent addCanFilterBy() { //3
-      TopicCanFilterByComponent t = new TopicCanFilterByComponent();
+    public SubscriptionTopicCanFilterByComponent addCanFilterBy() { //3
+      SubscriptionTopicCanFilterByComponent t = new SubscriptionTopicCanFilterByComponent();
       if (this.canFilterBy == null)
-        this.canFilterBy = new ArrayList<TopicCanFilterByComponent>();
+        this.canFilterBy = new ArrayList<SubscriptionTopicCanFilterByComponent>();
       this.canFilterBy.add(t);
       return t;
     }
 
-    public Topic addCanFilterBy(TopicCanFilterByComponent t) { //3
+    public SubscriptionTopic addCanFilterBy(SubscriptionTopicCanFilterByComponent t) { //3
       if (t == null)
         return this;
       if (this.canFilterBy == null)
-        this.canFilterBy = new ArrayList<TopicCanFilterByComponent>();
+        this.canFilterBy = new ArrayList<SubscriptionTopicCanFilterByComponent>();
       this.canFilterBy.add(t);
       return this;
     }
@@ -2605,7 +2481,7 @@ public class Topic extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #canFilterBy}, creating it if it does not already exist {3}
      */
-    public TopicCanFilterByComponent getCanFilterByFirstRep() { 
+    public SubscriptionTopicCanFilterByComponent getCanFilterByFirstRep() { 
       if (getCanFilterBy().isEmpty()) {
         addCanFilterBy();
       }
@@ -2614,53 +2490,53 @@ public class Topic extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).", 0, 1, url));
-        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this Topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("version", "string", "The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version));
-        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the Topic, for example, \"admission\".", 0, 1, title));
-        children.add(new Property("derivedFromCanonical", "canonical(Topic)", "The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
-        children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
-        children.add(new Property("status", "code", "The current state of the Topic.", 0, 1, status));
-        children.add(new Property("experimental", "boolean", "A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental));
+        children.add(new Property("url", "uri", "An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).", 0, 1, url));
+        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("version", "string", "The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version));
+        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title));
+        children.add(new Property("derivedFromCanonical", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
+        children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
+        children.add(new Property("status", "code", "The current state of the SubscriptionTopic.", 0, 1, status));
+        children.add(new Property("experimental", "boolean", "A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date));
-        children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the Topic.  May also allow for contact.", 0, 1, publisher));
+        children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the SubscriptionTopic.  May also allow for contact.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the Topic from the consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of code system definitions.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the Topic is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explains why this Topic is needed and why it has been designed as it has.", 0, 1, purpose));
-        children.add(new Property("copyright", "markdown", "A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.", 0, 1, copyright));
+        children.add(new Property("copyright", "markdown", "A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.", 0, 1, copyright));
         children.add(new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate));
-        children.add(new Property("effectivePeriod", "Period", "The period during which the Topic content was or is planned to be effective.", 0, 1, effectivePeriod));
-        children.add(new Property("resourceTrigger", "", "The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.", 0, 1, resourceTrigger));
-        children.add(new Property("canFilterBy", "", "List of properties by which Subscriptions on the topic can be filtered.", 0, java.lang.Integer.MAX_VALUE, canFilterBy));
+        children.add(new Property("effectivePeriod", "Period", "The period during which the SubscriptionTopic content was or is planned to be effective.", 0, 1, effectivePeriod));
+        children.add(new Property("resourceTrigger", "", "The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.", 0, 1, resourceTrigger));
+        children.add(new Property("canFilterBy", "", "List of properties by which Subscriptions on the subscription topic can be filtered.", 0, java.lang.Integer.MAX_VALUE, canFilterBy));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URL that is used to identify this Topic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).", 0, 1, url);
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this Topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the Topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version);
-        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the Topic, for example, \"admission\".", 0, 1, title);
-        case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(Topic)", "The canonical URL pointing to another FHIR-defined Topic that is adhered to in whole or in part by this Topic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
-        case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined subscription topic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
-        case -892481550: /*status*/  return new Property("status", "code", "The current state of the Topic.", 0, 1, status);
-        case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A flag to indicate that this Topic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).", 0, 1, url);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version);
+        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title);
+        case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
+        case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
+        case -892481550: /*status*/  return new Property("status", "code", "The current state of the SubscriptionTopic.", 0, 1, status);
+        case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the Topic.  May also allow for contact.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the SubscriptionTopic.  May also allow for contact.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the Topic from the consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of code system definitions.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the Topic is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explains why this Topic is needed and why it has been designed as it has.", 0, 1, purpose);
-        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the Topic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the Topic.", 0, 1, copyright);
+        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.", 0, 1, copyright);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate);
-        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the Topic content was or is planned to be effective.", 0, 1, effectivePeriod);
-        case -424927798: /*resourceTrigger*/  return new Property("resourceTrigger", "", "The criteria for including updates to a nominated resource in the topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.", 0, 1, resourceTrigger);
-        case -1299519009: /*canFilterBy*/  return new Property("canFilterBy", "", "List of properties by which Subscriptions on the topic can be filtered.", 0, java.lang.Integer.MAX_VALUE, canFilterBy);
+        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the SubscriptionTopic content was or is planned to be effective.", 0, 1, effectivePeriod);
+        case -424927798: /*resourceTrigger*/  return new Property("resourceTrigger", "", "The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.", 0, 1, resourceTrigger);
+        case -1299519009: /*canFilterBy*/  return new Property("canFilterBy", "", "List of properties by which Subscriptions on the subscription topic can be filtered.", 0, java.lang.Integer.MAX_VALUE, canFilterBy);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2688,8 +2564,8 @@ public class Topic extends DomainResource {
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
-        case -424927798: /*resourceTrigger*/ return this.resourceTrigger == null ? new Base[0] : new Base[] {this.resourceTrigger}; // TopicResourceTriggerComponent
-        case -1299519009: /*canFilterBy*/ return this.canFilterBy == null ? new Base[0] : this.canFilterBy.toArray(new Base[this.canFilterBy.size()]); // TopicCanFilterByComponent
+        case -424927798: /*resourceTrigger*/ return this.resourceTrigger == null ? new Base[0] : new Base[] {this.resourceTrigger}; // SubscriptionTopicResourceTriggerComponent
+        case -1299519009: /*canFilterBy*/ return this.canFilterBy == null ? new Base[0] : this.canFilterBy.toArray(new Base[this.canFilterBy.size()]); // SubscriptionTopicCanFilterByComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2757,10 +2633,10 @@ public class Topic extends DomainResource {
           this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -424927798: // resourceTrigger
-          this.resourceTrigger = (TopicResourceTriggerComponent) value; // TopicResourceTriggerComponent
+          this.resourceTrigger = (SubscriptionTopicResourceTriggerComponent) value; // SubscriptionTopicResourceTriggerComponent
           return value;
         case -1299519009: // canFilterBy
-          this.getCanFilterBy().add((TopicCanFilterByComponent) value); // TopicCanFilterByComponent
+          this.getCanFilterBy().add((SubscriptionTopicCanFilterByComponent) value); // SubscriptionTopicCanFilterByComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2809,9 +2685,9 @@ public class Topic extends DomainResource {
         } else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("resourceTrigger")) {
-          this.resourceTrigger = (TopicResourceTriggerComponent) value; // TopicResourceTriggerComponent
+          this.resourceTrigger = (SubscriptionTopicResourceTriggerComponent) value; // SubscriptionTopicResourceTriggerComponent
         } else if (name.equals("canFilterBy")) {
-          this.getCanFilterBy().add((TopicCanFilterByComponent) value);
+          this.getCanFilterBy().add((SubscriptionTopicCanFilterByComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2878,31 +2754,31 @@ public class Topic extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.url");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.version");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.version");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.title");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.title");
         }
         else if (name.equals("derivedFromCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.derivedFromCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFromCanonical");
         }
         else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.derivedFromUri");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFromUri");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.status");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.date");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.date");
         }
         else if (name.equals("publisher")) {
           this.publisher = new Reference();
@@ -2912,7 +2788,7 @@ public class Topic extends DomainResource {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.description");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2921,23 +2797,23 @@ public class Topic extends DomainResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.copyright");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Topic.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
           return this.effectivePeriod;
         }
         else if (name.equals("resourceTrigger")) {
-          this.resourceTrigger = new TopicResourceTriggerComponent();
+          this.resourceTrigger = new SubscriptionTopicResourceTriggerComponent();
           return this.resourceTrigger;
         }
         else if (name.equals("canFilterBy")) {
@@ -2948,17 +2824,17 @@ public class Topic extends DomainResource {
       }
 
   public String fhirType() {
-    return "Topic";
+    return "SubscriptionTopic";
 
   }
 
-      public Topic copy() {
-        Topic dst = new Topic();
+      public SubscriptionTopic copy() {
+        SubscriptionTopic dst = new SubscriptionTopic();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(Topic dst) {
+      public void copyValues(SubscriptionTopic dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
@@ -3005,13 +2881,13 @@ public class Topic extends DomainResource {
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
         dst.resourceTrigger = resourceTrigger == null ? null : resourceTrigger.copy();
         if (canFilterBy != null) {
-          dst.canFilterBy = new ArrayList<TopicCanFilterByComponent>();
-          for (TopicCanFilterByComponent i : canFilterBy)
+          dst.canFilterBy = new ArrayList<SubscriptionTopicCanFilterByComponent>();
+          for (SubscriptionTopicCanFilterByComponent i : canFilterBy)
             dst.canFilterBy.add(i.copy());
         };
       }
 
-      protected Topic typedCopy() {
+      protected SubscriptionTopic typedCopy() {
         return copy();
       }
 
@@ -3019,9 +2895,9 @@ public class Topic extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof Topic))
+        if (!(other_ instanceof SubscriptionTopic))
           return false;
-        Topic o = (Topic) other_;
+        SubscriptionTopic o = (SubscriptionTopic) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
            && compareDeep(title, o.title, true) && compareDeep(derivedFromCanonical, o.derivedFromCanonical, true)
            && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
@@ -3037,9 +2913,9 @@ public class Topic extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof Topic))
+        if (!(other_ instanceof SubscriptionTopic))
           return false;
-        Topic o = (Topic) other_;
+        SubscriptionTopic o = (SubscriptionTopic) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
            && compareValues(derivedFromCanonical, o.derivedFromCanonical, true) && compareValues(derivedFromUri, o.derivedFromUri, true)
            && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
@@ -3057,7 +2933,7 @@ public class Topic extends DomainResource {
 
   @Override
   public ResourceType getResourceType() {
-    return ResourceType.Topic;
+    return ResourceType.SubscriptionTopic;
    }
 
  /**
@@ -3065,17 +2941,17 @@ public class Topic extends DomainResource {
    * <p>
    * Description: <b>Date status first applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Topic.date</b><br>
+   * Path: <b>SubscriptionTopic.date</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="Topic.date", description="Date status first applied", type="date" )
+  @SearchParamDefinition(name="date", path="SubscriptionTopic.date", description="Date status first applied", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
    * Description: <b>Date status first applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Topic.date</b><br>
+   * Path: <b>SubscriptionTopic.date</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -3083,19 +2959,19 @@ public class Topic extends DomainResource {
  /**
    * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>Business Identifier for Topic</b><br>
+   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.identifier</b><br>
+   * Path: <b>SubscriptionTopic.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="Topic.identifier", description="Business Identifier for Topic", type="token" )
+  @SearchParamDefinition(name="identifier", path="SubscriptionTopic.identifier", description="Business Identifier for SubscriptionTopic", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Business Identifier for Topic</b><br>
+   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.identifier</b><br>
+   * Path: <b>SubscriptionTopic.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -3103,45 +2979,45 @@ public class Topic extends DomainResource {
  /**
    * Search parameter: <b>publisher</b>
    * <p>
-   * Description: <b>The name of the individual or organization that published the Topic</b><br>
+   * Description: <b>The name of the individual or organization that published the SubscriptionTopic</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Topic.publisher</b><br>
+   * Path: <b>SubscriptionTopic.publisher</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="publisher", path="Topic.publisher", description="The name of the individual or organization that published the Topic", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="publisher", path="SubscriptionTopic.publisher", description="The name of the individual or organization that published the SubscriptionTopic", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_PUBLISHER = "publisher";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
    * <p>
-   * Description: <b>The name of the individual or organization that published the Topic</b><br>
+   * Description: <b>The name of the individual or organization that published the SubscriptionTopic</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Topic.publisher</b><br>
+   * Path: <b>SubscriptionTopic.publisher</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PUBLISHER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Topic:publisher</b>".
+   * the path value of "<b>SubscriptionTopic:publisher</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PUBLISHER = new ca.uhn.fhir.model.api.Include("Topic:publisher").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PUBLISHER = new ca.uhn.fhir.model.api.Include("SubscriptionTopic:publisher").toLocked();
 
  /**
    * Search parameter: <b>resource-type</b>
    * <p>
-   * Description: <b>Candidate types for this topic</b><br>
+   * Description: <b>Candidate types for this subscription topic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.resourceTrigger.resourceType</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.resourceType</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="resource-type", path="Topic.resourceTrigger.resourceType", description="Candidate types for this topic", type="token" )
+  @SearchParamDefinition(name="resource-type", path="SubscriptionTopic.resourceTrigger.resourceType", description="Candidate types for this subscription topic", type="token" )
   public static final String SP_RESOURCE_TYPE = "resource-type";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>resource-type</b>
    * <p>
-   * Description: <b>Candidate types for this topic</b><br>
+   * Description: <b>Candidate types for this subscription topic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.resourceTrigger.resourceType</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.resourceType</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE_TYPE);
@@ -3151,17 +3027,17 @@ public class Topic extends DomainResource {
    * <p>
    * Description: <b>draft | active | retired | unknown</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.status</b><br>
+   * Path: <b>SubscriptionTopic.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Topic.status", description="draft | active | retired | unknown", type="token" )
+  @SearchParamDefinition(name="status", path="SubscriptionTopic.status", description="draft | active | retired | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
    * Description: <b>draft | active | retired | unknown</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.status</b><br>
+   * Path: <b>SubscriptionTopic.status</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
@@ -3169,19 +3045,19 @@ public class Topic extends DomainResource {
  /**
    * Search parameter: <b>title</b>
    * <p>
-   * Description: <b>Name for this Topic (Human friendly)</b><br>
+   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Topic.title</b><br>
+   * Path: <b>SubscriptionTopic.title</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="title", path="Topic.title", description="Name for this Topic (Human friendly)", type="string" )
+  @SearchParamDefinition(name="title", path="SubscriptionTopic.title", description="Name for this SubscriptionTopic (Human friendly)", type="string" )
   public static final String SP_TITLE = "title";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>title</b>
    * <p>
-   * Description: <b>Name for this Topic (Human friendly)</b><br>
+   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Topic.title</b><br>
+   * Path: <b>SubscriptionTopic.title</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
@@ -3191,17 +3067,17 @@ public class Topic extends DomainResource {
    * <p>
    * Description: <b>Text representation of the trigger</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Topic.resourceTrigger.description</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.description</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="trigger-description", path="Topic.resourceTrigger.description", description="Text representation of the trigger", type="string" )
+  @SearchParamDefinition(name="trigger-description", path="SubscriptionTopic.resourceTrigger.description", description="Text representation of the trigger", type="string" )
   public static final String SP_TRIGGER_DESCRIPTION = "trigger-description";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>trigger-description</b>
    * <p>
    * Description: <b>Text representation of the trigger</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Topic.resourceTrigger.description</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.description</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TRIGGER_DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TRIGGER_DESCRIPTION);
@@ -3209,19 +3085,19 @@ public class Topic extends DomainResource {
  /**
    * Search parameter: <b>url</b>
    * <p>
-   * Description: <b>Logical canonical URL to reference this Topic (globally unique)</b><br>
+   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>Topic.url</b><br>
+   * Path: <b>SubscriptionTopic.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="Topic.url", description="Logical canonical URL to reference this Topic (globally unique)", type="uri" )
+  @SearchParamDefinition(name="url", path="SubscriptionTopic.url", description="Logical canonical URL to reference this SubscriptionTopic (globally unique)", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
    * <p>
-   * Description: <b>Logical canonical URL to reference this Topic (globally unique)</b><br>
+   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
    * Type: <b>uri</b><br>
-   * Path: <b>Topic.url</b><br>
+   * Path: <b>SubscriptionTopic.url</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
@@ -3229,19 +3105,19 @@ public class Topic extends DomainResource {
  /**
    * Search parameter: <b>version</b>
    * <p>
-   * Description: <b>Business version of the Topic</b><br>
+   * Description: <b>Business version of the SubscriptionTopic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.version</b><br>
+   * Path: <b>SubscriptionTopic.version</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="version", path="Topic.version", description="Business version of the Topic", type="token" )
+  @SearchParamDefinition(name="version", path="SubscriptionTopic.version", description="Business version of the SubscriptionTopic", type="token" )
   public static final String SP_VERSION = "version";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>version</b>
    * <p>
-   * Description: <b>Business version of the Topic</b><br>
+   * Description: <b>Business version of the SubscriptionTopic</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Topic.version</b><br>
+   * Path: <b>SubscriptionTopic.version</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);

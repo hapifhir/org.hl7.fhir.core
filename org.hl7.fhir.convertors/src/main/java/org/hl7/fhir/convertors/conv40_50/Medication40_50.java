@@ -146,8 +146,10 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent();
         copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.hasItemCodeableConcept())
+            tgt.getItem().setConcept(convertCodeableConcept(src.getItemCodeableConcept()));
+        if (src.hasItemReference())
+          tgt.getItem().setReference(convertReference(src.getItemReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
         if (src.hasStrength())
@@ -160,8 +162,10 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
         copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.getItem().hasConcept())
+          tgt.setItem(convertType(src.getItem().getConcept()));
+        if (src.getItem().hasReference())
+          tgt.setItem(convertType(src.getItem().getReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
         if (src.hasStrengthRatio())

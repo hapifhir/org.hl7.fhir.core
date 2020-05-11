@@ -17,8 +17,10 @@ public class MedicationDispense10_50 {
             tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifier()));
         if (src.hasStatusElement())
             tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept())
+          tgt.getMedication().setConcept(VersionConvertor_10_50.convertCodeableConcept(src.getMedicationCodeableConcept()));
+        if (src.hasMedicationReference())
+          tgt.getMedication().setReference(VersionConvertor_10_50.convertReference(src.getMedicationReference()));
         if (src.hasPatient())
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getPatient()));
         for (org.hl7.fhir.dstu2.model.Reference t : src.getAuthorizingPrescription()) tgt.addAuthorizingPrescription(VersionConvertor_10_50.convertReference(t));
@@ -52,8 +54,10 @@ public class MedicationDispense10_50 {
             tgt.setIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifierFirstRep()));
         if (src.hasStatusElement())
             tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        if (src.getMedication().hasConcept())
+          tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication().getConcept()));
+      if (src.getMedication().hasReference())
+        tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication().getReference()));
         if (src.hasSubject())
             tgt.setPatient(VersionConvertor_10_50.convertReference(src.getSubject()));
         for (org.hl7.fhir.r5.model.Reference t : src.getAuthorizingPrescription()) tgt.addAuthorizingPrescription(VersionConvertor_10_50.convertReference(t));

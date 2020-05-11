@@ -4560,7 +4560,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return;
 
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || !isInheritedProfile(profile, inv.getSource()))) {
+      if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || (!isInheritedProfile(profile, inv.getSource()) && !isInheritedProfile(ed.getType(), inv.getSource())) )) {
         @SuppressWarnings("unchecked")
         Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
         if (invList == null) {
@@ -4576,6 +4576,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+  }
+
+  private boolean isInheritedProfile(List<TypeRefComponent> types, String source) {
+    for (TypeRefComponent type : types) {
+      for (CanonicalType c : type.getProfile()) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, c.asStringValue());
+        if (sd != null) {
+          if (sd.getUrl().equals(source)) {
+            return true;
+          }
+          if (isInheritedProfile(sd, source)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   private boolean isInheritedProfile(StructureDefinition profile, String source) {
@@ -4594,6 +4611,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkInvariant(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
+    if (debug) {
+      System.out.println("inv "+inv.getKey()+" on "+path+" in "+resource.fhirType()+" {{ "+inv.getExpression()+" }}");
+    }
     ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
     if (n == null) {
       long t = System.nanoTime();
@@ -4620,6 +4640,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!ok) {
       if (!Utilities.noString(msg))
         msg = " (" + msg + ")";
+      if (debug) {
+        System.out.println("  failed! "+msg);
+      }
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
         ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {
         if (bpWarnings == BestPracticeWarningLevel.Hint)

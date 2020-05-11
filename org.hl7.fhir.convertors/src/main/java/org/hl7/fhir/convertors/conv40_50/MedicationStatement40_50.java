@@ -67,8 +67,12 @@ public class MedicationStatement40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
         if (src.hasCategory())
             tgt.addCategory(convertCodeableConcept(src.getCategory()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept()) {
+          tgt.getMedication().setConcept(convertCodeableConcept(src.getMedicationCodeableConcept()));
+        }
+        if (src.hasMedicationReference()) {
+          tgt.getMedication().setReference(convertReference(src.getMedicationReference()));
+        }
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasContext())
@@ -100,8 +104,12 @@ public class MedicationStatement40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason()) tgt.addStatusReason(convertCodeableConcept(t));
         if (src.hasCategory())
             tgt.setCategory(convertCodeableConcept(src.getCategoryFirstRep()));
-        if (src.hasMedication())
-            tgt.setMedication(convertType(src.getMedication()));
+        if (src.getMedication().hasConcept()) {
+            tgt.setMedication(convertType(src.getMedication().getConcept()));
+        }
+        if (src.getMedication().hasReference()) {
+          tgt.setMedication(convertType(src.getMedication().getReference()));
+        }
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
         if (src.hasEncounter())

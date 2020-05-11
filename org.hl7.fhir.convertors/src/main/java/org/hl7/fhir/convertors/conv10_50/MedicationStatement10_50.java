@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
 
@@ -14,8 +15,12 @@ public class MedicationStatement10_50 {
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        if (src.getMedication().hasConcept()) {
+          tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication().getConcept()));
+        }
+        if (src.getMedication().hasReference()) {
+          tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication().getReference()));
+        }
         if (src.hasSubject())
             tgt.setPatient(VersionConvertor_10_50.convertReference(src.getSubject()));
         if (src.hasEffective())
@@ -38,8 +43,12 @@ public class MedicationStatement10_50 {
         for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_10_50.convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept()) {
+          tgt.getMedication().setConcept(VersionConvertor_10_50.convertCodeableConcept(src.getMedicationCodeableConcept()));
+        }
+        if (src.hasMedicationReference()) {
+          tgt.getMedication().setReference(VersionConvertor_10_50.convertReference(src.getMedicationReference()));
+        }
         if (src.hasPatient())
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getPatient()));
         if (src.hasEffective())

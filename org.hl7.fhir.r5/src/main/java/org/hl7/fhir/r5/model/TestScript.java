@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1019,6 +1019,10 @@ public class TestScript extends CanonicalResource {
          */
         CHARGEITEMDEFINITION, 
         /**
+         * The Citation.
+         */
+        CITATION, 
+        /**
          * A provider issued list of professional services and products which have been provided, or are to be provided, to a patient which is sent to an insurer for reimbursement.
          */
         CLAIM, 
@@ -1039,7 +1043,7 @@ public class TestScript extends CanonicalResource {
          */
         CODESYSTEM, 
         /**
-         * An occurrence of information being transmitted; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.
+         * A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.
          */
         COMMUNICATION, 
         /**
@@ -1107,7 +1111,7 @@ public class TestScript extends CanonicalResource {
          */
         DEVICEREQUEST, 
         /**
-         * A record of a device being used by a patient where the record is the result of a report from the patient or another clinician.
+         * A record of a device being used by a patient where the record is the result of a report from the patient or a clinician.
          */
         DEVICEUSESTATEMENT, 
         /**
@@ -1155,7 +1159,11 @@ public class TestScript extends CanonicalResource {
          */
         EVIDENCE, 
         /**
-         * The EvidenceVariable resource describes a \"PICO\" element that knowledge (evidence, assertion, recommendation) is about.
+         * EvidenceFocus.
+         */
+        EVIDENCEFOCUS, 
+        /**
+         * The EvidenceVariable resource describes an element that knowledge (Evidence) is about.
          */
         EVIDENCEVARIABLE, 
         /**
@@ -1307,6 +1315,10 @@ public class TestScript extends CanonicalResource {
          */
         NUTRITIONORDER, 
         /**
+         * A food or fluid product that is consumed by patients.
+         */
+        NUTRITIONPRODUCT, 
+        /**
          * Measurements and simple assertions made about a patient, device or other subject.
          */
         OBSERVATION, 
@@ -1351,6 +1363,10 @@ public class TestScript extends CanonicalResource {
          */
         PAYMENTRECONCILIATION, 
         /**
+         * Permission.
+         */
+        PERMISSION, 
+        /**
          * Demographics and administrative information about a person independent of a specific health-related context.
          */
         PERSON, 
@@ -1383,7 +1399,7 @@ public class TestScript extends CanonicalResource {
          */
         QUESTIONNAIRERESPONSE, 
         /**
-         * The regulatory authorization of a medicinal product.
+         * The regulatory authorization of a medicinal product, device or process.
          */
         REGULATEDAUTHORIZATION, 
         /**
@@ -1443,9 +1459,17 @@ public class TestScript extends CanonicalResource {
          */
         STRUCTUREMAP, 
         /**
-         * The subscription resource describes a particular client's request to be notified about a Topic.
+         * The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.
          */
         SUBSCRIPTION, 
+        /**
+         * The SubscriptionStatus resource describes the state of a Subscription during notifications.
+         */
+        SUBSCRIPTIONSTATUS, 
+        /**
+         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
+         */
+        SUBSCRIPTIONTOPIC, 
         /**
          * A homogeneous material with a definite composition.
          */
@@ -1498,10 +1522,6 @@ public class TestScript extends CanonicalResource {
          * A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.
          */
         TESTSCRIPT, 
-        /**
-         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
-         */
-        TOPIC, 
         /**
          * A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).
          */
@@ -1703,6 +1723,8 @@ public class TestScript extends CanonicalResource {
           return CHARGEITEM;
         if ("ChargeItemDefinition".equals(codeString))
           return CHARGEITEMDEFINITION;
+        if ("Citation".equals(codeString))
+          return CITATION;
         if ("Claim".equals(codeString))
           return CLAIM;
         if ("ClaimResponse".equals(codeString))
@@ -1771,6 +1793,8 @@ public class TestScript extends CanonicalResource {
           return EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return EVIDENCE;
+        if ("EvidenceFocus".equals(codeString))
+          return EVIDENCEFOCUS;
         if ("EvidenceVariable".equals(codeString))
           return EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -1847,6 +1871,8 @@ public class TestScript extends CanonicalResource {
           return NUTRITIONINTAKE;
         if ("NutritionOrder".equals(codeString))
           return NUTRITIONORDER;
+        if ("NutritionProduct".equals(codeString))
+          return NUTRITIONPRODUCT;
         if ("Observation".equals(codeString))
           return OBSERVATION;
         if ("ObservationDefinition".equals(codeString))
@@ -1869,6 +1895,8 @@ public class TestScript extends CanonicalResource {
           return PAYMENTNOTICE;
         if ("PaymentReconciliation".equals(codeString))
           return PAYMENTRECONCILIATION;
+        if ("Permission".equals(codeString))
+          return PERMISSION;
         if ("Person".equals(codeString))
           return PERSON;
         if ("PlanDefinition".equals(codeString))
@@ -1917,6 +1945,10 @@ public class TestScript extends CanonicalResource {
           return STRUCTUREMAP;
         if ("Subscription".equals(codeString))
           return SUBSCRIPTION;
+        if ("SubscriptionStatus".equals(codeString))
+          return SUBSCRIPTIONSTATUS;
+        if ("SubscriptionTopic".equals(codeString))
+          return SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -1943,8 +1975,6 @@ public class TestScript extends CanonicalResource {
           return TESTREPORT;
         if ("TestScript".equals(codeString))
           return TESTSCRIPT;
-        if ("Topic".equals(codeString))
-          return TOPIC;
         if ("ValueSet".equals(codeString))
           return VALUESET;
         if ("VerificationResult".equals(codeString))
@@ -2049,6 +2079,7 @@ public class TestScript extends CanonicalResource {
             case CATALOGENTRY: return "CatalogEntry";
             case CHARGEITEM: return "ChargeItem";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
+            case CITATION: return "Citation";
             case CLAIM: return "Claim";
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
@@ -2083,6 +2114,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
+            case EVIDENCEFOCUS: return "EvidenceFocus";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -2121,6 +2153,7 @@ public class TestScript extends CanonicalResource {
             case NAMINGSYSTEM: return "NamingSystem";
             case NUTRITIONINTAKE: return "NutritionIntake";
             case NUTRITIONORDER: return "NutritionOrder";
+            case NUTRITIONPRODUCT: return "NutritionProduct";
             case OBSERVATION: return "Observation";
             case OBSERVATIONDEFINITION: return "ObservationDefinition";
             case OPERATIONDEFINITION: return "OperationDefinition";
@@ -2132,6 +2165,7 @@ public class TestScript extends CanonicalResource {
             case PATIENT: return "Patient";
             case PAYMENTNOTICE: return "PaymentNotice";
             case PAYMENTRECONCILIATION: return "PaymentReconciliation";
+            case PERMISSION: return "Permission";
             case PERSON: return "Person";
             case PLANDEFINITION: return "PlanDefinition";
             case PRACTITIONER: return "Practitioner";
@@ -2156,6 +2190,8 @@ public class TestScript extends CanonicalResource {
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case SUBSCRIPTION: return "Subscription";
+            case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -2169,7 +2205,6 @@ public class TestScript extends CanonicalResource {
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTREPORT: return "TestReport";
             case TESTSCRIPT: return "TestScript";
-            case TOPIC: return "Topic";
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
@@ -2269,6 +2304,7 @@ public class TestScript extends CanonicalResource {
             case CATALOGENTRY: return "http://hl7.org/fhir/resource-types";
             case CHARGEITEM: return "http://hl7.org/fhir/resource-types";
             case CHARGEITEMDEFINITION: return "http://hl7.org/fhir/resource-types";
+            case CITATION: return "http://hl7.org/fhir/resource-types";
             case CLAIM: return "http://hl7.org/fhir/resource-types";
             case CLAIMRESPONSE: return "http://hl7.org/fhir/resource-types";
             case CLINICALIMPRESSION: return "http://hl7.org/fhir/resource-types";
@@ -2303,6 +2339,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
+            case EVIDENCEFOCUS: return "http://hl7.org/fhir/resource-types";
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
@@ -2341,6 +2378,7 @@ public class TestScript extends CanonicalResource {
             case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case NUTRITIONINTAKE: return "http://hl7.org/fhir/resource-types";
             case NUTRITIONORDER: return "http://hl7.org/fhir/resource-types";
+            case NUTRITIONPRODUCT: return "http://hl7.org/fhir/resource-types";
             case OBSERVATION: return "http://hl7.org/fhir/resource-types";
             case OBSERVATIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case OPERATIONDEFINITION: return "http://hl7.org/fhir/resource-types";
@@ -2352,6 +2390,7 @@ public class TestScript extends CanonicalResource {
             case PATIENT: return "http://hl7.org/fhir/resource-types";
             case PAYMENTNOTICE: return "http://hl7.org/fhir/resource-types";
             case PAYMENTRECONCILIATION: return "http://hl7.org/fhir/resource-types";
+            case PERMISSION: return "http://hl7.org/fhir/resource-types";
             case PERSON: return "http://hl7.org/fhir/resource-types";
             case PLANDEFINITION: return "http://hl7.org/fhir/resource-types";
             case PRACTITIONER: return "http://hl7.org/fhir/resource-types";
@@ -2376,6 +2415,8 @@ public class TestScript extends CanonicalResource {
             case STRUCTUREDEFINITION: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREMAP: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case SUBSCRIPTIONSTATUS: return "http://hl7.org/fhir/resource-types";
+            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCE: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCENUCLEICACID: return "http://hl7.org/fhir/resource-types";
@@ -2389,7 +2430,6 @@ public class TestScript extends CanonicalResource {
             case TERMINOLOGYCAPABILITIES: return "http://hl7.org/fhir/resource-types";
             case TESTREPORT: return "http://hl7.org/fhir/resource-types";
             case TESTSCRIPT: return "http://hl7.org/fhir/resource-types";
-            case TOPIC: return "http://hl7.org/fhir/resource-types";
             case VALUESET: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
@@ -2489,12 +2529,13 @@ public class TestScript extends CanonicalResource {
             case CATALOGENTRY: return "Catalog entries are wrappers that contextualize items included in a catalog.";
             case CHARGEITEM: return "The resource ChargeItem describes the provision of healthcare provider products for a certain patient, therefore referring not only to the product, but containing in addition details of the provision, like date, time, amounts and participating organizations and persons. Main Usage of the ChargeItem is to enable the billing process and internal cost allocation.";
             case CHARGEITEMDEFINITION: return "The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.";
+            case CITATION: return "The Citation.";
             case CLAIM: return "A provider issued list of professional services and products which have been provided, or are to be provided, to a patient which is sent to an insurer for reimbursement.";
             case CLAIMRESPONSE: return "This resource provides the adjudication details from the processing of a Claim resource.";
             case CLINICALIMPRESSION: return "A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called \"ClinicalImpression\" rather than \"ClinicalAssessment\" to avoid confusion with the recording of assessment tools such as Apgar score.";
             case CLINICALUSEISSUE: return "A single usage issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
             case CODESYSTEM: return "The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.";
-            case COMMUNICATION: return "An occurrence of information being transmitted; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.";
+            case COMMUNICATION: return "A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.";
             case COMMUNICATIONREQUEST: return "A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.";
             case COMPARTMENTDEFINITION: return "A compartment definition that defines how resources are accessed on a server.";
             case COMPOSITION: return "A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).";
@@ -2511,7 +2552,7 @@ public class TestScript extends CanonicalResource {
             case DEVICEDEFINITION: return "The characteristics, operational status and capabilities of a medical-related component of a medical device.";
             case DEVICEMETRIC: return "Describes a measurement, calculation or setting capability of a medical device.";
             case DEVICEREQUEST: return "Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker.";
-            case DEVICEUSESTATEMENT: return "A record of a device being used by a patient where the record is the result of a report from the patient or another clinician.";
+            case DEVICEUSESTATEMENT: return "A record of a device being used by a patient where the record is the result of a report from the patient or a clinician.";
             case DIAGNOSTICREPORT: return "The findings and interpretation of diagnostic  tests performed on patients, groups of patients, devices, and locations, and/or specimens derived from these. The report includes clinical context such as requesting and provider information, and some mix of atomic results, images, textual and coded interpretations, and formatted representation of diagnostic reports.";
             case DOCUMENTMANIFEST: return "A collection of documents compiled for a purpose together with metadata that applies to the collection.";
             case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this \"document\" encompasses *any* serialized object with a mime-type, it includes formal patient-centric documents (CDA), clinical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.";
@@ -2523,7 +2564,8 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "This represents statistics, certainty, both the intended and actual population, and evidence variables.";
-            case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes a \"PICO\" element that knowledge (evidence, assertion, recommendation) is about.";
+            case EVIDENCEFOCUS: return "EvidenceFocus.";
+            case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
@@ -2561,6 +2603,7 @@ public class TestScript extends CanonicalResource {
             case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
+            case NUTRITIONPRODUCT: return "A food or fluid product that is consumed by patients.";
             case OBSERVATION: return "Measurements and simple assertions made about a patient, device or other subject.";
             case OBSERVATIONDEFINITION: return "Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.";
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
@@ -2572,6 +2615,7 @@ public class TestScript extends CanonicalResource {
             case PATIENT: return "Demographics and other administrative information about an individual or animal receiving care or other health-related services.";
             case PAYMENTNOTICE: return "This resource provides the status of the payment for goods and services rendered, and the request and response resource references.";
             case PAYMENTRECONCILIATION: return "This resource provides the details including amount of a payment and allocates the payment items being paid.";
+            case PERMISSION: return "Permission.";
             case PERSON: return "Demographics and administrative information about a person independent of a specific health-related context.";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.";
             case PRACTITIONER: return "A person who is directly or indirectly involved in the provisioning of healthcare.";
@@ -2580,7 +2624,7 @@ public class TestScript extends CanonicalResource {
             case PROVENANCE: return "Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
             case QUESTIONNAIRERESPONSE: return "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.";
-            case REGULATEDAUTHORIZATION: return "The regulatory authorization of a medicinal product.";
+            case REGULATEDAUTHORIZATION: return "The regulatory authorization of a medicinal product, device or process.";
             case RELATEDPERSON: return "Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
             case REQUESTGROUP: return "A group of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
             case RESEARCHSTUDY: return "A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.";
@@ -2595,7 +2639,9 @@ public class TestScript extends CanonicalResource {
             case SPECIMENDEFINITION: return "A kind of specimen with associated set of requirements.";
             case STRUCTUREDEFINITION: return "A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
-            case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a Topic.";
+            case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.";
+            case SUBSCRIPTIONSTATUS: return "The SubscriptionStatus resource describes the state of a Subscription during notifications.";
+            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
@@ -2609,7 +2655,6 @@ public class TestScript extends CanonicalResource {
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
-            case TOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
@@ -2709,6 +2754,7 @@ public class TestScript extends CanonicalResource {
             case CATALOGENTRY: return "CatalogEntry";
             case CHARGEITEM: return "ChargeItem";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
+            case CITATION: return "Citation";
             case CLAIM: return "Claim";
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
@@ -2743,6 +2789,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
+            case EVIDENCEFOCUS: return "EvidenceFocus";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -2781,6 +2828,7 @@ public class TestScript extends CanonicalResource {
             case NAMINGSYSTEM: return "NamingSystem";
             case NUTRITIONINTAKE: return "NutritionIntake";
             case NUTRITIONORDER: return "NutritionOrder";
+            case NUTRITIONPRODUCT: return "NutritionProduct";
             case OBSERVATION: return "Observation";
             case OBSERVATIONDEFINITION: return "ObservationDefinition";
             case OPERATIONDEFINITION: return "OperationDefinition";
@@ -2792,6 +2840,7 @@ public class TestScript extends CanonicalResource {
             case PATIENT: return "Patient";
             case PAYMENTNOTICE: return "PaymentNotice";
             case PAYMENTRECONCILIATION: return "PaymentReconciliation";
+            case PERMISSION: return "Permission";
             case PERSON: return "Person";
             case PLANDEFINITION: return "PlanDefinition";
             case PRACTITIONER: return "Practitioner";
@@ -2816,6 +2865,8 @@ public class TestScript extends CanonicalResource {
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case SUBSCRIPTION: return "Subscription";
+            case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -2829,7 +2880,6 @@ public class TestScript extends CanonicalResource {
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTREPORT: return "TestReport";
             case TESTSCRIPT: return "TestScript";
-            case TOPIC: return "Topic";
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
@@ -3025,6 +3075,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.CHARGEITEM;
         if ("ChargeItemDefinition".equals(codeString))
           return FHIRDefinedType.CHARGEITEMDEFINITION;
+        if ("Citation".equals(codeString))
+          return FHIRDefinedType.CITATION;
         if ("Claim".equals(codeString))
           return FHIRDefinedType.CLAIM;
         if ("ClaimResponse".equals(codeString))
@@ -3093,6 +3145,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return FHIRDefinedType.EVIDENCE;
+        if ("EvidenceFocus".equals(codeString))
+          return FHIRDefinedType.EVIDENCEFOCUS;
         if ("EvidenceVariable".equals(codeString))
           return FHIRDefinedType.EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -3169,6 +3223,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.NUTRITIONINTAKE;
         if ("NutritionOrder".equals(codeString))
           return FHIRDefinedType.NUTRITIONORDER;
+        if ("NutritionProduct".equals(codeString))
+          return FHIRDefinedType.NUTRITIONPRODUCT;
         if ("Observation".equals(codeString))
           return FHIRDefinedType.OBSERVATION;
         if ("ObservationDefinition".equals(codeString))
@@ -3191,6 +3247,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.PAYMENTNOTICE;
         if ("PaymentReconciliation".equals(codeString))
           return FHIRDefinedType.PAYMENTRECONCILIATION;
+        if ("Permission".equals(codeString))
+          return FHIRDefinedType.PERMISSION;
         if ("Person".equals(codeString))
           return FHIRDefinedType.PERSON;
         if ("PlanDefinition".equals(codeString))
@@ -3239,6 +3297,10 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.STRUCTUREMAP;
         if ("Subscription".equals(codeString))
           return FHIRDefinedType.SUBSCRIPTION;
+        if ("SubscriptionStatus".equals(codeString))
+          return FHIRDefinedType.SUBSCRIPTIONSTATUS;
+        if ("SubscriptionTopic".equals(codeString))
+          return FHIRDefinedType.SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return FHIRDefinedType.SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -3265,8 +3327,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.TESTREPORT;
         if ("TestScript".equals(codeString))
           return FHIRDefinedType.TESTSCRIPT;
-        if ("Topic".equals(codeString))
-          return FHIRDefinedType.TOPIC;
         if ("ValueSet".equals(codeString))
           return FHIRDefinedType.VALUESET;
         if ("VerificationResult".equals(codeString))
@@ -3465,6 +3525,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CHARGEITEM);
         if ("ChargeItemDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CHARGEITEMDEFINITION);
+        if ("Citation".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CITATION);
         if ("Claim".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CLAIM);
         if ("ClaimResponse".equals(codeString))
@@ -3533,6 +3595,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVENTDEFINITION);
         if ("Evidence".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCE);
+        if ("EvidenceFocus".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCEFOCUS);
         if ("EvidenceVariable".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCEVARIABLE);
         if ("ExampleScenario".equals(codeString))
@@ -3609,6 +3673,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.NUTRITIONINTAKE);
         if ("NutritionOrder".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.NUTRITIONORDER);
+        if ("NutritionProduct".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.NUTRITIONPRODUCT);
         if ("Observation".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.OBSERVATION);
         if ("ObservationDefinition".equals(codeString))
@@ -3631,6 +3697,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PAYMENTNOTICE);
         if ("PaymentReconciliation".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PAYMENTRECONCILIATION);
+        if ("Permission".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PERMISSION);
         if ("Person".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PERSON);
         if ("PlanDefinition".equals(codeString))
@@ -3679,6 +3747,10 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.STRUCTUREMAP);
         if ("Subscription".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTION);
+        if ("SubscriptionStatus".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTIONSTATUS);
+        if ("SubscriptionTopic".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTIONTOPIC);
         if ("Substance".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSTANCE);
         if ("SubstanceDefinition".equals(codeString))
@@ -3705,8 +3777,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TESTREPORT);
         if ("TestScript".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TESTSCRIPT);
-        if ("Topic".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TOPIC);
         if ("ValueSet".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.VALUESET);
         if ("VerificationResult".equals(codeString))
@@ -3898,6 +3968,8 @@ public class TestScript extends CanonicalResource {
         return "ChargeItem";
       if (code == FHIRDefinedType.CHARGEITEMDEFINITION)
         return "ChargeItemDefinition";
+      if (code == FHIRDefinedType.CITATION)
+        return "Citation";
       if (code == FHIRDefinedType.CLAIM)
         return "Claim";
       if (code == FHIRDefinedType.CLAIMRESPONSE)
@@ -3966,6 +4038,8 @@ public class TestScript extends CanonicalResource {
         return "EventDefinition";
       if (code == FHIRDefinedType.EVIDENCE)
         return "Evidence";
+      if (code == FHIRDefinedType.EVIDENCEFOCUS)
+        return "EvidenceFocus";
       if (code == FHIRDefinedType.EVIDENCEVARIABLE)
         return "EvidenceVariable";
       if (code == FHIRDefinedType.EXAMPLESCENARIO)
@@ -4042,6 +4116,8 @@ public class TestScript extends CanonicalResource {
         return "NutritionIntake";
       if (code == FHIRDefinedType.NUTRITIONORDER)
         return "NutritionOrder";
+      if (code == FHIRDefinedType.NUTRITIONPRODUCT)
+        return "NutritionProduct";
       if (code == FHIRDefinedType.OBSERVATION)
         return "Observation";
       if (code == FHIRDefinedType.OBSERVATIONDEFINITION)
@@ -4064,6 +4140,8 @@ public class TestScript extends CanonicalResource {
         return "PaymentNotice";
       if (code == FHIRDefinedType.PAYMENTRECONCILIATION)
         return "PaymentReconciliation";
+      if (code == FHIRDefinedType.PERMISSION)
+        return "Permission";
       if (code == FHIRDefinedType.PERSON)
         return "Person";
       if (code == FHIRDefinedType.PLANDEFINITION)
@@ -4112,6 +4190,10 @@ public class TestScript extends CanonicalResource {
         return "StructureMap";
       if (code == FHIRDefinedType.SUBSCRIPTION)
         return "Subscription";
+      if (code == FHIRDefinedType.SUBSCRIPTIONSTATUS)
+        return "SubscriptionStatus";
+      if (code == FHIRDefinedType.SUBSCRIPTIONTOPIC)
+        return "SubscriptionTopic";
       if (code == FHIRDefinedType.SUBSTANCE)
         return "Substance";
       if (code == FHIRDefinedType.SUBSTANCEDEFINITION)
@@ -4138,8 +4220,6 @@ public class TestScript extends CanonicalResource {
         return "TestReport";
       if (code == FHIRDefinedType.TESTSCRIPT)
         return "TestScript";
-      if (code == FHIRDefinedType.TOPIC)
-        return "Topic";
       if (code == FHIRDefinedType.VALUESET)
         return "ValueSet";
       if (code == FHIRDefinedType.VERIFICATIONRESULT)

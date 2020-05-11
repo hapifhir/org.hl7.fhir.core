@@ -19,6 +19,7 @@ import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserRdfGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserXmlGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaResourceGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaTypeGenerator;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
@@ -61,18 +62,20 @@ public class JavaCoreGenerator {
     String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
     Configuration config = new Configuration(ap);
+    String pid = "r5";
+    String jid = "r5";
     
 
     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     System.out.println("Cache: "+pcm.getFolder());
-    System.out.println("Load hl7.fhir.r5.core");
-    NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core", version);
+    System.out.println("Load hl7.fhir."+pid+".core");
+    NpmPackage npm = pcm.loadPackage("hl7.fhir."+pid+".core", version);
     Definitions master = DefinitionsLoader.load(npm); 
     
     markValueSets(master, config);
     
-    System.out.println("Load hl7.fhir.r5.expansions");
-    Definitions expansions = DefinitionsLoader.load(pcm.loadPackage("hl7.fhir.r5.expansions", version));
+    System.out.println("Load hl7.fhir."+pid+".expansions");
+    Definitions expansions = DefinitionsLoader.load(pcm.loadPackage("hl7.fhir."+pid+".expansions", version));
     
     System.out.println("Process Expansions");
     updateExpansions(master, expansions);
@@ -88,6 +91,7 @@ public class JavaCoreGenerator {
     egen.close();
     
     JavaFactoryGenerator fgen = new JavaFactoryGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceFactory.java")), master, config, date, npm.version());
+    JavaTypeGenerator tgen = new JavaTypeGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceType.java")), master, config, date, npm.version());
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "JsonParser.java")), master, config, date, npm.version());
     JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "XmlParser.java")), master, config, date, npm.version());
     JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "RdfParser.java")), master, config, date, npm.version());
@@ -169,6 +173,9 @@ public class JavaCoreGenerator {
     System.out.println(" .. Factory");
     fgen.generate();
     fgen.close();
+    System.out.println(" .. Types");
+    tgen.generate();
+    tgen.close();
     System.out.println(" .. JsonParser");
     jgen.generate();
     jgen.close();

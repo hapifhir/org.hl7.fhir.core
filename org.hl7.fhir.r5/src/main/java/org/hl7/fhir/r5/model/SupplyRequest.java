@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -555,10 +555,10 @@ public class SupplyRequest extends DomainResource {
     /**
      * The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.
      */
-    @Child(name = "item", type = {CodeableConcept.class, Medication.class, Substance.class, Device.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "item", type = {CodeableReference.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Medication, Substance, or Device requested to be supplied", formalDefinition="The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supply-item")
-    protected DataType item;
+    protected CodeableReference item;
 
     /**
      * The amount that is being ordered of the indicated item.
@@ -624,7 +624,7 @@ public class SupplyRequest extends DomainResource {
     @Description(shortDefinition="The destination of the supply", formalDefinition="Where the supply is destined to go." )
     protected Reference deliverTo;
 
-    private static final long serialVersionUID = 1227479248L;
+    private static final long serialVersionUID = -898869904L;
 
   /**
    * Constructor
@@ -636,7 +636,7 @@ public class SupplyRequest extends DomainResource {
   /**
    * Constructor
    */
-    public SupplyRequest(DataType item, Quantity quantity) {
+    public SupplyRequest(CodeableReference item, Quantity quantity) {
       super();
       this.setItem(item);
       this.setQuantity(quantity);
@@ -820,38 +820,13 @@ public class SupplyRequest extends DomainResource {
     /**
      * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
-    public DataType getItem() { 
+    public CodeableReference getItem() { 
+      if (this.item == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SupplyRequest.item");
+        else if (Configuration.doAutoCreate())
+          this.item = new CodeableReference(); // cc
       return this.item;
-    }
-
-    /**
-     * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
-     */
-    public CodeableConcept getItemCodeableConcept() throws FHIRException { 
-      if (this.item == null)
-        this.item = new CodeableConcept();
-      if (!(this.item instanceof CodeableConcept))
-        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.item.getClass().getName()+" was encountered");
-      return (CodeableConcept) this.item;
-    }
-
-    public boolean hasItemCodeableConcept() { 
-      return this != null && this.item instanceof CodeableConcept;
-    }
-
-    /**
-     * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
-     */
-    public Reference getItemReference() throws FHIRException { 
-      if (this.item == null)
-        this.item = new Reference();
-      if (!(this.item instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.item.getClass().getName()+" was encountered");
-      return (Reference) this.item;
-    }
-
-    public boolean hasItemReference() { 
-      return this != null && this.item instanceof Reference;
     }
 
     public boolean hasItem() { 
@@ -861,9 +836,7 @@ public class SupplyRequest extends DomainResource {
     /**
      * @param value {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
-    public SupplyRequest setItem(DataType value) { 
-      if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for SupplyRequest.item[x]: "+value.fhirType());
+    public SupplyRequest setItem(CodeableReference value) { 
       this.item = value;
       return this;
     }
@@ -1244,7 +1217,7 @@ public class SupplyRequest extends DomainResource {
         children.add(new Property("status", "code", "Status of the supply request.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.", 0, 1, category));
         children.add(new Property("priority", "code", "Indicates how quickly this SupplyRequest should be addressed with respect to other requests.", 0, 1, priority));
-        children.add(new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item));
+        children.add(new Property("item", "CodeableReference(Medication|Substance|Device|DeviceDefinition)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item));
         children.add(new Property("quantity", "Quantity", "The amount that is being ordered of the indicated item.", 0, 1, quantity));
         children.add(new Property("parameter", "", "Specific parameters for the ordered item.  For example, the size of the indicated item.", 0, java.lang.Integer.MAX_VALUE, parameter));
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "When the request should be fulfilled.", 0, 1, occurrence));
@@ -1263,10 +1236,7 @@ public class SupplyRequest extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "Status of the supply request.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.", 0, 1, category);
         case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly this SupplyRequest should be addressed with respect to other requests.", 0, 1, priority);
-        case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-        case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-        case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-        case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(Medication|Substance|Device)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
+        case 3242771: /*item*/  return new Property("item", "CodeableReference(Medication|Substance|Device|DeviceDefinition)", "The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
         case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount that is being ordered of the indicated item.", 0, 1, quantity);
         case 1954460585: /*parameter*/  return new Property("parameter", "", "Specific parameters for the ordered item.  For example, the size of the indicated item.", 0, java.lang.Integer.MAX_VALUE, parameter);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "When the request should be fulfilled.", 0, 1, occurrence);
@@ -1292,7 +1262,7 @@ public class SupplyRequest extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SupplyRequestStatus>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
-        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // DataType
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // CodeableReference
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // SupplyRequestParameterComponent
         case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
@@ -1325,7 +1295,7 @@ public class SupplyRequest extends DomainResource {
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3242771: // item
-          this.item = TypeConvertor.castToType(value); // DataType
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -1371,8 +1341,8 @@ public class SupplyRequest extends DomainResource {
         } else if (name.equals("priority")) {
           value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
-        } else if (name.equals("item[x]")) {
-          this.item = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("item")) {
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("parameter")) {
@@ -1403,7 +1373,6 @@ public class SupplyRequest extends DomainResource {
         case -892481550:  return getStatusElement();
         case 50511102:  return getCategory();
         case -1165461084:  return getPriorityElement();
-        case 2116201613:  return getItem();
         case 3242771:  return getItem();
         case -1285004149:  return getQuantity();
         case 1954460585:  return addParameter(); 
@@ -1427,7 +1396,7 @@ public class SupplyRequest extends DomainResource {
         case -892481550: /*status*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1165461084: /*priority*/ return new String[] {"code"};
-        case 3242771: /*item*/ return new String[] {"CodeableConcept", "Reference"};
+        case 3242771: /*item*/ return new String[] {"CodeableReference"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case 1954460585: /*parameter*/ return new String[] {};
         case 1687874001: /*occurrence*/ return new String[] {"dateTime", "Period", "Timing"};
@@ -1457,12 +1426,8 @@ public class SupplyRequest extends DomainResource {
         else if (name.equals("priority")) {
           throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.priority");
         }
-        else if (name.equals("itemCodeableConcept")) {
-          this.item = new CodeableConcept();
-          return this.item;
-        }
-        else if (name.equals("itemReference")) {
-          this.item = new Reference();
+        else if (name.equals("item")) {
+          this.item = new CodeableReference();
           return this.item;
         }
         else if (name.equals("quantity")) {
@@ -1736,10 +1701,10 @@ public class SupplyRequest extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -1765,7 +1730,7 @@ public class SupplyRequest extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);

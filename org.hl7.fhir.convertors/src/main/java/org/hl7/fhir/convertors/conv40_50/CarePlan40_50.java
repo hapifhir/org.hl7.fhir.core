@@ -308,7 +308,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         if (src.hasScheduled())
             tgt.setScheduled(convertType(src.getScheduled()));
         if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+            tgt.getLocation().setReference(convertReference(src.getLocation()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));
@@ -345,8 +345,8 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasScheduled())
             tgt.setScheduled(convertType(src.getScheduled()));
-        if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+        if (src.getLocation().hasReference())
+            tgt.setLocation(convertReference(src.getLocation().getReference()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));

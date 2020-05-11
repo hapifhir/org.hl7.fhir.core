@@ -49,7 +49,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1102,20 +1102,20 @@ public class Immunization extends DomainResource {
         protected List<CodeableConcept> targetDisease;
 
         /**
-         * Nominal position in a series.
+         * Nominal position in a series as intended by the practitioner administering the dose.
          */
-        @Child(name = "doseNumber", type = {PositiveIntType.class, StringType.class}, order=4, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Dose number within series", formalDefinition="Nominal position in a series." )
-        protected DataType doseNumber;
+        @Child(name = "doseNumber", type = {StringType.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Dose number within series", formalDefinition="Nominal position in a series as intended by the practitioner administering the dose." )
+        protected StringType doseNumber;
 
         /**
-         * The recommended number of doses to achieve immunity.
+         * The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.
          */
-        @Child(name = "seriesDoses", type = {PositiveIntType.class, StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity." )
-        protected DataType seriesDoses;
+        @Child(name = "seriesDoses", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity as intended by the practitioner administering the dose." )
+        protected StringType seriesDoses;
 
-        private static final long serialVersionUID = 193176765L;
+        private static final long serialVersionUID = 660613103L;
 
     /**
      * Constructor
@@ -1127,7 +1127,7 @@ public class Immunization extends DomainResource {
     /**
      * Constructor
      */
-      public ImmunizationProtocolAppliedComponent(DataType doseNumber) {
+      public ImmunizationProtocolAppliedComponent(String doseNumber) {
         super();
         this.setDoseNumber(doseNumber);
       }
@@ -1259,40 +1259,19 @@ public class Immunization extends DomainResource {
         }
 
         /**
-         * @return {@link #doseNumber} (Nominal position in a series.)
+         * @return {@link #doseNumber} (Nominal position in a series as intended by the practitioner administering the dose.). This is the underlying object with id, value and extensions. The accessor "getDoseNumber" gives direct access to the value
          */
-        public DataType getDoseNumber() { 
+        public StringType getDoseNumberElement() { 
+          if (this.doseNumber == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImmunizationProtocolAppliedComponent.doseNumber");
+            else if (Configuration.doAutoCreate())
+              this.doseNumber = new StringType(); // bb
           return this.doseNumber;
         }
 
-        /**
-         * @return {@link #doseNumber} (Nominal position in a series.)
-         */
-        public PositiveIntType getDoseNumberPositiveIntType() throws FHIRException { 
-          if (this.doseNumber == null)
-            this.doseNumber = new PositiveIntType();
-          if (!(this.doseNumber instanceof PositiveIntType))
-            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.doseNumber.getClass().getName()+" was encountered");
-          return (PositiveIntType) this.doseNumber;
-        }
-
-        public boolean hasDoseNumberPositiveIntType() { 
-          return this != null && this.doseNumber instanceof PositiveIntType;
-        }
-
-        /**
-         * @return {@link #doseNumber} (Nominal position in a series.)
-         */
-        public StringType getDoseNumberStringType() throws FHIRException { 
-          if (this.doseNumber == null)
-            this.doseNumber = new StringType();
-          if (!(this.doseNumber instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.doseNumber.getClass().getName()+" was encountered");
-          return (StringType) this.doseNumber;
-        }
-
-        public boolean hasDoseNumberStringType() { 
-          return this != null && this.doseNumber instanceof StringType;
+        public boolean hasDoseNumberElement() { 
+          return this.doseNumber != null && !this.doseNumber.isEmpty();
         }
 
         public boolean hasDoseNumber() { 
@@ -1300,50 +1279,44 @@ public class Immunization extends DomainResource {
         }
 
         /**
-         * @param value {@link #doseNumber} (Nominal position in a series.)
+         * @param value {@link #doseNumber} (Nominal position in a series as intended by the practitioner administering the dose.). This is the underlying object with id, value and extensions. The accessor "getDoseNumber" gives direct access to the value
          */
-        public ImmunizationProtocolAppliedComponent setDoseNumber(DataType value) { 
-          if (value != null && !(value instanceof PositiveIntType || value instanceof StringType))
-            throw new Error("Not the right type for Immunization.protocolApplied.doseNumber[x]: "+value.fhirType());
+        public ImmunizationProtocolAppliedComponent setDoseNumberElement(StringType value) { 
           this.doseNumber = value;
           return this;
         }
 
         /**
-         * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
+         * @return Nominal position in a series as intended by the practitioner administering the dose.
          */
-        public DataType getSeriesDoses() { 
+        public String getDoseNumber() { 
+          return this.doseNumber == null ? null : this.doseNumber.getValue();
+        }
+
+        /**
+         * @param value Nominal position in a series as intended by the practitioner administering the dose.
+         */
+        public ImmunizationProtocolAppliedComponent setDoseNumber(String value) { 
+            if (this.doseNumber == null)
+              this.doseNumber = new StringType();
+            this.doseNumber.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.). This is the underlying object with id, value and extensions. The accessor "getSeriesDoses" gives direct access to the value
+         */
+        public StringType getSeriesDosesElement() { 
+          if (this.seriesDoses == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImmunizationProtocolAppliedComponent.seriesDoses");
+            else if (Configuration.doAutoCreate())
+              this.seriesDoses = new StringType(); // bb
           return this.seriesDoses;
         }
 
-        /**
-         * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
-         */
-        public PositiveIntType getSeriesDosesPositiveIntType() throws FHIRException { 
-          if (this.seriesDoses == null)
-            this.seriesDoses = new PositiveIntType();
-          if (!(this.seriesDoses instanceof PositiveIntType))
-            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.seriesDoses.getClass().getName()+" was encountered");
-          return (PositiveIntType) this.seriesDoses;
-        }
-
-        public boolean hasSeriesDosesPositiveIntType() { 
-          return this != null && this.seriesDoses instanceof PositiveIntType;
-        }
-
-        /**
-         * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
-         */
-        public StringType getSeriesDosesStringType() throws FHIRException { 
-          if (this.seriesDoses == null)
-            this.seriesDoses = new StringType();
-          if (!(this.seriesDoses instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.seriesDoses.getClass().getName()+" was encountered");
-          return (StringType) this.seriesDoses;
-        }
-
-        public boolean hasSeriesDosesStringType() { 
-          return this != null && this.seriesDoses instanceof StringType;
+        public boolean hasSeriesDosesElement() { 
+          return this.seriesDoses != null && !this.seriesDoses.isEmpty();
         }
 
         public boolean hasSeriesDoses() { 
@@ -1351,12 +1324,31 @@ public class Immunization extends DomainResource {
         }
 
         /**
-         * @param value {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
+         * @param value {@link #seriesDoses} (The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.). This is the underlying object with id, value and extensions. The accessor "getSeriesDoses" gives direct access to the value
          */
-        public ImmunizationProtocolAppliedComponent setSeriesDoses(DataType value) { 
-          if (value != null && !(value instanceof PositiveIntType || value instanceof StringType))
-            throw new Error("Not the right type for Immunization.protocolApplied.seriesDoses[x]: "+value.fhirType());
+        public ImmunizationProtocolAppliedComponent setSeriesDosesElement(StringType value) { 
           this.seriesDoses = value;
+          return this;
+        }
+
+        /**
+         * @return The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.
+         */
+        public String getSeriesDoses() { 
+          return this.seriesDoses == null ? null : this.seriesDoses.getValue();
+        }
+
+        /**
+         * @param value The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.
+         */
+        public ImmunizationProtocolAppliedComponent setSeriesDoses(String value) { 
+          if (Utilities.noString(value))
+            this.seriesDoses = null;
+          else {
+            if (this.seriesDoses == null)
+              this.seriesDoses = new StringType();
+            this.seriesDoses.setValue(value);
+          }
           return this;
         }
 
@@ -1365,8 +1357,8 @@ public class Immunization extends DomainResource {
           children.add(new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series));
           children.add(new Property("authority", "Reference(Organization)", "Indicates the authority who published the protocol (e.g. ACIP) that is being followed.", 0, 1, authority));
           children.add(new Property("targetDisease", "CodeableConcept", "The vaccine preventable disease the dose is being administered against.", 0, java.lang.Integer.MAX_VALUE, targetDisease));
-          children.add(new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber));
-          children.add(new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses));
+          children.add(new Property("doseNumber", "string", "Nominal position in a series as intended by the practitioner administering the dose.", 0, 1, doseNumber));
+          children.add(new Property("seriesDoses", "string", "The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.", 0, 1, seriesDoses));
         }
 
         @Override
@@ -1375,14 +1367,8 @@ public class Immunization extends DomainResource {
           case -905838985: /*series*/  return new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series);
           case 1475610435: /*authority*/  return new Property("authority", "Reference(Organization)", "Indicates the authority who published the protocol (e.g. ACIP) that is being followed.", 0, 1, authority);
           case -319593813: /*targetDisease*/  return new Property("targetDisease", "CodeableConcept", "The vaccine preventable disease the dose is being administered against.", 0, java.lang.Integer.MAX_VALUE, targetDisease);
-          case -1632295686: /*doseNumber[x]*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-          case -887709242: /*doseNumber*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-          case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt", "Nominal position in a series.", 0, 1, doseNumber);
-          case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "string", "Nominal position in a series.", 0, 1, doseNumber);
-          case 1553560673: /*seriesDoses[x]*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-          case -1936727105: /*seriesDoses*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-          case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-          case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+          case -887709242: /*doseNumber*/  return new Property("doseNumber", "string", "Nominal position in a series as intended by the practitioner administering the dose.", 0, 1, doseNumber);
+          case -1936727105: /*seriesDoses*/  return new Property("seriesDoses", "string", "The recommended number of doses to achieve immunity as intended by the practitioner administering the dose.", 0, 1, seriesDoses);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1394,8 +1380,8 @@ public class Immunization extends DomainResource {
         case -905838985: /*series*/ return this.series == null ? new Base[0] : new Base[] {this.series}; // StringType
         case 1475610435: /*authority*/ return this.authority == null ? new Base[0] : new Base[] {this.authority}; // Reference
         case -319593813: /*targetDisease*/ return this.targetDisease == null ? new Base[0] : this.targetDisease.toArray(new Base[this.targetDisease.size()]); // CodeableConcept
-        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // DataType
-        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // DataType
+        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // StringType
+        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1414,10 +1400,10 @@ public class Immunization extends DomainResource {
           this.getTargetDisease().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -887709242: // doseNumber
-          this.doseNumber = TypeConvertor.castToType(value); // DataType
+          this.doseNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case -1936727105: // seriesDoses
-          this.seriesDoses = TypeConvertor.castToType(value); // DataType
+          this.seriesDoses = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1432,10 +1418,10 @@ public class Immunization extends DomainResource {
           this.authority = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("targetDisease")) {
           this.getTargetDisease().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("doseNumber[x]")) {
-          this.doseNumber = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("seriesDoses[x]")) {
-          this.seriesDoses = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("doseNumber")) {
+          this.doseNumber = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("seriesDoses")) {
+          this.seriesDoses = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1447,10 +1433,8 @@ public class Immunization extends DomainResource {
         case -905838985:  return getSeriesElement();
         case 1475610435:  return getAuthority();
         case -319593813:  return addTargetDisease(); 
-        case -1632295686:  return getDoseNumber();
-        case -887709242:  return getDoseNumber();
-        case 1553560673:  return getSeriesDoses();
-        case -1936727105:  return getSeriesDoses();
+        case -887709242:  return getDoseNumberElement();
+        case -1936727105:  return getSeriesDosesElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1462,8 +1446,8 @@ public class Immunization extends DomainResource {
         case -905838985: /*series*/ return new String[] {"string"};
         case 1475610435: /*authority*/ return new String[] {"Reference"};
         case -319593813: /*targetDisease*/ return new String[] {"CodeableConcept"};
-        case -887709242: /*doseNumber*/ return new String[] {"positiveInt", "string"};
-        case -1936727105: /*seriesDoses*/ return new String[] {"positiveInt", "string"};
+        case -887709242: /*doseNumber*/ return new String[] {"string"};
+        case -1936727105: /*seriesDoses*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1481,21 +1465,11 @@ public class Immunization extends DomainResource {
         else if (name.equals("targetDisease")) {
           return addTargetDisease();
         }
-        else if (name.equals("doseNumberPositiveInt")) {
-          this.doseNumber = new PositiveIntType();
-          return this.doseNumber;
+        else if (name.equals("doseNumber")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Immunization.protocolApplied.doseNumber");
         }
-        else if (name.equals("doseNumberString")) {
-          this.doseNumber = new StringType();
-          return this.doseNumber;
-        }
-        else if (name.equals("seriesDosesPositiveInt")) {
-          this.seriesDoses = new PositiveIntType();
-          return this.seriesDoses;
-        }
-        else if (name.equals("seriesDosesString")) {
-          this.seriesDoses = new StringType();
-          return this.seriesDoses;
+        else if (name.equals("seriesDoses")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Immunization.protocolApplied.seriesDoses");
         }
         else
           return super.addChild(name);
@@ -1539,7 +1513,8 @@ public class Immunization extends DomainResource {
         if (!(other_ instanceof ImmunizationProtocolAppliedComponent))
           return false;
         ImmunizationProtocolAppliedComponent o = (ImmunizationProtocolAppliedComponent) other_;
-        return compareValues(series, o.series, true);
+        return compareValues(series, o.series, true) && compareValues(doseNumber, o.doseNumber, true) && compareValues(seriesDoses, o.seriesDoses, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -3754,10 +3729,10 @@ public class Immunization extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -3783,7 +3758,7 @@ public class Immunization extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | Immunization.occurrence | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -3911,10 +3886,10 @@ public class Immunization extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -3955,7 +3930,7 @@ public class Immunization extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.patient | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -358,8 +358,8 @@ public class StructureMapUtilities {
     case RELATEDTO: return "-";
     case EQUIVALENT: return "==";
     case NOTRELATEDTO: return "!=";
-    case SOURCENARROWERTARGET: return "<=";
-    case SOURCEBROADERTARGET: return ">=";
+    case SOURCEISNARROWERTHANTARGET: return "<=";
+    case SOURCEISBROADERTHANTARGET: return ">=";
     default: return "??";
     }
   }
@@ -826,9 +826,9 @@ public class StructureMapUtilities {
 		if (token.equals("!="))
 			return ConceptMapRelationship.NOTRELATEDTO;
 		if (token.equals("<="))
-			return ConceptMapRelationship.SOURCENARROWERTARGET;
+			return ConceptMapRelationship.SOURCEISNARROWERTHANTARGET;
 		if (token.equals(">="))
-			return ConceptMapRelationship.SOURCEBROADERTARGET;
+			return ConceptMapRelationship.SOURCEISBROADERTHANTARGET;
 		throw lexer.error("Unknown relationship token '"+token+"'");
 	}
 
@@ -2121,7 +2121,7 @@ public class StructureMapUtilities {
 					message = "Concept map "+su+" found no translation for "+src.getCode();
 				else {
 					for (TargetElementComponent tgt : list.get(0).comp.getTarget()) {
-						if (tgt.getRelationship() == null || EnumSet.of( ConceptMapRelationship.RELATEDTO , ConceptMapRelationship.EQUIVALENT, ConceptMapRelationship.SOURCENARROWERTARGET).contains(tgt.getRelationship())) {
+						if (tgt.getRelationship() == null || EnumSet.of( ConceptMapRelationship.RELATEDTO , ConceptMapRelationship.EQUIVALENT, ConceptMapRelationship.SOURCEISNARROWERTHANTARGET).contains(tgt.getRelationship())) {
 							if (done) {
 								message = "Concept map "+su+" found multiple matches for "+src.getCode();
 								done = false;

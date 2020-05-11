@@ -303,9 +303,9 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setAuthority(convertReference(src.getAuthority()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
         if (src.hasDoseNumber())
-            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+            tgt.setDoseNumber(src.getDoseNumber().primitiveValue());
         if (src.hasSeriesDoses())
-            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+            tgt.setSeriesDoses(src.getSeriesDoses().primitiveValue());
         return tgt;
     }
 
@@ -320,9 +320,9 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setAuthority(convertReference(src.getAuthority()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTargetDisease()) tgt.addTargetDisease(convertCodeableConcept(t));
         if (src.hasDoseNumber())
-            tgt.setDoseNumber(convertType(src.getDoseNumber()));
+            tgt.setDoseNumber(convertType(src.getDoseNumberElement()));
         if (src.hasSeriesDoses())
-            tgt.setSeriesDoses(convertType(src.getSeriesDoses()));
+            tgt.setSeriesDoses(convertType(src.getSeriesDosesElement()));
         return tgt;
     }
 }
