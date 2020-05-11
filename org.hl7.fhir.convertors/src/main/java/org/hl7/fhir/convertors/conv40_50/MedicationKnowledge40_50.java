@@ -23,6 +23,7 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 
@@ -137,23 +138,50 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    private static CodeType convertMedicationKnowledgeStatus(Enumeration<MedicationKnowledgeStatusCodes> src) {
-        if (src == null)
-            return null;
-        CodeType tgt = new CodeType();
-        copyElement(src, tgt);
-        tgt.setValue(src.getValueAsString());
-        return tgt;
+    private static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus> convertMedicationKnowledgeStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> src) {
+      if (src == null)
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatusEnumFactory());
+      copyElement(src, tgt);
+      switch(src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus.ACTIVE);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus.ENTEREDINERROR);
+        break;
+      case INACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus.INACTIVE);
+        break;
+      case NULL:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus.NULL);
+        break;
     }
+      return tgt;
+  }
 
-    private static Enumeration<MedicationKnowledgeStatusCodes> convertMedicationKnowledgeStatus(CodeType src) {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationKnowledgeStatusCodesEnumFactory());
-        copyElement(src, tgt);
-        tgt.setValue(MedicationKnowledgeStatusCodes.fromCode(src.getCode()));
-        return tgt;
+  private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> convertMedicationKnowledgeStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeStatus> src) {
+      if (src == null)
+          return null;
+      org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationKnowledgeStatusCodesEnumFactory());
+      copyElement(src, tgt);
+      switch(src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ACTIVE);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ENTEREDINERROR);
+        break;
+      case INACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.INACTIVE);
+        break;
+      case NULL:
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.NULL);
+        break;
     }
+    return tgt;
+  }
+
 
     public static org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeRelatedMedicationKnowledgeComponent convertMedicationKnowledgeRelatedMedicationKnowledgeComponent(org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeRelatedMedicationKnowledgeComponent src) throws FHIRException {
         if (src == null)

@@ -1,24 +1,24 @@
 package org.hl7.fhir.r4.model;
 
 /*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+  * #%L
+  * org.hl7.fhir.r4
+  * %%
+  * Copyright (C) 2014 - 2019 Health Level 7
+  * %%
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  * 
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  * 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  * #L%
+  */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,18 +49,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Common Ancestor declaration for conformance and knowledge artifact resources.
  */
@@ -192,14 +195,9 @@ public abstract class MetadataResource extends DomainResource {
     /**
      * @param value {@link #url} (An absolute URI that is used to identify this metadata resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this metadata resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the metadata resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
-    public MetadataResource setUrlElement(UriType value) {
-      checkCanUseUrl();
+    public MetadataResource setUrlElement(UriType value) { 
       this.url = value;
       return this;
-    }
-
-    protected void checkCanUseUrl() {
-      // it's fine      
     }
 
     /**
@@ -216,7 +214,6 @@ public abstract class MetadataResource extends DomainResource {
       if (Utilities.noString(value))
         this.url = null;
       else {
-        checkCanUseUrl();
         if (this.url == null)
           this.url = new UriType();
         this.url.setValue(value);

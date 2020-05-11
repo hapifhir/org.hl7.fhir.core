@@ -13,7 +13,7 @@ public class MedicationDispense30_40 {
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_40.convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationDispenseStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
@@ -55,7 +55,7 @@ public class MedicationDispense30_40 {
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_40.convertReference(t));
         if (src.hasStatus())
-            tgt.setStatus(convertMedicationDispenseStatus(src.getStatus()));
+            tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
         if (src.hasCategory())
             tgt.setCategory(VersionConvertor_30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
@@ -109,17 +109,76 @@ public class MedicationDispense30_40 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus convertMedicationDispenseStatus(String src) throws FHIRException {
-        if (src == null)
-            return null;
-        return org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.fromCode(src);
+    private static org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> convertMedicationDispenseStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus> src) {
+      if (src == null)
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
+      VersionConvertor_30_40.copyElement(src, tgt);
+      switch(src.getValue()) {
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.COMPLETED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.ENTEREDINERROR);
+        break;
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.INPROGRESS);
+        break;
+      case NULL:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.NULL);
+        break;
+      case ONHOLD:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.ONHOLD);
+        break;
+      case PREPARATION:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.PREPARATION);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
+        break;
     }
+      return tgt;
+  }
 
-    static public String convertMedicationDispenseStatus(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus src) throws FHIRException {
-        if (src == null)
-            return null;
-        return src.toCode();
+  private static org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus> convertMedicationDispenseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> src) {
+      if (src == null)
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
+      VersionConvertor_30_40.copyElement(src, tgt);
+      switch(src.getValue()) {
+      case CANCELLED:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.COMPLETED);
+        break;
+      case DECLINED:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.ENTEREDINERROR);
+        break;
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.INPROGRESS);
+        break;
+      case NULL:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.NULL);
+        break;
+      case ONHOLD:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.ONHOLD);
+        break;
+      case PREPARATION:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.PREPARATION);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
+        break;
+      case UNKNOWN:
+        tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
     public static org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent convertMedicationDispenseSubstitutionComponent(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent src) throws FHIRException {
         if (src == null)
