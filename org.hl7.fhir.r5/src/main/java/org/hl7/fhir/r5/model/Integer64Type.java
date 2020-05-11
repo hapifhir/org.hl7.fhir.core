@@ -52,14 +52,12 @@ package org.hl7.fhir.r5.model;
  */
 
 
-import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
  * Primitive type "integer" in FHIR: A signed 32-bit integer
  */
-@DatatypeDef(name = "integer")
+@DatatypeDef(name = "integer64")
 public class Integer64Type extends PrimitiveType<Long> /* implements IBaseInteger64Datatype */ {
 
 	private static final long serialVersionUID = 3L;
