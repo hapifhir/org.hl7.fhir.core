@@ -113,7 +113,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     version = VersionUtilities.getMajMin(version);
     if (!ve.containsKey(version)) {
       if (version.startsWith("5.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#current", DEF_TX, txLog, FhirPublication.R5, true, "4.2.0"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.4.0", DEF_TX, txLog, FhirPublication.R5, true, "4.4.0"));
       else if (version.startsWith("3.0"))
         ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2"));
       else if (version.startsWith("4.0"))
