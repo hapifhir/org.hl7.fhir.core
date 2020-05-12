@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -1231,4 +1231,3 @@ public class Device extends DomainResource {
   public static final String SP_MANUFACTURER = "manufacturer";
 
 }
-

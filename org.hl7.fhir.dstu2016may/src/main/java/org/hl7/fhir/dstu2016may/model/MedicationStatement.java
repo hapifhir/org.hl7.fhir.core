@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model;
+package org.hl7.fhir.dstu2016may.model;
 
 
 
@@ -1937,4 +1937,3 @@ Specifically if 'boolean' datatype is selected, then the following logic applies
 
 
 }
-

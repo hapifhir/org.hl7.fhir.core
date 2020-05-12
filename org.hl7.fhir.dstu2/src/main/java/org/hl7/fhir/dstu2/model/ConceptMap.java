@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -2281,4 +2281,3 @@ public class ConceptMap extends DomainResource {
   public static final String SP_STATUS = "status";
 
 }
-

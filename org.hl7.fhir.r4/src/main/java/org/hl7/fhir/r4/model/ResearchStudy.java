@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -3055,4 +3055,3 @@ or intervention but are still being followed according to the primary objective 
 
 
 }
-

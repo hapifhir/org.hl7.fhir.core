@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.formats;
+package org.hl7.fhir.r4.formats;
 
 import java.io.IOException;
 
@@ -58840,4 +58840,3 @@ public class JsonParser extends JsonParserBase {
   }
 
 }
-

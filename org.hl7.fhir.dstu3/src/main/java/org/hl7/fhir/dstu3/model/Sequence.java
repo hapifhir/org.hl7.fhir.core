@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 import java.math.BigDecimal;
 
@@ -4601,4 +4601,3 @@ public class Sequence extends DomainResource {
 
 
 }
-

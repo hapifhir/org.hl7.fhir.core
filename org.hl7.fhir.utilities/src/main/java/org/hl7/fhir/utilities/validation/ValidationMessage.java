@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities.validation;
+package org.hl7.fhir.utilities.validation;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

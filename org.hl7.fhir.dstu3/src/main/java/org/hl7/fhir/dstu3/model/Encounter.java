@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -4532,4 +4532,3 @@ This would be used for a case where an admission starts of as an emergency encou
 
 
 }
-

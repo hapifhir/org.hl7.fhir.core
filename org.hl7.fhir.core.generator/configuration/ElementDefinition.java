@@ -1,5 +1,4 @@
-﻿  
-  public String toString() {
+public String toString() {
     if (hasId())
       return getId();
     if (hasSliceName())
@@ -109,7 +108,4 @@
 
   public boolean isInlineType() {
     return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
-  }  
-
-
-
+  }

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.utils.client;
+package org.hl7.fhir.dstu3.utils.client;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

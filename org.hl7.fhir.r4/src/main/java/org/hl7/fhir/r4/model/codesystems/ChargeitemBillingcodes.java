@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -99,4 +99,3 @@ Grundpauschale für Ärzte, Institute und Krankenhäuser, die zur Erbringung von
 
 
 }
-

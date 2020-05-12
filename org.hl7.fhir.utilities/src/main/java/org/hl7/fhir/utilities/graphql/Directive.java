@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities.graphql;
+package org.hl7.fhir.utilities.graphql;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

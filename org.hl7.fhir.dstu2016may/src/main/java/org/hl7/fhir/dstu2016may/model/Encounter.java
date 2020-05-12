@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model;
+package org.hl7.fhir.dstu2016may.model;
 
 
 
@@ -3850,4 +3850,3 @@ Not to be used when the patient is currently at the location
 
 
 }
-

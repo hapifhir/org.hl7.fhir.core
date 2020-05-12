@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.utils.client;
+package org.hl7.fhir.dstu2.utils.client;
 
 
 

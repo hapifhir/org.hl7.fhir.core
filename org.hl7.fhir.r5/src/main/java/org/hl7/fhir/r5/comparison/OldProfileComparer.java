@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.comparison;
+package org.hl7.fhir.r5.comparison;
 
 import java.io.BufferedOutputStream;
 

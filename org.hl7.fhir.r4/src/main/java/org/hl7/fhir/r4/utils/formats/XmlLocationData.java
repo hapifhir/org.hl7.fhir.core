@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.utils.formats;
+package org.hl7.fhir.r4.utils.formats;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

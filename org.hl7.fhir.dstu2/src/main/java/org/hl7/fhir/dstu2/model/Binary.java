@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -248,4 +248,3 @@ public class Binary extends BaseBinary implements IBaseBinary {
   public static final String SP_CONTENTTYPE = "contenttype";
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -3104,4 +3104,3 @@ Not to be used when the patient is currently at the location
   public static final String SP_STATUS = "status";
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.elementmodel;
+package org.hl7.fhir.dstu3.elementmodel;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

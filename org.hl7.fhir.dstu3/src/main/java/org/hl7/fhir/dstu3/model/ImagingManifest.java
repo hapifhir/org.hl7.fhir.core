@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -1791,4 +1791,3 @@ The value may be derived from the DICOM Standard Part 16, CID-7010 descriptions 
 
 
 }
-

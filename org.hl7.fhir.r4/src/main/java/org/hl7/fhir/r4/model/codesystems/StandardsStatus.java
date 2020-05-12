@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -125,4 +125,3 @@ Future versions of FHIR may make significant changes to Trial Use content that a
 
 
 }
-

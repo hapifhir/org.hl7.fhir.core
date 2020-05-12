@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model.codesystems;
+package org.hl7.fhir.dstu2016may.model.codesystems;
 
 
 
@@ -663,4 +663,3 @@ Members of the OO WG have recently attempted to contact members of RCRIM regardi
 
 
 }
-

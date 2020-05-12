@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -754,4 +754,3 @@ public class Quantity extends Type implements ICompositeType, ICoding {
 // end addition
 
 }
-

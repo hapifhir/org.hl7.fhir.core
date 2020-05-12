@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -2369,4 +2369,3 @@ public class Bundle extends Resource implements IBaseBundle {
   public static final String SP_MESSAGE = "message";
 
 }
-

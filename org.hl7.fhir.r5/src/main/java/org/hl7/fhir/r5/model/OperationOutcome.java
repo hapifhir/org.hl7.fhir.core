@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -1497,4 +1497,3 @@ For resource issues, this will be a simple XPath limited to element names, repet
 
 
 }
-

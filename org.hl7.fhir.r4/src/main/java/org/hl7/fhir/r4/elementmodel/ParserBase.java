@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.elementmodel;
+package org.hl7.fhir.r4.elementmodel;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

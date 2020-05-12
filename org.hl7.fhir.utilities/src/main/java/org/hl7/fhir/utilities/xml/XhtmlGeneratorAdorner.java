@@ -1,4 +1,3 @@
-﻿
 package org.hl7.fhir.utilities.xml;
 
 /*
@@ -79,4 +78,3 @@ public interface XhtmlGeneratorAdorner {
   String getNodeId(XhtmlGeneratorAdornerState state, Element node);
 
 }
-

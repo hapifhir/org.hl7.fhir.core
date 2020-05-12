@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.exceptions;
+package org.hl7.fhir.exceptions;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model;
+package org.hl7.fhir.dstu2016may.model;
 
 
 
@@ -2212,4 +2212,3 @@ Work addresses are not typically entered in this property as they are usually ro
 
 
 }
-

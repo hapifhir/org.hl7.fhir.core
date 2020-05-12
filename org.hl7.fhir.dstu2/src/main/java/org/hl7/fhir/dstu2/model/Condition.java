@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -1686,4 +1686,3 @@ public class Condition extends DomainResource {
   public static final String SP_BODYSITE = "body-site";
 
 }
-

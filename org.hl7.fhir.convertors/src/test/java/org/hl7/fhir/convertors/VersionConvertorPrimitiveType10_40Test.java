@@ -64,4 +64,3 @@ public class VersionConvertorPrimitiveType10_40Test {
       Arguments.arguments(org.hl7.fhir.r4.model.UriType.class.getSimpleName(), new org.hl7.fhir.r4.model.UriType()));
   }
 }
-

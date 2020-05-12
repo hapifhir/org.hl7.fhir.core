@@ -1,4 +1,4 @@
-   /**
+/**
    * Sets the value for <b>start</b> () 
    *
      * <p>
@@ -22,5 +22,4 @@
   public Period setEnd( Date theDate,  TemporalPrecisionEnum thePrecision) { 
     end = new DateTimeType(theDate, thePrecision);  
     return this;  
-  } 
-
+  }

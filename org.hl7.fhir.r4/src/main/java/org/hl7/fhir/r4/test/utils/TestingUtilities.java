@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.test.utils;
+package org.hl7.fhir.r4.test.utils;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

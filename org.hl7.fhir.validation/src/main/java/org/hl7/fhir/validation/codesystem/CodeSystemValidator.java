@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.validation.codesystem;
+package org.hl7.fhir.validation.codesystem;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

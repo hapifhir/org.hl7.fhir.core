@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors;
 
 import java.util.ArrayList;
 import java.util.List;

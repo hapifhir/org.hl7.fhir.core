@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -2283,4 +2283,3 @@ An adverse event is an event that caused harm to a patient,  an adverse reaction
 
 
 }
-

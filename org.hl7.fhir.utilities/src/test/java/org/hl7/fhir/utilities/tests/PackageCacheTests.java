@@ -33,4 +33,3 @@ public class PackageCacheTests {
     Assertions.assertNotNull(npm2);
   }
 }
-

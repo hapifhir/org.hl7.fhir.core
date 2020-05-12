@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -2736,4 +2736,3 @@ The ISO description conflates both of the proposed specializations of HL7 ETREAT
 
 
 }
-

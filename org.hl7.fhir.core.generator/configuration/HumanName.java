@@ -1,4 +1,4 @@
- /** 
+/** 
   /** 
    * Returns all repetitions of {@link #getGiven() given name} as a space separated string 
    *  
@@ -63,5 +63,4 @@
       b.append(next.getValue()); 
     } 
     return b.toString(); 
-  } 
-
+  }

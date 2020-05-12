@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -339,4 +339,3 @@ Information for which the patient seeks heightened confidentiality. Sensitive in
 
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model.codesystems;
+package org.hl7.fhir.dstu2016may.model.codesystems;
 
 
 
@@ -2243,4 +2243,3 @@ Long-term shared authentication secrets, if used, are never revealed to any part
 
 
 }
-

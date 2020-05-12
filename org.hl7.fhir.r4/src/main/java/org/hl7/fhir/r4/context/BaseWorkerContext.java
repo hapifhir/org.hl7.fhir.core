@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.context;
+package org.hl7.fhir.r4.context;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

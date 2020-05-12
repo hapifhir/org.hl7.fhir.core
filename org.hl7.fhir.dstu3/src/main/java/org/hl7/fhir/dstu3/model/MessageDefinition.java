@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -2763,4 +2763,3 @@ public class MessageDefinition extends MetadataResource {
 
 
 }
-

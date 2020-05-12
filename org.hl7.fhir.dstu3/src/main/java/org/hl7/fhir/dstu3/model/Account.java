@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -1801,4 +1801,3 @@ This period may be different to the coveragePeriod which is the duration of time
 
 
 }
-

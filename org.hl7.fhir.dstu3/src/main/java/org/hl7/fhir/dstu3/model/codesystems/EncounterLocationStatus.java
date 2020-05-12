@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -109,4 +109,3 @@ Not to be used when the patient is currently at the location
 
 
 }
-

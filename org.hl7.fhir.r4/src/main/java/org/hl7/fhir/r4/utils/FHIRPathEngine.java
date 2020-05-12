@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.utils;
+package org.hl7.fhir.r4.utils;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;

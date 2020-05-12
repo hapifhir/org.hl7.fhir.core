@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -760,4 +760,3 @@ public class Order extends DomainResource {
   public static final String SP_WHENCODE = "when_code";
 
 }
-

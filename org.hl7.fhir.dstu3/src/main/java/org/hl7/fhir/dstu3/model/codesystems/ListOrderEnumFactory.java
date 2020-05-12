@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -86,4 +86,3 @@ public class ListOrderEnumFactory implements EnumFactory<ListOrder> {
       }
 
 }
-

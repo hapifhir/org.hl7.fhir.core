@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.patterns;
+package org.hl7.fhir.r5.patterns;
 
 
 
@@ -1338,4 +1338,3 @@ public interface Request extends PatternBase {
 
 
 }
-

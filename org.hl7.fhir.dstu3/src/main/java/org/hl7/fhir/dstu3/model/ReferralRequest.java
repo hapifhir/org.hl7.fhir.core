@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -3097,4 +3097,3 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
 
 
 }
-

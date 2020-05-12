@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -2441,4 +2441,3 @@ Long-term shared authentication secrets, if used, are never revealed to any part
 
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.terminologies;
+package org.hl7.fhir.dstu2016may.terminologies;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

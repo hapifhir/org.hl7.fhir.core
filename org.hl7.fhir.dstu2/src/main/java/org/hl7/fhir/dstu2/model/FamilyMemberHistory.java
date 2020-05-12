@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -1343,4 +1343,3 @@ public class FamilyMemberHistory extends DomainResource {
   public static final String SP_RELATIONSHIP = "relationship";
 
 }
-

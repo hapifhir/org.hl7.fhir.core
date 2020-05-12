@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -160,4 +160,3 @@ A specific time might or might not be pre-allocated.
 
 
 }
-

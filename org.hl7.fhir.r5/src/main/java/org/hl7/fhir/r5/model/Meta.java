@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -664,4 +664,3 @@ public class Meta extends DataType implements IBaseMetaType {
 // end addition
 
 }
-

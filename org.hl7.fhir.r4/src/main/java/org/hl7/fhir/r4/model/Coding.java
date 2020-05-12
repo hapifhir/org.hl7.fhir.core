@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -540,4 +540,3 @@ public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding
 // end addition
 
 }
-

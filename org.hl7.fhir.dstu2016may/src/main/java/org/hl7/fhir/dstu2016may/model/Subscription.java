@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model;
+package org.hl7.fhir.dstu2016may.model;
 
 
 
@@ -1420,4 +1420,3 @@ public class Subscription extends DomainResource {
 
 
 }
-

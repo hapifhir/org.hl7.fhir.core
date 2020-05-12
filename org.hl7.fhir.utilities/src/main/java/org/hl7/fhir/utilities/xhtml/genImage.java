@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities.xhtml;
+package org.hl7.fhir.utilities.xhtml;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

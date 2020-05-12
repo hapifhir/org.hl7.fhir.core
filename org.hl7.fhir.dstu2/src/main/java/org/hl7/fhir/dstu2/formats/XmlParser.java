@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.formats;
+package org.hl7.fhir.dstu2.formats;
 
 
 
@@ -22120,4 +22120,3 @@ public class XmlParser extends XmlParserBase {
   }
 
 }
-

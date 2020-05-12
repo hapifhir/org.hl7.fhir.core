@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities.json;
+package org.hl7.fhir.utilities.json;
 
 import java.io.File;
 

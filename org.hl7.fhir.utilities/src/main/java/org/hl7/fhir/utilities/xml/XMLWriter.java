@@ -1,5 +1,3 @@
-﻿
-
 package org.hl7.fhir.utilities.xml;
 
 /*
@@ -905,4 +903,3 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	
 	
 }
-

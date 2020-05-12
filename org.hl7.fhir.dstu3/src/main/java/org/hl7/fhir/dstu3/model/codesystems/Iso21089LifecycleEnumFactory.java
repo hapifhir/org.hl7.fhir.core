@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -154,4 +154,3 @@ public class Iso21089LifecycleEnumFactory implements EnumFactory<Iso21089Lifecyc
       }
 
 }
-

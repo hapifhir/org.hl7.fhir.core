@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -10118,4 +10118,3 @@ public class Citation extends MetadataResource {
 
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -954,4 +954,3 @@ public class Address extends Type implements ICompositeType {
 
 
 }
-

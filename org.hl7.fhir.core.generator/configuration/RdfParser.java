@@ -267,4 +267,3 @@ public class RdfParser extends RdfParserBase {
   }
 
 }
-
