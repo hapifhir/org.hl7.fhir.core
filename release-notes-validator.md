@@ -6,10 +6,10 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
-(no changes yet)
+* fix fatal NPE validating bundles when resource is missing
+* fix tests for R5 changes 
 
 ## v4.2.30 (2020-05-12)
-
 
 * Allow mailto: urls as absolute URIs 
 

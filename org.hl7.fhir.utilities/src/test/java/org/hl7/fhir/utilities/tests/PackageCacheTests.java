@@ -14,11 +14,10 @@ import java.io.IOException;
 public class PackageCacheTests {
 
   @Test
-  @Disabled // This test is currently set to always fail.
   public void testPath() throws IOException {
     PackageCacheManager cache = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
-    Assertions.assertTrue(false);
+    Assertions.assertTrue(cache.listPackages().isEmpty());
     NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
@@ -31,5 +30,6 @@ public class PackageCacheTests {
     npm.save(dir);
     NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:" + dir.getAbsolutePath());
     Assertions.assertNotNull(npm2);
+    Assertions.assertFalse(cache.listPackages().isEmpty());
   }
 }
