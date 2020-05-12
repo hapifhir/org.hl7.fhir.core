@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -162,4 +162,3 @@ public class V3EntityClassEnumFactory implements EnumFactory<V3EntityClass> {
       }
 
 }
-

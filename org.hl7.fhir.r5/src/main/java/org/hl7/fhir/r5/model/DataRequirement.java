@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -1907,4 +1907,3 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
 
 
 }
-

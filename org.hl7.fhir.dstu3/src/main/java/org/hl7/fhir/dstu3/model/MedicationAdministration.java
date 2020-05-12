@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -2937,4 +2937,3 @@ The dosage instructions should reflect the dosage of the medication that was adm
 
 
 }
-

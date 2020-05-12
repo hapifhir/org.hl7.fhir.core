@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -2851,4 +2851,3 @@ Requires the near-distance parameter to be provided also</b><br>
 
 
 }
-

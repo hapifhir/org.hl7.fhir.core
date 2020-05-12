@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -3213,4 +3213,3 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 
 
 }
-

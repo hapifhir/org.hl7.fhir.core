@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.formats;
+package org.hl7.fhir.dstu3.formats;
 
 import java.io.IOException;
 
@@ -42350,4 +42350,3 @@ public class JsonParser extends JsonParserBase {
   }
 
 }
-

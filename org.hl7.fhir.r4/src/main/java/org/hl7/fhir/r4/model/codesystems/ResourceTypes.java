@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -1404,4 +1404,3 @@ The primary difference between a medication statement and a medication administr
 
 
 }
-

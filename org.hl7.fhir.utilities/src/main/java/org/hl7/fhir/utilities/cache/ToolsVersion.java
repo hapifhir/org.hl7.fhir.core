@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.cache;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -53,4 +53,3 @@ public class ToolsVersion {
   // 2: split auto-ig into r3/r4 content
   // arbitrarily started at 1 when changing to git
 }
-

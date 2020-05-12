@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.formats;
+package org.hl7.fhir.r5.formats;
 
 
 // generated
@@ -24472,4 +24472,3 @@ public class RdfParser extends RdfParserBase {
   }
 
 }
-

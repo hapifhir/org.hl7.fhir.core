@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -475,4 +475,3 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 // end addition
 
 }
-

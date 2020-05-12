@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.formats;
+package org.hl7.fhir.dstu2016may.formats;
 
 
 
@@ -36206,4 +36206,3 @@ public class JsonParser extends JsonParserBase {
   }
 
 }
-

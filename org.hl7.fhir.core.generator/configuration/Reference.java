@@ -1,5 +1,4 @@
-﻿
-    @Override
+@Override
       public String toString() {
         if (hasReference())
           return "Reference["+getReference()+"]";
@@ -25,4 +24,4 @@
       setReference(null); 
     } 
     return this; 
-  } 
+  }

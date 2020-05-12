@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model;
+package org.hl7.fhir.dstu2016may.model;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -10118,4 +10118,3 @@ The primary difference between a medication statement and a medication administr
 
 
 }
-

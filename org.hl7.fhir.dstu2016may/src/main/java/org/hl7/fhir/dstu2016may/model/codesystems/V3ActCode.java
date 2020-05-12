@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model.codesystems;
+package org.hl7.fhir.dstu2016may.model.codesystems;
 
 
 
@@ -10652,4 +10652,3 @@ the measure population as a narrative description (e.g., all patients seen in th
 
 
 }
-

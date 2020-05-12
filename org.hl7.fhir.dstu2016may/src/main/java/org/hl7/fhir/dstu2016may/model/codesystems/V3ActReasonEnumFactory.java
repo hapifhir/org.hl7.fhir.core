@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2016may.model.codesystems;
+package org.hl7.fhir.dstu2016may.model.codesystems;
 
 
 
@@ -1102,4 +1102,3 @@ public class V3ActReasonEnumFactory implements EnumFactory<V3ActReason> {
       }
 
 }
-

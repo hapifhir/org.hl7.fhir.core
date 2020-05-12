@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.validation;
+package org.hl7.fhir.validation;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.*;

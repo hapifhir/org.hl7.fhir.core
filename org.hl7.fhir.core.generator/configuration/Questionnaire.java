@@ -1,5 +1,4 @@
-﻿
-  public QuestionnaireItemComponent getQuestion(String linkId) {
+public QuestionnaireItemComponent getQuestion(String linkId) {
     if (linkId == null)
       return null;
     for (QuestionnaireItemComponent i : getItem()) {
@@ -20,4 +19,3 @@
     }
     return null;
   }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2.model;
 
 
 
@@ -1634,4 +1634,3 @@ Specifically if 'boolean' datatype is selected, then the following logic applies
   public static final String SP_STATUS = "status";
 
 }
-

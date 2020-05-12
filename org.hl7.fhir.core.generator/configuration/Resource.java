@@ -1,5 +1,4 @@
-﻿
- @Override
+@Override
   public String getIdBase() {
     return getId();
   }
@@ -13,4 +12,3 @@
   public String getLanguage(String defValue) {
     return hasLanguage() ? getLanguage() : defValue;
   }
-

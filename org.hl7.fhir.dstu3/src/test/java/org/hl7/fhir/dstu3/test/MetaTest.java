@@ -24,4 +24,3 @@ public class MetaTest {
     Assertions.assertEquals(coding, meta.getSecurity(TEST_SYSTEM, TEST_CODE));
   }
 }
-

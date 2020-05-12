@@ -418,4 +418,3 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
 }
-

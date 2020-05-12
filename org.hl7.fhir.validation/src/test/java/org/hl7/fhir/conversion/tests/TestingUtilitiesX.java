@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.conversion.tests;
+package org.hl7.fhir.conversion.tests;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

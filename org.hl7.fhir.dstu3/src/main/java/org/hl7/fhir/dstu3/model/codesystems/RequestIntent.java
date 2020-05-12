@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -143,4 +143,3 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
 
 
 }
-

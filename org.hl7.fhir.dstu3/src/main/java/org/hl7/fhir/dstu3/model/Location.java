@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model;
+package org.hl7.fhir.dstu3.model;
 
 
 
@@ -2100,4 +2100,3 @@ Requires the near-distance parameter to be provided also</b><br>
 
 
 }
-

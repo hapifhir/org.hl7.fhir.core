@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.formats;
+package org.hl7.fhir.r4.formats;
 
 
 
@@ -18036,4 +18036,3 @@ public class RdfParser extends RdfParserBase {
   }
 
 }
-

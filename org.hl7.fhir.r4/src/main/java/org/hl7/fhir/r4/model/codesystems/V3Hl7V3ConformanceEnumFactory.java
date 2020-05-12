@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -78,4 +78,3 @@ public class V3Hl7V3ConformanceEnumFactory implements EnumFactory<V3Hl7V3Conform
       }
 
 }
-

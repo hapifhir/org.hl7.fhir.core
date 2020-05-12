@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.validation;
+package org.hl7.fhir.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 

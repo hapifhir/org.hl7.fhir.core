@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.conformance;
+package org.hl7.fhir.dstu3.conformance;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

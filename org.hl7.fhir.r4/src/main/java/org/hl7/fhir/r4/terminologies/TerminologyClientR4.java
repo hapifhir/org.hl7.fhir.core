@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.terminologies;
+package org.hl7.fhir.r4.terminologies;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

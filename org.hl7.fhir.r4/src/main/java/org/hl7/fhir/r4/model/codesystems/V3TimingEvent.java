@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model.codesystems;
+package org.hl7.fhir.r4.model.codesystems;
 
 
 
@@ -240,4 +240,3 @@ public enum V3TimingEvent {
 
 
 }
-

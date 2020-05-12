@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -496,4 +496,3 @@ The type is the Canonical URL of Resource Definition that is the type this refer
 // end addition
 
 }
-

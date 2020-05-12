@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities;
 
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 

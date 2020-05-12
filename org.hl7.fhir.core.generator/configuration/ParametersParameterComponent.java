@@ -1,4 +1,4 @@
-﻿  public String toString() {
+public String toString() {
     String s = getName() + " = ";
     if (hasValue()) {
       if (getValue().isPrimitive()) {

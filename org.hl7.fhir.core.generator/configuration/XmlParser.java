@@ -918,4 +918,3 @@ public class XmlParser extends XmlParserBase {
   }
 
 }
-

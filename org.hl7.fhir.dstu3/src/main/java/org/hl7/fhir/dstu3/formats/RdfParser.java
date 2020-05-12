@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.formats;
+package org.hl7.fhir.dstu3.formats;
 
 
 
@@ -13324,4 +13324,3 @@ public class RdfParser extends RdfParserBase {
   }
 
 }
-

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.context;
+package org.hl7.fhir.r5.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

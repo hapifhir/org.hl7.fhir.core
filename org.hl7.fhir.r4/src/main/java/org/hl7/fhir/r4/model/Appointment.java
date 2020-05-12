@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -3148,4 +3148,3 @@ The duration (usually in minutes) could also be provided to indicate the length 
 
 
 }
-

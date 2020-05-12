@@ -1,4 +1,4 @@
-  /** 
+/** 
    * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
    * If no link is found which matches the given relation, returns <code>null</code>. If more than one 
    * link is found which matches the given relation, returns the first matching BundleLinkComponent. 
@@ -44,5 +44,4 @@
     retVal.setRelation(theRelation); 
     getLink().add(retVal); 
     return retVal; 
-  } 
-
+  }

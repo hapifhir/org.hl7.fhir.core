@@ -937,4 +937,3 @@ public class FluentPathTests {
     testBoolean(patient(), "(Patient.name | Patient.address).count() = 3", true);
   }
 }
-

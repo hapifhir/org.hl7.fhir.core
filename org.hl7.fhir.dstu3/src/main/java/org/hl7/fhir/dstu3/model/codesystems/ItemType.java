@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.dstu3.model.codesystems;
+package org.hl7.fhir.dstu3.model.codesystems;
 
 
 
@@ -224,4 +224,3 @@ There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-uni
 
 
 }
-

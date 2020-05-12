@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.utilities;
+package org.hl7.fhir.utilities;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -128,4 +128,3 @@ public abstract class ScriptedPageProcessor {
 
 
 }
- 

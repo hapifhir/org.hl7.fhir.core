@@ -8,13 +8,16 @@ title: FHIR Validator Release Notes
 
 (no changes yet)
 
+## v4.2.30 (2020-05-12)
+
+
+* Allow mailto: urls as absolute URIs 
+
 ## v4.2.29 (2020-05-11)
 
-
-(no changes yet)
+* Upgrade to R4.4.0 internally
 
 ## v4.2.28 (2020-05-10)
-
 
 * Change to use different secondary package server
 
@@ -183,4 +186,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* This rel
+* This re

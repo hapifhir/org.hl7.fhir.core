@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.conv10_30.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;

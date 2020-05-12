@@ -45,5 +45,3 @@ public abstract class I18nBase {
     i18Nmessages = ResourceBundle.getBundle("Messages", locale);
   }
 }
-
-

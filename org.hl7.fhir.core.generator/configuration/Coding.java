@@ -1,4 +1,4 @@
-﻿      @Override
+@Override
       public boolean supportsVersion() {
         return true;
       }
@@ -27,5 +27,4 @@
 
       public boolean matches(Coding other) {
         return other.hasCode() && this.hasCode() && other.hasSystem() && this.hasSystem() && this.getCode().equals(other.getCode()) && this.getSystem().equals(other.getSystem()) ;
-      } 
-      
+      }

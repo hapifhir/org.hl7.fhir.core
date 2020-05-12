@@ -1,5 +1,4 @@
-﻿
-  public boolean hasTarget() {
+public boolean hasTarget() {
     return Utilities.existsInList(getCode(), "Reference", "canonical", "CodeableReference");
   }
   

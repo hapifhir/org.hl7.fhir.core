@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.openapi;
+package org.hl7.fhir.r5.openapi;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -1,5 +1,4 @@
-﻿
-  public String describeType() {
+public String describeType() {
     if ("Extension".equals(getType()))
       return "Extension" ;
     switch (getKind()) {
@@ -11,4 +10,3 @@
       return "Definition";
     }
   }
- 

@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -437,4 +437,3 @@ public abstract class Resource extends BaseResource implements IAnyResource {
 // end addition
 
 }
-

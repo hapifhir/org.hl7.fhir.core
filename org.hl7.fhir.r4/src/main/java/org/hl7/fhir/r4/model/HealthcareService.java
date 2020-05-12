@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -3345,4 +3345,3 @@ public class HealthcareService extends DomainResource {
 
 
 }
-

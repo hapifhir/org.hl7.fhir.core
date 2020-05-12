@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.model;
 
 
 
@@ -1720,4 +1720,3 @@ A coverage may only be responsible for specific types of charges, and the sequen
 
 
 }
-

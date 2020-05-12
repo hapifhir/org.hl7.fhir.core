@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.validation.instance;
+package org.hl7.fhir.validation.instance;
 
 import org.hl7.fhir.exceptions.FHIRException;
 

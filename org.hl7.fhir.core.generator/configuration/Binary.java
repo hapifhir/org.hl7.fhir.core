@@ -1,5 +1,4 @@
-﻿ 
-  @Override
+@Override
   public byte[] getContent() {
     return getData();
   }
@@ -13,5 +12,3 @@
   public Base64BinaryType getContentElement() {
     return getDataElement();
   }
-
-      

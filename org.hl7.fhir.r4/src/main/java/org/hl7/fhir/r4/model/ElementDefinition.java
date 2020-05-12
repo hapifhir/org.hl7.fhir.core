@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4.model;
 
 
 
@@ -7616,4 +7616,3 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 // end addition
 
 }
-

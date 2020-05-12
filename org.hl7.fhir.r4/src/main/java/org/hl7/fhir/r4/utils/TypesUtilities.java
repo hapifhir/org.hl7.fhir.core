@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4.utils;
+package org.hl7.fhir.r4.utils;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -161,4 +161,3 @@ public class TypesUtilities {
     return Utilities.existsInList(code, "boolean", "integer", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
   }
 }
-
