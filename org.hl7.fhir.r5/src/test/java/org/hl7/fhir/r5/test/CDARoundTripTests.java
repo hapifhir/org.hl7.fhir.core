@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -13,22 +14,10 @@ import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CDARoundTripTests {
 
-//  private SimpleWorkerContext context;
-// old-test  private FHIRPathEngine fp;
-
-  @BeforeAll
-  public static void setUp() throws Exception {
-// old-test     context = new SimpleWorkerContext();
-// old-test     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-// old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "dev"), null, "StructureDefinition");
-// old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.cda", "dev"), null, "StructureDefinition");
-// old-test     fp = new FHIRPathEngine(context);
-  }
 
 // old-test    
 //  @Test
@@ -172,11 +161,11 @@ public class CDARoundTripTests {
 //        FhirFormat.TURTLE, OutputStyle.PRETTY, null);
 //  }
 
-
   @Test
   public void testSimple() throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     SimpleWorkerContext context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
+    FHIRPathEngine fp = new FHIRPathEngine(context);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
@@ -191,7 +180,6 @@ public class CDARoundTripTests {
       }
     }
     Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
-    FHIRPathEngine fp = new FHIRPathEngine(context);
     Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
     Assertions.assertEquals("SoEN", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.displayName")));
     Assertions.assertEquals("SoEN2", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.sdtcDisplayName")));
