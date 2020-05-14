@@ -2213,6 +2213,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean matchingResource = false;
         for (CanonicalType target : containerType.getTargetProfile()) {
           StructureDefinition sd = resolveProfile(profile, target.asStringValue());
+          if (sd == null)
+            throw new FHIRException("Unable to resolve profile " + target.asStringValue() + " against profile " + profile.getUrl());
           if (("http://hl7.org/fhir/StructureDefinition/" + sd.getType()).equals(tu)) {
             matchingResource = true;
             break;
