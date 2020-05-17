@@ -6,6 +6,7 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
+* Fix to check invariants on Elements with type redirections (e.g. ValueSet.compose.exclude)
 * fix fatal NPE validating bundles when resource is missing
 * fix tests for R5 changes 
 
