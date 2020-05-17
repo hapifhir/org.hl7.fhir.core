@@ -2185,9 +2185,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean matchingResource = false;
         for (CanonicalType target : containerType.getTargetProfile()) {
           StructureDefinition sd = resolveProfile(profile, target.asStringValue());
+          if (rule(errors, IssueType.NOTFOUND, element.line(), element.col(), path, sd != null, I18nConstants.REFERENCE_REF_CANTRESOLVEPROFILE, target.asStringValue())) {
           if (("http://hl7.org/fhir/StructureDefinition/" + sd.getType()).equals(tu)) {
             matchingResource = true;
             break;
+          }
           }
         }
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, matchingResource, I18nConstants.REFERENCE_REF_WRONGTARGET, reference.getType(), container.getType("Reference").getTargetProfile());
@@ -3627,6 +3629,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else if (ei.definition.getContentReference() != null) {
         typeDefn = resolveNameReference(profile.getSnapshot(), ei.definition.getContentReference());
+        
       } else if (ei.definition.getType().size() == 1 && ("Element".equals(ei.definition.getType().get(0).getWorkingCode()) || "BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode()))) {
         if (ei.definition.getType().get(0).hasProfile()) {
           CanonicalType pu = ei.definition.getType().get(0).getProfile().get(0);
@@ -3654,7 +3657,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String thisExtension = null;
       boolean checkDisplay = true;
 
-      checkInvariants(hostContext, errors, profile, ei.definition, resource, ei.getElement(), localStack, true);
+      checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : ei.definition, resource, ei.getElement(), localStack, true);
 
       ei.getElement().markValidation(profile, ei.definition);
       boolean elementValidated = false;
@@ -3910,18 +3913,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ElementDefinition ed = childDefinitions.get(i);
       boolean childUnsupportedSlicing = false;
       boolean process = true;
-      if (ed.hasSlicing() && !ed.getSlicing().getOrdered())
+      if (ed.hasSlicing() && !ed.getSlicing().getOrdered()) {
         slicingPath = ed.getPath();
-      else if (slicingPath != null && ed.getPath().equals(slicingPath))
+      } else if (slicingPath != null && ed.getPath().equals(slicingPath)) {
         ; // nothing
-      else if (slicingPath != null && !ed.getPath().startsWith(slicingPath))
+      } else if (slicingPath != null && !ed.getPath().startsWith(slicingPath)) {
         slicingPath = null;
+      }
       // where are we with slicing
       if (ed.hasSlicing()) {
         if (slicer != null && slicer.getPath().equals(ed.getPath())) {
           String errorContext = "profile " + profile.getUrl();
-          if (!resource.getChildValue(ID).isEmpty())
+          if (!resource.getChildValue(ID).isEmpty()) {
             errorContext += "; instance " + resource.getChildValue("id");
+          }
           throw new DefinitionException(context.formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));
         }
         slicer = ed;
@@ -3941,9 +3946,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     int lastSlice = -1;
     for (ElementInfo ei : children) {
       String sliceInfo = "";
-      if (slicer != null)
+      if (slicer != null) {
         sliceInfo = " (slice: " + slicer.getPath() + ")";
-      if (!unsupportedSlicing)
+      }
+      if (!unsupportedSlicing) {
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
             ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
@@ -3956,9 +3962,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
-          if (!profile.getAbstract())
+          if (!profile.getAbstract()) {
             rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.getPath(), (ei.definition != null), I18nConstants.VALIDATION_VAL_PROFILE_NOTALLOWED, profile.getUrl());
+          }
         }
+      }
       // TODO: Should get the order of elements correct when parsing elements that are XML attributes vs. elements
       boolean isXmlAttr = false;
       if (ei.definition != null) {
@@ -3974,14 +3982,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr;
         rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getUrl(), ei.getName());
       }
-      if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered())
+      if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered()) {
         rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, I18nConstants.VALIDATION_VAL_PROFILE_SLICEORDER, profile.getUrl(), ei.getName());
-      if (ei.definition == null || !isXmlAttr)
+      }
+      if (ei.definition == null || !isXmlAttr) {
         last = ei.index;
-      if (ei.slice != null)
+      }
+      if (ei.slice != null) {
         lastSlice = ei.sliceindex;
-      else
+      } else {
         lastSlice = -1;
+      }
     }
     return problematicPaths;
   }
