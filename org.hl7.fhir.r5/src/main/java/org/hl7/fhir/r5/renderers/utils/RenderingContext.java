@@ -83,6 +83,8 @@ public class RenderingContext {
   protected ProfileUtilities profileUtilities;
   private String definitionsTarget;
   private String destDir;
+  private boolean inlineGraphics;
+  
 
   /**
    * 
@@ -304,6 +306,14 @@ public class RenderingContext {
     res.destDir = destDir;
 
     return res;
+  }
+
+  public boolean isInlineGraphics() {
+    return inlineGraphics;
+  }
+
+  public void setInlineGraphics(boolean inlineGraphics) {
+    this.inlineGraphics = inlineGraphics;
   }
   
 

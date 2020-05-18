@@ -203,6 +203,10 @@ public class DataRenderer {
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
 
+  protected String translate(String source, String content) {
+    return content;
+  }
+
   // -- 4. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {

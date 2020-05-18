@@ -17,10 +17,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class QuestionnaireRenderer extends ResourceRenderer {
   
-  private String directory;
-  private String defnFile;
-  private boolean inlineGraphics;
-  
   private boolean tree;
   
   public QuestionnaireRenderer(RenderingContext context) {
@@ -48,7 +44,7 @@ public class QuestionnaireRenderer extends ResourceRenderer {
   }
   
   public boolean renderTree(XhtmlNode x, Questionnaire q) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDirectory(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
     model.setDocoImg(context.getPrefix() +"help16.png");
@@ -71,7 +67,7 @@ public class QuestionnaireRenderer extends ResourceRenderer {
     rows.add(r);
     boolean hasExt = false;
 
-    r.getCells().add(gen.new Cell(null, context.getDefnFile() == null ? "" : context.getDefnFile()+"-definitions.html#extension."+i.getLinkId(), i.getLinkId(), null, null));
+    r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"-definitions.html#extension."+i.getLinkId(), i.getLinkId(), null, null));
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
     r.getCells().add(gen.new Cell(null, null, (i.getRequired() ? "1" : "0")+".."+(i.getRepeats() ? "*" : "1"), null, null));
