@@ -1,7 +1,13 @@
 package org.hl7.fhir.r5.renderers;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -36,13 +42,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
@@ -856,7 +857,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         return v;
     }
 
-    if (noSlowLookup)
+    if (context.isNoSlowLookup())
       return null;
     
     if (!getContext().getWorker().hasCache()) {

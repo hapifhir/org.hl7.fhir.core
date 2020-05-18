@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.model;
 
+import java.net.URI;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -32,8 +34,6 @@ package org.hl7.fhir.r5.model;
 
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-
-import java.net.URI;
 
 @DatatypeDef(name = "uuid", profileOf = UriType.class)
 public class UuidType extends UriType {

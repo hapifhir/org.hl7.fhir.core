@@ -23,10 +23,12 @@ import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -245,7 +247,6 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private void validateMeasureReportGroups(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mr, NodeStack stack, boolean inProgress) {
-    NarrativeGenerator gen = new NarrativeGenerator(null, null, context);
     List<MeasureGroupComponent> groups = new ArrayList<MeasureGroupComponent>();
 
     List<Element> glist = mr.getChildrenByName("group");
@@ -258,10 +259,10 @@ public class MeasureValidator extends BaseValidator {
       if (m.groups().get(0).hasCode() && mrg.hasChild("code")) {
         CodeableConcept cc = ObjectConverter.readAsCodeableConcept(mrg.getNamedChild("code"));
         if (rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), hasUseableCode(cc), I18nConstants.MEASURE_MR_GRP_NO_USABLE_CODE)) {
-          rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), cc.matches(m.groups().get(0).getCode()), I18nConstants.MEASURE_MR_GRP_NO_WRONG_CODE, gen.gen(cc), gen.gen(m.groups().get(0).getCode()));
+          rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), cc.matches(m.groups().get(0).getCode()), I18nConstants.MEASURE_MR_GRP_NO_WRONG_CODE, DataRenderer.display(context, cc), DataRenderer.display(context, m.groups().get(0).getCode()));
         }
       }
-      validateMeasureReportGroup(hostContext, m, m.groups().get(0), errors, mrg, ns, inProgress, gen);
+      validateMeasureReportGroup(hostContext, m, m.groups().get(0), errors, mrg, ns, inProgress);
     } else {
       int i = 0;
       for (Element mrg : glist) {
@@ -272,7 +273,7 @@ public class MeasureValidator extends BaseValidator {
           if (rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), mg != null, I18nConstants.MEASURE_MR_GRP_UNK_CODE)) {
             if (rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), !groups.contains(mg), I18nConstants.MEASURE_MR_GRP_DUPL_CODE)) {
               groups.add(mg);
-              validateMeasureReportGroup(hostContext, m, mg, errors, mrg, ns, inProgress, gen);
+              validateMeasureReportGroup(hostContext, m, mg, errors, mrg, ns, inProgress);
             }
           }
         }
@@ -280,19 +281,19 @@ public class MeasureValidator extends BaseValidator {
       }
       for (MeasureGroupComponent mg : m.groups()) {
         if (!groups.contains(mg)) {
-          rule(errors, IssueType.BUSINESSRULE, mr.line(), mr.col(), stack.getLiteralPath(), groups.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, gen.gen(mg.getCode()));
+          rule(errors, IssueType.BUSINESSRULE, mr.line(), mr.col(), stack.getLiteralPath(), groups.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, DataRenderer.display(context, mg.getCode()));
         }
       }
     }
   }
 
-  private void validateMeasureReportGroup(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack ns, boolean inProgress, NarrativeGenerator gen) {
-    validateMeasureReportGroupPopulations(hostContext, m, mg, errors, mrg, ns, inProgress, gen);
-    validateScore(hostContext, m, errors, mrg, ns, inProgress, gen);
-    validateMeasureReportGroupStratifiers(hostContext, m, mg, errors, mrg, ns, inProgress, gen);
+  private void validateMeasureReportGroup(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack ns, boolean inProgress) {
+    validateMeasureReportGroupPopulations(hostContext, m, mg, errors, mrg, ns, inProgress);
+    validateScore(hostContext, m, errors, mrg, ns, inProgress);
+    validateMeasureReportGroupStratifiers(hostContext, m, mg, errors, mrg, ns, inProgress);
   }
 
-  private void validateScore(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress, NarrativeGenerator gen) {
+  private void validateScore(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     Element ms = mrg.getNamedChild("measureScore");
     // first, we check MeasureReport.type
     if ("data-collection".equals(m.reportType())) {
@@ -336,7 +337,7 @@ public class MeasureValidator extends BaseValidator {
                 }
               }
             } else if (c != null) {
-              rule(errors, IssueType.NOTFOUND, ms.line(), ms.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_SCORE_FIXED, gen.gen(c));            
+              rule(errors, IssueType.NOTFOUND, ms.line(), ms.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_SCORE_FIXED, DataRenderer.display(context, c));            
             } else {
               warning(errors, IssueType.NOTFOUND, ms.line(), ms.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_SCORE_UNIT_REQUIRED, "ratio");            
             }
@@ -359,7 +360,7 @@ public class MeasureValidator extends BaseValidator {
                 }
               }
             } else if (c != null) {
-              rule(errors, IssueType.NOTFOUND, ms.line(), ms.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_SCORE_FIXED, gen.gen(c));            
+              rule(errors, IssueType.NOTFOUND, ms.line(), ms.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_SCORE_FIXED, DataRenderer.display(context, c));            
             } 
           }
         }
@@ -378,7 +379,7 @@ public class MeasureValidator extends BaseValidator {
       rule(errors, IssueType.BUSINESSRULE, e.line(), e.col(), ns.getLiteralPath(), false, msgId, params);        
     }
   }
-  private void validateMeasureReportGroupPopulations(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress, NarrativeGenerator gen) {
+  private void validateMeasureReportGroupPopulations(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     // there must be a population for each population defined in the measure, and no 4others. 
     List<MeasureGroupPopulationComponent> pops = new ArrayList<MeasureGroupPopulationComponent>();
     List<Element> plist = mrg.getChildrenByName("population");
@@ -400,7 +401,7 @@ public class MeasureValidator extends BaseValidator {
     }
     for (MeasureGroupPopulationComponent mgp : mg.getPopulation()) {
       if (!pops.contains(mgp) && !mgp.getCode().hasCoding("http://terminology.hl7.org/CodeSystem/measure-population", "measure-observation")) {
-        rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), pops.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, gen.gen(mgp.getCode()));
+        rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), pops.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, DataRenderer.display(context, mgp.getCode()));
       }
     }
   }
@@ -420,7 +421,7 @@ public class MeasureValidator extends BaseValidator {
     }
   }
 
-  private void validateMeasureReportGroupStratifiers(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress, NarrativeGenerator gen) {
+  private void validateMeasureReportGroupStratifiers(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     // there must be a population for each population defined in the measure, and no 4others. 
     List<MeasureGroupStratifierComponent> strats = new ArrayList<>();
     List<Element> slist = mrg.getChildrenByName("stratifier");
@@ -442,7 +443,7 @@ public class MeasureValidator extends BaseValidator {
     }
     for (MeasureGroupStratifierComponent mgs : mg.getStratifier()) {
       if (!strats.contains(mgs)) {
-        rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), strats.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, gen.gen(mgs.getCode()));
+        rule(errors, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), strats.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, DataRenderer.display(context, mgs.getCode()));
       }
     }
   }

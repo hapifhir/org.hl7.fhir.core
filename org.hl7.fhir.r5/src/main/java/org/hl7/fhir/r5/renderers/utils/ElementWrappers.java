@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
@@ -20,7 +21,8 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapperImpl;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.WrapperBaseImpl;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ElementWrappers {
@@ -33,8 +35,8 @@ public class ElementWrappers {
     private List<ElementDefinition> children;
     private List<PropertyWrapper> list;
 
-    public BaseWrapperMetaElement(ResourceRenderer renderer, Element element, String type, StructureDefinition structure, ElementDefinition definition) {
-      super(renderer);
+    public BaseWrapperMetaElement(RenderingContext context, Element element, String type, StructureDefinition structure, ElementDefinition definition) {
+      super(context);
       this.element = element;
       this.type = type;
       this.structure = structure;
@@ -50,17 +52,24 @@ public class ElementWrappers {
         return null;
       ByteArrayOutputStream xml = new ByteArrayOutputStream();
       try {
-        new XmlParser(renderer.getContext().getWorker()).compose(element, xml, OutputStyle.PRETTY, null);
+        new XmlParser(context.getWorker()).compose(element, xml, OutputStyle.PRETTY, null);
       } catch (Exception e) {
         throw new FHIRException(e.getMessage(), e);
       }
-      return renderer.parseType(xml.toString(), type); 
+      if (context.getParser() == null) {
+        System.out.println("huh?");
+      } 
+      return context.getParser().parseType(xml.toString(), type); 
     }
 
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = renderer.getContext().getProfileUtilities().getChildList(structure, definition);
+        children = context.getProfileUtilities().getChildList(structure, definition);
+        if (children.isEmpty() && !Utilities.noString(type)) {
+          StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
+          children = context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep());
+        }
         list = new ArrayList<PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -69,7 +78,7 @@ public class ElementWrappers {
             element.getNamedChildrenWithWildcard(name, elements);
           else
             element.getNamedChildren(name, elements);
-          list.add(new PropertyWrapperMetaElement(renderer, structure, child, elements));
+          list.add(new PropertyWrapperMetaElement(context, structure, child, elements));
         }
       }
       return list;
@@ -90,8 +99,8 @@ public class ElementWrappers {
     private List<ResourceWrapper> list;
     private List<PropertyWrapper> list2;
     private StructureDefinition definition;
-    public ResourceWrapperMetaElement(ResourceRenderer renderer, Element wrapped) {
-      super(renderer);
+    public ResourceWrapperMetaElement(RenderingContext context, Element wrapped) {
+      super(context);
       this.wrapped = wrapped;
       this.definition = wrapped.getProperty().getStructure();
     }
@@ -102,7 +111,7 @@ public class ElementWrappers {
         List<Element> children = wrapped.getChildrenByName("contained");
         list = new ArrayList<ResourceWrapper>();
         for (Element e : children) {
-          list.add(new ResourceWrapperMetaElement(renderer, e));
+          list.add(new ResourceWrapperMetaElement(context, e));
         }
       }
       return list;
@@ -133,7 +142,7 @@ public class ElementWrappers {
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
-        List<ElementDefinition> children = renderer.getContext().getProfileUtilities().getChildList(definition, definition.getSnapshot().getElement().get(0));
+        List<ElementDefinition> children = context.getProfileUtilities().getChildList(definition, definition.getSnapshot().getElement().get(0));
         list2 = new ArrayList<PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -141,7 +150,7 @@ public class ElementWrappers {
             wrapped.getNamedChildrenWithWildcard(tail(child.getPath()), elements);
           else
             wrapped.getNamedChildren(tail(child.getPath()), elements);
-          list2.add(new PropertyWrapperMetaElement(renderer, definition, child, elements));
+          list2.add(new PropertyWrapperMetaElement(context, definition, child, elements));
         }
       }
       return list2;
@@ -157,6 +166,54 @@ public class ElementWrappers {
         x.tx("?ngen-1?");
       }
     }
+
+    @Override
+    public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException {
+      if (!x.hasAttribute("xmlns"))
+        x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+      String l = wrapped.getChildValue("language");
+      if (!Utilities.noString(l)) {
+        // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+        x.setAttribute("lang", l);
+        x.setAttribute("xml:lang", l);
+      }
+      org.hl7.fhir.r5.elementmodel.Element txt = wrapped.getNamedChild("text");
+      if (txt == null) {
+        txt = new org.hl7.fhir.r5.elementmodel.Element("text", wrapped.getProperty().getChild(null, "text"));
+        int i = 0;
+        while (i < wrapped.getChildren().size() && (wrapped.getChildren().get(i).getName().equals("id") || wrapped.getChildren().get(i).getName().equals("meta") || wrapped.getChildren().get(i).getName().equals("implicitRules") || wrapped.getChildren().get(i).getName().equals("language")))
+          i++;
+        if (i >= wrapped.getChildren().size())
+          wrapped.getChildren().add(txt);
+        else
+          wrapped.getChildren().add(i, txt);
+      }
+      org.hl7.fhir.r5.elementmodel.Element st = txt.getNamedChild("status");
+      if (st == null) {
+        st = new org.hl7.fhir.r5.elementmodel.Element("status", txt.getProperty().getChild(null, "status"));
+        txt.getChildren().add(0, st);
+      }
+      st.setValue(status.toCode());
+      org.hl7.fhir.r5.elementmodel.Element div = txt.getNamedChild("div");
+      if (div == null) {
+        div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
+        txt.getChildren().add(div);
+        div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
+      }
+      div.setValue(x.toString());
+      div.setXhtml(x);
+
+    }
+
+    @Override
+    public BaseWrapper root() {
+      return new BaseWrapperMetaElement(context, wrapped, getName(), definition, definition.getSnapshot().getElementFirstRep());
+    }
+
+    @Override
+    public StructureDefinition getDefinition() {
+      return definition;
+    }
   }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
@@ -166,8 +223,8 @@ public class ElementWrappers {
     private List<Element> values;
     private List<BaseWrapper> list;
 
-    public PropertyWrapperMetaElement(ResourceRenderer renderer, StructureDefinition structure, ElementDefinition definition, List<Element> values) {
-      super(renderer);
+    public PropertyWrapperMetaElement(RenderingContext context, StructureDefinition structure, ElementDefinition definition, List<Element> values) {
+      super(context);
       this.structure = structure;
       this.definition = definition;
       this.values = values;
@@ -188,7 +245,7 @@ public class ElementWrappers {
       if (list == null) {
         list = new ArrayList<BaseWrapper>();
         for (Element e : values)
-          list.add(new BaseWrapperMetaElement(renderer, e, e.fhirType(), structure, definition));
+          list.add(new BaseWrapperMetaElement(context, e, e.fhirType(), structure, definition));
       }
       return list;
     }

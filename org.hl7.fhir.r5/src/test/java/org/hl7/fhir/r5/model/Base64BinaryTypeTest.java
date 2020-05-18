@@ -1,11 +1,12 @@
 package org.hl7.fhir.r5.model;
 
-import ca.uhn.fhir.parser.DataFormatException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import ca.uhn.fhir.parser.DataFormatException;
 
 class Base64BinaryTypeTest {
 

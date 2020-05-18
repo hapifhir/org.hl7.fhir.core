@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.comparison;
 
-import java.io.BufferedOutputStream;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,11 +32,7 @@ import java.io.BufferedOutputStream;
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -48,21 +42,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.OldProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -79,18 +69,19 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.RendererFactory;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.KeyGenerator;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Logger.LogMessageType;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -1397,7 +1388,7 @@ public class OldProfileComparer implements ProfileKnowledgeProvider {
     }
   }
   
-  private String genValueSets(String base) throws IOException {
+  private String genValueSets(String base) throws IOException, FHIRException, EOperationOutcome {
     StringBuilder b = new StringBuilder();
     b.append("<ul>\r\n");
     for (ValueSet vs : getValuesets()) {
@@ -1411,10 +1402,10 @@ public class OldProfileComparer implements ProfileKnowledgeProvider {
     return b.toString();   
   }
   
-  private void genValueSetFile(String filename, ValueSet vs) throws IOException {
-    NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
-    gen.setNoSlowLookup(true);
-    gen.generate(null, vs, false);
+  private void genValueSetFile(String filename, ValueSet vs) throws IOException, FHIRException, EOperationOutcome {
+    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    rc.setNoSlowLookup(true);
+    RendererFactory.factory(vs, rc).render(vs);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(vs.getText().getDiv());
     StringBuilder b = new StringBuilder();
     b.append("<html>");
@@ -1506,7 +1497,7 @@ public class OldProfileComparer implements ProfileKnowledgeProvider {
   }
 
 
-  public String generate() throws IOException {
+  public String generate() throws IOException, FHIRException, EOperationOutcome {
     for (ValueSet vs : valuesets) {
       vs.setUserData("path", folder+"/"+getId()+"-vs-"+vs.getId()+".html");
     }

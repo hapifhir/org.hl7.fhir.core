@@ -1,31 +1,89 @@
 package org.hl7.fhir.r5.renderers.utils;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 public class RenderingContext {
 
+//  from NarrativeGenerator
+//
+//  private String prefix;
+//  private IWorkerContext context;
+//  private String basePath;
+//  private String tooCostlyNoteEmpty;
+//  private String tooCostlyNoteNotEmpty;
+//  private String tooCostlyNoteEmptyDependent;
+//  private String tooCostlyNoteNotEmptyDependent;
+//  private IReferenceResolver resolver;
+//  private int headerLevelContext;
+//  private boolean canonicalUrlsAsLinks;
+//  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+//  private boolean noSlowLookup;
+//  private List<String> codeSystemPropList = new ArrayList<>();
+//  private ProfileUtilities profileUtilities;
+//  private XVerExtensionManager xverManager;
+//
+//
+//  public Base parseType(String xml, String type) throws IOException, FHIRException {
+//    if (parser != null)
+//      return parser.parseType(xml, type);
+//    else
+//      return new XmlParser().parseAnyType(xml, type);
+//  }
+
+  public interface ILiquidTemplateProvider {
+    String findTemplate(RenderingContext rcontext, DomainResource r);
+    String findTemplate(RenderingContext rcontext, String resourceName);
+  }
+  
+  public interface ITypeParser {
+    Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
+  }
+  
   public enum ResourceRendererMode{
     RESOURCE, IG
   }
 
   protected IWorkerContext worker;
   protected MarkDownProcessor markdown;
-  protected String lang;
-  protected String prefix;
-  protected ValidationOptions terminologyServiceOptions;
-  protected ProfileUtilities profileUtilities;
-  private boolean canonicalUrlsAsLinks;
   protected ResourceRendererMode mode;
   private IReferenceResolver resolver;
+  private ILiquidTemplateProvider templateProvider;
+  private IEvaluationContext services;
+  private ITypeParser parser;
+
+  protected String lang;
+  protected String prefix;
   private int headerLevelContext;
+  private boolean canonicalUrlsAsLinks;
+  private boolean pretty;
+
+  protected ValidationOptions terminologyServiceOptions;
+  private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
   private String tooCostlyNoteEmptyDependent;
   private String tooCostlyNoteNotEmptyDependent;
+  private List<String> codeSystemPropList = new ArrayList<>();
+
+  protected ProfileUtilities profileUtilities;
+  private String definitionsTarget;
+  private String destDir;
+
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -50,7 +108,7 @@ public class RenderingContext {
   }
 
   // -- 2. Markdown support -------------------------------------------------------
-  
+
   public ProfileUtilities getProfileUtilities() {
     return profileUtilities;
   }
@@ -63,8 +121,9 @@ public class RenderingContext {
     return canonicalUrlsAsLinks;
   }
 
-  public void setCanonicalUrlsAsLinks(boolean canonicalUrlsAsLinks) {
+  public RenderingContext setCanonicalUrlsAsLinks(boolean canonicalUrlsAsLinks) {
     this.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
+    return this;
   }
 
   public MarkDownProcessor getMarkdown() {
@@ -88,53 +147,165 @@ public class RenderingContext {
     return tooCostlyNoteEmpty;
   }
 
-  public void setTooCostlyNoteEmpty(String tooCostlyNoteEmpty) {
+  public RenderingContext setTooCostlyNoteEmpty(String tooCostlyNoteEmpty) {
     this.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
+    return this;
   }
 
   public String getTooCostlyNoteNotEmpty() {
     return tooCostlyNoteNotEmpty;
   }
 
-  public void setTooCostlyNoteNotEmpty(String tooCostlyNoteNotEmpty) {
+  public RenderingContext setTooCostlyNoteNotEmpty(String tooCostlyNoteNotEmpty) {
     this.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
+    return this;
   }
 
   public String getTooCostlyNoteEmptyDependent() {
     return tooCostlyNoteEmptyDependent;
   }
 
-  public void setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
+  public RenderingContext setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
     this.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+    return this;
   }
 
   public String getTooCostlyNoteNotEmptyDependent() {
     return tooCostlyNoteNotEmptyDependent;
   }
 
-  public void setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
+  public RenderingContext setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
     this.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+    return this;
   }
 
   public int getHeaderLevelContext() {
     return headerLevelContext;
   }
 
-  public void setHeaderLevelContext(int headerLevelContext) {
+  public RenderingContext setHeaderLevelContext(int headerLevelContext) {
     this.headerLevelContext = headerLevelContext;
+    return this;
   }
 
   public IReferenceResolver getResolver() {
     return resolver;
   }
 
-  public void setResolver(IReferenceResolver resolver) {
+  public RenderingContext setResolver(IReferenceResolver resolver) {
     this.resolver = resolver;
+    return this;
   }
 
-  public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
+  public RenderingContext setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
+    return this;
+  }
+
+  public boolean isNoSlowLookup() {
+    return noSlowLookup;
+  }
+
+  public RenderingContext setNoSlowLookup(boolean noSlowLookup) {
+    this.noSlowLookup = noSlowLookup;
+    return this;
+  }
+
+  public String getDefinitionsTarget() {
+    return definitionsTarget;
+  }
+
+  public RenderingContext setDefinitionsTarget(String definitionsTarget) {
+    this.definitionsTarget = definitionsTarget;
+    return this;
+  }
+
+  public String getDestDir() {
+    return destDir;
+  }
+
+  public RenderingContext setDestDir(String destDir) {
+    this.destDir = destDir;
+    return this;
+  }
+
+  public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
+    this.profileUtilities = profileUtilities;
+    return this;
+  }
+
+  public ILiquidTemplateProvider getTemplateProvider() {
+    return templateProvider;
+  }
+
+  public RenderingContext setTemplateProvider(ILiquidTemplateProvider templateProvider) {
+    this.templateProvider = templateProvider;
+    return this;
+  }
+
+  public IEvaluationContext getServices() {
+    return services;
+  }
+
+  public RenderingContext setServices(IEvaluationContext services) {
+    this.services = services;
+    return this;
+  }
+
+  public boolean isPretty() {
+    return pretty;
+  }
+
+  public RenderingContext setPretty(boolean pretty) {
+    this.pretty = pretty;
+    return this;
+  }
+
+  public ITypeParser getParser() {
+    return parser;
+  }
+
+  public RenderingContext setParser(ITypeParser parser) {
+    this.parser = parser;
+    return this;
+  }
+
+
+  public List<String> getCodeSystemPropList() {
+    return codeSystemPropList;
+  }
+
+  public RenderingContext setCodeSystemPropList(List<String> codeSystemPropList) {
+    this.codeSystemPropList = codeSystemPropList;
+    return this;
+  }
+
+  public RenderingContext copy() {
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, prefix, lang, mode);
+
+    res.resolver = resolver;
+    res.templateProvider = templateProvider;
+    res.services = services;
+    res.parser = parser;
+
+    res.headerLevelContext = headerLevelContext;
+    res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
+    res.pretty = pretty;
+
+    res.noSlowLookup = noSlowLookup;
+    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
+    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
+    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+    res.codeSystemPropList.addAll(codeSystemPropList);
+
+    res.profileUtilities = profileUtilities;
+    res.definitionsTarget = definitionsTarget;
+    res.destDir = destDir;
+
+    return res;
   }
   
-  
+
+
 }

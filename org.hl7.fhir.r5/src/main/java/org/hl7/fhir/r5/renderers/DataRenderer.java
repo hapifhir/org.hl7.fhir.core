@@ -1,11 +1,11 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
@@ -15,31 +15,33 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.Timing;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r5.model.HumanName.NameUse;
-import org.hl7.fhir.r5.model.Timing.EventTiming;
-import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
-import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.HumanName;
+import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.Timing;
+import org.hl7.fhir.r5.model.Timing.EventTiming;
+import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
+import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -54,6 +56,11 @@ public class DataRenderer {
   public DataRenderer(RenderingContext context) {
     super();
     this.context = context;
+  }
+
+  public DataRenderer(IWorkerContext worker) {
+    super();
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "", null, ResourceRendererMode.RESOURCE);
   }
 
   // -- 2. Markdown support -------------------------------------------------------
@@ -202,12 +209,96 @@ public class DataRenderer {
     return new DataRenderer(new RenderingContext(context, null, null, "", null, ResourceRendererMode.RESOURCE)).display(type);
   }
   
+  public String displayBase(Base b) {
+    if (b instanceof DataType) {
+      return display((DataType) b);
+    } else {
+      return "No display for "+b.fhirType();      
+    }
+    
+  }
+  
   public String display(DataType type) {
-    return null;
+    if (type instanceof Coding) {
+      return displayCoding((Coding) type);
+    } else if (type instanceof CodeableConcept) {
+      return displayCodeableConcept((CodeableConcept) type);
+    } else if (type instanceof Identifier) {
+      return displayIdentifier((Identifier) type);
+    } else if (type instanceof HumanName) {
+      return displayHumanName((HumanName) type);
+    } else if (type instanceof Address) {
+      return displayAddress((Address) type);
+    } else if (type instanceof ContactPoint) {
+      return displayContactPoint((ContactPoint) type);
+    } else if (type instanceof Quantity) {
+      return displayQuantity((Quantity) type);
+    } else if (type instanceof Range) {
+      return displayRange((Range) type);
+    } else if (type instanceof Period) {
+      return displayPeriod((Period) type);
+    } else if (type instanceof Timing) {
+      return displayTiming((Timing) type);
+    } else if (type instanceof SampledData) {
+      return displaySampledData((SampledData) type);
+    } else if (type.isPrimitive()) {
+      return type.primitiveValue();
+    } else {
+      return "No display for "+type.fhirType();
+    }
   }
 
+  public String display(BaseWrapper type) {
+    return "to do";   
+  }
+
+  public void render(XhtmlNode x, BaseWrapper type) {
+    x.tx("to do");       
+  }
+  
+  public void renderBase(XhtmlNode x, Base b) {
+    if (b instanceof DataType) {
+      render(x, (DataType) b);
+    } else {
+      x.tx("No display for "+b.fhirType());      
+    }
+  }
+  
   public void render(XhtmlNode x, DataType type) {
-    
+    if (type instanceof DateTimeType) {
+      renderDateTime(x, (DateTimeType) type);
+    } else if (type instanceof UriType) {
+      renderUri(x, (UriType) type);
+    } else if (type instanceof Annotation) {
+      renderAnnotation(x, (Annotation) type);
+    } else if (type instanceof Coding) {
+      renderCoding(x, (Coding) type);
+    } else if (type instanceof CodeableConcept) {
+      renderCodeableConcept(x, (CodeableConcept) type);
+    } else if (type instanceof Identifier) {
+      renderIdentifier(x, (Identifier) type);
+    } else if (type instanceof HumanName) {
+      renderHumanName(x, (HumanName) type);
+    } else if (type instanceof Address) {
+      renderAddress(x, (Address) type);
+    } else if (type instanceof ContactPoint) {
+      renderContactPoint(x, (ContactPoint) type);
+    } else if (type instanceof Quantity) {
+      renderQuantity(x, (Quantity) type);
+    } else if (type instanceof Range) {
+      renderRange(x, (Range) type);
+    } else if (type instanceof Period) {
+      renderPeriod(x, (Period) type);
+    } else if (type instanceof Timing) {
+      renderTiming(x, (Timing) type);
+    } else if (type instanceof SampledData) {
+      renderSampledData(x, (SampledData) type);
+    } else if (type.isPrimitive()) {
+      x.tx(type.primitiveValue());
+    } else {
+      x.tx("No display for "+type.fhirType());      
+    }
+
   }
 
   public void renderDateTime(XhtmlNode x, Base e) {
@@ -273,7 +364,26 @@ public class DataRenderer {
     }
     x.addText(s.toString());
   }
-  
+
+  public String displayCoding(Coding c) {
+    String s = "";
+    if (c.hasDisplayElement())
+      return c.getDisplay();
+    if (Utilities.noString(s))
+      s = lookupCode(c.getSystem(), c.getCode());
+    if (Utilities.noString(s))
+      s = c.getCode();
+    return s;
+  }
+
+  public String displayCoding(List<Coding> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (Coding c : list) {
+      b.append(displayCoding(c));
+    }
+    return b.toString();
+  }
+
   protected void renderCoding(XhtmlNode x, Coding c) {
     renderCoding(x, c, false);
   }

@@ -36,18 +36,36 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior;
+import org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehaviorEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionConditionKind;
+import org.hl7.fhir.r5.model.Enumerations.ActionConditionKindEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior;
+import org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehaviorEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionParticipantType;
+import org.hl7.fhir.r5.model.Enumerations.ActionParticipantTypeEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior;
+import org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehaviorEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType;
+import org.hl7.fhir.r5.model.Enumerations.ActionRelationshipTypeEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior;
+import org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehaviorEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior;
+import org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehaviorEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.RequestPriority;
+import org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.

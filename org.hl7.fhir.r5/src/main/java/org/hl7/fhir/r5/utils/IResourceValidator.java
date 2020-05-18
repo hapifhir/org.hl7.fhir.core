@@ -34,8 +34,8 @@ package org.hl7.fhir.r5.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 import java.util.Locale;
+
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;

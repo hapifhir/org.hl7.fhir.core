@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
@@ -19,6 +20,9 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.renderers.RendererFactory;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
@@ -1161,14 +1165,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return filteredValidation;
   }
   
-  private OperationOutcome exceptionToOutcome(Exception ex) throws DefinitionException {
+  private OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION).setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    new NarrativeGenerator("", "", context).generate(null, op);
+    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RendererFactory.factory(op, rc).render(op);
     return op;
   }
   
-  private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws DefinitionException {
+  private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
       FHIRPathEngine fpe = new FHIRPathEngine(context);
@@ -1179,7 +1184,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
-    new NarrativeGenerator("", "", context).generate(null, op);
+    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RendererFactory.factory(op, rc).render(op);
     return op;
   }
   
@@ -1236,7 +1242,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public DomainResource generate(String source, String version) throws Exception {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, source);
-    new NarrativeGenerator("",  "", context).generate((DomainResource) res, null);
+    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RendererFactory.factory(res, rc).render((DomainResource) res);
     return (DomainResource) res;
   }
   
@@ -1332,7 +1339,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.debug = debug;
   }
 
-  public void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException {
+  public void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException, FHIRException, EOperationOutcome {
     String f = Utilities.path(folder, "comparison.zip");
     download("http://fhir.org/archive/comparison.zip", f);
     unzip(f, folder);
@@ -1539,10 +1546,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       out.write(read, 0, buffer);
   }
 
-  private void genScanOutputItem(ScanOutputItem item, String filename) throws IOException {
-    NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
-    gen.setNoSlowLookup(true);
-    gen.generate(null, item.outcome);
+  private void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
+    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    rc.setNoSlowLookup(true);
+    RendererFactory.factory(item.outcome, rc).render(item.outcome);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.outcome.getText().getDiv());
     
     String title = item.getTitle();

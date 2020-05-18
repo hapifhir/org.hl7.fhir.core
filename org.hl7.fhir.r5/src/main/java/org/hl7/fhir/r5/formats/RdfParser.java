@@ -38,11 +38,8 @@ package org.hl7.fhir.r5.formats;
 
 
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
-import java.io.IOException;
+import org.hl7.fhir.utilities.Utilities;
 
 public class RdfParser extends RdfParserBase {
 
