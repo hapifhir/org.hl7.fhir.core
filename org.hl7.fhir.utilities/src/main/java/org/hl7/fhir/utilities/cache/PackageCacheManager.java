@@ -257,7 +257,15 @@ public class PackageCacheManager {
     for (File f : new File(cacheFolder).listFiles()) {
       if (f.isDirectory()) {
         Utilities.clearDirectory(f.getAbsolutePath());
+        try {
         FileUtils.deleteDirectory(f);
+        } catch (Exception e1) {
+          try {
+            FileUtils.deleteDirectory(f);
+            } catch (Exception e2) {
+              // just give up 
+            }          
+        }
       }
       else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
@@ -652,8 +660,8 @@ public class PackageCacheManager {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), "current");
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id+".tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id+".tgz"), "current");
     } else {
       throw new FHIRException("The package '"+id+"' has not entry on the current build server");
     }

@@ -687,8 +687,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         hasExtensions = genInclude(ul, inc, "Include", langs, maps) || hasExtensions;
       }
-      for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-        hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
+      if (vs.getCompose().hasExclude()) {
+        p = x.para();
+        p.tx("This value set excludes codes based on the following rules:");
+        ul = x.ul();
+        for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
+          hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
+        }
       }
     }
     

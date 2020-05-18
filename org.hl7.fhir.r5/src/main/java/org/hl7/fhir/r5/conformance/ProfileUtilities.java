@@ -4252,7 +4252,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private String commas(List<ElementDefinitionSlicingDiscriminatorComponent> list) {
     CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
     for (ElementDefinitionSlicingDiscriminatorComponent id : list)
-      c.append(id.getType().toCode()+":"+id.getPath());
+      c.append((id.hasType() ? id.getType().toCode() : "??")+":"+id.getPath());
     return c.toString();
   }
 
