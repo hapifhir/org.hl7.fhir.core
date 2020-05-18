@@ -19,7 +19,6 @@ import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -57,12 +56,13 @@ import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.DOMWrappers.BaseWrapperElement;
+import org.hl7.fhir.r5.renderers.utils.DOMWrappers.ResourceWrapperElement;
+import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.DOMWrappers.ResourceWrapperElement;
-import org.hl7.fhir.r5.renderers.utils.DOMWrappers.BaseWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -88,7 +88,21 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException {
-    // TODO Auto-generated method stub
+    return render(x, new DirectWrappers.ResourceWrapperDirect(context, r));
+  }
+
+  @Override
+  public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    x.para().b().tx("Generated Narrative");
+    try {
+      StructureDefinition sd = r.getDefinition();
+      ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+      generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.getName(), false, 0);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+    }
     return false;
   }
 
@@ -96,85 +110,85 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
     return "todo";
   }
-
-  public void inject(Element er, XhtmlNode x, NarrativeStatus status, boolean pretty) {
-    if (!x.hasAttribute("xmlns"))
-      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-    Element le = XMLUtil.getNamedChild(er, "language");
-    String l = le == null ? null : le.getAttribute("value");
-    if (!Utilities.noString(l)) {
-      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
-      x.setAttribute("lang", l);
-      x.setAttribute("xml:lang", l);
-    }
-    Element txt = XMLUtil.getNamedChild(er, "text");
-    if (txt == null) {
-      txt = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "text");
-      Element n = XMLUtil.getFirstChild(er);
-      while (n != null && (n.getNodeName().equals("id") || n.getNodeName().equals("meta") || n.getNodeName().equals("implicitRules") || n.getNodeName().equals("language")))
-        n = XMLUtil.getNextSibling(n);
-      if (n == null)
-        er.appendChild(txt);
-      else
-        er.insertBefore(txt, n);
-    }
-    Element st = XMLUtil.getNamedChild(txt, "status");
-    if (st == null) {
-      st = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "status");
-      Element n = XMLUtil.getFirstChild(txt);
-      if (n == null)
-        txt.appendChild(st);
-      else
-        txt.insertBefore(st, n);
-    }
-    st.setAttribute("value", status.toCode());
-    Element div = XMLUtil.getNamedChild(txt, "div");
-    if (div == null) {
-      div = er.getOwnerDocument().createElementNS(FormatUtilities.XHTML_NS, "div");
-      div.setAttribute("xmlns", FormatUtilities.XHTML_NS);
-      txt.appendChild(div);
-    }
-    if (div.hasChildNodes())
-      div.appendChild(er.getOwnerDocument().createElementNS(FormatUtilities.XHTML_NS, "hr"));
-    new XhtmlComposer(XhtmlComposer.XML, pretty).compose(div, x);
-  }
-
-  public void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status, boolean pretty) throws IOException, FHIRException {
-    if (!x.hasAttribute("xmlns"))
-      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-    String l = er.getChildValue("language");
-    if (!Utilities.noString(l)) {
-      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
-      x.setAttribute("lang", l);
-      x.setAttribute("xml:lang", l);
-    }
-    org.hl7.fhir.r5.elementmodel.Element txt = er.getNamedChild("text");
-    if (txt == null) {
-      txt = new org.hl7.fhir.r5.elementmodel.Element("text", er.getProperty().getChild(null, "text"));
-      int i = 0;
-      while (i < er.getChildren().size() && (er.getChildren().get(i).getName().equals("id") || er.getChildren().get(i).getName().equals("meta") || er.getChildren().get(i).getName().equals("implicitRules") || er.getChildren().get(i).getName().equals("language")))
-        i++;
-      if (i >= er.getChildren().size())
-        er.getChildren().add(txt);
-      else
-        er.getChildren().add(i, txt);
-    }
-    org.hl7.fhir.r5.elementmodel.Element st = txt.getNamedChild("status");
-    if (st == null) {
-      st = new org.hl7.fhir.r5.elementmodel.Element("status", txt.getProperty().getChild(null, "status"));
-      txt.getChildren().add(0, st);
-    }
-    st.setValue(status.toCode());
-    org.hl7.fhir.r5.elementmodel.Element div = txt.getNamedChild("div");
-    if (div == null) {
-      div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
-      txt.getChildren().add(div);
-      div.setValue(new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x));
-    }
-    div.setValue(x.toString());
-    div.setXhtml(x);
-  }
-
+//
+//  public void inject(Element er, XhtmlNode x, NarrativeStatus status, boolean pretty) {
+//    if (!x.hasAttribute("xmlns"))
+//      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+//    Element le = XMLUtil.getNamedChild(er, "language");
+//    String l = le == null ? null : le.getAttribute("value");
+//    if (!Utilities.noString(l)) {
+//      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+//      x.setAttribute("lang", l);
+//      x.setAttribute("xml:lang", l);
+//    }
+//    Element txt = XMLUtil.getNamedChild(er, "text");
+//    if (txt == null) {
+//      txt = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "text");
+//      Element n = XMLUtil.getFirstChild(er);
+//      while (n != null && (n.getNodeName().equals("id") || n.getNodeName().equals("meta") || n.getNodeName().equals("implicitRules") || n.getNodeName().equals("language")))
+//        n = XMLUtil.getNextSibling(n);
+//      if (n == null)
+//        er.appendChild(txt);
+//      else
+//        er.insertBefore(txt, n);
+//    }
+//    Element st = XMLUtil.getNamedChild(txt, "status");
+//    if (st == null) {
+//      st = er.getOwnerDocument().createElementNS(FormatUtilities.FHIR_NS, "status");
+//      Element n = XMLUtil.getFirstChild(txt);
+//      if (n == null)
+//        txt.appendChild(st);
+//      else
+//        txt.insertBefore(st, n);
+//    }
+//    st.setAttribute("value", status.toCode());
+//    Element div = XMLUtil.getNamedChild(txt, "div");
+//    if (div == null) {
+//      div = er.getOwnerDocument().createElementNS(FormatUtilities.XHTML_NS, "div");
+//      div.setAttribute("xmlns", FormatUtilities.XHTML_NS);
+//      txt.appendChild(div);
+//    }
+//    if (div.hasChildNodes())
+//      div.appendChild(er.getOwnerDocument().createElementNS(FormatUtilities.XHTML_NS, "hr"));
+//    new XhtmlComposer(XhtmlComposer.XML, pretty).compose(div, x);
+//  }
+//
+//  public void inject(org.hl7.fhir.r5.elementmodel.Element er, XhtmlNode x, NarrativeStatus status, boolean pretty) throws IOException, FHIRException {
+//    if (!x.hasAttribute("xmlns"))
+//      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+//    String l = er.getChildValue("language");
+//    if (!Utilities.noString(l)) {
+//      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+//      x.setAttribute("lang", l);
+//      x.setAttribute("xml:lang", l);
+//    }
+//    org.hl7.fhir.r5.elementmodel.Element txt = er.getNamedChild("text");
+//    if (txt == null) {
+//      txt = new org.hl7.fhir.r5.elementmodel.Element("text", er.getProperty().getChild(null, "text"));
+//      int i = 0;
+//      while (i < er.getChildren().size() && (er.getChildren().get(i).getName().equals("id") || er.getChildren().get(i).getName().equals("meta") || er.getChildren().get(i).getName().equals("implicitRules") || er.getChildren().get(i).getName().equals("language")))
+//        i++;
+//      if (i >= er.getChildren().size())
+//        er.getChildren().add(txt);
+//      else
+//        er.getChildren().add(i, txt);
+//    }
+//    org.hl7.fhir.r5.elementmodel.Element st = txt.getNamedChild("status");
+//    if (st == null) {
+//      st = new org.hl7.fhir.r5.elementmodel.Element("status", txt.getProperty().getChild(null, "status"));
+//      txt.getChildren().add(0, st);
+//    }
+//    st.setValue(status.toCode());
+//    org.hl7.fhir.r5.elementmodel.Element div = txt.getNamedChild("div");
+//    if (div == null) {
+//      div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
+//      txt.getChildren().add(div);
+//      div.setValue(new XhtmlComposer(XhtmlComposer.XML, pretty).compose(x));
+//    }
+//    div.setValue(x.toString());
+//    div.setXhtml(x);
+//  }
+//
 
   
   public void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
@@ -526,30 +540,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return true;
   }
 
-  private String generateByProfile(Element er, StructureDefinition profile, boolean showCodeDetails) throws IOException, org.hl7.fhir.exceptions.FHIRException {
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
-    try {
-      generateByProfile(er, profile, er, profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), er.getLocalName()), x, er.getLocalName(), showCodeDetails);
-    } catch (Exception e) {
-      e.printStackTrace();
-      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
-    }
-    inject(er, x,  NarrativeStatus.GENERATED, false);
-    String b = new XhtmlComposer(XhtmlComposer.XML, false).compose(x);
-    return b;
-  }
-
-  private void generateByProfile(Element eres, StructureDefinition profile, Element ee, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
-
-    ResourceWrapperElement resw = new ResourceWrapperElement(this, eres, profile);
-    BaseWrapperElement base = new BaseWrapperElement(this, ee, null, profile, profile.getSnapshot().getElement().get(0));
-    generateByProfile(resw, profile, base, allElements, defn, children, x, path, showCodeDetails, 0);
-  }
-
-
   private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
-    generateByProfile(new ResourceWrapperDirect(this, res), profile, new BaseWrapperDirect(this, e), allElements, defn, children, x, path, showCodeDetails, 0);
+    generateByProfile(new ResourceWrapperDirect(this.context, res), profile, new BaseWrapperDirect(this.context, e), allElements, defn, children, x, path, showCodeDetails, 0);
   }
 
   private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException {
@@ -731,10 +723,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us"))
                   throw new DefinitionException("unknown extension "+url);
                 // System.out.println("unknown extension "+url);
-                pe = new PropertyWrapperDirect(this, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex));
+                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex));
               } else {
                 ElementDefinition def = ed.getSnapshot().getElement().get(0);
-                pe = new PropertyWrapperDirect(this, new Property(p.getName()+"["+url+"]", "Extension", def.getDefinition(), def.getMin(), def.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(def.getMax()), ex));
+                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", "Extension", def.getDefinition(), def.getMin(), def.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(def.getMax()), ex));
                 ((PropertyWrapperDirect) pe).getWrapped().setStructure(ed);
               }
               results.add(pe);

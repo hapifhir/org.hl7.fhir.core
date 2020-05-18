@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Encounter;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
@@ -21,7 +22,6 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapperImpl;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.WrapperBaseImpl;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class DirectWrappers {
@@ -30,8 +30,8 @@ public class DirectWrappers {
     private Property wrapped;
     private List<BaseWrapper> list;
 
-    public PropertyWrapperDirect(ResourceRenderer renderer, Property wrapped) {
-      super(renderer);
+    public PropertyWrapperDirect(RenderingContext context, Property wrapped) {
+      super(context);
       if (wrapped == null)
         throw new Error("wrapped == null");
       this.wrapped = wrapped;
@@ -56,7 +56,7 @@ public class DirectWrappers {
       if (list == null) {
         list = new ArrayList<BaseWrapper>();
         for (Base b : wrapped.getValues())
-          list.add(b == null ? null : new BaseWrapperDirect(renderer, b));
+          list.add(b == null ? null : new BaseWrapperDirect(context, b));
       }
       return list;
     }
@@ -102,8 +102,8 @@ public class DirectWrappers {
     private Base wrapped;
     private List<PropertyWrapper> list;
 
-    public BaseWrapperDirect(ResourceRenderer renderer, Base wrapped) {
-      super(renderer);
+    public BaseWrapperDirect(RenderingContext context, Base wrapped) {
+      super(context);
       if (wrapped == null)
         throw new Error("wrapped == null");
       this.wrapped = wrapped;
@@ -119,7 +119,7 @@ public class DirectWrappers {
       if (list == null) {
         list = new ArrayList<PropertyWrapper>();
         for (Property p : wrapped.children())
-          list.add(new PropertyWrapperDirect(renderer, p));
+          list.add(new PropertyWrapperDirect(context, p));
       }
       return list;
 
@@ -131,7 +131,7 @@ public class DirectWrappers {
       if (p == null)
         return null;
       else
-        return new PropertyWrapperDirect(renderer, p);
+        return new PropertyWrapperDirect(context, p);
     }
 
   }
@@ -139,8 +139,8 @@ public class DirectWrappers {
   public static class ResourceWrapperDirect extends WrapperBaseImpl implements ResourceWrapper {
     private Resource wrapped;
 
-    public ResourceWrapperDirect(ResourceRenderer renderer, Resource wrapped) {
-      super(renderer);
+    public ResourceWrapperDirect(RenderingContext context, Resource wrapped) {
+      super(context);
       if (wrapped == null)
         throw new Error("wrapped == null");
       this.wrapped = wrapped;
@@ -152,7 +152,7 @@ public class DirectWrappers {
       if (wrapped instanceof DomainResource) {
         DomainResource dr = (DomainResource) wrapped;
         for (Resource c : dr.getContained()) {
-          list.add(new ResourceWrapperDirect(renderer, c));
+          list.add(new ResourceWrapperDirect(context, c));
         }
       }
       return list;
@@ -183,7 +183,7 @@ public class DirectWrappers {
       List<PropertyWrapper> list = new ArrayList<PropertyWrapper>();
       if (wrapped.children() != null) {
         for (Property c : wrapped.children())
-          list.add(new PropertyWrapperDirect(renderer, c));
+          list.add(new PropertyWrapperDirect(context, c));
       }
       return list;
     }
@@ -193,10 +193,26 @@ public class DirectWrappers {
       if (wrapped instanceof CanonicalResource) {
         x.tx(((CanonicalResource) wrapped).present());
       } else if (wrapped instanceof Patient) {
-        new PatientRenderer(getRenderer().getContext()).describe(x, (Patient) wrapped);
+        new PatientRenderer(getContext()).describe(x, (Patient) wrapped);
       } else if (wrapped instanceof Encounter) {
-        new EncounterRenderer(getRenderer().getContext()).describe(x, (Encounter) wrapped);
+        new EncounterRenderer(getContext()).describe(x, (Encounter) wrapped);
       }
+    }
+
+    @Override
+    public void injectNarrative(XhtmlNode x, NarrativeStatus status) {
+      ResourceRenderer.inject((DomainResource) wrapped, x, status);
+      
+    }
+
+    @Override
+    public BaseWrapper root() {
+      return new BaseWrapperDirect(context, wrapped);
+    }
+
+    @Override
+    public StructureDefinition getDefinition() {
+      return context.getWorker().fetchTypeDefinition(wrapped.fhirType());
     }
   }
 

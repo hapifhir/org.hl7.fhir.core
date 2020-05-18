@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.ProfileComparer;
 import org.hl7.fhir.r5.formats.IParser;
@@ -9,6 +10,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.KeyGenerator;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -24,7 +26,7 @@ import java.util.UUID;
 
 public class ComparisonService {
 
-  public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException {
+  public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException, FHIRException, EOperationOutcome {
     // ok now set up the comparison
     String left = Params.getParam(args, Params.LEFT);
     String right = Params.getParam(args, Params.RIGHT);
@@ -78,7 +80,7 @@ public class ComparisonService {
     System.out.println("Done");
   }
 
-  public static void compareStructureDefinitions(String dest, ValidationEngine validator, String left, String right, StructureDefinition resLeft, StructureDefinition resRight) throws IOException {
+  public static void compareStructureDefinitions(String dest, ValidationEngine validator, String left, String right, StructureDefinition resLeft, StructureDefinition resRight) throws IOException, FHIRException, EOperationOutcome {
     System.out.println("Comparing StructureDefinitions " + left + " to " + right);
     ProfileComparer pc = new ProfileComparer(validator.getContext(), dest);
     StructureDefinition sdL = resLeft;

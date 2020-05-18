@@ -1,12 +1,12 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.formats.Turtle;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class TurtleTests {
 

@@ -1,9 +1,9 @@
 package org.hl7.fhir.r5.model;
 
+import java.util.TimeZone;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.TimeZone;
 
 public class BaseDateTimeTypeTest {
 

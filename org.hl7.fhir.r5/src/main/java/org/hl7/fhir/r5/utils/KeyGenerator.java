@@ -1,7 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.utilities.Utilities;
 
 public class KeyGenerator {

@@ -1,5 +1,12 @@
 package org.hl7.fhir.r5.model;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import org.apache.commons.lang3.Validate;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,12 +40,6 @@ package org.hl7.fhir.r5.model;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import org.apache.commons.lang3.Validate;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * Primitive type "date" in FHIR: any day in a gregorian calendar

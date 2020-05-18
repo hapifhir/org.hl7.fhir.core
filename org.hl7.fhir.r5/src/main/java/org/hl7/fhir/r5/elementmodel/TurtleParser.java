@@ -56,9 +56,9 @@ import org.hl7.fhir.r5.utils.formats.Turtle.TTLList;
 import org.hl7.fhir.r5.utils.formats.Turtle.TTLLiteral;
 import org.hl7.fhir.r5.utils.formats.Turtle.TTLObject;
 import org.hl7.fhir.r5.utils.formats.Turtle.TTLURL;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 

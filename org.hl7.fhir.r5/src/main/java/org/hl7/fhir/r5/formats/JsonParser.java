@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.formats;
 
+import java.io.IOException;
+
+import org.hl7.fhir.exceptions.FHIRFormatError;
+
 // generated
 
 
@@ -38,14 +42,11 @@ package org.hl7.fhir.r5.formats;
 
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser.PresentedBigDecimal;
-import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import java.io.IOException;
+import com.google.gson.JsonObject;
 
 public class JsonParser extends JsonParserBase {
 
