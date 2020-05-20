@@ -97,6 +97,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     try {
       StructureDefinition sd = r.getDefinition();
       ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+      if (sd.getType().equals("NamingSystem") && "icd10".equals(r.getId())) {
+        System.out.println("hah!");
+      }
       generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.getName(), false, 0);
 
     } catch (Exception e) {

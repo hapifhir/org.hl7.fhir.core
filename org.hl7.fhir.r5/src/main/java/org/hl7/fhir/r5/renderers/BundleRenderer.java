@@ -47,7 +47,9 @@ public class BundleRenderer extends ResourceRenderer {
         throw new FHIRException("Invalid document - first entry is not a Composition");
       Composition dr = (Composition) b.getEntryFirstRep().getResource();
       return dr.getText().getDiv();
-    } else  {
+    } else if ((b.getType() == BundleType.DOCUMENT && allEntresAreHistoryProvenance(b))) {
+      return null;
+    } else {
       XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
       root.para().addText("Bundle "+b.getId()+" of type "+b.getType().toCode());
       int i = 0;
@@ -78,6 +80,10 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
+
+  private boolean allEntresAreHistoryProvenance(Bundle b) {
+    return false;
+  }
 
   private List<XhtmlNode> checkInternalLinks(Bundle b, List<XhtmlNode> childNodes) {
     scanNodesForInternalLinks(b, childNodes);

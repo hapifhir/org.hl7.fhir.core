@@ -15,35 +15,10 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 public class RenderingContext {
-
-//  from NarrativeGenerator
-//
-//  private String prefix;
-//  private IWorkerContext context;
-//  private String basePath;
-//  private String tooCostlyNoteEmpty;
-//  private String tooCostlyNoteNotEmpty;
-//  private String tooCostlyNoteEmptyDependent;
-//  private String tooCostlyNoteNotEmptyDependent;
-//  private IReferenceResolver resolver;
-//  private int headerLevelContext;
-//  private boolean canonicalUrlsAsLinks;
-//  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
-//  private boolean noSlowLookup;
-//  private List<String> codeSystemPropList = new ArrayList<>();
-//  private ProfileUtilities profileUtilities;
-//  private XVerExtensionManager xverManager;
-//
-//
-//  public Base parseType(String xml, String type) throws IOException, FHIRException {
-//    if (parser != null)
-//      return parser.parseType(xml, type);
-//    else
-//      return new XmlParser().parseAnyType(xml, type);
-//  }
 
   public interface ILiquidTemplateProvider {
     String findTemplate(RenderingContext rcontext, DomainResource r);
@@ -71,6 +46,7 @@ public class RenderingContext {
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
+  private boolean header;
 
   protected ValidationOptions terminologyServiceOptions;
   private boolean noSlowLookup;
@@ -129,6 +105,9 @@ public class RenderingContext {
   }
 
   public MarkDownProcessor getMarkdown() {
+    if (markdown == null) {
+      markdown = new MarkDownProcessor(Dialect.COMMON_MARK);
+    }
     return markdown;
   }
 
@@ -314,6 +293,14 @@ public class RenderingContext {
 
   public void setInlineGraphics(boolean inlineGraphics) {
     this.inlineGraphics = inlineGraphics;
+  }
+
+  public boolean isHeader() {
+    return header;
+  }
+
+  public void setHeader(boolean header) {
+    this.header = header;
   }
   
 
