@@ -208,6 +208,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         children = new ArrayList<XhtmlNode>();
       return children;
     }
+
+    public Piece addHtml(XhtmlNode x) {
+      getChildren().add(x);
+      return this;
+    }
     
   }
   
@@ -735,7 +740,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         a.setAttribute("href", p.getReference());
         if (!Utilities.noString(p.getHint()))
           a.setAttribute("title", p.getHint());
-        a.addText(p.getText());
+        if (p.getText() != null) {
+          a.addText(p.getText());
+        } else {
+          a.addChildren(p.getChildren());
+        }
         addStyle(a, p);
       } else { 
         if (!Utilities.noString(p.getHint())) {
