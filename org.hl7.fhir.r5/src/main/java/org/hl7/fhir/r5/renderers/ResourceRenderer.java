@@ -9,7 +9,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
@@ -23,7 +26,9 @@ import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElemen
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -239,6 +244,31 @@ public abstract class ResourceRenderer extends DataRenderer {
      String url = subject.getChildByName("reference").value().getBase().primitiveValue();
      ResourceWithReference rr = context.getResolver().resolve(context, url);
      return rr == null ? null : rr.getResource();
+   }
+
+
+   protected String describeStatus(PublicationStatus status, boolean experimental) {
+     switch (status) {
+     case ACTIVE: return experimental ? "Experimental" : "Active"; 
+     case DRAFT: return "draft";
+     case RETIRED: return "retired";
+     default: return "Unknown";
+     }
+   }
+
+   protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
+     String code = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
+     CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
+     if (cs == null || !cs.hasUserData("path"))
+       x.tx(code);
+     else {
+       ConceptDefinitionComponent cd = CodeSystemUtilities.findCode(cs.getConcept(), code);
+       if (cd == null) {
+         x.tx(code);
+       } else {
+         x.ah(cs.getUserString("path")+"#"+cs.getId()+"-"+cd.getCode()).tx(cd.getDisplay());
+       }
+     }
    }
 
 

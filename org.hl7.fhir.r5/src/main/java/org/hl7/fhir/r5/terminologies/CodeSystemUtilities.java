@@ -40,6 +40,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -291,11 +292,11 @@ public class CodeSystemUtilities {
     
   }
 
-  public static boolean hasOID(CodeSystem cs) {
+  public static boolean hasOID(CanonicalResource cs) {
     return getOID(cs) != null;
   }
 
-  public static String getOID(CodeSystem cs) {
+  public static String getOID(CanonicalResource cs) {
     if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;

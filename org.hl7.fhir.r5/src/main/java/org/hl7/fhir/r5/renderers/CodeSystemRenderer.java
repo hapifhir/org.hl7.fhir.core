@@ -39,13 +39,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   
 
   public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (CodeSystem) dr, false);
+    return render(x, (CodeSystem) dr);
   }
   
-  public boolean render(XhtmlNode x, CodeSystem cs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
 
-    if (header) {
+    if (context.isHeader()) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
@@ -283,7 +283,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
 
     for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-      if (cd.hasLanguage() && !langs.contains(cd.getLanguage())) {
+      if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && (!cs.hasLanguage() || !cs.getLanguage().equals(cd.getLanguage()))) {
         langs.add(cd.getLanguage());
       }
         

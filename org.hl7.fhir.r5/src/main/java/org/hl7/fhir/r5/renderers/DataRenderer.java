@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.SampledData;
@@ -203,11 +204,18 @@ public class DataRenderer {
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
 
+  // -- 4. Language support ------------------------------------------------------
+  
   protected String translate(String source, String content) {
     return content;
   }
 
-  // -- 4. Data type Rendering ---------------------------------------------- 
+  public String gt(@SuppressWarnings("rawtypes") PrimitiveType value) {
+    return value.primitiveValue();
+  }
+  
+
+  // -- 5. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
     return new DataRenderer(new RenderingContext(context, null, null, "", null, ResourceRendererMode.RESOURCE)).display(type);

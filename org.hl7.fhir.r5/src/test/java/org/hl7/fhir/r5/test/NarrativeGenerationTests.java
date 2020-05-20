@@ -20,6 +20,8 @@ import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,22 +33,38 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-@Disabled //Test case 1 doesn't pass
 public class NarrativeGenerationTests {
 
+  private static final String HEADER = "<html><head>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/fhir.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/dist/css/bootstrap.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/bootstrap-fhir.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/project.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/pygments-manni.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/jquery-ui.css\"/>"+
+     "</head><body>\r\n<div id=\"segment-content\" class=\"segment\"><div class=\"container\"><div class=\"row\"><div class=\"inner-wrapper\"><div class=\"col-12\">\r\n<p>Narrative</p>";
+  private static final String FOOTER = "\r\n</div></div></div></div></div></body></html>";
+  
   private static IWorkerContext context;
 
   public static class TestDetails {
     private String id;
+    private boolean header;
 
     public TestDetails(Element test) {
       super();
       id = test.getAttribute("id");
+      header = "true".equals(test.getAttribute("header"));
     }
 
     public String getId() {
       return id;
     }
+
+    public boolean isHeader() {
+      return header;
+    } 
+    
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
@@ -69,13 +87,18 @@ public class NarrativeGenerationTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);    
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", null, ResourceRendererMode.RESOURCE); 
+    rc.setDestDir("C:\\work\\org.hl7.fhir\\packages\\packages\\hl7.fhir.pubpack\\package\\other\\");
+    rc.setHeader(test.isHeader());
+    rc.setDefinitionsTarget("test.html");
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-expected.xml")));
     DomainResource source = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.xml"));
     DomainResource target = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"));
     RendererFactory.factory(source, rc).render(source);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")), source);
     source = (DomainResource) new XmlParser().parse(new FileInputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")));
+    String html = HEADER+new XhtmlComposer(true).compose(source.getText().getDiv())+FOOTER;
+    TextFile.stringToFile(html, TestingUtilities.tempFile("narrative", test.getId() + ".html"));
     Assertions.assertTrue(source.equalsDeep(target), "Output does not match expected");
   }
 }

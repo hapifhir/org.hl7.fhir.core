@@ -41,6 +41,12 @@ public class RendererFactory {
     if ("ImplementationGuide".equals(resourceName)) {
       return new ImplementationGuideRenderer(context);
     }
+    if ("NamingSystem".equals(resourceName)) {
+      return new NamingSystemRenderer(context);
+    }
+    if ("Questionnaire".equals(resourceName)) {
+      return new QuestionnaireRenderer(context);
+    }
 
     if ("Patient".equals(resourceName)) {
       return new PatientRenderer(context);
