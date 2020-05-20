@@ -653,4 +653,10 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+
+  public XhtmlNode addChildren(List<XhtmlNode> children) {
+    getChildNodes().addAll(children);
+    return this;
+  }
+
 }
