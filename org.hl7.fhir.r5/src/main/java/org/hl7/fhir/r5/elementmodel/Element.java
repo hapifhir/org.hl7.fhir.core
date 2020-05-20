@@ -542,7 +542,7 @@ public class Element extends Base {
   		return null;
 	  Element result = null;
 	  for (Element child : children) {
-	  	if (child.getName().equals(name)) {
+	  	if (child.getName().equals(name) || (child.getName().startsWith(name) && child.getProperty().getDefinition().isChoice())) {
 	  		if (result == null)
 	  			result = child;
 	  		else 
@@ -881,6 +881,34 @@ public class Element extends Base {
       }
     }
     return null;
+  }
+
+  public Base getExtensionValue(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return child.getNamedChild("value");
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean hasExtension(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   

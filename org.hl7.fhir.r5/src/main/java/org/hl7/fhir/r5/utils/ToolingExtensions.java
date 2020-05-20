@@ -404,6 +404,15 @@ public class ToolingExtensions {
     return ((BooleanType) ex.getValue()).getValue();
   }
 
+  public static boolean readBoolExtension(Element e, String uri) {
+    Extension ex = ExtensionHelper.getExtension(e, uri);
+    if (ex == null)
+      return false;
+    if (!(ex.getValue() instanceof BooleanType))
+      return false;
+    return ((BooleanType) ex.getValue()).getValue();
+  }
+
   public static boolean findBooleanExtension(DomainResource c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)
