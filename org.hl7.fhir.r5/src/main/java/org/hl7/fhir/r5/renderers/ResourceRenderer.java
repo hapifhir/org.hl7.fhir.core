@@ -48,6 +48,12 @@ public abstract class ResourceRenderer extends DataRenderer {
     this.rcontext = rcontext;
   }
 
+  public XhtmlNode build(DomainResource dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    render(x, dr);
+    return x;
+    
+  }
   /**
    * given a resource, update it's narrative with the best rendering available
    * 
