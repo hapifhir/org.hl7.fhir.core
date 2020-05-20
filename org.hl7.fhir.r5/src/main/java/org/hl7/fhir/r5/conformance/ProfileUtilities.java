@@ -871,15 +871,25 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (outcome.getType().size() == 0) {
                 throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
               }
+              boolean nonExtension = false;
               if (outcome.getType().size() > 1) {
                 for (TypeRefComponent t : outcome.getType()) {
-                  if (!t.getWorkingCode().equals("Reference"))
-                    throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
+                  if (!t.getWorkingCode().equals("Reference")) {
+                    for (ElementDefinition ed : diffMatches) {
+                      if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension")) {
+                        nonExtension = true;
+                      }
+                    }
+                  }
                 }
               }
-              StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
-              if (dt == null)
+              if (nonExtension) {
+                throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, cpath, differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
+              } 
+              StructureDefinition dt = outcome.getType().size() > 1 ? context.fetchTypeDefinition("Element") : getProfileForDataType(outcome.getType().get(0));
+              if (dt == null) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
+              }
               contextName = dt.getUrl();
               int start = diffCursor;
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
@@ -3229,8 +3239,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         list.add(0, root);
       }
     }
-    if (diff)
+    if (diff) {
       insertMissingSparseElements(list);
+    }
     genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null);
     try {
       return gen.generate(model, imagePath, 0, outputTracker);
@@ -3251,14 +3262,29 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) {
         // now work backwards down to lastMatch inserting missing path nodes
-        for (int index = pathCurrent.length-2; index >= firstDiff; index--) {
-          ElementDefinition root = new ElementDefinition().setPath(makePath(pathCurrent, index));
-          root.setId(root.getPath());
-          list.add(i, root);
+        ElementDefinition parent = findParent(list, i, list.get(i).getPath());
+        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1;
+        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1;
+        if (childDepth > parentDepth + 1) {
+          String basePath = parent.getPath();
+          String baseId = parent.getId();
+          for (int index = parentDepth; index >= firstDiff; index--) {
+            String mtail = makeTail(pathCurrent, parentDepth, index);
+            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail);
+            root.setId(baseId+"."+mtail);
+            list.add(i, root);
+          }
         }
       } 
       i++;
     }
+  }
+
+  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) {
+    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) {
+      i--;
+    }
+    return list.get(i);
   }
 
   private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) {
@@ -3270,6 +3296,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length;
   }
 
+  private String makeTail(String[] pathCurrent, int start, int index) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    for (int i = start; i <= index; i++) {
+      b.append(pathCurrent[i]);
+    }
+    return b.toString();
+  }
 
   private String makePath(String[] pathCurrent, int index) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
