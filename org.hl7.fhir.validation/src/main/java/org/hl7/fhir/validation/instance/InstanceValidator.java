@@ -50,6 +50,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -1309,13 +1310,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
     String display = element.getNamedChildValue("display");
-    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
-    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(code) || !Utilities.noString(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
+    checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, display);
+  }
 
-    if (system != null && code != null && !noTerminologyChecks) {
-      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);
+  private void checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack, String theCode, String theSystem, String theDisplay) {
+    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
+    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
+
+    if (theSystem != null && theCode != null && !noTerminologyChecks) {
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem);
       try {
-        if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
+        if (checkCode(errors, element, path, theCode, theSystem, theDisplay, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
@@ -2103,6 +2108,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".units", focus.getNamedChild("unit"), fixed.getUnitElement(), fixedSource, "units", focus, pattern);
     checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), fixedSource, "system", focus, pattern);
     checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), fixedSource, "code", focus, pattern);
+  }
+
+  private void checkQuantity(List<ValidationMessage> theErrors, String thePath, Element theElement, StructureDefinition theProfile, ElementDefinition theDefinition, boolean theInCodeableConcept, boolean theCheckDisplayInContext, NodeStack theStack) {
+    String unit = theElement.hasChild("unit") ? theElement.getNamedChild("unit").getValue() : null;
+    String system = theElement.hasChild("system") ? theElement.getNamedChild("system").getValue() : null;
+    String code = theElement.hasChild("code") ? theElement.getNamedChild("code").getValue() : null;
+
+    checkCodedElement(theErrors, thePath, theElement, theProfile, theDefinition, theInCodeableConcept, theCheckDisplayInContext, theStack, code, system, unit);
   }
 
   // implementation
@@ -3675,6 +3688,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           checkIdentifier(errors, ei.getPath(), ei.getElement(), ei.definition);
         } else if (type.equals("Coding")) {
           checkCoding(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
+        } else if (type.equals("Quantity")) {
+          checkQuantity(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
         } else if (type.equals("CodeableConcept")) {
           checkDisplay = checkCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, ei.definition, stack);
           thisIsCodeableConcept = true;
