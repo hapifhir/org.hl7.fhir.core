@@ -33,11 +33,12 @@ package org.hl7.fhir.validation.instance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
@@ -48,11 +49,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 
+import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -72,7 +74,6 @@ import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.Base;
@@ -83,12 +84,10 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
@@ -101,25 +100,14 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Measure;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
-import org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Questionnaire;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
 import org.hl7.fhir.r5.model.Resource;
@@ -140,7 +128,6 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -149,8 +136,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
@@ -171,8 +156,6 @@ import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import ca.uhn.fhir.util.ObjectUtil;
 
 
 /**
@@ -1875,39 +1858,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("base64Binary")) {
       String encoded = e.primitiveValue();
       if (isNotBlank(encoded)) {
-        /*
-         * Technically this is not bulletproof as some invalid base64 won't be caught,
-         * but I think it's good enough. The original code used Java8 Base64 decoder
-         * but I've replaced it with a regex for 2 reasons:
-         * 1. This code will run on any version of Java
-         * 2. This code doesn't actually decode, which is much easier on memory use for big payloads
-         */
-        int charCount = 0;
-        boolean ok = true;
-        for (int i = 0; i < encoded.length(); i++) {
-          char nextChar = encoded.charAt(i);
-          if (Character.isWhitespace(nextChar)) {
-            continue;
-          }
-          if (Character.isLetterOrDigit(nextChar)) {
-            charCount++;
-          }
-          if (nextChar == '/' || nextChar == '=' || nextChar == '+') {
-            charCount++;
-          }
-        }
-
-        if (charCount > 0 && charCount % 4 != 0) {
-          ok = false; 
+        boolean ok = isValidBase64(encoded);
+        if (!ok) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value);
         }
         if (ok && context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
-          byte[] cnt = Base64.getDecoder().decode(encoded);
-          int size = cnt.length;
+          int size = countBase64DecodedBytes(encoded);
           long def = Long.parseLong(ToolingExtensions.readStringExtension(context, "http://hl7.org/fhir/StructureDefinition/maxSize"));
           rule(errors, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def);
         }
+
       }
     }
     if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
@@ -1989,6 +1950,53 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  /**
+   * Technically this is not bulletproof as some invalid base64 won't be caught,
+   * but I think it's good enough. The original code used Java8 Base64 decoder
+   * but I've replaced it with a regex for 2 reasons:
+   * 1. This code will run on any version of Java
+   * 2. This code doesn't actually decode, which is much easier on memory use for big payloads
+   */
+  private boolean isValidBase64(String theEncoded) {
+    int charCount = 0;
+    boolean ok = true;
+    for (int i = 0; i < theEncoded.length(); i++) {
+      char nextChar = theEncoded.charAt(i);
+      if (Character.isWhitespace(nextChar)) {
+        continue;
+      }
+      if (Character.isLetterOrDigit(nextChar)) {
+        charCount++;
+      }
+      if (nextChar == '/' || nextChar == '=' || nextChar == '+') {
+        charCount++;
+      }
+    }
+
+    if (charCount > 0 && charCount % 4 != 0) {
+      ok = false;
+    }
+    return ok;
+  }
+
+
+  private int countBase64DecodedBytes(String theEncoded) {
+    Base64InputStream inputStream = new Base64InputStream(new ByteArrayInputStream(theEncoded.getBytes(StandardCharsets.UTF_8)));
+    try {
+      try {
+        for (int counter = 0; ; counter++) {
+          if (inputStream.read() == -1) {
+            return counter;
+          }
+        }
+      } finally {
+          inputStream.close();
+      }
+    } catch (IOException e) {
+      throw new IllegalStateException(e); // should not happen
+    }
   }
 
   private boolean isDefinitionURL(String url) {
@@ -2150,9 +2158,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String fetchError = null;
     if (element.hasChild("data")) {
       String b64 = element.getChildValue("data");
-      byte[] cnt = Base64.getDecoder().decode(b64.getBytes());
-      size = cnt.length;
-      if (element.hasChild("size")) {
+      // Note: If the value isn't valid, we're not adding an error here, as the test to the
+      // child Base64Binary will catch it and we don't want to log it twice
+      boolean ok = isValidBase64(b64);
+      if (ok && element.hasChild("size")) {
+        size = countBase64DecodedBytes(b64);
         String sz = element.getChildValue("size");
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size);
       }
