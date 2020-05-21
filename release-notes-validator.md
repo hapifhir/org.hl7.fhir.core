@@ -6,6 +6,11 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
+(no changes yet)
+
+## v5.0.2 (2020-05-22)
+
+
 * Fix to check invariants on Elements with type redirections (e.g. ValueSet.compose.exclude)
 * fix fatal NPE validating bundles when resource is missing
 * fix tests for R5 changes 
@@ -189,4 +194,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* This re
+* This r
