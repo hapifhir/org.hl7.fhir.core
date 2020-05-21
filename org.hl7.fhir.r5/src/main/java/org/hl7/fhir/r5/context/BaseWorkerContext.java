@@ -532,7 +532,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValueSetExpansionOutcome(vs.copy());
     }
     if (!vs.hasUrl())
-      throw new Error(formatMessage(I18nConstants.NO_VALUE_SET));
+      throw new Error(formatMessage(I18nConstants.NO_VALUE_SET_IN_URL));
     
       CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
       ValueSetExpansionOutcome res;

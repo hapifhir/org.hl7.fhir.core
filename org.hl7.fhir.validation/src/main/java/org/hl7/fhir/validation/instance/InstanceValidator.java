@@ -160,7 +160,7 @@ import com.google.gson.JsonObject;
 
 /**
  * Thinking of using this in a java program? Don't!
- * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine, or NativeHostServices
+ * You should use one of the wrappers instead. Either in HAPI, or use ValidationEngine
  * <p>
  * Validation todo:
  * - support @default slices

@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -10,9 +11,11 @@ import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemInitialComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -258,13 +261,105 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       p.tx(": ");
     }
     p.span(null, "linkId: "+i.getLinkId()).tx(i.getText());
+    if (i.getRequired()) {
+      p.span("color: red", "Mandatory").tx(" *");
+    }
 
+    XhtmlNode input = null;
+    switch (i.getType()) {
+    case STRING:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "text", i.getType().getDisplay(), 60);
+      break;
+    case ATTACHMENT:
+      break;
+    case BOOLEAN:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "checkbox", i.getType().getDisplay(), 1);
+      break;
+    case CHOICE:
+      input = p.select(i.getLinkId());
+      listOptions(q, i, input);
+      break;
+    case DATE:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "date", i.getType().getDisplay(), 10);
+      break;
+    case DATETIME:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "datetime-local", i.getType().getDisplay(), 25);
+      break;
+    case DECIMAL:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 15);
+      break;
+    case DISPLAY:
+      break;
+    case GROUP:
+      break;
+    case INTEGER:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 10);
+      break;
+    case OPENCHOICE:
+      break;
+    case QUANTITY:
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "number", "value", 15);
+      p.tx(" ");
+      input = p.input(i.getLinkId(), "unit", "unit", 10);
+      break;
+    case QUESTION:
+      break;
+    case REFERENCE:
+      break;
+    case TEXT:
+      break;
+    case TIME:
+      break;
+    case URL:
+      break;
+    default:
+      break;
+    }
+    if (input != null) {
+      if (i.getReadOnly()) {
+        input.attribute("readonly", "1");
+      }
+      
+    }
     int t = 1;
     for (QuestionnaireItemComponent c : i.getItem()) {
       hasExt = renderFormItem(d, q, c, pfx == null ? null : pfx+"."+Integer.toString(t), false) || hasExt;
       t++;
     }
     return hasExt; 
+  }
+
+  private void listOptions(Questionnaire q, QuestionnaireItemComponent i, XhtmlNode select) {
+    if (i.hasAnswerValueSet()) {
+      ValueSet vs = null;
+      if (i.getAnswerValueSet().startsWith("#")) {
+        vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1)).copy();
+        if (vs != null && !vs.hasUrl()) {
+          vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
+        }
+      } else {
+        vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet());
+      }
+      if (vs != null) {
+        ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
+        if (exp.getValueset() != null) {
+          for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
+            select.option(cc.getCode(), cc.hasDisplay() ? cc.getDisplay() : cc.getCode(), false);    
+          }
+          return;
+        }
+      }
+    } else if (i.hasAnswerOption()) {
+      
+    } 
+    select.option("a", "??", false);    
   }
 
   public String display(DomainResource dr) throws UnsupportedEncodingException, IOException {
