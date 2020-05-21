@@ -34,10 +34,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1232,7 +1234,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
-    // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
@@ -1252,7 +1253,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
-    // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
@@ -1272,7 +1272,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
-    // TODO Auto-generated method stub
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
@@ -1313,7 +1312,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, display);
   }
 
-  private void checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack, String theCode, String theSystem, String theDisplay) {
+  private void checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack,
+      String theCode, String theSystem, String theDisplay) {
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
     warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
 
@@ -1783,7 +1783,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     if (regex != null)
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex);
-
+    
+    
     if (type.equals("boolean")) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, "true".equals(e.primitiveValue()) || "false".equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE);
     }
@@ -1882,6 +1883,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
          * 2. This code doesn't actually decode, which is much easier on memory use for big payloads
          */
         int charCount = 0;
+        boolean ok = true;
         for (int i = 0; i < encoded.length(); i++) {
           char nextChar = encoded.charAt(i);
           if (Character.isWhitespace(nextChar)) {
@@ -1896,8 +1898,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
 
         if (charCount > 0 && charCount % 4 != 0) {
+          ok = false; 
           String value = encoded.length() < 100 ? encoded : "(snip)";
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value);
+        }
+        if (ok && context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
+          byte[] cnt = Base64.getDecoder().decode(encoded);
+          int size = cnt.length;
+          long def = Long.parseLong(ToolingExtensions.readStringExtension(context, "http://hl7.org/fhir/StructureDefinition/maxSize"));
+          rule(errors, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def);
         }
       }
     }
@@ -1928,6 +1937,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
         if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue()))
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
+      }
+      if (context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces")) {
+        int dp = e.primitiveValue().contains(".") ? e.primitiveValue().substring(e.primitiveValue().indexOf(".")+1).length() : 0;
+        int def = Integer.parseInt(ToolingExtensions.readStringExtension(context, "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces"));
+        rule(errors, IssueType.STRUCTURE, e.line(), e.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def);
       }
     }
     if (type.equals("instant")) {
@@ -2110,12 +2124,72 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), fixedSource, "code", focus, pattern);
   }
 
-  private void checkQuantity(List<ValidationMessage> theErrors, String thePath, Element theElement, StructureDefinition theProfile, ElementDefinition theDefinition, boolean theInCodeableConcept, boolean theCheckDisplayInContext, NodeStack theStack) {
-    String unit = theElement.hasChild("unit") ? theElement.getNamedChild("unit").getValue() : null;
-    String system = theElement.hasChild("system") ? theElement.getNamedChild("system").getValue() : null;
-    String code = theElement.hasChild("code") ? theElement.getNamedChild("code").getValue() : null;
+  private void checkQuantity(List<ValidationMessage> theErrors, String thePath, Element element, StructureDefinition theProfile, ElementDefinition definition, NodeStack theStack) {
+    String unit = element.hasChild("unit") ? element.getNamedChild("unit").getValue() : null;
+    String system = element.hasChild("system") ? element.getNamedChild("system").getValue() : null;
+    String code = element.hasChild("code") ? element.getNamedChild("code").getValue() : null;
 
-    checkCodedElement(theErrors, thePath, theElement, theProfile, theDefinition, theInCodeableConcept, theCheckDisplayInContext, theStack, code, system, unit);
+    // todo: allowedUnits http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits - codeableConcept, or canonical(ValueSet)
+    // todo: http://hl7.org/fhir/StructureDefinition/iso21090-PQ-translation
+
+    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces")) {
+      String dec = element.getChildValue("value");
+      int dp = dec.contains(".") ? dec.substring(dec.indexOf(".")+1).length() : 0;
+      int def = Integer.parseInt(ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces"));
+      rule(theErrors, IssueType.STRUCTURE, element.line(), element.col(), thePath, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def);
+    }
+    
+    if (system != null || code != null ) {
+      checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, unit);
+    }
+  }
+
+  private void checkAttachment(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, boolean theInCodeableConcept, boolean theCheckDisplayInContext, NodeStack theStack) {
+    long size = -1;
+    // first check size
+    String fetchError = null;
+    if (element.hasChild("data")) {
+      String b64 = element.getChildValue("data");
+      byte[] cnt = Base64.getDecoder().decode(b64.getBytes());
+      size = cnt.length;
+      if (element.hasChild("size")) {
+        String sz = element.getChildValue("size");
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size);
+      }
+    } else if (element.hasChild("size")) {
+      String sz = element.getChildValue("size");
+      if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, Utilities.isLong(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz)) {
+        size = Long.parseLong(sz);
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz);
+      }
+    } else if (element.hasChild("url")) {
+      String url = element.getChildValue("url"); 
+      if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
+        try {
+          if (url.startsWith("http://") || url.startsWith("https://")) {
+            if (fetcher == null) {
+              fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER, url);  
+            } else {
+              byte[] cnt = fetcher.fetchRaw(url);
+              size = cnt.length;
+            }
+          } else if (url.startsWith("file:")) {
+            size = new File(url.substring(5)).length();
+          } else {
+            fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);          }
+        } catch (Exception e) {
+          fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR, url, e.getMessage());
+        }
+      }
+    }
+    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
+      if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, fetchError)) {
+        long def = Long.parseLong(ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/maxSize"));
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def);
+      }
+    }
+    rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
+          I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
   }
 
   // implementation
@@ -3689,7 +3763,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else if (type.equals("Coding")) {
           checkCoding(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
         } else if (type.equals("Quantity")) {
-          checkQuantity(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
+          checkQuantity(errors, ei.getPath(), ei.getElement(), profile, ei.definition, stack);
+        } else if (type.equals("Attachment")) {
+          checkAttachment(errors, ei.getPath(), ei.getElement(), profile, ei.definition, inCodeableConcept, checkDisplayInContext, stack);
         } else if (type.equals("CodeableConcept")) {
           checkDisplay = checkCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, ei.definition, stack);
           thisIsCodeableConcept = true;

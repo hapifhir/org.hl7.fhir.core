@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,6 +82,8 @@ public interface IResourceValidator {
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
     boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException;
 
+    byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
+    
     void setLocale(Locale locale);
   }
   

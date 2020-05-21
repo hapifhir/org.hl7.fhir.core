@@ -9,6 +9,8 @@ title: FHIR Validator Release Notes
 * Fix to check invariants on Elements with type redirections (e.g. ValueSet.compose.exclude)
 * fix fatal NPE validating bundles when resource is missing
 * fix tests for R5 changes 
+* Fix to validate code units on Quantity 
+* Add validation for Attachment & check maxSize extension on base64Binary
 
 ## v4.2.30 (2020-05-12)
 

@@ -42,8 +42,11 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.xml.sax.SAXException;
 
+import com.google.gson.JsonObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -2067,6 +2070,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     } else {
       throw new Exception("Target Version not supported yet: "+targetVer);
     }
+  }
+
+  @Override
+  public byte[] fetchRaw(String source) throws IOException {
+    URL url = new URL(source);
+    URLConnection c = url.openConnection();
+    return TextFile.streamToBytes(c.getInputStream());
   }
   
 }
