@@ -76,6 +76,7 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -83,6 +84,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.Integer64Type;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
@@ -327,6 +329,10 @@ public class ToolingExtensions {
       return ((CodeType) ex.getValue()).getValue();
     if (ex.getValue() instanceof IntegerType)
       return ((IntegerType) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof Integer64Type)
+      return ((Integer64Type) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).asStringValue();
     if ((ex.getValue() instanceof MarkdownType))
       return ((MarkdownType) ex.getValue()).getValue();
     if (!(ex.getValue() instanceof StringType))
@@ -346,6 +352,10 @@ public class ToolingExtensions {
       return ((CodeType) ex.getValue()).getValue();
     if (ex.getValue() instanceof IntegerType)
       return ((IntegerType) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof Integer64Type)
+      return ((Integer64Type) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).asStringValue();
     if ((ex.getValue() instanceof MarkdownType))
       return ((MarkdownType) ex.getValue()).getValue();
     return null;
