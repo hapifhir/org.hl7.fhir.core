@@ -408,7 +408,7 @@ public class I18nConstants {
   public final static String CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT = "Can_only_specify_profile_in_the_context";
   public final static String NO_URL_IN_EXPAND_VALUE_SET_2 = "no_url_in_expand_value_set_2";
   public final static String NO_URL_IN_EXPAND_VALUE_SET = "no_url_in_expand_value_set";
-  public final static String NO_VALUE_SET = "no_value_set";
+  public final static String NO_VALUE_SET_IN_URL = "no_value_set";
   public final static String NO_PARAMETERS_PROVIDED_TO_EXPANDVS = "No_Parameters_provided_to_expandVS";
   public final static String NO_EXPANSION_PARAMETERS_PROVIDED = "No_Expansion_Parameters_provided";
   public final static String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";

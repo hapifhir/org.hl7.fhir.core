@@ -659,4 +659,34 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+
+  public XhtmlNode input(String name, String type, String placeholder, int size) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
+    p.attribute("name", name);
+    p.attribute("type", type);
+    p.attribute("placeholder", placeholder);
+    p.attribute("size", Integer.toString(size));
+    getChildNodes().add(p);
+    return p;
+  }
+
+  public XhtmlNode select(String name) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
+    p.attribute("name", name);
+    p.attribute("size", "1");
+    getChildNodes().add(p);
+    return p;
+  }
+  
+  public XhtmlNode option(String value, String text, boolean selected) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "option");
+    p.attribute("value", value);
+    p.attribute("selected", Boolean.toString(selected));
+    p.tx(text);
+    getChildNodes().add(p);
+    return p;
+  }
+  
+  
+  
 }
