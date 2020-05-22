@@ -548,8 +548,21 @@ public class XhtmlNode implements IBaseXhtml {
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
   }
+
   public XhtmlNode ah(String href) {
     return addTag("a").attribute("href", href);
+  }
+
+  public XhtmlNode ah(String href, String title) {
+    return addTag("a").attribute("href", href).attribute("title", title);
+  }
+
+  public XhtmlNode img(String src) {
+    return addTag("img").attribute("src", src);    
+  }
+
+  public XhtmlNode img(String src, String title) {
+    return addTag("img").attribute("src", src).attribute("title", title);    
   }
 
   public void an(String href) {
@@ -686,7 +699,17 @@ public class XhtmlNode implements IBaseXhtml {
     getChildNodes().add(p);
     return p;
   }
+
+
+  public XhtmlNode remove(XhtmlNode x) {
+    getChildNodes().remove(x);
+    return this;
+    
+  }
+
+
   
+
   
   
 }
