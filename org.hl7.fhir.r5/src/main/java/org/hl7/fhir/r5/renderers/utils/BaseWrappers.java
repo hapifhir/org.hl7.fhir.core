@@ -42,6 +42,7 @@ public class BaseWrappers {
     public List<ResourceWrapper> getContained();
     public String getId();
     public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
+    public Base getBase();
     public String getName();
     public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
     public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;

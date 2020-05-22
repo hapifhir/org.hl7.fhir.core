@@ -214,6 +214,11 @@ public class ElementWrappers {
     public StructureDefinition getDefinition() {
       return definition;
     }
+
+    @Override
+    public Base getBase() {
+      return wrapped;
+    }
   }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {

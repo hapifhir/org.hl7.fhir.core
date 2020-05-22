@@ -214,6 +214,11 @@ public class DirectWrappers {
     public StructureDefinition getDefinition() {
       return context.getWorker().fetchTypeDefinition(wrapped.fhirType());
     }
+
+    @Override
+    public Base getBase() {
+      return wrapped;
+    }
   }
 
 }

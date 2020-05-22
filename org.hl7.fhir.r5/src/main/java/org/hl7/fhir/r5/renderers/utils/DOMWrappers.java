@@ -307,6 +307,11 @@ public class DOMWrappers {
     public StructureDefinition getDefinition() {
       return definition;
     }
+
+    @Override
+    public Base getBase() {
+      throw new Error("Not Implemented yet");
+    }
   }
 
 }

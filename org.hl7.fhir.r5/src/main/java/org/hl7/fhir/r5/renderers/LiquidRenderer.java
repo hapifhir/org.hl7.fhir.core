@@ -61,7 +61,7 @@ public class LiquidRenderer extends ResourceRenderer {
     XhtmlNode xn;
     try {
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
-      String html = "rto do"; // engine.evaluate(doc, r, rcontext);
+      String html = engine.evaluate(doc, r.getBase(), rcontext);
       xn = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
         throw new FHIRException("Error in template: Root element is not 'div'");
