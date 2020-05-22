@@ -57,7 +57,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
     this.test = test;
     LiquidDocument doc = engine.parse(test.get("template").getAsString(), "test-script");
     String output = engine.evaluate(doc, loadResource(), null);
-    Assertions.assertTrue(test.get("output").getAsString().equals(output));
+    Assertions.assertEquals(test.get("output").getAsString(), output);
   }
 
   @Override
