@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemInitialComponent;
+import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -113,7 +114,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory")) {
       CodeableConcept cc = i.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory").getValueCodeableConcept();
       String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
-      flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod", null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-"+code+".png"))));
+      flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-displayCategory", null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-"+code+".png"))));
     }
     
     Cell defn = gen.new Cell();
@@ -231,7 +232,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     int i = 1;
     for (QuestionnaireItemComponent c : q.getItem()) {
-      hasExt = renderFormItem(d, q, c, hasPrefix ? null : Integer.toString(i), true) || hasExt;
+      hasExt = renderFormItem(d, q, c, hasPrefix ? null : Integer.toString(i), 0) || hasExt;
       i++;
     }
     return hasExt; 
@@ -249,20 +250,25 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private boolean renderFormItem(XhtmlNode x, Questionnaire q, QuestionnaireItemComponent i, String pfx, boolean root) {
+  private boolean renderFormItem(XhtmlNode x, Questionnaire q, QuestionnaireItemComponent i, String pfx, int indent) throws IOException {
     boolean hasExt = false;
-    XhtmlNode d = x.div();
-    if (!root) {
-      d.style("margin-left: 10px");
+    XhtmlNode d = x.div().style("width: "+Integer.toString(900-indent*10)+"px; border-top: 1px #eeeeee solid");
+    if (indent > 0) {
+      d.style("margin-left: "+Integer.toString(10*indent)+"px");
     }
-    XhtmlNode p = d.para();
+    XhtmlNode display = d.div().style("display: inline-block; width: "+Integer.toString(500-indent*10)+"px");
+    XhtmlNode details = d.div().style("border: 1px #ccccff solid; padding: 2px; display: inline-block; background-color: #fefce7; width: 380px");
+    XhtmlNode p = display.para();
+    if (i.getType() == QuestionnaireItemType.GROUP) {
+      p = p.b();
+    }
     if (i.hasPrefix()) {
       p.tx(i.getPrefix());
       p.tx(": ");
     }
     p.span(null, "linkId: "+i.getLinkId()).tx(i.getText());
     if (i.getRequired()) {
-      p.span("color: red", "Mandatory").tx(" *");
+      p.span("color: red", "Mandatory").tx("*");
     }
 
     XhtmlNode input = null;
@@ -296,6 +302,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     case DISPLAY:
       break;
     case GROUP:
+      
       break;
     case INTEGER:
       p.tx(" ");
@@ -325,16 +332,141 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (input != null) {
       if (i.getReadOnly()) {
         input.attribute("readonly", "1");
+        input.style("background-color: #eeeeee");
       }
-      
     }
+    
+//  if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation")) {
+//  String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation");
+//  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-"+code+".png"))));
+//}
+
+    
+    XhtmlNode ul = details.ul();
+    boolean hasFlag = false; 
+    XhtmlNode flags = item(ul, "Flags");
+    item(ul, "linkId", i.getLinkId());
+    
+    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject")) {
+      hasFlag = true;
+      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject", "Can change the subject of the questionnaire").img(Utilities.path(context.getDestDir(), "icon-qi-subject.png"));
+    }
+    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden")) {
+      hasFlag = true;
+      flags.ah(Utilities.pathURL(context.getPrefix(), "extension-questionnaire-hidden.html"), "Is a hidden item").img(Utilities.path(context.getDestDir(), "icon-qi-hidden.png"));
+      d.style("background-color: #eeeeee");
+    }
+    if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay")) {
+      hasFlag = true;
+      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay", "Is optional to display").img(Utilities.path(context.getDestDir(), "icon-qi-optional.png"));
+    }
+    if (i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod")) {
+      hasFlag = true;
+      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod", "Is linked to an observation").img(Utilities.path(context.getDestDir(), "icon-qi-observation.png"));
+    }
+    if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory")) {
+      CodeableConcept cc = i.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory").getValueCodeableConcept();
+      String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
+      hasFlag = true;
+      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-displayCategory", "Category: "+code).img(Utilities.path(context.getDestDir(), "icon-qi-"+code+".png"));
+    }
+
+    if (i.hasMaxLength()) {
+      item(ul, "Max Length", Integer.toString(i.getMaxLength()));
+    }
+    if (i.hasDefinition()) {
+      item(ul, "Definition", i.getDefinition());
+    }
+    if (i.hasEnableWhen()) {
+      item(ul, "Enable When", "todo");
+    }
+    if (i.hasAnswerValueSet()) {
+      XhtmlNode ans = item(ul, "Answers");
+      if (i.getAnswerValueSet().startsWith("#")) {
+        ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
+        if (vs == null) {
+          ans.tx(i.getAnswerValueSet());                    
+        } else {
+          ans.ah("todo").tx(vs.present());                              
+        }
+      } else {
+        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
+        if (vs == null  || !vs.hasUserData("path")) {
+          ans.tx(i.getAnswerValueSet());                    
+        } else {
+          ans.ah(vs.getUserString("path")).tx(vs.present());                              
+        }             
+      }
+    }
+    if (i.hasAnswerOption()) {
+      item(ul, "Answers", Integer.toString(i.getAnswerOption().size())+" "+Utilities.pluralize("option", i.getAnswerOption().size()), context.getDefinitionsTarget()+"#"+i.getLinkId());
+    }
+    if (i.hasInitial()) {
+      XhtmlNode vi = item(ul, "Initial Values");
+      boolean first = true;
+      for (QuestionnaireItemInitialComponent v : i.getInitial()) {
+        if (first) first = false; else vi.tx(", ");
+        if (v.getValue().isPrimitive()) {
+          vi.tx(v.getValue().primitiveValue());
+        } else {
+          vi.tx("{todo}");          
+        }
+      }
+    }
+    if (!hasFlag) {
+      ul.remove(flags);
+    }
+//    if (i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression") || i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-itemContext") || i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression") || i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-contextExpression") || i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-candidateExpression") || i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression")) {
+//      if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
+//      defn.getPieces().add(gen.new Piece(null, "Expressions: ", null));
+//      Piece p = gen.new Piece("ul");
+//      defn.getPieces().add(p);
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression")) {
+//        addExpression(p, e.getValueExpression(), "Initial Value", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression");
+//      }
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-contextExpression")) {
+//        addExpression(p, e.getValueExpression(), "Context", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-contextExpression");
+//      }
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-itemContext")) {
+//        addExpression(p, e.getValueExpression(), "Item Context", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-itemContext");
+//      }
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression")) {
+//        addExpression(p, e.getValueExpression(), "Enable When", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression");
+//      }
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression")) {
+//        addExpression(p, e.getValueExpression(), "Calculated Value", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression");
+//      }
+//      for (Extension e : i.getExtensionsByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-candidateExpression")) {
+//        addExpression(p, e.getValueExpression(), "Candidates", "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-candidateExpression");
+//      } 
+//    }
+//
+
     int t = 1;
     for (QuestionnaireItemComponent c : i.getItem()) {
-      hasExt = renderFormItem(d, q, c, pfx == null ? null : pfx+"."+Integer.toString(t), false) || hasExt;
+      hasExt = renderFormItem(x, q, c, pfx == null ? null : pfx+"."+Integer.toString(t), indent+1) || hasExt;
       t++;
     }
     return hasExt; 
   }
+
+  private void item(XhtmlNode ul, String name, String value, String valueLink) {
+    if (!Utilities.noString(value)) {
+      ul.li().style("font-size: 10px").ah(valueLink).tx(name+": "+value);
+    }
+  }
+
+  private void item(XhtmlNode ul, String name, String value) {
+    if (!Utilities.noString(value)) {
+      ul.li().style("font-size: 10px").tx(name+": "+value);
+    }
+  }
+  private XhtmlNode item(XhtmlNode ul, String name) {
+    XhtmlNode li = ul.li();
+    li.style("font-size: 10px").tx(name+": ");
+    return li;
+  }
+
 
   private void listOptions(Questionnaire q, QuestionnaireItemComponent i, XhtmlNode select) {
     if (i.hasAnswerValueSet()) {
