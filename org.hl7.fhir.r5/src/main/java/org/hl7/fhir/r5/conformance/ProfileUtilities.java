@@ -533,9 +533,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
       }
-      if (derived.getUrl().equals("http://sharedhealth.exchange/fhir/StructureDefinition/profile-operationoutcome")) {
-        debug = true;
-      }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -915,8 +912,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             if (sd != null) {
-              checkNotGenerating(sd, "an extension definition");
-              if (!sd.hasSnapshot()) {
+              if (isGenerating(sd)) {
+                // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
+                // but we check anyway
+                if (sd.getSnapshot().getElementFirstRep().isEmpty()) {
+                  throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), "Source for first element"));
+                }
+              } else if (!sd.hasSnapshot()) {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
@@ -1601,6 +1603,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private boolean isGenerating(StructureDefinition sd) {
+    return sd.hasUserData("profileutils.snapshot.generating");
   }
 
 
