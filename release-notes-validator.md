@@ -6,7 +6,7 @@ title: FHIR Validator Release Notes
 
 ## Current (not released yet)
 
-(no changes yet)
+* Fix for Core issue #95 - recursion on profile definition
 
 ## v5.0.2 (2020-05-22)
 
