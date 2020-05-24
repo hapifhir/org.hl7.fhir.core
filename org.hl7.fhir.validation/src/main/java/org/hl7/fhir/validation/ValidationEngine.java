@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
@@ -33,7 +32,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -42,11 +41,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.xml.sax.SAXException;
 
-import com.google.gson.JsonObject;
-
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -254,7 +250,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean anyExtensionsAllowed = false;
   private String version;
   private String language;
-  private PackageCacheManager pcm;
+  private FilesystemPackageCacheManager pcm;
   private PrintWriter mapLog;
   private boolean debug;
   private Set<String> loadedIgs = new HashSet<>();
@@ -301,7 +297,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public ValidationEngine() throws IOException {
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);  
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
     
   public void setTerminologyServer(String src, String log, FhirPublication version) throws Exception {
@@ -325,7 +321,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws Exception {
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadCoreDefinitions(src, false);
     context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);    
@@ -333,7 +329,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws Exception {
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadCoreDefinitions(src, false);
     setTerminologyServer(txsrvr, txLog, version);
     this.version = vString;
@@ -341,7 +337,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   
   public ValidationEngine(String src) throws Exception {
     loadCoreDefinitions(src, false);
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
   public String getLanguage() {
@@ -473,7 +469,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytesNCS(src));
         return res;
       }
-    } else if ((src.matches(PackageCacheManager.PACKAGE_REGEX) || src.matches(PackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
+    } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
       return fetchByPackage(src);
     }
     throw new Exception("Unable to find/resolve/read -ig "+src);
@@ -627,7 +623,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
     if (pcm == null) {
       log("Creating Package manager?");
-      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
     if (version == null) {
       version = pcm.getLatestVersion(id);
