@@ -80,10 +80,12 @@ import java.util.Map.Entry;
  * @author Grahame Grieve
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
-  private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
+  private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
+  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
+  public static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
   private String cacheFolder;
   private boolean progress = true;
   private List<NpmPackage> temporaryPackages = new ArrayList<NpmPackage>();
@@ -95,8 +97,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * Constructor
    */
   public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
-    addPackageServer("http://packages.fhir.org");
-    addPackageServer("http://packages2.fhir.org/packages");
+    addPackageServer(PRIMARY_SERVER);
+    addPackageServer(SECONDARY_SERVER);
 
     if (userMode)
       cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
@@ -196,15 +198,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private String getPackageUrl(String packageId, String server) throws IOException {
-    PackageClient pc = new PackageClient(server);
-    List<PackageInfo> res = pc.search(packageId, null, null, false);
-    if (res.size() == 0) {
-      return null;
-    } else {
-      return res.get(0).getUrl();
-    }
-  }
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
     PackageClient pc = new PackageClient(server);
@@ -234,7 +227,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     // ok, well, we'll try the old way
-      return fetchTheOldWay(id, version);
+    return fetchTheOldWay(id, version);
   }
 
   public String getLatestVersion(String id) throws IOException {
@@ -294,17 +287,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   /**
-   * Load the latest version of the identified package from the cache - it it exists
-   *
-   * @param id
-   * @return
-   * @throws IOException
-   */
-  public NpmPackage loadPackageFromCacheOnly(String id) throws IOException {
-    return loadPackageFromCacheOnly(id, null);
-  }
-
-  /**
    * Load the identified package from the cache - it it exists
    * <p>
    * This is for special purpose only (testing, control over speed of loading).
@@ -315,7 +297,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @return
    * @throws IOException
    */
-  public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
+  @Override
+  protected NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
     }
@@ -345,14 +328,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   /**
    * Add an already fetched package to the cache
    */
-  public NpmPackage addPackageToCache(String id, String version, InputStream tgz, String sourceDesc) throws IOException {
+  @Override
+  public NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     if (progress) {
       System.out.println("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
       System.out.print("  Fetching:");
     }
 
-    NpmPackage npm = NpmPackage.fromPackage(tgz, sourceDesc, true);
+    NpmPackage npm = NpmPackage.fromPackage(packageTgzInputStream, sourceDesc, true);
 
     if (progress) {
       System.out.println();
@@ -435,23 +419,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   @Override
   public String getPackageUrl(String packageId) throws IOException {
-    String result = null;
-    NpmPackage npm = loadPackageFromCacheOnly(packageId);
-    if (npm != null) {
-      return npm.canonical();
-    }
-
-    for (String nextPackageServer : getPackageServers()) {
-      result = getPackageUrl(nextPackageServer);
-      if (result != null) {
-        return result;
-      }
-    }
-
+    String result = super.getPackageUrl(packageId);
     if (result == null) {
       result = getPackageUrlFromBuildList(packageId);
     }
-    
+
     return result;
   }
 
@@ -459,8 +431,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (NpmPackage p : temporaryPackages) {
       specList.put(p.name(), p.canonical());
     }
-    listSpecs(specList, PRIMARY_SERVER);
-    listSpecs(specList, SECONDARY_SERVER);
+    for (String next : getPackageServers()) {
+      listSpecs(specList, next);
+    }
     addCIBuildSpecs(specList);
   }
 
@@ -550,11 +523,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   @Override
-  public String getPackageId(String canonical) throws IOException {
-    String retVal = super.getPackageId(canonical);
+  public String getPackageId(String canonicalUrl) throws IOException {
+    String retVal = super.getPackageId(canonicalUrl);
 
     if (retVal == null) {
-        retVal = getPackageIdFromBuildList(canonical);
+      retVal = getPackageIdFromBuildList(canonicalUrl);
     }
 
     return retVal;

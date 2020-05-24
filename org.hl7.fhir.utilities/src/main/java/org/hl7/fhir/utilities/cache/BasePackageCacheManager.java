@@ -11,6 +11,13 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private List<String> myPackageServers = new ArrayList<>();
 
+  /**
+   * Constructor
+   */
+  public BasePackageCacheManager() {
+    super();
+  }
+
   public List<String> getPackageServers() {
     return myPackageServers;
   }
@@ -26,12 +33,55 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
 
+  /**
+   * Load the latest version of the identified package from the cache - it it exists
+   *
+   * @param id
+   * @return
+   * @throws IOException
+   */
+  public NpmPackage loadPackageFromCacheOnly(String id) throws IOException {
+    return loadPackageFromCacheOnly(id, null);
+  }
+
+  protected abstract NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException;
+
   @Override
-  public String getPackageId(String canonical) throws IOException {
+  public String getPackageUrl(String packageId) throws IOException {
+    String result = null;
+    NpmPackage npm = loadPackageFromCacheOnly(packageId);
+    if (npm != null) {
+      return npm.canonical();
+    }
+
+    for (String nextPackageServer : getPackageServers()) {
+      result = getPackageUrl(packageId, nextPackageServer);
+      if (result != null) {
+        return result;
+      }
+    }
+
+    return result;
+  }
+
+
+  private String getPackageUrl(String packageId, String server) throws IOException {
+    PackageClient pc = new PackageClient(server);
+    List<PackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
+    if (res.size() == 0) {
+      return null;
+    } else {
+      return res.get(0).getUrl();
+    }
+  }
+
+
+  @Override
+  public String getPackageId(String canonicalUrl) throws IOException {
     String result = null;
 
     for (String nextPackageServer : getPackageServers()) {
-      result = getPackageId(canonical, nextPackageServer);
+      result = getPackageId(canonicalUrl, nextPackageServer);
       if (result != null) {
         break;
       }
