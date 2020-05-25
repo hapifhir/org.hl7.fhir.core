@@ -40,7 +40,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
 
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((CanonicalResource) r).present();
   }
 
@@ -103,7 +103,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getPrefix()+m.getLink());
+      XhtmlNode a = b.ah(getContext().getSpecLink()+m.getLink());
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -163,11 +163,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       XhtmlNode a = li.ah(spec);
       a.code(inc.getSystem());
     } else if (cs != null && ref != null) {
-      if (!Utilities.noString(getContext().getPrefix()) && ref.startsWith("http://hl7.org/fhir/"))
+      if (!Utilities.noString(getContext().getSpecLink()) && ref.startsWith("http://hl7.org/fhir/"))
         ref = ref.substring(20)+"/index.html";
       else if (addHtml && !ref.contains(".html"))
         ref = ref + ".html";
-      XhtmlNode a = li.ah(getContext().getPrefix()+ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(getContext().getSpecLink()+ref.replace("\\", "/"));
       a.code(inc.getSystem());
     } else {
       li.code(inc.getSystem());
@@ -283,10 +283,10 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
   private String adjustForPath(String ref) {
-    if (getContext().getPrefix() == null)
+    if (getContext().getSpecLink() == null)
       return ref;
     else
-      return getContext().getPrefix()+ref;
+      return getContext().getSpecLink()+ref;
   }
 
 

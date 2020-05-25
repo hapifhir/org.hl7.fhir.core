@@ -88,7 +88,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     x.tx(display(r));
   }
 
-  public abstract String display(DomainResource r) throws UnsupportedEncodingException, IOException;
+  public abstract String display(Resource r) throws UnsupportedEncodingException, IOException;
   
   public static void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
@@ -104,7 +104,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       r.getText().setStatus(status);
     } else {
       XhtmlNode n = r.getText().getDiv();
-      n.hr();
+      n.clear();
       n.getChildNodes().addAll(x.getChildNodes());
     }
   }

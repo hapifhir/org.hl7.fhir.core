@@ -33,22 +33,52 @@ public class RenderingContext {
     RESOURCE, IG
   }
 
-  protected IWorkerContext worker;
-  protected MarkDownProcessor markdown;
-  protected ResourceRendererMode mode;
+  
+  public enum QuestionnaireRendererMode {
+    /**
+     * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
+     * Note that this is not the same as how the questionnaire would like on a form filler, since all dynamic behavior is ignored
+     */
+    FORM,
+    
+    /**
+     * a structured tree that presents the content of the questionnaire in a logical fashion
+     */
+    TREE,   
+    
+    /**
+     * A structured tree that presents the enableWhen, terminology and expression bindings for the questionnaire 
+     */
+    LOGIC,
+    
+    /**
+     * A presentation that lists all the items, with full details about them 
+     */
+    DEFNS, 
+    
+    /**
+     * Rendered links to various openly available Form Filler applications that know how to render a questionnaire published in a package 
+     */
+    LINKS
+  }
+  
+  private IWorkerContext worker;
+  private MarkDownProcessor markdown;
+  private ResourceRendererMode mode;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
   private IEvaluationContext services;
   private ITypeParser parser;
 
-  protected String lang;
-  protected String prefix;
+  private String lang;
+  private String specLink;
+  private String selfLink; // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
   private boolean header;
 
-  protected ValidationOptions terminologyServiceOptions;
+  private ValidationOptions terminologyServiceOptions;
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
@@ -56,26 +86,27 @@ public class RenderingContext {
   private String tooCostlyNoteNotEmptyDependent;
   private List<String> codeSystemPropList = new ArrayList<>();
 
-  protected ProfileUtilities profileUtilities;
+  private ProfileUtilities profileUtilities;
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
   
-
+  private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
    * @param markdown - appropriate markdown processing engine 
    * @param terminologyServiceOptions - options to use when looking up codes
-   * @param prefix - path to FHIR specification
+   * @param specLink - path to FHIR specification
    * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String prefix, String lang, ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String lang, ResourceRendererMode mode) {
     super();
     this.worker = worker;
     this.markdown = markdown;
     this.lang = lang;
-    this.prefix = prefix;
+    this.specLink = specLink;
     this.mode = mode;
     this.terminologyServiceOptions = terminologyServiceOptions;
     profileUtilities = new ProfileUtilities(worker, null, null);
@@ -115,8 +146,8 @@ public class RenderingContext {
     return lang;
   }
 
-  public String getPrefix() {
-    return prefix;
+  public String getSpecLink() {
+    return specLink;
   }
 
   public ValidationOptions getTerminologyServiceOptions() {
@@ -262,7 +293,7 @@ public class RenderingContext {
   }
 
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, prefix, lang, mode);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specLink, lang, mode);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -301,6 +332,22 @@ public class RenderingContext {
 
   public void setHeader(boolean header) {
     this.header = header;
+  }
+
+  public QuestionnaireRendererMode getQuestionnaireMode() {
+    return questionnaireMode;
+  }
+
+  public void setQuestionnaireMode(QuestionnaireRendererMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
+  }
+
+  public String getSelfLink() {
+    return selfLink;
+  }
+
+  public void setSelfLink(String selfLink) {
+    this.selfLink = selfLink;
   }
   
 

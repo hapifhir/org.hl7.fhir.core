@@ -506,6 +506,10 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("td");
   }
   
+  public XhtmlNode td(String clss) {
+    return addTag("td").attribute("class", clss);
+  }
+  
   public XhtmlNode colspan(String n) {
     return setAttribute("colspan", n);
   }
@@ -545,8 +549,13 @@ public class XhtmlNode implements IBaseXhtml {
   public XhtmlNode i() {
     return addTag("i");
   }
+  
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
+  }
+
+  public XhtmlNode tx(int cnt) {
+    return addText(Integer.toString(cnt));
   }
 
   public XhtmlNode ah(String href) {
@@ -704,6 +713,12 @@ public class XhtmlNode implements IBaseXhtml {
   public XhtmlNode remove(XhtmlNode x) {
     getChildNodes().remove(x);
     return this;
+    
+  }
+
+
+  public void clear() {
+    getChildNodes().clear();
     
   }
 
