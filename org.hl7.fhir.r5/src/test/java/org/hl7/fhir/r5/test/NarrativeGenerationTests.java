@@ -15,11 +15,14 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -91,6 +94,7 @@ public class NarrativeGenerationTests {
     rc.setDestDir("C:\\work\\org.hl7.fhir\\packages\\packages\\hl7.fhir.pubpack\\package\\other\\");
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
+    rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-expected.xml")));
     DomainResource source = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.xml"));
     DomainResource target = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"));
@@ -99,6 +103,14 @@ public class NarrativeGenerationTests {
     source = (DomainResource) new XmlParser().parse(new FileInputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")));
     String html = HEADER+new XhtmlComposer(true).compose(source.getText().getDiv())+FOOTER;
     TextFile.stringToFile(html, TestingUtilities.tempFile("narrative", test.getId() + ".html"));
+//    if (source instanceof Questionnaire) {
+//      for (QuestionnaireRendererMode mode : QuestionnaireRendererMode.values()) {
+//        rc.setQuestionnaireMode(mode);
+//        RendererFactory.factory(source, rc).render(source);
+//        html = HEADER+new XhtmlComposer(true).compose(source.getText().getDiv())+FOOTER;
+//        TextFile.stringToFile(html, TestingUtilities.tempFile("narrative", test.getId() +"-"+ mode.toString()+ ".html"));
+//      }
+//    }
     Assertions.assertTrue(source.equalsDeep(target), "Output does not match expected");
   }
 }

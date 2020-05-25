@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -74,7 +75,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((OperationDefinition) r).present();
   }
 
@@ -104,7 +105,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");
-      td.ah( context.getPrefix() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getPrefix(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
+      td.ah( context.getSpecLink() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getSpecLink(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
       td.tx(")");
     }
     td = tr.td();

@@ -207,7 +207,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (ref == null)
         p.code(vs.getExpansion().getContains().get(0).getSystem());
       else
-        p.ah(getContext().getPrefix()+ref).code(vs.getExpansion().getContains().get(0).getSystem());
+        p.ah(getContext().getSpecLink()+ref).code(vs.getExpansion().getContains().get(0).getSystem());
     }
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
@@ -638,7 +638,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else        
         td.addText(code);
     } else {
-      String href = getContext().getPrefix()+getCsRef(e);
+      String href = getContext().getSpecLink()+getCsRef(e);
       if (href.contains("#"))
         href = href + "-"+Utilities.nmtokenize(code);
       else
@@ -662,9 +662,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
     String cslink = getCsRef(cs);
     XhtmlNode a = null;
     if (cslink != null) 
-      a = td.ah(getContext().getPrefix()+cslink+"#"+cs.getId()+"-"+code);
+      a = td.ah(getContext().getSpecLink()+cslink+"#"+cs.getId()+"-"+code);
     else
-      a = td.ah(getContext().getPrefix()+vslink+"#"+code);
+      a = td.ah(getContext().getSpecLink()+vslink+"#"+code);
     a.addText(code);
   }
 
@@ -796,7 +796,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             } else {
               li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
-                String href = getContext().getPrefix()+getCsRef(e);
+                String href = getContext().getSpecLink()+getCsRef(e);
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else

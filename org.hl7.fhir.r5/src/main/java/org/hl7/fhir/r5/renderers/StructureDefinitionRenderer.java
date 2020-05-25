@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -26,7 +27,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public boolean render(XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException {
-    x.getChildNodes().add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, context.getPrefix(), "", false, false, null, false));
+    x.getChildNodes().add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, context.getSpecLink(), "", false, false, null, false));
     return true;
   }
 
@@ -39,7 +40,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((StructureDefinition) r).present();
   }
 
