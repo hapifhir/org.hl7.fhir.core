@@ -31,11 +31,11 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        [xml]$pomXml = Get-Content .\org.hl7.fhir.r5\pom.xml
-        # r5_version
+        [xml]$pomXml = Get-Content .\pom.xml
+        # version
         Write-Host $pomXml.project.version
-        $r5_version=$pomXml.project.version
-        Write-Host "##vso[task.setvariable variable=r5_version]$r5_version"
+        $version=$pomXml.project.version
+        Write-Host "##vso[task.setvariable variable=version]$version"
 
   # Runs 'mvn clean package'
   # - task: Maven@3
@@ -49,7 +49,7 @@ steps:
   #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
   #     goals: 'clean package'
       
-  - bash: echo r5 version => $(r5_version)
+  - bash: echo Pulled version from pom.xml => $(version)
 
   # - script: bash <(curl https://codecov.io/bash) -t $(codecov)
   #   displayName: 'codecov'
