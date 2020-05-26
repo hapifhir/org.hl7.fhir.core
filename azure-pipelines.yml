@@ -50,7 +50,6 @@ steps:
   #     goals: 'clean package'
       
   - bash: echo r5 version => $(r5_version)
-    displayName: 'Display r5 Version'
 
   # - script: bash <(curl https://codecov.io/bash) -t $(codecov)
   #   displayName: 'codecov'
