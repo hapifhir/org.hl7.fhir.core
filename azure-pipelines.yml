@@ -33,7 +33,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        [xml]$pomXml = Get-Content -Path $(System.DefaultWorkingDirectory)/org.hl7.fhir.r5/pom.xml
+        [xml]$pomXml = Get-Content -Path /org.hl7.fhir.r5/pom.xml
         # version
         Write-Host $pomXml.project.version
         $version=$pomXml.project.version
