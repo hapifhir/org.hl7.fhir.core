@@ -1,16 +1,20 @@
 trigger:
-  branches:
-    include:
-      - '*'
+  - master
+  - release
 
+pr:
+  - master
+  - release
+
+# Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows
 strategy:
   matrix:
     linux:
       imageName: "ubuntu-16.04"
-#     mac:
-#       imageName: "macos-10.14"
-#     windows:
-#       imageName: "vs2017-win2016"
+    # mac:
+    #   imageName: "macos-10.14"
+    # windows:
+    #   imageName: "vs2017-win2016"
   maxParallel: 3
 
 pool:
@@ -19,44 +23,166 @@ pool:
 variables:
   currentImage: $(imageName)
   codecov: $(CODECOV_TOKEN)
+  VERSION:
 
 steps:
+  # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file.
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        [xml]$pomXml = Get-Content .\pom.xml
-        # version
+        [xml]$pomXml = Get-Content .\org.hl7.fhir.r5\pom.xml
+        # r5_version
         Write-Host $pomXml.project.version
-        $version=$pomXml.project.version
-        Write-Host "##vso[task.setvariable variable=version]$version"
+        $r5_version=$pomXml.project.version
+        Write-Host "##vso[task.setvariable variable=r5_version]$r5_version"
 
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean package'
+  # Runs 'mvn clean package'
+  # - task: Maven@3
+  #   inputs:
+  #     mavenPomFile: 'pom.xml'
+  #     mavenOptions: '-Xmx3072m'
+  #     javaHomeOption: 'JDKVersion'
+  #     jdkVersionOption: '1.8'
+  #     jdkArchitectureOption: 'x64'
+  #     publishJUnitResults: true
+  #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+  #     goals: 'clean package'
       
-  - bash: echo Current version => $(version)
-    displayName: 'version'
+  - bash: echo r5 version => $(r5_version)
+    displayName: 'Display r5 Version'
 
-  - script: bash <(curl https://codecov.io/bash) -t $(codecov)
-    displayName: 'codecov'
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
+  # - script: bash <(curl https://codecov.io/bash) -t $(codecov)
+  #   displayName: 'codecov'
+  # - task: PublishCodeCoverageResults@1
+  #   inputs:
+  #     codeCoverageTool: 'JaCoCo'
+  #     summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+  #     reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
 
-  - task: PublishPipelineArtifact@1
-    condition: eq(variables.currentImage, 'ubuntu-16.04')
-    inputs:
-      targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
-      artifactName: Validator
+  # - task: PublishPipelineArtifact@1
+  #   condition: eq(variables.currentImage, 'ubuntu-16.04')
+  #   inputs:
+  #     targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
+  #     artifactName: Validator
 
+  # # Prints out the build version, for debugging purposes
+  # - bash: echo Pulled version from pom.xml => $(version)
+
+  # # For creating the snapshot release with maven, we need to build a fake settings.xml for it to read from.
+  # # This is done for the master branch merges only.
+  # - bash: |
+  #     cat >$(System.DefaultWorkingDirectory)/settings.xml <<EOL
+  #     <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  #               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  #               xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+  #                                   https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  #       <servers>
+  #         <server>
+  #           <id>ossrh</id>
+  #           <username>$(SONATYPE_USER)</username>
+  #           <password>$(SONATYPE_PASS)</password>
+  #         </server>
+  #         <server>
+  #           <id>sonatype-nexus-snapshots</id>
+  #           <username>$(SONATYPE_USER)</username>
+  #           <password>$(SONATYPE_PASS)</password>
+  #         </server>
+  #         <server>
+  #           <id>sonatype-nexus-staging</id>
+  #           <username>$(SONATYPE_USER)</username>
+  #           <password>$(SONATYPE_PASS)</password>
+  #         </server>
+  #         <server>
+  #             <id>$(PGP_KEYNAME)</id>
+  #             <passphrase>$(PGP_PASSPHRASE)</passphrase>
+  #         </server>
+  #       </servers>
+  #       <profiles>
+  #         <profile>
+  #           <id>release</id>
+  #           <activation>
+  #             <activeByDefault>true</activeByDefault>
+  #           </activation>
+  #           <properties>
+  #             <gpg.keyname>$(PGP_KEYNAME)</gpg.keyname>
+  #           </properties>
+  #         </profile>
+  #       </profiles>
+  #     </settings>
+  #     EOL
+  #   displayName: 'Create .mvn/settings.xml'
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  # # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid
+  # # signing key. The next two steps download the public and private keys from the
+  # # secure library files. 
+  # - task: DownloadSecureFile@1
+  #   displayName: 'Download public key.'
+  #   inputs:
+  #     secureFile: public.key
+
+  # - task: DownloadSecureFile@1
+  #   displayName: 'Download private key.'
+  #   inputs:
+  #     secureFile: private.key
+
+  # # Import both the private and public keys into gpg for signing.
+  # - bash: |
+  #     gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/public.key
+  #     gpg --import --no-tty --batch --yes $(Agent.TempDirectory)/private.key
+  #     gpg --list-keys --keyid-format LONG
+  #     gpg --list-secret-keys --keyid-format LONG
+  #   displayName: 'Import signing keys.'
+
+  # # Deploy the SNAPSHOT artifact to sonatype nexus
+  # # This is done for the master branch merges only.
+  # - task: Maven@3
+  #   displayName: 'Deploy $(version) to Sonatype staging'
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  #   inputs:
+  #     mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+  #     goals: deploy
+  #     options: '--settings $(System.DefaultWorkingDirectory)/settings.xml '
+  #     publishJUnitResults: false
+
+  # # Copies the generated *.jar file to the staging directory.
+  # # This is done for release versions only.
+  # - task: CopyFiles@2
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+  #   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  #   inputs:
+  #     SourceFolder: '$(system.defaultworkingdirectory)'
+  #     Contents: "$(System.DefaultWorkingDirectory)/target/fhir-test-cases-$(version).jar"
+  #     TargetFolder: '$(build.artifactstagingdirectory)'
+
+  # # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
+  # # pass the build id (ex: 1.1.13-SNAPSHOT) as a string in a file. 
+  # # This is used in the release pipeline, so we create it here.
+  # # This is only done for the release branch.
+  # - bash: |
+  #     echo $(version)
+  #     VERSION=$(version)
+  #     echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+
+  # # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
+  # # This is done for release versions only.
+  # - task: CopyFiles@2
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+  #   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  #   inputs:
+  #     SourceFolder: '$(System.Defaultworkingdirectory)'
+  #     Contents: "$(System.DefaultWorkingDirectory)/VERSION"
+  #     TargetFolder: '$(build.artifactstagingdirectory)'
+
+  # # Publishes the files we've moved into the staging directory, so they can be accessed by the 
+  # # release pipeline. You will notice that we only do this for the ubuntu build, as doing it 
+  # # for each of the three release pipelines will cause conflicts.
+  # # This is done for release versions only.
+  # - task: PublishBuildArtifacts@1
+  #   condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+  #   displayName: 'Publish Build Artifacts'
+  #   inputs:
+  #     PathtoPublish: '$(build.artifactstagingdirectory)'
 
