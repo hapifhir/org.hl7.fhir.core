@@ -18,7 +18,7 @@ public class PackageCacheTests {
     PackageCacheManager cache = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
     Assertions.assertTrue(cache.listPackages().isEmpty());
-    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
+    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.5");
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
     File dir = new File(Utilities.path("[tmp]", "cache"));
