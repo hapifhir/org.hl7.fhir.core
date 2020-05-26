@@ -213,13 +213,8 @@ public class PackageCacheManager {
         } finally {
           fileLock.release();
         }
-        try {
-          if (!lockFile.delete()) {
-            lockFile.deleteOnExit();
-          }
-        } catch (Throwable t) {
-          System.out.println("unable to clean up lock file for "+lockFile.getName()+": "+t.getMessage());
-          // nothing
+        if (!lockFile.delete()) {
+          lockFile.deleteOnExit();
         }
         return result;
       } 
