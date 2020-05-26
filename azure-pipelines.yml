@@ -26,6 +26,8 @@ variables:
   VERSION:
 
 steps:
+  - bash: ls -la
+  - bash: pwd
   # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file.
   - task: PowerShell@2
     inputs:
