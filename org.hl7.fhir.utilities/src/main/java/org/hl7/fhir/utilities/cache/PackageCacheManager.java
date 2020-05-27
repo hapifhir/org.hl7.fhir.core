@@ -540,43 +540,45 @@ public class PackageCacheManager {
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id+"#"+v);
       try {
-        Utilities.createDirectory(packRoot);
-        Utilities.clearDirectory(packRoot);
+        // ok, now we have a lock on it... check if something created it while we were waiting
+        if (!new File(packRoot).exists()) {
+          Utilities.createDirectory(packRoot);
+          Utilities.clearDirectory(packRoot);
 
-        int i = 0;
-        int c = 0;
-        int size = 0;
-        for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
-          String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
-          if (!(new File(dir).exists()))
-            Utilities.createDirectory(dir);
-          for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-            String fn = Utilities.path(dir, fe.getKey());
-            byte[] cnt = fe.getValue();
-            TextFile.bytesToFile(cnt, fn);
-            size = size + cnt.length;
-            i++;
-            if (progress && i % 50 == 0) {
-              c++;
-              System.out.print(".");
-              if (c == 120) {
-                System.out.println("");
-                System.out.print("  ");
-                c = 2;
-              }
-            }    
+          int i = 0;
+          int c = 0;
+          int size = 0;
+          for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
+            String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
+            if (!(new File(dir).exists()))
+              Utilities.createDirectory(dir);
+            for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
+              String fn = Utilities.path(dir, fe.getKey());
+              byte[] cnt = fe.getValue();
+              TextFile.bytesToFile(cnt, fn);
+              size = size + cnt.length;
+              i++;
+              if (progress && i % 50 == 0) {
+                c++;
+                System.out.print(".");
+                if (c == 120) {
+                  System.out.println("");
+                  System.out.print("  ");
+                  c = 2;
+                }
+              }    
+            }
           }
+
+
+          IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+          ini.setTimeStampFormat("yyyyMMddhhmmss");
+          ini.setTimestampProperty("packages", id+"#"+v, Timestamp.from(Instant.now()), null);
+          ini.setIntegerProperty("package-sizes", id+"#"+v, size, null);
+          ini.save();
+          if (progress)
+            System.out.println(" done.");
         }
-
-
-        IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-        ini.setTimeStampFormat("yyyyMMddhhmmss");
-        ini.setTimestampProperty("packages", id+"#"+v, Timestamp.from(Instant.now()), null);
-        ini.setIntegerProperty("package-sizes", id+"#"+v, size, null);
-        ini.save();
-        if (progress)
-          System.out.println(" done.");
-
         pck = loadPackageInfo(packRoot);
         if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
           if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
