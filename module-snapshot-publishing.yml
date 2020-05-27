@@ -28,6 +28,7 @@ variables:
 steps:
   # Debugging output to identify current module.
   - bash: echo Publishing SNAPSHOT for $(module)
+    displayName: 'Print module name.'
 
   # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid
   # signing key. The next two steps download the public and private keys from the
@@ -97,7 +98,7 @@ steps:
   # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
-    displayName: 'Deploy $(version) to Sonatype staging'
+    displayName: 'Deploy $(module) to Sonatype staging'
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
       goals: deploy
