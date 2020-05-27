@@ -40,7 +40,6 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
-import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Package cache manager
+ * This is a package cache manager implementation that uses a local disk cache
+ *
  * <p>
  * API:
  * <p>
@@ -200,30 +200,19 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
-    PackageClient pc = new PackageClient(server);
-    List<PackageInfo> matches = pc.search(null, null, null, false);
-    for (PackageInfo m : matches) {
+    CachingPackageClient pc = new CachingPackageClient(server);
+    List<BasePackageClient.PackageInfo> matches = pc.search(null, null, null, false);
+    for (BasePackageClient.PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
         specList.put(m.getId(), m.getUrl());
       }
     }
   }
 
-  private InputStreamWithSrc loadFromPackageServer(String id, String version) {
-
-    for (String nextPackageServer : getPackageServers()) {
-      PackageClient packageClient = new PackageClient(nextPackageServer);
-      try {
-        if (Utilities.noString(version)) {
-          version = packageClient.getLatestVersion(id);
-        }
-        InputStream stream = packageClient.fetch(id, version);
-        String url = packageClient.url(id, version);
-        return new InputStreamWithSrc(stream, packageClient.url(id, version), version);
-      } catch (IOException e) {
-        ourLog.info("Failed to resolve package {}#{} from server: {}", id, version, nextPackageServer);
-      }
-
+  protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
+    InputStreamWithSrc retVal = super.loadFromPackageServer(id, version);
+    if (retVal != null) {
+      return retVal;
     }
 
     // ok, well, we'll try the old way
@@ -232,7 +221,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
-      PackageClient pc = new PackageClient(nextPackageServer);
+      CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
       try {
         return pc.getLatestVersion(id);
       } catch (IOException e) {
@@ -443,6 +432,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
     }
+
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
@@ -461,7 +451,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     // nup, don't have it locally (or it's expired)
-    InputStreamWithSrc source;
+    FilesystemPackageCacheManager.InputStreamWithSrc source;
     if ("current".equals(version)) {
       // special case - fetch from ci-build server
       source = loadFromCIBuild(id);
@@ -470,6 +460,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     return addPackageToCache(id, version == null ? source.version : version, source.stream, source.url);
   }
+
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
     try {
@@ -730,19 +721,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public interface INetworkServices {
 
     InputStream resolvePackage(String packageId, String version);
-  }
-
-  public class InputStreamWithSrc {
-
-    public InputStream stream;
-    public String url;
-    public String version;
-
-    public InputStreamWithSrc(InputStream stream, String url, String version) {
-      this.stream = stream;
-      this.url = url;
-      this.version = version;
-    }
   }
 
   public class BuildRecordSorter implements Comparator<BuildRecord> {

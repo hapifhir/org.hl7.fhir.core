@@ -1,14 +1,19 @@
 package org.hl7.fhir.utilities.cache;
 
 import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
-
+  private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
 
   /**
@@ -35,16 +40,37 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   /**
    * Load the latest version of the identified package from the cache - it it exists
-   *
-   * @param id
-   * @return
-   * @throws IOException
    */
   public NpmPackage loadPackageFromCacheOnly(String id) throws IOException {
     return loadPackageFromCacheOnly(id, null);
   }
 
-  protected abstract NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException;
+  /**
+   * Try to load a package from all registered package servers, and return <code>null</code>
+   * if it can not be found at any of them.
+   */
+  @Nullable
+  protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
+
+    for (String nextPackageServer : getPackageServers()) {
+      CachingPackageClient packageClient = new CachingPackageClient(nextPackageServer);
+      try {
+        if (Utilities.noString(version)) {
+          version = packageClient.getLatestVersion(id);
+        }
+        InputStream stream = packageClient.fetch(id, version);
+        String url = packageClient.url(id, version);
+        return new InputStreamWithSrc(stream, packageClient.url(id, version), version);
+      } catch (IOException e) {
+        ourLog.info("Failed to resolve package {}#{} from server: {}", id, version, nextPackageServer);
+      }
+
+    }
+
+    return null;
+  }
+
+  protected abstract NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException;
 
   @Override
   public String getPackageUrl(String packageId) throws IOException {
@@ -66,8 +92,8 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
 
   private String getPackageUrl(String packageId, String server) throws IOException {
-    PackageClient pc = new PackageClient(server);
-    List<PackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
+    CachingPackageClient pc = new CachingPackageClient(server);
+    List<CachingPackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
     if (res.size() == 0) {
       return null;
     } else {
@@ -91,13 +117,13 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   private String getPackageId(String canonical, String server) throws IOException {
-    PackageClient pc = new PackageClient(server);
-    List<PackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
+    CachingPackageClient pc = new CachingPackageClient(server);
+    List<CachingPackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
     if (res.size() == 0) {
       return null;
     } else {
       // this is driven by HL7 Australia (http://hl7.org.au/fhir/ is the canonical url for the base package, and the root for all the others)
-      for (PackageClient.PackageInfo pi : res) {
+      for (CachingPackageClient.PackageInfo pi : res) {
         if (canonical.equals(pi.getCanonical())) {
           return pi.getId();
         }
@@ -106,5 +132,17 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     }
   }
 
+  public class InputStreamWithSrc {
+
+    public InputStream stream;
+    public String url;
+    public String version;
+
+    public InputStreamWithSrc(InputStream stream, String url, String version) {
+      this.stream = stream;
+      this.url = url;
+      this.version = version;
+    }
+  }
 
 }
