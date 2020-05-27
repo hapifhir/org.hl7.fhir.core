@@ -28,7 +28,8 @@ variables:
 steps:
   - bash: ls -la
   - bash: pwd
-  # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file.
+  # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
+  # the same version, at the same time, as defined in the root level pom.xml.
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
@@ -38,6 +39,9 @@ steps:
         Write-Host $pomXml.project.version
         $version=$pomXml.project.version
         Write-Host "##vso[task.setvariable variable=version]$version"
+
+  # Prints out the build version, for debugging purposes
+  - bash: echo Pulled version from pom.xml => $(version)
 
   # Runs 'mvn clean package'
   - task: Maven@3
@@ -50,25 +54,26 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean package'
-      
-  - bash: echo Pulled version from pom.xml => $(version)
 
+  # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
-    displayName: 'codecov'
+    displayName: 'codecov Bash Uploader'
+
+  # Publishes the test results to build artifacts.
   - task: PublishCodeCoverageResults@1
+    displayName: 'Publish JaCoCo test results '
     inputs:
       codeCoverageTool: 'JaCoCo'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
 
+  # Publishes the built Validator jar to build artifacts. Primarity for testing and debugging builds.
   - task: PublishPipelineArtifact@1
+    displayName: 'Publish Validator jar'
     condition: eq(variables.currentImage, 'ubuntu-16.04')
     inputs:
       targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
       artifactName: Validator
-
-  # Prints out the build version, for debugging purposes
-  - bash: echo Pulled version from pom.xml => $(version)
 
   # For creating the snapshot release with maven, we need to build a fake settings.xml for it to read from.
   # This is done for the master branch merges only.
@@ -136,7 +141,7 @@ steps:
       gpg --list-secret-keys --keyid-format LONG
     displayName: 'Import signing keys.'
 
-  # Deploy the SNAPSHOT artifact to sonatype nexus
+  # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
     displayName: 'Deploy $(version) to Sonatype staging'
