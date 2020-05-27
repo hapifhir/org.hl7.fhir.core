@@ -93,13 +93,11 @@ steps:
       </settings>
       EOL
     displayName: 'Create .mvn/settings.xml'
-    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
     displayName: 'Deploy $(version) to Sonatype staging'
-    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
       goals: deploy
