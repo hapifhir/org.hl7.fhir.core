@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 public interface IPackageCacheManager {
 
-
   String getPackageId(String canonicalUrl) throws IOException;
 
   NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException;

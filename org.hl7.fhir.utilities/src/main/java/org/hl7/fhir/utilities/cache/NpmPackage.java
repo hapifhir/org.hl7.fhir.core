@@ -102,13 +102,17 @@ public class NpmPackage {
   public class NpmPackageFolder {
     private String name;
     private Map<String, List<String>> types = new HashMap<>();
-    private Map<String, byte[]> content = new HashMap<String, byte[]>(); 
+    private Map<String, byte[]> content = new HashMap<>();
     private JsonObject index;
     private File folder;
 
     public NpmPackageFolder(String name) {
       super();
       this.name = name;
+    }
+
+    public Map<String, List<String>> getTypes() {
+      return types;
     }
 
     public String getName() {
@@ -192,15 +196,12 @@ public class NpmPackage {
   private Map<String, NpmPackageFolder> folders = new HashMap<>();
   private boolean changedByLoader; // internal qa only!
 
+  /**
+   * Constructor
+   */
   private NpmPackage() {
-
+    super();
   }
-  //  public NpmPackage(JsonObject npm, Map<String, byte[]> content, List<String> folders) {
-  //    this.path = null;
-  //    this.content = content;
-  //    this.npm = npm;
-  //    this.folders = folders;
-  //  }
 
   public static NpmPackage fromFolder(String path) throws IOException {
     NpmPackage res = new NpmPackage();
@@ -839,7 +840,9 @@ public class NpmPackage {
     stream.write(b);
   }
 
-
+  /**
+   * Keys are resource type names, values are filenames
+   */
   public Map<String, List<String>> getTypes() {
     return folders.get("package").types;
   }

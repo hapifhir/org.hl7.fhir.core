@@ -1,5 +1,14 @@
 package org.hl7.fhir.utilities.cache;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,19 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
-import org.hl7.fhir.utilities.json.JSONUtil;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-public class PackageClient {
+public abstract class BasePackageClient {
 
   public class PackageInfo {
     private String id;
@@ -34,7 +31,7 @@ public class PackageClient {
     private String description;
     private String url;
     private String canonical;
-    
+
     public PackageInfo(String id, String version, String fhirVersion, String description, String url, String canonical) {
       super();
       this.id = id;
@@ -62,21 +59,21 @@ public class PackageClient {
     public String getUrl() {
       return url;
     }
-    
+
     public String getCanonical() {
       return canonical;
     }
     @Override
     public String toString() {
       return id+"#"+(version == null ? "?pc-pi?" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
-    }    
+    }
   }
- 
+
   private String address;
   private String cacheFolder;
 
 
-  public PackageClient(String address) {
+  public BasePackageClient(String address) {
     super();
     this.address = address;
     try {
@@ -109,15 +106,10 @@ public class PackageClient {
   }
 
   public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
-    File cacheFile = new File(Utilities.path(cacheFolder, fn(url)));
-    if (cacheFile.exists()) {
-      return new FileInputStream(cacheFile);
-    }
-    TextFile.bytesToFile(TextFile.streamToBytes(fetchUrl(url, null)), cacheFile);
-    return new FileInputStream(cacheFile);
+    return fetchUrl(url, null);
   }
 
-  private String fn(String url) {
+  protected String fn(String url) {
     String[] p = url.split("\\/");
     return p[2]+"-"+p[p.length-2]+"-"+p[p.length-1]+".tgz";
   }

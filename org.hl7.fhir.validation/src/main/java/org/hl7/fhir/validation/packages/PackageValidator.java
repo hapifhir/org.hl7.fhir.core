@@ -9,8 +9,8 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.PackageClient;
-import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
+import org.hl7.fhir.utilities.cache.CachingPackageClient;
+import org.hl7.fhir.utilities.cache.CachingPackageClient.PackageInfo;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 public class PackageValidator {
@@ -22,7 +22,7 @@ public class PackageValidator {
   private void execute() throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     
-    PackageClient pc = new PackageClient(FilesystemPackageCacheManager.PRIMARY_SERVER);
+    CachingPackageClient pc = new CachingPackageClient(FilesystemPackageCacheManager.PRIMARY_SERVER);
     for (PackageInfo t : pc.search(null, null, null, false)) {
       System.out.println("Check Package "+t.getId());
       List<PackageInfo> vl = pc.getVersions(t.getId());
