@@ -1,7 +1,7 @@
 @echo off
 
-set oldver=5.0.2
-set newver=5.0.3
+set oldver=5.0.3
+set newver=5.0.4
 
 echo ..
 echo =========================================================================
@@ -15,7 +15,7 @@ call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\build" -fileMask "*.xml" -fin
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\fhir-ig-publisher" -fileMask "*.xml" -find "%oldver%-SNAPSHOT" -replace "%newver%-SNAPSHOT" -count 2
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\latest-ig-publisher" -fileMask "*.html" -find "%oldver%" -replace "%newver%" -count 1
 call "C:\tools\fnr.exe" -dir "C:\work\org.hl7.fhir\latest-ig-publisher" -fileMask "*.json" -find "%oldver%" -replace "%newver%" -count 1
-call mvn clean deploy -Dmaven.test.redirectTestOutputToFile=false -DdeployAtEnd=true 
+rem call mvn clean deploy -Dmaven.test.redirectTestOutputToFile=false -DdeployAtEnd=true 
 IF %ERRORLEVEL% NEQ 0 ( 
   GOTO DONE
 )

@@ -13,7 +13,7 @@
     each other. It is fine to bump the point version of this POM without affecting
     HAPI FHIR.
     -->
-    <version>5.0.3-SNAPSHOT</version>
+    <version>5.0.4-SNAPSHOT</version>
 
     <properties>
         <hapi_fhir_version>5.0.0</hapi_fhir_version>
@@ -135,6 +135,7 @@
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
     </modules>
+
 
     <build>
         <plugins>

@@ -82,7 +82,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         tr = t.tr();
         tr.td().addText(r.getType());
         if (r.hasProfile()) {
-          tr.td().ah(context.getSpecLink()+r.getProfile()).addText(r.getProfile());
+          tr.td().ah(r.getProfile()).addText(r.getProfile());
         }
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
         if (hasVRead)

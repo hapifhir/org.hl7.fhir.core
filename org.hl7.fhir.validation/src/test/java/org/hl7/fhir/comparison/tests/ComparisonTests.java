@@ -103,7 +103,7 @@ public class ComparisonTests {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.4");
+      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.5");
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
       }
