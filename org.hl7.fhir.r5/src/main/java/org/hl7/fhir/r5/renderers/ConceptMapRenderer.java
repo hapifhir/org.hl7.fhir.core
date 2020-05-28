@@ -375,7 +375,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (cs == null)
       td.tx(url);
     else
-      td.ah(cs.getUserString("path")).attribute("title", url).tx(cs.present());
+      td.ah(context.fixReference(cs.getUserString("path"))).attribute("title", url).tx(cs.present());
   }
 
   private void addUnmapped(XhtmlNode tbl, ConceptMapGroupComponent grp) {

@@ -1,16 +1,20 @@
 trigger:
-  branches:
-    include:
-      - '*'
+  - master
+  - release
 
+pr:
+  - master
+  - release
+
+# Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows
 strategy:
   matrix:
     linux:
       imageName: "ubuntu-16.04"
-#     mac:
-#       imageName: "macos-10.14"
-#     windows:
-#       imageName: "vs2017-win2016"
+    mac:
+      imageName: "macos-10.14"
+    windows:
+      imageName: "vs2017-win2016"
   maxParallel: 3
 
 pool:
@@ -19,18 +23,47 @@ pool:
 variables:
   currentImage: $(imageName)
   codecov: $(CODECOV_TOKEN)
+  VERSION:
 
 steps:
+  - bash: ls -la
+  - bash: pwd
+  # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
+  # the same version, at the same time, as defined in the root level pom.xml.
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        [xml]$pomXml = Get-Content .\pom.xml
+        [xml]$pomXml = Get-Content -Path .\pom.xml
         # version
         Write-Host $pomXml.project.version
         $version=$pomXml.project.version
         Write-Host "##vso[task.setvariable variable=version]$version"
 
+  # Prints out the build version, for debugging purposes
+  - bash: echo Pulled version from pom.xml => $(version)
+
+  # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
+  # pass the build id (ex: 1.1.13-SNAPSHOT) as a string in a file. 
+  # This is used in the release pipeline, so we create it here.
+  # This is only done for the release branch.
+  - bash: |
+      echo $(version)
+      VERSION=$(version)
+      echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+
+  # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
+  # This is done for release versions only.
+  - task: CopyFiles@2
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    inputs:
+      SourceFolder: '$(System.Defaultworkingdirectory)'
+      Contents: "$(System.DefaultWorkingDirectory)/VERSION"
+      TargetFolder: '$(build.artifactstagingdirectory)'
+
+  # Runs 'mvn clean package'
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
@@ -41,22 +74,34 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean package'
-      
-  - bash: echo Current version => $(version)
-    displayName: 'version'
 
+  # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
-    displayName: 'codecov'
+    displayName: 'codecov Bash Uploader'
+
+  # Publishes the test results to build artifacts.
   - task: PublishCodeCoverageResults@1
+    displayName: 'Publish JaCoCo test results '
     inputs:
       codeCoverageTool: 'JaCoCo'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
 
+  # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
   - task: PublishPipelineArtifact@1
-    condition: eq(variables.currentImage, 'ubuntu-16.04')
+    displayName: 'Publish Validator jar'
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     inputs:
       targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
       artifactName: Validator
 
+  # Publishes the files we've moved into the staging directory, so they can be accessed by the 
+  # release pipeline. You will notice that we only do this for the ubuntu build, as doing it 
+  # for each of the three release pipelines will cause conflicts.
+  # This is done for release versions only.
+  - task: PublishBuildArtifacts@1
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+    displayName: 'Publish Build Artifacts'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
 

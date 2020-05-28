@@ -74,14 +74,16 @@ public abstract class ResourceRenderer extends DataRenderer {
     assert r.getContext() == context;
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions = render(x, r);
-    r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+    if (r.hasNarrative()) {
+      r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+    }
     return x;
   }
 
   public abstract boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new NotImplementedException("This is not implemented yet for resources of type "+r.getName());
+    throw new NotImplementedException("Rendering using the wrapper is not implemented yet for resources of type "+r.getName());
   }
   
   public void describe(XhtmlNode x, DomainResource r) throws UnsupportedEncodingException, IOException {

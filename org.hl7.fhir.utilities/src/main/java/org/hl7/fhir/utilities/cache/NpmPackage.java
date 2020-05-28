@@ -576,6 +576,9 @@ public class NpmPackage {
 
   public boolean hasFile(String folder, String file) throws IOException {
     NpmPackageFolder f = folders.get(folder);
+    if (f == null) {
+      f = folders.get(Utilities.path("package", folder));
+    }
     return f != null && f.hasFile(file);
   }
 
