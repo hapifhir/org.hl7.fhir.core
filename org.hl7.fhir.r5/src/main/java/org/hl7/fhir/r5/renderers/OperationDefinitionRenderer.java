@@ -105,7 +105,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");
-      td.ah( context.getSpecLink() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getSpecLink(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
+      td.ah( context.getSpecificationLink() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getSpecificationLink(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
       td.tx(")");
     }
     td = tr.td();

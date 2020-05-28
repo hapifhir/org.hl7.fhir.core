@@ -59,8 +59,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
-    model.setDocoImg(context.getSpecLink() +"help16.png");
-    model.setDocoRef(context.getSpecLink()+"formats.html#table");
+    model.setDocoImg(context.getSpecificationLink() +"help16.png");
+    model.setDocoRef(context.getSpecificationLink()+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Cardinality"), translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
@@ -87,19 +87,19 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
     r.getCells().add(gen.new Cell(null, null, (i.getRequired() ? "1" : "0")+".."+(i.getRepeats() ? "*" : "1"), null, null));
-    r.getCells().add(gen.new Cell(null, context.getSpecLink()+"codesystem-item-type.html#"+i.getType().toCode(), i.getType().toCode(), null, null));
+    r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#"+i.getType().toCode(), i.getType().toCode(), null, null));
     
     // flags:
     Cell flags = gen.new Cell();
     r.getCells().add(flags);
     if (i.getReadOnly()) {
-      flags.addPiece(gen.new Piece(Utilities.pathURL(context.getSpecLink(), "questionnaire-definitions.html#Questionnaire.item.readOnly"), null, "Is Readonly").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-readonly.png"))));
+      flags.addPiece(gen.new Piece(Utilities.pathURL(context.getSpecificationLink(), "questionnaire-definitions.html#Questionnaire.item.readOnly"), null, "Is Readonly").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-readonly.png"))));
     }
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject")) {
       flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject", null, "Can change the subject of the questionnaire").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-subject.png"))));
     }
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden")) {
-      flags.addPiece(gen.new Piece(Utilities.pathURL(context.getSpecLink(), "extension-questionnaire-hidden.html"), null, "Is a hidden item").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-hidden.png"))));
+      flags.addPiece(gen.new Piece(Utilities.pathURL(context.getSpecificationLink(), "extension-questionnaire-hidden.html"), null, "Is a hidden item").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-hidden.png"))));
     }
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay")) {
       flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay", null, "Is optional to display").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getDestDir(), "icon-qi-optional.png"))));
@@ -225,8 +225,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
-    model.setDocoImg(context.getSpecLink() +"help16.png");
-    model.setDocoRef(context.getSpecLink()+"formats.html#table");
+    model.setDocoImg(context.getSpecificationLink() +"help16.png");
+    model.setDocoRef(context.getSpecificationLink()+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Description & Constraints"), translate("sd.hint", "Additional information about the item"), null, 0));
 
@@ -474,7 +474,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden")) {
       hasFlag = true;
-      flags.ah(Utilities.pathURL(context.getSpecLink(), "extension-questionnaire-hidden.html"), "Is a hidden item").img(Utilities.path(context.getDestDir(), "icon-qi-hidden.png"));
+      flags.ah(Utilities.pathURL(context.getSpecificationLink(), "extension-questionnaire-hidden.html"), "Is a hidden item").img(Utilities.path(context.getDestDir(), "icon-qi-hidden.png"));
       d.style("background-color: #eeeeee");
     }
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay")) {

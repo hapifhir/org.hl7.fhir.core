@@ -681,6 +681,13 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+  public XhtmlNode addChildren(XhtmlNode x) {
+    if (x != null) {
+      getChildNodes().addAll(x.getChildNodes());
+    }
+    return this;
+  }
+
 
   public XhtmlNode input(String name, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");

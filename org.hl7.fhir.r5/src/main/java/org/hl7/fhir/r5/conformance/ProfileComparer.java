@@ -1391,7 +1391,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   }
   
   private void genValueSetFile(String filename, ValueSet vs) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(vs, rc).render(vs);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(vs.getText().getDiv());

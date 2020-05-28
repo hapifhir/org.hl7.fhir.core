@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 public class RenderingContext {
@@ -71,7 +72,8 @@ public class RenderingContext {
   private ITypeParser parser;
 
   private String lang;
-  private String specLink;
+  private String localPrefix; // relative link within local context
+  private String specificationLink;
   private String selfLink; // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
@@ -101,12 +103,13 @@ public class RenderingContext {
    * @param specLink - path to FHIR specification
    * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String lang, ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode) {
     super();
     this.worker = worker;
     this.markdown = markdown;
     this.lang = lang;
-    this.specLink = specLink;
+    this.specificationLink = specLink;
+    this.localPrefix = localPrefix;
     this.mode = mode;
     this.terminologyServiceOptions = terminologyServiceOptions;
     profileUtilities = new ProfileUtilities(worker, null, null);
@@ -146,8 +149,12 @@ public class RenderingContext {
     return lang;
   }
 
-  public String getSpecLink() {
-    return specLink;
+  public String getSpecificationLink() {
+    return specificationLink;
+  }
+
+  public String getLocalPrefix() {
+    return localPrefix;
   }
 
   public ValidationOptions getTerminologyServiceOptions() {
@@ -293,7 +300,7 @@ public class RenderingContext {
   }
 
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specLink, lang, mode);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -348,6 +355,16 @@ public class RenderingContext {
 
   public void setSelfLink(String selfLink) {
     this.selfLink = selfLink;
+  }
+
+  public String fixReference(String ref) {
+    if (!Utilities.isAbsoluteUrl(ref)) {
+      return (localPrefix == null ? "" : localPrefix)+ref;
+    }
+    if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
+      return specificationLink+ref.substring(20);
+    }
+    return ref;
   }
   
 

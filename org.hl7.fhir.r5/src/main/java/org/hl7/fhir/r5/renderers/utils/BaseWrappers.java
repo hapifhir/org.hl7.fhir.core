@@ -29,6 +29,7 @@ public class BaseWrappers {
     public int getMaxCardinality();
     public StructureDefinition getStructure();
     public BaseWrapper value();
+    public ResourceWrapper getAsResource();
   }
 
   public interface WrapperBase  extends RendererWrapper {
@@ -48,6 +49,7 @@ public class BaseWrappers {
     public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;
     public BaseWrapper root();
     public StructureDefinition getDefinition();
+    public boolean hasNarrative();
   }
 
   public interface BaseWrapper extends WrapperBase {
