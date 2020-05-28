@@ -491,30 +491,10 @@ public class I18nConstants {
   public static final String MEASURE_M_CRITERIA_CQL_NO_ELM = "MEASURE_M_CRITERIA_CQL_NO_ELM"; 
   public static final String MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID = "MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID"; 
   public static final String MEASURE_M_CRITERIA_CQL_NOT_FOUND = "MEASURE_M_CRITERIA_CQL_NOT_FOUND";
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
+  public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
   public static final String TERMINOLOGY_TX_SYSTEM_HTTPS = "TERMINOLOGY_TX_SYSTEM_HTTPS";
   public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
+  public static final String VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT = "VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT";
 }
