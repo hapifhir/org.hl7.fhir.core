@@ -1447,7 +1447,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!diffMatches.get(0).hasSliceName()) { // it's not real content, just the slice
             diffpos++; 
           }
-          if (hasInnerDiffMatches(differential, cpath, diffpos, diffLimit, base.getElement(), false)) {
+          if (hasInnerDiffMatches(differential, cpath, diffCursor, diffLimit, base.getElement(), false)) {
             int nbl = findEndOfElement(base, baseCursor);
             int ndx = differential.getElement().indexOf(diffMatches.get(0));
             int ndc = ndx+(diffMatches.get(0).hasSlicing() ? 1 : 0);
