@@ -3148,10 +3148,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   private ElementDefinition getElementByName(List<ElementDefinition> elements, String contentReference) {
-    for (ElementDefinition ed : elements)
-      if (ed.hasSliceName() && ("#"+ed.getSliceName()).equals(contentReference))
+    for (ElementDefinition ed : elements) {
+      if (("#"+ed.getPath()).equals(contentReference)) {
         return ed;
-    return null;
+      }
+      if (("#"+ed.getId()).equals(contentReference)) {
+        return ed;
+      }
+    }
+    throw new Error("getElementByName: can't find "+contentReference+"in "+elements.toString());
+//    return null;
   }
 
   private ElementDefinition getElementById(List<ElementDefinition> elements, String contentReference) {
