@@ -652,12 +652,12 @@ public class Utilities {
   }
 
 
-  private static boolean isDigit(char c) {
+  public static boolean isDigit(char c) {
     return (c >= '0') && (c <= '9');
   }
 
 
-  private static boolean isAlphabetic(char c) {
+  public static boolean isAlphabetic(char c) {
     return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'));
   }
 

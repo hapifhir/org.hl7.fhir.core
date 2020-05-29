@@ -14,7 +14,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -26,6 +25,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -68,7 +68,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-public class TestingUtilities {
+public class TestingUtilities extends BaseTestingUtilities {
   private static final boolean SHOW_DIFF = true;
 
   static public Map<String, IWorkerContext> fcontexts;
@@ -97,8 +97,6 @@ public class TestingUtilities {
     }
     return fcontexts.get(v);
   }
-
-  static public boolean silent;
 
   static public String fixedpath;
   static public String contentpath;
@@ -457,74 +455,6 @@ public class TestingUtilities {
       return "Strings differ in length: " + Integer.toString(s1.length()) + " vs " + Integer.toString(s2.length()) + " but match to the end of the shortest";
     return null;
   }
-
-  public static boolean findTestResource(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
-      return new File(n).exists();
-    } else {
-      String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
-      try {
-        InputStream inputStream = TestingUtilities.class.getResourceAsStream(classpath);
-        return inputStream != null;
-      } catch (Throwable t) {
-        return false;
-      }
-    }
-  }
-
-  // TODO: JA need to figure out how to detect that we're running in maven
-  private static boolean isTryToLoadFromFileSystem() {
-    return !"true".equals(System.getProperty("dont_load_from_filesystem"));
-  }
-
-  public static String loadTestResource(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
-      // ok, we'll resolve this locally
-      return TextFile.fileToString(new File(n));
-    } else {
-      // resolve from the package 
-      String contents;
-      String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
-      try (InputStream inputStream = TestingUtilities.class.getResourceAsStream(classpath)) {
-        if (inputStream == null) {
-          throw new IOException("Can't find file on classpath: " + classpath);
-        }
-        contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
-      }
-      return contents;
-    }
-  }
-
-  public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
-      return new FileInputStream(n);
-    } else {
-      String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
-      InputStream s = TestingUtilities.class.getResourceAsStream(classpath);
-      if (s == null) {
-        throw new Error("unable to find resource " + classpath);
-      }
-      return s;
-    }
-  }
-
-  public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
-      return TextFile.fileToBytes(n);
-    } else {
-      String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
-      InputStream s = TestingUtilities.class.getResourceAsStream(classpath);
-      if (s == null) {
-        throw new Error("unable to find resource " + classpath);
-      }
-      return TextFile.streamToBytes(s);
-    }
-  }
-
 
   public static String tempFile(String folder, String name) throws IOException {
     String tmp = tempFolder(folder);
