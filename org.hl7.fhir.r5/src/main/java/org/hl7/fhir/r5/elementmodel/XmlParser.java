@@ -414,14 +414,12 @@ public class XmlParser extends ParserBase {
           return p;
       }
     }
-    if (namespace == null || Utilities.existsInList(namespace, "http://www.w3.org/1999/xhtml", "http://hl7.org/fhir")) {
-      for (Property p : propsSortedByLongestFirst) {
-        if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(PropertyRepresentation.XMLTEXT)) {
-          if (p.getXmlName().equals(nodeName)) 
-            return p;
-          if (p.getName().endsWith("[x]") && nodeName.length() > p.getName().length()-3 && p.getName().substring(0, p.getName().length()-3).equals(nodeName.substring(0, p.getName().length()-3))) 
-            return p;
-        }
+    for (Property p : propsSortedByLongestFirst) {
+      if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(PropertyRepresentation.XMLTEXT)) {
+        if (p.getXmlName().equals(nodeName)) 
+          return p;
+        if (p.getName().endsWith("[x]") && nodeName.length() > p.getName().length()-3 && p.getName().substring(0, p.getName().length()-3).equals(nodeName.substring(0, p.getName().length()-3))) 
+          return p;
       }
     }
   	return null;
