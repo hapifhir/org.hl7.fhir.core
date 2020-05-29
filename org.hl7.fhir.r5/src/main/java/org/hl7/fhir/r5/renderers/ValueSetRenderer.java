@@ -796,7 +796,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             } else {
               li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
-                String href = getContext().getSpecificationLink()+getCsRef(e);
+                String href = getContext().fixReference(getCsRef(e));
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
