@@ -521,6 +521,7 @@ public class SnapShotGenerationTestsX {
     }
     if (output.getDifferential().hasElement()) {
       RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+      rc.setDestDir(makeTempDir());
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.context(), null, new TestPKP()));
       RendererFactory.factory(output, rc).render(output);
     }
@@ -539,6 +540,13 @@ public class SnapShotGenerationTestsX {
       Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");
     }
   }
+
+  private String makeTempDir() throws IOException {
+    String path = Utilities.path("[tmp]", "snapshot");
+    Utilities.createDirectory(path);
+    return path;
+  }
+
 
   private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
