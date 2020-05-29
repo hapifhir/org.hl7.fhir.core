@@ -1,7 +1,9 @@
 package org.hl7.fhir.r4.formats;
 
+import java.awt.im.InputContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -164,6 +166,13 @@ public abstract class FormatUtilities {
 
   public static Resource loadFile(String path) throws FileNotFoundException, IOException, FHIRException {
     byte[] src = TextFile.fileToBytes(path);
+    FhirFormat fmt = determineFormat(src);
+    ParserBase parser = makeParser(fmt);
+    return parser.parse(src);
+  }
+
+  public static Resource loadFile(InputStream source) throws FileNotFoundException, IOException, FHIRException {
+    byte[] src = TextFile.streamToBytes(source);
     FhirFormat fmt = determineFormat(src);
     ParserBase parser = makeParser(fmt);
     return parser.parse(src);
