@@ -213,26 +213,32 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean firstElement = true;
       boolean last = false;
       for (PropertyWrapper p : res.children()) {
-        ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
-        if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child)) {
-          if (firstElement)
-            firstElement = false;
-          else if (last)
-            x.tx("; ");
-          boolean first = true;
-          last = false;
-          for (BaseWrapper v : p.getValues()) {
-            if (first)
-              first = false;
+        if (!ignoreProperty(p)) {
+          ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
+          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child)) {
+            if (firstElement)
+              firstElement = false;
             else if (last)
-              x.tx(", ");
-            last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails) || last;
+              x.tx("; ");
+            boolean first = true;
+            last = false;
+            for (BaseWrapper v : p.getValues()) {
+              if (first)
+                first = false;
+              else if (last)
+                x.tx(", ");
+              last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails) || last;
+            }
           }
         }
       }
     }
   }
 
+
+  private boolean ignoreProperty(PropertyWrapper p) {
+    return Utilities.existsInList(p.getName(), "contained");
+  }
 
   private boolean includeInSummary(ElementDefinition child) {
     if (child.getIsModifier())
