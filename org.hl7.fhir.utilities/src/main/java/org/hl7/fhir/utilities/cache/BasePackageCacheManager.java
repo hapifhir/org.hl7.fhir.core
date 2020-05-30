@@ -70,7 +70,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     return null;
   }
 
-  protected abstract NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException;
+  public abstract NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException;
 
   @Override
   public String getPackageUrl(String packageId) throws IOException {

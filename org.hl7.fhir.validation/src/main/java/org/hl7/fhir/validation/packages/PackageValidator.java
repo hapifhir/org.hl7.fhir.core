@@ -10,7 +10,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.CachingPackageClient;
-import org.hl7.fhir.utilities.cache.CachingPackageClient.PackageInfo;
+import org.hl7.fhir.utilities.cache.BasePackageClient.PackageInfo;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 public class PackageValidator {
