@@ -38,8 +38,8 @@ package org.hl7.fhir.r5.formats;
 
 
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
 
 public class RdfParser extends RdfParserBase {
 

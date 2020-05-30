@@ -1167,7 +1167,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION).setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }
@@ -1183,7 +1183,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }
@@ -1241,7 +1241,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public DomainResource generate(String source, String version) throws Exception {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, source);
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
     RendererFactory.factory(res, rc).render((DomainResource) res);
     return (DomainResource) res;
   }
@@ -1546,7 +1546,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(context, null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(item.outcome, rc).render(item.outcome);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.outcome.getText().getDiv());

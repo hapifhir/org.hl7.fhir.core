@@ -96,6 +96,11 @@ public class DirectWrappers {
     public String toString() {
       return "#."+wrapped.toString();
     }
+
+    @Override
+    public ResourceWrapper getAsResource() {
+      throw new Error("Not implemented yet");
+    }
   }
 
   public static class BaseWrapperDirect extends WrapperBaseImpl implements BaseWrapper {
@@ -213,6 +218,24 @@ public class DirectWrappers {
     @Override
     public StructureDefinition getDefinition() {
       return context.getWorker().fetchTypeDefinition(wrapped.fhirType());
+    }
+
+    @Override
+    public Base getBase() {
+      return wrapped;
+    }
+
+    @Override
+    public boolean hasNarrative() {
+      StructureDefinition sd = context.getWorker().fetchTypeDefinition(wrapped.fhirType());
+      while (sd != null) {
+        if ("DomainResource".equals(sd.getType())) {
+          return true;
+        }
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      }
+      return false;
+
     }
   }
 

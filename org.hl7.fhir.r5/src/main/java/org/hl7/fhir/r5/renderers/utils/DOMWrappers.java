@@ -178,6 +178,11 @@ public class DOMWrappers {
       return getValues().get(0);
     }
 
+    @Override
+    public ResourceWrapper getAsResource() {
+     throw new Error("Not implemented yet");
+    }
+
   }
 
   public static class ResourceWrapperElement extends WrapperBaseImpl implements ResourceWrapper {
@@ -306,6 +311,23 @@ public class DOMWrappers {
     @Override
     public StructureDefinition getDefinition() {
       return definition;
+    }
+
+    @Override
+    public Base getBase() {
+      throw new Error("Not Implemented yet");
+    }
+
+    @Override
+    public boolean hasNarrative() {
+      StructureDefinition sd = definition;
+      while (sd != null) {
+        if ("DomainResource".equals(sd.getType())) {
+          return true;
+        }
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      }
+      return false;
     }
   }
 
