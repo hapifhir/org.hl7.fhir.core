@@ -11,6 +11,11 @@ title: FHIR Validator Release Notes
 ## v5.0.5 (2020-05-30)
 
 
+(no changes yet)
+
+## v5.0.5 (2020-05-30)
+
+
 * Snapshot Generator: Add more testing for type consistency when profiling elements
 * Snapshot Generator: Fix bug constraining elements once they are sliced
 * Add support for http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name for CDA use
@@ -210,4 +215,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* Thi
+* Th
