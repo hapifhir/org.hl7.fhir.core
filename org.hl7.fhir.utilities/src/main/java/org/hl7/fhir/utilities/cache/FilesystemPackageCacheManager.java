@@ -201,8 +201,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
     CachingPackageClient pc = new CachingPackageClient(server);
-    List<BasePackageClient.PackageInfo> matches = pc.search(null, null, null, false);
-    for (BasePackageClient.PackageInfo m : matches) {
+    List<PackageClient.PackageInfo> matches = pc.search(null, null, null, false);
+    for (PackageClient.PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
         specList.put(m.getId(), m.getUrl());
       }
