@@ -287,7 +287,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   @Override
-  protected NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
+  public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
     }
