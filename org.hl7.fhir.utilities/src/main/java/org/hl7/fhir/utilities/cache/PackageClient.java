@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public abstract class BasePackageClient {
+public class PackageClient {
 
   public class PackageInfo {
     private String id;
@@ -73,7 +73,7 @@ public abstract class BasePackageClient {
   private String cacheFolder;
 
 
-  public BasePackageClient(String address) {
+  public PackageClient(String address) {
     super();
     this.address = address;
     try {
