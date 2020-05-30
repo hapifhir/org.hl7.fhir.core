@@ -235,11 +235,7 @@ public class XmlParser extends ParserBase {
     if (policy == ValidationPolicy.EVERYTHING) {
       if (empty(element) && FormatUtilities.FHIR_NS.equals(element.getNamespaceURI())) // this rule only applies to FHIR Content
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.ELEMENT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
-      String ns = FormatUtilities.FHIR_NS;
-      if (ToolingExtensions.hasExtension(prop.getDefinition(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      	ns = ToolingExtensions.readStringExtension(prop.getDefinition(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-      else if (ToolingExtensions.hasExtension(prop.getStructure(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      	ns = ToolingExtensions.readStringExtension(prop.getStructure(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+      String ns = prop.getXmlNamespace();
       if (!element.getNamespaceURI().equals(ns))
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
     }
@@ -304,7 +300,7 @@ public class XmlParser extends ParserBase {
         logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
     	}
     	if (!(attr.getNodeName().equals("xmlns") || attr.getNodeName().startsWith("xmlns:"))) {
-      	Property property = getAttrProp(properties, attr.getNodeName());
+      	Property property = getAttrProp(properties, attr.getLocalName(), attr.getNamespaceURI());
       	if (property != null) {
 	    	  String av = attr.getNodeValue();
 	    	  if (ToolingExtensions.hasExtension(property.getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"))
@@ -331,7 +327,7 @@ public class XmlParser extends ParserBase {
     Node child = node.getFirstChild();
     while (child != null) {
     	if (child.getNodeType() == Node.ELEMENT_NODE) {
-    		Property property = getElementProp(properties, child.getLocalName());
+    		Property property = getElementProp(properties, child.getLocalName(), child.getNamespaceURI());
     		if (property != null) {
     			if (!property.isChoice() && "xhtml".equals(property.getType())) {
     			  XhtmlNode xhtml;
@@ -401,7 +397,7 @@ public class XmlParser extends ParserBase {
   }
 
 
-  private Property getElementProp(List<Property> properties, String nodeName) {
+  private Property getElementProp(List<Property> properties, String nodeName, String namespace) {
 		List<Property> propsSortedByLongestFirst = new ArrayList<Property>(properties);
 		// sort properties according to their name longest first, so .requestOrganizationReference comes first before .request[x]
 		// and therefore the longer property names get evaluated first
@@ -411,22 +407,37 @@ public class XmlParser extends ParserBase {
 				return o2.getName().length() - o1.getName().length();
 			}
 		});
-  	for (Property p : propsSortedByLongestFirst)
-  		if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(
-          PropertyRepresentation.XMLTEXT)) {
-  		  if (p.getName().equals(nodeName)) 
-				  return p;
-  		  if (p.getName().endsWith("[x]") && nodeName.length() > p.getName().length()-3 && p.getName().substring(0, p.getName().length()-3).equals(nodeName.substring(0, p.getName().length()-3))) 
-				  return p;
-  		}
+		// first scan, by namespace
+    for (Property p : propsSortedByLongestFirst) {
+      if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(PropertyRepresentation.XMLTEXT)) {
+        if (p.getXmlName().equals(nodeName) && p.getXmlNamespace().equals(namespace)) 
+          return p;
+      }
+    }
+    for (Property p : propsSortedByLongestFirst) {
+      if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(PropertyRepresentation.XMLTEXT)) {
+        if (p.getXmlName().equals(nodeName)) 
+          return p;
+        if (p.getName().endsWith("[x]") && nodeName.length() > p.getName().length()-3 && p.getName().substring(0, p.getName().length()-3).equals(nodeName.substring(0, p.getName().length()-3))) 
+          return p;
+      }
+    }
   	return null;
 	}
 
-	private Property getAttrProp(List<Property> properties, String nodeName) {
-  	for (Property p : properties)
-  		if (p.getName().equals(nodeName) && p.getDefinition().hasRepresentation(
-          PropertyRepresentation.XMLATTR))
-				return p;
+  private Property getAttrProp(List<Property> properties, String nodeName, String namespace) {
+    for (Property p : properties) {
+      if (p.getXmlName().equals(nodeName) && p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && p.getXmlNamespace().equals(namespace)) {
+        return p;
+      }
+    }
+    if (namespace == null) {
+      for (Property p : properties) {
+        if (p.getXmlName().equals(nodeName) && p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          return p;
+        }    
+      }
+    }
   	return null;
   }
 
@@ -524,7 +535,7 @@ public class XmlParser extends ParserBase {
     xml.setSortAttributes(false);
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getNamespace());
+    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
     composeElement(xml, e, e.getType(), true);
@@ -545,7 +556,7 @@ public class XmlParser extends ParserBase {
 
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getNamespace());
+    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }

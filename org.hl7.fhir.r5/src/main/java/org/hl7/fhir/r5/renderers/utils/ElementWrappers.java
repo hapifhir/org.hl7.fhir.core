@@ -48,8 +48,9 @@ public class ElementWrappers {
       if (type == null || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
         return null;
 
-      if (element.hasElementProperty())
-        return null;
+      if (element.hasElementProperty()) {
+        return element;
+      }
       ByteArrayOutputStream xml = new ByteArrayOutputStream();
       try {
         new XmlParser(context.getWorker()).compose(element, xml, OutputStyle.PRETTY, null);
@@ -57,7 +58,7 @@ public class ElementWrappers {
         throw new FHIRException(e.getMessage(), e);
       }
       if (context.getParser() == null) {
-        System.out.println("huh?");
+        System.out.println("Noe version specific parser provided");
       } 
       return context.getParser().parseType(xml.toString(), type); 
     }
@@ -214,6 +215,23 @@ public class ElementWrappers {
     public StructureDefinition getDefinition() {
       return definition;
     }
+
+    @Override
+    public Base getBase() {
+      return wrapped;
+    }
+
+    @Override
+    public boolean hasNarrative() {
+      StructureDefinition sd = definition;
+      while (sd != null) {
+        if ("DomainResource".equals(sd.getType())) {
+          return true;
+        }
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      }
+      return false;
+    }
   }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
@@ -280,6 +298,11 @@ public class ElementWrappers {
       if (getValues().size() != 1)
         throw new Error("Access single value, but value count is "+getValues().size());
       return getValues().get(0);
+    }
+
+    @Override
+    public ResourceWrapper getAsResource() {
+      return new ElementWrappers.ResourceWrapperMetaElement(context, values.get(0));
     }
 
   }

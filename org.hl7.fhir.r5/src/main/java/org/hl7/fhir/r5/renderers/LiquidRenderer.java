@@ -7,6 +7,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -51,7 +52,7 @@ public class LiquidRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return "not done yet";
   }
 
@@ -61,7 +62,7 @@ public class LiquidRenderer extends ResourceRenderer {
     XhtmlNode xn;
     try {
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
-      String html = "rto do"; // engine.evaluate(doc, r, rcontext);
+      String html = engine.evaluate(doc, r.getBase(), rcontext);
       xn = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
         throw new FHIRException("Error in template: Root element is not 'div'");

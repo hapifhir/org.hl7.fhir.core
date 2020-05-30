@@ -181,7 +181,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		writer.end();
 	}
 
-
 	/**
 	 * Compose a type to a stream (used in the spec, for example, but not normally in production)
 	 * @ 

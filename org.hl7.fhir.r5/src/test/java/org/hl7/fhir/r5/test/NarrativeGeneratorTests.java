@@ -24,7 +24,7 @@ public class NarrativeGeneratorTests {
 
   @BeforeAll
   public static void setUp() throws FHIRException {
-    rc = new RenderingContext(TestingUtilities.context(), null, null, "", "http://hl7.org/fhir", ResourceRendererMode.RESOURCE);
+    rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
   }
 
   @Test

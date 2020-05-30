@@ -9,6 +9,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.DiagnosticReport;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
@@ -126,7 +127,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return display((DiagnosticReport) r);
   }
 

@@ -533,9 +533,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
       }
-      if (derived.getUrl().equals("http://sharedhealth.exchange/fhir/StructureDefinition/profile-operationoutcome")) {
-        debug = true;
-      }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -901,6 +898,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           baseCursor++;
         } else if (diffMatches.size() == 1 && (slicingDone || (!isImplicitSlicing(diffMatches.get(0), cpath) && !(diffMatches.get(0).hasSlicing() || (isExtension(diffMatches.get(0)) && diffMatches.get(0).hasSliceName()))))) {// one matching element in the differential
           ElementDefinition template = null;
+          if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
+            throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, url, diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));            
+          }
           if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
@@ -915,8 +915,16 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             if (sd != null) {
-              checkNotGenerating(sd, "an extension definition");
-              if (!sd.hasSnapshot()) {
+              if (!isMatchingType(sd, diffMatches.get(0).getType())) {
+                throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, sd.getUrl(), diffMatches.get(0).getPath(), sd.getType(), p.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));            
+              }
+              if (isGenerating(sd)) {
+                // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
+                // but we check anyway
+                if (sd.getSnapshot().getElementFirstRep().isEmpty()) {
+                  throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), "Source for first element"));
+                }
+              } else if (!sd.hasSnapshot()) {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
@@ -1445,7 +1453,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!diffMatches.get(0).hasSliceName()) { // it's not real content, just the slice
             diffpos++; 
           }
-          if (hasInnerDiffMatches(differential, cpath, diffpos, diffLimit, base.getElement(), false)) {
+          if (hasInnerDiffMatches(differential, cpath, diffCursor, diffLimit, base.getElement(), false)) {
             int nbl = findEndOfElement(base, baseCursor);
             int ndx = differential.getElement().indexOf(diffMatches.get(0));
             int ndc = ndx+(diffMatches.get(0).hasSlicing() ? 1 : 0);
@@ -1601,6 +1609,35 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
+    while (sd != null) {
+      for (TypeRefComponent tr : types) {
+        if (sd.getType().equals(tr.getCode())) {
+          return true;
+        }
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());    
+    }
+    return false;
+  }
+
+  private boolean isValidType(TypeRefComponent t, ElementDefinition base) {
+    for (TypeRefComponent tr : base.getType()) {
+      if (tr.getCode().equals(t.getCode())) {
+        return true;
+      }
+      if (tr.getWorkingCode().equals(t.getCode())) {
+        System.out.println("Type error: use of a simple type \""+t.getCode()+"\" wrongly constraining "+base.getPath());
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isGenerating(StructureDefinition sd) {
+    return sd.hasUserData("profileutils.snapshot.generating");
   }
 
 
@@ -3111,10 +3148,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   private ElementDefinition getElementByName(List<ElementDefinition> elements, String contentReference) {
-    for (ElementDefinition ed : elements)
-      if (ed.hasSliceName() && ("#"+ed.getSliceName()).equals(contentReference))
+    for (ElementDefinition ed : elements) {
+      if (("#"+ed.getPath()).equals(contentReference)) {
         return ed;
-    return null;
+      }
+      if (("#"+ed.getId()).equals(contentReference)) {
+        return ed;
+      }
+    }
+    throw new Error("getElementByName: can't find "+contentReference+"in "+elements.toString());
+//    return null;
   }
 
   private ElementDefinition getElementById(List<ElementDefinition> elements, String contentReference) {

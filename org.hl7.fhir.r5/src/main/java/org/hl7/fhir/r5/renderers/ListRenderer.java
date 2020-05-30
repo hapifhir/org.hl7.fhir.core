@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -183,7 +184,7 @@ public class ListRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((ListResource) r).getTitle();
   }
 

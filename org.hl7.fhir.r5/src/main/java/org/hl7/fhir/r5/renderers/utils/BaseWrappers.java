@@ -29,6 +29,7 @@ public class BaseWrappers {
     public int getMaxCardinality();
     public StructureDefinition getStructure();
     public BaseWrapper value();
+    public ResourceWrapper getAsResource();
   }
 
   public interface WrapperBase  extends RendererWrapper {
@@ -42,11 +43,13 @@ public class BaseWrappers {
     public List<ResourceWrapper> getContained();
     public String getId();
     public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
+    public Base getBase();
     public String getName();
     public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
     public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;
     public BaseWrapper root();
     public StructureDefinition getDefinition();
+    public boolean hasNarrative();
   }
 
   public interface BaseWrapper extends WrapperBase {

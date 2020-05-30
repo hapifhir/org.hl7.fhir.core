@@ -61,7 +61,7 @@ public class DataRenderer {
 
   public DataRenderer(IWorkerContext worker) {
     super();
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "", null, ResourceRendererMode.RESOURCE);
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.RESOURCE);
   }
 
   // -- 2. Markdown support -------------------------------------------------------
@@ -218,7 +218,7 @@ public class DataRenderer {
   // -- 5. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
-    return new DataRenderer(new RenderingContext(context, null, null, "", null, ResourceRendererMode.RESOURCE)).display(type);
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.RESOURCE)).display(type);
   }
   
   public String displayBase(Base b) {

@@ -90,61 +90,61 @@ public class ComparisonTests {
   @MethodSource("data")
   public void test(String name, JsonObject content) throws Exception {
     this.content = content;
-    
+
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
-    
+
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
-      context = TestingUtilities.context(); 
+      context = TestingUtilities.context();
     }
-  
+
     if (!new File(Utilities.path("[tmp]", "comparison")).exists()) {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.4");
+      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.5");
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
       }
     }
-    System.out.println("---- " + name + " ----------------------------------------------------------------");    
+    System.out.println("---- " + name + " ----------------------------------------------------------------");
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
-    
+
     ComparisonSession session = new ComparisonSession(context);
-    
+
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
-      CodeSystemComparer cs = new CodeSystemComparer(session );
+      CodeSystemComparer cs = new CodeSystemComparer(session);
       CodeSystemComparison csc = cs.compare((CodeSystem) left, (CodeSystem) right);
       Assertions.assertTrue(csc.getUnion().getConcept().size() > csc.getIntersection().getConcept().size());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-intersection.json")), csc.getIntersection());
-      
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(cs.renderConcepts(csc, "", ""));
-      TextFile.stringToFile(HEADER+hd("Messages")+xmle+BREAK+hd("Metadata")+xml1+BREAK+hd("Concepts")+xml2+FOOTER, Utilities.path("[tmp]", "comparison", name+".html"));
+      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name+"-intersection.json")), csc.getIntersection());
-      
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(cs.renderCompose(csc, "", ""));
       String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
-      TextFile.stringToFile(HEADER+hd("Messages")+xmle+BREAK+hd("Metadata")+xml1+BREAK+hd("Definition")+xml2+BREAK+hd("Expansion")+xml3+FOOTER, Utilities.path("[tmp]", "comparison", name+".html"));
+      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
     } else {
-      throw new FHIRException("Can't compare "+left.fhirType()+" to "+right.fhirType());
+      throw new FHIRException("Can't compare " + left.fhirType() + " to " + right.fhirType());
     }
   }
 
   private String hd(String text) {
-    return "<h2>"+text+"</h2>\r\n";   
+    return "<h2>" + text + "</h2>\r\n";
   }
 
   private CanonicalResource load(String name) throws IOException {
@@ -183,7 +183,7 @@ public class ComparisonTests {
           throw new FHIRException("unknown version " + ver);
       }
     }
-  } 
+  }
 
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
     JsonObject output = focus.getAsJsonObject("output");

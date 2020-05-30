@@ -74,21 +74,23 @@ public abstract class ResourceRenderer extends DataRenderer {
     assert r.getContext() == context;
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions = render(x, r);
-    r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+    if (r.hasNarrative()) {
+      r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+    }
     return x;
   }
 
   public abstract boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new NotImplementedException("This is not implemented yet for resources of type "+r.getName());
+    throw new NotImplementedException("Rendering using the wrapper is not implemented yet for resources of type "+r.getName());
   }
   
   public void describe(XhtmlNode x, DomainResource r) throws UnsupportedEncodingException, IOException {
     x.tx(display(r));
   }
 
-  public abstract String display(DomainResource r) throws UnsupportedEncodingException, IOException;
+  public abstract String display(Resource r) throws UnsupportedEncodingException, IOException;
   
   public static void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
@@ -104,7 +106,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       r.getText().setStatus(status);
     } else {
       XhtmlNode n = r.getText().getDiv();
-      n.hr();
+      n.clear();
       n.getChildNodes().addAll(x.getChildNodes());
     }
   }

@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -84,7 +85,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return display((OperationOutcome) r);
   }
 

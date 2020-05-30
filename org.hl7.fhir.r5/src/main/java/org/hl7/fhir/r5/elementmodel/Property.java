@@ -68,6 +68,24 @@ public class Property {
 		return definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
 	}
 
+  public String getXmlName() {
+    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name")) {
+      return ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+    } else {
+      return getName();
+    }
+  }
+
+  public String getXmlNamespace() {
+    if (ToolingExtensions.hasExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")) {
+      return ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+    } else if (ToolingExtensions.hasExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")) {
+      return ToolingExtensions.readStringExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+    } else {
+      return FormatUtilities.FHIR_NS;
+    }
+  }
+	
 	public ElementDefinition getDefinition() {
 		return definition;
 	}
@@ -197,14 +215,6 @@ public class Property {
 
   public String getScopedPropertyName() {
     return definition.getBase().getPath();
-  }
-
-  public String getNamespace() {
-    if (ToolingExtensions.hasExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      return ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-    if (ToolingExtensions.hasExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      return ToolingExtensions.readStringExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-    return FormatUtilities.FHIR_NS;
   }
 
   private boolean isElementWithOnlyExtension(final ElementDefinition ed, final List<ElementDefinition> children) {

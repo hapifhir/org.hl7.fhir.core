@@ -15,6 +15,10 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Provenance;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -37,9 +41,50 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return null;
   }
+
+  @Override
+  public boolean render(XhtmlNode x, ResourceWrapper b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    List<BaseWrapper> entries = b.children("entry");
+    if ("document".equals(b.get("type").primitiveValue())) {
+      if (entries.isEmpty() || (entries.get(0).has("resource") && "Composition".equals(entries.get(0).get("resource").fhirType())))
+        throw new FHIRException("Invalid document - first entry is not a Composition");
+      ResourceWrapper r = (ResourceWrapper) entries.get(0).getChildByName("resource").getValues().get(0);
+      x.addChildren(r.getNarrative());
+    } else if ("collection".equals(b.get("type").primitiveValue()) && allEntriesAreHistoryProvenance(entries)) {
+      // nothing
+    } else {
+      XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
+      root.para().addText("Bundle "+b.getId()+" of type "+b.get("type").primitiveValue());
+      int i = 0;
+      for (BaseWrapper be : entries) {
+        i++;
+        if (be.has("fullUrl")) {
+          root.an(makeInternalLink(be.get("fullUrl").primitiveValue()));
+        }
+        if (be.has("resource") && be.getChildByName("resource").getValues().get(0).has("id")) {
+          root.an(be.get("resource").fhirType().toLowerCase() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+        }
+        root.hr();
+        root.para().addText("Entry "+Integer.toString(i)+(be.has("fullUrl") ? " - Full URL = " + be.get("fullUrl").primitiveValue() : ""));
+//        if (be.hasRequest())
+//          renderRequest(root, be.getRequest());
+//        if (be.hasSearch())
+//          renderSearch(root, be.getSearch());
+//        if (be.hasResponse())
+//          renderResponse(root, be.getResponse());
+        if (be.has("resource")) {
+          root.para().addText("Resource "+be.get("resource").fhirType()+":");
+          ResourceWrapper rw = be.getChildByName("resource").getAsResource();
+          root.blockquote().addChildren(rw.getNarrative());
+        }
+      }
+    }
+    return false;
+  }
+ 
 
   public XhtmlNode render(Bundle b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (b.getType() == BundleType.DOCUMENT) {
@@ -47,7 +92,7 @@ public class BundleRenderer extends ResourceRenderer {
         throw new FHIRException("Invalid document - first entry is not a Composition");
       Composition dr = (Composition) b.getEntryFirstRep().getResource();
       return dr.getText().getDiv();
-    } else if ((b.getType() == BundleType.DOCUMENT && allEntresAreHistoryProvenance(b))) {
+    } else if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
       return null;
     } else {
       XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
@@ -80,9 +125,22 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-
+  private boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
+    for (BaseWrapper be : entries) {
+      if (!"Provenance".equals(be.get("resource").fhirType())) {
+        return false;
+      }
+    }
+    return !entries.isEmpty();
+  }
+  
   private boolean allEntresAreHistoryProvenance(Bundle b) {
-    return false;
+    for (BundleEntryComponent be : b.getEntry()) {
+      if (!(be.getResource() instanceof Provenance)) {
+        return false;
+      }
+    }
+    return !b.getEntry().isEmpty();
   }
 
   private List<XhtmlNode> checkInternalLinks(Bundle b, List<XhtmlNode> childNodes) {

@@ -731,7 +731,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     timeTracker.tx(t, System.nanoTime());
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = context.validateCode(new ValidationOptions(stack.getWorkingLang()), system, code, checkDisplay ? display : null);
+      ValidationResult s = checkCodeOnServer(stack, code, system, display, checkDisplay);
       timeTracker.tx(t, System.nanoTime());
       if (s == null)
         return true;
@@ -894,7 +894,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
-                    ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()).checkValueSetOnly(), cc, valueset); // we're going to validate the codings directly, so only check the valueset
+                    ValidationResult vr = checkCodeOnServer(stack, valueset, cc, true); // we're going to validate the codings directly, so only check the valueset
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -936,7 +936,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (bindingsOk) {
                     for (Coding nextCoding : cc.getCoding()) {
                       if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
-                        ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()).noCheckValueSetMembership(), nextCoding, valueset);
+                        ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
                         if (vr.getSeverity() != null) {
                           if (vr.getSeverity() == IssueSeverity.INFORMATION) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
@@ -1003,7 +1003,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
-                    ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), cc, valueset); // we're going to validate the codings directly
+                    ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false); // we're going to validate the codings directly
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1047,7 +1047,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextCode = nextCoding.getCode();
                       String nextSystem = nextCoding.getSystem();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
-                        ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), nextSystem, nextCode, null);
+                        ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, null, false);
                         if (!vr.isOk()) {
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
                         }
@@ -1096,7 +1096,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     long t = System.nanoTime();
                     ValidationResult vr = null;
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                      vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, valueset);
+                      vr = checkCodeOnServer(stack, valueset, c, true);
                     }
                     timeTracker.tx(t, System.nanoTime());
                     if (vr != null && !vr.isOk()) {
@@ -1221,7 +1221,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), cc, valueset);
+        ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false);
         timeTracker.tx(t, System.nanoTime());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1240,7 +1240,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, valueset);
+        ValidationResult vr = checkCodeOnServer(stack, valueset, c, true);
         timeTracker.tx(t, System.nanoTime());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1259,7 +1259,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), value, valueset);
+        ValidationResult vr = checkCodeOnServer(stack, valueset, value, new ValidationOptions(stack.getWorkingLang()));
         timeTracker.tx(t, System.nanoTime());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1315,7 +1315,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     long t = System.nanoTime();
                     ValidationResult vr = null;
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                      vr = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, valueset);
+                      vr = checkCodeOnServer(stack, valueset, c, true);
                     }
                     timeTracker.tx(t, System.nanoTime());
                     if (vr != null && !vr.isOk()) {
@@ -2100,7 +2100,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ValidationResult vr = null;
         if (binding.getStrength() != BindingStrength.EXAMPLE) {
           ValidationOptions options = new ValidationOptions(stack.getWorkingLang()).guessSystem();
-          vr = context.validateCode(options, value, vs);
+          vr = checkCodeOnServer(stack, vs, value, options);
         }
         timeTracker.tx(t, System.nanoTime());
         if (vr != null && !vr.isOk()) {
@@ -4540,5 +4540,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
+
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet vs, String value, ValidationOptions options) {
+    return context.validateCode(options, value, vs);
+  }
+
+  // no delay on this one? 
+  public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String display, boolean checkDisplay) {
+    return context.validateCode(new ValidationOptions(stack.getWorkingLang()), system, code, checkDisplay ? display : null);
+  }
+
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
+    if (checkMembership) {
+      return context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, valueset);   
+    } else {
+      return context.validateCode(new ValidationOptions(stack.getWorkingLang()).noCheckValueSetMembership(), c, valueset);
+    }
+  }
+  
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
+    if (vsOnly) {
+      return context.validateCode(new ValidationOptions(stack.getWorkingLang()).checkValueSetOnly(), cc, valueset);
+    } else {
+      return context.validateCode(new ValidationOptions(stack.getWorkingLang()), cc, valueset);
+    }
+  }
 
 }

@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -81,7 +82,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         tr = t.tr();
         tr.td().addText(r.getType());
         if (r.hasProfile()) {
-          tr.td().ah(context.getPrefix()+r.getProfile()).addText(r.getProfile());
+          tr.td().ah(r.getProfile()).addText(r.getProfile());
         }
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
         if (hasVRead)
@@ -112,7 +113,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String display(DomainResource r) throws UnsupportedEncodingException, IOException {
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((CapabilityStatement) r).present();
   }
 
