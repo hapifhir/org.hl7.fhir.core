@@ -553,7 +553,16 @@ public class XmlParser extends ParserBase {
     return false;
   }
 
-
+  private void setXsiTypeIfIsTypeAttr(IXMLWriter xml, Element element) throws IOException, FHIRException {
+    if (isTypeAttr(element.getProperty()) && !Utilities.noString(element.getType())) {
+      String type = element.getType();
+      if (Utilities.isAbsoluteUrl(type)) {
+        type = type.substring(type.lastIndexOf("/")+1);
+      }
+      xml.attribute("xsi:type",type);    
+    }
+  }
+  
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
@@ -596,9 +605,7 @@ public class XmlParser extends ParserBase {
           xml.link(linkResolver.resolveProperty(element.getProperty()));
         xml.text(element.getValue());
       } else {
-        if (isTypeAttr(element.getProperty()) && !Utilities.noString(element.getType())) {
-          xml.attribute("xsi:type", element.getType());
-        }
+        setXsiTypeIfIsTypeAttr(xml, element);
         if (element.hasValue()) {
           if (linkResolver != null)
             xml.link(linkResolver.resolveType(element.getType()));
@@ -615,9 +622,7 @@ public class XmlParser extends ParserBase {
           xml.element(elementName);
       }
     } else {
-      if (isTypeAttr(element.getProperty()) && !Utilities.noString(element.getType())) {
-        xml.attribute("xsi:type", element.getType());
-      }
+      setXsiTypeIfIsTypeAttr(xml, element);
       for (Element child : element.getChildren()) {
         if (isAttr(child.getProperty())) {
           if (linkResolver != null)
