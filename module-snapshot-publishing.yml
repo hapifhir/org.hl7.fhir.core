@@ -5,6 +5,8 @@ trigger:
     include:
     - master
 
+pr: none
+
 strategy:
   matrix:
     dstu2:
