@@ -863,6 +863,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       b.append(".png");
       String file = Utilities.path(dest, b.toString());
       if (!new File(file).exists()) {
+        File newFile = new File(file);
+        newFile.getParentFile().mkdirs();
+        newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         genImage(indents, hasChildren, lineColor, stream);
         if (outputTracker!=null)
