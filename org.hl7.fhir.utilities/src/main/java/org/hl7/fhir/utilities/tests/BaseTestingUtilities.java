@@ -14,6 +14,11 @@ public class BaseTestingUtilities {
   static public boolean silent;
 
   public static String loadTestResource(String... paths) throws IOException {
+    System.out.println("=====================================");
+    System.out.println("new File(\"../../fhir-test-cases\").exists() == " + new File("../../fhir-test-cases").exists());
+    System.out.println("isTryToLoadFromFileSystem() == " + isTryToLoadFromFileSystem());
+    System.out.println("=====================================");
+
     if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       // ok, we'll resolve this locally
@@ -22,6 +27,11 @@ public class BaseTestingUtilities {
       // resolve from the package 
       String contents;
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
+
+      System.out.println("=====================================");
+      System.out.println("classpath == " + classpath);
+      System.out.println("=====================================");
+
       try (InputStream inputStream = BaseTestingUtilities.class.getResourceAsStream(classpath)) {
         if (inputStream == null) {
           throw new IOException("Can't find file on classpath: " + classpath);
