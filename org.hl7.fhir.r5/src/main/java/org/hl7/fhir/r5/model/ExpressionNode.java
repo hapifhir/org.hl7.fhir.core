@@ -72,8 +72,9 @@ public class ExpressionNode {
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
-    HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
-    ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
+    HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
+    // Local extensions to FHIRPath
+    HtmlChecks, AliasAs, Alias, fromBase64, toBase64;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -133,6 +134,8 @@ public class ExpressionNode {
       if (name.equals("aliasAs")) return Function.AliasAs;
       if (name.equals("htmlChecks")) return Function.HtmlChecks;
       if (name.equals("htmlchecks")) return Function.HtmlChecks; // support change of care from R3
+      if (name.equals("fromBase64")) return Function.fromBase64;
+      if (name.equals("toBase64")) return Function.toBase64;      
       if (name.equals("ofType")) return Function.OfType;      
       if (name.equals("type")) return Function.Type;      
       if (name.equals("toInteger")) return Function.ToInteger;
@@ -209,6 +212,8 @@ public class ExpressionNode {
       case HasValue : return "hasValue";
       case Alias : return "alias";
       case AliasAs : return "aliasAs";
+      case fromBase64 : return "fromBase64";
+      case toBase64 : return "toBase64";
       case HtmlChecks : return "htmlChecks";
       case OfType : return "ofType";
       case Type : return "type";

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -1146,6 +1147,8 @@ public class FHIRPathEngine {
     case HasValue: return checkParamCount(lexer, location, exp, 0);
     case Alias: return checkParamCount(lexer, location, exp, 1);
     case AliasAs: return checkParamCount(lexer, location, exp, 1);
+    case fromBase64: return checkParamCount(lexer, location, exp, 0);
+    case toBase64: return checkParamCount(lexer, location, exp, 0);
     case HtmlChecks: return checkParamCount(lexer, location, exp, 0);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
@@ -2643,7 +2646,11 @@ public class FHIRPathEngine {
       return anything(CollectionStatus.SINGLETON); 
     case AliasAs : 
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return focus; 
+      return focus;
+    case fromBase64:
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case toBase64:
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case ToInteger : {
       checkContextPrimitive(focus, "toInteger", true);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
@@ -2818,6 +2825,8 @@ public class FHIRPathEngine {
     case AllTrue: return funcAllTrue(context, focus, exp);
     case HasValue : return funcHasValue(context, focus, exp);
     case AliasAs : return funcAliasAs(context, focus, exp);
+    case fromBase64 : return funcFromBase64(context, focus, exp);
+    case toBase64 : return funcToBase64(context, focus, exp);
     case Alias : return funcAlias(context, focus, exp);
     case HtmlChecks : return funcHtmlChecks(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
@@ -2846,7 +2855,27 @@ public class FHIRPathEngine {
     }
   }
 
-	private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+	private List<Base> funcToBase64(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+	  List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 1) {
+      String s = convertToString(focus.get(0));
+      result.add(new StringType(Base64.encodeBase64String(s.getBytes())));
+    }
+    return result;
+  }
+
+
+  private List<Base> funcFromBase64(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+	  List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 1) {
+      String s = convertToString(focus.get(0));
+      result.add(new StringType(new String(Base64.decodeBase64(s))));
+    }
+    return result;
+  }
+
+
+  private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
     context.addAlias(name, focus);
