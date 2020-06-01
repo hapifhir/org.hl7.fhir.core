@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -123,6 +124,16 @@ public class ValidationService {
     if (cliContext.getMap() == null)
       throw new Exception("Must provide a map when doing a transform");
     try {
+      List<StructureDefinition> structures = validator.getContext().allStructures();
+      for (StructureDefinition sd : structures) {
+        if (!sd.hasSnapshot()) {
+          if (sd.getKind()!=null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
+            validator.getContext().generateSnapshot(sd, true);
+          }  else {
+            validator.getContext().generateSnapshot(sd, false);
+          }
+        }
+      }
       validator.setMapLog(cliContext.getMapLog());
       org.hl7.fhir.r5.elementmodel.Element r = validator.transform(cliContext.getSources().get(0), cliContext.getMap());
       System.out.println(" ...success");
