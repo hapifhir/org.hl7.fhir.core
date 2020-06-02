@@ -509,6 +509,55 @@ public class Utilities {
     return b.toString();
   }
 
+  public static String unescapeJson(String json) throws FHIRException  {
+    if (json == null)
+      return null;
+    
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    while (i < json.length()) {
+      if (json.charAt(i) == '\\') {
+        i++;
+        char ch = json.charAt(i);
+        switch (ch) {
+        case '"':
+          b.append('b');
+          break;
+        case '\\':
+          b.append('\\');
+          break;
+        case '/':
+          b.append('/');
+          break;
+        case 'b':
+          b.append('\b');
+          break;
+        case 'f':
+          b.append('\f');
+          break;
+        case 'n':
+          b.append('\n');
+          break;
+        case 'r':
+          b.append('\r');
+          break;
+        case 't':
+          b.append('\t');
+          break;
+        case 'u':
+          String hex = json.substring(i+1, i+5);
+          b.append((char) Integer.parseInt(hex, 16));
+          break;
+        default:
+          throw new FHIRException("Unknown JSON escape \\"+ch);
+        }
+      }  else
+        b.append(json.charAt(i));
+      i++;
+    }   
+    return b.toString();
+  }
+
 
   public static boolean isPlural(String word) {
     word = word.toLowerCase();

@@ -1151,6 +1151,7 @@ public class FHIRPathEngine {
     case Encode: return checkParamCount(lexer, location, exp, 1);
     case Decode: return checkParamCount(lexer, location, exp, 1);
     case Escape: return checkParamCount(lexer, location, exp, 1);
+    case Unescape: return checkParamCount(lexer, location, exp, 1);
     case Trim: return checkParamCount(lexer, location, exp, 0);
     case Split: return checkParamCount(lexer, location, exp, 1);
     case Join: return checkParamCount(lexer, location, exp, 1);    
@@ -2661,6 +2662,9 @@ public class FHIRPathEngine {
     case Escape:
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case Unescape:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case Trim:
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case Split:
@@ -2846,6 +2850,7 @@ public class FHIRPathEngine {
     case Encode : return funcEncode(context, focus, exp);
     case Decode : return funcDecode(context, focus, exp);
     case Escape : return funcEscape(context, focus, exp);
+    case Unescape : return funcUnescape(context, focus, exp);
     case Trim : return funcTrim(context, focus, exp);
     case Split : return funcSplit(context, focus, exp);
     case Join : return funcJoin(context, focus, exp); 
@@ -2952,6 +2957,23 @@ public class FHIRPathEngine {
         result.add(new StringType(Utilities.escapeXml(cnt)));        
       } else if ("json".equals(param)) {
         result.add(new StringType(Utilities.escapeJson(cnt)));        
+      }
+    }
+
+    return result;  
+  }
+
+  private List<Base> funcUnescape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    String param = nl.get(0).primitiveValue();
+
+    List<Base> result = new ArrayList<Base>();
+    if (focus.size() == 1) {
+      String cnt = focus.get(0).primitiveValue();
+      if ("html".equals(param)) {
+        result.add(new StringType(Utilities.unescapeXml(cnt)));        
+      } else if ("json".equals(param)) {
+        result.add(new StringType(Utilities.unescapeJson(cnt)));        
       }
     }
 

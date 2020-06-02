@@ -74,7 +74,7 @@ public class ExpressionNode {
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
     // R3 functions
-    Encode, Decode, Escape, Trim, Split, Join, 
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, 
     // Local extensions to FHIRPath
     HtmlChecks, AliasAs, Alias;
 
@@ -139,6 +139,7 @@ public class ExpressionNode {
       if (name.equals("encode")) return Function.Encode;
       if (name.equals("decode")) return Function.Decode;      
       if (name.equals("escape")) return Function.Escape;
+      if (name.equals("unescape")) return Function.Unescape;
       if (name.equals("trim")) return Function.Trim;      
       if (name.equals("split")) return Function.Split;
       if (name.equals("join")) return Function.Join;            
@@ -221,6 +222,7 @@ public class ExpressionNode {
       case Encode : return "encode";
       case Decode : return "decode";
       case Escape : return "escape";
+      case Unescape : return "unescape";
       case Trim : return "trim";
       case Split : return "split";
       case Join : return "join";
