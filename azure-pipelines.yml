@@ -74,6 +74,7 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean package'
+      options: '-X'
 
   # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
