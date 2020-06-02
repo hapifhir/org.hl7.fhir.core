@@ -78,6 +78,7 @@ steps:
   # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
     displayName: 'codecov Bash Uploader'
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   # Publishes the test results to build artifacts.
   - task: PublishCodeCoverageResults@1
@@ -86,7 +87,8 @@ steps:
       codeCoverageTool: 'JaCoCo'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
-
+    condition: and(eq(variables.currentImage, 'ubuntu-16.04'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    
   # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Validator jar'
