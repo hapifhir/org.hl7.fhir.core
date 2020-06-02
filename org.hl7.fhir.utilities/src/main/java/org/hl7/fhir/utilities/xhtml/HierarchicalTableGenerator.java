@@ -920,4 +920,12 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     if (!check)
       throw new FHIRException(message);
   }
+
+  public void emptyRow(TableModel model, int cellCount) {
+    Row r = new Row();
+    model.rows.add(r);
+    for (int i = 0; i < cellCount; i++) {
+      r.getCells().add(new Cell());
+    }
+  }
 }

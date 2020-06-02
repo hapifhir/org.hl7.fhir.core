@@ -1147,8 +1147,12 @@ public class FHIRPathEngine {
     case HasValue: return checkParamCount(lexer, location, exp, 0);
     case Alias: return checkParamCount(lexer, location, exp, 1);
     case AliasAs: return checkParamCount(lexer, location, exp, 1);
-    case fromBase64: return checkParamCount(lexer, location, exp, 0);
-    case toBase64: return checkParamCount(lexer, location, exp, 0);
+    case Encode: return checkParamCount(lexer, location, exp, 1);
+    case Decode: return checkParamCount(lexer, location, exp, 1);
+    case Escape: return checkParamCount(lexer, location, exp, 1);
+    case Trim: return checkParamCount(lexer, location, exp, 0);
+    case Split: return checkParamCount(lexer, location, exp, 1);
+    case Join: return checkParamCount(lexer, location, exp, 1);    
     case HtmlChecks: return checkParamCount(lexer, location, exp, 0);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
@@ -2646,10 +2650,23 @@ public class FHIRPathEngine {
       return anything(CollectionStatus.SINGLETON); 
     case AliasAs : 
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return focus;
-    case fromBase64:
+      return focus;      
+    case Encode:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
-    case toBase64:
+    case Decode:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case Escape:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case Trim:
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case Split:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    case Join:
+      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case ToInteger : {
       checkContextPrimitive(focus, "toInteger", true);
@@ -2825,8 +2842,12 @@ public class FHIRPathEngine {
     case AllTrue: return funcAllTrue(context, focus, exp);
     case HasValue : return funcHasValue(context, focus, exp);
     case AliasAs : return funcAliasAs(context, focus, exp);
-    case fromBase64 : return funcFromBase64(context, focus, exp);
-    case toBase64 : return funcToBase64(context, focus, exp);
+    case Encode : return funcEncode(context, focus, exp);
+    case Decode : return funcDecode(context, focus, exp);
+    case Escape : return funcEscape(context, focus, exp);
+    case Trim : return funcTrim(context, focus, exp);
+    case Split : return funcSplit(context, focus, exp);
+    case Join : return funcJoin(context, focus, exp); 
     case Alias : return funcAlias(context, focus, exp);
     case HtmlChecks : return funcHtmlChecks(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
@@ -2854,27 +2875,43 @@ public class FHIRPathEngine {
       throw new Error("not Implemented yet");
     }
   }
+	
+  private List<Base> funcEncode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;	
+	}
 
-	private List<Base> funcToBase64(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-	  List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
-      result.add(new StringType(Base64.encodeBase64String(s.getBytes())));
-    }
-    return result;
+  private List<Base> funcDecode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;  
   }
 
-
-  private List<Base> funcFromBase64(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-	  List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
-      result.add(new StringType(new String(Base64.decodeBase64(s))));
-    }
-    return result;
+  private List<Base> funcEscape(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;  
   }
 
+  private List<Base> funcTrim(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;  
+  }
 
+  private List<Base> funcSplit(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;  
+  }
+
+  private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    
+    return result;  
+  }
+	
   private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
