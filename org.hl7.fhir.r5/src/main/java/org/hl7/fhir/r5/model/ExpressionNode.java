@@ -72,8 +72,11 @@ public class ExpressionNode {
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
-    HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
-    ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
+    HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
+    // R3 functions
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, 
+    // Local extensions to FHIRPath
+    HtmlChecks, AliasAs, Alias;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -133,6 +136,13 @@ public class ExpressionNode {
       if (name.equals("aliasAs")) return Function.AliasAs;
       if (name.equals("htmlChecks")) return Function.HtmlChecks;
       if (name.equals("htmlchecks")) return Function.HtmlChecks; // support change of care from R3
+      if (name.equals("encode")) return Function.Encode;
+      if (name.equals("decode")) return Function.Decode;      
+      if (name.equals("escape")) return Function.Escape;
+      if (name.equals("unescape")) return Function.Unescape;
+      if (name.equals("trim")) return Function.Trim;      
+      if (name.equals("split")) return Function.Split;
+      if (name.equals("join")) return Function.Join;            
       if (name.equals("ofType")) return Function.OfType;      
       if (name.equals("type")) return Function.Type;      
       if (name.equals("toInteger")) return Function.ToInteger;
@@ -209,6 +219,13 @@ public class ExpressionNode {
       case HasValue : return "hasValue";
       case Alias : return "alias";
       case AliasAs : return "aliasAs";
+      case Encode : return "encode";
+      case Decode : return "decode";
+      case Escape : return "escape";
+      case Unescape : return "unescape";
+      case Trim : return "trim";
+      case Split : return "split";
+      case Join : return "join";
       case HtmlChecks : return "htmlChecks";
       case OfType : return "ofType";
       case Type : return "type";
