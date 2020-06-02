@@ -188,9 +188,6 @@ public class XhtmlNode implements IBaseXhtml {
     return node;
   }
 
-
-
-
   public XhtmlNode addText(String content)
   {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 

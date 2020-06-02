@@ -863,6 +863,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       b.append(".png");
       String file = Utilities.path(dest, b.toString());
       if (!new File(file).exists()) {
+        File newFile = new File(file);
+        newFile.getParentFile().mkdirs();
+        newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         genImage(indents, hasChildren, lineColor, stream);
         if (outputTracker!=null)
@@ -916,5 +919,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private void check(boolean check, String message) throws FHIRException  {
     if (!check)
       throw new FHIRException(message);
+  }
+
+  public void emptyRow(TableModel model, int cellCount) {
+    Row r = new Row();
+    model.rows.add(r);
+    for (int i = 0; i < cellCount; i++) {
+      r.getCells().add(new Cell());
+    }
   }
 }
