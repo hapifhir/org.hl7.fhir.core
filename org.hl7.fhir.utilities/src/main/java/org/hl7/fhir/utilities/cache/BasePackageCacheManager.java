@@ -60,7 +60,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
         }
         InputStream stream = packageClient.fetch(id, version);
         String url = packageClient.url(id, version);
-        return new InputStreamWithSrc(stream, packageClient.url(id, version), version);
+        return new InputStreamWithSrc(stream, url, version);
       } catch (IOException e) {
         ourLog.info("Failed to resolve package {}#{} from server: {}", id, version, nextPackageServer);
       }

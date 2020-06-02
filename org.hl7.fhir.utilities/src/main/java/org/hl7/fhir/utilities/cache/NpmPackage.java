@@ -195,6 +195,7 @@ public class NpmPackage {
   private JsonObject npm;
   private Map<String, NpmPackageFolder> folders = new HashMap<>();
   private boolean changedByLoader; // internal qa only!
+  private Map<String, Object> userData = new HashMap<>();
 
   /**
    * Constructor
@@ -208,6 +209,10 @@ public class NpmPackage {
     loadFiles(res, path, new File(path));
     res.checkIndexed(path);
     return res;
+  }
+
+  public Map<String, Object> getUserData() {
+    return userData;
   }
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
