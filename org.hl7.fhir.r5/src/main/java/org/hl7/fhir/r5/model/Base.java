@@ -79,6 +79,15 @@ private Map<String, Object> userData;
     return (Integer) getUserData(name);
   }
 
+  public void copyUserData(Base other) {
+    if (other.userData != null) {
+      if (userData == null) {
+        userData = new HashMap<>();
+      }
+      userData.putAll(other.userData);
+    }
+  }      
+
   public boolean hasFormatComment() {
   	return (formatCommentsPre != null && !formatCommentsPre.isEmpty()) || (formatCommentsPost != null && !formatCommentsPost.isEmpty());
   }
