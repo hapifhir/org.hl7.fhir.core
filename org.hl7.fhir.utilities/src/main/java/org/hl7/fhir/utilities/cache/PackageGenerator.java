@@ -100,7 +100,8 @@ public class PackageGenerator {
   }
   
   public PackageGenerator name(String value) {
-    object.addProperty("name", "@fhir/"+value);
+    // NOTE: I removed a prefix of "@fhir/" here. What was this for? -JA
+    object.addProperty("name", value);
     return this;
   }
    

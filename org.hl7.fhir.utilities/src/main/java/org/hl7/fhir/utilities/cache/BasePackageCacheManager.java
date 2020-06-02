@@ -11,16 +11,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
+  private Function<String, PackageClient> myClientFactory = address -> new CachingPackageClient(address);
 
   /**
    * Constructor
    */
   public BasePackageCacheManager() {
     super();
+  }
+
+  /**
+   * Provide a new client factory implementation
+   */
+  public void setClientFactory(Function<String, PackageClient> theClientFactory) {
+    Validate.notNull(theClientFactory, "theClientFactory must not be null");
+    myClientFactory = theClientFactory;
   }
 
   public List<String> getPackageServers() {
@@ -53,7 +63,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
 
     for (String nextPackageServer : getPackageServers()) {
-      CachingPackageClient packageClient = new CachingPackageClient(nextPackageServer);
+      PackageClient packageClient = myClientFactory.apply(nextPackageServer);
       try {
         if (Utilities.noString(version)) {
           version = packageClient.getLatestVersion(id);
@@ -92,8 +102,8 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
 
   private String getPackageUrl(String packageId, String server) throws IOException {
-    CachingPackageClient pc = new CachingPackageClient(server);
-    List<CachingPackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
+    PackageClient pc = myClientFactory.apply(server);
+    List<PackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
     if (res.size() == 0) {
       return null;
     } else {
@@ -117,13 +127,13 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   private String getPackageId(String canonical, String server) throws IOException {
-    CachingPackageClient pc = new CachingPackageClient(server);
-    List<CachingPackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
+    PackageClient pc = myClientFactory.apply(server);
+    List<PackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
     if (res.size() == 0) {
       return null;
     } else {
       // this is driven by HL7 Australia (http://hl7.org.au/fhir/ is the canonical url for the base package, and the root for all the others)
-      for (CachingPackageClient.PackageInfo pi : res) {
+      for (PackageClient.PackageInfo pi : res) {
         if (canonical.equals(pi.getCanonical())) {
           return pi.getId();
         }
