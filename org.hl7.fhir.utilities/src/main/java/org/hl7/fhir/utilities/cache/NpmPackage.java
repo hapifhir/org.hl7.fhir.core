@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -204,11 +205,23 @@ public class NpmPackage {
     super();
   }
 
+  /**
+   * Factory method that parses a package from an extracted folder
+   */
   public static NpmPackage fromFolder(String path) throws IOException {
     NpmPackage res = new NpmPackage();
     loadFiles(res, path, new File(path));
     res.checkIndexed(path);
     return res;
+  }
+
+  /**
+   * Factory method that starts a new empty package using the given PackageGenerator to create the manifest
+   */
+  public static NpmPackage empty(PackageGenerator thePackageGenerator) {
+    NpmPackage retVal = new NpmPackage();
+    retVal.npm = thePackageGenerator.getRootJsonObject();
+    return retVal;
   }
 
   public Map<String, Object> getUserData() {
@@ -787,7 +800,7 @@ public class NpmPackage {
           TextFile.bytesToFile(b, Utilities.path(dir.getAbsolutePath(), n, s));
         }
       }
-      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), n, ".index.json"));
     }
     byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
@@ -825,7 +838,7 @@ public class NpmPackage {
           tar.closeArchiveEntry();
         }
       }
-      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
@@ -942,6 +955,9 @@ public class NpmPackage {
   }
 
   public void addFile(String folderName, String name, byte[] cnt, String type) {
+    if (!folders.containsKey(folderName)) {
+      folders.put(folderName, new NpmPackageFolder(folderName));
+    }
     NpmPackageFolder folder = folders.get(folderName);
     folder.content.put(name, cnt);
     if (!folder.types.containsKey(type))
