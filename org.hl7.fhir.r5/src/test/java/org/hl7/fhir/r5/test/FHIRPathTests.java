@@ -213,6 +213,9 @@ public class FHIRPathTests {
             Assertions.assertTrue(outcome.get(i).equalsDeep(q), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
           } else {
             Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
+            if (!(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()))) {
+              System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
+            }
             Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
           }
         }
