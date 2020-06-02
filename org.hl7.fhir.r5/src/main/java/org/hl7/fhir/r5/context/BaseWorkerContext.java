@@ -309,7 +309,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
       if (ed.getPath().equals("Extension.url") || ed.getPath().endsWith(".extension.url") ) {
         ed.setMin(1);
-        ed.getBase().setMin(1);
+        if (ed.hasBase()) {
+          ed.getBase().setMin(1);
+        }
       }
       if ("extension".equals(ed.getSliceName())) {
         ed.setSliceName(null);
