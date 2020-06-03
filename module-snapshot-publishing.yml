@@ -19,8 +19,8 @@ strategy:
 #      module: "org.hl7.fhir.r4"
     r5:
       module: "org.hl7.fhir.r5"
-#    validator:
-#      module: "org.hl7.fhir.validation"
+    validator:
+      module: "org.hl7.fhir.validation"
 #    validator_cli:
 #      module: "org.hl7.fhir.validation.cli"
   maxParallel: 3
