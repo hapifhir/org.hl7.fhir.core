@@ -1454,68 +1454,71 @@ public class VersionConvertor_14_50 {
         org.hl7.fhir.r5.model.ElementDefinition tgt = new org.hl7.fhir.r5.model.ElementDefinition();
         copyElement(src, tgt);
         if (src.hasPathElement())
-            tgt.setPathElement(convertString(src.getPathElement()));
+          tgt.setPathElement(convertString(src.getPathElement()));
         tgt.setRepresentation(src.getRepresentation().stream()
-                .map(VersionConvertor_14_50::convertPropertyRepresentation)
-                .collect(Collectors.toList()));
+            .map(VersionConvertor_14_50::convertPropertyRepresentation)
+            .collect(Collectors.toList()));
         if (src.hasName())
-            tgt.setSliceNameElement(convertString(src.getNameElement()));
+          tgt.setSliceNameElement(convertString(src.getNameElement()));
         if (src.hasLabel())
-            tgt.setLabelElement(convertString(src.getLabelElement()));
+          tgt.setLabelElement(convertString(src.getLabelElement()));
         for (org.hl7.fhir.dstu2016may.model.Coding t : src.getCode()) tgt.addCode(convertCoding(t));
         if (src.hasSlicing())
-            tgt.setSlicing(convertElementDefinitionSlicingComponent(src.getSlicing(), context, pos));
+          tgt.setSlicing(convertElementDefinitionSlicingComponent(src.getSlicing(), context, pos));
         if (src.hasShort())
-            tgt.setShortElement(convertString(src.getShortElement()));
+          tgt.setShortElement(convertString(src.getShortElement()));
         if (src.hasDefinition())
-            tgt.setDefinitionElement(convertMarkdown(src.getDefinitionElement()));
+          tgt.setDefinitionElement(convertMarkdown(src.getDefinitionElement()));
         if (src.hasComments())
-            tgt.setCommentElement(convertMarkdown(src.getCommentsElement()));
+          tgt.setCommentElement(convertMarkdown(src.getCommentsElement()));
         if (src.hasRequirements())
-            tgt.setRequirementsElement(convertMarkdown(src.getRequirementsElement()));
+          tgt.setRequirementsElement(convertMarkdown(src.getRequirementsElement()));
         for (org.hl7.fhir.dstu2016may.model.StringType t : src.getAlias()) tgt.addAlias(t.getValue());
         if (src.hasMin())
-            tgt.setMin(src.getMin());
+          tgt.setMin(src.getMin());
         if (src.hasMax())
-            tgt.setMaxElement(convertString(src.getMaxElement()));
+          tgt.setMaxElement(convertString(src.getMaxElement()));
         if (src.hasBase())
-            tgt.setBase(convertElementDefinitionBaseComponent(src.getBase()));
+          tgt.setBase(convertElementDefinitionBaseComponent(src.getBase()));
         if (src.hasContentReference())
-            tgt.setContentReferenceElement(convertUri(src.getContentReferenceElement()));
-        for (org.hl7.fhir.dstu2016may.model.ElementDefinition.TypeRefComponent t : src.getType()) convertTypeRefComponent(t, tgt.getType());
-        if (src.hasDefaultValue())
+          tgt.setContentReferenceElement(convertUri(src.getContentReferenceElement()));
+        // work around for problem in R2B definitions:
+        if (!src.hasContentReference()) {
+          for (org.hl7.fhir.dstu2016may.model.ElementDefinition.TypeRefComponent t : src.getType()) convertTypeRefComponent(t, tgt.getType());
+          if (src.hasDefaultValue())
             tgt.setDefaultValue(convertType(src.getDefaultValue()));
-        if (src.hasMeaningWhenMissing())
+          if (src.hasMeaningWhenMissing())
             tgt.setMeaningWhenMissingElement(convertMarkdown(src.getMeaningWhenMissingElement()));
-        if (src.hasFixed())
+          if (src.hasFixed())
             tgt.setFixed(convertType(src.getFixed()));
-        if (src.hasPattern())
+          if (src.hasPattern())
             tgt.setPattern(convertType(src.getPattern()));
-        if (src.hasExample())
+          if (src.hasExample())
             tgt.addExample().setLabel("General").setValue(convertType(src.getExample()));
-        if (src.hasMinValue())
+          if (src.hasMinValue())
             tgt.setMinValue(convertType(src.getMinValue()));
-        if (src.hasMaxValue())
+          if (src.hasMaxValue())
             tgt.setMaxValue(convertType(src.getMaxValue()));
-        if (src.hasMaxLength())
+          if (src.hasMaxLength())
             tgt.setMaxLengthElement(convertInteger(src.getMaxLengthElement()));
-        for (org.hl7.fhir.dstu2016may.model.IdType t : src.getCondition()) tgt.addCondition(t.getValue());
-        for (org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint()) tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
-        if (src.hasMustSupport())
+          for (org.hl7.fhir.dstu2016may.model.IdType t : src.getCondition()) tgt.addCondition(t.getValue());
+          for (org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint()) tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
+          if (src.hasMustSupport())
             tgt.setMustSupportElement(convertBoolean(src.getMustSupportElement()));
-        if (src.hasIsModifier())
+          if (src.hasIsModifier())
             tgt.setIsModifierElement(convertBoolean(src.getIsModifierElement()));
-        if (tgt.getIsModifier()) {
+          if (tgt.getIsModifier()) {
             String reason = org.hl7.fhir.dstu2016may.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.MODIFIER_REASON_EXTENSION);
             if (Utilities.noString(reason))
-                reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
+              reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
             tgt.setIsModifierReason(reason);
-        }
-        if (src.hasIsSummary())
+          }
+          if (src.hasIsSummary())
             tgt.setIsSummaryElement(convertBoolean(src.getIsSummaryElement()));
-        if (src.hasBinding())
+          if (src.hasBinding())
             tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
-        for (org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping()) tgt.addMapping(convertElementDefinitionMappingComponent(t));
+          for (org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping()) tgt.addMapping(convertElementDefinitionMappingComponent(t));
+        }
         return tgt;
     }
 
