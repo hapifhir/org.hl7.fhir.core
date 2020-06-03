@@ -53,6 +53,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -460,4 +463,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     TextFile.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
 
   }
+
+  @Override
+  public byte[] fetchRaw(String source) throws MalformedURLException, IOException {
+    URL url = new URL(source);
+    URLConnection c = url.openConnection();
+    return TextFile.streamToBytes(c.getInputStream());
+ }
 }

@@ -3,20 +3,14 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Provenance;
-import org.hl7.fhir.r5.model.Provenance;
+import org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
-import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ProvenanceRenderer extends ResourceRenderer {
@@ -148,7 +142,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     return hasExtensions; 
   }
 
-  public String display(DomainResource dr) throws UnsupportedEncodingException, IOException {
+  public String display(Resource dr) throws UnsupportedEncodingException, IOException {
     return display((Provenance) dr);
   }
 

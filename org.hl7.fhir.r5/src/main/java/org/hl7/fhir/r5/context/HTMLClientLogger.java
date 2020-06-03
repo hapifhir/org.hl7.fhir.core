@@ -42,6 +42,8 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class HTMLClientLogger implements ToolingClientLogger {
 
+  private static final boolean DEBUG = false;
+  
   private PrintStream file;
   private int id = 0;
   private String lastId;
@@ -60,6 +62,9 @@ public class HTMLClientLogger implements ToolingClientLogger {
     if (file == null)
       return;
     id++;
+    if (DEBUG) {
+      System.out.println("tx: " +method+" "+url+" "+present(body));
+    }
     lastId = Integer.toString(id);
     file.println("<hr/><a name=\"l"+lastId+"\"> </a>");
     file.println("<pre>");
@@ -80,6 +85,9 @@ public class HTMLClientLogger implements ToolingClientLogger {
   public void logResponse(String outcome, List<String> headers, byte[] body) {
     if (file == null)
       return;
+    if (DEBUG) {
+      System.out.println("tx: " +outcome+" "+present(body));
+    }
     file.println("<pre>");
     file.println(outcome);
     for (String s : headers)  
@@ -92,6 +100,19 @@ public class HTMLClientLogger implements ToolingClientLogger {
       }
     }
     file.println("</pre>");
+  }
+
+  private String present(byte[] body) {
+    if (body == null) {
+      return "";
+    }
+    String cnt = new String(body);
+    cnt = cnt.replace("\n", " ").replace("\r", "");
+    if (cnt.length() > 400) {
+      return cnt.substring(0, 398)+"...";
+    } else {
+      return cnt;
+    }
   }
 
   public String getLastId() {

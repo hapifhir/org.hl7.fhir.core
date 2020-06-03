@@ -8,8 +8,42 @@ title: FHIR Validator Release Notes
 
 (no changes yet)
 
-## v4.2.30 (2020-05-12)
+## v5.0.6 (2020-06-01)
 
+
+(no changes yet)
+
+## v5.0.5 (2020-05-30)
+
+
+(no changes yet)
+
+## v5.0.5 (2020-05-30)
+
+
+* Snapshot Generator: Add more testing for type consistency when profiling elements
+* Snapshot Generator: Fix bug constraining elements once they are sliced
+* Add support for http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name for CDA use
+
+## v5.0.4 (2020-05-27)
+
+(no changes yet)
+
+## v5.0.3 (2020-05-26)
+
+
+* Fix for Core issue #95 - recursion on profile definition
+
+## v5.0.2 (2020-05-22)
+
+
+* Fix to check invariants on Elements with type redirections (e.g. ValueSet.compose.exclude)
+* fix fatal NPE validating bundles when resource is missing
+* fix tests for R5 changes 
+* Fix to validate code units on Quantity 
+* Add validation for Attachment & check maxSize extension on base64Binary
+
+## v4.2.30 (2020-05-12)
 
 * Allow mailto: urls as absolute URIs 
 
@@ -186,4 +220,4 @@ title: FHIR Validator Release Notes
 
 ## v4.1.60 (2020-02-02)
 
-* This re
+* T

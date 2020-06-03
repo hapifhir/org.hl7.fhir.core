@@ -43,6 +43,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
@@ -50,7 +51,6 @@ import org.hl7.fhir.r5.model.ICoding;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.TypeConvertor;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
@@ -542,7 +542,7 @@ public class Element extends Base {
   		return null;
 	  Element result = null;
 	  for (Element child : children) {
-	  	if (child.getName().equals(name)) {
+	  	if (child.getName().equals(name) || (child.getName().startsWith(name) && child.getProperty().getDefinition().isChoice())) {
 	  		if (result == null)
 	  			result = child;
 	  		else 
@@ -881,6 +881,34 @@ public class Element extends Base {
       }
     }
     return null;
+  }
+
+  public Base getExtensionValue(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return child.getNamedChild("value");
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean hasExtension(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   

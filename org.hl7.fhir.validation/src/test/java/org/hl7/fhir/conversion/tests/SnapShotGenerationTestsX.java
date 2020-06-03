@@ -18,12 +18,15 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.renderers.RendererFactory;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -516,8 +519,12 @@ public class SnapShotGenerationTestsX {
       System.out.println("\r\nException: " + e.getMessage());
       throw e;
     }
-    if (output.getDifferential().hasElement())
-      new NarrativeGenerator("", "http://hl7.org/fhir", TestingUtilitiesX.context(version)).setPkp(new TestPKP()).generate(output, null);
+    if (output.getDifferential().hasElement()) {
+      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+      rc.setDestDir(makeTempDir());
+      rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.context(), null, new TestPKP()));
+      RendererFactory.factory(output, rc).render(output);
+    }
     if (!fail) {
       test.output = output;
       TestingUtilitiesX.context(version).cacheResource(output);
@@ -533,6 +540,13 @@ public class SnapShotGenerationTestsX {
       Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");
     }
   }
+
+  private String makeTempDir() throws IOException {
+    String path = Utilities.path("[tmp]", "snapshot");
+    Utilities.createDirectory(path);
+    return path;
+  }
+
 
   private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);

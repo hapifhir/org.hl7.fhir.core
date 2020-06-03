@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.IOException;
+
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -13,8 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public class CDARoundTripTests {
 
@@ -181,6 +181,8 @@ public class CDARoundTripTests {
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ce.xml"), "ce.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
+    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
     for (StructureDefinition sd : context.getStructures()) {
       if (!sd.hasSnapshot()) {
@@ -191,6 +193,8 @@ public class CDARoundTripTests {
     Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
     FHIRPathEngine fp = new FHIRPathEngine(context);
     Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
+    Assertions.assertEquals("SoEN", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.displayName")));
+    Assertions.assertEquals("SoEN2", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.sdtcDisplayName")));
   }
 
 }

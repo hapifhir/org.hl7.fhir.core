@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
@@ -92,14 +93,12 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -107,14 +106,14 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -534,9 +533,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
       }
-      if (derived.getUrl().equals("http://sharedhealth.exchange/fhir/StructureDefinition/profile-operationoutcome")) {
-        debug = true;
-      }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -872,15 +868,25 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (outcome.getType().size() == 0) {
                 throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
               }
+              boolean nonExtension = false;
               if (outcome.getType().size() > 1) {
                 for (TypeRefComponent t : outcome.getType()) {
-                  if (!t.getWorkingCode().equals("Reference"))
-                    throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
+                  if (!t.getWorkingCode().equals("Reference")) {
+                    for (ElementDefinition ed : diffMatches) {
+                      if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension")) {
+                        nonExtension = true;
+                      }
+                    }
+                  }
                 }
               }
-              StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
-              if (dt == null)
+              if (nonExtension) {
+                throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, cpath, differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
+              } 
+              StructureDefinition dt = outcome.getType().size() > 1 ? context.fetchTypeDefinition("Element") : getProfileForDataType(outcome.getType().get(0));
+              if (dt == null) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
+              }
               contextName = dt.getUrl();
               int start = diffCursor;
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
@@ -892,6 +898,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           baseCursor++;
         } else if (diffMatches.size() == 1 && (slicingDone || (!isImplicitSlicing(diffMatches.get(0), cpath) && !(diffMatches.get(0).hasSlicing() || (isExtension(diffMatches.get(0)) && diffMatches.get(0).hasSliceName()))))) {// one matching element in the differential
           ElementDefinition template = null;
+          if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
+            throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, url, diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));            
+          }
           if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
@@ -906,8 +915,16 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             if (sd != null) {
-              checkNotGenerating(sd, "an extension definition");
-              if (!sd.hasSnapshot()) {
+              if (!isMatchingType(sd, diffMatches.get(0).getType())) {
+                throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, sd.getUrl(), diffMatches.get(0).getPath(), sd.getType(), p.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));            
+              }
+              if (isGenerating(sd)) {
+                // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
+                // but we check anyway
+                if (sd.getSnapshot().getElementFirstRep().isEmpty()) {
+                  throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), "Source for first element"));
+                }
+              } else if (!sd.hasSnapshot()) {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
@@ -1436,7 +1453,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!diffMatches.get(0).hasSliceName()) { // it's not real content, just the slice
             diffpos++; 
           }
-          if (hasInnerDiffMatches(differential, cpath, diffpos, diffLimit, base.getElement(), false)) {
+          if (hasInnerDiffMatches(differential, cpath, diffCursor, diffLimit, base.getElement(), false)) {
             int nbl = findEndOfElement(base, baseCursor);
             int ndx = differential.getElement().indexOf(diffMatches.get(0));
             int ndc = ndx+(diffMatches.get(0).hasSlicing() ? 1 : 0);
@@ -1592,6 +1609,35 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
+    while (sd != null) {
+      for (TypeRefComponent tr : types) {
+        if (sd.getType().equals(tr.getCode())) {
+          return true;
+        }
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());    
+    }
+    return false;
+  }
+
+  private boolean isValidType(TypeRefComponent t, ElementDefinition base) {
+    for (TypeRefComponent tr : base.getType()) {
+      if (tr.getCode().equals(t.getCode())) {
+        return true;
+      }
+      if (tr.getWorkingCode().equals(t.getCode())) {
+        System.out.println("Type error: use of a simple type \""+t.getCode()+"\" wrongly constraining "+base.getPath());
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isGenerating(StructureDefinition sd) {
+    return sd.hasUserData("profileutils.snapshot.generating");
   }
 
 
@@ -3102,10 +3148,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   private ElementDefinition getElementByName(List<ElementDefinition> elements, String contentReference) {
-    for (ElementDefinition ed : elements)
-      if (ed.hasSliceName() && ("#"+ed.getSliceName()).equals(contentReference))
+    for (ElementDefinition ed : elements) {
+      if (("#"+ed.getPath()).equals(contentReference)) {
         return ed;
-    return null;
+      }
+      if (("#"+ed.getId()).equals(contentReference)) {
+        return ed;
+      }
+    }
+    throw new Error("getElementByName: can't find "+contentReference+"in "+elements.toString());
+//    return null;
   }
 
   private ElementDefinition getElementById(List<ElementDefinition> elements, String contentReference) {
@@ -3230,8 +3282,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         list.add(0, root);
       }
     }
-    if (diff)
+    if (diff) {
       insertMissingSparseElements(list);
+    }
     genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null);
     try {
       return gen.generate(model, imagePath, 0, outputTracker);
@@ -3252,14 +3305,29 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) {
         // now work backwards down to lastMatch inserting missing path nodes
-        for (int index = pathCurrent.length-2; index >= firstDiff; index--) {
-          ElementDefinition root = new ElementDefinition().setPath(makePath(pathCurrent, index));
-          root.setId(root.getPath());
-          list.add(i, root);
+        ElementDefinition parent = findParent(list, i, list.get(i).getPath());
+        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1;
+        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1;
+        if (childDepth > parentDepth + 1) {
+          String basePath = parent.getPath();
+          String baseId = parent.getId();
+          for (int index = parentDepth; index >= firstDiff; index--) {
+            String mtail = makeTail(pathCurrent, parentDepth, index);
+            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail);
+            root.setId(baseId+"."+mtail);
+            list.add(i, root);
+          }
         }
       } 
       i++;
     }
+  }
+
+  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) {
+    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) {
+      i--;
+    }
+    return list.get(i);
   }
 
   private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) {
@@ -3271,6 +3339,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length;
   }
 
+  private String makeTail(String[] pathCurrent, int start, int index) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
+    for (int i = start; i <= index; i++) {
+      b.append(pathCurrent[i]);
+    }
+    return b.toString();
+  }
 
   private String makePath(String[] pathCurrent, int index) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
@@ -4252,7 +4327,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private String commas(List<ElementDefinitionSlicingDiscriminatorComponent> list) {
     CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
     for (ElementDefinitionSlicingDiscriminatorComponent id : list)
-      c.append(id.getType().toCode()+":"+id.getPath());
+      c.append((id.hasType() ? id.getType().toCode() : "??")+":"+id.getPath());
     return c.toString();
   }
 

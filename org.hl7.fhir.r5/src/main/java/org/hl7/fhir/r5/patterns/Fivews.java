@@ -3,6 +3,11 @@ package org.hl7.fhir.r5.patterns;
 
 
 
+import java.util.Date;
+import java.util.List;
+
+import org.hl7.fhir.exceptions.FHIRException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,13 +38,20 @@ package org.hl7.fhir.r5.patterns;
 */
 
 // Generated on Wed, May 8, 2019 10:40+1000 for FHIR v4.1.0
-
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Configuration;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.EnumFactory;
 import org.hl7.fhir.r5.model.Enumeration;
-import java.util.*;
-
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.InstantType;
+import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.Timing;
 /**
  * Who What When Where Why - Common pattern for all resources that deals with attribution.
  */

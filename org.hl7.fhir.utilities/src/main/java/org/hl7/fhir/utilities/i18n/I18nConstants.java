@@ -26,6 +26,7 @@ public class I18nConstants {
   public final static String CODESYSTEM_CS_VS_MISMATCH = "CodeSystem_CS_VS_MisMatch";
   public final static String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
   public final static String EXTENSION_EXT_CONTEXT_WRONG = "Extension_EXT_Context_Wrong";
+  public final static String EXTENSION_EXT_CONTEXT_WRONG_XVER = "EXTENSION_EXT_CONTEXT_WRONG_XVER";
   public final static String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public final static String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public final static String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";
@@ -171,6 +172,7 @@ public class I18nConstants {
   public final static String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
   public final static String TERMINOLOGY_TX_VALUESET_NOTFOUND2 = "Terminology_TX_ValueSet_NotFound2";
   public final static String TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID = "Type_Specific_Checks_DT_Base64_Valid";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG = "TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG";
   public final static String TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE = "Type_Specific_Checks_DT_Boolean_Value";
   public final static String TYPE_SPECIFIC_CHECKS_DT_CODE_WS = "Type_Specific_Checks_DT_Code_WS";
   public final static String TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE = "Type_Specific_Checks_DT_DateTime_Reasonable";
@@ -180,6 +182,7 @@ public class I18nConstants {
   public final static String TYPE_SPECIFIC_CHECKS_DT_DATE_VALID = "Type_Specific_Checks_DT_Date_Valid";
   public final static String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE = "Type_Specific_Checks_DT_Decimal_Range";
   public final static String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID = "Type_Specific_Checks_DT_Decimal_Valid";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS = "TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS";
   public final static String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM = "Type_Specific_Checks_DT_Identifier_System";
   public final static String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE = "TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE";
   public final static String TYPE_SPECIFIC_CHECKS_DT_ID_VALID = "Type_Specific_Checks_DT_ID_Valid";
@@ -206,6 +209,13 @@ public class I18nConstants {
   public final static String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
   public final static String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public final static String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME = "TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR = "TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG = "TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG";
+  public final static String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT";
   public final static String VALIDATION_BUNDLE_MESSAGE = "Validation_BUNDLE_Message";
   public final static String VALIDATION_VAL_CONTENT_UNKNOWN = "Validation_VAL_Content_Unknown";
   public final static String VALIDATION_VAL_NOTYPE = "Validation_VAL_NoType";
@@ -399,7 +409,7 @@ public class I18nConstants {
   public final static String CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT = "Can_only_specify_profile_in_the_context";
   public final static String NO_URL_IN_EXPAND_VALUE_SET_2 = "no_url_in_expand_value_set_2";
   public final static String NO_URL_IN_EXPAND_VALUE_SET = "no_url_in_expand_value_set";
-  public final static String NO_VALUE_SET = "no_value_set";
+  public final static String NO_VALUE_SET_IN_URL = "no_value_set";
   public final static String NO_PARAMETERS_PROVIDED_TO_EXPANDVS = "No_Parameters_provided_to_expandVS";
   public final static String NO_EXPANSION_PARAMETERS_PROVIDED = "No_Expansion_Parameters_provided";
   public final static String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";
@@ -482,30 +492,10 @@ public class I18nConstants {
   public static final String MEASURE_M_CRITERIA_CQL_NO_ELM = "MEASURE_M_CRITERIA_CQL_NO_ELM"; 
   public static final String MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID = "MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID"; 
   public static final String MEASURE_M_CRITERIA_CQL_NOT_FOUND = "MEASURE_M_CRITERIA_CQL_NOT_FOUND";
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
-//public static final String 
+  public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
   public static final String TERMINOLOGY_TX_SYSTEM_HTTPS = "TERMINOLOGY_TX_SYSTEM_HTTPS";
   public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
+  public static final String VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT = "VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT";
 }

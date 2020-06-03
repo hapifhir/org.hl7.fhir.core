@@ -35,11 +35,15 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -186,8 +190,39 @@ public class PackageCacheManager {
     }
   }
 
-  private static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  private static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
+  public interface CacheLockFunction<T> {
+    T get() throws IOException;
+  }
+  public class CacheLock {
+
+    private final File lockFile;
+
+    public CacheLock(String name) throws IOException {
+      this.lockFile = new File(cacheFolder, name + ".lock");
+      if (!lockFile.isFile()) {
+        TextFile.stringToFile("", lockFile);
+      }
+    }
+
+    public <T> T doWithLock(CacheLockFunction<T> f) throws FileNotFoundException, IOException {
+      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+        final FileLock fileLock = channel.lock();
+        T result = null;
+        try {
+          result = f.get();
+        } finally {
+          fileLock.release();
+        }
+        if (!lockFile.delete()) {
+          lockFile.deleteOnExit();
+        }
+        return result;
+      } 
+    }
+  }
+
+  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
+  public static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
 //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
@@ -256,8 +291,19 @@ public class PackageCacheManager {
   private void clearCache() throws IOException {
     for (File f : new File(cacheFolder).listFiles()) {
       if (f.isDirectory()) {
-        Utilities.clearDirectory(f.getAbsolutePath());
-        FileUtils.deleteDirectory(f);
+        new CacheLock(f.getName()).doWithLock(() -> {
+          Utilities.clearDirectory(f.getAbsolutePath());
+          try {
+            FileUtils.deleteDirectory(f);
+          } catch (Exception e1) {
+            try {
+              FileUtils.deleteDirectory(f);
+            } catch (Exception e2) {
+              // just give up 
+            }          
+          }
+          return null; // must return something
+        });
       }
       else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
@@ -329,8 +375,6 @@ public class PackageCacheManager {
   }
 
   private InputStreamWithSrc loadFromPackageServer(String id, String v) {
-    // release hack:
-    if ("4.4.0".equals(v)) {v = "4.2.0"; };
     PackageClient pc = new PackageClient(PRIMARY_SERVER);
     String u = null;
     InputStream stream;
@@ -407,15 +451,18 @@ public class PackageCacheManager {
    * @throws IOException
    */
   public void removePackage(String id, String ver) throws IOException  {
-    String f = Utilities.path(cacheFolder, id+"#"+ver);
-    File ff = new File(f);
-    if (ff.exists()) {    
-      Utilities.clearDirectory(f);    
-      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-      ini.removeProperty("packages", id+"#"+ver);
-      ini.save();
-      ff.delete();
-    }
+    new CacheLock(id+"#"+ver).doWithLock(() -> {
+      String f = Utilities.path(cacheFolder, id+"#"+ver);
+      File ff = new File(f);
+      if (ff.exists()) {    
+        Utilities.clearDirectory(f);    
+        IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+        ini.removeProperty("packages", id+"#"+ver);
+        ini.save();
+        ff.delete();
+      }
+      return null;
+    });
   }
 
   /**
@@ -488,70 +535,78 @@ public class PackageCacheManager {
     if (version == null)
       version = npm.version();
 
-    String packRoot = Utilities.path(cacheFolder, id+"#"+version);
-    try {
-      Utilities.createDirectory(packRoot);
-      Utilities.clearDirectory(packRoot);
+    String v = version;
+    return new CacheLock(id+"#"+version).doWithLock(() -> {
+      NpmPackage pck = null;
+      String packRoot = Utilities.path(cacheFolder, id+"#"+v);
+      try {
+        // ok, now we have a lock on it... check if something created it while we were waiting
+        if (!new File(packRoot).exists()) {
+          Utilities.createDirectory(packRoot);
+          Utilities.clearDirectory(packRoot);
 
-      int i = 0;
-      int c = 0;
-      int size = 0;
-      for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
-        String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
-        if (!(new File(dir).exists()))
-          Utilities.createDirectory(dir);
-        for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-          String fn = Utilities.path(dir, fe.getKey());
-          byte[] cnt = fe.getValue();
-          TextFile.bytesToFile(cnt, fn);
-          size = size + cnt.length;
-          i++;
-          if (progress && i % 50 == 0) {
-            c++;
-            System.out.print(".");
-            if (c == 120) {
-              System.out.println("");
-              System.out.print("  ");
-              c = 2;
+          int i = 0;
+          int c = 0;
+          int size = 0;
+          for (Entry<String, NpmPackageFolder> e : npm.getFolders().entrySet()) {
+            String dir = e.getKey().equals("package") ? Utilities.path(packRoot, "package") : Utilities.path(packRoot, "package",  e.getKey());;
+            if (!(new File(dir).exists()))
+              Utilities.createDirectory(dir);
+            for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
+              String fn = Utilities.path(dir, fe.getKey());
+              byte[] cnt = fe.getValue();
+              TextFile.bytesToFile(cnt, fn);
+              size = size + cnt.length;
+              i++;
+              if (progress && i % 50 == 0) {
+                c++;
+                System.out.print(".");
+                if (c == 120) {
+                  System.out.println("");
+                  System.out.print("  ");
+                  c = 2;
+                }
+              }    
             }
-          }    
-        }
-      }
+          }
 
 
-      IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-      ini.setTimeStampFormat("yyyyMMddhhmmss");
-      ini.setTimestampProperty("packages", id+"#"+version, Timestamp.from(Instant.now()), null);
-      ini.setIntegerProperty("package-sizes", id+"#"+version, size, null);
-      ini.save();
-      if (progress)
-        System.out.println(" done.");
-
-      NpmPackage pck = loadPackageInfo(packRoot);
-      if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-        if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
-          npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
-          npm.getNpm().remove("name");
-          npm.getNpm().addProperty("name", id);
+          IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
+          ini.setTimeStampFormat("yyyyMMddhhmmss");
+          ini.setTimestampProperty("packages", id+"#"+v, Timestamp.from(Instant.now()), null);
+          ini.setIntegerProperty("package-sizes", id+"#"+v, size, null);
+          ini.save();
+          if (progress)
+            System.out.println(" done.");
         }
-        if (!version.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-          npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
-          npm.getNpm().remove("version");
-          npm.getNpm().addProperty("version", version);
+        pck = loadPackageInfo(packRoot);
+        if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+          if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
+            npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
+            npm.getNpm().remove("name");
+            npm.getNpm().addProperty("name", id);
+          }
+          if (!v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
+            npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
+            npm.getNpm().remove("version");
+            npm.getNpm().addProperty("version", v);
+          }
+          TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id+"#"+v, "package", "package.json"), false);
         }
-        TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id+"#"+version, "package", "package.json"), false);
+      } catch (Exception e) {
+        try {
+          // don't leave a half extracted package behind
+          System.out.println("Clean up package "+packRoot+" because installation failed: "+e.getMessage());
+          e.printStackTrace();
+          Utilities.clearDirectory(packRoot);
+          new File(packRoot).delete();
+        } catch (Exception ei) {
+          // nothing
+        }
+        throw e;
       }
       return pck;
-    } catch (Exception e) {
-      try {
-        // don't leave a half extracted package behind
-        Utilities.clearDirectory(packRoot);
-        new File(packRoot).delete();
-      } catch (Exception ei) {
-        // nothing
-      }
-      throw e;
-    }
+    });    
   }
 
   public String getPackageId(String canonical) throws IOException {
@@ -654,8 +709,8 @@ public class PackageCacheManager {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("http://hl7.org/fhir/2020Feb", id+".tgz"), "current");
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id+".tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id+".tgz"), "current");
     } else {
       throw new FHIRException("The package '"+id+"' has not entry on the current build server");
     }
@@ -859,6 +914,16 @@ public class PackageCacheManager {
       return "http://fhir.org/packages/hl7.fhir.xver-extensions";
     }
     return null;
+  }
+
+  public List<String> listPackages() {
+    List<String> res = new ArrayList<>();
+    for (File f : new File(cacheFolder).listFiles()) {
+      if (f.isDirectory() && f.getName().contains("#")) {
+        res.add(f.getName());
+      }
+    }
+    return res;
   }
 
 
