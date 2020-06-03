@@ -23,7 +23,7 @@ strategy:
       module: "org.hl7.fhir.validation"
     validator_cli:
       module: "org.hl7.fhir.validation.cli"
-  maxParallel: 3
+  maxParallel: 8
 
 pool:
   vmImage: "ubuntu-16.04"
