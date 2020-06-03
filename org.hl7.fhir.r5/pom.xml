@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -13,14 +13,15 @@
 	<packaging>bundle</packaging>
 
 	<dependencies>
-
 		<!-- HAPI Dependencies -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>org.hl7.fhir.utilities</artifactId>
+			<version>${project.version}</version>
 		</dependency>
+
 		<dependency>
-         <groupId>ca.uhn.hapi.fhir</groupId>
+		 <groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-base</artifactId>
 			<exclusions>
 				<exclusion>
@@ -133,16 +134,16 @@
 			<version>${junit_jupiter_version}</version>
 			<scope>test</scope>
 		</dependency>
-    <dependency>
-        <groupId>com.atlassian.commonmark</groupId>
-        <artifactId>commonmark</artifactId>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>com.atlassian.commonmark</groupId>
-        <artifactId>commonmark-ext-gfm-tables</artifactId>
-        <scope>test</scope>
-    </dependency>
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
