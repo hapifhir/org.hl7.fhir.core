@@ -7,6 +7,24 @@ trigger:
 
 pr: none
 
+strategy:
+  matrix:
+#    dstu2:
+#      module: "org.hl7.fhir.dstu2"
+#    dstu3:
+#      module: "org.hl7.fhir.dstu3"
+#    dstu2016may:
+#      module: "org.hl7.fhir.dstu2016may"
+#    r4:
+#      module: "org.hl7.fhir.r4"
+    r5:
+      module: "org.hl7.fhir.r5"
+#    validator:
+#      module: "org.hl7.fhir.validation"
+#    validator_cli:
+#      module: "org.hl7.fhir.validation.cli"
+  maxParallel: 3
+
 pool:
   vmImage: "ubuntu-16.04"
 
@@ -14,6 +32,9 @@ variables:
   currentModule: $(module)
 
 steps:
+  # Debugging output to identify current module.
+  - bash: echo Publishing SNAPSHOT for $(module)
+    displayName: 'Print module name.'
 
   # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid
   # signing key. The next two steps download the public and private keys from the
@@ -83,9 +104,9 @@ steps:
   # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
-    displayName: 'Deploying SNAPSHOTS to Sonatype staging'
+    displayName: 'Deploy $(module) to Sonatype staging'
     inputs:
-      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
       goals: clean deploy
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -X'
       publishJUnitResults: false
