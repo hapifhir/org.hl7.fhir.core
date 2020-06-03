@@ -26,6 +26,7 @@ public class I18nConstants {
   public final static String CODESYSTEM_CS_VS_MISMATCH = "CodeSystem_CS_VS_MisMatch";
   public final static String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
   public final static String EXTENSION_EXT_CONTEXT_WRONG = "Extension_EXT_Context_Wrong";
+  public final static String EXTENSION_EXT_CONTEXT_WRONG_XVER = "EXTENSION_EXT_CONTEXT_WRONG_XVER";
   public final static String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public final static String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public final static String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";

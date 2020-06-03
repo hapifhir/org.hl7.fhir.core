@@ -1567,14 +1567,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (!ok) {
-      rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.EXTENSION_EXT_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());
+      if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
+        warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.EXTENSION_EXT_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
+      } else {
+        rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.EXTENSION_EXT_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
+      }
       return false;
     } else {
       if (definition.hasContextInvariant()) {
         for (StringType s : definition.getContextInvariant()) {
           if (!fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), container, fpe.parse(s.getValue()))) {
-            rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());
-            return false;
+            if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
+              warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());              
+              return true;
+            } else {
+              rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());
+              return false;
+            }
           }
         }
       }
