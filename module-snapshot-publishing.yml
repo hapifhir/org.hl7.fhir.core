@@ -9,20 +9,20 @@ pr: none
 
 strategy:
   matrix:
-#    dstu2:
-#      module: "org.hl7.fhir.dstu2"
-#    dstu3:
-#      module: "org.hl7.fhir.dstu3"
-#    dstu2016may:
-#      module: "org.hl7.fhir.dstu2016may"
-#    r4:
-#      module: "org.hl7.fhir.r4"
+    dstu2:
+      module: "org.hl7.fhir.dstu2"
+    dstu3:
+      module: "org.hl7.fhir.dstu3"
+    dstu2016may:
+      module: "org.hl7.fhir.dstu2016may"
+    r4:
+      module: "org.hl7.fhir.r4"
     r5:
       module: "org.hl7.fhir.r5"
     validator:
       module: "org.hl7.fhir.validation"
-#    validator_cli:
-#      module: "org.hl7.fhir.validation.cli"
+    validator_cli:
+      module: "org.hl7.fhir.validation.cli"
   maxParallel: 3
 
 pool:
