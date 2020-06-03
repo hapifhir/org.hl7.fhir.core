@@ -134,7 +134,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         cs = findSpecialCodeSystem(system);
       }
       if (cs == null) {
-        warningMessage = "Unable to resolve system "+system+" - system is not specified or implicit";
+        warningMessage = "Unable to resolve system "+system;
         if (!inExpansion)
           throw new FHIRException(warningMessage);
       }
@@ -144,8 +144,12 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           throw new FHIRException(warningMessage);
       }
 
-      if (cs!=null)
+      if (cs!=null) {
         res = validateCode(code, cs);
+      } else {
+        // it's in the expansion, but we could find it in a code system
+        res = findCodeInExpansion(code);
+      }
     } else {
       inExpansion = checkExpansion(code);
     }
@@ -175,13 +179,38 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     return null;
   }
 
-  boolean checkExpansion(Coding code) {
+  private ValidationResult findCodeInExpansion(Coding code) {
+    if (valueset==null || !valueset.hasExpansion())
+      return null;
+    return findCodeInExpansion(code, valueset.getExpansion().getContains());
+  }
+  
+  private ValidationResult findCodeInExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
+    for (ValueSetExpansionContainsComponent containsComponent: contains) {
+      if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
+        ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
+        ccd.setCode(containsComponent.getCode());
+        ccd.setDisplay(containsComponent.getDisplay());
+        ValidationResult res = new ValidationResult(ccd);
+        return res;
+      }
+      if (containsComponent.hasContains()) {
+        ValidationResult res = findCodeInExpansion(code, containsComponent.getContains());
+        if (res != null) {
+          return res;
+        }
+      }
+    }
+    return null;
+  }
+  
+  private boolean checkExpansion(Coding code) {
     if (valueset==null || !valueset.hasExpansion())
       return false;
     return checkExpansion(code, valueset.getExpansion().getContains());
   }
 
-  boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
+  private boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent containsComponent: contains) {
       if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode()))
         return true;

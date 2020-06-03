@@ -30,6 +30,8 @@ public class XVerExtensionManager {
     BadVersion, Unknown, Invalid, Valid
   }
 
+  public static final String XVER_EXT_MARKER = "XVER_EXT_MARKER";
+
   private Map<String, JsonObject> lists = new HashMap<>();
   private IWorkerContext context;
 
@@ -81,6 +83,7 @@ public class XVerExtensionManager {
     JsonObject path = root.getAsJsonObject(e);
     
     StructureDefinition sd = new StructureDefinition();
+    sd.setUserData(XVER_EXT_MARKER, "true");
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
