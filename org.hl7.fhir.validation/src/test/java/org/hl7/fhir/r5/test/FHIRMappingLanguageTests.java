@@ -36,8 +36,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -68,14 +68,16 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   @BeforeAll
   public static void setUp() throws Exception {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.1"));
+    context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r5.core", "current"));
+    if (context.getValidatorFactory() == null) {
+      context.setValidatorFactory(new InstanceValidatorFactory());
+    }
     jsonParser = new JsonParser();
     jsonParser.setOutputStyle(OutputStyle.PRETTY);
   }
 
   @ParameterizedTest(name = "{index}: {0}")
   @MethodSource("data")
-  @Disabled // Test fails: java.lang.AssertionError: Error, but proper output was expected (This does not appear to be a FHIR resource (unknown name "QuestionnaireResponse")
   public void test(String name, String source, String map, String output) throws Exception {
 
     InputStream fileSource = TestingUtilities.loadTestResourceStream("r5", "fml", source);
