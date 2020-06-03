@@ -23,7 +23,7 @@ strategy:
       module: "org.hl7.fhir.validation"
     validator_cli:
       module: "org.hl7.fhir.validation.cli"
-  maxParallel: 3
+  maxParallel: 8
 
 pool:
   vmImage: "ubuntu-16.04"
@@ -107,6 +107,15 @@ steps:
     displayName: 'Deploy $(module) to Sonatype staging'
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
-      goals: deploy
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -X'
+      goals: clean deploy
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml'
+      publishJUnitResults: false
+
+  # Clean any existing deployment artifacts
+  - task: Maven@3
+    displayName: 'Clean any existing deploy artifacts.'
+    inputs:
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
+      goals: clean
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml'
       publishJUnitResults: false
