@@ -10,15 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class PackageCacheTests {
 
   @Test
-  @Disabled // This test is currently set to always fail.
   public void testPath() throws IOException {
     PackageCacheManager cache = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
-    Assertions.assertTrue(false);
+    List<String> list = cache.listPackages();
+    if (!list.isEmpty()) {
+      System.out.println("remaining packages: "+list.toString());
+    }
+    Assertions.assertTrue(list.isEmpty());
     NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
@@ -31,5 +35,7 @@ public class PackageCacheTests {
     npm.save(dir);
     NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:" + dir.getAbsolutePath());
     Assertions.assertNotNull(npm2);
+    list = cache.listPackages();
+    Assertions.assertFalse(list.isEmpty());
   }
 }

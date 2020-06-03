@@ -15,8 +15,6 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.

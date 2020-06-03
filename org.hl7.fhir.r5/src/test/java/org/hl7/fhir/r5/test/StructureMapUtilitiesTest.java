@@ -1,5 +1,10 @@
 package org.hl7.fhir.r5.test;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Base;
@@ -12,11 +17,6 @@ import org.hl7.fhir.utilities.cache.PackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 @Disabled // org.hl7.fhir.exceptions.FHIRException: Unable to resolve package id hl7.fhir.core#4.0.0
 public class StructureMapUtilitiesTest implements ITransformerServices {

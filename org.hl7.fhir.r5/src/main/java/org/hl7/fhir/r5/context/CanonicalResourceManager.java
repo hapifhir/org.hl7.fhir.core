@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalListSorter;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.utilities.VersionUtilities;
 

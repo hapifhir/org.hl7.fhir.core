@@ -9,14 +9,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapper;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class BaseWrappers {
   
   public interface RendererWrapper {
-    public ResourceRenderer getRenderer();
+    public RenderingContext getContext();
   }
 
   public interface PropertyWrapper extends RendererWrapper {
@@ -29,6 +29,7 @@ public class BaseWrappers {
     public int getMaxCardinality();
     public StructureDefinition getStructure();
     public BaseWrapper value();
+    public ResourceWrapper getAsResource();
   }
 
   public interface WrapperBase  extends RendererWrapper {
@@ -42,8 +43,13 @@ public class BaseWrappers {
     public List<ResourceWrapper> getContained();
     public String getId();
     public XhtmlNode getNarrative() throws FHIRFormatError, IOException, FHIRException;
+    public Base getBase();
     public String getName();
     public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
+    public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;
+    public BaseWrapper root();
+    public StructureDefinition getDefinition();
+    public boolean hasNarrative();
   }
 
   public interface BaseWrapper extends WrapperBase {
@@ -52,15 +58,15 @@ public class BaseWrappers {
   }
 
   public static abstract class RendererWrapperImpl implements RendererWrapper {
-    protected ResourceRenderer renderer;
+    protected RenderingContext context;
 
-    public RendererWrapperImpl(ResourceRenderer renderer) {
+    public RendererWrapperImpl(RenderingContext context) {
       super();
-      this.renderer = renderer;
+      this.context = context;
     }
 
-    public ResourceRenderer getRenderer() {
-      return renderer;
+    public RenderingContext getContext() {
+      return context;
     }
     
     protected String tail(String path) {
@@ -71,8 +77,8 @@ public class BaseWrappers {
   
   public static abstract class WrapperBaseImpl extends RendererWrapperImpl implements WrapperBase {
     
-    public WrapperBaseImpl(ResourceRenderer renderer) {
-      super(renderer);
+    public WrapperBaseImpl(RenderingContext context) {
+      super(context);
     }
 
     @Override

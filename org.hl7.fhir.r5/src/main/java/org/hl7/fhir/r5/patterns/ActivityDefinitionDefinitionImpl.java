@@ -33,15 +33,27 @@ package org.hl7.fhir.r5.patterns;
 */
 
 // Generated on Wed, May 8, 2019 10:40+1000 for FHIR v4.1.0
+import java.util.Date;
+import java.util.List;
 
-import java.util.*;
-
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ActivityDefinition;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.ContactDetail;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UsageContext;
 
 public class ActivityDefinitionDefinitionImpl extends PatternBaseImpl implements Definition {
 

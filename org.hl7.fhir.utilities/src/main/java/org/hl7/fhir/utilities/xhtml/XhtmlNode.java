@@ -188,9 +188,6 @@ public class XhtmlNode implements IBaseXhtml {
     return node;
   }
 
-
-
-
   public XhtmlNode addText(String content)
   {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
@@ -506,6 +503,10 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("td");
   }
   
+  public XhtmlNode td(String clss) {
+    return addTag("td").attribute("class", clss);
+  }
+  
   public XhtmlNode colspan(String n) {
     return setAttribute("colspan", n);
   }
@@ -545,11 +546,29 @@ public class XhtmlNode implements IBaseXhtml {
   public XhtmlNode i() {
     return addTag("i");
   }
+  
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
   }
+
+  public XhtmlNode tx(int cnt) {
+    return addText(Integer.toString(cnt));
+  }
+
   public XhtmlNode ah(String href) {
     return addTag("a").attribute("href", href);
+  }
+
+  public XhtmlNode ah(String href, String title) {
+    return addTag("a").attribute("href", href).attribute("title", title);
+  }
+
+  public XhtmlNode img(String src) {
+    return addTag("img").attribute("src", src);    
+  }
+
+  public XhtmlNode img(String src, String title) {
+    return addTag("img").attribute("src", src).attribute("title", title);    
   }
 
   public void an(String href) {
@@ -653,4 +672,63 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+
+  public XhtmlNode addChildren(List<XhtmlNode> children) {
+    getChildNodes().addAll(children);
+    return this;
+  }
+
+  public XhtmlNode addChildren(XhtmlNode x) {
+    if (x != null) {
+      getChildNodes().addAll(x.getChildNodes());
+    }
+    return this;
+  }
+
+
+  public XhtmlNode input(String name, String type, String placeholder, int size) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
+    p.attribute("name", name);
+    p.attribute("type", type);
+    p.attribute("placeholder", placeholder);
+    p.attribute("size", Integer.toString(size));
+    getChildNodes().add(p);
+    return p;
+  }
+
+  public XhtmlNode select(String name) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
+    p.attribute("name", name);
+    p.attribute("size", "1");
+    getChildNodes().add(p);
+    return p;
+  }
+  
+  public XhtmlNode option(String value, String text, boolean selected) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "option");
+    p.attribute("value", value);
+    p.attribute("selected", Boolean.toString(selected));
+    p.tx(text);
+    getChildNodes().add(p);
+    return p;
+  }
+
+
+  public XhtmlNode remove(XhtmlNode x) {
+    getChildNodes().remove(x);
+    return this;
+    
+  }
+
+
+  public void clear() {
+    getChildNodes().clear();
+    
+  }
+
+
+  
+
+  
+  
 }

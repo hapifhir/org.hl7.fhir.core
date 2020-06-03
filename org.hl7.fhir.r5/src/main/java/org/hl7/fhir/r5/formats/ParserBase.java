@@ -44,8 +44,8 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.Utilities;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {

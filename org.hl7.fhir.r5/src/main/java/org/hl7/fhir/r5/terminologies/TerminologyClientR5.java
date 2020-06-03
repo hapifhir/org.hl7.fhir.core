@@ -34,7 +34,6 @@ package org.hl7.fhir.r5.terminologies;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import org.hl7.fhir.r5.context.HTMLClientLogger;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;

@@ -1,16 +1,16 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.w3c.dom.Element;
 
 public class Resolver {
 
   public interface IReferenceResolver {
-    ResourceWithReference resolve(String url);
+    ResourceWithReference resolve(RenderingContext context, String url);
   }
 
   public static class ResourceContext {

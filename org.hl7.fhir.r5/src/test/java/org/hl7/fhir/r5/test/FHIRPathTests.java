@@ -1,11 +1,29 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Quantity;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -20,12 +38,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Stream;
 
 public class FHIRPathTests {
 
@@ -201,6 +213,9 @@ public class FHIRPathTests {
             Assertions.assertTrue(outcome.get(i).equalsDeep(q), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
           } else {
             Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
+            if (!(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()))) {
+              System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
+            }
             Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
           }
         }

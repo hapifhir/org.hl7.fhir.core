@@ -1,7 +1,13 @@
 package org.hl7.fhir.r5.renderers;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -36,13 +42,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
@@ -206,7 +207,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (ref == null)
         p.code(vs.getExpansion().getContains().get(0).getSystem());
       else
-        p.ah(getContext().getPrefix()+ref).code(vs.getExpansion().getContains().get(0).getSystem());
+        p.ah(context.fixReference(ref)).code(vs.getExpansion().getContains().get(0).getSystem());
     }
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
@@ -637,7 +638,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else        
         td.addText(code);
     } else {
-      String href = getContext().getPrefix()+getCsRef(e);
+      String href = context.fixReference(getCsRef(e));
       if (href.contains("#"))
         href = href + "-"+Utilities.nmtokenize(code);
       else
@@ -661,9 +662,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
     String cslink = getCsRef(cs);
     XhtmlNode a = null;
     if (cslink != null) 
-      a = td.ah(getContext().getPrefix()+cslink+"#"+cs.getId()+"-"+code);
+      a = td.ah(getContext().getSpecificationLink()+cslink+"#"+cs.getId()+"-"+code);
     else
-      a = td.ah(getContext().getPrefix()+vslink+"#"+code);
+      a = td.ah(getContext().getSpecificationLink()+vslink+"#"+code);
     a.addText(code);
   }
 
@@ -687,8 +688,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         hasExtensions = genInclude(ul, inc, "Include", langs, maps) || hasExtensions;
       }
-      for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-        hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
+      if (vs.getCompose().hasExclude()) {
+        p = x.para();
+        p.tx("This value set excludes codes based on the following rules:");
+        ul = x.ul();
+        for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
+          hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
+        }
       }
     }
     
@@ -790,7 +796,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             } else {
               li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
-                String href = getContext().getPrefix()+getCsRef(e);
+                String href = getContext().fixReference(getCsRef(e));
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
@@ -851,7 +857,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         return v;
     }
 
-    if (noSlowLookup)
+    if (context.isNoSlowLookup())
       return null;
     
     if (!getContext().getWorker().hasCache()) {

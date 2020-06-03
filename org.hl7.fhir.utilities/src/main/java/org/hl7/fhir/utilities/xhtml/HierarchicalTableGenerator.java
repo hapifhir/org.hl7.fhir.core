@@ -208,6 +208,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         children = new ArrayList<XhtmlNode>();
       return children;
     }
+
+    public Piece addHtml(XhtmlNode x) {
+      getChildren().add(x);
+      return this;
+    }
     
   }
   
@@ -735,7 +740,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         a.setAttribute("href", p.getReference());
         if (!Utilities.noString(p.getHint()))
           a.setAttribute("title", p.getHint());
-        a.addText(p.getText());
+        if (p.getText() != null) {
+          a.addText(p.getText());
+        } else {
+          a.addChildren(p.getChildren());
+        }
         addStyle(a, p);
       } else { 
         if (!Utilities.noString(p.getHint())) {
@@ -854,6 +863,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       b.append(".png");
       String file = Utilities.path(dest, b.toString());
       if (!new File(file).exists()) {
+        File newFile = new File(file);
+        newFile.getParentFile().mkdirs();
+        newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         genImage(indents, hasChildren, lineColor, stream);
         if (outputTracker!=null)
@@ -907,5 +919,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private void check(boolean check, String message) throws FHIRException  {
     if (!check)
       throw new FHIRException(message);
+  }
+
+  public void emptyRow(TableModel model, int cellCount) {
+    Row r = new Row();
+    model.rows.add(r);
+    for (int i = 0; i < cellCount; i++) {
+      r.getCells().add(new Cell());
+    }
   }
 }

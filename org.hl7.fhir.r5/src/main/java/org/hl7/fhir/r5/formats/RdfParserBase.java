@@ -40,14 +40,13 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.utils.formats.Turtle;
-import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
-import org.hl7.fhir.r5.utils.formats.Turtle.Section;
-import org.hl7.fhir.r5.utils.formats.Turtle.Subject;
+import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.Section;
+import org.hl7.fhir.utilities.turtle.Turtle.Subject;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class RdfParserBase extends ParserBase implements IParser  {
