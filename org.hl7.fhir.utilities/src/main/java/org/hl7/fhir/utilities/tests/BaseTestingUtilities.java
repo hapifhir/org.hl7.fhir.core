@@ -22,8 +22,9 @@ public class BaseTestingUtilities {
      * the name of the project directory to something other than 'fhir-test-cases', or move it to another location, not
      * at the same directory level as the core project.
      */
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+    String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir != null && new File(dir).exists()) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
       return TextFile.fileToString(new File(n));
     } else {
@@ -41,8 +42,9 @@ public class BaseTestingUtilities {
   }
 
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+    String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir != null && new File(dir).exists()) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return new FileInputStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
@@ -55,8 +57,9 @@ public class BaseTestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+    String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir != null && new File(dir).exists()) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return TextFile.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
@@ -69,8 +72,9 @@ public class BaseTestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
-      String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
+    String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir != null && new File(dir).exists()) {
+      String n = Utilities.path(dir, Utilities.path(paths));
       return new File(n).exists();
     } else {
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
@@ -81,11 +85,6 @@ public class BaseTestingUtilities {
         return false;
       }
     }
-  }
-
-  // TODO: JA need to figure out how to detect that we're running in maven
-  public static boolean isTryToLoadFromFileSystem() {
-    return !"true".equals(System.getProperty("dont_load_from_filesystem"));
   }
 
 
