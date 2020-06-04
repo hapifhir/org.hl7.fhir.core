@@ -21,7 +21,7 @@ import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -42,7 +42,7 @@ import java.util.zip.ZipInputStream;
 public class R3R4ConversionTests implements ITransformerServices, IValidatorResourceFetcher {
 
   private static final boolean SAVING = true;
-  private PackageCacheManager pcm = null;
+  private FilesystemPackageCacheManager pcm = null;
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     if (!(new File(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")).exists()))
@@ -285,7 +285,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     if (contextR3 != null)
       return;
 
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     R3ToR4Loader ldr = new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
 
     System.out.println("loading R3");

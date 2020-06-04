@@ -63,8 +63,13 @@ public class PackageGenerator {
       throw new Error("Unknown Type");
     }
   }
+
   private OutputStream stream;
   private JsonObject object;
+
+  public PackageGenerator() {
+    object = new JsonObject();
+  }
 
   public PackageGenerator(OutputStream stream) {
     super();
@@ -79,7 +84,11 @@ public class PackageGenerator {
     object = parser.parse(TextFile.streamToString(template)).getAsJsonObject();
 
   }
-  
+
+  public JsonObject getRootJsonObject() {
+    return object;
+  }
+
   public void commit() throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(object);
@@ -91,7 +100,8 @@ public class PackageGenerator {
   }
   
   public PackageGenerator name(String value) {
-    object.addProperty("name", "@fhir/"+value);
+    // NOTE: I removed a prefix of "@fhir/" here. What was this for? -JA
+    object.addProperty("name", value);
     return this;
   }
    
