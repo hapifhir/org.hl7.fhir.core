@@ -35,12 +35,12 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,20 +57,14 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.NpmPackage.IndexVersionSorter;
-import org.hl7.fhir.utilities.cache.PackageCacheManager.PackageEntry;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
-import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -109,13 +103,17 @@ public class NpmPackage {
   public class NpmPackageFolder {
     private String name;
     private Map<String, List<String>> types = new HashMap<>();
-    private Map<String, byte[]> content = new HashMap<String, byte[]>(); 
+    private Map<String, byte[]> content = new HashMap<>();
     private JsonObject index;
     private File folder;
 
     public NpmPackageFolder(String name) {
       super();
       this.name = name;
+    }
+
+    public Map<String, List<String>> getTypes() {
+      return types;
     }
 
     public String getName() {
@@ -198,22 +196,36 @@ public class NpmPackage {
   private JsonObject npm;
   private Map<String, NpmPackageFolder> folders = new HashMap<>();
   private boolean changedByLoader; // internal qa only!
+  private Map<String, Object> userData = new HashMap<>();
 
+  /**
+   * Constructor
+   */
   private NpmPackage() {
-
+    super();
   }
-  //  public NpmPackage(JsonObject npm, Map<String, byte[]> content, List<String> folders) {
-  //    this.path = null;
-  //    this.content = content;
-  //    this.npm = npm;
-  //    this.folders = folders;
-  //  }
 
+  /**
+   * Factory method that parses a package from an extracted folder
+   */
   public static NpmPackage fromFolder(String path) throws IOException {
     NpmPackage res = new NpmPackage();
     loadFiles(res, path, new File(path));
     res.checkIndexed(path);
     return res;
+  }
+
+  /**
+   * Factory method that starts a new empty package using the given PackageGenerator to create the manifest
+   */
+  public static NpmPackage empty(PackageGenerator thePackageGenerator) {
+    NpmPackage retVal = new NpmPackage();
+    retVal.npm = thePackageGenerator.getRootJsonObject();
+    return retVal;
+  }
+
+  public Map<String, Object> getUserData() {
+    return userData;
   }
 
   public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
@@ -788,7 +800,7 @@ public class NpmPackage {
           TextFile.bytesToFile(b, Utilities.path(dir.getAbsolutePath(), n, s));
         }
       }
-      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TextFile.bytesToFile(cnt, Utilities.path(dir.getAbsolutePath(), n, ".index.json"));
     }
     byte[] cnt = TextFile.stringToBytes(new GsonBuilder().setPrettyPrinting().create().toJson(npm), false);
@@ -826,7 +838,7 @@ public class NpmPackage {
           tar.closeArchiveEntry();
         }
       }
-      byte[] cnt = indexer.build().getBytes(Charset.forName("UTF-8"));
+      byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
@@ -849,7 +861,9 @@ public class NpmPackage {
     stream.write(b);
   }
 
-
+  /**
+   * Keys are resource type names, values are filenames
+   */
   public Map<String, List<String>> getTypes() {
     return folders.get("package").types;
   }
@@ -941,6 +955,9 @@ public class NpmPackage {
   }
 
   public void addFile(String folderName, String name, byte[] cnt, String type) {
+    if (!folders.containsKey(folderName)) {
+      folders.put(folderName, new NpmPackageFolder(folderName));
+    }
     NpmPackageFolder folder = folders.get(folderName);
     folder.content.put(name, cnt);
     if (!folder.types.containsKey(type))
