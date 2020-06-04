@@ -30,7 +30,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -102,7 +102,7 @@ public class ComparisonTests {
     if (!new File(Utilities.path("[tmp]", "comparison")).exists()) {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
-      PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
       NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.5");
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
