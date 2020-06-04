@@ -62,7 +62,7 @@ import org.hl7.fhir.r4.utils.NPMPackageGenerator;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
@@ -392,7 +392,7 @@ public class ExtensionDefinitionGenerator {
 
   private List<StructureDefinition> loadSource() throws IOException, FHIRException {
     List<StructureDefinition> list = new ArrayList<>();
-    PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     NpmPackage npm = pcm.loadPackage("hl7.fhir.core", sourceVersion.toCode());
     if (sourceVersion == FHIRVersion._4_0_0)
       context = SimpleWorkerContext.fromPackage(npm);

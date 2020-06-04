@@ -43,7 +43,7 @@ import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -522,7 +522,7 @@ public class SnapShotGenerationTests {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage("hl7.fhir.xver-extensions", "0.0.4")) {
-      NpmPackage npm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.4");
+      NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.4");
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
