@@ -18,12 +18,11 @@ import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.terminologies.TerminologyClientR5;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
@@ -83,9 +82,9 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontexts = new HashMap<>();
     }
     if (!fcontexts.containsKey(v)) {
-      PackageCacheManager pcm;
+      FilesystemPackageCacheManager pcm;
       try {
-        pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+        pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
         IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
         fcontext.setExpansionProfile(new Parameters());

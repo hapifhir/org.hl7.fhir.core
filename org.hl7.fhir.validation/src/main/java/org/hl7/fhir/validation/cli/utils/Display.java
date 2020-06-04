@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class Display {
       System.out.print(s.contains(" ") ? " \"" + s + "\"" : " " + s);
     }
     System.out.println();
-    System.out.println("Directories: Current = " + System.getProperty("user.dir") + ", Package Cache = " + new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
+    System.out.println("Directories: Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
   }
 
   public static void displayHelpDetails() {

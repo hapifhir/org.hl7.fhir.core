@@ -147,7 +147,9 @@
                     <target>1.8</target>
                     <forceJavacCompilerUse>false</forceJavacCompilerUse>
                     <encoding>UTF-8</encoding>
-                    <fork>false</fork>
+                    <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
+                    while if true it will use an executable. -->
+                    <fork>true</fork>
                     <meminitial>512m</meminitial>
                     <maxmem>4000m</maxmem>
                     <debug>true</debug>
@@ -159,6 +161,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven_surefire_version}</version>
                 <configuration>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <parallel>classes</parallel>
                     <trimStackTrace>false</trimStackTrace>
                     <testFailureIgnore>false</testFailureIgnore>
                     <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
