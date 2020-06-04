@@ -44,15 +44,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.fhir.ucum.UcumEssenceService;
-import org.fhir.ucum.UcumException;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,9 +71,9 @@ public class TestingUtilities {
 	
 	public static IWorkerContext context() {
 	  if (fcontext == null) {
-	    PackageCacheManager pcm;
+	    FilesystemPackageCacheManager pcm;
 	    try {
-	      pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
 	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
