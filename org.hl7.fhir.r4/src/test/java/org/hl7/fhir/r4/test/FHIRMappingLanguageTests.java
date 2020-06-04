@@ -14,7 +14,7 @@ import org.hl7.fhir.r4.utils.StructureMapUtilities;
 import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,7 +61,7 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   @BeforeAll
   static public void setUp() throws Exception {
     if (context == null) {
-      PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
       context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
       jsonParser = new JsonParser();
       jsonParser.setOutputStyle(OutputStyle.PRETTY);
