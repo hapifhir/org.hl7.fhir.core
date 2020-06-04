@@ -13,7 +13,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-base</artifactId>
