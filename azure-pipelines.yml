@@ -92,7 +92,7 @@ steps:
   # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Validator jar'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
+    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     inputs:
       targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
       artifactName: Validator
