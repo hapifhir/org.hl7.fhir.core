@@ -113,6 +113,10 @@ public class ProfileComparer extends CanonicalResourceComparer {
     assert(right != null);
     assert(left.path().equals(right.path()));
 
+    if (session.isDebug()) {
+      System.out.println("Compare elements at "+path);
+    }
+    
     // not allowed to be different:   
     ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
     ruleEqual(comp, res, left.current().getMeaningWhenMissingElement(), right.current().getMeaningWhenMissingElement(), "meaningWhenMissing", path);
@@ -256,7 +260,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
         matchR.add(r);
         StructuralMatch<ElementDefinition> sm = new StructuralMatch<ElementDefinition>(l.current(), r.current());
         res.getChildren().add(sm);
-        compareElements(comp, sm, l.path(), null, left, right);
+        compareElements(comp, sm, l.path(), null, l, r);
       }
     }
     for (DefinitionNavigator r : rc) {
@@ -332,7 +336,6 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return "left: "+left+"; right: "+right;
   }
 
-
   private List<Coding> mergeCodings(List<Coding> left, List<Coding> right) {
     List<Coding> result = new ArrayList<Coding>();
     result.addAll(left);
@@ -346,7 +349,6 @@ public class ProfileComparer extends CanonicalResourceComparer {
     }
     return result;
   }
-
 
   private List<StringType> mergeStrings(List<StringType> left, List<StringType> right) {
     List<StringType> result = new ArrayList<StringType>();
@@ -434,7 +436,6 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return Integer.toString(defn.current().getMin())+".."+defn.current().getMax();
   }
 
-
   private Collection<? extends TypeRefComponent> unionTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent l : left) 
@@ -514,13 +515,11 @@ public class ProfileComparer extends CanonicalResourceComparer {
       results.add(nw);      
   }
 
-
   private boolean derivesFrom(StructureDefinition left, StructureDefinition right) {
     // left derives from right if it's base is the same as right
     // todo: recursive...
     return left.hasBaseDefinition() && left.getBaseDefinition().equals(right.getUrl());
   }
-
 
   private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
@@ -600,7 +599,6 @@ public class ProfileComparer extends CanonicalResourceComparer {
       b.append(t.getWorkingCode()+(t.hasProfile() ? "("+t.getProfile()+")" : "")+(t.hasTargetProfile() ? "("+t.getTargetProfile()+")" : "")); // todo: other properties
     return b.toString();
   }
-
 
   private boolean compareBindings(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition subset, ElementDefinition superset, String path, ElementDefinition lDef, ElementDefinition rDef) throws FHIRFormatError, DefinitionException, IOException {
     assert(lDef.hasBinding() || rDef.hasBinding());
@@ -745,8 +743,6 @@ public class ProfileComparer extends CanonicalResourceComparer {
     }
     return sd;
   }
-
-
 
   private boolean isPreferredOrExample(ElementDefinitionBindingComponent binding) {
     return binding.getStrength() == BindingStrength.EXAMPLE || binding.getStrength() == BindingStrength.PREFERRED;
