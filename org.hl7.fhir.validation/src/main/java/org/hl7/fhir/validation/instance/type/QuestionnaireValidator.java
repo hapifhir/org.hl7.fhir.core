@@ -511,7 +511,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
         long t = System.nanoTime();
         ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs);
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         if (!res.isOk()) {
           txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode());
         } else if (res.getSeverity() != null) {

@@ -2992,6 +2992,16 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root) {
     Cell c = gen.new Cell();
     r.getCells().add(c);
+    if (e.hasContentReference()) {
+      ElementDefinition ed = getElementByName(profile.getSnapshot().getElement(), e.getContentReference());
+      if (ed == null)
+        c.getPieces().add(gen.new Piece(null, translate("sd.table", "Unknown reference to %s", e.getContentReference()), null));
+      else {
+        c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getPath()), null));
+        c.getPieces().add(gen.new Piece("#"+ed.getPath(), tail(ed.getPath()), ed.getPath()));
+      }
+      return c;
+    }
     List<TypeRefComponent> types = e.getType();
     if (!e.hasType()) {
       if (root) { // we'll use base instead of types then
@@ -3840,13 +3850,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       
-      if (definition.hasContentReference()) {
-        ElementDefinition ed = getElementByName(profile.getSnapshot().getElement(), definition.getContentReference());
-        if (ed == null)
-          c.getPieces().add(gen.new Piece(null, translate("sd.table", "Unknown reference to %s", definition.getContentReference()), null));
-        else
-          c.getPieces().add(gen.new Piece("#"+ed.getPath(), translate("sd.table", "See %s", ed.getPath()), null));
-      }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
       } else {
