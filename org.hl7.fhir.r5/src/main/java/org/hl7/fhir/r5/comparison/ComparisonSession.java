@@ -25,6 +25,7 @@ public class ComparisonSession {
   private IWorkerContext context;
   private String sessiondId;
   private int count;
+  private boolean debug;
   
   public ComparisonSession(IWorkerContext context) {
     super();
@@ -90,6 +91,22 @@ public class ComparisonSession {
   public void identify(ResourceComparison res) {
     count++;
     res.setId(sessiondId+"-"+count);
-    
   }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+
+  public Map<String, ResourceComparison> getCompares() {
+    return compares;
+  }
+  
+  
+  
+  
+  
 }
