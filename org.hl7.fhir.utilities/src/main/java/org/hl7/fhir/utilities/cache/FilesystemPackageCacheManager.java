@@ -182,7 +182,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (!CACHE_VERSION.equals(v)) {
       clearCache();
       ini.setStringProperty("cache", "version", CACHE_VERSION, null);
-      save = true;
+      ini.save();
     }
   }
 
