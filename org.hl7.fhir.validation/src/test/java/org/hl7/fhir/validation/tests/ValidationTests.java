@@ -100,6 +100,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @ParameterizedTest(name = "{index}: id {0}")
   @MethodSource("data")
   public void test(String name, JsonObject content) throws Exception {
+    long setup = System.nanoTime();
     this.content = content;
     System.out.println("---- " + name + " ----------------------------------------------------------------");
     System.out.println("** Core: ");
@@ -185,6 +186,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setAllowExamples(true);
     }
     val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
+    System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
     if (name.endsWith(".json"))
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
     else

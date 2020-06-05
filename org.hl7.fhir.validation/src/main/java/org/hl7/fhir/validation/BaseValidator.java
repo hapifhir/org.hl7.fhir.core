@@ -603,7 +603,7 @@ public class BaseValidator {
         }
         if (fr == null)
           fr = ValueSetUtilities.generateImplicitValueSet(reference);
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         return fr;
       }
     } else
