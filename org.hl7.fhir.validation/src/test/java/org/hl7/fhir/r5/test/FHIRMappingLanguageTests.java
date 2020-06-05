@@ -1,24 +1,43 @@
-package org.hl7.fhir.r4.test;
+package org.hl7.fhir.r5.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.elementmodel.Manager;
-import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.terminologies.ConceptMapEngine;
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.StructureMapUtilities;
-import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceFactory;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,18 +45,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
-
-@Disabled
 public class FHIRMappingLanguageTests implements ITransformerServices {
 
   private List<Resource> outputs = new ArrayList<Resource>();
@@ -47,9 +54,9 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
 
   public static Stream<Arguments> data()
     throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-    Document tests = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("fml", "manifest.xml"));
+    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fml", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
-    List<Arguments> objects = new ArrayList();
+    List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       objects.add(Arguments.of(test.getAttribute("name"), test.getAttribute("source"), test.getAttribute("map"),
         test.getAttribute("output")));
@@ -59,23 +66,24 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   }
 
   @BeforeAll
-  static public void setUp() throws Exception {
-    if (context == null) {
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
-      jsonParser = new JsonParser();
-      jsonParser.setOutputStyle(OutputStyle.PRETTY);
+  public static void setUp() throws Exception {
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r5.core", "current"));
+    if (context.getValidatorFactory() == null) {
+      context.setValidatorFactory(new InstanceValidatorFactory());
     }
+    jsonParser = new JsonParser();
+    jsonParser.setOutputStyle(OutputStyle.PRETTY);
   }
 
   @ParameterizedTest(name = "{index}: {0}")
   @MethodSource("data")
   public void test(String name, String source, String map, String output) throws Exception {
 
-    String fileSource = TestingUtilities.resourceNameToFile("fml", source);
-    String fileMap = TestingUtilities.resourceNameToFile("fml", map);
-    String fileOutput = TestingUtilities.resourceNameToFile("fml", output);
-    String fileOutputRes = TestingUtilities.resourceNameToFile("fml", output) + ".out";
+    InputStream fileSource = TestingUtilities.loadTestResourceStream("r5", "fml", source);
+    InputStream fileMap = TestingUtilities.loadTestResourceStream("r5", "fml", map);
+    String outputJson = TestingUtilities.loadTestResource("r5", "fml", output);
+    String fileOutputRes = TestingUtilities.tempFile("fml", output) + ".out";
 
     outputs.clear();
 
@@ -84,9 +92,9 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
     Resource resource = null;
     try {
       StructureMapUtilities scu = new StructureMapUtilities(context, this);
-      org.hl7.fhir.r4.elementmodel.Element src = Manager.parse(context,
-        new ByteArrayInputStream(TextFile.fileToBytes(fileSource)), FhirFormat.JSON);
-      StructureMap structureMap = scu.parse(TextFile.fileToString(fileMap), name);
+      org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context,
+        new ByteArrayInputStream(TextFile.streamToBytes(fileSource)), FhirFormat.JSON);
+      StructureMap structureMap = scu.parse(TextFile.streamToString(fileMap), name);
       String typeName = scu.getTargetType(structureMap).getType();
       resource = ResourceFactory.createResource(typeName);
       scu.transform(null, src, structureMap, resource);
@@ -98,12 +106,13 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
     if (ok) {
       ByteArrayOutputStream boas = new ByteArrayOutputStream();
       jsonParser.compose(boas, resource);
-      log(boas.toString());
+      String result = boas.toString();
+      log(result);
       TextFile.bytesToFile(boas.toByteArray(), fileOutputRes);
-      msg = TestingUtilities.checkJsonIsSame(fileOutputRes, fileOutput);
+      msg = TestingUtilities.checkJsonSrcIsSame(result, outputJson);
       assertTrue(msg, Utilities.noString(msg));
     } else
-      assertTrue("Error, but proper output was expected (" + msg + ")", output.equals("$error"));
+      assertEquals("Error, but proper output was expected (" + msg + ")", "$error", output);
   }
 
   @Override
@@ -145,5 +154,4 @@ public class FHIRMappingLanguageTests implements ITransformerServices {
   public List<Base> performSearch(Object appContext, String url) throws FHIRException {
     throw new FHIRException("performSearch is not supported yet");
   }
-
 }
