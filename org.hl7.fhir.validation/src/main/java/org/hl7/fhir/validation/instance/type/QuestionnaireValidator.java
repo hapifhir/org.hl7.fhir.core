@@ -95,7 +95,7 @@ public class QuestionnaireValidator extends BaseValidator {
           Element tgt = getQuestionById(item, ql);
           if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt == null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_ISINNER)) {
             tgt = getQuestionById(questionnaire, ql);
-            if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOTARGET, ql)) {
+            if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOTARGET, ql, item.getChildValue("linkId"))) {
               if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != item, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_SELF)) {
                 if (!isBefore(item, tgt, parents)) {
                   warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_AFTER, ql);
