@@ -191,7 +191,7 @@ public class MeasureValidator extends BaseValidator {
     if (hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), measure != null, I18nConstants.MEASURE_MR_M_NONE)) {
       long t = System.nanoTime();
       Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       if (warning(errors, IssueType.REQUIRED, m.line(), m.col(), stack.getLiteralPath(), msrc != null, I18nConstants.MEASURE_MR_M_NOTFOUND, measure)) {
         boolean inComplete = !"complete".equals(element.getNamedChildValue("status"));
         MeasureContext mc = new MeasureContext(msrc, element);
