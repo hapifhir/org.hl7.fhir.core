@@ -515,7 +515,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
-    timeTracker.load(t, System.nanoTime());
+    timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, e, profiles);
     return e;
@@ -544,7 +544,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
-    timeTracker.load(t, System.nanoTime());
+    timeTracker.load(t);
     validate(appContext, errors, e, profiles);
     return e;
   }
@@ -574,7 +574,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
-    timeTracker.load(t, System.nanoTime());
+    timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, e, profiles);
     return e;
@@ -605,7 +605,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
-    timeTracker.load(t, System.nanoTime());
+    timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, e, profiles);
     return e;
@@ -631,7 +631,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
     long t = System.nanoTime();
     Element e = parser.parse(object);
-    timeTracker.load(t, System.nanoTime());
+    timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, e, profiles);
     return e;
@@ -672,7 +672,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (hintAboutNonMustSupport) {
       checkElementUsage(errors, element, new NodeStack(context, element, validationLanguage));
     }
-    timeTracker.overall(t, System.nanoTime());
+    timeTracker.overall(t);
   }
 
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
@@ -728,11 +728,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     long t = System.nanoTime();
     boolean ss = context.supportsSystem(system);
-    timeTracker.tx(t, System.nanoTime());
+    timeTracker.tx(t);
     if (ss) {
       t = System.nanoTime();
       ValidationResult s = checkCodeOnServer(stack, code, system, display, checkDisplay);
-      timeTracker.tx(t, System.nanoTime());
+      timeTracker.tx(t);
       if (s == null)
         return true;
       if (s.isOk()) {
@@ -949,7 +949,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       }
                     }
                   }
-                  timeTracker.tx(t, System.nanoTime());
+                  timeTracker.tx(t);
                 }
               }
             } catch (Exception e) {
@@ -1054,7 +1054,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       }
                     }
                   }
-                  timeTracker.tx(t, System.nanoTime());
+                  timeTracker.tx(t);
                 }
               }
             } catch (Exception e) {
@@ -1098,7 +1098,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
-                    timeTracker.tx(t, System.nanoTime());
+                    timeTracker.tx(t);
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
@@ -1222,7 +1222,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false);
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1241,7 +1241,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c, true);
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1260,7 +1260,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, new ValidationOptions(stack.getWorkingLang()));
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1317,7 +1317,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
-                    timeTracker.tx(t, System.nanoTime());
+                    timeTracker.tx(t);
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
@@ -1387,7 +1387,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     long t = System.nanoTime();
     StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
-    timeTracker.sd(t, System.nanoTime());
+    timeTracker.sd(t);
     if (ex == null) {
       if (xverManager == null) {
         xverManager = new XVerExtensionManager(context);
@@ -2111,7 +2111,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ValidationOptions options = new ValidationOptions(stack.getWorkingLang()).guessSystem();
           vr = checkCodeOnServer(stack, vs, value, options);
         }
-        timeTracker.tx(t, System.nanoTime());
+        timeTracker.tx(t);
         if (vr != null && !vr.isOk()) {
           if (vr.IsNoService())
             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
@@ -2486,7 +2486,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else
         return null;
     } finally {
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
     }
   }
 
@@ -2628,7 +2628,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ExpressionNode expr = fpe.parse(fixExpr(discriminator));
     long t2 = System.nanoTime();
     ed = fpe.evaluateDefinition(expr, profile, element);
-    timeTracker.sd(t2, System.nanoTime());
+    timeTracker.sd(t2);
     if (ed != null)
       elements.add(ed);
 
@@ -2653,7 +2653,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         expr = fpe.parse(fixExpr(discriminator));
         t2 = System.nanoTime();
         ed = fpe.evaluateDefinition(expr, profile, element);
-        timeTracker.sd(t2, System.nanoTime());
+        timeTracker.sd(t2);
         if (ed != null)
           elements.add(ed);
       }
@@ -2681,7 +2681,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot())
         return sd;
     }
@@ -2722,7 +2722,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     try {
       return context.fetchCodeSystem(system);
     } finally {
-      timeTracker.tx(t, System.nanoTime());
+      timeTracker.tx(t);
     }
   }
 
@@ -2957,7 +2957,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       long t = System.nanoTime();
       StructureDefinition fr = context.fetchResource(StructureDefinition.class, pr);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       return fr;
     }
   }
@@ -2969,7 +2969,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot())
         return sd.getSnapshot().getElement().get(0);
     }
@@ -3121,7 +3121,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (FHIRLexerException e) {
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getUrl(), path, e.getMessage()));
       }
-      timeTracker.fpe(t, System.nanoTime());
+      timeTracker.fpe(t);
       ed.setUserData("slice.expression.cache", n);
     }
 
@@ -3146,7 +3146,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     try {
       long t = System.nanoTime();
       ok = fpe.evaluateToBoolean(hostContext.forProfile(profile), hostContext.getResource(), hostContext.getRootResource(), element, n);
-      timeTracker.fpe(t, System.nanoTime());
+      timeTracker.fpe(t);
       msg = fpe.forLog();
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -3536,7 +3536,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (isValidResourceType(resourceName, trr)) {
       long t = System.nanoTime();
       StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
       ValidatorHostContext hc = null;
       if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER) {
@@ -4277,7 +4277,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (FHIRLexerException e) {
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage()));
       }
-      timeTracker.fpe(t, System.nanoTime());
+      timeTracker.fpe(t);
       inv.setUserData("validator.expression.cache", n);
     }
 
@@ -4286,7 +4286,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     try {
       long t = System.nanoTime();
       ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), element, n);
-      timeTracker.fpe(t, System.nanoTime());
+      timeTracker.fpe(t);
       msg = fpe.forLog();
     } catch (Exception ex) {
       ok = false;
@@ -4337,7 +4337,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       defn = element.getProperty().getStructure();
       if (defn == null)
         defn = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-      timeTracker.sd(t, System.nanoTime());
+      timeTracker.sd(t);
       ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName), defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
     }
 

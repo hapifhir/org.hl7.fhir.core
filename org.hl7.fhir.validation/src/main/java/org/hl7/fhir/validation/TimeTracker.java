@@ -25,27 +25,26 @@ public class TimeTracker {
     return fpeTime;
   }
   
-  public void load(long t, long nanoTime) {
-    // TODO Auto-generated method stub
-    
+  public void load(long start) {
+    loadTime = loadTime + (System.nanoTime() - start);
   }
-  public void overall(long t, long nanoTime) {
-    // TODO Auto-generated method stub
-    
+  
+  public void overall(long start) {  
+    overall = overall + (System.nanoTime() - start);
   }
-  public void tx(long t, long nanoTime) {
-    // TODO Auto-generated method stub
-    
+  
+  public void tx(long start) {
+    txTime = txTime + (System.nanoTime() - start);
   }
-  public void sd(long t, long nanoTime) {
-    // TODO Auto-generated method stub
-    
+  
+  public void sd(long start) {
+    sdTime = sdTime + (System.nanoTime() - start);
   }
-  public void fpe(long t, long nanoTime) {
-    // TODO Auto-generated method stub
-    fpeTime = fpeTime + (System.nanoTime() - t);
-
+  
+  public void fpe(long start) {
+    fpeTime = fpeTime + (System.nanoTime() - start);
   }
+  
   public void reset() {
     overall = 0;
     txTime = 0;
