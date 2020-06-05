@@ -7,24 +7,6 @@ trigger:
 
 pr: none
 
-strategy:
-  matrix:
-    dstu2:
-      module: "org.hl7.fhir.dstu2"
-    dstu3:
-      module: "org.hl7.fhir.dstu3"
-    dstu2016may:
-      module: "org.hl7.fhir.dstu2016may"
-    r4:
-      module: "org.hl7.fhir.r4"
-    r5:
-      module: "org.hl7.fhir.r5"
-    validator:
-      module: "org.hl7.fhir.validation"
-    validator_cli:
-      module: "org.hl7.fhir.validation.cli"
-  maxParallel: 8
-
 pool:
   vmImage: "ubuntu-16.04"
 
@@ -32,10 +14,6 @@ variables:
   currentModule: $(module)
 
 steps:
-  # Debugging output to identify current module.
-  - bash: echo Publishing SNAPSHOT for $(module)
-    displayName: 'Print module name.'
-
   # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid
   # signing key. The next two steps download the public and private keys from the
   # secure library files. 
@@ -106,16 +84,7 @@ steps:
   - task: Maven@3
     displayName: 'Deploy $(module) to Sonatype staging'
     inputs:
-      mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
-      goals: clean deploy
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml'
-      publishJUnitResults: false
-
-  # Clean any existing deployment artifacts
-  - task: Maven@3
-    displayName: 'Clean any existing deploy artifacts.'
-    inputs:
-      mavenPomFile: '$(System.DefaultWorkingDirectory)/$(module)/pom.xml'
-      goals: clean
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+      goals: deploy
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml'
       publishJUnitResults: false
