@@ -54,6 +54,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -827,6 +828,14 @@ public class FHIRToolingClient {
 
   public void setLogger(ToolingClientLogger logger) {
     utils.setLogger(logger);
+  }
+
+  public int getRetryCount() {
+    return utils.getRetryCount();
+  }
+
+  public void setRetryCount(int retryCount) {
+    utils.setRetryCount(retryCount);
   }
 
 

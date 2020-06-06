@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.client;
+package org.hl7.fhir.utilities;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

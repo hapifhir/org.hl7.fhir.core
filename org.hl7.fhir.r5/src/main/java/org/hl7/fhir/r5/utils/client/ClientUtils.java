@@ -85,6 +85,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 /**
  * Helper class handling lower level HTTP transport concerns.
@@ -101,6 +102,7 @@ public class ClientUtils {
   private String username;
   private String password;
   private ToolingClientLogger logger;
+  private int retryCount;
 
   public HttpHost getProxy() {
     return proxy;
@@ -278,7 +280,11 @@ public class ClientUtils {
    */
   protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy) {
     HttpResponse response = null;
+		boolean ok = false;
+		int tryCount = 0;
+		while (!ok) {
     try {
+		    tryCount++;
       HttpClient httpclient = new DefaultHttpClient();
       if(proxy != null) {
         httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
@@ -286,9 +292,15 @@ public class ClientUtils {
       request.setEntity(new ByteArrayEntity(payload));
       log(request);
       response = httpclient.execute(request);
+		    ok = true;
     } catch(IOException ioe) {
-      throw new EFhirClientException("Error sending HTTP Post/Put Payload", ioe);
+		    if (tryCount <= retryCount) {
+		      ok = false;
+		    } else {
+      throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
     }
+		  }
+		}
     return response;
   }
 
@@ -630,6 +642,14 @@ public class ClientUtils {
       //Do nothing
     }
     return value;
+  }
+
+  public int getRetryCount() {
+    return retryCount;
+  }
+
+  public void setRetryCount(int retryCount) {
+    this.retryCount = retryCount;
   }
 
 

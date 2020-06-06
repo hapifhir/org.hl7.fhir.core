@@ -1,9 +1,5 @@
 package org.hl7.fhir.r5.utils.client;
 
-
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -54,6 +50,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -245,35 +242,64 @@ public class FHIRToolingClient {
     return (T) bnd.getEntry().get(0).getResource();
   }
   
-//	
-//	public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
-//		ResourceRequest<T> result = null;
-//		try {
-//			List<Header> headers = null;
-//			result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, proxy);
-//			result.addErrorStatus(410);//gone
-//			result.addErrorStatus(404);//unknown
-//			result.addErrorStatus(405);
-//			result.addErrorStatus(422);//Unprocessable Entity
-//			result.addSuccessStatus(200);
-//			result.addSuccessStatus(201);
-//			if(result.isUnsuccessfulRequest()) {
-//				throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
-//			}
-//		} catch(Exception e) {
-//			throw new EFhirClientException("An error has occurred while trying to update this resource", e);
-//		}
-//		// TODO oe 26.1.2015 could be made nicer if only OperationOutcome	locationheader is returned with an operationOutcome would be returned (and not	the resource also) we make another read
-//		try {
-//		  OperationOutcome operationOutcome = (OperationOutcome)result.getPayload();
-//		  ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = ResourceAddress.parseCreateLocation(result.getLocation());
-//		  return this.vread(resourceClass, resVersionedIdentifier.getId(),resVersionedIdentifier.getVersionId());
-//		} catch(ClassCastException e) {
-//		  // if we fall throught we have the correct type already in the create
-//		}
-//
-//		return result.getPayload();
-//	}
+	
+  public Resource update(Resource resource) {
+    ResourceRequest<Resource> result = null;
+    try {
+      List<Header> headers = null;
+      result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers);
+      result.addErrorStatus(410);//gone
+      result.addErrorStatus(404);//unknown
+      result.addErrorStatus(405);
+      result.addErrorStatus(422);//Unprocessable Entity
+      result.addSuccessStatus(200);
+      result.addSuccessStatus(201);
+      if(result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
+      }
+    } catch(Exception e) {
+      throw new EFhirClientException("An error has occurred while trying to update this resource", e);
+    }
+    // TODO oe 26.1.2015 could be made nicer if only OperationOutcome locationheader is returned with an operationOutcome would be returned (and not  the resource also) we make another read
+    try {
+      OperationOutcome operationOutcome = (OperationOutcome)result.getPayload();
+      ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = ResourceAddress.parseCreateLocation(result.getLocation());
+      return this.vread(resource.getClass(), resVersionedIdentifier.getId(),resVersionedIdentifier.getVersionId());
+    } catch(ClassCastException e) {
+      // if we fall throught we have the correct type already in the create
+    }
+
+    return result.getPayload();
+  }
+
+	public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
+		ResourceRequest<T> result = null;
+		try {
+			List<Header> headers = null;
+			result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers);
+			result.addErrorStatus(410);//gone
+			result.addErrorStatus(404);//unknown
+			result.addErrorStatus(405);
+			result.addErrorStatus(422);//Unprocessable Entity
+			result.addSuccessStatus(200);
+			result.addSuccessStatus(201);
+			if(result.isUnsuccessfulRequest()) {
+				throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
+			}
+		} catch(Exception e) {
+			throw new EFhirClientException("An error has occurred while trying to update this resource", e);
+		}
+		// TODO oe 26.1.2015 could be made nicer if only OperationOutcome	locationheader is returned with an operationOutcome would be returned (and not	the resource also) we make another read
+		try {
+		  OperationOutcome operationOutcome = (OperationOutcome)result.getPayload();
+		  ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = ResourceAddress.parseCreateLocation(result.getLocation());
+		  return this.vread(resourceClass, resVersionedIdentifier.getId(),resVersionedIdentifier.getVersionId());
+		} catch(ClassCastException e) {
+		  // if we fall throught we have the correct type already in the create
+		}
+
+		return result.getPayload();
+	}
 
 //	
 //	public <T extends Resource> boolean delete(Class<T> resourceClass, String id) {
@@ -798,6 +824,14 @@ public class FHIRToolingClient {
 
   public void setLogger(ToolingClientLogger logger) {
     utils.setLogger(logger);
+  }
+
+  public int getRetryCount() {
+    return utils.getRetryCount();
+  }
+
+  public void setRetryCount(int retryCount) {
+    utils.setRetryCount(retryCount);
   }
 
 

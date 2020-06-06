@@ -54,6 +54,7 @@ import org.hl7.fhir.dstu3.model.PrimitiveType;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.dstu3.model.ValueSet;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -92,6 +93,7 @@ public class FHIRToolingClient {
 	private String base;
 	private ResourceAddress resourceAddress;
 	private ResourceFormat preferredResourceFormat;
+	private HttpHost proxy;
 	private int maxResultSetSize = -1;//_count
 	private CapabilityStatement capabilities;
 
@@ -217,6 +219,31 @@ public class FHIRToolingClient {
 		return result.getPayload();
 	}
 	
+	// GET fhir/ValueSet?url=http://hl7.org/fhir/ValueSet/clinical-findings&version=0.8
+
+  public <T extends Resource> T getCanonical(Class<T> resourceClass, String canonicalURL) {
+    ResourceRequest<T> result = null;
+    try {
+      result = utils.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndCanonical(resourceClass, canonicalURL), getPreferredResourceFormat());
+      result.addErrorStatus(410);//gone
+      result.addErrorStatus(404);//unknown
+      result.addErrorStatus(405);//unknown
+      result.addSuccessStatus(200);//Only one for now
+      if(result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
+      }
+    } catch (Exception e) {
+      handleException("An error has occurred while trying to read this version of the resource", e);
+    }
+    Bundle bnd = (Bundle) result.getPayload();
+    if (bnd.getEntry().size() == 0)
+      throw new EFhirClientException("No matching resource found for canonical URL '"+canonicalURL+"'");
+    if (bnd.getEntry().size() > 1)
+      throw new EFhirClientException("Multiple matching resources found for canonical URL '"+canonicalURL+"'");
+    return (T) bnd.getEntry().get(0).getResource();
+  }
+  
+	
   public Resource update(Resource resource) {
     ResourceRequest<Resource> result = null;
     try {
@@ -246,35 +273,34 @@ public class FHIRToolingClient {
     return result.getPayload();
   }
 
-//	
-//	public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
-//		ResourceRequest<T> result = null;
-//		try {
-//			List<Header> headers = null;
-//			result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, proxy);
-//			result.addErrorStatus(410);//gone
-//			result.addErrorStatus(404);//unknown
-//			result.addErrorStatus(405);
-//			result.addErrorStatus(422);//Unprocessable Entity
-//			result.addSuccessStatus(200);
-//			result.addSuccessStatus(201);
-//			if(result.isUnsuccessfulRequest()) {
-//				throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
-//			}
-//		} catch(Exception e) {
-//			throw new EFhirClientException("An error has occurred while trying to update this resource", e);
-//		}
-//		// TODO oe 26.1.2015 could be made nicer if only OperationOutcome	locationheader is returned with an operationOutcome would be returned (and not	the resource also) we make another read
-//		try {
-//		  OperationOutcome operationOutcome = (OperationOutcome)result.getPayload();
-//		  ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = ResourceAddress.parseCreateLocation(result.getLocation());
-//		  return this.vread(resourceClass, resVersionedIdentifier.getId(),resVersionedIdentifier.getVersionId());
-//		} catch(ClassCastException e) {
-//		  // if we fall throught we have the correct type already in the create
-//		}
-//
-//		return result.getPayload();
-//	}
+	public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
+		ResourceRequest<T> result = null;
+		try {
+			List<Header> headers = null;
+			result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers);
+			result.addErrorStatus(410);//gone
+			result.addErrorStatus(404);//unknown
+			result.addErrorStatus(405);
+			result.addErrorStatus(422);//Unprocessable Entity
+			result.addSuccessStatus(200);
+			result.addSuccessStatus(201);
+			if(result.isUnsuccessfulRequest()) {
+				throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
+			}
+		} catch(Exception e) {
+			throw new EFhirClientException("An error has occurred while trying to update this resource", e);
+		}
+		// TODO oe 26.1.2015 could be made nicer if only OperationOutcome	locationheader is returned with an operationOutcome would be returned (and not	the resource also) we make another read
+		try {
+		  OperationOutcome operationOutcome = (OperationOutcome)result.getPayload();
+		  ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = ResourceAddress.parseCreateLocation(result.getLocation());
+		  return this.vread(resourceClass, resVersionedIdentifier.getId(),resVersionedIdentifier.getVersionId());
+		} catch(ClassCastException e) {
+		  // if we fall throught we have the correct type already in the create
+		}
+
+		return result.getPayload();
+	}
 
 //	
 //	public <T extends Resource> boolean delete(Class<T> resourceClass, String id) {
@@ -801,5 +827,23 @@ public class FHIRToolingClient {
   public Parameters getTerminologyCapabilities() {
     return (Parameters) utils.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(), getPreferredResourceFormat()).getReference();
   }
+
+
+  public org.hl7.fhir.utilities.ToolingClientLogger getLogger() {
+    return utils.getLogger();
+  }
+
+  public void setLogger(ToolingClientLogger logger) {
+    utils.setLogger(logger);
+  }
+  
+  public int getRetryCount() {
+    return utils.getRetryCount();
+  }
+
+  public void setRetryCount(int retryCount) {
+    utils.setRetryCount(retryCount);
+  }
+
 
 }
