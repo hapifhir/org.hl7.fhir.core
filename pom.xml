@@ -259,6 +259,7 @@
                     <ignoredResourcePatterns>
                         <ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
                         <ignoredResource>javac.bat</ignoredResource>
+                        <ignoredResource>javac.sh</ignoredResource>
                         <ignoredResource>about.html</ignoredResource>
                         <ignoredResource>changelog.xml</ignoredResource>
                     </ignoredResourcePatterns>
