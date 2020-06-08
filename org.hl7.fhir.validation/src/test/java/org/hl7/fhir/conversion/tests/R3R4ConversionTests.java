@@ -1,7 +1,8 @@
 package org.hl7.fhir.conversion.tests;
 
 import com.google.gson.*;
-import org.hl7.fhir.convertors.R3ToR4Loader;
+
+import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
