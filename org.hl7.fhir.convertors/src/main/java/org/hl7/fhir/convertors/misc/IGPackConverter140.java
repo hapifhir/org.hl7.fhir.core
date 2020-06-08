@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.misc;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -31,42 +31,29 @@ package org.hl7.fhir.convertors;
 
 
 
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.ValueSet;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
-public class IGR2ConvertorAdvisor implements VersionConvertorAdvisor40 {
+import org.hl7.fhir.convertors.VersionConvertor_14_30;
+import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
+public class IGPackConverter140 {
+  
+  public static void main(String[] args) throws Exception {
+    for (String s : new File("C:\\temp\\igpack").list()) {
+//      if (s.endsWith(".xml") && !s.contains("z-")) {
+      if (s.equals("expansions.xml")) {
+        System.out.println("process "+s);
+        org.hl7.fhir.dstu2016may.formats.XmlParser xp = new org.hl7.fhir.dstu2016may.formats.XmlParser();
+        org.hl7.fhir.dstu2016may.model.Resource r14 = xp.parse(new FileInputStream("C:\\temp\\igpack\\"+s));
+        org.hl7.fhir.dstu3.model.Resource r17 = VersionConvertor_14_30.convertResource(r14);
+        org.hl7.fhir.dstu3.formats.XmlParser xc = new org.hl7.fhir.dstu3.formats.XmlParser();
+        xc.setOutputStyle(OutputStyle.PRETTY);
+        xc.compose(new FileOutputStream("C:\\temp\\igpack\\z-"+s), r17);
+      }
+    }
+    System.out.println("done");
   }
 
 }

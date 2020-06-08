@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.loaders;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,22 +37,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.dstu2.formats.JsonParser;
-import org.hl7.fhir.dstu2.formats.XmlParser;
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.dstu3.model.Bundle;
-import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.dstu3.model.Bundle.BundleType;
-import org.hl7.fhir.dstu3.model.CodeSystem;
-import org.hl7.fhir.dstu3.model.MetadataResource;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.dstu3.model.UriType;
-import org.hl7.fhir.dstu3.model.ValueSet;
+import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.dstu2016may.formats.JsonParser;
+import org.hl7.fhir.dstu2016may.formats.XmlParser;
+import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.ValueSet;
 
-public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdvisor30 {
+public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+
+  public R2016MayToR5Loader(String[] types) {
+    super(types);
+  }
 
   private List<CodeSystem> cslist = new ArrayList<>();
   private boolean patchUrls;
@@ -60,27 +67,28 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
   
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r2 = null;
+    Resource r2016may = null;
     if (isJson)
-      r2 = new JsonParser().parse(stream);
+      r2016may = new JsonParser().parse(stream);
     else
-      r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2, this);
+      r2016may = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may);
+    
     Bundle b;
-    if (r3 instanceof Bundle)
-      b = (Bundle) r3;
+    if (r5 instanceof Bundle)
+      b = (Bundle) r5;
     else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
-      b.addEntry().setResource(r3).setFullUrl(r3 instanceof MetadataResource ? ((MetadataResource) r3).getUrl() : null);
+      b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
     }
+    
     for (CodeSystem cs : cslist) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-	cslist.clear();
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -92,11 +100,12 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
       }
       b.getEntry().removeAll(remove);
     }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/DSTU2/"));
+    for (BundleEntryComponent be : b.getEntry()) {
+      if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) be.getResource();
+        new ProfileUtilities(null, null, null).setIds(sd, false);
+        if (patchUrls) {
+          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/2016May/"));
           sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
         }
       }
@@ -110,7 +119,17 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
   }
 
   @Override
-  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
+  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
+    return null;
+  }
+
+  @Override
+  public Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
+    return null;
+  }
+
+  @Override
+  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
 
@@ -131,7 +150,7 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
     return patchUrls;
   }
 
-  public R2ToR3Loader setPatchUrls(boolean patchUrls) {
+  public R2016MayToR5Loader setPatchUrls(boolean patchUrls) {
     this.patchUrls = patchUrls;
     return this;
   }
@@ -140,9 +159,14 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
     return killPrimitives;
   }
 
-  public R2ToR3Loader setKillPrimitives(boolean killPrimitives) {
+  public R2016MayToR5Loader setKillPrimitives(boolean killPrimitives) {
     this.killPrimitives = killPrimitives;
     return this;
+  }
+
+  @Override
+  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
+    return null;
   }
 
 }

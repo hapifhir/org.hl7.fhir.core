@@ -42,6 +42,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
+import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
+import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
+import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
