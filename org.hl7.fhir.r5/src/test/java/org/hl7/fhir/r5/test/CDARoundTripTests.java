@@ -214,8 +214,7 @@ public class CDARoundTripTests {
 		ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
 		Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
 		Element cdaXmlRoundtrip = Manager.parse(context, new ByteArrayInputStream(baosXml.toString().getBytes()), FhirFormat.XML);
-
-//		assertsExample(cdaXmlRoundtrip);
+		assertsExample(cdaXmlRoundtrip);
 	}
 
 	@Test
