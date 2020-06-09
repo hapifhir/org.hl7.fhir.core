@@ -687,6 +687,11 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
         readChar();
   }
   
+  private void skipWhiteSpaceInternal() throws IOException {
+    while (Character.isWhitespace(peekChar()) || (peekChar() == 0xfeff))
+      readChar();
+  }
+  
   private void pushChar(char ch) {
     cache = Character.toString(ch)+cache;    
   }
@@ -1151,7 +1156,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     readChar();
     if (peekChar() == '?') {
       readToTagEnd();
-      skipWhiteSpace();
+      skipWhiteSpaceInternal();
       if (peekChar() != '<')
         throw new FHIRException("Unable to Parse HTML - does not start with tag after processing instruction. Found "+peekChar()+descLoc());
       readChar();
