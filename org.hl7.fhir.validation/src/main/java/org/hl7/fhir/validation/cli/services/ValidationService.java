@@ -193,6 +193,7 @@ public class ValidationService {
     validator.setSnomedExtension(cliContext.getSnomedCTCode());
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
     validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+    validator.setSecurityChecks(cliContext.isSecurityChecks());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }
