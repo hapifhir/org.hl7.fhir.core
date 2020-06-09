@@ -1,13 +1,19 @@
 package org.hl7.fhir.r5.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -55,4 +61,22 @@ public class ResourceRoundTripTests {
       throw new FHIRException("Bundle was null");
   }
   
+  @Test
+  /**
+   * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
+   */
+  public void testSerializeUmlaut() throws IOException {
+    Element xml = Manager.parse(TestingUtilities.context(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
+        FhirFormat.XML);
+    List<Element> concept = xml.getChildrenByName("concept");
+    assertTrue(concept!=null && concept.size()==1);
+    List<Element> code = concept.get(0).getChildrenByName("code");
+    assertTrue(code!=null && code.size()==1);
+    code.get(0).setValue("ö");
+    ByteArrayOutputStream baosXml = new  ByteArrayOutputStream();
+    Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
+    String cdaSerialised = baosXml.toString();
+    assertTrue(cdaSerialised.indexOf("<code value=\"ö\"")>0); 
+  }
+
 }
