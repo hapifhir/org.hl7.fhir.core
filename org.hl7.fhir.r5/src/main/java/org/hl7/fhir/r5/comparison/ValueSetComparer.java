@@ -56,6 +56,11 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         expansion = new StructuralMatch<>();
       }
       return expansion;
+    }
+
+    @Override
+    protected String abbreviation() {
+      return "sd";
     }         
   }
   

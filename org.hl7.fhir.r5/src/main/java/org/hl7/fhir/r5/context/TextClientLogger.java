@@ -37,7 +37,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 public class TextClientLogger implements ToolingClientLogger {

@@ -542,7 +542,7 @@ public class Element extends Base {
   		return null;
 	  Element result = null;
 	  for (Element child : children) {
-	  	if (child.getName().equals(name) || (child.getName().startsWith(name) && child.getProperty().getDefinition().isChoice())) {
+	  	if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
 	  		if (result == null)
 	  			result = child;
 	  		else 

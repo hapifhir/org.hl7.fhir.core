@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.Utilities;
 
 public class ComparisonSession {
 
@@ -90,7 +91,9 @@ public class ComparisonSession {
 
   public void identify(ResourceComparison res) {
     count++;
-    res.setId(sessiondId+"-"+count);
+    if (!Utilities.isValidId(res.getId())) {
+      res.setId(sessiondId+"-"+count);
+    }
   }
 
   public boolean isDebug() {

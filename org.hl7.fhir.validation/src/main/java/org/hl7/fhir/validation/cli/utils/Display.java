@@ -98,6 +98,8 @@ public class Display {
     System.out.println("     marked as mustSupport=true.  Useful to identify elements included that may be ignored by recipients");
     System.out.println("-assumeValidRestReferences: If present, assume that URLs that reference resources follow the RESTful URI pattern");
     System.out.println("     and it is safe to infer the type from the URL");
+    System.out.println("-security-checks: If present, check that string content doesn't include any html-like tags that might create");
+    System.out.println("     problems downstream (though all external input must always be santized by escaping for either html or sql)");
     System.out.println("");
     System.out.println("The validator also supports the param -proxy=[address]:[port] for if you use a proxy");
     System.out.println("");

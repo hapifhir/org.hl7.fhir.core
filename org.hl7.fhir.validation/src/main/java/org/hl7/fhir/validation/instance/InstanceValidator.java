@@ -176,6 +176,7 @@ import com.google.gson.JsonObject;
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
   private static final String EXECUTION_ID = "validator.execution.id";
+  private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
   
   private class ValidatorHostServices implements IEvaluationContext {
 
@@ -352,6 +353,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidatorHostServices validatorServices;
   private boolean assumeValidRestReferences;
   private boolean allowExamples;
+  private boolean securityChecks;
   private ProfileUtilities profileUtilities;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
@@ -1773,8 +1775,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return;
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
-    if (regex != null)
+    if (regex != null) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex);
+    }
+    if (!"xhtml".equals(type)) {
+      if (securityChecks) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR);
+      } else {
+        hint(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+      }
+    }
     
     
     if (type.equals("boolean")) {
@@ -1959,6 +1969,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private boolean containsHtmlTags(String cnt) {
+    int i = cnt.indexOf("<");
+    while (i > -1) {
+      cnt = cnt.substring(i+1);
+      i = cnt.indexOf("<");
+      int e = cnt.indexOf(">");
+      if (e > -1 && e < i) {
+        String s = cnt.substring(0, e);
+        if (s.matches(HTML_FRAGMENT_REGEX)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**
@@ -2207,7 +2233,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def);
       }
     }
-    rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
+    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
           I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
   }
 
@@ -4573,6 +4599,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       return context.validateCode(new ValidationOptions(stack.getWorkingLang()), cc, valueset);
     }
+  }
+
+  public boolean isSecurityChecks() {
+    return securityChecks;
+  }
+
+  public void setSecurityChecks(boolean securityChecks) {
+    this.securityChecks = securityChecks;
   }
 
 }

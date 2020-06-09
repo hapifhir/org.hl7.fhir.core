@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.txClient;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -34,26 +34,28 @@ package org.hl7.fhir.convertors;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
-public class TerminologyClientR3 implements TerminologyClient {
+public class TerminologyClientR4 implements TerminologyClient {
 
   private FHIRToolingClient client; // todo: use the R2 client
   
-  public TerminologyClientR3(String address) throws URISyntaxException {
+  public TerminologyClientR4(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
   }
 
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return (TerminologyCapabilities) VersionConvertor_30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false);
+    return (TerminologyCapabilities) TerminologyCapabilities40_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
   }
 
   @Override
@@ -63,44 +65,52 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertor_30_50.convertResource(vs, false);
-    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertor_30_50.convertResource(p, false);
+    org.hl7.fhir.r4.model.ValueSet vs2 = (org.hl7.fhir.r4.model.ValueSet) VersionConvertor_40_50.convertResource(vs);
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertor_40_50.convertResource(p);
     vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
-    return (ValueSet) VersionConvertor_30_50.convertResource(vs2, false);
+    return (ValueSet) VersionConvertor_40_50.convertResource(vs2);
   }
 
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
-    p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertor_40_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "validate-code", p2);
+    return (Parameters) VersionConvertor_40_50.convertResource(p2);
   }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
-    p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertor_40_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "validate-code", p2);
+    return (Parameters) VersionConvertor_40_50.convertResource(p2);
   }
 
   @Override
-  public void setTimeout(int i) {
-    // ignored in this version - need to roll R4 internal changes back to R2 if desired
+  public TerminologyClient setTimeout(int i) {
+    client.setTimeout(i);
+    return this;
   }
 
   @Override
-  public void setLogger(ToolingClientLogger txLog) {
-    // ignored in this version - need to roll R4 internal changes back to R2 if desired
+  public TerminologyClient setLogger(ToolingClientLogger txLog) {
+    client.setLogger(txLog);
+    return this;
+  }
+
+  @Override
+  public TerminologyClient setRetryCount(int retryCount) throws FHIRException {
+    client.setRetryCount(retryCount);
+    return this;
   }
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) VersionConvertor_30_50.convertResource(client.getCapabilitiesStatementQuick(), false);
+    return (CapabilityStatement) VersionConvertor_40_50.convertResource(client.getCapabilitiesStatementQuick());
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) VersionConvertor_30_50.convertResource(client.lookupCode(params), false);
+    return (Parameters) VersionConvertor_40_50.convertResource(client.lookupCode(params));
   }
   
 }

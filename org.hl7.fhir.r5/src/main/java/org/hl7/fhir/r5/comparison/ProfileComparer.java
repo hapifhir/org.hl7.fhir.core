@@ -45,6 +45,11 @@ public class ProfileComparer extends CanonicalResourceComparer {
     public StructuralMatch<ElementDefinition> getCombined() {
       return combined;
     }
+
+    @Override
+    protected String abbreviation() {
+      return "sd";
+    }
   }
 
   public ProfileComparer(ComparisonSession session) {
@@ -687,6 +692,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
       } else if (rvs == null) {
         vm(IssueSeverity.ERROR, "Unable to resolve right value set "+right.getValueSet().toString()+" at "+path, path, comp.getMessages(), res.getMessages());
         return true;        
+      } else if (sameValueSets(lvs, rvs)) {
+        subBinding.setValueSet(lvs.getUrl());
+        superBinding.setValueSet(lvs.getUrl());
       } else {
         ValueSetComparison compP = (ValueSetComparison) session.compare(lvs, rvs);
         if (compP != null) {
@@ -696,6 +704,20 @@ public class ProfileComparer extends CanonicalResourceComparer {
       }
     }
     return false;
+  }
+
+  private boolean sameValueSets(ValueSet lvs, ValueSet rvs) {
+    if (!lvs.getUrl().equals(rvs.getUrl())) {
+      return false;
+    }
+    if (lvs.hasVersion()) {
+      if (!lvs.getVersion().equals(rvs.getVersion())) {
+        return false;
+      } else if (!rvs.hasVersion()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private List<ElementDefinitionConstraintComponent> intersectConstraints(String path, List<ElementDefinitionConstraintComponent> left, List<ElementDefinitionConstraintComponent> right) {
