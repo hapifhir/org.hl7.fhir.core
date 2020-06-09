@@ -24,7 +24,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
-  public class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
+  public abstract class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
 
     protected T left;
     protected T right;
@@ -34,7 +34,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
     public CanonicalResourceComparison(T left, T right) {
-      super();
+      super(left.getId(), right.getId());
       this.left = left;
       this.right = right;
     }

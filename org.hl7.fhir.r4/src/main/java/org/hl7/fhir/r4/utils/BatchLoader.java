@@ -53,7 +53,6 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
-import org.hl7.fhir.r4.utils.client.ToolingClientLogger;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
 

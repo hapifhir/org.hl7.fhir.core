@@ -213,18 +213,26 @@ public class StructureMapUtilities {
       return services.resolveReference(appContext, url);
     }
 
+    private boolean noErrorValidationMessages(List<ValidationMessage> valerrors) {
+      boolean ok = true;
+      for (ValidationMessage v : valerrors)
+        ok = ok && !v.getLevel().isError();
+      return ok;
+    }
+
     @Override
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = worker.newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
         val.validate(appContext, valerrors, (Resource) item, url);
-        boolean ok = true;
-        for (ValidationMessage v : valerrors)
-          ok = ok && v.getLevel().isError();
-        return ok;
+        return noErrorValidationMessages(valerrors);
       }
-      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
+      if (item instanceof Element) {
+        val.validate(appContext, valerrors, (Element) item, url);
+        return noErrorValidationMessages(valerrors);
+      }
+      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
     }
 
     @Override

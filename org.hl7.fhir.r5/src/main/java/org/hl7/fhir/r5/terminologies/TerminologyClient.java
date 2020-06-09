@@ -38,7 +38,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 public interface TerminologyClient {
   public String getAddress();
@@ -46,8 +46,9 @@ public interface TerminologyClient {
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
   public Parameters validateCS(Parameters pin) throws FHIRException;
   public Parameters validateVS(Parameters pin) throws FHIRException;
-  public void setTimeout(int i) throws FHIRException;
-  public void setLogger(ToolingClientLogger txLog) throws FHIRException;
+  public TerminologyClient setTimeout(int i) throws FHIRException;
+  public TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
+  public TerminologyClient setRetryCount(int retryCount) throws FHIRException;
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   public Parameters lookupCode(Map<String, String> params) throws FHIRException;
 }
