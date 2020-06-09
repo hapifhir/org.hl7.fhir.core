@@ -45,6 +45,11 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     public StructuralMatch<ConceptDefinitionComponent> getCombined() {
       return combined;
     }
+
+    @Override
+    protected String abbreviation() {
+      return "cs";
+    }
   }
 
   private CodeSystem right;
@@ -226,7 +231,6 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
   }
 
-
   private boolean hasDesignation(ConceptDefinitionDesignationComponent td, List<ConceptDefinitionDesignationComponent> designation) {
     for (ConceptDefinitionDesignationComponent t : designation) {
       if (designationsMatch(td, t)) {
@@ -302,7 +306,6 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
     return null;
   }
-
 
   public XhtmlNode renderConcepts(CodeSystemComparison comparison, String id, String prefix) throws FHIRException, IOException {
     // columns: code, display (left|right), properties (left|right)

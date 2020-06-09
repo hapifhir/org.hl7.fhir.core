@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.loaders;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,27 +37,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
+import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
+import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.dstu3.model.Bundle.BundleType;
+import org.hl7.fhir.dstu3.model.CodeSystem;
+import org.hl7.fhir.dstu3.model.MetadataResource;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.dstu3.model.UriType;
+import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 
-public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
-
-  
-  public R2ToR5Loader(String[] types) {
-    super(types);
-  }
+public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdvisor30 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
   private boolean patchUrls;
@@ -70,23 +67,22 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, this);
+    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2, this);
     Bundle b;
-    if (r5 instanceof Bundle)
-      b = (Bundle) r5;
+    if (r3 instanceof Bundle)
+      b = (Bundle) r3;
     else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
-      b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
+      b.addEntry().setResource(r3).setFullUrl(r3 instanceof MetadataResource ? ((MetadataResource) r3).getUrl() : null);
     }
-    // Add any code systems defined as part of processing value sets to the end of the converted Bundle
     for (CodeSystem cs : cslist) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-    cslist.clear();
+	cslist.clear();
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -116,16 +112,7 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
   }
 
   @Override
-  public Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
+  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
     return null;
   }
 
@@ -146,7 +133,7 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     return patchUrls;
   }
 
-  public R2ToR5Loader setPatchUrls(boolean patchUrls) {
+  public R2ToR3Loader setPatchUrls(boolean patchUrls) {
     this.patchUrls = patchUrls;
     return this;
   }
@@ -155,14 +142,9 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     return killPrimitives;
   }
 
-  public R2ToR5Loader setKillPrimitives(boolean killPrimitives) {
+  public R2ToR3Loader setKillPrimitives(boolean killPrimitives) {
     this.killPrimitives = killPrimitives;
     return this;
-  }
-
-  @Override
-  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
   }
 
 }

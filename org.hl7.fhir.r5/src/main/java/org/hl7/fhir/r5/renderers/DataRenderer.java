@@ -231,6 +231,9 @@ public class DataRenderer {
   }
   
   public String display(DataType type) {
+    if (type.isEmpty())
+      return "";
+    
     if (type instanceof Coding) {
       return displayCoding((Coding) type);
     } else if (type instanceof CodeableConcept) {
@@ -693,7 +696,7 @@ public class DataRenderer {
   }
 
   public static String displayPeriod(Period p) {
-    String s = !p.hasStart() ? "?ngen-5?" : p.getStartElement().toHumanDisplay();
+    String s = !p.hasStart() ? "(?)" : p.getStartElement().toHumanDisplay();
     s = s + " --> ";
     return s + (!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }

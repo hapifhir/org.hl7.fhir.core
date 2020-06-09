@@ -25,44 +25,44 @@ public class RenderingContext {
     String findTemplate(RenderingContext rcontext, DomainResource r);
     String findTemplate(RenderingContext rcontext, String resourceName);
   }
-  
+
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
   }
-  
+
   public enum ResourceRendererMode{
     RESOURCE, IG
   }
 
-  
+
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
      * Note that this is not the same as how the questionnaire would like on a form filler, since all dynamic behavior is ignored
      */
     FORM,
-    
+
     /**
      * a structured tree that presents the content of the questionnaire in a logical fashion
      */
     TREE,   
-    
+
     /**
      * A structured tree that presents the enableWhen, terminology and expression bindings for the questionnaire 
      */
     LOGIC,
-    
+
     /**
      * A presentation that lists all the items, with full details about them 
      */
     DEFNS, 
-    
+
     /**
      * Rendered links to various openly available Form Filler applications that know how to render a questionnaire published in a package 
      */
     LINKS
   }
-  
+
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -92,9 +92,9 @@ public class RenderingContext {
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
-  
+
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
-  
+
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -329,32 +329,36 @@ public class RenderingContext {
     return inlineGraphics;
   }
 
-  public void setInlineGraphics(boolean inlineGraphics) {
+  public RenderingContext setInlineGraphics(boolean inlineGraphics) {
     this.inlineGraphics = inlineGraphics;
+    return this;
   }
 
   public boolean isHeader() {
     return header;
   }
 
-  public void setHeader(boolean header) {
+  public RenderingContext setHeader(boolean header) {
     this.header = header;
+    return this;
   }
 
   public QuestionnaireRendererMode getQuestionnaireMode() {
     return questionnaireMode;
   }
 
-  public void setQuestionnaireMode(QuestionnaireRendererMode questionnaireMode) {
+  public RenderingContext setQuestionnaireMode(QuestionnaireRendererMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
+    return this;
   }
 
   public String getSelfLink() {
     return selfLink;
   }
 
-  public void setSelfLink(String selfLink) {
+  public RenderingContext setSelfLink(String selfLink) {
     this.selfLink = selfLink;
+    return this;
   }
 
   public String fixReference(String ref) {
@@ -366,7 +370,17 @@ public class RenderingContext {
     }
     return ref;
   }
-  
+
+  public RenderingContext setLang(String lang) {
+    this.lang = lang;
+    return this;
+  }
+
+  public RenderingContext setLocalPrefix(String localPrefix) {
+    this.localPrefix = localPrefix;
+    return this;
+  }
+
 
 
 }
