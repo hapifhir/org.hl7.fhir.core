@@ -210,6 +210,10 @@ public class XmlParser extends ParserBase {
       return "h:";
     if (ns.equals("urn:hl7-org:v3"))
       return "v3:";
+    if (ns.equals("urn:hl7-org:sdtc")) 
+      return "sdtc:";
+    if (ns.equals("urn:ihe:pharm"))
+      return "pharm:";
     return "?:";
   }
 
@@ -538,11 +542,31 @@ public class XmlParser extends ParserBase {
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    addNamespaces(xml, e);
     composeElement(xml, e, e.getType(), true);
     xml.end();
-
   }
 
+  private void addNamespaces(IXMLWriter xml, Element e) throws IOException {
+    String ns = e.getProperty().getXmlNamespace();
+    if (ns!=null && !xml.getDefaultNamespace().equals(ns)){
+      if (!xml.namespaceDefined(ns)) {
+        String prefix = pathPrefix(ns);
+        if (prefix.endsWith(":")) {
+          prefix = prefix.substring(0, prefix.length()-1);
+        }
+        if ("?".equals(prefix)) {
+          xml.namespace(ns);
+        } else {
+          xml.namespace(ns, prefix);
+        }
+      }
+    }
+    for (Element c : e.getChildren()) {
+      addNamespaces(xml, c);
+    }
+  }
+  
   private boolean hasTypeAttr(Element e) {
     if (isTypeAttr(e.getProperty()))
       return true;
@@ -584,9 +608,9 @@ public class XmlParser extends ParserBase {
     if (isText(element.getProperty())) {
       if (linkResolver != null)
         xml.link(linkResolver.resolveProperty(element.getProperty()));
-      xml.enter(elementName);
+      xml.enter(element.getProperty().getXmlNamespace(),elementName);
       xml.text(element.getValue());
-      xml.exit(elementName);   
+      xml.exit(element.getProperty().getXmlNamespace(),elementName);   
     } else if (!element.hasChildren() && !element.hasValue()) {
       if (element.getExplicitType() != null)
         xml.attribute("xsi:type", element.getExplicitType());
@@ -614,10 +638,10 @@ public class XmlParser extends ParserBase {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
 				if (element.hasChildren()) {
-					xml.enter(elementName);
-					for (Element child : element.getChildren()) 
+				  xml.enter(element.getProperty().getXmlNamespace(), elementName);
+				  for (Element child : element.getChildren()) 
 						composeElement(xml, child, child.getName(), false);
-					xml.exit(elementName);
+					xml.exit(element.getProperty().getXmlNamespace(),elementName);
 				} else
           xml.element(elementName);
       }
@@ -630,16 +654,16 @@ public class XmlParser extends ParserBase {
           String av = child.getValue();
           if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"))
             av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"), av);
-          xml.attribute(child.getName(), av);
-      }
+          xml.attribute(child.getProperty().getXmlNamespace(),child.getProperty().getXmlName(), av);
+        }
       }
       if (linkResolver != null)
         xml.link(linkResolver.resolveProperty(element.getProperty()));
-      xml.enter(elementName);
+      xml.enter(element.getProperty().getXmlNamespace(),elementName);
       if (!root && element.getSpecial() != null) {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
-        xml.enter(element.getType());
+        xml.enter(element.getProperty().getXmlNamespace(),element.getType());
       }
       for (Element child : element.getChildren()) {
         if (isText(child.getProperty())) {
@@ -650,8 +674,8 @@ public class XmlParser extends ParserBase {
           composeElement(xml, child, child.getName(), false);
       }
 	    if (!root && element.getSpecial() != null)
-        xml.exit(element.getType());
-      xml.exit(elementName);
+        xml.exit(element.getProperty().getXmlNamespace(),element.getType());
+      xml.exit(element.getProperty().getXmlNamespace(),elementName);
     }
   }
 
