@@ -83,7 +83,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   public abstract boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new NotImplementedException("Rendering using the wrapper is not implemented yet for resources of type "+r.getName());
+    ProfileDrivenRenderer pr = new ProfileDrivenRenderer(context);
+    return pr.render(x, r);
   }
   
   public void describe(XhtmlNode x, DomainResource r) throws UnsupportedEncodingException, IOException {
