@@ -45,6 +45,11 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     public StructuralMatch<ConceptDefinitionComponent> getCombined() {
       return combined;
     }
+
+    @Override
+    protected String abbreviation() {
+      return "cs";
+    }
   }
 
   private CodeSystem right;
