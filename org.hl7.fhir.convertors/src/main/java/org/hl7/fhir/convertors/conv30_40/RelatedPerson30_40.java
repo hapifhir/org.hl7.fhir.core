@@ -40,7 +40,7 @@ public class RelatedPerson30_40 {
             tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
-            tgt.setBirthDate(tgt.getBirthDate());
+            tgt.setBirthDate(src.getBirthDate());
         }
         for (org.hl7.fhir.r4.model.Address t : src.getAddress()) {
             tgt.addAddress(VersionConvertor_30_40.convertAddress(t));
@@ -84,7 +84,7 @@ public class RelatedPerson30_40 {
             tgt.setGenderElement(VersionConvertor_30_40.convertAdministrativeGender(src.getGenderElement()));
         }
         if (src.hasBirthDate()) {
-            tgt.setBirthDate(tgt.getBirthDate());
+            tgt.setBirthDate(src.getBirthDate());
         }
         for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) {
             tgt.addAddress(VersionConvertor_30_40.convertAddress(t));
