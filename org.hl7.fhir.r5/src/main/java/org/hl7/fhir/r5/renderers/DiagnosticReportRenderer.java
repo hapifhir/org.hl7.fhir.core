@@ -48,7 +48,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     PropertyWrapper pw = getProperty(dr, "category");
     if (valued(pw)) {
       h2.tx("(");
-      render(h2, pw.value());
+      boolean first = true;
+      for (BaseWrapper b : pw.getValues()) {
+        if (first) first = false; else h2.tx(", ");
+        render(h2, b);
+      }
       h2.tx(") ");
     }
     if (dr.has("issued")) {
