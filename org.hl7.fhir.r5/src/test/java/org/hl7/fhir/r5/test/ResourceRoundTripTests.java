@@ -75,8 +75,8 @@ public class ResourceRoundTripTests {
     code.get(0).setValue("ö");
     ByteArrayOutputStream baosXml = new  ByteArrayOutputStream();
     Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
-    String cdaSerialised = baosXml.toString();
-    assertTrue(cdaSerialised.indexOf("<code value=\"ö\"")>0); 
+    String cdaSerialised = baosXml.toString("UTF-8");
+    assertTrue(cdaSerialised.indexOf("ö")>0); 
   }
 
 }
