@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.conv30_40.Account30_40;
 import org.hl7.fhir.convertors.conv30_40.ActivityDefinition30_40;
 import org.hl7.fhir.convertors.conv30_40.AllergyIntolerance30_40;
 import org.hl7.fhir.convertors.conv30_40.Appointment30_40;
@@ -24,6 +25,7 @@ import org.hl7.fhir.convertors.conv30_40.Composition30_40;
 import org.hl7.fhir.convertors.conv30_40.ConceptMap30_40;
 import org.hl7.fhir.convertors.conv30_40.Condition30_40;
 import org.hl7.fhir.convertors.conv30_40.Consent30_40;
+import org.hl7.fhir.convertors.conv30_40.Coverage30_40;
 import org.hl7.fhir.convertors.conv30_40.DataElement30_40;
 import org.hl7.fhir.convertors.conv30_40.DetectedIssue30_40;
 import org.hl7.fhir.convertors.conv30_40.DeviceUseStatement30_40;
@@ -4931,6 +4933,8 @@ public class VersionConvertor_30_40 {
             return null;
         if (src instanceof org.hl7.fhir.dstu3.model.Parameters)
             return Parameters30_40.convertParameters((org.hl7.fhir.dstu3.model.Parameters) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.Account)
+          return Account30_40.convertAccount((org.hl7.fhir.dstu3.model.Account) src);
         if (src instanceof org.hl7.fhir.dstu3.model.ActivityDefinition)
             return ActivityDefinition30_40.convertActivityDefinition((org.hl7.fhir.dstu3.model.ActivityDefinition) src);
         if (src instanceof org.hl7.fhir.dstu3.model.AllergyIntolerance)
@@ -4971,6 +4975,8 @@ public class VersionConvertor_30_40 {
             return Condition30_40.convertCondition((org.hl7.fhir.dstu3.model.Condition) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Consent)
             return Consent30_40.convertConsent((org.hl7.fhir.dstu3.model.Consent) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.Coverage)
+          return Coverage30_40.convertCoverage((org.hl7.fhir.dstu3.model.Coverage) src);
         if (src instanceof org.hl7.fhir.dstu3.model.DataElement)
             return DataElement30_40.convertDataElement((org.hl7.fhir.dstu3.model.DataElement) src);
         if (src instanceof org.hl7.fhir.dstu3.model.DetectedIssue)
@@ -5108,6 +5114,8 @@ public class VersionConvertor_30_40 {
             else
                 return Parameters30_40.convertParameters((org.hl7.fhir.r4.model.Parameters) src);
         }
+        if (src instanceof org.hl7.fhir.r4.model.Account)
+          return Account30_40.convertAccount((org.hl7.fhir.r4.model.Account) src);
         if (src instanceof org.hl7.fhir.r4.model.ActivityDefinition)
             return ActivityDefinition30_40.convertActivityDefinition((org.hl7.fhir.r4.model.ActivityDefinition) src);
         if (src instanceof org.hl7.fhir.r4.model.AllergyIntolerance)
@@ -5148,6 +5156,8 @@ public class VersionConvertor_30_40 {
             return Condition30_40.convertCondition((org.hl7.fhir.r4.model.Condition) src);
         if (src instanceof org.hl7.fhir.r4.model.Consent)
             return Consent30_40.convertConsent((org.hl7.fhir.r4.model.Consent) src);
+        if (src instanceof org.hl7.fhir.r4.model.Coverage)
+          return Coverage30_40.convertCoverage((org.hl7.fhir.r4.model.Coverage) src);
         if (src instanceof org.hl7.fhir.r4.model.DetectedIssue)
             return DetectedIssue30_40.convertDetectedIssue((org.hl7.fhir.r4.model.DetectedIssue) src);
         if (src instanceof org.hl7.fhir.r4.model.DeviceUseStatement)

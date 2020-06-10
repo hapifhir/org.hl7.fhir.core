@@ -1,11 +1,14 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -13,22 +16,33 @@ import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CDARoundTripTests {
 
-//  private SimpleWorkerContext context;
-// old-test  private FHIRPathEngine fp;
+	private static SimpleWorkerContext context;
+	private static FHIRPathEngine fp;
 
-  @BeforeAll
-  public static void setUp() throws Exception {
-// old-test     context = new SimpleWorkerContext();
-// old-test     PackageCacheManager pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-// old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "dev"), null, "StructureDefinition");
-// old-test     context.loadFromPackage(pcm.loadPackage("hl7.fhir.cda", "dev"), null, "StructureDefinition");
-// old-test     fp = new FHIRPathEngine(context);
-  }
+	@BeforeAll
+	public static void setUp() throws Exception {
+	    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+		context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
+		fp = new FHIRPathEngine(context);
+
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ce.xml"), "ce.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
+		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
+		for (StructureDefinition sd : context.getStructures()) {
+			if (!sd.hasSnapshot()) {
+				System.out.println("generate snapshot for " + sd.getUrl());
+				context.generateSnapshot(sd, true);
+			}
+		}
+	}
 
 // old-test    
 //  @Test
@@ -172,29 +186,57 @@ public class CDARoundTripTests {
 //        FhirFormat.TURTLE, OutputStyle.PRETTY, null);
 //  }
 
-
-  @Test
-  public void testSimple() throws IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    SimpleWorkerContext context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ce.xml"), "ce.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
-    context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
-    for (StructureDefinition sd : context.getStructures()) {
-      if (!sd.hasSnapshot()) {
-        System.out.println("generate snapshot for " + sd.getUrl());
-        context.generateSnapshot(sd, true);
-      }
-    }
-    Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
-    FHIRPathEngine fp = new FHIRPathEngine(context);
-    Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.templateId.root")));
-    Assertions.assertEquals("SoEN", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.displayName")));
-    Assertions.assertEquals("SoEN2", fp.evaluateToString(null, cda, cda, cda, fp.parse("ClinicalDocument.code.sdtcDisplayName")));
+	public void assertsExample(Element cdaExample) {
+	    Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.templateId.root")));
+        Assertions.assertEquals("SoEN", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.displayName")));
+        Assertions.assertEquals("SoEN2", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.sdtcDisplayName")));
+        Assertions.assertEquals("c266", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.extension")));
+	    Assertions.assertEquals("2.16.840.1.113883.19.4", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.root")));
+	    Assertions.assertEquals("X-34133-9", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.code")));
+	    Assertions.assertEquals("2.16.840.1.113883.6.1", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystem")));
+	    Assertions.assertEquals("LOINC", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystemName")));
+	    Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.dataString")));	  
   }
+
+	@Test
+	/**
+	 * Deserializes a simplified CDA example into the logical model and checks that
+	 * xml deserialization/serialization
+	 * 
+	 * @throws IOException
+	 */
+	public void testClinicalDocumentXmlParser() throws IOException {
+		Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
+				FhirFormat.XML);
+
+		assertsExample(cda);
+
+		ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
+		Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
+		Element cdaXmlRoundtrip = Manager.parse(context, new ByteArrayInputStream(baosXml.toString().getBytes()), FhirFormat.XML);
+		assertsExample(cdaXmlRoundtrip);
+	}
+
+	@Test
+	/**
+	 * Deserializes a simplified CDA example into the logical model and checks that
+	 * json deserialization/serialization works
+	 * 
+	 * @throws IOException
+	 */
+	public void testClinicalDocumentJsonParser() throws IOException {
+		Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
+				FhirFormat.XML);
+
+		assertsExample(cda);
+
+		ByteArrayOutputStream baosJson = new ByteArrayOutputStream();
+		Manager.compose(context, cda, baosJson, FhirFormat.JSON, OutputStyle.PRETTY, null);
+		Element cdaJsonRoundtrip = Manager.parse(context, new ByteArrayInputStream(baosJson.toString().getBytes()),
+				FhirFormat.JSON);
+		
+		assertsExample(cdaJsonRoundtrip);
+
+	}
 
 }
