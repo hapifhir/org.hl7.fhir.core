@@ -1,3 +1,5 @@
+package main.java;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -28,5 +30,5 @@
  */
 
 public class Marker {
-  // This class is just here to force a javadoc build in order to satisfy maven central
+
 }
