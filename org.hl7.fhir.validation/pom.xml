@@ -11,7 +11,7 @@
 
     <artifactId>org.hl7.fhir.validation</artifactId>
     <packaging>bundle</packaging>
-qq
+
     <dependencies>
 
         <!-- HAPI Dependencies -->

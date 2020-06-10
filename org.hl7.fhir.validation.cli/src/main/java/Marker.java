@@ -1,4 +1,4 @@
-
+package main.java;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,5 +30,11 @@
  */
 
 public class Marker {
-  // This class is just here to force a javadoc build in order to satisfy maven central
+  /**
+   * Fake comments.
+   * @param args
+   */
+  public static void main(String[] args) {
+    // This class is just here to force a javadoc build in order to satisfy maven central
+  }
 }
