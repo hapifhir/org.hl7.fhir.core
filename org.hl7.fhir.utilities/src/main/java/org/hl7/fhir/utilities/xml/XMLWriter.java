@@ -726,7 +726,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 			if (dontEscape)
 				write(content);
 			else
-				write(XMLUtil.escapeXML(content, "US-ASCII", false));
+				write(XMLUtil.escapeXML(content, charset, false));
 		}
 	}
 
