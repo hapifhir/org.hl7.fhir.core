@@ -30,11 +30,5 @@ package main.java;
  */
 
 public class Marker {
-  /**
-   * Fake comments.
-   * @param args
-   */
-  public static void main(String[] args) {
-    // This class is just here to force a javadoc build in order to satisfy maven central
-  }
+
 }
