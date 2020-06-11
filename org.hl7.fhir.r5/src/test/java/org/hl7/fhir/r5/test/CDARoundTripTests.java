@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -237,6 +240,28 @@ public class CDARoundTripTests {
 		
 		assertsExample(cdaJsonRoundtrip);
 
+	}
+	
+	@Test
+	/**
+	 * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
+	 */
+	public void testSerializeUmlaut() throws IOException {
+	  Element xml = Manager.parse(context,
+		  TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
+	  
+	  List<Element> title = xml.getChildrenByName("title");
+	  assertTrue(title != null && title.size() == 1);
+	  
+	  
+	  Element value = title.get(0).getChildren().get(0);
+	  Assertions.assertEquals("Episode Note", value.getValue());
+	  value.setValue("öé");
+	  
+	  ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
+	  Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
+	  String cdaSerialised = baosXml.toString("UTF-8");
+	  assertTrue(cdaSerialised.indexOf("öé") > 0);
 	}
 
 }
