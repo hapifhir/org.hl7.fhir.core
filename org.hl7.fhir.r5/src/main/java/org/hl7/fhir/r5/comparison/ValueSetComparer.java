@@ -60,7 +60,12 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
     @Override
     protected String abbreviation() {
-      return "sd";
+      return "vs";
+    }
+
+    @Override
+    protected String summary() {
+      return "ValueSet: "+left.present()+" vs "+right.present();
     }         
   }
   
