@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -27,15 +28,23 @@ public class ComparisonSession {
   private String sessiondId;
   private int count;
   private boolean debug;
+  private String title;
   
-  public ComparisonSession(IWorkerContext context) {
+  public ComparisonSession(IWorkerContext context, String title) {
     super();
     this.context = context;
     this.sessiondId = UUID.randomUUID().toString().toLowerCase();
+    this.title = title;
   }
   
   public IWorkerContext getContext() {
     return context;
+  }
+
+  
+  
+  public String getTitle() {
+    return title;
   }
 
   public ResourceComparison compare(String left, String right) throws DefinitionException, FHIRFormatError, IOException {
@@ -69,7 +78,7 @@ public class ComparisonSession {
       compares.put(key, csc);
       return csc;
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
-      ProfileComparer cs = new ProfileComparer(this);
+      ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(context, null, null));
       ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
       compares.put(key, csc);
       return csc;
@@ -91,9 +100,6 @@ public class ComparisonSession {
 
   public void identify(ResourceComparison res) {
     count++;
-    if (!Utilities.isValidId(res.getId())) {
-      res.setId(sessiondId+"-"+count);
-    }
   }
 
   public boolean isDebug() {
