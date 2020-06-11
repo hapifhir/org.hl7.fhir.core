@@ -609,6 +609,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
     assert options != null;
     
+    if (options == null) {
+      options = ValidationOptions.defaults();
+    }
+    
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) 
