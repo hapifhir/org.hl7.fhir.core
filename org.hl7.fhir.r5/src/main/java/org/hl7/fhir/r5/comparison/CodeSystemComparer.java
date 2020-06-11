@@ -50,6 +50,11 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     protected String abbreviation() {
       return "cs";
     }
+
+    @Override
+    protected String summary() {
+      return "CodeSystem: "+left.present()+" vs "+right.present();
+    }
   }
 
   private CodeSystem right;

@@ -415,6 +415,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       this.span = span;
     }
 
+    public Title setStyle(String value) {
+      super.setStyle(value);
+      return this;
+    }
   }
   
   public class Row {
@@ -568,6 +572,26 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     return model;
   }
+
+  public TableModel initComparisonTable(String prefix, String id) {
+    TableModel model = new TableModel(id, true);
+    
+    model.setAlternating(true);
+    model.setDocoImg(prefix+"help16.png");
+    model.setDocoRef(prefix+"formats.html#table");    
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Type"), translate("sd.hint", "Reference to the type of the element - Left Structure"), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Description & Constraints"), translate("sd.hint", "Additional information about the element - Left Structure"), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "R Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "R Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Type"), translate("sd.hint", "Reference to the type of the element - Left Structure"), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Description & Constraints"), translate("sd.hint", "Additional information about the element - Left Structure"), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Comments"), translate("sd.hint", "Comments about the comparison"), null, 0));
+    return model;
+  }
+
 
 
   public TableModel initGridTable(String prefix, String id) {

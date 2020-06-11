@@ -14,8 +14,11 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ComparisonSession;
+import org.hl7.fhir.r5.comparison.ProfileComparer;
+import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -24,6 +27,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
@@ -103,7 +107,7 @@ public class ComparisonTests {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.5");
+      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.6");
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
       }
@@ -112,7 +116,7 @@ public class ComparisonTests {
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
 
-    ComparisonSession session = new ComparisonSession(context);
+    ComparisonSession session = new ComparisonSession(context, "Comparison Tests");
 
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);
@@ -138,9 +142,29 @@ public class ComparisonTests {
       String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
+    } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
+      ProfileUtilities utils = new ProfileUtilities(context, null, null);
+      genSnapshot(utils, (StructureDefinition) left);
+      genSnapshot(utils, (StructureDefinition) right);
+      ProfileComparer pc = new ProfileComparer(session, utils);
+      ProfileComparison csc = pc.compare((StructureDefinition) left, (StructureDefinition) right);
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+
+      String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
+      String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
+      String xml2 = new XhtmlComposer(true).compose(pc.renderStructure(csc, "", "", "http://hl7.org/fhir"));
+//      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
+      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      checkOutcomes(csc.getMessages(), content);
     } else {
       throw new FHIRException("Can't compare " + left.fhirType() + " to " + right.fhirType());
     }
+  }
+
+  private void genSnapshot(ProfileUtilities utils, StructureDefinition sd) {
+    StructureDefinition base = context.fetchTypeDefinition(sd.getType());
+    utils.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/r4", sd.present());
   }
 
   private String hd(String text) {
