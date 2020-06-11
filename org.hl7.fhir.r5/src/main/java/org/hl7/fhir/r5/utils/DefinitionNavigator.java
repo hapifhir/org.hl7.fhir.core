@@ -201,6 +201,11 @@ public class DefinitionNavigator {
   public StructureDefinition getStructure() {
     return structure;
   }
+
+  @Override
+  public String toString() {
+    return current().getId();
+  }
   
 
 }

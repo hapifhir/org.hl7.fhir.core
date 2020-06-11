@@ -2,9 +2,12 @@ package org.hl7.fhir.r5.comparison;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -12,6 +15,7 @@ import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
@@ -47,9 +51,27 @@ public class ComparisonRenderer implements IEvaluationContext {
   
   public void render() throws IOException {
     dumpBinaries();
-    for (String id : session.getCompares().keySet()) {
-      renderComparison(id, session.getCompares().get(id));      
+    StringBuilder b = new StringBuilder();
+    
+    for (String id : sorted(session.getCompares().keySet())) {
+      ResourceComparison comp = session.getCompares().get(id);
+      renderComparison(id, comp);
+      b.append("<li><a href=\""+comp.getId()+".html\">"+Utilities.escapeXml(comp.summary())+"</a></li>\r\n");      
     }
+    Map<String, Base> vars = new HashMap<>();
+    CodeSystemComparer cs = new CodeSystemComparer(session);
+    vars.put("title", new StringType(session.getTitle()));
+    vars.put("list", new StringType(b.toString()));
+    String template = templates.get("Index");
+    String cnt = processTemplate(template, "CodeSystem", vars);
+    TextFile.stringToFile(cnt, file("index.html"));
+  }
+
+  private List<String> sorted(Set<String> keySet) {
+    List<String> list = new ArrayList<>();
+    list.addAll(keySet);
+    Collections.sort(list);
+    return list;
   }
 
   private void dumpBinaries() throws IOException {
@@ -115,7 +137,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
     String template = templates.get("Profile");
     Map<String, Base> vars = new HashMap<>();
-    ProfileComparer cs = new ProfileComparer(session);
+    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContext(), null, null));
     vars.put("left", new StringType(comp.getLeft().present()));
     vars.put("right", new StringType(comp.getRight().present()));
     vars.put("leftId", new StringType(comp.getLeft().getId()));
@@ -124,7 +146,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("rightUrl", new StringType(comp.getRight().getUrl()));
     vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
-//    vars.put("concepts", new StringType(new XhtmlComposer(true).compose(cs.renderConcepts(comp, "", ""))));
+    vars.put("structure", new StringType(new XhtmlComposer(true).compose(cs.renderStructure(comp, "", "", "http://hl7.org/fhir"))));
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file(comp.getId()+".html"));
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", comp.getId() + "-union.json")), comp.getUnion());
