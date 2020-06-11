@@ -1158,7 +1158,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!unbounded(currentBase) && !isSlicedToOneOnly(diffMatches.get(0)))
             // you can only slice an element that doesn't repeat if the sum total of your slices is limited to 1
             // (but you might do that in order to split up constraints by type)
-            throw new DefinitionException(context.formatMessage(I18nConstants.ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_, currentBase.getPath(), currentBase.getPath(), contextName, url));
+            throw new DefinitionException(context.formatMessage(I18nConstants.ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_, currentBase.getPath(), currentBase.getPath(), contextName, url, diffMatches.get(0).getId(), sliceNames(diffMatches)));
           if (!diffMatches.get(0).hasSlicing() && !isExtension(currentBase)) // well, the diff has set up a slice, but hasn't defined it. this is an error
             throw new DefinitionException(context.formatMessage(I18nConstants.DIFFERENTIAL_DOES_NOT_HAVE_A_SLICE__B_OF_____IN_PROFILE_, currentBase.getPath(), baseCursor, baseLimit, diffCursor, diffLimit, url));
 
@@ -1609,6 +1609,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private String sliceNames(List<ElementDefinition> diffMatches) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ElementDefinition ed : diffMatches) {
+      if (ed.hasSliceName()) {
+        b.append(ed.getSliceName());
+      }
+    }
+    return b.toString();
   }
 
   private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
