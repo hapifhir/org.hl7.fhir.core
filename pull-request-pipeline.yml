@@ -39,7 +39,6 @@ steps:
   # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
     displayName: 'codecov Bash Uploader'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   # Publishes the test results to build artifacts.
   - task: PublishCodeCoverageResults@1
@@ -48,4 +47,3 @@ steps:
       codeCoverageTool: 'JaCoCo'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
