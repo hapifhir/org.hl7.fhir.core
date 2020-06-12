@@ -176,13 +176,13 @@ public class VersionConvertor_40_50 {
     }
 
     public static org.hl7.fhir.r5.model.DateTimeType convertDateTime(org.hl7.fhir.r4.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.r5.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateTimeType(src.getValue()) : new org.hl7.fhir.r5.model.DateTimeType();
+        org.hl7.fhir.r5.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateTimeType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r4.model.DateTimeType convertDateTime(org.hl7.fhir.r5.model.DateTimeType src) throws FHIRException {
-        org.hl7.fhir.r4.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.DateTimeType(src.getValue()) : new org.hl7.fhir.r4.model.DateTimeType();
+        org.hl7.fhir.r4.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.r4.model.DateTimeType();
         copyElement(src, tgt);
         return tgt;
     }
@@ -218,31 +218,31 @@ public class VersionConvertor_40_50 {
     }
 
     public static org.hl7.fhir.r4.model.InstantType convertInstant(org.hl7.fhir.r5.model.InstantType src) throws FHIRException {
-        org.hl7.fhir.r4.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.InstantType(src.getValue()) : new org.hl7.fhir.r4.model.InstantType();
+        org.hl7.fhir.r4.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.InstantType(src.getValueAsString()) : new org.hl7.fhir.r4.model.InstantType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.IntegerType convertInteger(org.hl7.fhir.r4.model.IntegerType src) throws FHIRException {
-        org.hl7.fhir.r5.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IntegerType(src.getValue()) : new org.hl7.fhir.r5.model.IntegerType();
+        org.hl7.fhir.r5.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IntegerType(src.getValueAsString()) : new org.hl7.fhir.r5.model.IntegerType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r5.model.Integer64Type convertUnsignedIntToInteger64(org.hl7.fhir.r4.model.UnsignedIntType src) throws FHIRException {
-        org.hl7.fhir.r5.model.Integer64Type tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Integer64Type(Long.valueOf(src.getValue())) : new org.hl7.fhir.r5.model.Integer64Type();
+        org.hl7.fhir.r5.model.Integer64Type tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Integer64Type(src.getValueAsString()) : new org.hl7.fhir.r5.model.Integer64Type();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r4.model.UnsignedIntType convertInteger64ToUnsignedInt(org.hl7.fhir.r5.model.Integer64Type src) throws FHIRException {
-        org.hl7.fhir.r4.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.UnsignedIntType(Math.toIntExact(src.getValue())) : new org.hl7.fhir.r4.model.UnsignedIntType();
+        org.hl7.fhir.r4.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.UnsignedIntType(src.getValueAsString()) : new org.hl7.fhir.r4.model.UnsignedIntType();
         copyElement(src, tgt);
         return tgt;
     }
 
     public static org.hl7.fhir.r4.model.IntegerType convertInteger(org.hl7.fhir.r5.model.IntegerType src) throws FHIRException {
-        org.hl7.fhir.r4.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.IntegerType(src.getValue()) : new org.hl7.fhir.r4.model.IntegerType();
+        org.hl7.fhir.r4.model.IntegerType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.IntegerType(src.getValueAsString()) : new org.hl7.fhir.r4.model.IntegerType();
         copyElement(src, tgt);
         return tgt;
     }
@@ -3654,10 +3654,10 @@ public class VersionConvertor_40_50 {
             return convertTime((org.hl7.fhir.r4.model.TimeType) src);
         if (src instanceof org.hl7.fhir.r4.model.UrlType)
             return convertUrl((org.hl7.fhir.r4.model.UrlType) src);
+        if (src instanceof org.hl7.fhir.r4.model.UuidType)
+          return convertUuid((org.hl7.fhir.r4.model.UuidType) src);
         if (src instanceof org.hl7.fhir.r4.model.UriType)
             return convertUri((org.hl7.fhir.r4.model.UriType) src);
-        if (src instanceof org.hl7.fhir.r4.model.UuidType)
-            return convertUuid((org.hl7.fhir.r4.model.UuidType) src);
         if (src instanceof org.hl7.fhir.r4.model.Extension)
             return convertExtension((org.hl7.fhir.r4.model.Extension) src);
         if (src instanceof org.hl7.fhir.r4.model.Narrative)
@@ -3712,6 +3712,10 @@ public class VersionConvertor_40_50 {
             return convertProdCharacteristic((org.hl7.fhir.r4.model.ProdCharacteristic) src);
         if (src instanceof org.hl7.fhir.r4.model.ProductShelfLife)
             return convertProductShelfLife((org.hl7.fhir.r4.model.ProductShelfLife) src);
+        if (src instanceof org.hl7.fhir.r4.model.MoneyQuantity)
+          return convertMoneyQuantity((org.hl7.fhir.r4.model.MoneyQuantity) src);
+        if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
+          return convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
         if (src instanceof org.hl7.fhir.r4.model.Quantity)
             return convertQuantity((org.hl7.fhir.r4.model.Quantity) src);
         if (src instanceof org.hl7.fhir.r4.model.Range)
@@ -3736,10 +3740,6 @@ public class VersionConvertor_40_50 {
             return convertUsageContext((org.hl7.fhir.r4.model.UsageContext) src);
         if (src instanceof org.hl7.fhir.r4.model.ElementDefinition)
             return convertElementDefinition((org.hl7.fhir.r4.model.ElementDefinition) src);
-        if (src instanceof org.hl7.fhir.r4.model.MoneyQuantity)
-            return convertMoneyQuantity((org.hl7.fhir.r4.model.MoneyQuantity) src);
-        if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
-            return convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
         throw new Error("Unknown type " + src.fhirType());
     }
 
@@ -3780,10 +3780,10 @@ public class VersionConvertor_40_50 {
             return convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r5.model.UrlType)
             return convertUrl((org.hl7.fhir.r5.model.UrlType) src);
+        if (src instanceof org.hl7.fhir.r5.model.UuidType)
+          return convertUuid((org.hl7.fhir.r5.model.UuidType) src);
         if (src instanceof org.hl7.fhir.r5.model.UriType)
             return convertUri((org.hl7.fhir.r5.model.UriType) src);
-        if (src instanceof org.hl7.fhir.r5.model.UuidType)
-            return convertUuid((org.hl7.fhir.r5.model.UuidType) src);
         if (src instanceof org.hl7.fhir.r5.model.Extension)
             return convertExtension((org.hl7.fhir.r5.model.Extension) src);
         if (src instanceof org.hl7.fhir.r5.model.Narrative)
@@ -3838,6 +3838,10 @@ public class VersionConvertor_40_50 {
             return convertProdCharacteristic((org.hl7.fhir.r5.model.ProdCharacteristic) src);
         if (src instanceof org.hl7.fhir.r5.model.ProductShelfLife)
             return convertProductShelfLife((org.hl7.fhir.r5.model.ProductShelfLife) src);
+        if (src instanceof org.hl7.fhir.r5.model.MoneyQuantity)
+          return convertMoneyQuantity((org.hl7.fhir.r5.model.MoneyQuantity) src);
+        if (src instanceof org.hl7.fhir.r5.model.SimpleQuantity)
+          return convertSimpleQuantity((org.hl7.fhir.r5.model.SimpleQuantity) src);
         if (src instanceof org.hl7.fhir.r5.model.Quantity)
             return convertQuantity((org.hl7.fhir.r5.model.Quantity) src);
         if (src instanceof org.hl7.fhir.r5.model.Range)
@@ -3862,10 +3866,6 @@ public class VersionConvertor_40_50 {
             return convertUsageContext((org.hl7.fhir.r5.model.UsageContext) src);
         if (src instanceof org.hl7.fhir.r5.model.ElementDefinition)
             return convertElementDefinition((org.hl7.fhir.r5.model.ElementDefinition) src);
-        if (src instanceof org.hl7.fhir.r5.model.MoneyQuantity)
-            return convertMoneyQuantity((org.hl7.fhir.r5.model.MoneyQuantity) src);
-        if (src instanceof org.hl7.fhir.r5.model.SimpleQuantity)
-            return convertSimpleQuantity((org.hl7.fhir.r5.model.SimpleQuantity) src);
         throw new Error("Unknown type " + src.fhirType());
     }
 
