@@ -1,10 +1,6 @@
-trigger:
-  - master
-  - release
+trigger: none
 
-pr:
-  - master
-  - release
+pr: none
 
 # Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows
 strategy:
