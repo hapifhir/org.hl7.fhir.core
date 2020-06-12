@@ -73,7 +73,6 @@
     </repositories>
 
     <dependencies>
-
         <!-- Use logback for tests -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -81,7 +80,6 @@
             <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
