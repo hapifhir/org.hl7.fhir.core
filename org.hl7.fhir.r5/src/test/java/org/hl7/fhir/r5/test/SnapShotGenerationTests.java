@@ -124,7 +124,7 @@ public class SnapShotGenerationTests {
 
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
-    private StructureDefinition included;
+    private List<StructureDefinition> included = new ArrayList<>();
     private StructureDefinition expected;
     private StructureDefinition output;
 
@@ -167,7 +167,7 @@ public class SnapShotGenerationTests {
       return fail;
     }
 
-    public StructureDefinition getIncluded() {
+    public List<StructureDefinition> getIncluded() {
       return included;
     }
 
@@ -207,12 +207,14 @@ public class SnapShotGenerationTests {
       if (!fail)
         expected = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-expected.xml"));
       if (!Utilities.noString(include))
-        included = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", include + ".xml"));
+        included.add((StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
-        if (TestingUtilities.findTestResource("r5", "snapshot-generation", register + ".xml")) {
-          included = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", register + ".xml"));
-        } else {
-          included = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", register + ".json"));
+        for (String s : register.split("\\,")) {
+          if (TestingUtilities.findTestResource("r5", "snapshot-generation", s + ".xml")) {
+            included.add((StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", s + ".xml")));
+          } else {
+            included.add((StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", s + ".json")));
+          }
         }
       }
     }
@@ -323,7 +325,7 @@ public class SnapShotGenerationTests {
               else
                 return td.getOutput();
             case INCLUDE:
-              return td.getIncluded();
+              return td.getIncluded().get(0);
             default:
               throw new FHIRException("Not done yet");
           }
@@ -403,8 +405,10 @@ public class SnapShotGenerationTests {
       for (TestDetails t : tests) {
         if (t.expected != null && url.equals(t.expected.getUrl()))
           return t.expected;
-        if (t.included != null && url.equals(t.included.getUrl()))
-          return t.included;
+        for (StructureDefinition sd : t.included) {
+          if (url.equals(sd.getUrl()))
+            return sd;
+        }
       }
       return null;
     }
@@ -494,13 +498,18 @@ public class SnapShotGenerationTests {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, null);
       pu.setNewSlicingProcessing(true);
-      pu.setIds(test.included, false);
-      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.getBaseDefinition());
-      if (base != null) {
-        pu.generateSnapshot(base, test.included, test.included.getUrl(), "http://test.org/profile", test.included.getName());
+      for (StructureDefinition sd : test.included) {
+        pu.setIds(sd, false);
       }
-      if (!TestingUtilities.context().hasResource(StructureDefinition.class, test.included.getUrl()))
-        TestingUtilities.context().cacheResource(test.included);
+      for (StructureDefinition sd : test.included) {
+        if (!TestingUtilities.context().hasResource(StructureDefinition.class, sd.getUrl())) {
+          TestingUtilities.context().cacheResource(sd);
+        }
+      }
+      StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition());
+      if (base != null) {
+        pu.generateSnapshot(base, test.included.get(0), test.included.get(0).getUrl(), "http://test.org/profile", test.included.get(0).getName());
+      }
       int ec = 0;
       for (ValidationMessage vm : messages) {
         if (vm.getLevel() == IssueSeverity.ERROR) {

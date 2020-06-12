@@ -35,6 +35,7 @@ public class ComparisonSession {
     this.context = context;
     this.sessiondId = UUID.randomUUID().toString().toLowerCase();
     this.title = title;
+//    debug = true;
   }
   
   public IWorkerContext getContext() {

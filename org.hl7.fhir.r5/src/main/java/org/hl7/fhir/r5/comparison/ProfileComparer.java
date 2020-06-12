@@ -545,9 +545,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
   }
 
   private boolean derivesFrom(StructureDefinition left, StructureDefinition right) {
-    // left derives from right if it's base is the same as right
-    // todo: recursive...
-    return left.hasBaseDefinition() && left.getBaseDefinition().equals(right.getUrl());
+    StructureDefinition sd = left;
+    while (sd != null) {
+      if (right.getUrl().equals(sd.getBaseDefinition())) {
+        return true;
+      }
+      sd = sd.hasBaseDefinition() ? session.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+    }
+    return false;
   }
 
   private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
