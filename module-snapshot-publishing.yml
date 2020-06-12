@@ -1,10 +1,6 @@
 # This pipeline produces a SNAPSHOT build for each of the sub modules in
 # the core library, and publishes them to ossrh. 
-trigger:
-  branches:
-    include:
-    - master
-
+trigger: none
 pr: none
 
 pool:
