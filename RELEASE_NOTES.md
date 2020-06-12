@@ -5,3 +5,4 @@
 * Fix bug rendering DiagnosticReports with multiple categories
 * adjust check on Attachment to only be an warning (when no meaningful content exists)
 * add security check mode to Validator
+
