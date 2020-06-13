@@ -2778,7 +2778,7 @@ public class VersionConvertor_30_40 {
             return null;
         org.hl7.fhir.r4.model.Timing tgt = new org.hl7.fhir.r4.model.Timing();
         copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.DateTimeType t : src.getEvent()) tgt.addEvent(t.getValue());
+        for (org.hl7.fhir.dstu3.model.DateTimeType t : src.getEvent()) tgt.addEventElement().setValueAsString(t.getValueAsString());
         if (src.hasRepeat())
             tgt.setRepeat(convertTimingRepeatComponent(src.getRepeat()));
         if (src.hasCode())
@@ -2791,7 +2791,7 @@ public class VersionConvertor_30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Timing tgt = new org.hl7.fhir.dstu3.model.Timing();
         copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.DateTimeType t : src.getEvent()) tgt.addEvent(t.getValue());
+        for (org.hl7.fhir.r4.model.DateTimeType t : src.getEvent()) tgt.addEventElement().setValueAsString(t.getValueAsString());
         if (src.hasRepeat())
             tgt.setRepeat(convertTimingRepeatComponent(src.getRepeat()));
         if (src.hasCode())
