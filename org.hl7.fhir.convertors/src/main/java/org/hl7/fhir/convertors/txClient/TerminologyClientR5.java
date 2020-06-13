@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.convertors.txClient;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -34,13 +34,15 @@ package org.hl7.fhir.r5.terminologies;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 public class TerminologyClientR5 implements TerminologyClient {
 
@@ -76,13 +78,15 @@ public class TerminologyClientR5 implements TerminologyClient {
   }
 
   @Override
-  public void setTimeout(int i) {
+  public TerminologyClient setTimeout(int i) {
     client.setTimeout(i);    
+    return this;
   }
 
   @Override
-  public void setLogger(ToolingClientLogger txLog) {
+  public TerminologyClient setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);
+    return this;
   }
 
   @Override
@@ -93,6 +97,12 @@ public class TerminologyClientR5 implements TerminologyClient {
   @Override
   public Parameters lookupCode(Map<String, String> params) {
     return client.lookupCode(params);
+  }
+
+  @Override
+  public TerminologyClient setRetryCount(int retryCount) throws FHIRException {
+    client.setRetryCount(retryCount);
+    return this;
   }
 
 }

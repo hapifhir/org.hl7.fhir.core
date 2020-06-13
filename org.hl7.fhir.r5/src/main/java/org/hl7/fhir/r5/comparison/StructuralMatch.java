@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class StructuralMatch<T> {
 
@@ -75,6 +76,15 @@ public class StructuralMatch<T> {
 
   public List<ValidationMessage> getMessages() {
     return messages;
+  }
+
+  public boolean hasErrors() {
+    for (ValidationMessage vm : messages) {
+      if (vm.getLevel() == IssueSeverity.ERROR) {
+        return true;
+      }
+    }
+    return false;
   }
 
   

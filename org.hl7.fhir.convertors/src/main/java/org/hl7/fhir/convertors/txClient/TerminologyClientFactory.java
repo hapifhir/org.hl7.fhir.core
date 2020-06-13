@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.client;
+package org.hl7.fhir.convertors.txClient;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -31,14 +31,36 @@ package org.hl7.fhir.r5.utils.client;
 
 
 
-import java.util.List;
+import java.net.URISyntaxException;
 
-public interface ToolingClientLogger {
+import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.utilities.Utilities;
 
-  public void logRequest(String method, String url, List<String> headers, byte[] body);
-  public void logResponse(String outcome, List<String> headers, byte[] body);
-  public String getLastId();
-  public void clearLastId();
+public class TerminologyClientFactory {
 
+  public static TerminologyClient makeClient(String url, FhirPublication v) throws URISyntaxException {
+    if (v == null)
+      return new TerminologyClientR5(checkEndsWith("/r4", url));
+    switch (v) {
+    case DSTU2016May: return new TerminologyClientR3(checkEndsWith("/r3", url)); // r3 is the least worst match 
+    case DSTU1: throw new Error("The version "+v.toString()+" is not currently supported");
+    case DSTU2: return new TerminologyClientR2(checkEndsWith("/r2", url));
+    case R4: return new TerminologyClientR5(checkEndsWith("/r4", url));
+    case R5: return new TerminologyClientR5(checkEndsWith("/r4", url)); // r4 for now, since the terminology is currently the same
+    case STU3: return new TerminologyClientR3(checkEndsWith("/r3", url));
+    default: throw new Error("The version "+v.toString()+" is not currently supported");
+    }
+  }
+  
+  private static String checkEndsWith(String term, String url) {
+    if (url.endsWith(term))
+      return url;
+    if (url.startsWith("http://tx.fhir.org"))
+      return Utilities.pathURL(url, term);
+    if (url.equals("http://local.fhir.org:960"))
+      return Utilities.pathURL(url, term);
+    return url;
+  }
 
 }

@@ -7,8 +7,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.UnusedTracker;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -30,6 +33,11 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ProfileComparer extends CanonicalResourceComparer {
 
@@ -45,10 +53,26 @@ public class ProfileComparer extends CanonicalResourceComparer {
     public StructuralMatch<ElementDefinition> getCombined() {
       return combined;
     }
+
+    @Override
+    protected String abbreviation() {
+      return "sd";
+    }
+
+    @Override
+    protected String summary() {
+      return "Profile: "+left.present()+" vs "+right.present();
+    }
   }
 
-  public ProfileComparer(ComparisonSession session) {
+
+
+
+  private ProfileUtilities utils;
+
+  public ProfileComparer(ComparisonSession session, ProfileUtilities utils) {
     super(session);
+    this.utils = utils;
   }
 
   @Override
@@ -90,6 +114,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
       DefinitionNavigator rn = new DefinitionNavigator(session.getContext(), right);
       StructuralMatch<ElementDefinition> sm = new StructuralMatch<ElementDefinition>(ln.current(), rn.current());
       compareElements(res, sm, ln.path(), null, ln, rn);
+      res.combined = sm;
     }
     return res;
   }
@@ -138,17 +163,21 @@ public class ProfileComparer extends CanonicalResourceComparer {
     subset.setIsSummary(left.current().getIsSummary());
 
     // descriptive properties from ElementDefinition - merge them:
-    subset.setLabel(mergeText(comp, res, path, "label", left.current().getLabel(), right.current().getLabel()));
-    subset.setShort(mergeText(comp, res, path, "short", left.current().getShort(), right.current().getShort()));
-    subset.setDefinition(mergeText(comp, res, path, "definition", left.current().getDefinition(), right.current().getDefinition()));
-    subset.setComment(mergeText(comp, res, path, "comments", left.current().getComment(), right.current().getComment()));
-    subset.setRequirements(mergeText(comp, res, path, "requirements", left.current().getRequirements(), right.current().getRequirements()));
+    subset.setLabel(mergeText(comp, res, path, "label", left.current().getLabel(), right.current().getLabel(), false));
+    subset.setShort(mergeText(comp, res, path, "short", left.current().getShort(), right.current().getShort(), false));
+    subset.setDefinition(mergeText(comp, res, path, "definition", left.current().getDefinition(), right.current().getDefinition(), false));
+    subset.setComment(mergeText(comp, res, path, "comments", left.current().getComment(), right.current().getComment(), false));
+    subset.setRequirements(mergeText(comp, res, path, "requirements", left.current().getRequirements(), right.current().getRequirements(), false));
     subset.getCode().addAll(mergeCodings(left.current().getCode(), right.current().getCode()));
     subset.getAlias().addAll(mergeStrings(left.current().getAlias(), right.current().getAlias()));
     subset.getMapping().addAll(mergeMappings(left.current().getMapping(), right.current().getMapping()));
     // left will win for example
     subset.setExample(left.current().hasExample() ? left.current().getExample() : right.current().getExample());
 
+    if (left.current().getMustSupport() != right.current().getMustSupport()) {
+      vm(IssueSeverity.ERROR, "Elements differ in definition for mustSupport:\r\n  \""+left.current().getMustSupport()+"\"\r\n  \""+right.current().getMustSupport()+"\"", path, comp.getMessages(), res.getMessages());
+
+    }
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
     ElementDefinition superset = subset.copy();
 
@@ -273,7 +302,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   private DefinitionNavigator findInList(List<DefinitionNavigator> rc, DefinitionNavigator l) {
     for (DefinitionNavigator t : rc) {
-      if (t.current().getPath().equals(l.current().getPath())) {
+      if (tail(t.current().getPath()).equals(tail(l.current().getPath()))) {
         return t;
       }
     }
@@ -287,8 +316,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
       vm(IssueSeverity.ERROR, "Added "+name, path, comp.getMessages(), res.getMessages());
     } else if (vRight == null) {
       vm(IssueSeverity.ERROR, "Removed "+name, path, comp.getMessages(), res.getMessages());
-    } else if (Base.compareDeep(vLeft, vRight, false)) {
-      vm(IssueSeverity.ERROR, name+" be the same ("+toString(vLeft)+"/"+toString(vRight)+")", path, comp.getMessages(), res.getMessages());
+    } else if (!Base.compareDeep(vLeft, vRight, false)) {
+      vm(IssueSeverity.ERROR, name+" must be the same ("+toString(vLeft)+"/"+toString(vRight)+")", path, comp.getMessages(), res.getMessages());
     }
   }
 
@@ -319,7 +348,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return test;
   }
 
-  private String mergeText(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String name, String left, String right) {
+  private String mergeText(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String name, String left, String right, boolean isError) {
     if (left == null && right == null)
       return null;
     if (left == null)
@@ -331,7 +360,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (left.equalsIgnoreCase(right))
       return left;
     if (path != null) {
-      vm(IssueSeverity.ERROR, "Elements differ in definition for "+name+":\r\n  \""+left+"\"\r\n  \""+right+"\"", path, comp.getMessages(), res.getMessages());
+      vm(isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, "Elements differ in "+name+":\r\n  \""+left+"\"\r\n  \""+right+"\"", path, comp.getMessages(), res.getMessages());
     }
     return "left: "+left+"; right: "+right;
   }
@@ -516,9 +545,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
   }
 
   private boolean derivesFrom(StructureDefinition left, StructureDefinition right) {
-    // left derives from right if it's base is the same as right
-    // todo: recursive...
-    return left.hasBaseDefinition() && left.getBaseDefinition().equals(right.getUrl());
+    StructureDefinition sd = left;
+    while (sd != null) {
+      if (right.getUrl().equals(sd.getBaseDefinition())) {
+        return true;
+      }
+      sd = sd.hasBaseDefinition() ? session.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+    }
+    return false;
   }
 
   private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
@@ -656,8 +690,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
     subset.setBinding(subBinding);
     ElementDefinitionBindingComponent superBinding = new ElementDefinitionBindingComponent();
     superset.setBinding(superBinding);
-    subBinding.setDescription(mergeText(comp, res, path, "description", left.getDescription(), right.getDescription()));
-    superBinding.setDescription(mergeText(comp, res, path, "description", left.getDescription(), right.getDescription()));
+    subBinding.setDescription(mergeText(comp, res, path, "description", left.getDescription(), right.getDescription(), false));
+    superBinding.setDescription(mergeText(comp, res, path, "description", left.getDescription(), right.getDescription(), false));
     if (left.getStrength() == BindingStrength.REQUIRED || right.getStrength() == BindingStrength.REQUIRED)
       subBinding.setStrength(BindingStrength.REQUIRED);
     else
@@ -687,6 +721,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
       } else if (rvs == null) {
         vm(IssueSeverity.ERROR, "Unable to resolve right value set "+right.getValueSet().toString()+" at "+path, path, comp.getMessages(), res.getMessages());
         return true;        
+      } else if (sameValueSets(lvs, rvs)) {
+        subBinding.setValueSet(lvs.getUrl());
+        superBinding.setValueSet(lvs.getUrl());
       } else {
         ValueSetComparison compP = (ValueSetComparison) session.compare(lvs, rvs);
         if (compP != null) {
@@ -696,6 +733,20 @@ public class ProfileComparer extends CanonicalResourceComparer {
       }
     }
     return false;
+  }
+
+  private boolean sameValueSets(ValueSet lvs, ValueSet rvs) {
+    if (!lvs.getUrl().equals(rvs.getUrl())) {
+      return false;
+    }
+    if (lvs.hasVersion()) {
+      if (!lvs.getVersion().equals(rvs.getVersion())) {
+        return false;
+      } else if (!rvs.hasVersion()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private List<ElementDefinitionConstraintComponent> intersectConstraints(String path, List<ElementDefinitionConstraintComponent> left, List<ElementDefinitionConstraintComponent> right) {
@@ -754,7 +805,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
       union.setStrength(left.getStrength());
     else
       union.setStrength(right.getStrength());
-    union.setDescription(mergeText(comp, res, path, "binding.description", left.getDescription(), right.getDescription()));
+    union.setDescription(mergeText(comp, res, path, "binding.description", left.getDescription(), right.getDescription(), false));
     if (Base.compareDeep(left.getValueSet(), right.getValueSet(), false))
       union.setValueSet(left.getValueSet());
     else {
@@ -780,8 +831,165 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return session.getContext().fetchResource(ValueSet.class, vsRef);
   }
 
+  public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(Utilities.path("[tmp]", "compare"), false, true);
+    gen.setTranslator(session.getContext().translator());
+    TableModel model = gen.initComparisonTable(corePath, id);
+    genElementComp(null /* oome back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
+    return gen.generate(model, prefix, 0, null);
+  }
+
+  private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinition> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
+    Row originalRow = slicingRow;
+    Row typesRow = null;
+    
+    List<StructuralMatch<ElementDefinition>> children = combined.getChildren();
+
+    Row row = gen.new Row();
+    rows.add(row);
+    String path = combined.either().getPath();
+    row.setAnchor(path);
+      row.setColor(utils.getRowColor(combined.either(), false));
+      if (eitherHasSlicing(combined))
+        row.setLineColor(1);
+      else if (eitherHasSliceName(combined))
+        row.setLineColor(2);
+      else
+        row.setLineColor(0);
+      boolean ext = false;
+      if (tail(path).equals("extension")) {
+        if (elementIsComplex(combined))
+          row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+        else
+          row.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+        ext = true;
+      } else if (tail(path).equals("modifierExtension")) {
+        if (elementIsComplex(combined))
+          row.setIcon("icon_modifier_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+        else
+          row.setIcon("icon_modifier_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+      } else if (hasChoice(combined)) {
+        if (allAreReference(combined))
+          row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+        else {
+          row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+          typesRow = row;
+        }
+      } else if (combined.either().hasContentReference())
+        row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
+      else if (isPrimitive(combined))
+        row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+      else if (hasTarget(combined))
+        row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+      else if (isDataType(combined))
+        row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+      else
+        row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+      String ref = defPath == null ? null : defPath + combined.either().getId();
+      String sName = tail(path);
+      String sn = getSliceName(combined);
+      if (sn != null)
+        sName = sName +":"+sn;
+      UnusedTracker used = new UnusedTracker();
+      Cell nc;
+      String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
+      String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
+      if (combined.hasLeft()) {
+        nc = utils.genElementNameCell(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+      } else {
+        nc = utils.genElementNameCell(gen, combined.getRight(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+      }
+      if (combined.hasLeft()) {
+        frame(utils.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc), leftColor);
+      } else {
+        frame(spacers(row, 4, gen), leftColor);
+      }
+      if (combined.hasRight()) {
+        frame(utils.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc), rightColor);
+      } else {
+        frame(spacers(row, 4, gen), rightColor);
+      }
+      row.getCells().add(cellForMessages(gen, combined.getMessages()));
+
+      for (StructuralMatch<ElementDefinition> child : children) {
+        genElementComp(defPath, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
+      }
+    }
+
+  private void frame(List<Cell> cells, String color) {
+    for (Cell cell : cells) {
+      if (color != null) {
+        cell.setStyle("background-color: "+color);
+      }
+    }
+    cells.get(0).setStyle("border-left: 1px grey solid"+(color == null ? "" : "; background-color: "+color));
+    cells.get(cells.size()-1).setStyle("border-right: 1px grey solid"+(color == null ? "" : "; background-color: "+color));
+  }
+
+  private List<Cell> spacers(Row row, int count, HierarchicalTableGenerator gen) {
+    List<Cell> res = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
+      Cell c = gen.new Cell();
+      res.add(c);
+      row.getCells().add(c);
+    }
+    return res;
+  }
+
+  private String getSliceName(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  private boolean isDataType(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean hasTarget(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean isPrimitive(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean allAreReference(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean hasChoice(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean elementIsComplex(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub velement.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()
+    return false;
+  }
+
+  private boolean eitherHasSliceName(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  private boolean eitherHasSlicing(StructuralMatch<ElementDefinition> combined) {
+    // TODO Auto-generated method stub
+    return false;
+  }
   
- 
+
+  
+
+private String tail(String path) {
+  if (path.contains("."))
+    return path.substring(path.lastIndexOf('.')+1);
+  else
+    return path;
+}
   
 
 }

@@ -185,6 +185,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       val.setAllowExamples(true);
     }
+    if (content.has("security-checks")) {
+      val.setSecurityChecks(content.get("security-checks").getAsBoolean());
+    }
     val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
     System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
     if (name.endsWith(".json"))

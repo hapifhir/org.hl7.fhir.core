@@ -39,7 +39,25 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Tuple extends Base {
+
+  private static final long serialVersionUID = -8402411970797277451L;
   private Map<String, List<Base>> properties = new HashMap<>();
+  
+  public static Tuple fromMapList(Map<String, List<Base>> map) {
+    Tuple res = new Tuple();
+    res.properties.putAll(map);
+    return res;
+  }
+
+  public static Tuple fromMap(Map<String, Base> map) {
+    Tuple res = new Tuple();
+    for (String key : map.keySet()) {
+      List<Base> list = new ArrayList<>();
+      list.add(map.get(key));
+      res.properties.put(key, list);
+    }
+    return res;
+  }
 
   @Override
   public String fhirType() {

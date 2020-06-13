@@ -286,7 +286,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.pkp = pkp;
   }
   
-  private class UnusedTracker {
+  public static class UnusedTracker {
     private boolean used;
   }
 
@@ -1158,7 +1158,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!unbounded(currentBase) && !isSlicedToOneOnly(diffMatches.get(0)))
             // you can only slice an element that doesn't repeat if the sum total of your slices is limited to 1
             // (but you might do that in order to split up constraints by type)
-            throw new DefinitionException(context.formatMessage(I18nConstants.ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_, currentBase.getPath(), currentBase.getPath(), contextName, url));
+            throw new DefinitionException(context.formatMessage(I18nConstants.ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_, currentBase.getPath(), currentBase.getPath(), contextName, url, diffMatches.get(0).getId(), sliceNames(diffMatches)));
           if (!diffMatches.get(0).hasSlicing() && !isExtension(currentBase)) // well, the diff has set up a slice, but hasn't defined it. this is an error
             throw new DefinitionException(context.formatMessage(I18nConstants.DIFFERENTIAL_DOES_NOT_HAVE_A_SLICE__B_OF_____IN_PROFILE_, currentBase.getPath(), baseCursor, baseLimit, diffCursor, diffLimit, url));
 
@@ -1609,6 +1609,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private String sliceNames(List<ElementDefinition> diffMatches) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ElementDefinition ed : diffMatches) {
+      if (ed.hasSliceName()) {
+        b.append(ed.getSliceName());
+      }
+    }
+    return b.toString();
   }
 
   private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
@@ -3219,7 +3229,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return (!min.hasValue() ? "" : Integer.toString(min.getValue())) + ".." + (!max.hasValue() ? "" : max.getValue());
   }
 
-  private void genCardinality(HierarchicalTableGenerator gen, ElementDefinition definition, Row row, boolean hasDef, UnusedTracker tracker, ElementDefinition fallback) {
+  private Cell genCardinality(HierarchicalTableGenerator gen, ElementDefinition definition, Row row, boolean hasDef, UnusedTracker tracker, ElementDefinition fallback) {
     IntegerType min = !hasDef ? new IntegerType() : definition.hasMinElement() ? definition.getMinElement() : new IntegerType();
     StringType max = !hasDef ? new StringType() : definition.hasMaxElement() ? definition.getMaxElement() : new StringType();
     if (min.isEmpty() && definition.getUserData(DERIVATION_POINTER) != null) {
@@ -3249,8 +3259,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!min.isEmpty() || !max.isEmpty()) {
       cell.addPiece(checkForNoChange(min, gen.new Piece(null, !min.hasValue() ? "" : Integer.toString(min.getValue()), null)));
       cell.addPiece(checkForNoChange(min, max, gen.new Piece(null, "..", null)));
-      cell.addPiece(checkForNoChange(min, gen.new Piece(null, !max.hasValue() ? "" : max.getValue(), null)));
+      cell.addPiece(checkForNoChange(max, gen.new Piece(null, !max.hasValue() ? "" : max.getValue(), null)));
     }
+    return cell;
   }
 
 
@@ -3393,13 +3404,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Row genElement(String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions, boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow) throws IOException, FHIRException {
     Row originalRow = slicingRow;
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1);
-    String s = tail(element.getPath());
-    if (element.hasSliceName())
-      s = s +":"+element.getSliceName();
     Row typesRow = null;
     
     List<ElementDefinition> children = getChildren(all, element);
-    boolean isExtension = (s.equals("extension") || s.equals("modifierExtension"));
 //    if (!snapshot && isExtension && extensions != null && extensions != isExtension)
 //      return;
 
@@ -3449,71 +3456,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
       else
         row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
-      String ref = defPath == null ? null : defPath + element.getId();
       UnusedTracker used = new UnusedTracker();
+      String ref = defPath == null ? null : defPath + element.getId();
+      String sName = tail(element.getPath());
+      if (element.hasSliceName())
+        sName = sName +":"+element.getSliceName();
       used.used = true;
       if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
-        s = "@"+s;
-      String hint = "";
-      hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
-     if (hasDef && element.hasDefinition()) {
-        hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
-        hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
-      }
-      Cell left = gen.new Cell(null, ref, s, hint, null);
-      row.getCells().add(left);
-      Cell gc = gen.new Cell();
-      row.getCells().add(gc);
-      if (element != null && element.getIsModifier())
-        checkForNoChange(element.getIsModifierElement(), gc.addStyledText(translate("sd.table", "This element is a modifier element"), "?!", null, null, null, false));
-      if (element != null && element.getMustSupport())
-        checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element must be supported"), "S", "white", "red", null, false));
-      if (element != null && element.getIsSummary())
-        checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
-      if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty()))
-        gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
-
-      ExtensionContext extDefn = null;
-      if (ext) {
-        if (element != null && element.getType().size() == 1 && element.getType().get(0).hasProfile()) {
-          String eurl = element.getType().get(0).getProfile().get(0).getValue();
-          extDefn = locateExtension(StructureDefinition.class, eurl);
-          if (extDefn == null) {
-            genCardinality(gen, element, row, hasDef, used, null);
-            row.getCells().add(gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null));
-            generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
-          } else {
-            String name = urltail(eurl);
-            left.getPieces().get(0).setText(name);
-            // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
-            left.getPieces().get(0).setHint(translate("sd.table", "Extension URL")+" = "+extDefn.getUrl());
-            genCardinality(gen, element, row, hasDef, used, extDefn.getElement());
-            ElementDefinition valueDefn = extDefn.getExtensionValueDefinition();
-            if (valueDefn != null && !"0".equals(valueDefn.getMax()))
-               genTypes(gen, row, valueDefn, profileBaseFileName, profile, corePath, imagePath, root);
-             else // if it's complex, we just call it nothing
-                // genTypes(gen, row, extDefn.getSnapshot().getElement().get(0), profileBaseFileName, profile);
-              row.getCells().add(gen.new Cell(null, null, "("+translate("sd.table", "Complex")+")", null, null));
-            generateDescription(gen, row, element, extDefn.getElement(), used.used, null, extDefn.getUrl(), profile, corePath, imagePath, root, logicalModel, allInvariants, valueDefn, snapshot);
-          }
-        } else {
-          genCardinality(gen, element, row, hasDef, used, null);
-          if ("0".equals(element.getMax()))
-            row.getCells().add(gen.new Cell());            
-          else
-            genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
-          generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
-        }
-      } else {
-        genCardinality(gen, element, row, hasDef, used, null);
-        if (element.hasSlicing())
-          row.getCells().add(gen.new Cell(null, corePath+"profiling.html#slicing", "(Slice Definition)", null, null));
-        else if (hasDef && !"0".equals(element.getMax()) && typesRow == null)
-          genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root);
-        else
-          row.getCells().add(gen.new Cell());
-        generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot);
-      }
+        sName = "@"+sName;
+      Cell nc = genElementNameCell(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName);
+      genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc);
       if (element.hasSlicing()) {
         if (standardExtensionSlicing(element)) {
           used.used = true; // doesn't matter whether we have a type, we're used if we're setting up slicing ... element.hasType() && element.getType().get(0).hasProfile();
@@ -3545,7 +3497,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           hrow.setColor(getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
           hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-          hrow.getCells().add(gen.new Cell(null, null, s+":All Slices", "", null));
+          hrow.getCells().add(gen.new Cell(null, null, sName+":All Slices", "", null));
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
@@ -3560,7 +3512,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           hrow.setColor(getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
           hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-          hrow.getCells().add(gen.new Cell(null, null, s+":All Types", "", null));
+          hrow.getCells().add(gen.new Cell(null, null, sName+":All Types", "", null));
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
           hrow.getCells().add(gen.new Cell());
@@ -3569,7 +3521,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           row = hrow;
         }
           
-        Row currRow = row; 
+        Row currRow = row;
+        boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
         for (ElementDefinition child : children) {
           if (!child.hasSliceName())
             currRow = row; 
@@ -3586,6 +3539,85 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return slicingRow;
+  }
+
+  public Cell genElementNameCell(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
+      String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef,
+      boolean ext, UnusedTracker used, String ref, String sName) throws IOException {
+    String hint = "";
+    hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
+    if (hasDef && element.hasDefinition()) {
+      hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+    }
+    Cell left = gen.new Cell(null, ref, sName, hint, null);
+    row.getCells().add(left);
+    return left;
+  }
+
+  public List<Cell> genElementCells(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
+      String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef,
+      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell) throws IOException {
+    List<Cell> res = new ArrayList<>();
+    Cell gc = gen.new Cell();
+    row.getCells().add(gc);
+    res.add(gc);
+    if (element != null && element.getIsModifier())
+      checkForNoChange(element.getIsModifierElement(), gc.addStyledText(translate("sd.table", "This element is a modifier element"), "?!", null, null, null, false));
+    if (element != null && element.getMustSupport())
+      checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element must be supported"), "S", "white", "red", null, false));
+    if (element != null && element.getIsSummary())
+      checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
+    if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty()))
+      gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
+
+    ExtensionContext extDefn = null;
+    if (ext) {
+      if (element != null && element.getType().size() == 1 && element.getType().get(0).hasProfile()) {
+        String eurl = element.getType().get(0).getProfile().get(0).getValue();
+        extDefn = locateExtension(StructureDefinition.class, eurl);
+        if (extDefn == null) {
+          res.add(genCardinality(gen, element, row, hasDef, used, null));
+          res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null)));
+          res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot));
+        } else {
+          String name = urltail(eurl);
+          nameCell.getPieces().get(0).setText(name);
+          // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
+          nameCell.getPieces().get(0).setHint(translate("sd.table", "Extension URL")+" = "+extDefn.getUrl());
+          res.add(genCardinality(gen, element, row, hasDef, used, extDefn.getElement()));
+          ElementDefinition valueDefn = extDefn.getExtensionValueDefinition();
+          if (valueDefn != null && !"0".equals(valueDefn.getMax()))
+            res.add(genTypes(gen, row, valueDefn, profileBaseFileName, profile, corePath, imagePath, root));
+           else // if it's complex, we just call it nothing
+              // genTypes(gen, row, extDefn.getSnapshot().getElement().get(0), profileBaseFileName, profile);
+            res.add(addCell(row, gen.new Cell(null, null, "("+translate("sd.table", "Complex")+")", null, null)));
+          res.add(generateDescription(gen, row, element, extDefn.getElement(), used.used, null, extDefn.getUrl(), profile, corePath, imagePath, root, logicalModel, allInvariants, valueDefn, snapshot));
+        }
+      } else {
+        res.add(genCardinality(gen, element, row, hasDef, used, null));
+        if ("0".equals(element.getMax()))
+          res.add(addCell(row, gen.new Cell()));            
+        else
+          res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root));
+        res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot));
+      }
+    } else {
+      res.add(genCardinality(gen, element, row, hasDef, used, null));
+      if (element.hasSlicing())
+        res.add(addCell(row, gen.new Cell(null, corePath+"profiling.html#slicing", "(Slice Definition)", null, null)));
+      else if (hasDef && !"0".equals(element.getMax()) && typesRow == null)
+        res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root));
+      else
+        res.add(addCell(row, gen.new Cell()));
+      res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot));
+    }
+    return res;
+  }
+
+  private Cell addCell(Row row, Cell cell) {
+    row.getCells().add(cell);
+    return (cell);
   }
 
   private String checkAdd(String src, String app) {
@@ -3800,7 +3832,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String getRowColor(ElementDefinition element, boolean isConstraintMode) {
+  public String getRowColor(ElementDefinition element, boolean isConstraintMode) {
     switch (element.getUserInt(UD_ERROR_STATUS)) {
     case STATUS_HINT: return ROW_COLOR_HINT;
     case STATUS_WARNING: return ROW_COLOR_WARNING;
@@ -3849,7 +3881,12 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"), null));        
         }
       }
-      
+      if (root) {
+        if (profile.getAbstract()) {
+          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          c.addPiece(gen.new Piece(null, "This is an abstract profile", null));          
+        }
+      }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
       } else {

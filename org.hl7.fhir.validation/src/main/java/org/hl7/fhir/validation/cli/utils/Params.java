@@ -49,6 +49,7 @@ public class Params {
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String SECURITY_CHECKS = "-security-checks";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -151,6 +152,8 @@ public class Params {
         cliContext.setMode(Validator.EngineMode.NARRATIVE);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(Validator.EngineMode.SNAPSHOT);
+      } else if (args[i].equals(SECURITY_CHECKS)) {
+        cliContext.setSecurityChecks(true);        
       } else if (args[i].equals(SCAN)) {
         cliContext.setMode(Validator.EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {

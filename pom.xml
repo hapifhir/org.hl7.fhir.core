@@ -17,7 +17,7 @@
 
     <properties>
         <hapi_fhir_version>5.0.0</hapi_fhir_version>
-        <validator_test_case_version>1.1.19-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.1.19</validator_test_case_version>
         <junit_jupiter_version>5.6.2</junit_jupiter_version>
         <maven_surefire_version>3.0.0-M4</maven_surefire_version>
         <jacoco_version>0.8.5</jacoco_version>
@@ -47,6 +47,13 @@
         <module>org.hl7.fhir.report</module>
     </modules>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <snapshots>
@@ -63,22 +70,9 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>oss-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sonatype-public</id>
-            <name>Sonatype Public</name>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
-
         <!-- Use logback for tests -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -86,7 +80,6 @@
             <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -259,6 +252,7 @@
                     <ignoredResourcePatterns>
                         <ignoredResourcePattern>changelog.txt</ignoredResourcePattern>
                         <ignoredResource>javac.bat</ignoredResource>
+                        <ignoredResource>javac.sh</ignoredResource>
                         <ignoredResource>about.html</ignoredResource>
                         <ignoredResource>changelog.xml</ignoredResource>
                     </ignoredResourcePatterns>
@@ -316,6 +310,39 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <keyname>${gpg.keyname}</keyname>
+                            <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

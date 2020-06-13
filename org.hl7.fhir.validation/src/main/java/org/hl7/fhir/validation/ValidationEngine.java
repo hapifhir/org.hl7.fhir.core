@@ -2,6 +2,11 @@ package org.hl7.fhir.validation;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.*;
+import org.hl7.fhir.convertors.loaders.R2016MayToR5Loader;
+import org.hl7.fhir.convertors.loaders.R2ToR5Loader;
+import org.hl7.fhir.convertors.loaders.R3ToR5Loader;
+import org.hl7.fhir.convertors.loaders.R4ToR5Loader;
+import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
@@ -257,6 +262,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private IValidatorResourceFetcher fetcher;
   private boolean assumeValidRestReferences;
   private boolean noExtensibleBindingMessages;
+  private boolean securityChecks;
   private Locale locale;
 
   private class AsteriskFilter implements FilenameFilter {
@@ -823,7 +829,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new Exception("Unsupported format for "+fn);
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.IGR2ConvertorAdvisor5();
+      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
       r = VersionConvertor_10_50.convertResource(res, advisor);
     } else if (version.equals(Constants.VERSION) || "current".equals(version)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -1297,6 +1303,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setValidationLanguage(language);
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
+    validator.setSecurityChecks(securityChecks);
     validator.getContext().setLocale(locale);
     validator.setFetcher(this);
     return validator;
@@ -1687,7 +1694,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else
         throw new Exception("Unsupported format for "+fn);
     } else if (version.startsWith("1.0")) {
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.IGR2ConvertorAdvisor5();
+      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
       org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, advisor);
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new org.hl7.fhir.dstu2.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(s, res);
@@ -1732,6 +1739,16 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+  }
+  
+  
+
+  public boolean isSecurityChecks() {
+    return securityChecks;
+  }
+
+  public void setSecurityChecks(boolean securityChecks) {
+    this.securityChecks = securityChecks;
   }
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {

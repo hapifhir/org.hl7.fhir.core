@@ -1,3 +1,5 @@
+package org.hl7.fhir.utilities;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -27,6 +29,16 @@
   
  */
 
-public class Marker {
-  // This class is just here to force a javadoc build in order to satisfy maven central
+
+
+import java.util.List;
+
+public interface ToolingClientLogger {
+
+  public void logRequest(String method, String url, List<String> headers, byte[] body);
+  public void logResponse(String outcome, List<String> headers, byte[] body);
+  public String getLastId();
+  public void clearLastId();
+
+
 }

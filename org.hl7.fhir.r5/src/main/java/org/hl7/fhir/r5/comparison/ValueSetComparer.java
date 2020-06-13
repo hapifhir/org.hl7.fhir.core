@@ -56,6 +56,16 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         expansion = new StructuralMatch<>();
       }
       return expansion;
+    }
+
+    @Override
+    protected String abbreviation() {
+      return "vs";
+    }
+
+    @Override
+    protected String summary() {
+      return "ValueSet: "+left.present()+" vs "+right.present();
     }         
   }
   

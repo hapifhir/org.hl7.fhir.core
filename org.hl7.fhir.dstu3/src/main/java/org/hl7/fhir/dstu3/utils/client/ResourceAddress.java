@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -114,6 +115,13 @@ public class ResourceAddress {
 		return baseServiceUri.resolve(nameForClass(resourceClass) +"/"+id+"/_history/"+version);
 	}
 	
+  public <T extends Resource> URI resolveGetUriFromResourceClassAndCanonical(Class<T> resourceClass, String canonicalUrl) {
+    if (canonicalUrl.contains("|"))
+      return baseServiceUri.resolve(nameForClass(resourceClass)+"?url="+canonicalUrl.substring(0, canonicalUrl.indexOf("|"))+"&version="+canonicalUrl.substring(canonicalUrl.indexOf("|")+1));      
+    else
+      return baseServiceUri.resolve(nameForClass(resourceClass)+"?url="+canonicalUrl);
+  }
+  
 	public URI resolveGetHistoryForAllResources(int count) {
 		if(count > 0) {
 			return appendHttpParameter(baseServiceUri.resolve("_history"), "_count", ""+count);
@@ -213,6 +221,11 @@ public class ResourceAddress {
 		return baseServiceUri.resolve(quick ? "metadata?_summary=true" : "metadata");
 	}
 	
+  public URI resolveMetadataTxCaps() {
+    return baseServiceUri.resolve("metadata?mode=terminology");
+  }
+
+  
 	/**
 	 * For now, assume this type of location header structure.
 	 * Generalize later: http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
@@ -386,7 +399,7 @@ public class ResourceAddress {
 	}
 	
 	public static String getCalendarDateInIsoTimeFormat(Calendar calendar) {
-		SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");//TODO Move out
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", new Locale("en", "US"));//TODO Move out
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 	    return format.format(calendar.getTime());
 	}
@@ -417,8 +430,5 @@ public class ResourceAddress {
         }
     }
 	
-  public URI resolveMetadataTxCaps() {
-    return baseServiceUri.resolve("metadata?mode=terminology");
-  }  
 
 }

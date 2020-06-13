@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("C:\\Users\\graha\\Downloads\\package.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\R4\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -58,33 +58,31 @@ public class PackageHacker {
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
 //    fixVersions(npm);
 //    npm.addProperty("name", "hl7.terminology");
-    npm.addProperty("url", "http://terminology.hl7.org/1.0.0");
+//    npm.remove("version");
+//    npm.addProperty("version", "4.2.0");
 //    npm.remove("canonical");
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
 ////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
 //    npm.remove("url");
 //    npm.addProperty("url", "http://hl7.org/fhir/us/davinci-drug-formulary/Jun2019");
-//    JsonObject dep = npm.getAsJsonObject("dependencies");
-//    dep.remove("hl7.fhir.r3.core");
-//    dep.remove("hl7.fhir.r3.examples");
-//    dep.remove("hl7.fhir.r3.expansions");
-//    dep.remove("hl7.fhir.r3.elements");
-//    dep.addProperty("hl7.fhir.r3.core", "4.0.1");
-//    dep.addProperty("hl7.fhir.r3.examples", "4.0.1");
-//    dep.addProperty("hl7.fhir.r3.expansions", "4.0.1");
-//    dep.addProperty("hl7.fhir.r3.elements", "4.0.1");
+    JsonObject dep = new JsonObject();
+    npm.add("dependencies", dep);
+    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
+    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
+    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
+    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
   }
 
   private void fixVersions(JsonObject npm) {
     npm.remove("fhirVersions");
     JsonArray a = new JsonArray();
     npm.add("fhirVersions", a);
-    a.add("4.0.1");
+    a.add("4.2.0");
     npm.remove("fhir-version-list");
     a = new JsonArray();
     npm.add("fhir-version-list", a);
-    a.add("4.0.1");
+    a.add("4.2.0");
   }
 
   private void setProperty(JsonObject npm, String name, String value) {
