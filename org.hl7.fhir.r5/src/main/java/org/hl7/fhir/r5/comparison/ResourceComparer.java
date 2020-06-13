@@ -15,15 +15,30 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ResourceComparer {
 
-  public class ResourceComparison {
+  public abstract class ResourceComparison {
     private String id;
+    private String leftId;
+    private String rightId;
     
-    protected List<ValidationMessage> messages = new ArrayList<>();
-    
-    public ResourceComparison() {
+    public ResourceComparison(String leftId, String rightId) {
       super();
+      this.leftId = leftId;
+      this.rightId = rightId;
+      id = abbreviation()+"-"+leftId + "-" + rightId;
     }
 
+    protected abstract String abbreviation(); 
+
+    public String getLeftId() {
+      return leftId;
+    }
+
+    public String getRightId() {
+      return rightId;
+    }
+
+    protected List<ValidationMessage> messages = new ArrayList<>();
+    
     public List<ValidationMessage> getMessages() {
       return messages;
     }
@@ -32,11 +47,7 @@ public class ResourceComparer {
       return id;
     }
 
-    public void setId(String id) {
-      this.id = id;
-    }
-    
-    
+    protected abstract String summary();
   }
   
   public final static String COLOR_NO_ROW_LEFT = "#ffffb3";
@@ -71,6 +82,7 @@ public class ResourceComparer {
     XhtmlNode tbl = div.table("grid");
     for (ValidationMessage vm : csc.messages) {
       XhtmlNode tr = tbl.tr();
+      tr.style("background-color: "+colorForLevel(vm.getLevel()));
       tr.td().tx(vm.getLocation());
       tr.td().tx(vm.getMessage());
       tr.td().tx(vm.getLevel().getDisplay());

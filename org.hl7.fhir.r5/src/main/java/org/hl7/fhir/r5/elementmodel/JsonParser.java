@@ -184,7 +184,7 @@ public class JsonParser extends ParserBase {
 	}
 
   public void parseChildItem(String path, JsonObject object, Element context, Set<String> processed, Property property) {
-    if (property.isChoice()) {
+    if (property.isChoice() || property.getDefinition().getPath().endsWith("data[x]")) {
     	for (TypeRefComponent type : property.getDefinition().getType()) {
     		String eName = property.getName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getWorkingCode());
     		if (!isPrimitive(type.getWorkingCode()) && object.has(eName)) {

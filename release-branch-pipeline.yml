@@ -1,31 +1,18 @@
-trigger: none
+trigger:
+- release
 
 pr: none
 
-# Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows
-strategy:
-  matrix:
-    linux:
-      imageName: 'ubuntu-latest'
-    mac:
-      imageName: "macos-10.15"
-    windows:
-      imageName: "windows-2019"
-  maxParallel: 3
-
 pool:
-  vmImage: $(imageName)
+  vmImage: "ubuntu-16.04"
 
 variables:
-  currentImage: $(imageName)
-  codecov: $(CODECOV_TOKEN)
   VERSION:
 
 steps:
   # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
   # the same version, at the same time, as defined in the root level pom.xml.
   - task: PowerShell@2
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     inputs:
       targetType: 'inline'
       script: |
@@ -37,22 +24,18 @@ steps:
 
   # Prints out the build version, for debugging purposes
   - bash: echo Pulled version from pom.xml => $(version)
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
 
   # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
   # pass the build id (ex: 1.1.13-SNAPSHOT) as a string in a file. 
   # This is used in the release pipeline, so we create it here.
-  # This is only done for the release branch.
   - bash: |
       echo $(version)
       VERSION=$(version)
       echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
 
   # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
   # This is done for release versions only.
   - task: CopyFiles@2
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
     inputs:
       SourceFolder: '$(System.Defaultworkingdirectory)'
@@ -70,36 +53,17 @@ steps:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package'
-
-  # Upload test results to codecov    
-  - script: bash <(curl https://codecov.io/bash) -t $(codecov)
-    displayName: 'codecov Bash Uploader'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-
-  # Publishes the test results to build artifacts.
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Publish JaCoCo test results '
-    inputs:
-      codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     
   # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Validator jar'
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     inputs:
       targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
       artifactName: Validator
 
   # Publishes the files we've moved into the staging directory, so they can be accessed by the 
-  # release pipeline. You will notice that we only do this for the ubuntu build, as doing it 
-  # for each of the three release pipelines will cause conflicts.
-  # This is done for release versions only.
+  # release pipeline.
   - task: PublishBuildArtifacts@1
-    condition: and(eq(variables.currentImage, 'ubuntu-latest'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     displayName: 'Publish Build Artifacts'
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)'
-

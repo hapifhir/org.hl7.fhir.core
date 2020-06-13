@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
@@ -84,6 +85,7 @@ import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.utils.ResourceUtilities;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 /**
  * Helper class handling lower level HTTP transport concerns.
@@ -100,6 +102,7 @@ public class ClientUtils {
   private String username;
   private String password;
   private ToolingClientLogger logger;
+  private int retryCount;
 
   public HttpHost getProxy() {
     return proxy;
@@ -277,16 +280,26 @@ public class ClientUtils {
    */
   protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy) {
     HttpResponse response = null;
-    try {
-      HttpClient httpclient = new DefaultHttpClient();
-      if(proxy != null) {
-        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+    boolean ok = false;
+    int tryCount = 0;
+    while (!ok) {
+      try {
+        tryCount++;
+        HttpClient httpclient = new DefaultHttpClient();
+        if(proxy != null) {
+          httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+        }
+        request.setEntity(new ByteArrayEntity(payload));
+        log(request);
+        response = httpclient.execute(request);
+        ok = true;
+      } catch(IOException ioe) {
+        if (tryCount <= retryCount) {
+          ok = false;
+        } else {
+          throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
+        }
       }
-      request.setEntity(new ByteArrayEntity(payload));
-      log(request);
-      response = httpclient.execute(request);
-    } catch(IOException ioe) {
-      throw new EFhirClientException("Error sending HTTP Post/Put Payload", ioe);
     }
     return response;
   }
@@ -480,7 +493,7 @@ public class ClientUtils {
     String dateTime = null;
     try {
       dateTime = serverConnection.getHeaderField("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
       Date lastModifiedTimestamp = format.parse(dateTime);
       Calendar calendar=Calendar.getInstance();
       calendar.setTime(lastModifiedTimestamp);
@@ -585,7 +598,7 @@ public class ClientUtils {
       logger.logRequest(request.getMethod(), request.getURI().toString(), headers, cnt);
     }    
   }  
-  
+
   private byte[] log(HttpResponse response) {
     byte[] cnt = null;
     try {
@@ -612,7 +625,7 @@ public class ClientUtils {
     this.logger = logger;
   }
 
-  
+
   /**
    * Used for debugging
    * 
@@ -629,6 +642,14 @@ public class ClientUtils {
       //Do nothing
     }
     return value;
+  }
+
+  public int getRetryCount() {
+    return retryCount;
+  }
+
+  public void setRetryCount(int retryCount) {
+    this.retryCount = retryCount;
   }
 
 

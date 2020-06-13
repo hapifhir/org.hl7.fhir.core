@@ -63,6 +63,9 @@ public class CliContext {
   @JsonProperty("mode")
   private Validator.EngineMode mode = Validator.EngineMode.VALIDATION;
 
+  @JsonProperty("securityChecks")
+  private boolean securityChecks = false;
+  
   @JsonProperty("locale")
   private String locale = Locale.ENGLISH.getDisplayLanguage();
 
@@ -403,6 +406,17 @@ public class CliContext {
   @JsonProperty("noExtensibleBindingMessages")
   public CliContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
+    return this;
+  }
+
+  @JsonProperty("securityChecks")  
+  public boolean isSecurityChecks() {
+    return securityChecks;
+  }
+
+  @JsonProperty("securityChecks")  
+  public CliContext setSecurityChecks(boolean securityChecks) {
+    this.securityChecks = securityChecks;
     return this;
   }
 

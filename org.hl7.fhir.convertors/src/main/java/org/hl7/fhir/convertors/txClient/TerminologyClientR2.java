@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.txClient;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -34,6 +34,7 @@ package org.hl7.fhir.convertors;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -41,7 +42,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 public class TerminologyClientR2 implements TerminologyClient {
 
@@ -84,13 +85,21 @@ public class TerminologyClientR2 implements TerminologyClient {
   }
 
   @Override
-  public void setTimeout(int i) {
-    // ignored in this version - need to roll R4 internal changes back to R2 if desired
+  public TerminologyClient setTimeout(int i) {
+    client.setTimeout(i);
+    return this;
   }
 
   @Override
-  public void setLogger(ToolingClientLogger txLog) {
-    // ignored in this version - need to roll R4 internal changes back to R2 if desired
+  public TerminologyClient setLogger(ToolingClientLogger txLog) {
+    client.setLogger(txLog);
+    return this;
+  }
+
+  @Override
+  public TerminologyClient setRetryCount(int retryCount) throws FHIRException {
+    client.setRetryCount(retryCount);
+    return this;
   }
 
   @Override
@@ -102,4 +111,6 @@ public class TerminologyClientR2 implements TerminologyClient {
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
     return (Parameters) VersionConvertor_10_50.convertResource(client.lookupCode(params));
   }
+  
+  
 }
