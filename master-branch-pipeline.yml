@@ -1,13 +1,12 @@
 # This pipeline produces a SNAPSHOT build for each of the sub modules in
 # the core library, and publishes them to ossrh. 
-trigger: none
 pr: none
+
+trigger:
+- master
 
 pool:
   vmImage: "ubuntu-16.04"
-
-variables:
-  currentModule: $(module)
 
 steps:
   # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid

@@ -41,8 +41,6 @@ public class ComparisonSession {
   public IWorkerContext getContext() {
     return context;
   }
-
-  
   
   public String getTitle() {
     return title;
@@ -92,7 +90,6 @@ public class ComparisonSession {
     return urlL+"|"+verL+"||"+urlR+"|"+verR;
   }
   
-  
   public void identify(CanonicalResource res) {
     count++;
     res.setId(sessiondId+"-"+count);
@@ -114,9 +111,4 @@ public class ComparisonSession {
   public Map<String, ResourceComparison> getCompares() {
     return compares;
   }
-  
-  
-  
-  
-  
 }
