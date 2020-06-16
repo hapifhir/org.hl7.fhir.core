@@ -158,8 +158,6 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 public class ValidationEngine implements IValidatorResourceFetcher {
 
-
-
   public class ScanOutputItem {
     private String ref;
     private ImplementationGuide ig;
@@ -264,6 +262,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean noExtensibleBindingMessages;
   private boolean securityChecks;
   private Locale locale;
+
+  final String BAD_FILE_PATH_ERROR = "\n********************\n* The file name you passed in, \"%s\", doesn't exist on the local filesystem, and is not a.\n" +
+    "* Please verify that this is valid file location.\n********************\n\n";
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1064,16 +1065,19 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       for (int i=0; i < files.length; i++) {
         refs.add(files[i].getPath());
       }
-    
     } else {
       File file = new File(name);
-
-      if (!file.exists())
+      if (!file.exists()) {
+        if (System.console() != null) {
+          System.console().printf(String.format(BAD_FILE_PATH_ERROR, name));
+        } else {
+          System.out.println(String.format(BAD_FILE_PATH_ERROR, name));
+        }
         throw new IOException("File " + name + " does not exist");
-    
+      }
+
       if (file.isFile()) {
         refs.add(name);
-        
       } else {
         isBundle = true;
         for (int i=0; i < file.listFiles().length; i++) {
