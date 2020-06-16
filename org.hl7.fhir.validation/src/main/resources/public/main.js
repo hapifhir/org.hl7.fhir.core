@@ -138,7 +138,7 @@ function sendFilesToValidate(arrayOfFileInfo) {
   req.filesToValidate = arrayOfFileInfo;
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", 'http://localhost:8080/' + 'validate', true);
+  xhr.open("POST",  '/validate', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(req));
 
