@@ -323,13 +323,6 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
 
-  //todo: delete this when finished i18n
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
-    if (!thePass) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR, null);
-    }
-    return thePass;
-  }
 
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
