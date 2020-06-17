@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
@@ -227,7 +228,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 first = false;
               else if (last)
                 x.tx(", ");
-              last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails) || last;
+              last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails, false) || last;
             }
           }
         }
@@ -353,6 +354,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
   private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
+    return displayLeaf(res, ew, defn, x, name, showCodeDetails, true);
+  }
+  
+  private boolean displayLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, String name, boolean showCodeDetails, boolean allowLinks) throws FHIRException, UnsupportedEncodingException, IOException {
     if (ew == null)
       return false;
     Base e = ew.getBase();
@@ -399,6 +404,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         x.addText(name);
         return true;
       }
+    } else if (e instanceof CodeableReference) {
+      if (((CodeableReference) e).hasReference()) { 
+        Reference r = ((CodeableReference) e).getReference();
+        renderReference(res, x, r, allowLinks);
+      } else {
+        renderCodeableConcept(x, ((CodeableReference) e).getConcept(), showCodeDetails);
+      }
+      return true;
     } else if (e instanceof CodeableConcept) {
       renderCodeableConcept(x, (CodeableConcept) e, showCodeDetails);
       return true;
