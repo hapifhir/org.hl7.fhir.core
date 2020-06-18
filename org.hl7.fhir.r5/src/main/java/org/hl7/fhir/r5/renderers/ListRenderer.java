@@ -53,6 +53,7 @@ public class ListRenderer extends ResourceRenderer {
       td.tx("Code: "+displayBase(list.get("code")));
     }    
     tr = t.tr();
+    td = tr.td();
     if (list.has("subject")) {
       td.tx("Subject: ");
       shortForRef(td, list.get("subject"));
@@ -80,27 +81,27 @@ public class ListRenderer extends ResourceRenderer {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    td.b().tx("Items");
+    tr.td().b().tx("Items");
     if (date) {
-      td.tx("Date");      
+      tr.td().tx("Date");      
     }
     if (flag) {
-      td.tx("Flag");      
+      tr.td().tx("Flag");      
     }
     if (deleted) {
-      td.tx("Deleted");      
+      tr.td().tx("Deleted");      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
-      shortForRef(td, e.get("item"));
+      shortForRef(tr.td(), e.get("item"));
       if (date) {
-        td.tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
+        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
       }
       if (flag) {
-        td.tx(e.has("flag") ? displayBase(e.get("flag")) : "");      
+        tr.td().tx(e.has("flag") ? displayBase(e.get("flag")) : "");      
       }
       if (deleted) {
-        td.tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
+        tr.td().tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
       }
     }    
     return false;
@@ -211,8 +212,10 @@ public class ListRenderer extends ResourceRenderer {
             disp = url;
           }
           x.tx(disp);
-        } else {
+        } else if (r.getResource() != null) {
           RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, (Reference) ref);
+        } else {
+          RendererFactory.factory(url, context).renderReference(r.getResource(), x, (Reference) ref);
         }
       } else if (disp != null) {
         x.tx(disp);      

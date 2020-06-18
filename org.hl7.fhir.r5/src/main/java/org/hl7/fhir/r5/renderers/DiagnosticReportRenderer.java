@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -24,8 +25,8 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   public class ObservationNode {
     private String ref;
-    private ResourceWrapper obs;
-    private List<ObservationNode> contained = new ArrayList<ObservationNode>();
+    private ResourceWithReference obs;
+    private List<ObservationNode> contained;
   }
 
 
@@ -59,7 +60,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       render(h2, getProperty(dr, "issued").value());
     }
 
-    XhtmlNode tbl = x.table( "grid");
+    XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
     XhtmlNode tdl = tr.td();
     XhtmlNode tdr = tr.td();
@@ -96,7 +97,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
     pw = getProperty(dr, "result");
     if (valued(pw)) {
-      List<ObservationNode> observations = fetchObservations(pw.getValues());
+      List<ObservationNode> observations = fetchObservations(pw.getValues(), dr);
       buildObservationsTable(x, observations);
     }
 
@@ -149,10 +150,24 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     c.tx("to do");
   }
   
-  private List<ObservationNode> fetchObservations(List<BaseWrapper> list) {
-    return new ArrayList<ObservationNode>();
+  private List<ObservationNode> fetchObservations(List<BaseWrapper> list, ResourceWrapper rw) throws UnsupportedEncodingException, FHIRException, IOException {
+    List<ObservationNode> res = new ArrayList<ObservationNode>();
+    for (BaseWrapper b : list) {
+      if (b.has("reference")) {
+        ObservationNode obs = new ObservationNode();
+        obs.ref = b.get("reference").primitiveValue();
+        obs.obs = resolveReference(rw, obs.ref);
+        if (obs.obs.getResource() != null) {
+          PropertyWrapper t = getProperty(obs.obs.getResource(), "contained");
+          if (t.hasValues()) {
+            obs.contained = fetchObservations(t.getValues(), rw);
+          }
+        }
+        res.add(obs);
+      }
+    }
+    return res;
   }
-
 
   private void buildObservationsTable(XhtmlNode root, List<ObservationNode> observations) {
     XhtmlNode tbl = root.table( "none");
@@ -163,16 +178,21 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private void addObservationToTable(XhtmlNode tbl, ObservationNode o, int i) {
     XhtmlNode tr = tbl.tr();
-    if (o.obs == null) {
+    if (o.obs.getReference()  == null) {
       XhtmlNode td = tr.td().colspan("6");
       td.i().tx("This Observation could not be resolved");
     } else {
-      addObservationToTable(tr, o.obs, i);
-      // todo: contained observations
-    }
-    for (ObservationNode c : o.contained) {
-      addObservationToTable(tbl, c, i+1);
-    }
+      if (o.obs.getResource() != null) {
+        addObservationToTable(tr, o.obs.getResource(), i);
+      } else {
+        tr.td().tx("Unable to resolve Observation: "+o.obs.getReference());
+      }
+      if (o.contained != null) {
+        for (ObservationNode c : o.contained) {
+          addObservationToTable(tbl, c, i+1);
+        }
+      }
+    } 
   }
 
   private void addObservationToTable(XhtmlNode tr, ResourceWrapper obs, int i) {
@@ -180,7 +200,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
     // code (+bodysite)
     XhtmlNode td = tr.td();
-    PropertyWrapper pw = getProperty(obs, "result");
+    PropertyWrapper pw = getProperty(obs, "code");
     if (valued(pw)) {
       render(td, pw.value());
     }
@@ -195,12 +215,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     td = tr.td();
     pw = getProperty(obs, "value[x]");
     if (valued(pw)) {
-      if (pw.getTypeCode().equals("CodeableConcept"))
-        render(td, pw.value());
-      else if (pw.getTypeCode().equals("string"))
-        render(td, pw.value());
-      else
-        td.addText(pw.getTypeCode()+" not rendered yet");
+      render(td, pw.value());
     }
 
     // units

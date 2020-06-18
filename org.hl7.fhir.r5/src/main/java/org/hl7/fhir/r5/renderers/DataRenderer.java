@@ -655,7 +655,9 @@ public class DataRenderer {
   protected void renderQuantity(XhtmlNode x, Quantity q, boolean showCodeDetails) {
     if (q.hasComparator())
       x.addText(q.getComparator().toCode());
-    x.addText(q.getValue().toString());
+    if (q.hasValue()) {
+      x.addText(q.getValue().toString());
+    }
     if (q.hasUnit())
       x.tx(" "+q.getUnit());
     else if (q.hasCode())

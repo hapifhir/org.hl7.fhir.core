@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hl7.fhir.validation.Validator;
-import org.hl7.fhir.validation.cli.utils.SnomedVersion;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class CliContext {
   @JsonProperty("fhirpath")
   private String fhirpath = null;
   @JsonProperty("snomedCT")
-  private String snomedCT = SnomedVersion.INTL.getCode();
+  private String snomedCT = "900000000000207008";
   @JsonProperty("targetVer")
   private String targetVer = null;
 
@@ -339,12 +338,18 @@ public class CliContext {
     return this;
   }
 
-  public SnomedVersion getSnomedCT() {
-    return SnomedVersion.getFromCode(snomedCT);
-  }
 
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
+    if ("intl".equals(snomedCT)) return "900000000000207008";
+    if ("us".equals(snomedCT)) return "731000124108";
+    if ("uk".equals(snomedCT)) return "999000041000000102";
+    if ("au".equals(snomedCT)) return "32506021000036107";
+    if ("ca".equals(snomedCT)) return "20611000087101";
+    if ("nl".equals(snomedCT)) return "11000146104";
+    if ("se".equals(snomedCT)) return "45991000052106";
+    if ("es".equals(snomedCT)) return "449081005";
+    if ("dk".equals(snomedCT)) return "554471000005108";
     return snomedCT;
   }
 

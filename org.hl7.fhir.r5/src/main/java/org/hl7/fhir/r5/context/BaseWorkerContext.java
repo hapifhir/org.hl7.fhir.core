@@ -773,6 +773,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache = new TerminologyCache(lock, cachePath);
   }
 
+  public void clearTSCache(String url) throws Exception {
+    txCache.removeCS(url);
+  }
+
+  
   @Override
   public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
     synchronized (lock) {

@@ -118,9 +118,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public void renderReference(ResourceWrapper rw, XhtmlNode x, Reference r) throws UnsupportedEncodingException, IOException {
-    XhtmlNode c = x;
+    renderReference(rw, x, r, true); 
+  }
+  
+  public void renderReference(ResourceWrapper rw, XhtmlNode x, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+    XhtmlNode c = null;
     ResourceWithReference tr = null;
-    if (r.hasReferenceElement()) {
+    if (r.hasReferenceElement() && allowLinks) {
       tr = resolveReference(rw, r.getReference());
 
       if (!r.getReference().startsWith("#")) {
@@ -129,6 +133,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         else
           c = x.ah(r.getReference());
       }
+    } else {
+      c = x.span(null, null);
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the generated narrative
     if (r.hasDisplayElement()) {
@@ -178,7 +184,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected ResourceWithReference resolveReference(ResourceWrapper res, String url) {
     if (url == null)
       return null;
-    if (url.startsWith("#")) {
+    if (url.startsWith("#") && res != null) {
       for (ResourceWrapper r : res.getContained()) {
         if (r.getId().equals(url.substring(1)))
           return new ResourceWithReference(null, r);
@@ -249,8 +255,12 @@ public abstract class ResourceRenderer extends DataRenderer {
    protected ResourceWrapper fetchResource(BaseWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException {
      if (context.getResolver() == null)
        return null;
-     
-     String url = subject.getChildByName("reference").value().getBase().primitiveValue();
+
+     PropertyWrapper ref = subject.getChildByName("reference");
+     if (ref == null || !ref.hasValues()) {
+       return null;
+     }
+     String url = ref.value().getBase().primitiveValue();
      ResourceWithReference rr = context.getResolver().resolve(context, url);
      return rr == null ? null : rr.getResource();
    }
