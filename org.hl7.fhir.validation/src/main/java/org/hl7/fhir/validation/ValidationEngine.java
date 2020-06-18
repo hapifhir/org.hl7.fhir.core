@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
@@ -262,9 +263,6 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean noExtensibleBindingMessages;
   private boolean securityChecks;
   private Locale locale;
-
-  final String BAD_FILE_PATH_ERROR = "\n********************\n* The file name you passed in, \"%s\", doesn't exist on the local filesystem, and is not a.\n" +
-    "* Please verify that this is valid file location.\n********************\n\n";
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1069,9 +1067,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       File file = new File(name);
       if (!file.exists()) {
         if (System.console() != null) {
-          System.console().printf(String.format(BAD_FILE_PATH_ERROR, name));
+          System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         } else {
-          System.out.println(String.format(BAD_FILE_PATH_ERROR, name));
+          System.out.println(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         }
         throw new IOException("File " + name + " does not exist");
       }
