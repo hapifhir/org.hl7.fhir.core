@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.hl7.fhir.exceptions.i18nException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import java.util.ResourceBundle;
 
 class I18nBaseTest {
 
+  public static final String BAD_STRING_ARG = "THIS_DOES_NOT_EXIST";
   public static final String ARG_1 = "test arg";
 
   @Test
@@ -37,10 +37,9 @@ class I18nBaseTest {
   }
 
   @Test
-  @DisplayName("Assert i18nException is thrown for non-existent String.")
+  @DisplayName("Assert no string modification is done when no match is found.")
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
-    Assertions.assertThrows(i18nException.class, () -> testClass.formatMessage("THIS_DOES_NOT_EXIST", ARG_1));
+    Assertions.assertEquals(BAD_STRING_ARG, testClass.formatMessage(BAD_STRING_ARG, ARG_1));
   }
-
 }

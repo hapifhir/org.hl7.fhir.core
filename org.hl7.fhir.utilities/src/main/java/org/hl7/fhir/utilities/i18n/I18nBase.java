@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.hl7.fhir.exceptions.i18nException;
-
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -15,7 +13,7 @@ import java.util.ResourceBundle;
 public abstract class I18nBase {
 
   private Locale locale;
-  private ResourceBundle i18Nmessages;
+  private ResourceBundle i18nMessages;
 
   public Locale getLocale() {
     if (Objects.nonNull(locale)) {
@@ -34,7 +32,7 @@ public abstract class I18nBase {
    * Verifies if a {@link ResourceBundle} has been loaded for the current {@link Locale}. If not, it triggers a load.
    */
   private void checkResourceBundleIsLoaded() {
-    if (i18Nmessages == null) {
+    if (i18nMessages == null) {
       setValidationMessageLanguage(getLocale());
     }
   }
@@ -48,12 +46,11 @@ public abstract class I18nBase {
    */
   private boolean messageExistsForLocale(String message) {
     checkResourceBundleIsLoaded();
-    if (i18Nmessages.containsKey(message)) {
-      return true;
-    } else {
-      throw new i18nException("Attempting to localize message " + message + ", but no such equivalent message exists for" +
+    if (!i18nMessages.containsKey(message)) {
+      System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
         " the local " + getLocale());
     }
+    return i18nMessages.containsKey(message);
   }
 
   /**
@@ -66,9 +63,9 @@ public abstract class I18nBase {
     String message = theMessage;
     if (messageExistsForLocale(theMessage)) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(i18Nmessages.getString(theMessage), theMessageArguments);
+        message = MessageFormat.format(i18nMessages.getString(theMessage), theMessageArguments);
       } else {
-        message = i18Nmessages.getString(theMessage);
+        message = i18nMessages.getString(theMessage);
       }
     }
     return message;
@@ -79,6 +76,6 @@ public abstract class I18nBase {
    * @param locale {@link Locale} to load resources for.
    */
   public void setValidationMessageLanguage(Locale locale) {
-    i18Nmessages = ResourceBundle.getBundle("Messages", locale);
+    i18nMessages = ResourceBundle.getBundle("Messages", locale);
   }
 }
