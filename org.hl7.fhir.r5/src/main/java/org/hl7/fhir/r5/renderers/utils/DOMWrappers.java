@@ -64,6 +64,10 @@ public class DOMWrappers {
     public List<PropertyWrapper> children() {
       if (list == null) {
         children = context.getProfileUtilities().getChildList(structure, definition);
+        if (children.isEmpty() && type != null) {
+          StructureDefinition sdt = context.getWorker().fetchTypeDefinition(type);
+          children = context.getProfileUtilities().getChildList(sdt, sdt.getSnapshot().getElementFirstRep());          
+        }
         list = new ArrayList<PropertyWrapper>();
         for (ElementDefinition child : children) {
           List<Element> elements = new ArrayList<Element>();
@@ -140,8 +144,17 @@ public class DOMWrappers {
 
     @Override
     public String getTypeCode() {
-      if (definition == null || definition.getType().size() != 1)
-        throw new Error("not handled");
+      if (definition == null || definition.getType().size() != 1) {
+        if (values.size() != 1) {
+          throw new Error("not handled");
+        }
+        String tn = values.get(0).getLocalName().substring(tail(definition.getPath()).replace("[x]", "").length());
+        if (isPrimitive(Utilities.uncapitalize(tn))) {
+          return Utilities.uncapitalize(tn);
+        } else {
+          return tn;
+        }
+      }
       return definition.getType().get(0).getWorkingCode();
     }
 
