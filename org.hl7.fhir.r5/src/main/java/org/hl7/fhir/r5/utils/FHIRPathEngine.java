@@ -4433,7 +4433,8 @@ public class FHIRPathEngine {
   public ElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, ElementDefinition element) throws DefinitionException {
     StructureDefinition sd = profile;
     ElementDefinition focus = null;
-
+    boolean okToNotResolve = false;
+    
     if (expr.getKind() == Kind.Name) {
       if (element.hasSlicing()) {
         ElementDefinition slice = pickMandatorySlice(sd, element);
@@ -4493,6 +4494,19 @@ public class FHIRPathEngine {
            }
           }
         }
+      } else if ("ofType".equals(expr.getName())) {
+        if (!element.hasType())
+          throw new DefinitionException("illegal use of ofType() in discriminator - no type on element "+element.getId());
+        if (element.getType().size() > 1)
+          throw new DefinitionException("illegal use of ofType() in discriminator - Multiple possible types on "+element.getId());
+        if (!element.getType().get(0).hasCode())
+          throw new DefinitionException("illegal use of ofType() in discriminator - Type has no code on "+element.getId());
+        String atn = element.getType().get(0).getCode();
+        String stn = expr.getParameters().get(0).getName();  
+        okToNotResolve = true;
+        if ((atn.equals(stn))) {
+          focus = element;
+        }
       } else 
         throw new DefinitionException("illegal function name "+expr.getName()+"() in discriminator");
     } else if (expr.getKind() == Kind.Group) {
@@ -4501,9 +4515,13 @@ public class FHIRPathEngine {
       throw new DefinitionException("illegal expression syntax in discriminator (const)");
     }
 
-    if (focus == null)
-      throw new DefinitionException("Unable to resolve discriminator in definitions: "+expr.toString());      
-    else if (expr.getInner() == null)
+    if (focus == null) { 
+      if (okToNotResolve) {
+        return null;
+      } else {
+        throw new DefinitionException("Unable to resolve discriminator in definitions: "+expr.toString());
+      }
+    } else if (expr.getInner() == null)
       return focus;
     else {
       return evaluateDefinition(expr.getInner(), sd, focus);
