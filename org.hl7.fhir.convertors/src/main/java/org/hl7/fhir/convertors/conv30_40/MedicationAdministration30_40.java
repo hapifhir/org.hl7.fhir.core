@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.dstu3.model.SimpleQuantity;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class MedicationAdministration30_40 {
@@ -109,8 +110,14 @@ public class MedicationAdministration30_40 {
             tgt.setMethod(VersionConvertor_30_40.convertCodeableConcept(src.getMethod()));
         if (src.hasDose())
             tgt.setDose(VersionConvertor_30_40.convertSimpleQuantity(src.getDose()));
-        if (src.hasRate())
+        if (src.hasRate()) {
+          if (src.hasRateQuantity()) {
+            tgt.setRate(new SimpleQuantity());
+            VersionConvertor_30_40.copyQuantity(src.getRateQuantity(), tgt.getRateSimpleQuantity());
+          } else {
             tgt.setRate(VersionConvertor_30_40.convertType(src.getRate()));
+          }
+        }
         return tgt;
     }
 
