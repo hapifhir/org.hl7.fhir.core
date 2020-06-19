@@ -3429,24 +3429,24 @@ public class VersionConvertor_30_40 {
             return convertId((org.hl7.fhir.dstu3.model.IdType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.InstantType)
             return convertInstant((org.hl7.fhir.dstu3.model.InstantType) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.PositiveIntType)
+          return convertPositiveInt((org.hl7.fhir.dstu3.model.PositiveIntType) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.UnsignedIntType)
+          return convertUnsignedInt((org.hl7.fhir.dstu3.model.UnsignedIntType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.IntegerType)
             return convertInteger((org.hl7.fhir.dstu3.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.dstu3.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.OidType)
             return convertOid((org.hl7.fhir.dstu3.model.OidType) src);
-        if (src instanceof org.hl7.fhir.dstu3.model.PositiveIntType)
-            return convertPositiveInt((org.hl7.fhir.dstu3.model.PositiveIntType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.StringType)
             return convertString((org.hl7.fhir.dstu3.model.StringType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.TimeType)
             return convertTime((org.hl7.fhir.dstu3.model.TimeType) src);
-        if (src instanceof org.hl7.fhir.dstu3.model.UnsignedIntType)
-            return convertUnsignedInt((org.hl7.fhir.dstu3.model.UnsignedIntType) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.UuidType)
+          return convertUuid((org.hl7.fhir.dstu3.model.UuidType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.UriType)
             return convertUri((org.hl7.fhir.dstu3.model.UriType) src);
-        if (src instanceof org.hl7.fhir.dstu3.model.UuidType)
-            return convertUuid((org.hl7.fhir.dstu3.model.UuidType) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Extension)
             return convertExtension((org.hl7.fhir.dstu3.model.Extension) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Narrative)
@@ -3473,6 +3473,8 @@ public class VersionConvertor_30_40 {
             return convertMoney((org.hl7.fhir.dstu3.model.Money) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Period)
             return convertPeriod((org.hl7.fhir.dstu3.model.Period) src);
+        if (src instanceof org.hl7.fhir.dstu3.model.SimpleQuantity)
+          return convertSimpleQuantity((org.hl7.fhir.dstu3.model.SimpleQuantity) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Quantity)
             return convertQuantity((org.hl7.fhir.dstu3.model.Quantity) src);
         if (src instanceof org.hl7.fhir.dstu3.model.Range)
@@ -3535,24 +3537,24 @@ public class VersionConvertor_30_40 {
             return convertId((org.hl7.fhir.r4.model.IdType) src);
         if (src instanceof org.hl7.fhir.r4.model.InstantType)
             return convertInstant((org.hl7.fhir.r4.model.InstantType) src);
+        if (src instanceof org.hl7.fhir.r4.model.PositiveIntType)
+            return convertPositiveInt((org.hl7.fhir.r4.model.PositiveIntType) src);
+        if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
+            return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
         if (src instanceof org.hl7.fhir.r4.model.IntegerType)
             return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r4.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.r4.model.OidType)
             return convertOid((org.hl7.fhir.r4.model.OidType) src);
-        if (src instanceof org.hl7.fhir.r4.model.PositiveIntType)
-            return convertPositiveInt((org.hl7.fhir.r4.model.PositiveIntType) src);
         if (src instanceof org.hl7.fhir.r4.model.StringType)
             return convertString((org.hl7.fhir.r4.model.StringType) src);
         if (src instanceof org.hl7.fhir.r4.model.TimeType)
             return convertTime((org.hl7.fhir.r4.model.TimeType) src);
-        if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
-            return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
-        if (src instanceof org.hl7.fhir.r4.model.UriType)
-            return convertUri((org.hl7.fhir.r4.model.UriType) src);
         if (src instanceof org.hl7.fhir.r4.model.UuidType)
             return convertUuid((org.hl7.fhir.r4.model.UuidType) src);
+        if (src instanceof org.hl7.fhir.r4.model.UriType)
+            return convertUri((org.hl7.fhir.r4.model.UriType) src);
         if (src instanceof org.hl7.fhir.r4.model.Extension)
             return convertExtension((org.hl7.fhir.r4.model.Extension) src);
         if (src instanceof org.hl7.fhir.r4.model.Narrative)
@@ -3579,6 +3581,8 @@ public class VersionConvertor_30_40 {
             return convertMoney((org.hl7.fhir.r4.model.Money) src);
         if (src instanceof org.hl7.fhir.r4.model.Period)
             return convertPeriod((org.hl7.fhir.r4.model.Period) src);
+        if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
+          return convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
         if (src instanceof org.hl7.fhir.r4.model.Quantity)
             return convertQuantity((org.hl7.fhir.r4.model.Quantity) src);
         if (src instanceof org.hl7.fhir.r4.model.Range)

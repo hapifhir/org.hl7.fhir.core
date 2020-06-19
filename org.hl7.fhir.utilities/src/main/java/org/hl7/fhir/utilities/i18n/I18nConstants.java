@@ -12,6 +12,7 @@ public class I18nConstants {
   public static final String ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE = "Attempt_to_replace_element_name_for_a_nonchoice_type";
   public static final String ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED = "Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated";
   public static final String ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE = "Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available";
+  public static final String BAD_FILE_PATH_ERROR = "Bad_file_path_error";
   public static final String BASE_PROFILE__HAS_NO_TYPE = "Base_profile__has_no_type";
   public static final String BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___ = "Base__Derived_profiles_have_different_types____vs___";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
@@ -500,4 +501,5 @@ public class I18nConstants {
   public static final String _HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_ = "_has_children__and_multiple_types__in_profile_";
   public static final String _HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE = "_has_children__for_type__in_profile__but_cant_find_type";
   public static final String _HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_ = "_has_no_children__and_no_types_in_profile_";
+  public static final String ALL_OK = "ALL_OK";
 }

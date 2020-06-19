@@ -120,7 +120,10 @@ public class NpmPackage {
       return name;
     }
 
-    public void readIndex(JsonObject index) {
+    public boolean readIndex(JsonObject index) {
+      if (!index.has("index-version") || (index.get("index-version").getAsInt() != 1)) {
+        return false;
+      }
       this.index = index;
       for (JsonElement e : index.getAsJsonArray("files")) {
         JsonObject file = (JsonObject) e;
@@ -130,6 +133,7 @@ public class NpmPackage {
           types.put(type, new ArrayList<>());
         types.get(type).add(name);
       }
+      return true;
     }
 
     public List<String> listFiles() {
@@ -210,7 +214,7 @@ public class NpmPackage {
    */
   public static NpmPackage fromFolder(String path) throws IOException {
     NpmPackage res = new NpmPackage();
-    loadFiles(res, path, new File(path));
+    res.loadFiles(path, new File(path));
     res.checkIndexed(path);
     return res;
   }
@@ -228,9 +232,9 @@ public class NpmPackage {
     return userData;
   }
 
-  public static void loadFiles(NpmPackage res, String path, File source, String... exemptions) throws FileNotFoundException, IOException {
-    res.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
-    res.path = path;
+  public void loadFiles(String path, File source, String... exemptions) throws FileNotFoundException, IOException {
+    this.npm = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(Utilities.path(path, "package", "package.json")));
+    this.path = path;
     
     File dir = new File(path);
     for (File f : dir.listFiles()) {
@@ -240,22 +244,24 @@ public class NpmPackage {
           if (!d.equals("package")) {
             d = Utilities.path("package", d);
           }
-          NpmPackageFolder folder = res.new NpmPackageFolder(d);
+          NpmPackageFolder folder = this.new NpmPackageFolder(d);
           folder.folder = f;
-          res.folders.put(d, folder);
+          this.folders.put(d, folder);
           File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
           if (ij.exists()) {
             try {
-              folder.readIndex(JsonTrackingParser.parseJson(ij));
+              if (!folder.readIndex(JsonTrackingParser.parseJson(ij))) {
+                indexFolder(folder.getName(), folder);
+              }
             } catch (Exception e) {
               throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
             }
           }
-          loadSubFolders(res, dir.getAbsolutePath(), f);
+          loadSubFolders(dir.getAbsolutePath(), f);
         } else {
-          NpmPackageFolder folder = res.new NpmPackageFolder(Utilities.path("package", "$root"));
+          NpmPackageFolder folder = this.new NpmPackageFolder(Utilities.path("package", "$root"));
           folder.folder = dir;
-          res.folders.put(Utilities.path("package", "$root"), folder);        
+          this.folders.put(Utilities.path("package", "$root"), folder);        
         }
       }
     }
@@ -265,25 +271,27 @@ public class NpmPackage {
     return Utilities.existsInList(f.getName(), ".git", ".svn") || Utilities.existsInList(f.getName(), "package-list.json");
   }
 
-  private static void loadSubFolders(NpmPackage res, String rootPath, File dir) throws IOException {
+  private void loadSubFolders(String rootPath, File dir) throws IOException {
     for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
         String d = f.getAbsolutePath().substring(rootPath.length()+1);
         if (!d.startsWith("package")) {
           d = Utilities.path("package", d);
         }
-        NpmPackageFolder folder = res.new NpmPackageFolder(d);
+        NpmPackageFolder folder = this.new NpmPackageFolder(d);
         folder.folder = f;
-        res.folders.put(d, folder);
+        this.folders.put(d, folder);
         File ij = new File(Utilities.path(f.getAbsolutePath(), ".index.json"));
         if (ij.exists()) {
           try {
-            folder.readIndex(JsonTrackingParser.parseJson(ij));
+            if (!folder.readIndex(JsonTrackingParser.parseJson(ij))) {
+              indexFolder(folder.getName(), folder);
+            }
           } catch (Exception e) {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
-        loadSubFolders(res, rootPath, f);
+        loadSubFolders(rootPath, f);
         
       }
     }    
@@ -291,7 +299,7 @@ public class NpmPackage {
 
   public static NpmPackage fromFolder(String folder, PackageType defType, String... exemptions) throws IOException {
     NpmPackage res = new NpmPackage();
-    loadFiles(res, folder, new File(folder), exemptions);
+    res.loadFiles(folder, new File(folder), exemptions);
     if (!res.folders.containsKey("package")) {
       res.folders.put("package", res.new NpmPackageFolder("package"));
     }
@@ -386,26 +394,33 @@ public class NpmPackage {
 
   private void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
-      List<String> remove = new ArrayList<>();
       if (folder.index == null) {
-        NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-        indexer.start();
-        for (String n : folder.listFiles()) {
-          if (!indexer.seeFile(n, folder.fetchFile(n))) {
-            remove.add(n);
-          }
-        } 
-        for (String n : remove) {
-          folder.removeFile(n);
-        }
-        String json = indexer.build();
-        try {
-          folder.readIndex(JsonTrackingParser.parseJson(json));
-        } catch (Exception e) {
-          TextFile.stringToFile(json, Utilities.path("[tmp]", ".index.json"));
-          throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.name+"/.index.json: "+e.getMessage(), e);
-        }
+        indexFolder(desc, folder);
       }
+    }
+  }
+
+  public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
+    List<String> remove = new ArrayList<>();
+    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+    indexer.start();
+    for (String n : folder.listFiles()) {
+      if (!indexer.seeFile(n, folder.fetchFile(n))) {
+        remove.add(n);
+      }
+    } 
+    for (String n : remove) {
+      folder.removeFile(n);
+    }
+    String json = indexer.build();
+    try {
+      folder.readIndex(JsonTrackingParser.parseJson(json));
+      if (folder.folder != null) {
+        TextFile.stringToFile(json, Utilities.path(folder.folder.getAbsolutePath(), ".index.json"));
+      }
+    } catch (Exception e) {
+      TextFile.stringToFile(json, Utilities.path("[tmp]", ".index.json"));
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.name+"/.index.json: "+e.getMessage(), e);
     }
   }
 

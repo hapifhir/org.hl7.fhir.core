@@ -460,6 +460,15 @@ public class TerminologyCache {
   public static void setNoCaching(boolean noCaching) {
     TerminologyCache.noCaching = noCaching;
   }
+
+  public void removeCS(String url) {
+    synchronized (lock) {
+      String name = getNameForSystem(url);
+      if (caches.containsKey(name)) {
+        caches.remove(name);
+      }
+    }   
+  }
  
   
 }

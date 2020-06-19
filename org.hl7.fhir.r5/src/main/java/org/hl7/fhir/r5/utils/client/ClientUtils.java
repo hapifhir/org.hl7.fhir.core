@@ -96,6 +96,7 @@ public class ClientUtils {
 
   public static final String DEFAULT_CHARSET = "UTF-8";
   public static final String HEADER_LOCATION = "location";
+  private static boolean debugging = false;
 
   private HttpHost proxy;
   private int timeout = 5000;
@@ -323,6 +324,9 @@ public class ClientUtils {
       }
       response = httpclient.execute(request);
     } catch(IOException ioe) {
+      if (ClientUtils.debugging ) {
+        ioe.printStackTrace();
+      }
       throw new EFhirClientException("Error sending Http Request: "+ioe.getMessage(), ioe);
     }
     return response;

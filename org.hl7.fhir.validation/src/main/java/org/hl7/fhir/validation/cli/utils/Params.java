@@ -99,7 +99,7 @@ public class Params {
           throw new Error("Specified -profile without indicating profile source");
         } else {
           p = args[++i];
-          cliContext.addProfile(args[i++]);
+          cliContext.addProfile(p);
         }
         if (p != null && i + 1 < args.length && args[i + 1].equals("@")) {
           i++;
