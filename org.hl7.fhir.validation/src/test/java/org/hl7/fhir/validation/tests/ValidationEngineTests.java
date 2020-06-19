@@ -38,7 +38,7 @@ public class ValidationEngineTests {
     }
     Assertions.assertEquals(0, e);
     Assertions.assertEquals(0, w);
-    Assertions.assertEquals(0, h);
+    Assertions.assertEquals(1, h);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class ValidationEngineTests {
     int h = hints(op);
     Assertions.assertEquals(0, e);
     Assertions.assertEquals(0, w);
-    Assertions.assertEquals(0, h);
+    Assertions.assertEquals(1, h);
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
