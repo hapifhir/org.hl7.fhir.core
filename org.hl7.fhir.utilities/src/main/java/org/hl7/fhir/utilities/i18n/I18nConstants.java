@@ -501,4 +501,5 @@ public class I18nConstants {
   public static final String _HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_ = "_has_children__and_multiple_types__in_profile_";
   public static final String _HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE = "_has_children__for_type__in_profile__but_cant_find_type";
   public static final String _HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_ = "_has_no_children__and_no_types_in_profile_";
+  public static final String ALL_OK = "ALL_OK";
 }
