@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
@@ -157,8 +158,6 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  */
 public class ValidationEngine implements IValidatorResourceFetcher {
-
-
 
   public class ScanOutputItem {
     private String ref;
@@ -1064,16 +1063,19 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       for (int i=0; i < files.length; i++) {
         refs.add(files[i].getPath());
       }
-    
     } else {
       File file = new File(name);
-
-      if (!file.exists())
+      if (!file.exists()) {
+        if (System.console() != null) {
+          System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
+        } else {
+          System.out.println(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
+        }
         throw new IOException("File " + name + " does not exist");
-    
+      }
+
       if (file.isFile()) {
         refs.add(name);
-        
       } else {
         isBundle = true;
         for (int i=0; i < file.listFiles().length; i++) {
