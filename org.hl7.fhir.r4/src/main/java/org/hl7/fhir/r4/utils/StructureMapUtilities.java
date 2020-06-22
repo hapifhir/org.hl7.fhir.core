@@ -789,8 +789,7 @@ public class StructureMapUtilities {
       if (e.getCode().startsWith("\""))
         e.setCode(lexer.processConstant(e.getCode()));
 			TargetElementComponent tgt = e.addTarget();
-			if (eq != ConceptMapEquivalence.EQUIVALENT)
-			  tgt.setEquivalence(eq);
+			tgt.setEquivalence(eq);
 			if (tgt.getEquivalence() != ConceptMapEquivalence.UNMATCHED) {
 				lexer.token(":");
 				tgt.setCode(lexer.take());
