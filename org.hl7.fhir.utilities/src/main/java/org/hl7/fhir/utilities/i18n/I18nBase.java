@@ -14,7 +14,7 @@ public abstract class I18nBase {
 
   private Locale locale;
   private ResourceBundle i18nMessages;
-  private boolean warnAboutMissingMessages = false;
+  private boolean warnAboutMissingMessages = true;
 
   public Locale getLocale() {
     if (Objects.nonNull(locale)) {
