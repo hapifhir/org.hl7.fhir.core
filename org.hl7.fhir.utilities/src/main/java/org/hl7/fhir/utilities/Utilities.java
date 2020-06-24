@@ -30,10 +30,10 @@ package org.hl7.fhir.utilities;
  */
 
 
+import org.apache.commons.io.FileUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -42,7 +42,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
@@ -50,316 +49,302 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.io.FileUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-
-import net.sf.saxon.TransformerFactoryImpl;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Utilities {
 
-//	 private static final String TOKEN_REGEX = "^a-z[A-Za-z0-9]*$";
-
   private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
 
   /**
-     * Returns the plural form of the word in the string.
-     * 
-     * Examples:
-     * 
-     * <pre>
-     *   inflector.pluralize(&quot;post&quot;)               #=&gt; &quot;posts&quot;
-     *   inflector.pluralize(&quot;octopus&quot;)            #=&gt; &quot;octopi&quot;
-     *   inflector.pluralize(&quot;sheep&quot;)              #=&gt; &quot;sheep&quot;
-     *   inflector.pluralize(&quot;words&quot;)              #=&gt; &quot;words&quot;
-     *   inflector.pluralize(&quot;the blue mailman&quot;)   #=&gt; &quot;the blue mailmen&quot;
-     *   inflector.pluralize(&quot;CamelOctopus&quot;)       #=&gt; &quot;CamelOctopi&quot;
-     * </pre>
-     * 
-     * 
-     * 
-     * Note that if the {@link Object#toString()} is called on the supplied object, so this method works for non-strings, too.
-     * 
-     * 
-     * @param word the word that is to be pluralized.
-     * @return the pluralized form of the word, or the word itself if it could not be pluralized
-     * @see #singularize(Object)
-     */
-  public static String pluralizeMe( String word ) {
+   * Returns the plural form of the word in the string.
+   * <p>
+   * Examples:
+   *
+   * <pre>
+   *   inflector.pluralize(&quot;post&quot;)               #=&gt; &quot;posts&quot;
+   *   inflector.pluralize(&quot;octopus&quot;)            #=&gt; &quot;octopi&quot;
+   *   inflector.pluralize(&quot;sheep&quot;)              #=&gt; &quot;sheep&quot;
+   *   inflector.pluralize(&quot;words&quot;)              #=&gt; &quot;words&quot;
+   *   inflector.pluralize(&quot;the blue mailman&quot;)   #=&gt; &quot;the blue mailmen&quot;
+   *   inflector.pluralize(&quot;CamelOctopus&quot;)       #=&gt; &quot;CamelOctopi&quot;
+   * </pre>
+   * <p>
+   * <p>
+   * <p>
+   * Note that if the {@link Object#toString()} is called on the supplied object, so this method works for non-strings, too.
+   *
+   * @param word the word that is to be pluralized.
+   * @return the pluralized form of the word, or the word itself if it could not be pluralized
+   * @see #singularize(Object)
+   */
+  public static String pluralizeMe(String word) {
     Inflector inf = new Inflector();
     return inf.pluralize(word);
   }
-  
+
   public static String pluralize(String word, int count) {
     if (count == 1)
       return word;
     Inflector inf = new Inflector();
     return inf.pluralize(word);
   }
-  
-  
-    public static boolean isInteger(String string) {
-      if (isBlank(string)) {
-        return false;
-      }
-      String value = string.startsWith("-") ? string.substring(1) : string;
-      for (char next : value.toCharArray()) {
-        if (!Character.isDigit(next)) {
-          return false;
-        }
-      }
-      // check bounds -2,147,483,648..2,147,483,647
-      if (value.length() > 10)
-        return false;
-      if (string.startsWith("-")) {
-        if (value.length() == 10 && string.compareTo("2147483648") > 0)
-          return false;       
-      } else {
-        if (value.length() == 10 && string.compareTo("2147483647") > 0)
-          return false;
-      }
-      return true;
-    }
-    
-    public static boolean isLong(String string) {
-      if (isBlank(string)) {
-        return false;
-      }
-      String value = string.startsWith("-") ? string.substring(1) : string;
-      for (char next : value.toCharArray()) {
-        if (!Character.isDigit(next)) {
-          return false;
-        }
-      }
-      // check bounds  -9,223,372,036,854,775,808 to +9,223,372,036,854,775,807
-      if (value.length() > 20)
-        return false;
-      if (string.startsWith("-")) {
-        if (value.length() == 20 && string.compareTo("9223372036854775808") > 0)
-          return false;       
-      } else {
-        if (value.length() == 20 && string.compareTo("9223372036854775807") > 0)
-          return false;
-      }
-      return true;
-    }
-    
-    public static boolean isHex(String string) {
-      try {
-        int i = Integer.parseInt(string, 16);
-        return i != i+1;
-      } catch (Exception e) {
-        return false;
-      }
-    }
-    
-    public enum DecimalStatus {
-      BLANK, SYNTAX, RANGE, OK
-    }
-    
-    public static boolean isDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
-      DecimalStatus ds = checkDecimal(value, allowExponent, true);
-      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
-    }
-     
-    public static boolean isDecimal(String value, boolean allowExponent) {
-      DecimalStatus ds = checkDecimal(value, allowExponent, false);
-      return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
-    }
-     
-    public static DecimalStatus checkDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
-      if (isBlank(value)) {
-        return DecimalStatus.BLANK;
-      }
-      
-      // check for leading zeros
-      if (!allowLeadingZero) {
-        if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
-         return DecimalStatus.SYNTAX;
-        if (value.startsWith("-0")  && !"-0".equals(value) && !value.startsWith("-0."))
-          return DecimalStatus.SYNTAX;
-        if (value.startsWith("+0")  && !"+0".equals(value) && !value.startsWith("+0."))
-          return DecimalStatus.SYNTAX;
-      }
 
-      // check for trailing dot
-      if (value.endsWith(".")) {
-        return DecimalStatus.SYNTAX;
-      }
-      
-      boolean havePeriod = false;
-      boolean haveExponent = false;
-      boolean haveSign = false;
-      boolean haveDigits = false;
-      int preDecLength = 0;
-      int postDecLength = 0;
-      int exponentLength = 0;
-      int length = 0;
-      for (char next : value.toCharArray()) {
-        if (next == '.') {
-          if (!haveDigits || havePeriod || haveExponent) 
-            return DecimalStatus.SYNTAX;
-          havePeriod = true;
-          preDecLength = length;
-          length = 0;
-        } else if (next == '-' || next == '+' ) {
-          if (haveDigits || haveSign)
-            return DecimalStatus.SYNTAX;
-          haveSign = true;
-        } else if (next == 'e' || next == 'E' ) {
-          if (!haveDigits || haveExponent || !allowExponent) 
-            return DecimalStatus.SYNTAX;
-          haveExponent = true;
-          haveSign = false;
-          haveDigits = false;
-          if (havePeriod)
-            postDecLength = length;
-          else 
-            preDecLength = length;
-          length = 0;
-        } else if (!Character.isDigit(next)) {
-          return DecimalStatus.SYNTAX;
-        } else {
-          haveDigits = true;
-          length++;
-        }
-      }
-      if (haveExponent && !haveDigits)
-        return DecimalStatus.SYNTAX;
-      if (haveExponent) 
-        exponentLength = length;
-      else if (havePeriod)
-        postDecLength = length;
-      else
-        preDecLength = length;
-      
-      // now, bounds checking - these are arbitrary
-      if (exponentLength > 4)
-        return DecimalStatus.RANGE;
-      if (preDecLength + postDecLength > 18)
-        return DecimalStatus.RANGE;
-      
-      return DecimalStatus.OK;
+
+  public static boolean isInteger(String string) {
+    if (isBlank(string)) {
+      return false;
     }
-    
-	public static String camelCase(String value) {
-	  return new Inflector().camelCase(value.trim().replace(" ", "_"), false);
-	}
-	
-	public static String escapeXml(String doco) {
-		if (doco == null)
-			return "";
-		
-		StringBuilder b = new StringBuilder();
-		for (char c : doco.toCharArray()) {
-		  if (c == '<')
-			  b.append("&lt;");
-		  else if (c == '>')
-			  b.append("&gt;");
-		  else if (c == '&')
-			  b.append("&amp;");
+    String value = string.startsWith("-") ? string.substring(1) : string;
+    for (char next : value.toCharArray()) {
+      if (!Character.isDigit(next)) {
+        return false;
+      }
+    }
+    // check bounds -2,147,483,648..2,147,483,647
+    if (value.length() > 10)
+      return false;
+    if (string.startsWith("-")) {
+      if (value.length() == 10 && string.compareTo("2147483648") > 0)
+        return false;
+    } else {
+      if (value.length() == 10 && string.compareTo("2147483647") > 0)
+        return false;
+    }
+    return true;
+  }
+
+  public static boolean isLong(String string) {
+    if (isBlank(string)) {
+      return false;
+    }
+    String value = string.startsWith("-") ? string.substring(1) : string;
+    for (char next : value.toCharArray()) {
+      if (!Character.isDigit(next)) {
+        return false;
+      }
+    }
+    // check bounds  -9,223,372,036,854,775,808 to +9,223,372,036,854,775,807
+    if (value.length() > 20)
+      return false;
+    if (string.startsWith("-")) {
+      if (value.length() == 20 && string.compareTo("9223372036854775808") > 0)
+        return false;
+    } else {
+      if (value.length() == 20 && string.compareTo("9223372036854775807") > 0)
+        return false;
+    }
+    return true;
+  }
+
+  public static boolean isHex(String string) {
+    try {
+      int i = Integer.parseInt(string, 16);
+      return i != i + 1;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public enum DecimalStatus {
+    BLANK, SYNTAX, RANGE, OK
+  }
+
+  public static boolean isDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
+    DecimalStatus ds = checkDecimal(value, allowExponent, true);
+    return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+  }
+
+  public static boolean isDecimal(String value, boolean allowExponent) {
+    DecimalStatus ds = checkDecimal(value, allowExponent, false);
+    return ds == DecimalStatus.OK || ds == DecimalStatus.RANGE;
+  }
+
+  public static DecimalStatus checkDecimal(String value, boolean allowExponent, boolean allowLeadingZero) {
+    if (isBlank(value)) {
+      return DecimalStatus.BLANK;
+    }
+
+    // check for leading zeros
+    if (!allowLeadingZero) {
+      if (value.startsWith("0") && !"0".equals(value) && !value.startsWith("0."))
+        return DecimalStatus.SYNTAX;
+      if (value.startsWith("-0") && !"-0".equals(value) && !value.startsWith("-0."))
+        return DecimalStatus.SYNTAX;
+      if (value.startsWith("+0") && !"+0".equals(value) && !value.startsWith("+0."))
+        return DecimalStatus.SYNTAX;
+    }
+
+    // check for trailing dot
+    if (value.endsWith(".")) {
+      return DecimalStatus.SYNTAX;
+    }
+
+    boolean havePeriod = false;
+    boolean haveExponent = false;
+    boolean haveSign = false;
+    boolean haveDigits = false;
+    int preDecLength = 0;
+    int postDecLength = 0;
+    int exponentLength = 0;
+    int length = 0;
+    for (char next : value.toCharArray()) {
+      if (next == '.') {
+        if (!haveDigits || havePeriod || haveExponent)
+          return DecimalStatus.SYNTAX;
+        havePeriod = true;
+        preDecLength = length;
+        length = 0;
+      } else if (next == '-' || next == '+') {
+        if (haveDigits || haveSign)
+          return DecimalStatus.SYNTAX;
+        haveSign = true;
+      } else if (next == 'e' || next == 'E') {
+        if (!haveDigits || haveExponent || !allowExponent)
+          return DecimalStatus.SYNTAX;
+        haveExponent = true;
+        haveSign = false;
+        haveDigits = false;
+        if (havePeriod)
+          postDecLength = length;
+        else
+          preDecLength = length;
+        length = 0;
+      } else if (!Character.isDigit(next)) {
+        return DecimalStatus.SYNTAX;
+      } else {
+        haveDigits = true;
+        length++;
+      }
+    }
+    if (haveExponent && !haveDigits)
+      return DecimalStatus.SYNTAX;
+    if (haveExponent)
+      exponentLength = length;
+    else if (havePeriod)
+      postDecLength = length;
+    else
+      preDecLength = length;
+
+    // now, bounds checking - these are arbitrary
+    if (exponentLength > 4)
+      return DecimalStatus.RANGE;
+    if (preDecLength + postDecLength > 18)
+      return DecimalStatus.RANGE;
+
+    return DecimalStatus.OK;
+  }
+
+  public static String camelCase(String value) {
+    return new Inflector().camelCase(value.trim().replace(" ", "_"), false);
+  }
+
+  public static String escapeXml(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
       else if (c == '"')
         b.append("&quot;");
-		  else 
-			  b.append(c);
-		}		
-		return b.toString();
-	}
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
 
-	public static String titleize(String s) {
-	  StringBuilder b = new StringBuilder();
-	  boolean up = true;
-	  for (char c : s.toCharArray()) {
-	    if (up)
-	      b.append(Character.toUpperCase(c));
-	    else
-	      b.append(c);
-	    up = c == ' ';
-	  }
-	  return b.toString();
-	}
-	
-	public static String capitalize(String s)
-	{
-		if( s == null ) return null;
-		if( s.length() == 0 ) return s;
-		if( s.length() == 1 ) return s.toUpperCase();
-		
-		return s.substring(0, 1).toUpperCase() + s.substring(1);
-	}
-	  
-  public static void copyDirectory(String sourceFolder, String destFolder, FileNotifier notifier) throws IOException, FHIRException  {
+  public static String titleize(String s) {
+    StringBuilder b = new StringBuilder();
+    boolean up = true;
+    for (char c : s.toCharArray()) {
+      if (up)
+        b.append(Character.toUpperCase(c));
+      else
+        b.append(c);
+      up = c == ' ';
+    }
+    return b.toString();
+  }
+
+  public static String capitalize(String s) {
+    if (s == null) return null;
+    if (s.length() == 0) return s;
+    if (s.length() == 1) return s.toUpperCase();
+
+    return s.substring(0, 1).toUpperCase() + s.substring(1);
+  }
+
+  public static void copyDirectory(String sourceFolder, String destFolder, FileNotifier notifier) throws IOException, FHIRException {
     CSFile src = new CSFile(sourceFolder);
     if (!src.exists())
-      throw new FHIRException("Folder " +sourceFolder+" not found");
+      throw new FHIRException("Folder " + sourceFolder + " not found");
     createDirectory(destFolder);
-    
-   String[] files = src.list();
-   for (String f : files) {
-     if (new CSFile(sourceFolder+File.separator+f).isDirectory()) {
-       if (!f.startsWith(".")) // ignore .git files...
-         copyDirectory(sourceFolder+File.separator+f, destFolder+File.separator+f, notifier);
-     } else {
-       if (notifier != null)
-         notifier.copyFile(sourceFolder+File.separator+f, destFolder+File.separator+f);
-       copyFile(new CSFile(sourceFolder+File.separator+f), new CSFile(destFolder+File.separator+f));
-     }
-   }
+
+    String[] files = src.list();
+    for (String f : files) {
+      if (new CSFile(sourceFolder + File.separator + f).isDirectory()) {
+        if (!f.startsWith(".")) // ignore .git files...
+          copyDirectory(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
+      } else {
+        if (notifier != null)
+          notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
+        copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+      }
+    }
   }
-	
+
   public static void copyFile(String source, String dest) throws IOException {
     copyFile(new File(source), new File(dest));
   }
 
-	public static void copyFile(File sourceFile, File destFile) throws IOException {
-		if(!destFile.exists()) {
-			if (!new CSFile(destFile.getParent()).exists()) {
-				createDirectory(destFile.getParent());
-			}
-			destFile.createNewFile();
-		}
+  public static void copyFile(File sourceFile, File destFile) throws IOException {
+    if (!destFile.exists()) {
+      if (!new CSFile(destFile.getParent()).exists()) {
+        createDirectory(destFile.getParent());
+      }
+      destFile.createNewFile();
+    }
 
-		FileChannel source = null;
-		FileChannel destination = null;
+    FileChannel source = null;
+    FileChannel destination = null;
 
-		try {
-			source = new FileInputStream(sourceFile).getChannel();
-			destination = new FileOutputStream(destFile).getChannel();
-			destination.transferFrom(source, 0, source.size());
-		}
-		finally {
-			if(source != null) {
-				source.close();
-			}
-			if(destination != null) {
-				destination.close();
-			}
-		}
-	}
+    try {
+      source = new FileInputStream(sourceFile).getChannel();
+      destination = new FileOutputStream(destFile).getChannel();
+      destination.transferFrom(source, 0, source.size());
+    } finally {
+      if (source != null) {
+        source.close();
+      }
+      if (destination != null) {
+        destination.close();
+      }
+    }
+  }
 
   public static boolean checkFolder(String dir, List<String> errors)
-  	throws IOException
-  {
-	  if (!new CSFile(dir).exists()) {
-      errors.add("Unable to find directory "+dir);
+    throws IOException {
+    if (!new CSFile(dir).exists()) {
+      errors.add("Unable to find directory " + dir);
       return false;
     } else {
       return true;
     }
   }
 
-  public static boolean checkFile(String purpose, String dir, String file, List<String> errors) 
-  	throws IOException
-  {
-    if (!new CSFile(dir+file).exists()) {
+  public static boolean checkFile(String purpose, String dir, String file, List<String> errors)
+    throws IOException {
+    if (!new CSFile(dir + file).exists()) {
       if (errors != null)
-    	  errors.add("Unable to find "+purpose+" file "+file+" in "+dir);
+        errors.add("Unable to find " + purpose + " file " + file + " in " + dir);
       return false;
     } else {
       return true;
@@ -401,8 +386,8 @@ public class Utilities {
         if (files != null) {
           for (String f : files) {
             if (!existsInList(f, exemptions)) {
-              File fh = new CSFile(folder+File.separatorChar+f);
-              if (fh.isDirectory()) 
+              File fh = new CSFile(folder + File.separatorChar + f);
+              if (fh.isDirectory())
                 clearDirectory(fh.getAbsolutePath());
               fh.delete();
             }
@@ -412,7 +397,7 @@ public class Utilities {
     }
   }
 
-  public static File createDirectory(String path) throws IOException{
+  public static File createDirectory(String path) throws IOException {
     new CSFile(path).mkdirs();
     return new File(path);
   }
@@ -421,15 +406,14 @@ public class Utilities {
     if (name.lastIndexOf('.') > -1)
       return name.substring(0, name.lastIndexOf('.')) + ext;
     else
-      return name+ext;
+      return name + ext;
   }
-  
-  public static String cleanupTextString( String contents )
-  {
-	  if( contents == null || contents.trim().equals("") )
-		  return null;
-	  else
-		  return contents.trim();
+
+  public static String cleanupTextString(String contents) {
+    if (contents == null || contents.trim().equals(""))
+      return null;
+    else
+      return contents.trim();
   }
 
 
@@ -438,37 +422,33 @@ public class Utilities {
   }
 
 
-
-  
-  public static void bytesToFile(byte[] content, String filename) throws IOException  {
+  public static void bytesToFile(byte[] content, String filename) throws IOException {
     FileOutputStream out = new FileOutputStream(filename);
     out.write(content);
     out.close();
-    
+
   }
 
 
-
   public static String appendSlash(String definitions) {
-	    return definitions.endsWith(File.separator) ? definitions : definitions+File.separator;
-	  }
+    return definitions.endsWith(File.separator) ? definitions : definitions + File.separator;
+  }
 
   public static String appendForwardSlash(String definitions) {
-	    return definitions.endsWith("/") ? definitions : definitions+"/";
-	  }
+    return definitions.endsWith("/") ? definitions : definitions + "/";
+  }
 
 
   public static String fileTitle(String file) {
     if (file == null)
       return null;
     String s = new File(file).getName();
-    return s.indexOf(".") == -1? s : s.substring(0, s.indexOf("."));
+    return s.indexOf(".") == -1 ? s : s.substring(0, s.indexOf("."));
   }
 
 
-  public static String systemEol()
-  {
-	  return System.getProperty("line.separator");
+  public static String systemEol() {
+    return System.getProperty("line.separator");
   }
 
   public static String normaliseEolns(String value) {
@@ -476,10 +456,10 @@ public class Utilities {
   }
 
 
-  public static String unescapeXml(String xml) throws FHIRException  {
+  public static String unescapeXml(String xml) throws FHIRException {
     if (xml == null)
       return null;
-    
+
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < xml.length()) {
@@ -490,29 +470,29 @@ public class Utilities {
           e.append(xml.charAt(i));
           i++;
         }
-        if (e.toString().equals("lt")) 
+        if (e.toString().equals("lt"))
           b.append("<");
-        else if (e.toString().equals("gt")) 
+        else if (e.toString().equals("gt"))
           b.append(">");
-        else if (e.toString().equals("amp")) 
+        else if (e.toString().equals("amp"))
           b.append("&");
-        else if (e.toString().equals("quot")) 
+        else if (e.toString().equals("quot"))
           b.append("\"");
         else if (e.toString().equals("mu"))
-          b.append((char)956);          
+          b.append((char) 956);
         else
-          throw new FHIRException("unknown XML entity \""+e.toString()+"\"");
-      }  else
+          throw new FHIRException("unknown XML entity \"" + e.toString() + "\"");
+      } else
         b.append(xml.charAt(i));
       i++;
-    }   
+    }
     return b.toString();
   }
 
-  public static String unescapeJson(String json) throws FHIRException  {
+  public static String unescapeJson(String json) throws FHIRException {
     if (json == null)
       return null;
-    
+
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < json.length()) {
@@ -520,49 +500,49 @@ public class Utilities {
         i++;
         char ch = json.charAt(i);
         switch (ch) {
-        case '"':
-          b.append('b');
-          break;
-        case '\\':
-          b.append('\\');
-          break;
-        case '/':
-          b.append('/');
-          break;
-        case 'b':
-          b.append('\b');
-          break;
-        case 'f':
-          b.append('\f');
-          break;
-        case 'n':
-          b.append('\n');
-          break;
-        case 'r':
-          b.append('\r');
-          break;
-        case 't':
-          b.append('\t');
-          break;
-        case 'u':
-          String hex = json.substring(i+1, i+5);
-          b.append((char) Integer.parseInt(hex, 16));
-          break;
-        default:
-          throw new FHIRException("Unknown JSON escape \\"+ch);
+          case '"':
+            b.append('b');
+            break;
+          case '\\':
+            b.append('\\');
+            break;
+          case '/':
+            b.append('/');
+            break;
+          case 'b':
+            b.append('\b');
+            break;
+          case 'f':
+            b.append('\f');
+            break;
+          case 'n':
+            b.append('\n');
+            break;
+          case 'r':
+            b.append('\r');
+            break;
+          case 't':
+            b.append('\t');
+            break;
+          case 'u':
+            String hex = json.substring(i + 1, i + 5);
+            b.append((char) Integer.parseInt(hex, 16));
+            break;
+          default:
+            throw new FHIRException("Unknown JSON escape \\" + ch);
         }
-      }  else
+      } else
         b.append(json.charAt(i));
       i++;
-    }   
+    }
     return b.toString();
   }
 
 
   public static boolean isPlural(String word) {
     word = word.toLowerCase();
-    if ("restricts".equals(word) || "contains".equals(word) || "data".equals(word) || "specimen".equals(word) || "replaces".equals(word) || "addresses".equals(word) 
-        || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word))
+    if ("restricts".equals(word) || "contains".equals(word) || "data".equals(word) || "specimen".equals(word) || "replaces".equals(word) || "addresses".equals(word)
+      || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word))
       return false;
     Inflector inf = new Inflector();
     return !inf.singularize(word).equals(word);
@@ -591,7 +571,7 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean d = false;
     boolean first = true;
-    for(String arg: args) {
+    for (String arg : args) {
       if (first && arg == null)
         continue;
       first = false;
@@ -609,7 +589,7 @@ public class Utilities {
           }
         } else if ("[user]".equals(a)) {
           a = System.getProperty("user.home");
-        } else if (a.startsWith("[") && a.endsWith("]")){
+        } else if (a.startsWith("[") && a.endsWith("]")) {
           String ev = System.getenv(a.replace("[", "").replace("]", ""));
           if (ev != null) {
             a = ev;
@@ -622,23 +602,23 @@ public class Utilities {
       a = a.replace("/", File.separator);
       if (s.length() > 0 && a.startsWith(File.separator))
         a = a.substring(File.separator.length());
-      
-      while (a.startsWith(".."+File.separator)) {
+
+      while (a.startsWith(".." + File.separator)) {
         if (s.length() == 0) {
           s = new StringBuilder(Paths.get(".").toAbsolutePath().normalize().toString());
         } else {
-          String p = s.toString().substring(0, s.length()-1);
+          String p = s.toString().substring(0, s.length() - 1);
           if (!p.contains(File.separator)) {
             s = new StringBuilder();
           } else {
-            s = new StringBuilder(p.substring(0,  p.lastIndexOf(File.separator))+File.separator);
+            s = new StringBuilder(p.substring(0, p.lastIndexOf(File.separator)) + File.separator);
           }
         }
         a = a.substring(3);
       }
       if ("..".equals(a)) {
-        int i = s.substring(0, s.length()-1).lastIndexOf(File.separator);
-        s = new StringBuilder(s.substring(0, i+1));
+        int i = s.substring(0, s.length() - 1).lastIndexOf(File.separator);
+        s = new StringBuilder(s.substring(0, i + 1));
       } else
         s.append(a);
     }
@@ -656,7 +636,7 @@ public class Utilities {
   public static String pathURL(String... args) {
     StringBuilder s = new StringBuilder();
     boolean d = false;
-    for(String arg: args) {
+    for (String arg : args) {
       if (!d)
         d = !noString(arg);
       else if (!s.toString().endsWith("/") && !arg.startsWith("/"))
@@ -665,7 +645,6 @@ public class Utilities {
     }
     return s.toString();
   }
-
 
 
 //  public static void checkCase(String filename) {
@@ -684,7 +663,7 @@ public class Utilities {
       if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' || c == '_')
         s.append(c);
       else if (c != ' ')
-        s.append("."+Integer.toString(c));
+        s.append("." + Integer.toString(c));
     }
     return s.toString();
   }
@@ -695,7 +674,7 @@ public class Utilities {
       return false;
     boolean result = isAlphabetic(tail.charAt(0));
     for (int i = 1; i < tail.length(); i++) {
-    	result = result && (isAlphabetic(tail.charAt(i)) || isDigit(tail.charAt(i)) || (tail.charAt(i) == '_')  || (tail.charAt(i) == '[') || (tail.charAt(i) == ']'));
+      result = result && (isAlphabetic(tail.charAt(i)) || isDigit(tail.charAt(i)) || (tail.charAt(i) == '_') || (tail.charAt(i) == '[') || (tail.charAt(i) == ']'));
     }
     return result;
   }
@@ -722,7 +701,7 @@ public class Utilities {
     s = s.trim();
     if (s.endsWith(".") || s.endsWith("?"))
       return s;
-    return s+".";
+    return s + ".";
   }
 
 
@@ -730,20 +709,20 @@ public class Utilities {
     if (Utilities.noString(s))
       return s;
     if (s.endsWith("."))
-      return s.substring(0, s.length()-1);
+      return s.substring(0, s.length() - 1);
     return s;
   }
 
 
-	public static String stripBOM(String string) {
-	  return string.replace("\uFEFF", "");
+  public static String stripBOM(String string) {
+    return string.replace("\uFEFF", "");
   }
 
 
   public static String oidTail(String id) {
     if (id == null || !id.contains("."))
       return id;
-    return id.substring(id.lastIndexOf(".")+1);
+    return id.substring(id.lastIndexOf(".") + 1);
   }
 
 
@@ -756,7 +735,7 @@ public class Utilities {
   public static String escapeJava(String doco) {
     if (doco == null)
       return "";
-    
+
     StringBuilder b = new StringBuilder();
     for (char c : doco.toCharArray()) {
       if (c == '\r')
@@ -767,9 +746,9 @@ public class Utilities {
         b.append("\\\"");
       else if (c == '\\')
         b.append("\\\\");
-      else 
+      else
         b.append(c);
-    }   
+    }
     return b.toString();
   }
 
@@ -785,32 +764,31 @@ public class Utilities {
       b.append(Character.toLowerCase(name.charAt(i)));
     }
     parts.add(b.toString());
-    return parts.toArray(new String[] {} );
+    return parts.toArray(new String[]{});
   }
 
 
   public static String encodeUri(String v) {
     return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D");
   }
-  
 
 
-	public static String normalize(String s) {
-		if (noString(s))
-			return null;
-	  StringBuilder b = new StringBuilder();
-	  boolean isWhitespace = false;
-	  for (int i = 0; i < s.length(); i++) {
-	  	char c = s.charAt(i);
-	  	if (!Character.isWhitespace(c)) { 
-	  		b.append(Character.toLowerCase(c));
-	  		isWhitespace = false;
-	  	} else if (!isWhitespace) {
-	  		b.append(' ');
-	  		isWhitespace = true;	  		
-	  	} 
-	  }
-	  return b.toString().trim();
+  public static String normalize(String s) {
+    if (noString(s))
+      return null;
+    StringBuilder b = new StringBuilder();
+    boolean isWhitespace = false;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (!Character.isWhitespace(c)) {
+        b.append(Character.toLowerCase(c));
+        isWhitespace = false;
+      } else if (!isWhitespace) {
+        b.append(' ');
+        isWhitespace = true;
+      }
+    }
+    return b.toString().trim();
   }
 
   public static String normalizeSameCase(String s) {
@@ -820,29 +798,29 @@ public class Utilities {
     boolean isWhitespace = false;
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
-      if (!Character.isWhitespace(c)) { 
+      if (!Character.isWhitespace(c)) {
         b.append(c);
         isWhitespace = false;
       } else if (!isWhitespace) {
         b.append(' ');
-        isWhitespace = true;        
-      } 
+        isWhitespace = true;
+      }
     }
     return b.toString().trim();
   }
 
 
   public static void copyFileToDirectory(File source, File destDir) throws IOException {
-  	copyFile(source, new File(path(destDir.getAbsolutePath(), source.getName())));
+    copyFile(source, new File(path(destDir.getAbsolutePath(), source.getName())));
   }
 
 
-	public static boolean isWhitespace(String s) {
-	  boolean ok = true;
-	  for (int i = 0; i < s.length(); i++)
-	  	ok = ok && Character.isWhitespace(s.charAt(i));
-	  return ok;
-	  
+  public static boolean isWhitespace(String s) {
+    boolean ok = true;
+    for (int i = 0; i < s.length(); i++)
+      ok = ok && Character.isWhitespace(s.charAt(i));
+    return ok;
+
   }
 
 
@@ -858,7 +836,7 @@ public class Utilities {
   public static boolean charInSet(char value, char... array) {
     for (int i : array)
       if (value == i)
-          return true;
+        return true;
     return false;
   }
 
@@ -872,30 +850,30 @@ public class Utilities {
       return false;
     for (String s : array)
       if (value.equals(s))
-          return true;
+        return true;
     return false;
   }
-  
+
   public static boolean existsInList(String value, String... array) {
     if (value == null)
       return false;
     for (String s : array)
       if (value.equals(s))
-          return true;
+        return true;
     return false;
   }
 
   public static boolean existsInList(int value, int... array) {
     for (int i : array)
       if (value == i)
-          return true;
+        return true;
     return false;
   }
 
   public static boolean existsInListNC(String value, String... array) {
     for (String s : array)
       if (value.equalsIgnoreCase(s))
-          return true;
+        return true;
     return false;
   }
 
@@ -920,15 +898,15 @@ public class Utilities {
   }
 
   public static File createTempFile(String prefix, String suffix) throws IOException {
- // this allows use to eaily identify all our dtemp files and delete them, since delete on Exit doesn't really work.
-    File file = File.createTempFile("ohfu-"+prefix, suffix);  
+    // this allows use to eaily identify all our dtemp files and delete them, since delete on Exit doesn't really work.
+    File file = File.createTempFile("ohfu-" + prefix, suffix);
     file.deleteOnExit();
     return file;
   }
 
 
-	public static boolean isAsciiChar(char ch) {
-		return ch >= ' ' && ch <= '~'; 
+  public static boolean isAsciiChar(char ch) {
+    return ch >= ' ' && ch <= '~';
   }
 
 
@@ -937,19 +915,19 @@ public class Utilities {
   }
 
   public static String makeUuidUrn() {
-    return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
+    return "urn:uuid:" + UUID.randomUUID().toString().toLowerCase();
   }
 
   public static boolean isURL(String s) {
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
- }
+  }
 
 
   public static String escapeJson(String value) {
     if (value == null)
       return "";
-    
+
     StringBuilder b = new StringBuilder();
     for (char c : value.toCharArray()) {
       if (c == '\r')
@@ -963,10 +941,10 @@ public class Utilities {
       else if (c == '\\')
         b.append("\\\\");
       else if (((int) c) < 32)
-        b.append("\\u"+Utilities.padLeft(String.valueOf((int) c), '0', 4));  
+        b.append("\\u" + Utilities.padLeft(String.valueOf((int) c), '0', 4));
       else
         b.append(c);
-    }   
+    }
     return b.toString();
   }
 
@@ -977,9 +955,9 @@ public class Utilities {
       if (Character.isLetter(c)) {
         if (lastBreak)
           b.append(Character.toUpperCase(c));
-        else { 
+        else {
           if (Character.isUpperCase(c))
-            b.append(" ");          
+            b.append(" ");
           b.append(c);
         }
         lastBreak = false;
@@ -990,29 +968,27 @@ public class Utilities {
     }
     if (b.length() == 0)
       return code;
-    else 
+    else
       return b.toString();
   }
 
 
   public static String uncapitalize(String s) {
-    if( s == null ) return null;
-    if( s.length() == 0 ) return s;
-    if( s.length() == 1 ) return s.toLowerCase();
-    
+    if (s == null) return null;
+    if (s.length() == 0) return s;
+    if (s.length() == 1) return s.toLowerCase();
+
     return s.substring(0, 1).toLowerCase() + s.substring(1);
   }
 
 
   public static int charCount(String s, char c) {
-	  int res = 0;
-	  for (char ch : s.toCharArray())
-		if (ch == c)
-		  res++;
-	  return res;
+    int res = 0;
+    for (char ch : s.toCharArray())
+      if (ch == c)
+        res++;
+    return res;
   }
-
-
 
 
   public static boolean isOid(String cc) {
@@ -1033,13 +1009,13 @@ public class Utilities {
     File src = new File(folder);
     String[] files = src.list();
     for (String f : files) {
-      if (new File(folder+File.separator+f).isDirectory()) {
-        deleteAllFiles(folder+File.separator+f, type);
+      if (new File(folder + File.separator + f).isDirectory()) {
+        deleteAllFiles(folder + File.separator + f, type);
       } else if (f.endsWith(type)) {
-        new File(folder+File.separator+f).delete();
+        new File(folder + File.separator + f).delete();
       }
     }
-    
+
   }
 
   public static boolean compareIgnoreWhitespace(File f1, File f2) throws IOException {
@@ -1062,7 +1038,7 @@ public class Utilities {
           while (isWhitespace(foundByte))
             foundByte = in2.read();
         }
-        if (expectedByte != foundByte) 
+        if (expectedByte != foundByte)
           return false;
         expectedByte = in1.read();
       }
@@ -1074,16 +1050,18 @@ public class Utilities {
       if (in1 != null) {
         try {
           in1.close();
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
       }
       if (in2 != null) {
         try {
           in2.close();
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
       }
     }
   }
-  
+
   private static boolean isWhitespace(int b) {
     return b == 9 || b == 10 || b == 13 || b == 32;
   }
@@ -1095,7 +1073,7 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:")) ;
+    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:"));
   }
 
 
@@ -1120,7 +1098,7 @@ public class Utilities {
 
 
   public static String getFileExtension(String fn) {
-    return fn.contains(".") ? fn.substring(fn.lastIndexOf(".")+1) : "";
+    return fn.contains(".") ? fn.substring(fn.lastIndexOf(".") + 1) : "";
   }
 
 
@@ -1132,9 +1110,9 @@ public class Utilities {
         if (!first)
           b.append(" ");
         b.append(Character.toLowerCase(c));
-      } else 
+      } else
         b.append(c);
-      first = false;        
+      first = false;
     }
     return b.toString();
   }
@@ -1162,7 +1140,7 @@ public class Utilities {
       if (i == 0)
         break;
       list.add(line.substring(0, i));
-      line = line.substring(i+1);
+      line = line.substring(i + 1);
     }
     list.add(line);
     StringBuilder b = new StringBuilder();
@@ -1171,7 +1149,7 @@ public class Utilities {
       if (first)
         first = false;
       else
-        b.append("\r\n"+padLeft("", ' ', indent));
+        b.append("\r\n" + padLeft("", ' ', indent));
       b.append(s);
     }
     return b.toString();
@@ -1180,9 +1158,9 @@ public class Utilities {
 
   public static int countFilesInDirectory(String dirName) {
     File dir = new File(dirName);
-	 if (dir.exists() == false) {
+    if (dir.exists() == false) {
       return 0;
-	 }
+    }
     int i = 0;
     for (File f : dir.listFiles())
       if (!f.isDirectory())
@@ -1212,24 +1190,24 @@ public class Utilities {
   public static void visitFiles(String folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
     visitFiles(new File(folder), extension, visitor);
   }
-  
+
   public static void visitFiles(File folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
     for (File file : folder.listFiles()) {
-      if (file.isDirectory()) 
+      if (file.isDirectory())
         visitFiles(file, extension, visitor);
-      else if (extension == null || file.getName().endsWith(extension)) 
+      else if (extension == null || file.getName().endsWith(extension))
         visitor.visitFile(file);
-    }    
+    }
   }
 
   public static String extractBaseUrl(String url) {
-	if (url == null)
-		return null;
-	else if (url.contains("/"))
-      return url.substring(0,  url.lastIndexOf("/"));
+    if (url == null)
+      return null;
+    else if (url.contains("/"))
+      return url.substring(0, url.lastIndexOf("/"));
     else
       return url;
-	}
+  }
 
   public static String listCanonicalUrls(Set<String> keys) {
     return keys.toString();
@@ -1253,12 +1231,12 @@ public class Utilities {
     for (String s : target)
       if (!source.contains(s))
         extra.add(s);
-    
+
   }
 
   /**
    * Only handles simple FHIRPath expressions of the type produced by the validator
-   * 
+   *
    * @param path
    * @return
    */
@@ -1269,16 +1247,16 @@ public class Utilities {
     while (i < p.length) {
       String s = p[i];
       if (s.contains("[")) {
-        String si = s.substring(s.indexOf("[")+1, s.length()-1);
+        String si = s.substring(s.indexOf("[") + 1, s.length() - 1);
         if (!Utilities.isInteger(si))
-          throw new FHIRException("The FHIRPath expression '"+path+"' is not valid");
-        s = s.substring(0, s.indexOf("["))+"["+Integer.toString(Integer.parseInt(si)+1)+"]";
+          throw new FHIRException("The FHIRPath expression '" + path + "' is not valid");
+        s = s.substring(0, s.indexOf("[")) + "[" + Integer.toString(Integer.parseInt(si) + 1) + "]";
       }
-      if (i < p.length - 1 && p[i+1].startsWith(".ofType(")) {
+      if (i < p.length - 1 && p[i + 1].startsWith(".ofType(")) {
         i++;
-        s = s + capitalize(p[i].substring(8, p.length-1));
+        s = s + capitalize(p[i].substring(8, p.length - 1));
       }
-      b.append(s); 
+      b.append(s);
       i++;
     }
     return b.toString();
@@ -1291,7 +1269,7 @@ public class Utilities {
       return String.format("%s hours", d.toHours());
     } else if (d.toMinutes() > 2) {
       return String.format("%s mins", d.toMinutes());
-    } else { 
+    } else {
       return String.format("%s ms", d.toMillis());
     }
   }
@@ -1307,7 +1285,6 @@ public class Utilities {
     }
     return false;
   }
-
 
 
 }
