@@ -14,6 +14,7 @@ public abstract class I18nBase {
 
   private Locale locale;
   private ResourceBundle i18nMessages;
+  private boolean warnAboutMissingMessages = false;
 
   public Locale getLocale() {
     if (Objects.nonNull(locale)) {
@@ -47,8 +48,10 @@ public abstract class I18nBase {
   private boolean messageExistsForLocale(String message) {
     checkResourceBundleIsLoaded();
     if (!i18nMessages.containsKey(message)) {
-      System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
-        " the local " + getLocale());
+      if (warnAboutMissingMessages ) {
+        System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
+            " the local " + getLocale());
+      }
     }
     return i18nMessages.containsKey(message);
   }
@@ -78,4 +81,14 @@ public abstract class I18nBase {
   public void setValidationMessageLanguage(Locale locale) {
     i18nMessages = ResourceBundle.getBundle("Messages", locale);
   }
+
+  public boolean isWarnAboutMissingMessages() {
+    return warnAboutMissingMessages;
+  }
+
+  public void setWarnAboutMissingMessages(boolean warnAboutMissingMessages) {
+    this.warnAboutMissingMessages = warnAboutMissingMessages;
+  }
+  
+  
 }
