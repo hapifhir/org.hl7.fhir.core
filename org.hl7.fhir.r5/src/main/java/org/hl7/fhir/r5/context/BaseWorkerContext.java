@@ -1393,12 +1393,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   protected String tail(String url) {
-  if (Utilities.noString(url)) {
-    return "noname";
+    if (Utilities.noString(url)) {
+      return "noname";
+    }
+    if (url.contains("/")) {
+      return url.substring(url.lastIndexOf("/")+1);
+    }
+    return url;
   }
-  if (url.contains("/")) {
-    return url.substring(url.lastIndexOf("/")+1);
+  
+  public int getClientRetryCount() {
+    return txClient == null ? 0 : txClient.getRetryCount();
   }
-  return url;
-}
+  
+  public IWorkerContext setClientRetryCount(int value) {
+    if (txClient != null) {
+      txClient.setRetryCount(value);
+    }
+    return this;
+  }
+
 }

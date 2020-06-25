@@ -136,8 +136,19 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     if (i.hasEnableWhen()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
-      defn.getPieces().add(gen.new Piece(null, "Enable When: ", null));
-      defn.getPieces().add(gen.new Piece(null, "todo", null));      
+      Piece p = gen.new Piece(null, "Enable When: ", null);
+      defn.getPieces().add(p);
+      if (i.getEnableWhen().size() == 0) {
+        XhtmlNode x = new XhtmlNode(NodeType.Element, "span");
+        p.getChildren().add(x);
+        renderEnableWhen(x, i.getEnableWhenFirstRep());        
+      } else {
+        XhtmlNode x = new XhtmlNode(NodeType.Element, "ul");
+        p.getChildren().add(x);
+        for (QuestionnaireItemEnableWhenComponent qi : i.getEnableWhen()) {
+          renderEnableWhen(x.li(), qi);
+        }
+      }
     }
     if (i.hasAnswerValueSet()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
@@ -242,7 +253,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         hasExt = renderLogicItem(gen, model.getRows(), q, i) || hasExt;
       }
     }
-    XhtmlNode xn = gen.generate(model, context.getDestDir(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
     x.getChildNodes().add(xn);
     return hasExt;  
   }
