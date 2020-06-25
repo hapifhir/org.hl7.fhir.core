@@ -109,4 +109,18 @@ public class ChildIterator {
         }
         return basePath + "." + n + sfx + fn;
     }
+
+    public String type() {
+      if (element().getProperty().isChoice()) {
+        String en = element().getProperty().getName();
+        en = en.substring(0, en.length() - 3);
+        String t = name().substring(en.length());
+        if (instanceValidator.isPrimitiveType(Utilities.uncapitalize(t))) {
+          t = Utilities.uncapitalize(t);
+        }
+        return t;
+      } else {
+        return element().getProperty().getType();
+      }
+    }
 }

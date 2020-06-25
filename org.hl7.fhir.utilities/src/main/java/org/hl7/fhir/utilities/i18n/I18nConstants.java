@@ -484,6 +484,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
+  public static final String VALIDATION_VAL_PROFILE_TYPECONSTRAINEDOUT = "Validation_VAL_Profile_TypeConstrainedOut";
   public static final String VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_ = "Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_";
   public static final String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
   public static final String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";

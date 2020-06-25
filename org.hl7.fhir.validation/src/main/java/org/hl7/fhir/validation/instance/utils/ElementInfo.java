@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ElementInfo {
 
+  private final String type;
   public List<ValidationMessage> sliceInfo;
   public int index; // order of definition in overall order. all slices get the index of the slicing definition
   public int sliceindex; // order of the definition in the slices (if slice != null)
@@ -19,11 +20,12 @@ public class ElementInfo {
   private String name;
   private String path;
 
-  public ElementInfo(String name, Element element, String path, int count) {
+  public ElementInfo(String name, Element element, String path, int count, String type) {
     this.name = name;
     this.element = element;
     this.path = path;
     this.count = count;
+    this.type = type;
   }
 
     public List<ValidationMessage> getSliceInfo() {
@@ -105,6 +107,10 @@ public class ElementInfo {
     public ElementInfo setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public String getType() {
+      return type;
     }
 
     public String getPath() {

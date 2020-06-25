@@ -1438,13 +1438,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_N, url);
 
-      // check the type of the extension:
-      Set<String> allowedTypes = listExtensionTypes(ex);
-      String actualType = getExtensionType(element);
-      if (actualType == null)
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE, url);
-      else
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType);
+      //
+      // The check below is redundant given the check for VALIDATION_VAL_PROFILE_TYPECONSTRAINEDOUT
+      //
+      //      // check the type of the extension:
+      //      Set<String> allowedTypes = listExtensionTypes(ex);
+      //      String actualType = getExtensionType(element);
+      //      if (actualType == null)
+      //        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE, url);
+      //      else
+//        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType);
 
       // 3. is the content of the extension valid?
       validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true, url);
@@ -4000,6 +4003,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
     List<ElementDefinition> childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
+
     // 3. report any definitions that have a cardinality problem
     for (ElementDefinition ed : childDefinitions) {
       if (ed.getRepresentation().isEmpty()) { // ignore xml attributes
@@ -4007,10 +4011,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         List<ElementDefinition> slices = null;
         if (ed.hasSlicing())
           slices = profileUtilities.getSliceList(profile, ed);
+
+        String location = "Profile " + profile.getUrl() + ", Element '" + stack.getLiteralPath() + "." + tail(ed.getPath()) + (ed.hasSliceName() ? "[" + ed.getSliceName() + (ed.hasLabel() ? " (" + ed.getLabel() + ")" : "") + "]" : "") + "'";
         for (ElementInfo ei : children)
-          if (ei.definition == ed)
+          if (ei.definition == ed) {
             count++;
-          else if (slices != null) {
+
+            /*
+             * If the field is of type choice[x] but the profile has constrained out some of the
+             * type choices, make sure we're not using one of those types
+             */
+            if (ei.definition.getPath().endsWith("[x]")) {
+              if (ei.definition.getType().stream().noneMatch(t-> t.getCode().equals(ei.getType()))) {
+                rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_TYPECONSTRAINEDOUT, location, ei.getType());
+              }
+            }
+
+          } else if (slices != null) {
             for (ElementDefinition sed : slices) {
               if (ei.definition == sed) {
                 count++;
@@ -4018,7 +4035,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
-        String location = "Profile " + profile.getUrl() + ", Element '" + stack.getLiteralPath() + "." + tail(ed.getPath()) + (ed.hasSliceName() ? "[" + ed.getSliceName() + (ed.hasLabel() ? " (" + ed.getLabel() + ")" : "") + "]" : "") + "'";
         if (ed.getMin() > 0) {
           if (problematicPaths.contains(ed.getPath()))
             hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, location, Integer.toString(ed.getMin()));
@@ -4033,6 +4049,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+
   }
 
   public List<String> assignChildren(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, Element resource,
@@ -4137,7 +4154,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<ElementInfo> children = new ArrayList<ElementInfo>();
     ChildIterator iter = new ChildIterator(this, stack.getLiteralPath(), element);
     while (iter.next())
-      children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count()));
+      children.add(new ElementInfo(iter.name(), iter.element(), iter.path(), iter.count(), iter.type()));
     return children;
   }
 
