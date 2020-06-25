@@ -92,6 +92,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private static JsonObject manifest;
   private JsonObject content;
   private String version;
+  private String name;
 
   private static final String DEF_TX = "http://tx.fhir.org";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
@@ -102,6 +103,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   public void test(String name, JsonObject content) throws Exception {
     long setup = System.nanoTime();
     this.content = content;
+    this.name = name;
     System.out.println("---- " + name + " ----------------------------------------------------------------");
     System.out.println("** Core: ");
     String txLog = null;
@@ -338,11 +340,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assertions.assertEquals(java.get("errorCount").getAsInt(), ec, "Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".");
+      Assertions.assertEquals(java.get("errorCount").getAsInt(), ec, "Test "+name+": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".");
       if (java.has("warningCount"))
-        Assertions.assertEquals(java.get("warningCount").getAsInt(), wc, "Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".");
+        Assertions.assertEquals(java.get("warningCount").getAsInt(), wc, "Test "+name+": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".");
       if (java.has("infoCount"))
-        Assertions.assertEquals(java.get("infoCount").getAsInt(), hc, "Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".");
+        Assertions.assertEquals(java.get("infoCount").getAsInt(), hc, "Test "+name+": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".");
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");
