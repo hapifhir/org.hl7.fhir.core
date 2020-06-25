@@ -502,4 +502,8 @@ public class I18nConstants {
   public static final String _HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE = "_has_children__for_type__in_profile__but_cant_find_type";
   public static final String _HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_ = "_has_no_children__and_no_types_in_profile_";
   public static final String ALL_OK = "ALL_OK";
+  public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
+  public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
+  public static final String SEARCHPARAMETER_TYPE_WRONG = "SEARCHPARAMETER_TYPE_WRONG";
+  public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
 }

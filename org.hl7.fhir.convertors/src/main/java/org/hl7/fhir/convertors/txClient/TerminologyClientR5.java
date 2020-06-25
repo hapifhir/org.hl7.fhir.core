@@ -105,4 +105,9 @@ public class TerminologyClientR5 implements TerminologyClient {
     return this;
   }
 
+  @Override
+  public int getRetryCount() throws FHIRException {
+    return client.getRetryCount();
+  }
+
 }

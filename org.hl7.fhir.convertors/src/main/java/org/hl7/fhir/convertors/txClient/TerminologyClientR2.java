@@ -111,6 +111,11 @@ public class TerminologyClientR2 implements TerminologyClient {
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
     return (Parameters) VersionConvertor_10_50.convertResource(client.lookupCode(params));
   }
+
+  @Override
+  public int getRetryCount() throws FHIRException {
+    return client.getRetryCount();
+  }
   
   
 }

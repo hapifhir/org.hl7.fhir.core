@@ -634,5 +634,6 @@ public interface IWorkerContext {
 
   public boolean hasPackage(String id, String ver);
 
-
+  public int getClientRetryCount();
+  public IWorkerContext setClientRetryCount(int value);
 }
