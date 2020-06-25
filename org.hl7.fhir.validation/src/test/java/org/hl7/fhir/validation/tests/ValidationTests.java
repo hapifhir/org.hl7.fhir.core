@@ -142,6 +142,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     String testCaseContent = TestingUtilities.loadTestResource("validator", name);
 
     InstanceValidator val = vCurr.getValidator();
+    val.getContext().setClientRetryCount(4);
     val.setDebug(false);
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());

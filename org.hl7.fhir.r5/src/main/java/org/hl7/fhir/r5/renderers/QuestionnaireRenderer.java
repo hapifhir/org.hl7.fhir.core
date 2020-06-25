@@ -253,7 +253,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         hasExt = renderLogicItem(gen, model.getRows(), q, i) || hasExt;
       }
     }
-    XhtmlNode xn = gen.generate(model, context.getDestDir(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
     x.getChildNodes().add(xn);
     return hasExt;  
   }
