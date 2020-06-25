@@ -140,6 +140,8 @@ import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
+import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
+import org.hl7.fhir.validation.instance.type.ValueSetValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -3464,6 +3466,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
       new CodeSystemValidator(context, timeTracker).validateCodeSystem(errors, element, stack);
+    } else if (element.getType().equals("SearchParameter")) {
+      new SearchParameterValidator(context, timeTracker).validateSearchParameter(errors, element, stack);
+    } else if (element.getType().equals("ValueSet")) {
+      new ValueSetValidator(context, timeTracker).validateValueSet(errors, element, stack);
     }
   }
 

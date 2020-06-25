@@ -468,6 +468,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     } else {
       source = loadFromPackageServer(id, version);
     }
+    if (source == null) {
+      throw new FHIRException("Unable to find package "+id+"#"+version);
+    }
     return addPackageToCache(id, version == null ? source.version : version, source.stream, source.url);
   }
 

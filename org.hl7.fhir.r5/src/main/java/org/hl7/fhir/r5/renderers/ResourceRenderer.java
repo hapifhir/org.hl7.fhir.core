@@ -122,6 +122,10 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
   public void renderReference(ResourceWrapper rw, XhtmlNode x, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+    if (r == null) {
+      x.tx("null!");
+      return;
+    }
     XhtmlNode c = null;
     ResourceWithReference tr = null;
     if (r.hasReferenceElement() && allowLinks) {
@@ -132,6 +136,8 @@ public abstract class ResourceRenderer extends DataRenderer {
           c = x.ah(tr.getReference());
         else
           c = x.ah(r.getReference());
+      } else {
+        c = x.ah(r.getReference());
       }
     } else {
       c = x.span(null, null);
