@@ -459,9 +459,10 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
+  protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.WARNING, null);
+      String message = context.formatMessage(msg, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, null);
     }
     return thePass;
   }
@@ -473,7 +474,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
       addValidationMessage(errors, type, path, msg, html, IssueSeverity.WARNING, null);
     }
@@ -487,7 +488,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
+  protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, path, nmsg, html, IssueSeverity.WARNING, msg);
