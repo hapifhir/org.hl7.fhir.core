@@ -3975,7 +3975,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
-            if (!inv.hasSource() || inv.getSource().equals(profile.getUrl()) || allInvariants) {
+            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
               if (!c.getPieces().isEmpty()) 
                 c.addPiece(gen.new Piece("br"));
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
