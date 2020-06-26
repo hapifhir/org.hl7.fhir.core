@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -29,12 +30,14 @@ public class ComparisonSession {
   private int count;
   private boolean debug;
   private String title;
+  private ProfileKnowledgeProvider pkp;
   
-  public ComparisonSession(IWorkerContext context, String title) {
+  public ComparisonSession(IWorkerContext context, String title, ProfileKnowledgeProvider pkp) {
     super();
     this.context = context;
     this.sessiondId = UUID.randomUUID().toString().toLowerCase();
     this.title = title;
+    this.pkp = pkp;
 //    debug = true;
   }
   
@@ -77,7 +80,7 @@ public class ComparisonSession {
       compares.put(key, csc);
       return csc;
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
-      ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(context, null, null));
+      ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(context, null, pkp));
       ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
       compares.put(key, csc);
       return csc;
@@ -110,5 +113,9 @@ public class ComparisonSession {
 
   public Map<String, ResourceComparison> getCompares() {
     return compares;
+  }
+
+  public ProfileKnowledgeProvider getPkp() {
+    return pkp;
   }
 }
