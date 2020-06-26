@@ -3723,6 +3723,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ei.definition.getType().size() == 1 && !"*".equals(ei.definition.getType().get(0).getWorkingCode()) && !"Element".equals(ei.definition.getType().get(0).getWorkingCode())
         && !"BackboneElement".equals(ei.definition.getType().get(0).getWorkingCode())) {
         type = ei.definition.getType().get(0).getWorkingCode();
+        String stype = ei.getElement().fhirType();
+        if (ei.definition.isChoice() && !stype.equals(type)) {
+          if ("Extension".equals(profile.getType())) {
+            // error will be raised elsewhere
+          } else {
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);
+          }
+        }
+        // 
         // Excluding reference is a kludge to get around versioning issues
         if (ei.definition.getType().get(0).hasProfile()) {
           for (CanonicalType p : ei.definition.getType().get(0).getProfile()) {

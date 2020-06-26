@@ -103,6 +103,7 @@ public class I18nConstants {
   public static final String EXTENSION_EXT_SIMPLE = "Extension_EXT_Simple";
   public static final String EXTENSION_EXT_SUBEXTENSION_INVALID = "Extension_EXT_SubExtension_Invalid";
   public static final String EXTENSION_EXT_TYPE = "Extension_EXT_Type";
+  public static final String EXTENSION_PROF_TYPE = "Extension_PROF_Type";
   public static final String EXTENSION_EXT_UNKNOWN = "Extension_EXT_Unknown";
   public static final String EXTENSION_EXT_UNKNOWN_NOTHERE = "Extension_EXT_Unknown_NotHere";
   public static final String EXTENSION_EXT_URL_ABSOLUTE = "Extension_EXT_URL_Absolute";
