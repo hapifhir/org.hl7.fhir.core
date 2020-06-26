@@ -44,11 +44,13 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,13 +65,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
 
-public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
+@RunWith(Parameterized.class)
+public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
-  public static Stream<Arguments> data() throws IOException {
+  @Parameters(name = "{index}: id {0}")
+  public static Iterable<Object[]> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
@@ -82,11 +85,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     names.addAll(examples.keySet());
     Collections.sort(names);
 
-    List<Arguments> objects = new ArrayList<>();
+    List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      objects.add(Arguments.of(id, examples.get(id)));
+      objects.add(new Object[]{id, examples.get(id)});
     }
-    return objects.stream();
+    return objects;
   }
 
   private static JsonObject manifest;
@@ -98,9 +101,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
-  @ParameterizedTest(name = "{index}: id {0}")
-  @MethodSource("data")
-  public void test(String name, JsonObject content) throws Exception {
+  public ValidationTestSuite(String name, JsonObject content) {
+    this.name = name;
+    this.content = content;
+  }
+
+  @SuppressWarnings("deprecation")
+  @Test
+  public void test() throws Exception {
     long setup = System.nanoTime();
     this.content = content;
     this.name = name;
@@ -247,7 +255,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
           String exp = e.getAsString();
-          Assertions.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
+          Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
       checkOutcomes(errorsLogical, logical);
@@ -340,17 +348,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assertions.assertEquals(java.get("errorCount").getAsInt(), ec, "Test "+name+": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".");
+      Assert.assertEquals("Test " + name + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
       if (java.has("warningCount"))
-        Assertions.assertEquals(java.get("warningCount").getAsInt(), wc, "Test "+name+": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".");
+        Assert.assertEquals( "Test " + name + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
       if (java.has("infoCount"))
-        Assertions.assertEquals(java.get("infoCount").getAsInt(), hc, "Test "+name+": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".");
+        Assert.assertEquals( "Test " + name + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");
-      Assertions.assertEquals(errLocs.size(), el.size(), "locations count is not correct");
+      Assert.assertEquals( "locations count is not correct", errLocs.size(), el.size());
       for (int i = 0; i < errLocs.size(); i++) {
-        Assertions.assertEquals(errLocs.get(i), el.get(i).getAsString(), "Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i));
+        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
       }
     }
     if (focus.has("output")) {
@@ -465,7 +473,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
-  @AfterAll
+  @AfterClass
   public static void saveWhenDone() throws IOException {
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
     TextFile.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
@@ -477,5 +485,5 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return TextFile.streamToBytes(c.getInputStream());
- }
+  }
 }
