@@ -126,6 +126,7 @@ public class I18nConstants {
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_MISING_ = "Illegal_path__in_differential_in__name_portion_mising_";
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NO_UNICODE_WHITESPACE = "Illegal_path__in_differential_in__no_unicode_whitespace";
   public static final String INTERNAL_ERROR___TYPE_NOT_KNOWN_ = "Internal_error___type_not_known_";
+  public static final String INTERNAL_ERROR = "Internal_error";
   public static final String INTERNAL_INT_BAD_TYPE = "Internal_INT_Bad_Type";
   public static final String INTERNAL_RECURSION_DETECTION_FIND_LOOP_PATH_RECURSION____CHECK_PATHS_ARE_VALID_FOR_PATH_ = "Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_";
   public static final String INVALID_SLICING__THERE_IS_MORE_THAN_ONE_TYPE_SLICE_AT__BUT_ONE_OF_THEM__HAS_MIN__1_SO_THE_OTHER_SLICES_CANNOT_EXIST = "Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist";
@@ -512,4 +513,8 @@ public class I18nConstants {
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
   public static final String VALUESET_INCLUDE_INVALID_CONCEPT_CODE = "VALUESET_INCLUDE_INVALID_CONCEPT_CODE";
   public static final String VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER = "VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER";
+  public static final String TYPE_CHECKS_PATTERN_CC = "TYPE_CHECKS_PATTERN_CC";
+  public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
+  public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
+  public static final String TYPE_CHECKS_FIXED_CC_US = "TYPE_CHECKS_FIXED_CC_US";
 }

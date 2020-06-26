@@ -47,6 +47,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -1285,6 +1286,19 @@ public class Utilities {
     }
     return false;
   }
+  
+  public static boolean startsWithInList(String s, Collection<String> list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.startsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 
 }

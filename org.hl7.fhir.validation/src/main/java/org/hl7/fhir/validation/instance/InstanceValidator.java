@@ -841,15 +841,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!found) {
             // The argonaut DSTU2 labs profile requires userSelected=false on the category.coding and this
             // needs to produce an understandable error message
-            String message = "Expected CodeableConcept " + (pattern ? "pattern" : "fixed value") + " not found for" +
-              " system: " + fixedCoding.getSystemElement().asStringValue() +
-              " code: " + fixedCoding.getCodeElement().asStringValue() +
-              " display: " + fixedCoding.getDisplayElement().asStringValue();
+//            String message = "Expected CodeableConcept " + (pattern ? "pattern" : "fixed value") + " not found for" +
+//              " system: " + fixedCoding.getSystemElement().asStringValue() +
+//              " code: " + fixedCoding.getCodeElement().asStringValue() +
+//              " display: " + fixedCoding.getDisplayElement().asStringValue();
+//            if (fixedCoding.hasUserSelected()) {
+//              message += " userSelected: " + fixedCoding.getUserSelected();
+//            }
+//            message += " - Issues: " + allErrorsFixed;
+//            TYPE_CHECKS_PATTERN_CC = The pattern [system {0}, code {1}, and display "{2}"] defined in the profile {3} not found. Issues: {4}
+//            TYPE_CHECKS_PATTERN_CC_US = The pattern [system {0}, code {1}, display "{2}" and userSelected {5}] defined in the profile {3} not found. Issues: {4} 
+//            TYPE_CHECKS_FIXED_CC = The pattern [system {0}, code {1}, and display "{2}"] defined in the profile {3} not found. Issues: {4}
+//            TYPE_CHECKS_FIXED_CC_US = The pattern [system {0}, code {1}, display "{2}" and userSelected {5}] defined in the profile {3} not found. Issues: {4} 
+
             if (fixedCoding.hasUserSelected()) {
-              message += " userSelected: " + fixedCoding.getUserSelected();
+              rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC_US : I18nConstants.TYPE_CHECKS_FIXED_CC_US, 
+                  fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
+                  fixedSource, allErrorsFixed, fixedCoding.getUserSelected());
+              
+            } else {
+              rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, 
+                  fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
+                  fixedSource, allErrorsFixed);
             }
-            message += " - Issues: " + allErrorsFixed;
-            rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, message);
           }
         }
       }
@@ -4180,7 +4194,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ei.additionalSlice = true;
           }
         } catch (FHIRException e) {
-          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false, e.getMessage());
+          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.INTERNAL_ERROR, e.getMessage());
           unsupportedSlicing = true;
           childUnsupportedSlicing = true;
         }
