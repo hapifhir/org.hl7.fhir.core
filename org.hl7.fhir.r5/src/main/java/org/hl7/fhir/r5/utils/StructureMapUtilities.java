@@ -796,8 +796,7 @@ public class StructureMapUtilities {
       if (e.getCode().startsWith("\""))
         e.setCode(lexer.processConstant(e.getCode()));
 			TargetElementComponent tgt = e.addTarget();
-			if (rel != ConceptMapRelationship.EQUIVALENT)
-			  tgt.setRelationship(rel);
+			tgt.setRelationship(rel);
 			lexer.token(":");
 			tgt.setCode(lexer.take());
 			if (tgt.getCode().startsWith("\""))
