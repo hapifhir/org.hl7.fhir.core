@@ -449,7 +449,7 @@ public class MeasureValidator extends BaseValidator {
   }
   
   private void validateMeasureReportGroupStratifier(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupStratifierComponent mgs, List<ValidationMessage> errors, Element mrgs, NodeStack ns, boolean inProgress) {
-    // TODO Auto-generated method stub
+    // still to be done
     
   }
 

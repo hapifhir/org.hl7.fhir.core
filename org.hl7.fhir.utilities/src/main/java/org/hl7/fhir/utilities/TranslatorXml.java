@@ -134,13 +134,11 @@ public class TranslatorXml implements TranslationServices {
 
   @Override
   public String toStr(float value) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public String toStr(Date value) {
-    // TODO Auto-generated method stub
     return null;
   }
 
