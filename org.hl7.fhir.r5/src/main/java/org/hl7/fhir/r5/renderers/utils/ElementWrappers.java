@@ -60,7 +60,11 @@ public class ElementWrappers {
       if (context.getParser() == null) {
         System.out.println("Noe version specific parser provided");
       } 
-      return context.getParser().parseType(xml.toString(), type); 
+      if (context.getParser() == null) {
+        throw new Error("No type parser provided to renderer context");
+      } else {
+        return context.getParser().parseType(xml.toString(), type);
+      }
     }
 
     @Override
