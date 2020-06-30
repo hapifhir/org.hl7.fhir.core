@@ -110,7 +110,7 @@ public class MeasureValidator extends BaseValidator {
   private void validateMeasureCriteria(ValidatorHostContext hostContext, List<ValidationMessage> errors, MeasureContext mctxt, Element crit, NodeStack nsc) {
     String mimeType = crit.getChildValue("language");
     if (!Utilities.noString(mimeType)) { // that would be an error elsewhere 
-      if ("text/cql".equals(mimeType)) {
+      if ("text/cql".equals(mimeType) || "text/cql.identifier".equals(mimeType)) {
         String cqlRef = crit.getChildValue("expression");
         Library lib = null;
         if (rule(errors, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), mctxt.libraries().size()> 0, I18nConstants.MEASURE_M_CRITERIA_CQL_NO_LIB)) {
