@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
@@ -26,6 +27,7 @@ import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
+import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -287,7 +289,7 @@ public class DataRenderer {
     } else if (type instanceof Annotation) {
       renderAnnotation(x, (Annotation) type);
     } else if (type instanceof Coding) {
-      renderCoding(x, (Coding) type);
+      renderCodingWithDetails(x, (Coding) type);
     } else if (type instanceof CodeableConcept) {
       renderCodeableConcept(x, (CodeableConcept) type);
     } else if (type instanceof Identifier) {
@@ -308,12 +310,24 @@ public class DataRenderer {
       renderTiming(x, (Timing) type);
     } else if (type instanceof SampledData) {
       renderSampledData(x, (SampledData) type);
+    } else if (type instanceof Reference) {
+      renderReference(x, (Reference) type);
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
       x.tx("No display for "+type.fhirType());      
     }
 
+  }
+
+  private void renderReference(XhtmlNode x, Reference ref) {
+     if (ref.hasDisplay()) {
+       x.tx(ref.getDisplay());
+     } else if (ref.hasReference()) {
+       x.tx(ref.getReference());
+     } else {
+       x.tx("??");
+     }
   }
 
   public void renderDateTime(XhtmlNode x, Base e) {
@@ -401,6 +415,38 @@ public class DataRenderer {
 
   protected void renderCoding(XhtmlNode x, Coding c) {
     renderCoding(x, c, false);
+  }
+  
+  protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
+    String s = "";
+    if (c.hasDisplayElement())
+      s = c.getDisplay();
+    if (Utilities.noString(s))
+      s = lookupCode(c.getSystem(), c.getCode());
+
+
+    String sn = describeSystem(c.getSystem());
+    if ("http://snomed.info/sct".equals(c.getSystem())) {
+      x.ah("https://browser.ihtsdotools.org/").tx(sn);      
+    } else if ("http://loinc.org".equals(c.getSystem())) {
+      x.ah("https://loinc.org/").tx(sn);            
+    } else {
+      CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
+      if (cs != null && cs.hasUserData("path")) {
+        x.ah(cs.getUserString("path")).tx(sn);
+      } else {
+        x.tx(sn);
+      }
+    }
+    x.tx(" ");
+    x.tx(c.getCode());
+    if (!Utilities.noString(s)) {
+      x.tx(": ");
+      x.tx(s);
+    }
+    if (c.hasVersion()) {
+      x.tx(" (version = "+c.getVersion()+")");
+    }
   }
   
   protected void renderCoding(XhtmlNode x, Coding c, boolean showCodeDetails) {

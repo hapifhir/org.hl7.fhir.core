@@ -48,6 +48,10 @@ public class RendererFactory {
       return new QuestionnaireRenderer(context);
     }
 
+    if ("QuestionnaireResponse".equals(resourceName)) {
+      return new QuestionnaireResponseRenderer(context);
+    }
+
     if ("Patient".equals(resourceName)) {
       return new PatientRenderer(context);
     }
