@@ -348,9 +348,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String packRoot = Utilities.path(cacheFolder, id + "#" + v);
       try {
         // ok, now we have a lock on it... check if something created it while we were waiting
-        if (!new File(packRoot).exists()) {
+        if (!new File(packRoot).exists() || Utilities.existsInList(v, "current", "dev")) {
           Utilities.createDirectory(packRoot);
-          Utilities.clearDirectory(packRoot);
+          try {
+            Utilities.clearDirectory(packRoot);
+          } catch (Throwable t) {
+            System.out.println("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
+          }
 
           int i = 0;
           int c = 0;
