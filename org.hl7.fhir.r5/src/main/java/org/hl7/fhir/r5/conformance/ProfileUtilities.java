@@ -411,10 +411,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         String p = e.getPath();
   
         if (!Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
-          if (path.length() > p.length())
+          if (path.length() > p.length()) {
             return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
-          else
+          } else if (e.getContentReference().startsWith("#")) {
+            return getChildList(profile, e.getContentReference().substring(1), null, diff);            
+          } else {
             return getChildList(profile, e.getContentReference(), null, diff);
+          }
           
         } else if (p.startsWith(path+".") && !p.equals(path)) {
           String tail = p.substring(path.length()+1);
@@ -4961,7 +4964,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         slicing = child.getSlicing();        
       } else if (!name.equals(sliceName))
         slicing = null;
-      
+
       ElementDefinition based = getByPath(base, child.getPath());
       boolean doMin = (child.getMin() > 0) && (based == null || (child.getMin() != based.getMin()));
       boolean doMax = child.hasMax() && !child.getMax().equals("*") && (based == null || (!child.getMax().equals(based.getMax())));
@@ -4974,9 +4977,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             r.assrt("count(f:"+name+slicer.criteria+") >= "+Integer.toString(child.getMin()), name+slicer.name+": minimum cardinality of '"+name+"' is "+Integer.toString(child.getMin()));
           if (doMax) 
             r.assrt("count(f:"+name+slicer.criteria+") <= "+child.getMax(), name+slicer.name+": maximum cardinality of '"+name+"' is "+child.getMax());
-          }
         }
       }
+    }
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasXpath()) {
         Section s = sch.section(ed.getPath());
@@ -4984,9 +4987,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         r.assrt(inv.getXpath(), (inv.hasId() ? inv.getId()+": " : "")+inv.getHuman()+(inv.hasUserData(IS_DERIVED) ? " (inherited)" : ""));
       }
     }
-    for (ElementDefinition child : children) {
-      String name = tail(child.getPath());
-      generateForChildren(sch, xpath+"/f:"+name, child, structure, base);
+    if (!ed.hasContentReference()) {
+      for (ElementDefinition child : children) {
+        String name = tail(child.getPath());
+        generateForChildren(sch, xpath+"/f:"+name, child, structure, base);
+      }
     }
   }
 
