@@ -1627,7 +1627,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
     while (sd != null) {
       for (TypeRefComponent tr : types) {
-        if (sd.getUrl().startsWith("http://hl7.org/fhir/StrutureDefinition") && sd.getType().equals(tr.getCode())) {
+        if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && sd.getType().equals(tr.getCode())) {
           return true;
         }
         if (sd.getUrl().equals(tr.getCode())) {
