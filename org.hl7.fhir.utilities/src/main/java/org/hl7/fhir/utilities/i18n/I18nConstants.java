@@ -483,6 +483,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_OUTOFORDER = "Validation_VAL_Profile_OutOfOrder";
   public static final String VALIDATION_VAL_PROFILE_SLICEORDER = "Validation_VAL_Profile_SliceOrder";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
+  public static final String VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN = "VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
@@ -517,4 +518,7 @@ public class I18nConstants {
   public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
   public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
   public static final String TYPE_CHECKS_FIXED_CC_US = "TYPE_CHECKS_FIXED_CC_US";
+  public static final String VALIDATION_VAL_PROFILE_SIGNPOST = "VALIDATION_VAL_PROFILE_SIGNPOST";
+  public static final String VALIDATION_VAL_PROFILE_SIGNPOST_META = "VALIDATION_VAL_PROFILE_SIGNPOST_META";
+  public static final String VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL = "VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL";
 }
