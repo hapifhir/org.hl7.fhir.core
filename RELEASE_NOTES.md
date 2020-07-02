@@ -2,4 +2,3 @@
 * Fix bug in QuestionnaireResponse rendering
 * Validate based on ImplementationGuide.global 
 * add validation parameter -crumb-trails
-
