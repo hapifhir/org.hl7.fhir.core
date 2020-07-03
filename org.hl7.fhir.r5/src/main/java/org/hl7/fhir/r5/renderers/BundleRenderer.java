@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
@@ -125,7 +126,7 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-  private boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
+  public static boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
     for (BaseWrapper be : entries) {
       if (!"Provenance".equals(be.get("resource").fhirType())) {
         return false;
@@ -134,6 +135,7 @@ public class BundleRenderer extends ResourceRenderer {
     return !entries.isEmpty();
   }
   
+ 
   private boolean allEntresAreHistoryProvenance(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
       if (!(be.getResource() instanceof Provenance)) {

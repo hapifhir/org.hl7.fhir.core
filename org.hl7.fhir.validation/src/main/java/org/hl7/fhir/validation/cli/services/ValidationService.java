@@ -194,6 +194,7 @@ public class ValidationService {
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
     validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     validator.setSecurityChecks(cliContext.isSecurityChecks());
+    validator.setCrumbTrails(cliContext.isCrumbTrails());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }

@@ -264,7 +264,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean assumeValidRestReferences;
   private boolean noExtensibleBindingMessages;
   private boolean securityChecks;
+  private boolean crumbTrails;
   private Locale locale;
+  private List<ImplementationGuide> igs = new ArrayList<>();
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -756,6 +758,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
           context.cacheResource(r);
           if (r instanceof ImplementationGuide) {
             canonical = ((ImplementationGuide) r).getUrl();
+            igs.add((ImplementationGuide) r);
             if (canonical.contains("/ImplementationGuide/")) {
               Resource r2 = r.copy();
               ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
@@ -765,8 +768,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         }
       }
     }
-    if (canonical != null)
+    if (canonical != null) {
       grabNatives(source, canonical);
+    }
   }
 
   public Resource loadFileWithErrorChecking(String version, Entry<String, byte[]> t, String fn) {
@@ -1311,8 +1315,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
+    validator.setCrumbTrails(crumbTrails);
     validator.getContext().setLocale(locale);
     validator.setFetcher(this);
+    validator.getImplementationGuides().addAll(igs);
     return validator;
   }
 
@@ -1756,6 +1762,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setSecurityChecks(boolean securityChecks) {
     this.securityChecks = securityChecks;
+  }
+
+  
+  public boolean isCrumbTrails() {
+    return crumbTrails;
+  }
+
+  public void setCrumbTrails(boolean crumbTrails) {
+    this.crumbTrails = crumbTrails;
   }
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {

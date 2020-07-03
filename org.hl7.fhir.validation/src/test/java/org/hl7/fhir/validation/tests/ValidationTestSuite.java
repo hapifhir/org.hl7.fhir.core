@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -169,12 +170,18 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         vCurr.loadIg(e.getAsString(), true);
       }
     }
+    if (content.has("crumb-trail")) {
+      val.setCrumbTrails(content.get("crumb-trail").getAsBoolean());
+    }
     if (content.has("supporting")) {
       for (JsonElement e : content.getAsJsonArray("supporting")) {
         String filename = e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
         val.getContext().cacheResource(mr);
+        if (mr instanceof ImplementationGuide) {
+          val.getImplementationGuides().add((ImplementationGuide) mr);
+        }
       }
     }
     if (content.has("profiles")) {
@@ -219,6 +226,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           val.getContext().cacheResource(mr);
+          if (mr instanceof ImplementationGuide) {
+            val.getImplementationGuides().add((ImplementationGuide) mr);
+          }
         }
       }
       String filename = profile.get("source").getAsString();

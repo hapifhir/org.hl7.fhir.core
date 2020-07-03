@@ -104,6 +104,8 @@ import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Period;
@@ -141,6 +143,7 @@ import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
+import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -328,7 +331,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private BestPracticeWarningLevel bpWarnings;
   private String validationLanguage;
   private boolean baseOnly;
-
+ 
+  private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
 
   private IdStatus resourceIdRule;
@@ -357,6 +361,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean allowExamples;
   private boolean securityChecks;
   private ProfileUtilities profileUtilities;
+  private boolean crumbTrails;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
@@ -445,6 +450,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowExamples = value;
   }
 
+  public boolean isCrumbTrails() {
+    return crumbTrails;
+  }
+
+  public void setCrumbTrails(boolean crumbTrails) {
+    this.crumbTrails = crumbTrails;
+  }
 
   private boolean allowUnknownExtension(String url) {
     if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
@@ -2716,6 +2728,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return extensionDomains;
   }
 
+  public List<ImplementationGuide> getImplementationGuides() {
+    return igs;
+  }
+
   private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
     for (TypeRefComponent tr : list) {
       String url = tr.getWorkingCode();
@@ -3361,6 +3377,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       resolveBundleReferences(element, new ArrayList<Element>());
     }
     startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
+    hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getUrl());
 
     Element meta = element.getNamedChild(META);
     if (meta != null) {
@@ -3371,11 +3388,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile.primitiveValue());
         if (!defn.getUrl().equals(profile.primitiveValue())) {
           if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", sd != null, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue())) {
+            hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
             stack.resetIds();
             startInner(hostContext, errors, resource, element, sd, stack, false);
           }
         }
         i++;
+      }
+    }
+    String rt = element.fhirType();
+    for (ImplementationGuide ig : igs) {
+      for (ImplementationGuideGlobalComponent gl : ig.getGlobal()) {
+        if (rt.equals(gl.getType())) {
+          StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile());
+          if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
+            hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getUrl(), ig.getUrl());
+            stack.resetIds();
+            startInner(hostContext, errors, resource, element, sd, stack, false);
+          }
+        }
       }
     }
   }
@@ -3481,7 +3512,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CodeSystem")) {
       new CodeSystemValidator(context, timeTracker).validateCodeSystem(errors, element, stack);
     } else if (element.getType().equals("SearchParameter")) {
-      new SearchParameterValidator(context, timeTracker).validateSearchParameter(errors, element, stack);
+      new SearchParameterValidator(context, timeTracker, fpe).validateSearchParameter(errors, element, stack);
+    } else if (element.getType().equals("StructureDefinition")) {
+      new StructureDefinitionValidator(context, timeTracker, fpe).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
       new ValueSetValidator(context, timeTracker).validateValueSet(errors, element, stack);
     }

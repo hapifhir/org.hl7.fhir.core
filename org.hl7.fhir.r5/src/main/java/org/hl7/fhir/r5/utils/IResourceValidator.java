@@ -180,7 +180,14 @@ public interface IResourceValidator {
    */
   public boolean isAllowExamples();
   public void setAllowExamples(boolean value) ;
-  
+ 
+  /**
+   * CrumbTrail - whether the validator creates hints to 
+   * @return
+   */
+  public boolean isCrumbTrails();
+  public void setCrumbTrails(boolean crumbTrails);
+
 
   /**
    * Validate suite
