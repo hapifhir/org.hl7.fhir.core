@@ -346,7 +346,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean ruleHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
       msg = context.formatMessage(msg, null);
       html = context.formatMessage(html, null);
