@@ -192,7 +192,7 @@ public class BundleValidator extends BaseValidator{
     boolean ok = bundle.hasChild(META)
       && bundle.getNamedChild(META).hasChild(LAST_UPDATED)
       && bundle.getNamedChild(META).getNamedChild(LAST_UPDATED).hasValue();
-    rule(errors, IssueType.REQUIRED, stack.getLiteralPath(), ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
+    ruleHtml(errors, IssueType.REQUIRED, stack.getLiteralPath(), ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
   }
 
   private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {

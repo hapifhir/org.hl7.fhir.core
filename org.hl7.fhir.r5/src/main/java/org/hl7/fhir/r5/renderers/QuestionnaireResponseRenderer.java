@@ -163,8 +163,8 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     } else {
       r.setIcon("icon-q-string.png", "Item");
     }
-    String linkId = i.get("linkId").primitiveValue();
-    String text = i.get("text").primitiveValue();
+    String linkId = i.has("linkId") ? i.get("linkId").primitiveValue() : "??";
+    String text = i.has("text") ? i.get("text").primitiveValue() : "";
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+linkId, linkId, null, null));
     r.getCells().add(gen.new Cell(null, null, text, null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));

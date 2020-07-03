@@ -65,6 +65,9 @@ public class CliContext {
   @JsonProperty("securityChecks")
   private boolean securityChecks = false;
   
+  @JsonProperty("crumbTrails")
+  private boolean crumbTrails = false;
+  
   @JsonProperty("locale")
   private String locale = Locale.ENGLISH.getDisplayLanguage();
 
@@ -423,6 +426,14 @@ public class CliContext {
   public CliContext setSecurityChecks(boolean securityChecks) {
     this.securityChecks = securityChecks;
     return this;
+  }
+
+  public boolean isCrumbTrails() {
+    return crumbTrails;
+  }
+
+  public void setCrumbTrails(boolean crumbTrails) {
+    this.crumbTrails = crumbTrails;
   }
 
   @Override
