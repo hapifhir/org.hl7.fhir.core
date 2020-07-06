@@ -1199,6 +1199,9 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!outcome.hasContentReference() && !outcome.hasType()) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.NOT_DONE_YET));
               }
+              if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), true)) {
+                throw new Error("Not handled yet @ "+cpath+" | "+currentBase.getPath());
+              }
               start++;
               // result.getElement().remove(result.getElement().size()-1);
             } else 
