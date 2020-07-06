@@ -1,6 +1,5 @@
-* Added text/cql.identifier media type to Measure validation
-* Fix bug in QuestionnaireResponse rendering
-* Validate based on ImplementationGuide.global 
-* add validation parameter -crumb-trails
-* improve validation of StructureDefinitions
+* Fix bug in snapshot generation - not handling case where content is sliced, base slicing detail is provided, and max slices = 1
+* More work on validating existing snapshots
+
+
 
