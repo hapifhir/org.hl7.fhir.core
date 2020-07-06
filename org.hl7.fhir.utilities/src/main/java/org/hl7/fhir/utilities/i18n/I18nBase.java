@@ -64,7 +64,7 @@ public abstract class I18nBase {
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
-    if (messageExistsForLocale(theMessage, theMessageArguments.length != 0)) {
+    if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
         message = MessageFormat.format(i18nMessages.getString(theMessage), theMessageArguments);
       } else {
