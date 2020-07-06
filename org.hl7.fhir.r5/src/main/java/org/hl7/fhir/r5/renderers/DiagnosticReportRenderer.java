@@ -64,7 +64,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr = tbl.tr();
     XhtmlNode tdl = tr.td();
     XhtmlNode tdr = tr.td();
-    populateSubjectSummary(tdl, getProperty(dr, "subject").value());
+    if (dr.has("subject")) {
+       populateSubjectSummary(tdl, getProperty(dr, "subject").value());
+    }
     tdr.b().tx("Report Details");
     tdr.br();
     pw = getProperty(dr, "perfomer");
