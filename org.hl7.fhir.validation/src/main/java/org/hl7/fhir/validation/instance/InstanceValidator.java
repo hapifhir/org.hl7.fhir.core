@@ -3372,12 +3372,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
   private void start(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack) throws FHIRException {
     checkLang(resource, stack);
+    signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getUrl());
 
     if (BUNDLE.equals(element.fhirType())) {
       resolveBundleReferences(element, new ArrayList<Element>());
     }
     startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
-    hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getUrl());
 
     Element meta = element.getNamedChild(META);
     if (meta != null) {
@@ -3388,7 +3388,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile.primitiveValue());
         if (!defn.getUrl().equals(profile.primitiveValue())) {
           if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", sd != null, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue())) {
-            hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
+            signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
             stack.resetIds();
             startInner(hostContext, errors, resource, element, sd, stack, false);
           }
@@ -3402,7 +3402,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (rt.equals(gl.getType())) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile());
           if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
-            hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getUrl(), ig.getUrl());
+            signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getUrl(), ig.getUrl());
             stack.resetIds();
             startInner(hostContext, errors, resource, element, sd, stack, false);
           }

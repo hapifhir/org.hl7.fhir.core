@@ -501,6 +501,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String txLink;
   public String sliceHtml;
   private boolean slicingHint;
+  private boolean signpost;
 
 
   /**
@@ -784,6 +785,14 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public ValidationMessage setMessageId(String messageId) {
     this.messageId = messageId;
     return this;
+  }
+
+  public boolean isSignpost() {
+    return signpost;
+  }
+
+  public void setSignpost(boolean signpost) {
+    this.signpost = signpost;
   }
 
   
