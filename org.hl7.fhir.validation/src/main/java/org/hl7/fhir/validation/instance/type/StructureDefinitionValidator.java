@@ -83,7 +83,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       if (!snapshot.isEmpty()) {
-        System.out.print("?");
+        int was = snapshot.size();
+        int is = sd.getSnapshot().getElement().size();
+        rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
       }
     } catch (FHIRException | IOException e) {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());

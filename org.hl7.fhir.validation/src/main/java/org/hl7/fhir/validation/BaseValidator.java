@@ -223,6 +223,14 @@ public class BaseValidator {
     return thePass;
   }
 
+  protected boolean signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+    if (!thePass) {
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
+    }
+    return thePass;
+  }
+
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(theMessage, theMessageArguments);
