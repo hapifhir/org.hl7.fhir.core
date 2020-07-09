@@ -185,7 +185,7 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   private void renderResponse(XhtmlNode root, BundleEntryResponseComponent response) {
-    root.para().addText("Request:");
+    root.para().addText("Response:");
     StringBuilder b = new StringBuilder();
     b.append(response.getStatus()+"\r\n");
     if (response.hasLocation())
@@ -198,7 +198,7 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   private void renderRequest(XhtmlNode root, BundleEntryRequestComponent request) {
-    root.para().addText("Response:");
+    root.para().addText("Request:");
     StringBuilder b = new StringBuilder();
     b.append(request.getMethod()+" "+request.getUrl()+"\r\n");
     if (request.hasIfNoneMatch())
