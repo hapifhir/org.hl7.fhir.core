@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalCompon
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
@@ -2473,7 +2474,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         StructureDefinition sdF = sdFT;
         while (sdF != null) {
-          if (sdF == sd) {
+          if (sdF.getType().equals(sd.getType())) {
             ok = true;
             break;
           }
@@ -3242,6 +3243,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Coding c = (Coding) pattern;
       expression.append(" and ");
       buildCodingExpression(ed, expression, discriminator, c);
+    } else if (pattern instanceof BooleanType || pattern instanceof IntegerType || pattern instanceof DecimalType) {
+      expression.append(" and ");
+      buildPrimitiveExpression(ed, expression, discriminator, pattern, false);
+    } else if (pattern instanceof PrimitiveType) {
+      expression.append(" and ");
+      buildPrimitiveExpression(ed, expression, discriminator, pattern, true);
     } else if (pattern instanceof Identifier) {
       Identifier ii = (Identifier) pattern;
       expression.append(" and ");
@@ -3351,6 +3358,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     expression.append(").exists()");
   }
+
+  private void buildPrimitiveExpression(ElementDefinition ed, StringBuilder expression, String discriminator, DataType p, boolean quotes) throws DefinitionException {
+      if (p.hasExtension())
+        throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+      if (quotes) {        
+        expression.append(discriminator + ".where(value = '" + p.primitiveValue() + "'");
+      } else {
+        expression.append(discriminator + ".where(value = " + p.primitiveValue() + "");
+      }
+      expression.append(").exists()");
+    }
 
   private void buildFixedExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
     DataType fixed = criteriaElement.getFixed();
