@@ -1723,9 +1723,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         checkRatio(errors, path, focus, (Ratio) fixed, fixedSource, pattern);
       else if (fixed instanceof SampledData)
         checkSampledData(errors, path, focus, (SampledData) fixed, fixedSource, pattern);
+      else if (fixed instanceof Reference)
+        checkReference(errors, path, focus, (Reference) fixed, fixedSource, pattern);
 
       else
-        rule(errors, IssueType.EXCEPTION, focus.line(), focus.col(), path, false, I18nConstants.INTERNAL_INT_BAD_TYPE, fixed.getClass().getName());
+        rule(errors, IssueType.EXCEPTION, focus.line(), focus.col(), path, false, I18nConstants.INTERNAL_INT_BAD_TYPE, fixed.fhirType());
       List<Element> extensions = new ArrayList<Element>();
       focus.getNamedChildren("extension", extensions);
       if (fixed.getExtension().size() == 0) {
@@ -2462,13 +2464,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // if we == null, we inferred ft from the reference. if we are told to treat this as gospel
       TypeRefComponent type = getReferenceTypeRef(container.getType());
       Set<String> types = new HashSet<>();
+      StructureDefinition sdFT = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+ft);
+      boolean ok = false;
       for (CanonicalType tp : type.getTargetProfile()) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue());
         if (sd != null) {
           types.add(sd.getType());
         }
+        StructureDefinition sdF = sdFT;
+        while (sdF != null) {
+          if (sdF == sd) {
+            ok = true;
+            break;
+          }
+          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition()) : null;
+        }
       }
-      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || types.contains(ft), I18nConstants.REFERENCE_REF_BADTARGETTYPE2, ft, ref, types);
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || ok, I18nConstants.REFERENCE_REF_BADTARGETTYPE2, ft, ref, types);
 
     }
     if (pol == ReferenceValidationPolicy.CHECK_VALID) {
@@ -2552,6 +2564,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit"), fixed.getUpperLimitElement(), fixedSource, "upperLimit", focus, pattern);
     checkFixedValue(errors, path + ".dimensions", focus.getNamedChild("dimensions"), fixed.getDimensionsElement(), fixedSource, "dimensions", focus, pattern);
     checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), fixedSource, "data", focus, pattern);
+  }
+
+  private void checkReference(List<ValidationMessage> errors, String path, Element focus, Reference fixed, String fixedSource, boolean pattern) {
+    checkFixedValue(errors, path + ".reference", focus.getNamedChild("reference"), fixed.getReferenceElement_(), fixedSource, "reference", focus, pattern);
+    checkFixedValue(errors, path + ".type", focus.getNamedChild("type"), fixed.getTypeElement(), fixedSource, "type", focus, pattern);
+    checkFixedValue(errors, path + ".identifier", focus.getNamedChild("identifier"), fixed.getIdentifier(), fixedSource, "identifier", focus, pattern);
+    checkFixedValue(errors, path + ".display", focus.getNamedChild("display"), fixed.getDisplayElement(), fixedSource, "display", focus, pattern);
   }
 
   private void checkTiming(List<ValidationMessage> errors, String path, Element focus, Timing fixed, String fixedSource, boolean pattern) {
