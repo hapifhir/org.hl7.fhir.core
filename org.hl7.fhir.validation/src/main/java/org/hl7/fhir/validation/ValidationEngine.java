@@ -267,6 +267,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private boolean crumbTrails;
   private Locale locale;
   private List<ImplementationGuide> igs = new ArrayList<>();
+  private boolean showTimes;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -327,6 +328,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   public void setAnyExtensionsAllowed(boolean anyExtensionsAllowed) {
     this.anyExtensionsAllowed = anyExtensionsAllowed;
+  }
+
+  
+  public boolean isShowTimes() {
+    return showTimes;
+  }
+
+  public void setShowTimes(boolean showTimes) {
+    this.showTimes = showTimes;
   }
 
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws Exception {
@@ -1114,6 +1124,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
+    if (showTimes) {
+      System.out.println(location+": "+validator.reportTimes());
+    }
     return messagesToOutcome(messages);
   }
 
@@ -2112,6 +2125,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return TextFile.streamToBytes(c.getInputStream());
+  }
+
+  public void doneLoading(long loadStart) {
+    if (showTimes) {
+      String s = String.format("Load Time (ms): %d", (System.nanoTime() - loadStart) / 1000000);
+      System.out.println(s);
+   }
+    
   }
   
 }
