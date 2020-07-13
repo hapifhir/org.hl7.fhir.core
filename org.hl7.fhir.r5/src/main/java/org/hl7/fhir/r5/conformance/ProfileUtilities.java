@@ -3104,18 +3104,27 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       } else if (t.hasProfile() && (!t.getWorkingCode().equals("Extension") || isProfiledType(t.getProfile()))) { // a profiled type
         String ref;
-        ref = pkp.getLinkForProfile(profile, t.getProfile().get(0).getValue());
-        if (ref != null) {
-          String[] parts = ref.split("\\|");
-          if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
-//            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
-            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+        boolean pfirst = true;
+        for (CanonicalType p : t.getProfile()) {
+          if (pfirst) {
+            pfirst = false;
           } else {
-//            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().startsWith(corePath)? corePath: "")+parts[0], "<" + parts[1] + ">", t.getCode())));
-            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath+"StructureDefinition")? corePath: "")+parts[0], parts[1], t.getWorkingCode())));
-          }
-        } else
-          c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+            c.addPiece(checkForNoChange(tl, gen.new Piece(null,", ", null)));
+          }          
+
+          ref = pkp.getLinkForProfile(profile, p.getValue());
+          if (ref != null) {
+            String[] parts = ref.split("\\|");
+            if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
+              //            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
+              c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+            } else {
+              //            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().startsWith(corePath)? corePath: "")+parts[0], "<" + parts[1] + ">", t.getCode())));
+              c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath+"StructureDefinition")? corePath: "")+parts[0], parts[1], t.getWorkingCode())));
+            }
+          } else
+            c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+        }
       } else {
         String tc = t.getWorkingCode();
         if (Utilities.isAbsoluteUrl(tc)) {
