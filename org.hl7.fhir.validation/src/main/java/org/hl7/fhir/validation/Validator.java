@@ -131,6 +131,7 @@ public class Validator {
 
   public static void main(String[] args) throws Exception {
 
+    long loadStart = System.nanoTime();
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
     System.out.println("Detected Java version: " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
     String proxy = getNamedParam(args, Params.PROXY);
@@ -199,7 +200,7 @@ public class Validator {
         if (cliContext.getMode() == EngineMode.SCAN) {
           ValidationService.validateScan(cliContext, validator);
         } else {
-          ValidationService.validateSources(cliContext, validator);
+          ValidationService.validateSources(cliContext, validator, loadStart);
         }
       }
     }

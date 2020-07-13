@@ -68,6 +68,9 @@ public class CliContext {
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
+  @JsonProperty("showTimes")
+  private boolean showTimes = false;
+  
   @JsonProperty("locale")
   private String locale = Locale.ENGLISH.getDisplayLanguage();
 
@@ -436,6 +439,14 @@ public class CliContext {
     this.crumbTrails = crumbTrails;
   }
 
+  public boolean isShowTimes() {
+    return showTimes;
+  }
+
+  public void setShowTimes(boolean showTimes) {
+    this.showTimes = showTimes;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -464,6 +475,8 @@ public class CliContext {
       Objects.equals(questionnaires, that.questionnaires) &&
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
+      Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
       Objects.equals(locations, that.locations);
@@ -471,6 +484,6 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
   }
 }

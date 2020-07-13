@@ -44,7 +44,8 @@ public class ValidationService {
     return response;
   }
 
-  public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
+  public static void validateSources(CliContext cliContext, ValidationEngine validator, long loadStart) throws Exception {
+    validator.doneLoading(loadStart);
     if (cliContext.getProfiles().size() > 0) {
       System.out.println("  .. validate " + cliContext.getSources() + " against " + cliContext.getProfiles().toString());
     } else {
@@ -195,6 +196,7 @@ public class ValidationService {
     validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     validator.setSecurityChecks(cliContext.isSecurityChecks());
     validator.setCrumbTrails(cliContext.isCrumbTrails());
+    validator.setShowTimes(cliContext.isShowTimes());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }
