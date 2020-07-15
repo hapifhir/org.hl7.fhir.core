@@ -430,6 +430,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String color;
     private int lineColor;
     private String id;
+    private String opacity;
     
     public List<Row> getSubRows() {
       return subRows;
@@ -473,6 +474,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     public void setId(String id) {
       this.id = id;
     }
+    public String getOpacity() {
+      return opacity;
+    }
+    public void setOpacity(String opacity) {
+      this.opacity = opacity;
+    }
+    
   }
 
   public class TableModel {
@@ -613,7 +621,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     }
     table.setAttribute("style", "border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     XhtmlNode tr = table.addTag("tr");
-    tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
+    tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
     XhtmlNode tc = null;
     for (Title t : model.getTitles()) {
       tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null);
@@ -656,7 +664,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     else if (model.isAlternating()  && counter.isOdd())
       color = BACKGROUND_ALT_COLOR;
     
-    tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+";");
+    tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity()));
     if (model.isActive()) {
       tr.setAttribute("id", r.getId());
     }
