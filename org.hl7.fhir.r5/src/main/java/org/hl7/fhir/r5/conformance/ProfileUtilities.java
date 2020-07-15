@@ -2507,9 +2507,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       // condition : id 0..*
 
       if (derived.hasMustSupportElement()) {
-        if (!(base.hasMustSupportElement() && Base.compareDeep(derived.getMustSupportElement(), base.getMustSupportElement(), false)))
+        if (!(base.hasMustSupportElement() && Base.compareDeep(derived.getMustSupportElement(), base.getMustSupportElement(), false))) {
+          if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport()) {
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
+          }
           base.setMustSupportElement(derived.getMustSupportElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential)
           derived.setMustSupportElement(null);
         else
           derived.getMustSupportElement().setUserData(DERIVATION_EQUALS, true);
