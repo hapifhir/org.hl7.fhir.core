@@ -451,12 +451,13 @@ public class SnapShotGenerationTests {
     messages = new ArrayList<ValidationMessage>();
 
     if (test.isFail()) {
+      boolean failed = true;
       try {
         if (test.isGen())
           testGen(true, test, context);
         else
           testSort(test, context);
-        Assertions.assertTrue(false, "Should have failed");
+        failed = false;
       } catch (Throwable e) {
         System.out.println("Error running test: " + e.getMessage());
         if (!Utilities.noString(test.regex)) {
@@ -464,10 +465,9 @@ public class SnapShotGenerationTests {
         } else if ("Should have failed".equals(e.getMessage())) {
           throw e;
         } else {
-          Assertions.assertTrue(true, "all ok");
         }
-
       }
+      Assertions.assertTrue(failed, "Should have failed");
     } else if (test.isGen())
       testGen(false, test, context);
     else
