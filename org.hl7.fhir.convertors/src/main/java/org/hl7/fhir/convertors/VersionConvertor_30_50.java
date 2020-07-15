@@ -3304,9 +3304,18 @@ public class VersionConvertor_30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.DataRequirement tgt = new org.hl7.fhir.r5.model.DataRequirement();
-        copyElement(src, tgt);
-        if (src.hasType())
-            tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
+        copyElement(src, tgt, VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME);
+        if (src.hasType()) {
+          if (src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
+            tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)));
+          } else {
+            String n = VersionConvertorResourceNameMapper.mapName3to5(src.getType());
+            if (n != null) {
+              tgt.setType(Enumerations.FHIRAllTypes.fromCode(n));
+            }
+            tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new org.hl7.fhir.r5.model.CodeType(src.getType()));
+          }
+        }
         for (org.hl7.fhir.dstu3.model.UriType t : src.getProfile()) tgt.addProfile(t.getValue());
         for (org.hl7.fhir.dstu3.model.StringType t : src.getMustSupport()) tgt.addMustSupport(t.getValue());
         for (org.hl7.fhir.dstu3.model.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilter()) tgt.addCodeFilter(convertDataRequirementCodeFilterComponent(t));
@@ -3318,9 +3327,18 @@ public class VersionConvertor_30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.DataRequirement tgt = new org.hl7.fhir.dstu3.model.DataRequirement();
-        copyElement(src, tgt);
-        if (src.hasType())
-            tgt.setType(src.getType().toCode());
+        copyElement(src, tgt, VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME);
+        if (src.hasType() || src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
+          if (src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
+            tgt.setType(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME));
+          } else {
+            String n = VersionConvertorResourceNameMapper.mapName5to3(src.getType().toCode());
+            if (n != null) {
+              tgt.setType(n);
+            }
+            tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new org.hl7.fhir.dstu3.model.CodeType(src.getType().toCode()));
+          }
+        }
         for (org.hl7.fhir.r5.model.UriType t : src.getProfile()) tgt.addProfile(t.getValue());
         for (org.hl7.fhir.r5.model.StringType t : src.getMustSupport()) tgt.addMustSupport(t.getValue());
         for (org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilter()) tgt.addCodeFilter(convertDataRequirementCodeFilterComponent(t));
