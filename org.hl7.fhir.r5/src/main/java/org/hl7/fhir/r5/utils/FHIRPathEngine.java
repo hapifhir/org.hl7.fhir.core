@@ -55,7 +55,11 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -3219,9 +3223,49 @@ public class FHIRPathEngine {
 
   private List<Base> funcHtmlChecks(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     // todo: actually check the HTML
-    return makeBoolean(true);    
+    if (focus.size() != 1) {
+      return makeBoolean(false);          
+    }
+    XhtmlNode x = focus.get(0).getXhtml();
+    if (x == null) {
+      return makeBoolean(false);                
+    }
+    return makeBoolean(checkHtmlNames(x));    
   }
 
+  private boolean checkHtmlNames(XhtmlNode node) {
+    if (node.getNodeType() == NodeType.Element) {
+      if (!Utilities.existsInList(node.getName(),
+          "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
+          "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
+          "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
+          "code", "samp", "img", "map", "area")) {
+        return false;
+      }
+      for (String an : node.getAttributes().keySet()) {
+        boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
+            "title", "style", "class", "id", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+            // tables
+            "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
+
+            Utilities.existsInList(node.getName() + "." + an, "a.href", "a.name", "img.src", "img.border", "div.xmlns", "blockquote.cite", "q.cite",
+                "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.src",
+                "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
+                "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
+                "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
+                );
+        if (!ok) {
+          return false;
+        }
+      }
+      for (XhtmlNode c : node.getChildNodes()) {
+        if (!checkHtmlNames(c)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   
   private List<Base> funcAll(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
