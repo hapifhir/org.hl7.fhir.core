@@ -119,6 +119,11 @@ public class XhtmlType extends Element {
   public boolean hasPrimitiveValue() {
     return true;
   }
+
+  @Override
+  public XhtmlNode getXhtml() {
+    return getValue();
+  }
   
 
 }

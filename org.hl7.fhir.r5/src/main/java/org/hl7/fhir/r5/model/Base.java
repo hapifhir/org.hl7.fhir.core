@@ -341,4 +341,13 @@ private Map<String, Object> userData;
   public void copyValues(Base dst) {   
   }
 
+  /**
+   * return XHTML if this is an XHTML node, else null
+   * 
+   * @return
+   */
+  public XhtmlNode getXhtml() {
+    return null;
+  }
+
 }
