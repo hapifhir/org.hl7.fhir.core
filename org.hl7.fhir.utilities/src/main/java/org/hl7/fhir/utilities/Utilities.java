@@ -42,6 +42,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
@@ -834,6 +835,14 @@ public class Utilities {
   }
 
 
+  public static String URLDecode(String ref) {
+    try {
+      return URLDecoder.decode(ref, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new Error(e.getMessage());
+    }
+  }
+
   public static boolean charInSet(char value, char... array) {
     for (int i : array)
       if (value == i)
@@ -1299,6 +1308,7 @@ public class Utilities {
     return false;
   }
 
+  
 
 
 }

@@ -279,12 +279,17 @@ public class MeasureValidator extends BaseValidator {
         }
         i++;
       }
+      boolean dataCollection = isDataCollection(mr);
       for (MeasureGroupComponent mg : m.groups()) {
         if (!groups.contains(mg)) {
-          rule(errors, IssueType.BUSINESSRULE, mr.line(), mr.col(), stack.getLiteralPath(), groups.contains(mg), I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, DataRenderer.display(context, mg.getCode()));
+          rule(errors, IssueType.BUSINESSRULE, mr.line(), mr.col(), stack.getLiteralPath(), groups.contains(mg) || dataCollection, I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, DataRenderer.display(context, mg.getCode()));
         }
       }
     }
+  }
+
+  private boolean isDataCollection(Element mr) {
+    return "data-collection".equals(mr.getChildValue("type"));
   }
 
   private void validateMeasureReportGroup(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack ns, boolean inProgress) {
@@ -305,12 +310,18 @@ public class MeasureValidator extends BaseValidator {
       if (rule(errors, IssueType.REQUIRED, mrg.line(), mrg.col(), stack.getLiteralPath(), ms != null, I18nConstants.MEASURE_MR_SCORE_REQUIRED, m.scoring())) {
         NodeStack ns = stack.push(ms, -1, ms.getProperty().getDefinition(), ms.getProperty().getDefinition());
         Element v = ms.getNamedChild("value");
+        // TODO: this is a DEQM special and should be handled differently
+        if (v == null) {
+          if (ms.hasExtension("http://hl7.org/fhir/us/davinci-deqm/StructureDefinition/extension-alternateScoreType")) {
+            v = ms.getExtension("http://hl7.org/fhir/us/davinci-deqm/StructureDefinition/extension-alternateScoreType").getNamedChild("value");
+          }
+        }
         if ("proportion".equals(m.scoring())) {
           //  proportion - score is a unitless number from 0 ... 1
           banned(errors, ns, ms, "unit", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
           banned(errors, ns, ms, "system", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
           banned(errors, ns, ms, "code", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
-          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED)) {
+          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "proportion")) {
             try {
               BigDecimal dec = new BigDecimal(v.primitiveValue());
               NodeStack nsv = ns.push(v, -1, v.getProperty().getDefinition(), v.getProperty().getDefinition());
@@ -321,7 +332,7 @@ public class MeasureValidator extends BaseValidator {
           }
         } else if ("ratio".equals(m.scoring())) {
           //  ratio -  score is a number with no value constraints, and maybe with a unit (perhaps constrained by extension)
-          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED)) {
+          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "ratio")) {
             Element unit = ms.getNamedChild("code");
             Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
             if (unit != null) {
@@ -344,7 +355,7 @@ public class MeasureValidator extends BaseValidator {
           }
         } else if ("continuous-variable".equals(m.scoring())) {
           // continuous-variable - score is a quantity with a unit per the extension
-          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED)) {
+          if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "continuous-variable")) {
             Element unit = ms.getNamedChild("code");
             Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
             if (unit != null) {
