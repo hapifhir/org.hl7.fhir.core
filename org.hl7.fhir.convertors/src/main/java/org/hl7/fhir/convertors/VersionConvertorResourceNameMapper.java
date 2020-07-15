@@ -6,761 +6,759 @@ public class VersionConvertorResourceNameMapper {
 
   public static String mapName3to5(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("Account")) { return "Account"; }
-    if (name.equals("ActivityDefinition")) { return "ActivityDefinition"; }
-    if (name.equals("AdverseEvent")) { return "AdverseEvent"; }
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BodySite")) { return "BodyStructure"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("CapabilityStatement")) { return "CapabilityStatement"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("CareTeam")) { return "CareTeam"; }
-    if (name.equals("ChargeItem")) { return "ChargeItem"; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("CodeSystem")) { return "CodeSystem"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("CompartmentDefinition")) { return "CompartmentDefinition"; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Consent")) { return "Consent"; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("DataElement")) { return " StructureDefinition"; }
-    if (name.equals("EligibilityRequest")) { return "CoverageEligibilityRequest"; }
-    if (name.equals("EligibilityResponse")) { return "CoverageEligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceComponent")) { return null; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceRequest")) { return "DeviceRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("Endpoint")) { return "Endpoint"; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("ExpansionProfile")) { return "Parameters"; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("GraphDefinition")) { return "GraphDefinition"; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("GuidanceResponse")) { return "GuidanceResponse"; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingManifest")) { return null; }
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("Library")) { return "Library"; }
-    if (name.equals("Linkage")) { return "Linkage"; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Measure")) { return "Measure"; }
-    if (name.equals("MeasureReport")) { return "MeasureReport"; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationRequest")) { return "MedicationRequest"; }
-    if (name.equals("MedicationStatement")) { return "MedicationUsage"; }
-    if (name.equals("MessageDefinition")) { return "MessageDefinition"; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("Sequence")) { return "MolecularSequence"; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("PlanDefinition")) { return "PlanDefinition"; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("PractitionerRole")) { return "PractitionerRole"; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("ProcessRequest")) { return "Task"; }
-    if (name.equals("ProcessResponse")) { return "Task"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("ReferralRequest")) { return "ServiceRequest"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RequestGroup")) { return "RequestGroup"; }
-    if (name.equals("ResearchStudy")) { return "ResearchStudy"; }
-    if (name.equals("ResearchSubject")) { return "ResearchSubject"; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ServiceDefinition")) { return null; }
-    if (name.equals("ProcedureRequest")) { return "ServiceRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    if (name.equals("StructureMap")) { return "StructureMap"; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("Task")) { return "Task"; }
-    if (name.equals("TestReport")) { return "TestReport"; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "Account" : return org.hl7.fhir.r5.model.Account.class.getName(); 
+    case "ActivityDefinition" : return org.hl7.fhir.r5.model.ActivityDefinition.class.getName(); 
+    case "AdverseEvent" : return org.hl7.fhir.r5.model.AdverseEvent.class.getName(); 
+    case "AllergyIntolerance" : return org.hl7.fhir.r5.model.AllergyIntolerance.class.getName(); 
+    case "Appointment" : return org.hl7.fhir.r5.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.r5.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.r5.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.r5.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.r5.model.Binary.class.getName(); 
+    case "BodySite" : return org.hl7.fhir.r5.model.BodyStructure.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.r5.model.Bundle.class.getName(); 
+    case "CapabilityStatement" : return org.hl7.fhir.r5.model.CapabilityStatement.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.r5.model.CarePlan.class.getName(); 
+    case "CareTeam" : return org.hl7.fhir.r5.model.CareTeam.class.getName(); 
+    case "ChargeItem" : return org.hl7.fhir.r5.model.ChargeItem.class.getName(); 
+    case "Claim" : return org.hl7.fhir.r5.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.r5.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.r5.model.ClinicalImpression.class.getName(); 
+    case "CodeSystem" : return org.hl7.fhir.r5.model.CodeSystem.class.getName(); 
+    case "Communication" : return org.hl7.fhir.r5.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.r5.model.CommunicationRequest.class.getName(); 
+    case "CompartmentDefinition" : return org.hl7.fhir.r5.model.CompartmentDefinition.class.getName(); 
+    case "Composition" : return org.hl7.fhir.r5.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.r5.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.r5.model.Condition.class.getName(); 
+    case "Consent" : return org.hl7.fhir.r5.model.Consent.class.getName(); 
+    case "Contract" : return org.hl7.fhir.r5.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.r5.model.Coverage.class.getName(); 
+    case "DataElement" : return org.hl7.fhir.r5.model. StructureDefinition.class.getName(); 
+    case "EligibilityRequest" : return org.hl7.fhir.r5.model.CoverageEligibilityRequest.class.getName(); 
+    case "EligibilityResponse" : return org.hl7.fhir.r5.model.CoverageEligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.r5.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.r5.model.Device.class.getName(); 
+    case "DeviceComponent" : return null; 
+    case "DeviceMetric" : return org.hl7.fhir.r5.model.DeviceMetric.class.getName(); 
+    case "DeviceRequest" : return org.hl7.fhir.r5.model.DeviceRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.r5.model.DeviceUseStatement.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.r5.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.r5.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.r5.model.DocumentReference.class.getName(); 
+    case "Encounter" : return org.hl7.fhir.r5.model.Encounter.class.getName(); 
+    case "Endpoint" : return org.hl7.fhir.r5.model.Endpoint.class.getName(); 
+    case "EnrollmentRequest" : return org.hl7.fhir.r5.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.r5.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.r5.model.EpisodeOfCare.class.getName(); 
+    case "ExpansionProfile" : return org.hl7.fhir.r5.model.Parameters.class.getName(); 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.r5.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.r5.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.r5.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.r5.model.Goal.class.getName(); 
+    case "GraphDefinition" : return org.hl7.fhir.r5.model.GraphDefinition.class.getName(); 
+    case "Group" : return org.hl7.fhir.r5.model.Group.class.getName(); 
+    case "GuidanceResponse" : return org.hl7.fhir.r5.model.GuidanceResponse.class.getName(); 
+    case "HealthcareService" : return org.hl7.fhir.r5.model.HealthcareService.class.getName(); 
+    case "ImagingManifest" : return null; 
+    case "ImagingStudy" : return org.hl7.fhir.r5.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.r5.model.Immunization.class.getName(); 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.r5.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.r5.model.ImplementationGuide.class.getName(); 
+    case "Library" : return org.hl7.fhir.r5.model.Library.class.getName(); 
+    case "Linkage" : return org.hl7.fhir.r5.model.Linkage.class.getName(); 
+    case "List" : return org.hl7.fhir.r5.model.ListResource.class.getName(); 
+    case "Location" : return org.hl7.fhir.r5.model.Location.class.getName(); 
+    case "Measure" : return org.hl7.fhir.r5.model.Measure.class.getName(); 
+    case "MeasureReport" : return org.hl7.fhir.r5.model.MeasureReport.class.getName(); 
+    case "Media" : return org.hl7.fhir.r5.model.DocumentReference.class.getName(); 
+    case "Medication" : return org.hl7.fhir.r5.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.r5.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.r5.model.MedicationDispense.class.getName(); 
+    case "MedicationRequest" : return org.hl7.fhir.r5.model.MedicationRequest.class.getName(); 
+    case "MedicationStatement" : return org.hl7.fhir.r5.model.MedicationUsage.class.getName(); 
+    case "MessageDefinition" : return org.hl7.fhir.r5.model.MessageDefinition.class.getName(); 
+    case "MessageHeader" : return org.hl7.fhir.r5.model.MessageHeader.class.getName(); 
+    case "Sequence" : return org.hl7.fhir.r5.model.MolecularSequence.class.getName(); 
+    case "NamingSystem" : return org.hl7.fhir.r5.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.r5.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.r5.model.Observation.class.getName(); 
+    case "OperationDefinition" : return org.hl7.fhir.r5.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.r5.model.OperationOutcome.class.getName(); 
+    case "Organization" : return org.hl7.fhir.r5.model.Organization.class.getName(); 
+    case "Parameters" : return org.hl7.fhir.r5.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.r5.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.r5.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.r5.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.r5.model.Person.class.getName(); 
+    case "PlanDefinition" : return org.hl7.fhir.r5.model.PlanDefinition.class.getName(); 
+    case "Practitioner" : return org.hl7.fhir.r5.model.Practitioner.class.getName(); 
+    case "PractitionerRole" : return org.hl7.fhir.r5.model.PractitionerRole.class.getName(); 
+    case "Procedure" : return org.hl7.fhir.r5.model.Procedure.class.getName(); 
+    case "ProcessRequest" : return org.hl7.fhir.r5.model.Task.class.getName(); 
+    case "ProcessResponse" : return org.hl7.fhir.r5.model.Task.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.r5.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.r5.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.r5.model.QuestionnaireResponse.class.getName(); 
+    case "ReferralRequest" : return org.hl7.fhir.r5.model.ServiceRequest.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.r5.model.RelatedPerson.class.getName(); 
+    case "RequestGroup" : return org.hl7.fhir.r5.model.RequestGroup.class.getName(); 
+    case "ResearchStudy" : return org.hl7.fhir.r5.model.ResearchStudy.class.getName(); 
+    case "ResearchSubject" : return org.hl7.fhir.r5.model.ResearchSubject.class.getName(); 
+    case "RiskAssessment" : return org.hl7.fhir.r5.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.r5.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.r5.model.SearchParameter.class.getName(); 
+    case "ServiceDefinition" : return null; 
+    case "ProcedureRequest" : return org.hl7.fhir.r5.model.ServiceRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.r5.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.r5.model.Specimen.class.getName(); 
+    case "StructureDefinition" : return org.hl7.fhir.r5.model.StructureDefinition.class.getName(); 
+    case "StructureMap" : return org.hl7.fhir.r5.model.StructureMap.class.getName(); 
+    case "Subscription" : return org.hl7.fhir.r5.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.r5.model.Substance.class.getName(); 
+    case "SupplyDelivery" : return org.hl7.fhir.r5.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.r5.model.SupplyRequest.class.getName(); 
+    case "Task" : return org.hl7.fhir.r5.model.Task.class.getName(); 
+    case "TestReport" : return org.hl7.fhir.r5.model.TestReport.class.getName(); 
+    case "TestScript" : return org.hl7.fhir.r5.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.r5.model.ValueSet.class.getName(); 
+    case "VisionPrescription" : return org.hl7.fhir.r5.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
   public static String mapName5to3(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("Account")) { return "Account"; }
-    if (name.equals("ActivityDefinition")) { return "ActivityDefinition"; }
-    if (name.equals("AdverseEvent")) { return "AdverseEvent"; }
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BiologicallyDerivedProduct")) { return null; }
-    if (name.equals("BodyStructure")) { return "BodySite"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("CapabilityStatement")) { return "CapabilityStatement"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("CareTeam")) { return "CareTeam"; }
-    if (name.equals("CatalogEntry")) { return null; }
-    if (name.equals("ChargeItem")) { return "ChargeItem"; }
-    if (name.equals("ChargeItemDefinition")) { return null; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("CodeSystem")) { return "CodeSystem"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("CompartmentDefinition")) { return "CompartmentDefinition"; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Consent")) { return "Consent"; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("CoverageEligibilityRequest")) { return "EligibilityRequest"; }
-    if (name.equals("CoverageEligibilityResponse")) { return "EligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceDefinition")) { return null; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceRequest")) { return "DeviceRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("EffectEvidenceSynthesis")) { return null; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("Endpoint")) { return "Endpoint"; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("EventDefinition")) { return null; }
-    if (name.equals("ExampleScenario")) { return null; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("GraphDefinition")) { return "GraphDefinition"; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("GuidanceResponse")) { return "GuidanceResponse"; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationEvaluation")) { return null; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("InsurancePlan")) { return null; }
-    if (name.equals("Invoice")) { return null; }
-    if (name.equals("Library")) { return "Library"; }
-    if (name.equals("Linkage")) { return "Linkage"; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Measure")) { return "Measure"; }
-    if (name.equals("MeasureReport")) { return "MeasureReport"; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationKnowledge")) { return null; }
-    if (name.equals("MedicationRequest")) { return "MedicationRequest"; }
-    if (name.equals("MedicationUsage")) { return "MedicationStatement"; }
-    if (name.equals("MedicinalProduct")) { return null; }
-    if (name.equals("MedicinalProductAuthorization")) { return null; }
-    if (name.equals("MedicinalProductContraindication")) { return null; }
-    if (name.equals("MedicinalProductIndication")) { return null; }
-    if (name.equals("MedicinalProductIngredient")) { return null; }
-    if (name.equals("MedicinalProductInteraction")) { return null; }
-    if (name.equals("MedicinalProductManufactured")) { return null; }
-    if (name.equals("MedicinalProductPackaged")) { return null; }
-    if (name.equals("MedicinalProductPharmaceutical")) { return null; }
-    if (name.equals("MedicinalProductUndesirableEffect")) { return null; }
-    if (name.equals("MessageDefinition")) { return "MessageDefinition"; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("MolecularSequence")) { return "Sequence"; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("ObservationDefinition")) { return null; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("OrganizationAffiliation")) { return null; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("PlanDefinition")) { return "PlanDefinition"; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("PractitionerRole")) { return "PractitionerRole"; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RequestGroup")) { return "RequestGroup"; }
-    if (name.equals("ResearchStudy")) { return "ResearchStudy"; }
-    if (name.equals("ResearchSubject")) { return "ResearchSubject"; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ServiceRequest")) { return "ProcedureRequest"; }
-    //     if (name.equals("ServiceRequest")) { return "ReferralRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("SpecimenDefinition")) { return null; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    // if (name.equals("StructureDefinition")) { return "DataElement"; }
-    if (name.equals("StructureMap")) { return "StructureMap"; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SubstancePolymer")) { return null; }
-    if (name.equals("SubstanceReferenceInformation")) { return null; }
-    if (name.equals("SubstanceSpecification")) { return null; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("Task")) { return "Task"; }
-    if (name.equals("TerminologyCapabilities")) { return null; }
-    if (name.equals("TestReport")) { return "TestReport"; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    if (name.equals("VerificationResult")) { return null; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "Account" : return org.hl7.fhir.dstu3.model.Account.class.getName(); 
+    case "ActivityDefinition" : return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getName(); 
+    case "AdverseEvent" : return org.hl7.fhir.dstu3.model.AdverseEvent.class.getName(); 
+    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getName(); 
+    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getName(); 
+    case "BiologicallyDerivedProduct" : return null; 
+    case "BodyStructure" : return org.hl7.fhir.dstu3.model.BodySite.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getName(); 
+    case "CapabilityStatement" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getName(); 
+    case "CareTeam" : return org.hl7.fhir.dstu3.model.CareTeam.class.getName(); 
+    case "CatalogEntry" : return null; 
+    case "ChargeItem" : return org.hl7.fhir.dstu3.model.ChargeItem.class.getName(); 
+    case "ChargeItemDefinition" : return null; 
+    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getName(); 
+    case "CodeSystem" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getName(); 
+    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getName(); 
+    case "CompartmentDefinition" : return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getName(); 
+    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getName(); 
+    case "Consent" : return org.hl7.fhir.dstu3.model.Consent.class.getName(); 
+    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getName(); 
+    case "CoverageEligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getName(); 
+    case "CoverageEligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getName(); 
+    case "DeviceDefinition" : return null; 
+    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getName(); 
+    case "DeviceRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getName(); 
+    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getName(); 
+    case "Endpoint" : return org.hl7.fhir.dstu3.model.Endpoint.class.getName(); 
+    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getName(); 
+    case "EventDefinition" : return null; 
+    case "ExampleScenario" : return null; 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getName(); 
+    case "GraphDefinition" : return org.hl7.fhir.dstu3.model.GraphDefinition.class.getName(); 
+    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getName(); 
+    case "GuidanceResponse" : return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getName(); 
+    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getName(); 
+    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getName(); 
+    case "ImmunizationEvaluation" : return null; 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getName(); 
+    case "InsurancePlan" : return null; 
+    case "Invoice" : return null; 
+    case "Library" : return org.hl7.fhir.dstu3.model.Library.class.getName(); 
+    case "Linkage" : return org.hl7.fhir.dstu3.model.Linkage.class.getName(); 
+    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getName(); 
+    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getName(); 
+    case "Measure" : return org.hl7.fhir.dstu3.model.Measure.class.getName(); 
+    case "MeasureReport" : return org.hl7.fhir.dstu3.model.MeasureReport.class.getName(); 
+    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getName(); 
+    case "MedicationKnowledge" : return null; 
+    case "MedicationRequest" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getName(); 
+    case "MedicationUsage" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getName(); 
+    case "MessageDefinition" : return org.hl7.fhir.dstu3.model.MessageDefinition.class.getName(); 
+    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getName(); 
+    case "MolecularSequence" : return org.hl7.fhir.dstu3.model.Sequence.class.getName(); 
+    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getName(); 
+    case "ObservationDefinition" : return null; 
+    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getName(); 
+    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getName(); 
+    case "OrganizationAffiliation" : return null; 
+    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getName(); 
+    case "PlanDefinition" : return org.hl7.fhir.dstu3.model.PlanDefinition.class.getName(); 
+    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getName(); 
+    case "PractitionerRole" : return org.hl7.fhir.dstu3.model.PractitionerRole.class.getName(); 
+    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getName(); 
+    case "RequestGroup" : return org.hl7.fhir.dstu3.model.RequestGroup.class.getName(); 
+    case "ResearchStudy" : return org.hl7.fhir.dstu3.model.ResearchStudy.class.getName(); 
+    case "ResearchSubject" : return org.hl7.fhir.dstu3.model.ResearchSubject.class.getName(); 
+    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getName(); 
+    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getName(); 
+    // case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getName(); 
+    case "SpecimenDefinition" : return null; 
+    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getName(); 
+    // case "StructureDefinition" : return org.hl7.fhir.dstu3.model.DataElement.class.getName(); 
+    case "StructureMap" : return org.hl7.fhir.dstu3.model.StructureMap.class.getName(); 
+    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getName(); 
+    case "SubstancePolymer" : return null; 
+    case "SubstanceReferenceInformation" : return null; 
+    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getName(); 
+    case "Task" : return org.hl7.fhir.dstu3.model.Task.class.getName(); 
+    case "TerminologyCapabilities" : return null; 
+    case "TestReport" : return org.hl7.fhir.dstu3.model.TestReport.class.getName(); 
+    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getName(); 
+    case "VerificationResult" : return null; 
+    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
 
   public static String mapName3to4(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("Account")) { return "Account"; }
-    if (name.equals("ActivityDefinition")) { return "ActivityDefinition"; }
-    if (name.equals("AdverseEvent")) { return "AdverseEvent"; }
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BodySite")) { return "BodyStructure"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("CapabilityStatement")) { return "CapabilityStatement"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("CareTeam")) { return "CareTeam"; }
-    if (name.equals("ChargeItem")) { return "ChargeItem"; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("CodeSystem")) { return "CodeSystem"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("CompartmentDefinition")) { return "CompartmentDefinition"; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Consent")) { return "Consent"; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("DataElement")) { return " StructureDefinition"; }
-    if (name.equals("EligibilityRequest")) { return "CoverageEligibilityRequest"; }
-    if (name.equals("EligibilityResponse")) { return "CoverageEligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceComponent")) { return null; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceRequest")) { return "DeviceRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("Endpoint")) { return "Endpoint"; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("ExpansionProfile")) { return "Parameters"; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("GraphDefinition")) { return "GraphDefinition"; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("GuidanceResponse")) { return "GuidanceResponse"; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingManifest")) { return null; }
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("Library")) { return "Library"; }
-    if (name.equals("Linkage")) { return "Linkage"; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Measure")) { return "Measure"; }
-    if (name.equals("MeasureReport")) { return "MeasureReport"; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationRequest")) { return "MedicationRequest"; }
-    if (name.equals("MedicationStatement")) { return "MedicationStatement"; }
-    if (name.equals("MessageDefinition")) { return "MessageDefinition"; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("Sequence")) { return "MolecularSequence"; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("PlanDefinition")) { return "PlanDefinition"; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("PractitionerRole")) { return "PractitionerRole"; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("ProcessRequest")) { return "Task"; }
-    if (name.equals("ProcessResponse")) { return "Task"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("ReferralRequest")) { return "ServiceRequest"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RequestGroup")) { return "RequestGroup"; }
-    if (name.equals("ResearchStudy")) { return "ResearchStudy"; }
-    if (name.equals("ResearchSubject")) { return "ResearchSubject"; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ServiceDefinition")) { return null; }
-    if (name.equals("ProcedureRequest")) { return "ServiceRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    if (name.equals("StructureMap")) { return "StructureMap"; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("Task")) { return "Task"; }
-    if (name.equals("TestReport")) { return "TestReport"; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "Account" : return org.hl7.fhir.r4.model.Account.class.getName(); 
+    case "ActivityDefinition" : return org.hl7.fhir.r4.model.ActivityDefinition.class.getName(); 
+    case "AdverseEvent" : return org.hl7.fhir.r4.model.AdverseEvent.class.getName(); 
+    case "AllergyIntolerance" : return org.hl7.fhir.r4.model.AllergyIntolerance.class.getName(); 
+    case "Appointment" : return org.hl7.fhir.r4.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.r4.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.r4.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.r4.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.r4.model.Binary.class.getName(); 
+    case "BodySite" : return org.hl7.fhir.r4.model.BodyStructure.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.r4.model.Bundle.class.getName(); 
+    case "CapabilityStatement" : return org.hl7.fhir.r4.model.CapabilityStatement.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.r4.model.CarePlan.class.getName(); 
+    case "CareTeam" : return org.hl7.fhir.r4.model.CareTeam.class.getName(); 
+    case "ChargeItem" : return org.hl7.fhir.r4.model.ChargeItem.class.getName(); 
+    case "Claim" : return org.hl7.fhir.r4.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.r4.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.r4.model.ClinicalImpression.class.getName(); 
+    case "CodeSystem" : return org.hl7.fhir.r4.model.CodeSystem.class.getName(); 
+    case "Communication" : return org.hl7.fhir.r4.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.r4.model.CommunicationRequest.class.getName(); 
+    case "CompartmentDefinition" : return org.hl7.fhir.r4.model.CompartmentDefinition.class.getName(); 
+    case "Composition" : return org.hl7.fhir.r4.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.r4.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.r4.model.Condition.class.getName(); 
+    case "Consent" : return org.hl7.fhir.r4.model.Consent.class.getName(); 
+    case "Contract" : return org.hl7.fhir.r4.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.r4.model.Coverage.class.getName(); 
+    case "DataElement" : return org.hl7.fhir.r4.model. StructureDefinition.class.getName(); 
+    case "EligibilityRequest" : return org.hl7.fhir.r4.model.CoverageEligibilityRequest.class.getName(); 
+    case "EligibilityResponse" : return org.hl7.fhir.r4.model.CoverageEligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.r4.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.r4.model.Device.class.getName(); 
+    case "DeviceComponent" : return null; 
+    case "DeviceMetric" : return null; 
+    case "DeviceRequest" : return org.hl7.fhir.r4.model.DeviceRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.r4.model.DeviceUseStatement.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.r4.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.r4.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.r4.model.DocumentReference.class.getName(); 
+    case "Encounter" : return org.hl7.fhir.r4.model.Encounter.class.getName(); 
+    case "Endpoint" : return org.hl7.fhir.r4.model.Endpoint.class.getName(); 
+    case "EnrollmentRequest" : return org.hl7.fhir.r4.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.r4.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.r4.model.EpisodeOfCare.class.getName(); 
+    case "ExpansionProfile" : return org.hl7.fhir.r4.model.Parameters.class.getName(); 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.r4.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.r4.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.r4.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.r4.model.Goal.class.getName(); 
+    case "GraphDefinition" : return org.hl7.fhir.r4.model.GraphDefinition.class.getName(); 
+    case "Group" : return org.hl7.fhir.r4.model.Group.class.getName(); 
+    case "GuidanceResponse" : return org.hl7.fhir.r4.model.GuidanceResponse.class.getName(); 
+    case "HealthcareService" : return org.hl7.fhir.r4.model.HealthcareService.class.getName(); 
+    case "ImagingManifest" : return null; 
+    case "ImagingStudy" : return org.hl7.fhir.r4.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.r4.model.Immunization.class.getName(); 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.r4.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.r4.model.ImplementationGuide.class.getName(); 
+    case "Library" : return org.hl7.fhir.r4.model.Library.class.getName(); 
+    case "Linkage" : return org.hl7.fhir.r4.model.Linkage.class.getName(); 
+    case "List" : return org.hl7.fhir.r4.model.ListResource.class.getName(); 
+    case "Location" : return org.hl7.fhir.r4.model.Location.class.getName(); 
+    case "Measure" : return org.hl7.fhir.r4.model.Measure.class.getName(); 
+    case "MeasureReport" : return org.hl7.fhir.r4.model.MeasureReport.class.getName(); 
+    case "Media" : return org.hl7.fhir.r4.model.Media.class.getName(); 
+    case "Medication" : return org.hl7.fhir.r4.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.r4.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.r4.model.MedicationDispense.class.getName(); 
+    case "MedicationRequest" : return org.hl7.fhir.r4.model.MedicationRequest.class.getName(); 
+    case "MedicationStatement" : return org.hl7.fhir.r4.model.MedicationStatement.class.getName(); 
+    case "MessageDefinition" : return org.hl7.fhir.r4.model.MessageDefinition.class.getName(); 
+    case "MessageHeader" : return org.hl7.fhir.r4.model.MessageHeader.class.getName(); 
+    case "Sequence" : return org.hl7.fhir.r4.model.MolecularSequence.class.getName(); 
+    case "NamingSystem" : return org.hl7.fhir.r4.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.r4.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.r4.model.Observation.class.getName(); 
+    case "OperationDefinition" : return org.hl7.fhir.r4.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.r4.model.OperationOutcome.class.getName(); 
+    case "Organization" : return org.hl7.fhir.r4.model.Organization.class.getName(); 
+    case "Parameters" : return org.hl7.fhir.r4.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.r4.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.r4.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.r4.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.r4.model.Person.class.getName(); 
+    case "PlanDefinition" : return org.hl7.fhir.r4.model.PlanDefinition.class.getName(); 
+    case "Practitioner" : return org.hl7.fhir.r4.model.Practitioner.class.getName(); 
+    case "PractitionerRole" : return org.hl7.fhir.r4.model.PractitionerRole.class.getName(); 
+    case "Procedure" : return org.hl7.fhir.r4.model.Procedure.class.getName(); 
+    case "ProcessRequest" : return org.hl7.fhir.r4.model.Task.class.getName(); 
+    case "ProcessResponse" : return org.hl7.fhir.r4.model.Task.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.r4.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.r4.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.r4.model.QuestionnaireResponse.class.getName(); 
+    case "ReferralRequest" : return org.hl7.fhir.r4.model.ServiceRequest.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.r4.model.RelatedPerson.class.getName(); 
+    case "RequestGroup" : return org.hl7.fhir.r4.model.RequestGroup.class.getName(); 
+    case "ResearchStudy" : return org.hl7.fhir.r4.model.ResearchStudy.class.getName(); 
+    case "ResearchSubject" : return org.hl7.fhir.r4.model.ResearchSubject.class.getName(); 
+    case "RiskAssessment" : return org.hl7.fhir.r4.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.r4.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.r4.model.SearchParameter.class.getName(); 
+    case "ServiceDefinition" : return null; 
+    case "ProcedureRequest" : return org.hl7.fhir.r4.model.ServiceRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.r4.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.r4.model.Specimen.class.getName(); 
+    case "StructureDefinition" : return org.hl7.fhir.r4.model.StructureDefinition.class.getName(); 
+    case "StructureMap" : return org.hl7.fhir.r4.model.StructureMap.class.getName(); 
+    case "Subscription" : return org.hl7.fhir.r4.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.r4.model.Substance.class.getName(); 
+    case "SupplyDelivery" : return org.hl7.fhir.r4.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.r4.model.SupplyRequest.class.getName(); 
+    case "Task" : return org.hl7.fhir.r4.model.Task.class.getName(); 
+    case "TestReport" : return org.hl7.fhir.r4.model.TestReport.class.getName(); 
+    case "TestScript" : return org.hl7.fhir.r4.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.r4.model.ValueSet.class.getName(); 
+    case "VisionPrescription" : return org.hl7.fhir.r4.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
   public static String mapName4to3(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("Account")) { return "Account"; }
-    if (name.equals("ActivityDefinition")) { return "ActivityDefinition"; }
-    if (name.equals("AdverseEvent")) { return "AdverseEvent"; }
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BiologicallyDerivedProduct")) { return null; }
-    if (name.equals("BodyStructure")) { return "BodySite"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("CapabilityStatement")) { return "CapabilityStatement"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("CareTeam")) { return "CareTeam"; }
-    if (name.equals("CatalogEntry")) { return null; }
-    if (name.equals("ChargeItem")) { return "ChargeItem"; }
-    if (name.equals("ChargeItemDefinition")) { return null; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("CodeSystem")) { return "CodeSystem"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("CompartmentDefinition")) { return "CompartmentDefinition"; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Consent")) { return "Consent"; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("CoverageEligibilityRequest")) { return "EligibilityRequest"; }
-    if (name.equals("CoverageEligibilityResponse")) { return "EligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceDefinition")) { return null; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceRequest")) { return "DeviceRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("EffectEvidenceSynthesis")) { return null; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("Endpoint")) { return "Endpoint"; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("EventDefinition")) { return null; }
-    if (name.equals("ExampleScenario")) { return null; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("GraphDefinition")) { return "GraphDefinition"; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("GuidanceResponse")) { return "GuidanceResponse"; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationEvaluation")) { return null; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("InsurancePlan")) { return null; }
-    if (name.equals("Invoice")) { return null; }
-    if (name.equals("Library")) { return "Library"; }
-    if (name.equals("Linkage")) { return "Linkage"; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Measure")) { return "Measure"; }
-    if (name.equals("MeasureReport")) { return "MeasureReport"; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationKnowledge")) { return null; }
-    if (name.equals("MedicationRequest")) { return "MedicationRequest"; }
-    if (name.equals("MedicationStatement")) { return "MedicationStatement"; }
-    if (name.equals("MedicinalProduct")) { return null; }
-    if (name.equals("MedicinalProductAuthorization")) { return null; }
-    if (name.equals("MedicinalProductContraindication")) { return null; }
-    if (name.equals("MedicinalProductIndication")) { return null; }
-    if (name.equals("MedicinalProductIngredient")) { return null; }
-    if (name.equals("MedicinalProductInteraction")) { return null; }
-    if (name.equals("MedicinalProductManufactured")) { return null; }
-    if (name.equals("MedicinalProductPackaged")) { return null; }
-    if (name.equals("MedicinalProductPharmaceutical")) { return null; }
-    if (name.equals("MedicinalProductUndesirableEffect")) { return null; }
-    if (name.equals("MessageDefinition")) { return "MessageDefinition"; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("MolecularSequence")) { return "Sequence"; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("ObservationDefinition")) { return null; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("OrganizationAffiliation")) { return null; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("PlanDefinition")) { return "PlanDefinition"; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("PractitionerRole")) { return "PractitionerRole"; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RequestGroup")) { return "RequestGroup"; }
-    if (name.equals("ResearchStudy")) { return "ResearchStudy"; }
-    if (name.equals("ResearchSubject")) { return "ResearchSubject"; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ServiceRequest")) { return "ProcedureRequest"; }
-    //     if (name.equals("ServiceRequest")) { return "ReferralRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("SpecimenDefinition")) { return null; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    // if (name.equals("StructureDefinition")) { return "DataElement"; }
-    if (name.equals("StructureMap")) { return "StructureMap"; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SubstancePolymer")) { return null; }
-    if (name.equals("SubstanceReferenceInformation")) { return null; }
-    if (name.equals("SubstanceSpecification")) { return null; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("Task")) { return "Task"; }
-    if (name.equals("TerminologyCapabilities")) { return null; }
-    if (name.equals("TestReport")) { return "TestReport"; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    if (name.equals("VerificationResult")) { return null; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "Account" : return org.hl7.fhir.dstu3.model.Account.class.getName(); 
+    case "ActivityDefinition" : return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getName(); 
+    case "AdverseEvent" : return org.hl7.fhir.dstu3.model.AdverseEvent.class.getName(); 
+    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getName(); 
+    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getName(); 
+    case "BiologicallyDerivedProduct" : return null; 
+    case "BodyStructure" : return org.hl7.fhir.dstu3.model.BodySite.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getName(); 
+    case "CapabilityStatement" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getName(); 
+    case "CareTeam" : return org.hl7.fhir.dstu3.model.CareTeam.class.getName(); 
+    case "CatalogEntry" : return null; 
+    case "ChargeItem" : return org.hl7.fhir.dstu3.model.ChargeItem.class.getName(); 
+    case "ChargeItemDefinition" : return null; 
+    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getName(); 
+    case "CodeSystem" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getName(); 
+    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getName(); 
+    case "CompartmentDefinition" : return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getName(); 
+    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getName(); 
+    case "Consent" : return org.hl7.fhir.dstu3.model.Consent.class.getName(); 
+    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getName(); 
+    case "CoverageEligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getName(); 
+    case "CoverageEligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getName(); 
+    case "DeviceDefinition" : return null; 
+    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getName(); 
+    case "DeviceRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getName(); 
+    case "EffectEvidenceSynthesis" : return null; 
+    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getName(); 
+    case "Endpoint" : return org.hl7.fhir.dstu3.model.Endpoint.class.getName(); 
+    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getName(); 
+    case "EventDefinition" : return null; 
+    case "ExampleScenario" : return null; 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getName(); 
+    case "GraphDefinition" : return org.hl7.fhir.dstu3.model.GraphDefinition.class.getName(); 
+    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getName(); 
+    case "GuidanceResponse" : return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getName(); 
+    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getName(); 
+    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getName(); 
+    case "ImmunizationEvaluation" : return null; 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getName(); 
+    case "InsurancePlan" : return null; 
+    case "Invoice" : return null; 
+    case "Library" : return org.hl7.fhir.dstu3.model.Library.class.getName(); 
+    case "Linkage" : return org.hl7.fhir.dstu3.model.Linkage.class.getName(); 
+    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getName(); 
+    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getName(); 
+    case "Measure" : return org.hl7.fhir.dstu3.model.Measure.class.getName(); 
+    case "MeasureReport" : return org.hl7.fhir.dstu3.model.MeasureReport.class.getName(); 
+    case "Media" : return org.hl7.fhir.dstu3.model.Media.class.getName(); 
+    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getName(); 
+    case "MedicationKnowledge" : return null; 
+    case "MedicationRequest" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getName(); 
+    case "MedicationStatement" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getName(); 
+    case "MedicinalProduct" : return null; 
+    case "MedicinalProductAuthorization" : return null; 
+    case "MedicinalProductContraindication" : return null; 
+    case "MedicinalProductIndication" : return null; 
+    case "MedicinalProductIngredient" : return null; 
+    case "MedicinalProductInteraction" : return null; 
+    case "MedicinalProductManufactured" : return null; 
+    case "MedicinalProductPackaged" : return null; 
+    case "MedicinalProductPharmaceutical" : return null; 
+    case "MedicinalProductUndesirableEffect" : return null; 
+    case "MessageDefinition" : return org.hl7.fhir.dstu3.model.MessageDefinition.class.getName(); 
+    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getName(); 
+    case "MolecularSequence" : return org.hl7.fhir.dstu3.model.Sequence.class.getName(); 
+    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getName(); 
+    case "ObservationDefinition" : return null; 
+    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getName(); 
+    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getName(); 
+    case "OrganizationAffiliation" : return null; 
+    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getName(); 
+    case "PlanDefinition" : return org.hl7.fhir.dstu3.model.PlanDefinition.class.getName(); 
+    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getName(); 
+    case "PractitionerRole" : return org.hl7.fhir.dstu3.model.PractitionerRole.class.getName(); 
+    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getName(); 
+    case "RequestGroup" : return org.hl7.fhir.dstu3.model.RequestGroup.class.getName(); 
+    case "ResearchStudy" : return org.hl7.fhir.dstu3.model.ResearchStudy.class.getName(); 
+    case "ResearchSubject" : return org.hl7.fhir.dstu3.model.ResearchSubject.class.getName(); 
+    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getName(); 
+    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getName(); 
+//    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getName(); 
+    case "SpecimenDefinition" : return null; 
+    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getName(); 
+//    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.DataElement.class.getName(); 
+    case "StructureMap" : return org.hl7.fhir.dstu3.model.StructureMap.class.getName(); 
+    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getName(); 
+    case "SubstancePolymer" : return null; 
+    case "SubstanceReferenceInformation" : return null; 
+    case "SubstanceSpecification" : return null; 
+    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getName(); 
+    case "Task" : return org.hl7.fhir.dstu3.model.Task.class.getName(); 
+    case "TerminologyCapabilities" : return null; 
+    case "TestReport" : return org.hl7.fhir.dstu3.model.TestReport.class.getName(); 
+    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getName(); 
+    case "VerificationResult" : return null; 
+    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
   public static String mapName2to3(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BodySite")) { return "BodySite"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("Conformance")) { return "CapabilityStatement"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("DataElement")) { return "DataElement"; }
-    if (name.equals("EligibilityRequest")) { return "EligibilityRequest"; }
-    if (name.equals("EligibilityResponse")) { return "EligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceComponent")) { return "DeviceComponent"; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceUseRequest")) { return "DeviceRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("DiagnosticOrder")) { return "ProcedureRequest"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingObjectSelection")) { return null; } // != ImagingManifest
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationOrder")) { return "MedicationRequest"; }
-    if (name.equals("MedicationStatement")) { return "MedicationStatement"; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Order")) { return "Task"; }
-    if (name.equals("OrderResponse")) { return "Task"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("ProcessRequest")) { return "ProcessRequest"; }
-    if (name.equals("ProcessResponse")) { return "ProcessResponse"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("ReferralRequest")) { return "ReferralRequest"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ProcedureRequest")) { return "ProcedureRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    // if (name.equals("ValueSet")) { return "CodeSystem"; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getName(); 
+    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getName(); 
+    case "BodySite" : return org.hl7.fhir.dstu3.model.BodySite.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getName(); 
+    case "Conformance" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getName(); 
+    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getName(); 
+    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getName(); 
+    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getName(); 
+    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getName(); 
+    case "DataElement" : return org.hl7.fhir.dstu3.model.DataElement.class.getName(); 
+    case "EligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getName(); 
+    case "EligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getName(); 
+    case "DeviceComponent" : return org.hl7.fhir.dstu3.model.DeviceComponent.class.getName(); 
+    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getName(); 
+    case "DeviceUseRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getName(); 
+    case "DiagnosticOrder" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getName(); 
+    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getName(); 
+    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getName(); 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getName(); 
+    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getName(); 
+    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getName(); 
+    case "ImagingObjectSelection": return null;  // != ImagingManifest
+    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getName(); 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getName(); 
+    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getName(); 
+    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getName(); 
+    case "Media" : return org.hl7.fhir.dstu3.model.Media.class.getName(); 
+    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getName(); 
+    case "MedicationOrder" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getName(); 
+    case "MedicationStatement" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getName(); 
+    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getName(); 
+    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getName(); 
+    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getName(); 
+    case "Order" : return org.hl7.fhir.dstu3.model.Task.class.getName(); 
+    case "OrderResponse" : return org.hl7.fhir.dstu3.model.Task.class.getName(); 
+    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getName(); 
+    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getName(); 
+    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getName(); 
+    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getName(); 
+    case "ProcessRequest" : return org.hl7.fhir.dstu3.model.ProcessRequest.class.getName(); 
+    case "ProcessResponse" : return org.hl7.fhir.dstu3.model.ProcessResponse.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getName(); 
+    case "ReferralRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getName(); 
+    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getName(); 
+    case "ProcedureRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getName(); 
+    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getName(); 
+    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getName(); 
+    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getName(); 
+    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getName(); 
+//    case "ValueSet" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getName(); 
+    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
   public static String mapName3to2(String name) {
     if (Utilities.noString(name)) { return null; } 
-    if (name.equals("Account")) { return null; }
-    if (name.equals("ActivityDefinition")) { return null; }
-    if (name.equals("AdverseEvent")) { return null; }
-    if (name.equals("AllergyIntolerance")) { return "AllergyIntolerance"; }
-    if (name.equals("Appointment")) { return "Appointment"; }
-    if (name.equals("AppointmentResponse")) { return "AppointmentResponse"; }
-    if (name.equals("AuditEvent")) { return "AuditEvent"; }
-    if (name.equals("Basic")) { return "Basic"; }
-    if (name.equals("Binary")) { return "Binary"; }
-    if (name.equals("BodySite")) { return "BodySite"; }
-    if (name.equals("Bundle")) { return "Bundle"; }
-    if (name.equals("CapabilityStatement")) { return "Conformance"; }
-    if (name.equals("CarePlan")) { return "CarePlan"; }
-    if (name.equals("CareTeam")) { return null; }
-    if (name.equals("ChargeItem")) { return null; }
-    if (name.equals("Claim")) { return "Claim"; }
-    if (name.equals("ClaimResponse")) { return "ClaimResponse"; }
-    if (name.equals("ClinicalImpression")) { return "ClinicalImpression"; }
-    if (name.equals("CodeSystem")) { return "ValueSet"; }
-    if (name.equals("Communication")) { return "Communication"; }
-    if (name.equals("CommunicationRequest")) { return "CommunicationRequest"; }
-    if (name.equals("CompartmentDefinition")) { return null; }
-    if (name.equals("Composition")) { return "Composition"; }
-    if (name.equals("ConceptMap")) { return "ConceptMap"; }
-    if (name.equals("Condition")) { return "Condition"; }
-    if (name.equals("Consent")) { return null; }
-    if (name.equals("Contract")) { return "Contract"; }
-    if (name.equals("Coverage")) { return "Coverage"; }
-    if (name.equals("DataElement")) { return "DataElement"; }
-    if (name.equals("EligibilityRequest")) { return "EligibilityRequest"; }
-    if (name.equals("EligibilityResponse")) { return "EligibilityResponse"; }
-    if (name.equals("DetectedIssue")) { return "DetectedIssue"; }
-    if (name.equals("Device")) { return "Device"; }
-    if (name.equals("DeviceComponent")) { return "DeviceComponent"; }
-    if (name.equals("DeviceMetric")) { return "DeviceMetric"; }
-    if (name.equals("DeviceRequest")) { return "DeviceUseRequest"; }
-    if (name.equals("DeviceUseStatement")) { return "DeviceUseStatement"; }
-    if (name.equals("ProcedureRequest")) { return "DiagnosticOrder"; }
-    if (name.equals("DiagnosticReport")) { return "DiagnosticReport"; }
-    if (name.equals("DocumentManifest")) { return "DocumentManifest"; }
-    if (name.equals("DocumentReference")) { return "DocumentReference"; }
-    if (name.equals("Encounter")) { return "Encounter"; }
-    if (name.equals("Endpoint")) { return null; }
-    if (name.equals("EnrollmentRequest")) { return "EnrollmentRequest"; }
-    if (name.equals("EnrollmentResponse")) { return "EnrollmentResponse"; }
-    if (name.equals("EpisodeOfCare")) { return "EpisodeOfCare"; }
-    if (name.equals("ExpansionProfile")) { return null; }
-    if (name.equals("ExplanationOfBenefit")) { return "ExplanationOfBenefit"; }
-    if (name.equals("FamilyMemberHistory")) { return "FamilyMemberHistory"; }
-    if (name.equals("Flag")) { return "Flag"; }
-    if (name.equals("Goal")) { return "Goal"; }
-    if (name.equals("GraphDefinition")) { return null; }
-    if (name.equals("Group")) { return "Group"; }
-    if (name.equals("GuidanceResponse")) { return null; }
-    if (name.equals("HealthcareService")) { return "HealthcareService"; }
-    if (name.equals("ImagingManifest")) { return null; } // != ImagingObjectSelection
-    if (name.equals("ImagingStudy")) { return "ImagingStudy"; }
-    if (name.equals("Immunization")) { return "Immunization"; }
-    if (name.equals("ImmunizationRecommendation")) { return "ImmunizationRecommendation"; }
-    if (name.equals("ImplementationGuide")) { return "ImplementationGuide"; }
-    if (name.equals("Library")) { return null; }
-    if (name.equals("Linkage")) { return null; }
-    if (name.equals("List")) { return "List"; }
-    if (name.equals("Location")) { return "Location"; }
-    if (name.equals("Measure")) { return null; }
-    if (name.equals("MeasureReport")) { return null; }
-    if (name.equals("Media")) { return "Media"; }
-    if (name.equals("Medication")) { return "Medication"; }
-    if (name.equals("MedicationAdministration")) { return "MedicationAdministration"; }
-    if (name.equals("MedicationDispense")) { return "MedicationDispense"; }
-    if (name.equals("MedicationRequest")) { return "MedicationOrder"; }
-    if (name.equals("MedicationStatement")) { return "MedicationStatement"; }
-    if (name.equals("MessageDefinition")) { return null; }
-    if (name.equals("MessageHeader")) { return "MessageHeader"; }
-    if (name.equals("Sequence")) { return null; }
-    if (name.equals("NamingSystem")) { return "NamingSystem"; }
-    if (name.equals("NutritionOrder")) { return "NutritionOrder"; }
-    if (name.equals("Observation")) { return "Observation"; }
-    if (name.equals("OperationDefinition")) { return "OperationDefinition"; }
-    if (name.equals("OperationOutcome")) { return "OperationOutcome"; }
-    if (name.equals("Task")) { return "Order"; }
-    // if (name.equals("Task")) { return "OrderResponse"; }
-    if (name.equals("Organization")) { return "Organization"; }
-    if (name.equals("Parameters")) { return "Parameters"; }
-    if (name.equals("Patient")) { return "Patient"; }
-    if (name.equals("PaymentNotice")) { return "PaymentNotice"; }
-    if (name.equals("PaymentReconciliation")) { return "PaymentReconciliation"; }
-    if (name.equals("Person")) { return "Person"; }
-    if (name.equals("PlanDefinition")) { return null; }
-    if (name.equals("Practitioner")) { return "Practitioner"; }
-    if (name.equals("PractitionerRole")) { return null; }
-    if (name.equals("Procedure")) { return "Procedure"; }
-    if (name.equals("ProcessRequest")) { return "ProcessRequest"; }
-    if (name.equals("ProcessResponse")) { return "ProcessResponse"; }
-    if (name.equals("Provenance")) { return "Provenance"; }
-    if (name.equals("Questionnaire")) { return "Questionnaire"; }
-    if (name.equals("QuestionnaireResponse")) { return "QuestionnaireResponse"; }
-    if (name.equals("ReferralRequest")) { return "ReferralRequest"; }
-    if (name.equals("RelatedPerson")) { return "RelatedPerson"; }
-    if (name.equals("RequestGroup")) { return null; }
-    if (name.equals("ResearchStudy")) { return null; }
-    if (name.equals("ResearchSubject")) { return null; }
-    if (name.equals("RiskAssessment")) { return "RiskAssessment"; }
-    if (name.equals("Schedule")) { return "Schedule"; }
-    if (name.equals("SearchParameter")) { return "SearchParameter"; }
-    if (name.equals("ServiceDefinition")) { return null; }
-    if (name.equals("ProcedureRequest")) { return "ProcedureRequest"; }
-    if (name.equals("Slot")) { return "Slot"; }
-    if (name.equals("Specimen")) { return "Specimen"; }
-    if (name.equals("StructureDefinition")) { return "StructureDefinition"; }
-    if (name.equals("StructureMap")) { return null; }
-    if (name.equals("Subscription")) { return "Subscription"; }
-    if (name.equals("Substance")) { return "Substance"; }
-    if (name.equals("SupplyDelivery")) { return "SupplyDelivery"; }
-    if (name.equals("SupplyRequest")) { return "SupplyRequest"; }
-    if (name.equals("Task")) { return null; }
-    if (name.equals("TestReport")) { return null; }
-    if (name.equals("TestScript")) { return "TestScript"; }
-    if (name.equals("ValueSet")) { return "ValueSet"; }
-    if (name.equals("VisionPrescription")) { return "VisionPrescription"; }
-    return null;
+    switch (name) {
+    case "Account" : return null; 
+    case "ActivityDefinition" : return null; 
+    case "AllergyIntolerance" : return org.hl7.fhir.dstu2.model.AllergyIntolerance.class.getName(); 
+    case "AdverseEvent" : return null; 
+    case "Appointment" : return org.hl7.fhir.dstu2.model.Appointment.class.getName(); 
+    case "AppointmentResponse" : return org.hl7.fhir.dstu2.model.AppointmentResponse.class.getName(); 
+    case "AuditEvent" : return org.hl7.fhir.dstu2.model.AuditEvent.class.getName(); 
+    case "Basic" : return org.hl7.fhir.dstu2.model.Basic.class.getName(); 
+    case "Binary" : return org.hl7.fhir.dstu2.model.Binary.class.getName(); 
+    case "BodySite" : return org.hl7.fhir.dstu2.model.BodySite.class.getName(); 
+    case "Bundle" : return org.hl7.fhir.dstu2.model.Bundle.class.getName(); 
+    case "CapabilityStatement" : return org.hl7.fhir.dstu2.model.Conformance.class.getName(); 
+    case "CarePlan" : return org.hl7.fhir.dstu2.model.CarePlan.class.getName(); 
+    case "CareTeam" : return null; 
+    case "ChargeItem" : return null; 
+    case "Claim" : return org.hl7.fhir.dstu2.model.Claim.class.getName(); 
+    case "ClaimResponse" : return org.hl7.fhir.dstu2.model.ClaimResponse.class.getName(); 
+    case "ClinicalImpression" : return org.hl7.fhir.dstu2.model.ClinicalImpression.class.getName(); 
+    case "CodeSystem" : return org.hl7.fhir.dstu2.model.ValueSet.class.getName(); 
+    case "Communication" : return org.hl7.fhir.dstu2.model.Communication.class.getName(); 
+    case "CommunicationRequest" : return org.hl7.fhir.dstu2.model.CommunicationRequest.class.getName(); 
+    case "CompartmentDefinition" : return null; 
+    case "Composition" : return org.hl7.fhir.dstu2.model.Composition.class.getName(); 
+    case "ConceptMap" : return org.hl7.fhir.dstu2.model.ConceptMap.class.getName(); 
+    case "Condition" : return org.hl7.fhir.dstu2.model.Condition.class.getName(); 
+    case "Consent" : return null; 
+    case "Contract" : return org.hl7.fhir.dstu2.model.Contract.class.getName(); 
+    case "Coverage" : return org.hl7.fhir.dstu2.model.Coverage.class.getName(); 
+    case "DataElement" : return org.hl7.fhir.dstu2.model.DataElement.class.getName(); 
+    case "EligibilityRequest" : return org.hl7.fhir.dstu2.model.EligibilityRequest.class.getName(); 
+    case "EligibilityResponse" : return org.hl7.fhir.dstu2.model.EligibilityResponse.class.getName(); 
+    case "DetectedIssue" : return org.hl7.fhir.dstu2.model.DetectedIssue.class.getName(); 
+    case "Device" : return org.hl7.fhir.dstu2.model.Device.class.getName(); 
+    case "DeviceComponent" : return org.hl7.fhir.dstu2.model.DeviceComponent.class.getName(); 
+    case "DeviceMetric" : return org.hl7.fhir.dstu2.model.DeviceMetric.class.getName(); 
+    case "DeviceRequest" : return org.hl7.fhir.dstu2.model.DeviceUseRequest.class.getName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.dstu2.model.DeviceUseStatement.class.getName(); 
+//    case "ProcedureRequest" : return org.hl7.fhir.dstu2.model.DiagnosticOrder.class.getName(); 
+    case "DiagnosticReport" : return org.hl7.fhir.dstu2.model.DiagnosticReport.class.getName(); 
+    case "DocumentManifest" : return org.hl7.fhir.dstu2.model.DocumentManifest.class.getName(); 
+    case "DocumentReference" : return org.hl7.fhir.dstu2.model.DocumentReference.class.getName(); 
+    case "Encounter" : return org.hl7.fhir.dstu2.model.Encounter.class.getName(); 
+    case "Endpoint" : return null; 
+    case "EnrollmentRequest" : return org.hl7.fhir.dstu2.model.EnrollmentRequest.class.getName(); 
+    case "EnrollmentResponse" : return org.hl7.fhir.dstu2.model.EnrollmentResponse.class.getName(); 
+    case "EpisodeOfCare" : return org.hl7.fhir.dstu2.model.EpisodeOfCare.class.getName(); 
+    case "ExpansionProfile" : return null; 
+    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu2.model.ExplanationOfBenefit.class.getName(); 
+    case "FamilyMemberHistory" : return org.hl7.fhir.dstu2.model.FamilyMemberHistory.class.getName(); 
+    case "Flag" : return org.hl7.fhir.dstu2.model.Flag.class.getName(); 
+    case "Goal" : return org.hl7.fhir.dstu2.model.Goal.class.getName(); 
+    case "GraphDefinition" : return null; 
+    case "Group" : return org.hl7.fhir.dstu2.model.Group.class.getName(); 
+    case "GuidanceResponse" : return null; 
+    case "HealthcareService" : return org.hl7.fhir.dstu2.model.HealthcareService.class.getName(); 
+    case "ImagingManifest" : return null;  // != ImagingObjectSelection
+    case "ImagingStudy" : return org.hl7.fhir.dstu2.model.ImagingStudy.class.getName(); 
+    case "Immunization" : return org.hl7.fhir.dstu2.model.Immunization.class.getName(); 
+    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu2.model.ImmunizationRecommendation.class.getName(); 
+    case "ImplementationGuide" : return org.hl7.fhir.dstu2.model.ImplementationGuide.class.getName(); 
+    case "Library" : return null; 
+    case "Linkage" : return null; 
+    case "List" : return org.hl7.fhir.dstu2.model.List_.class.getName(); 
+    case "Location" : return org.hl7.fhir.dstu2.model.Location.class.getName(); 
+    case "Measure" : return null; 
+    case "MeasureReport" : return null; 
+    case "Media" : return org.hl7.fhir.dstu2.model.Media.class.getName(); 
+    case "Medication" : return org.hl7.fhir.dstu2.model.Medication.class.getName(); 
+    case "MedicationAdministration" : return org.hl7.fhir.dstu2.model.MedicationAdministration.class.getName(); 
+    case "MedicationDispense" : return org.hl7.fhir.dstu2.model.MedicationDispense.class.getName(); 
+    case "MedicationRequest" : return org.hl7.fhir.dstu2.model.MedicationOrder.class.getName(); 
+    case "MedicationStatement" : return org.hl7.fhir.dstu2.model.MedicationStatement.class.getName(); 
+    case "MessageDefinition" : return null; 
+    case "MessageHeader" : return org.hl7.fhir.dstu2.model.MessageHeader.class.getName(); 
+    case "Sequence" : return null; 
+    case "NamingSystem" : return org.hl7.fhir.dstu2.model.NamingSystem.class.getName(); 
+    case "NutritionOrder" : return org.hl7.fhir.dstu2.model.NutritionOrder.class.getName(); 
+    case "Observation" : return org.hl7.fhir.dstu2.model.Observation.class.getName(); 
+    case "OperationDefinition" : return org.hl7.fhir.dstu2.model.OperationDefinition.class.getName(); 
+    case "OperationOutcome" : return org.hl7.fhir.dstu2.model.OperationOutcome.class.getName(); 
+    case "Task" : return org.hl7.fhir.dstu2.model.Order.class.getName(); 
+//    case "Task" : return org.hl7.fhir.dstu2.model.OrderResponse.class.getName(); 
+    case "Organization" : return org.hl7.fhir.dstu2.model.Organization.class.getName(); 
+    case "Parameters" : return org.hl7.fhir.dstu2.model.Parameters.class.getName(); 
+    case "Patient" : return org.hl7.fhir.dstu2.model.Patient.class.getName(); 
+    case "PaymentNotice" : return org.hl7.fhir.dstu2.model.PaymentNotice.class.getName(); 
+    case "PaymentReconciliation" : return org.hl7.fhir.dstu2.model.PaymentReconciliation.class.getName(); 
+    case "Person" : return org.hl7.fhir.dstu2.model.Person.class.getName(); 
+    case "PlanDefinition" : return null; 
+    case "Practitioner" : return org.hl7.fhir.dstu2.model.Practitioner.class.getName(); 
+    case "PractitionerRole" : return null; 
+    case "Procedure" : return org.hl7.fhir.dstu2.model.Procedure.class.getName(); 
+    case "ProcessRequest" : return org.hl7.fhir.dstu2.model.ProcessRequest.class.getName(); 
+    case "ProcessResponse" : return org.hl7.fhir.dstu2.model.ProcessResponse.class.getName(); 
+    case "Provenance" : return org.hl7.fhir.dstu2.model.Provenance.class.getName(); 
+    case "Questionnaire" : return org.hl7.fhir.dstu2.model.Questionnaire.class.getName(); 
+    case "QuestionnaireResponse" : return org.hl7.fhir.dstu2.model.QuestionnaireResponse.class.getName(); 
+    case "ReferralRequest" : return org.hl7.fhir.dstu2.model.ReferralRequest.class.getName(); 
+    case "RelatedPerson" : return org.hl7.fhir.dstu2.model.RelatedPerson.class.getName(); 
+    case "RequestGroup" : return null; 
+    case "ResearchStudy" : return null; 
+    case "ResearchSubject" : return null; 
+    case "RiskAssessment" : return org.hl7.fhir.dstu2.model.RiskAssessment.class.getName(); 
+    case "Schedule" : return org.hl7.fhir.dstu2.model.Schedule.class.getName(); 
+    case "SearchParameter" : return org.hl7.fhir.dstu2.model.SearchParameter.class.getName(); 
+    case "ServiceDefinition" : return null; 
+    case "ProcedureRequest" : return org.hl7.fhir.dstu2.model.ProcedureRequest.class.getName(); 
+    case "Slot" : return org.hl7.fhir.dstu2.model.Slot.class.getName(); 
+    case "Specimen" : return org.hl7.fhir.dstu2.model.Specimen.class.getName(); 
+    case "StructureDefinition" : return org.hl7.fhir.dstu2.model.StructureDefinition.class.getName(); 
+    case "StructureMap" : return null; 
+    case "Subscription" : return org.hl7.fhir.dstu2.model.Subscription.class.getName(); 
+    case "Substance" : return org.hl7.fhir.dstu2.model.Substance.class.getName(); 
+    case "SupplyDelivery" : return org.hl7.fhir.dstu2.model.SupplyDelivery.class.getName(); 
+    case "SupplyRequest" : return org.hl7.fhir.dstu2.model.SupplyRequest.class.getName(); 
+    case "TestReport" : return null; 
+    case "TestScript" : return org.hl7.fhir.dstu2.model.TestScript.class.getName(); 
+    case "ValueSet" : return org.hl7.fhir.dstu2.model.ValueSet.class.getName(); 
+    case "VisionPrescription" : return org.hl7.fhir.dstu2.model.VisionPrescription.class.getName(); 
+    default: return null;
+    }
   }
 
 
