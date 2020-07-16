@@ -19,7 +19,6 @@ steps:
             echo "Your RELEASE_NOTES.md file is empty. Please provide release notes before creating a release."
             exit 1
       fi
-      displayName: 'RELEASE_NOTES.md check'
 
   # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
   # the same version, at the same time, as defined in the root level pom.xml.
