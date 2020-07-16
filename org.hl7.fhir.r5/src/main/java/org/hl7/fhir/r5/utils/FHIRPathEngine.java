@@ -18,6 +18,7 @@ import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -1223,7 +1224,8 @@ public class FHIRPathEngine {
     case Trim: return checkParamCount(lexer, location, exp, 0);
     case Split: return checkParamCount(lexer, location, exp, 1);
     case Join: return checkParamCount(lexer, location, exp, 1);    
-    case HtmlChecks: return checkParamCount(lexer, location, exp, 0);
+    case HtmlChecks1: return checkParamCount(lexer, location, exp, 0);
+    case HtmlChecks2: return checkParamCount(lexer, location, exp, 0);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
     case ToString: return checkParamCount(lexer, location, exp, 0);
@@ -2823,7 +2825,9 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case HasValue : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case HtmlChecks : 
+    case HtmlChecks1 : 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case HtmlChecks2 : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Alias : 
       checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
@@ -3042,7 +3046,8 @@ public class FHIRPathEngine {
     case Split : return funcSplit(context, focus, exp);
     case Join : return funcJoin(context, focus, exp); 
     case Alias : return funcAlias(context, focus, exp);
-    case HtmlChecks : return funcHtmlChecks(context, focus, exp);
+    case HtmlChecks1 : return funcHtmlChecks1(context, focus, exp);
+    case HtmlChecks2 : return funcHtmlChecks2(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
     case ToDecimal : return funcToDecimal(context, focus, exp);
     case ToString : return funcToString(context, focus, exp);
@@ -3221,7 +3226,7 @@ public class FHIRPathEngine {
     return res;    
   }
 
-  private List<Base> funcHtmlChecks(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     // todo: actually check the HTML
     if (focus.size() != 1) {
       return makeBoolean(false);          
@@ -3233,7 +3238,36 @@ public class FHIRPathEngine {
     return makeBoolean(checkHtmlNames(x));    
   }
 
+  private List<Base> funcHtmlChecks2(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    // todo: actually check the HTML
+    if (focus.size() != 1) {
+      return makeBoolean(false);          
+    }
+    XhtmlNode x = focus.get(0).getXhtml();
+    if (x == null) {
+      return makeBoolean(false);                
+    }
+    return makeBoolean(checkForContent(x));    
+  }
+
+  private boolean checkForContent(XhtmlNode x) {
+    if ((x.getNodeType() == NodeType.Text && !Utilities.noString(x.getContent().trim())) || (x.getNodeType() == NodeType.Element && "img".equals(x.getName()))) {
+      return true;
+    }
+    for (XhtmlNode c : x.getChildNodes()) {
+      if (checkForContent(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   private boolean checkHtmlNames(XhtmlNode node) {
+    if (node.getNodeType() == NodeType.Comment) {
+      if (node.getContent().startsWith("DOCTYPE"))
+        return false;
+    }
     if (node.getNodeType() == NodeType.Element) {
       if (!Utilities.existsInList(node.getName(),
           "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
