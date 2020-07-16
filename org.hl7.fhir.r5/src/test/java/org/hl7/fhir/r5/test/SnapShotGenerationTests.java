@@ -582,8 +582,12 @@ public class SnapShotGenerationTests {
 
   private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
-    if (sd == null)
+    if (sd == null) {
       sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
+    } 
+    if (sd == null) {
+      throw new DefinitionException("Unable to find profile "+url);
+    }
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition(), context);
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, new TestPKP());
