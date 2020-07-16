@@ -11,3 +11,5 @@ Code:
 * add code for converting resource names between versions
 * add FHIRPath engine to i18n framework
 * fix bundle rendering
+* change HTML parser to parse doctype declaration, and move html validation to the validator
+* snapshot generator - fix bug where slices get cardinaliyt min=1 by default
