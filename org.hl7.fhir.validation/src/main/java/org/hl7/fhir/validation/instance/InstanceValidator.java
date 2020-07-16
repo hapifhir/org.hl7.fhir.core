@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
@@ -2068,6 +2069,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkInnerNames(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
     for (XhtmlNode node : list) {
+      if (node.getNodeType() == NodeType.Comment) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !node.getContent().startsWith("DOCTYPE"), I18nConstants.XHTML_XHTML_DOCTYPE_ILLEGAL);
+      }
       if (node.getNodeType() == NodeType.Element) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(node.getName(),
           "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
@@ -2695,7 +2699,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     ElementDefinition ed = null;
-    ExpressionNode expr = fpe.parse(fixExpr(discriminator));
+    ExpressionNode expr = fpe.parse(fixExpr(discriminator, null));
     long t2 = System.nanoTime();
     ed = fpe.evaluateDefinition(expr, profile, element);
     timeTracker.sd(t2);
@@ -2720,7 +2724,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (element == null)
             throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_, id, p));
         }
-        expr = fpe.parse(fixExpr(discriminator));
+        expr = fpe.parse(fixExpr(discriminator, null));
         t2 = System.nanoTime();
         ed = fpe.evaluateDefinition(expr, profile, element);
         timeTracker.sd(t2);
@@ -3191,7 +3195,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       try {
-        n = fpe.parse(fixExpr(expression.toString()));
+        n = fpe.parse(fixExpr(expression.toString(), null));
       } catch (FHIRLexerException e) {
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getUrl(), path, e.getMessage()));
       }
@@ -4394,7 +4398,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (n == null) {
       long t = System.nanoTime();
       try {
-        n = fpe.parse(fixExpr(inv.getExpression()));
+        n = fpe.parse(fixExpr(inv.getExpression(), inv.getKey()));
       } catch (FHIRLexerException e) {
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage()));
       }
@@ -4562,7 +4566,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               try {
                 ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
                 if (n == null) {
-                  n = fpe.parse(fixExpr(inv.getExpression()));
+                  n = fpe.parse(fixExpr(inv.getExpression(), inv.getKey()));
                   inv.setUserData("validator.expression.cache", n);
                 }
                 fpe.check(null, sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
@@ -4576,7 +4580,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private String fixExpr(String expr) {
+  private String fixExpr(String expr, String key) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
     // R4
     // waiting for 4.0.2
@@ -4587,6 +4591,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }
 
+    if ("txt-2".equals(key)) {
+      return "htmlChecks2()";
+    }
     // handled in 4.0.1
     if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr))
       return "(component.empty() and hasMember.empty()) implies (dataAbsentReason.exists() or value.exists())";
