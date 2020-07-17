@@ -86,6 +86,11 @@ public class DOMWrappers {
       return null;
     }
 
+    @Override
+    public String fhirType() {
+      return type;
+    }
+
   }
 
   public static class PropertyWrapperElement extends RendererWrapperImpl implements PropertyWrapper {
@@ -194,6 +199,11 @@ public class DOMWrappers {
     @Override
     public ResourceWrapper getAsResource() {
      throw new Error("Not implemented yet");
+    }
+
+    @Override
+    public String fhirType() {
+      return getTypeCode();
     }
 
   }
@@ -341,6 +351,11 @@ public class DOMWrappers {
         sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       }
       return false;
+    }
+
+    @Override
+    public String fhirType() {
+      return wrapped.getNodeName();
     }
   }
 

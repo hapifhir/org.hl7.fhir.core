@@ -137,6 +137,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         else
           c = x.ah(r.getReference());
       } else {
+        
         c = x.ah(r.getReference());
       }
     } else {

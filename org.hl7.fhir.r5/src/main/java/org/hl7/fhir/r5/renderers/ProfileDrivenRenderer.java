@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.NotImplementedException;
@@ -66,6 +68,7 @@ import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
@@ -78,6 +81,7 @@ import org.w3c.dom.Element;
 
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
+  private Set<String> containedIds = new HashSet<>();
   
   public ProfileDrivenRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
@@ -94,14 +98,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    x.para().b().tx("Generated Narrative");
+    if (context.isAddGeneratedNarrativeHeader()) {
+      x.para().b().tx("Generated Narrative");
+    }
     try {
       StructureDefinition sd = r.getDefinition();
       ElementDefinition ed = sd.getSnapshot().getElement().get(0);
       if (sd.getType().equals("NamingSystem") && "icd10".equals(r.getId())) {
         System.out.println("hah!");
       }
-      generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.getName(), false, 0);
+      containedIds.clear();
+      generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -206,7 +213,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
       x.tx("Generated Summary: ");
     }
-    String path = res.getName();
+    String path = res.fhirType();
     StructureDefinition profile = getContext().getWorker().fetchResource(StructureDefinition.class, path);
     if (profile == null)
       x.tx("unknown resource " +path);
@@ -263,7 +270,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (ew == null)
       return;
 
@@ -338,7 +345,28 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderPeriod(x, p);
     } else if (e instanceof Reference) {
       Reference r = (Reference) e;
-      renderReference(res, x, r);
+      if (r.getReference() != null && r.getReference().contains("#")) {
+        if (containedIds.contains(r.getReference().substring(1))) {
+          x.ah(r.getReference()).tx("See "+r.getReference());
+        } else {
+          // in this case, we render the resource in line
+          ResourceWrapper rw = null;
+          for (ResourceWrapper t : res.getContained()) {
+            if (r.getReference().substring(1).equals(t.getId())) {
+              rw = t;
+            }
+          }
+          if (rw == null) {
+            renderReference(res, x, r);
+          } else {
+            x.an(rw.getId());
+            ResourceRenderer rr = RendererFactory.factory(rw, context.copy().setAddGeneratedNarrativeHeader(false));
+            rr.render(x.blockquote(), rw);
+          }
+        }
+      } else {
+        renderReference(res, x, r);
+      }
     } else if (e instanceof Resource) {
       return;
     } else if (e instanceof ElementDefinition) {
@@ -551,7 +579,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private boolean generateByProfile(StructureDefinition profile, boolean showCodeDetails) {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
+    if(context.isAddGeneratedNarrativeHeader()) {
+      x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
+    }
     try {
       generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
     } catch (Exception e) {
@@ -562,11 +592,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return true;
   }
 
-  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateByProfile(Resource res, StructureDefinition profile, Base e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     generateByProfile(new ResourceWrapperDirect(this.context, res), profile, new BaseWrapperDirect(this.context, e), allElements, defn, children, x, path, showCodeDetails, 0);
   }
 
-  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (children.isEmpty()) {
       renderLeaf(res, e, defn, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
     } else {
@@ -575,11 +605,18 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           ElementDefinition child = getElementDefinition(children, path+"."+p.getName(), p);
           if (child != null) {
             Map<String, String> displayHints = readDisplayHints(child);
-            if (!exemptFromRendering(child)) {
+            if ("DomainResource.contained".equals(child.getBase().getPath())) {
+//              if (p.getValues().size() > 0 && child != null) {
+//                for (BaseWrapper v : p.getValues()) {
+//                  x.an(v.get("id").primitiveValue());
+//                }
+//              }
+              System.out.print("c");
+            } else if (!exemptFromRendering(child)) {
               List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
               filterGrandChildren(grandChildren, path+"."+p.getName(), p);
-              if (p.getValues().size() > 0 && child != null) {
-                if (isPrimitive(child)) {
+              if (p.getValues().size() > 0) {
+                 if (isPrimitive(child)) {
                   XhtmlNode para = x.para();
                   String name = p.getName();
                   if (name.endsWith("[x]"))
@@ -691,7 +728,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       tr.td().b().addText(Utilities.capitalize(tail(e.getPath())));
   }
 
-  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException {
+  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     for (ElementDefinition e : grandChildren) {
       PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
