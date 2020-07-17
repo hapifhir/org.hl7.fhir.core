@@ -81,7 +81,12 @@ public class UtilitiesTests {
     } else if (os.contains(LINUX)) {
       return LINUX_TEMP_DIR;
     } else if (os.toUpperCase().contains(WINDOWS)) {
-      return WIN_TEMP_DIR;
+      File tmp = new File("c:\\temp");
+      if(tmp.exists()) {
+    	  return WIN_TEMP_DIR;
+      } else {
+    	  return System.getProperty("java.io.tmpdir");
+      }
     } else {
       throw new IllegalStateException("OS not recognized...cannot verify created directories.");
     }
