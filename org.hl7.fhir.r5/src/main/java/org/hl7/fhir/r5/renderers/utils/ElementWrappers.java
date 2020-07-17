@@ -97,6 +97,11 @@ public class ElementWrappers {
       return null;
     }
 
+    @Override
+    public String fhirType() {
+      return element.fhirType();
+    }
+
   }
 
   public static class ResourceWrapperMetaElement extends WrapperBaseImpl implements ResourceWrapper {
@@ -236,6 +241,11 @@ public class ElementWrappers {
       }
       return false;
     }
+
+    @Override
+    public String fhirType() {
+      return wrapped.fhirType();
+    }
   }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
@@ -307,6 +317,11 @@ public class ElementWrappers {
     @Override
     public ResourceWrapper getAsResource() {
       return new ElementWrappers.ResourceWrapperMetaElement(context, values.get(0));
+    }
+
+    @Override
+    public String fhirType() {
+      return getTypeCode();
     }
 
   }
