@@ -571,8 +571,14 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("img").attribute("src", src).attribute("title", title);    
   }
 
-  public void an(String href) {
-    addTag("a").attribute("name", href).tx(" ");
+  public XhtmlNode an(String href) {
+    return an(href, " ");
+  }
+  
+  public XhtmlNode an(String href, String tx) {
+    XhtmlNode a = addTag("a").attribute("name", href);
+    a.tx(tx);
+    return a;
   }
 
   public XhtmlNode span(String style, String title) {

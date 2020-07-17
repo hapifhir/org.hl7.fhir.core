@@ -30,6 +30,7 @@ public class BaseWrappers {
     public StructureDefinition getStructure();
     public BaseWrapper value();
     public ResourceWrapper getAsResource();
+    public String fhirType();
   }
 
   public interface WrapperBase  extends RendererWrapper {
@@ -37,6 +38,7 @@ public class BaseWrappers {
     public Base get(String name) throws UnsupportedEncodingException, FHIRException, IOException;
     public List<BaseWrapper> children(String name) throws UnsupportedEncodingException, FHIRException, IOException;
     public List<PropertyWrapper> children();
+    public String fhirType();
   }
 
   public interface ResourceWrapper extends WrapperBase {
@@ -55,6 +57,7 @@ public class BaseWrappers {
   public interface BaseWrapper extends WrapperBase {
     public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException;
     public PropertyWrapper getChildByName(String tail);
+    public String fhirType();
   }
 
   public static abstract class RendererWrapperImpl implements RendererWrapper {
