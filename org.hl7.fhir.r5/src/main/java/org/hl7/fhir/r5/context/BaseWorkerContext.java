@@ -260,40 +260,54 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
           throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
         }
-        if ("StructureDefinition".equals(r.getType())) {
-          StructureDefinition sd = (StructureDefinition) r.getResource();
-          if ("1.4.0".equals(version)) {
-            fixOldSD(sd);
-          }
-          structures.register(r, packageInfo);
-        } else if ("ValueSet".equals(r.getType())) {
-          valueSets.register(r, packageInfo);
-        } else if ("CodeSystem".equals(r.getType())) {
-          codeSystems.register(r, packageInfo);
-        } else if ("ImplementationGuide".equals(r.getType())) {
-          guides.register(r, packageInfo);
-        } else if ("CapabilityStatement".equals(r.getType())) {
-          capstmts.register(r, packageInfo);
-        } else if ("Measure".equals(r.getType())) {
-          measures.register(r, packageInfo);
-        } else if ("Library".equals(r.getType())) {
-          libraries.register(r, packageInfo);        
-        } else if ("SearchParameter".equals(r.getType())) {
-          searchParameters.register(r, packageInfo);
-        } else if ("PlanDefinition".equals(r.getType())) {
-          plans.register(r, packageInfo);
-        } else if ("OperationDefinition".equals(r.getType())) {
-          operations.register(r, packageInfo);
-        } else if ("Questionnaire".equals(r.getType())) {
-          questionnaires.register(r, packageInfo);
-        } else if ("ConceptMap".equals(r.getType())) {
-          maps.register(r, packageInfo);
-        } else if ("StructureMap".equals(r.getType())) {
-          transforms.register(r, packageInfo);
-        } else if ("NamingSystem".equals(r.getType())) {
-          systems.register(r, packageInfo);
+        switch(r.getType()) {
+          case "StructureDefinition":
+            StructureDefinition sd = (StructureDefinition) r.getResource();
+            if ("1.4.0".equals(version)) {
+              fixOldSD(sd);
+            }
+            structures.register(r, packageInfo);
+            break;
+          case "ValueSet":
+            valueSets.register(r, packageInfo);
+            break;
+          case "CodeSystem":
+            codeSystems.register(r, packageInfo);
+            break;
+          case "ImplementationGuide":
+            guides.register(r, packageInfo);
+            break;
+          case "CapabilityStatement":
+            capstmts.register(r, packageInfo);
+            break;
+          case "Measure":
+            measures.register(r, packageInfo);
+            break;
+          case "Library":
+            libraries.register(r, packageInfo);
+            break;
+          case "SearchParameter":
+            searchParameters.register(r, packageInfo);
+            break;
+          case "PlanDefinition":
+            plans.register(r, packageInfo);
+            break;
+          case "OperationDefinition":
+            operations.register(r, packageInfo);
+            break;
+          case "Questionnaire":
+            questionnaires.register(r, packageInfo);
+            break;
+          case "ConceptMap":
+            maps.register(r, packageInfo);
+            break;
+          case "StructureMap":
+            transforms.register(r, packageInfo);
+            break;
+          case "NamingSystem":
+            systems.register(r, packageInfo);
+            break;
         }
-      
     }
   }
 
@@ -997,8 +1011,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (res != null)
             return (T) res;
         }
-        return null;      
-      }    
+        return null;
+      }
       if (supportedCodeSystems.contains(uri))
         return null;
       throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
