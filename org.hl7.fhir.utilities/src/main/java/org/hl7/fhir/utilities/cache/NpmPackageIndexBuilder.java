@@ -44,16 +44,24 @@ public class NpmPackageIndexBuilder {
           files.add(fi);
           fi.addProperty("filename", name);
           fi.addProperty("resourceType", json.get("resourceType").getAsString()); 
-          if (json.has("id") && json.get("id").isJsonPrimitive())
+          if (json.has("id") && json.get("id").isJsonPrimitive()) {
             fi.addProperty("id", json.get("id").getAsString());
-          if (json.has("url") && json.get("url").isJsonPrimitive())
+          }
+          if (json.has("url") && json.get("url").isJsonPrimitive()) {
             fi.addProperty("url", json.get("url").getAsString());
-          if (json.has("version") && json.get("version").isJsonPrimitive())
+          }
+          if (json.has("version") && json.get("version").isJsonPrimitive()) {
             fi.addProperty("version", json.get("version").getAsString());
-          if (json.has("kind") && json.get("kind").isJsonPrimitive())
+          }
+          if (json.has("kind") && json.get("kind").isJsonPrimitive()) {
             fi.addProperty("kind", json.get("kind").getAsString());
-          if (json.has("type") && json.get("type").isJsonPrimitive())
+          }
+          if (json.has("type") && json.get("type").isJsonPrimitive()) {
             fi.addProperty("type", json.get("type").getAsString());
+          }
+          if (json.has("supplements") && json.get("supplements").isJsonPrimitive()) {
+            fi.addProperty("supplements", json.get("supplements").getAsString());
+          }
         }
       } catch (Exception e) {
         System.out.println("Error parsing "+name+": "+e.getMessage());

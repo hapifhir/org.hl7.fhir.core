@@ -55,12 +55,14 @@ import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 
-public class R2016MayToR4Loader implements IContextResourceLoader, VersionConvertorAdvisor40 {
+public class R2016MayToR4Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor40 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
+  public R2016MayToR4Loader() {
+    super(new String[0]);
+  }
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2016may = null;
@@ -101,8 +103,8 @@ public class R2016MayToR4Loader implements IContextResourceLoader, VersionConver
         StructureDefinition sd = (StructureDefinition) be.getResource();
         new ProfileUtilities(null, null, null).setIds(sd, false);
         if (patchUrls) {
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/2016May/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, "http://hl7.org/fhir/2016May/"));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }
@@ -140,24 +142,6 @@ public class R2016MayToR4Loader implements IContextResourceLoader, VersionConver
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
     return null;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R2016MayToR4Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R2016MayToR4Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
 }
