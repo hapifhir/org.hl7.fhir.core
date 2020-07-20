@@ -83,6 +83,9 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
@@ -101,10 +104,74 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple.AllConceptsFilter;
+import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple.IConceptFilter;
+import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple.PropertyFilter;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ValueSetExpanderSimple implements ValueSetExpander {
+
+  public class PropertyFilter implements IConceptFilter {
+
+    private ConceptSetFilterComponent filter;
+    private PropertyComponent property;
+
+    public PropertyFilter(ConceptSetFilterComponent fc, PropertyComponent propertyDefinition) {
+      this.filter = fc;
+      this.property = propertyDefinition;
+    }
+
+    @Override
+    public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
+      ConceptPropertyComponent pc = getPropertyForConcept(def);
+      if (pc != null) {
+        String v = pc.getValue().isPrimitive() ? pc.getValue().primitiveValue() : null;
+        switch (filter.getOp()) {
+        case DESCENDENTOF: throw new FHIRException("not supported yet");
+        case EQUAL: return filter.getValue().equals(v);
+        case EXISTS: throw new FHIRException("not supported yet");
+        case GENERALIZES: throw new FHIRException("not supported yet");
+        case IN: throw new FHIRException("not supported yet");
+        case ISA: throw new FHIRException("not supported yet");
+        case ISNOTA: throw new FHIRException("not supported yet");
+        case NOTIN: throw new FHIRException("not supported yet");
+        case NULL: throw new FHIRException("not supported yet");
+        case REGEX: throw new FHIRException("not supported yet");
+        default:
+          throw new FHIRException("Shouldn't get here");        
+        }            
+      } else if (property.getType() == PropertyType.BOOLEAN && filter.getOp() == FilterOperator.EQUAL) {
+        return "false".equals(filter.getValue()); 
+      } else {
+        return false;
+      }
+    }
+
+    private ConceptPropertyComponent getPropertyForConcept(ConceptDefinitionComponent def) {
+      for (ConceptPropertyComponent pc : def.getProperty()) {
+        if (pc.getCode().equals(property.getCode())) {
+          return pc;
+        }
+      }
+      return null;
+    }
+
+  }
+
+  public class AllConceptsFilter implements IConceptFilter {
+
+    @Override
+    public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
+      return true;
+    }
+  }
+
+  public interface IConceptFilter {
+
+    boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def);
+
+  }
 
   private List<ValueSetExpansionContainsComponent> codes = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private List<ValueSetExpansionContainsComponent> roots = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
@@ -214,7 +281,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     return list;
   }
 
-  private void addCodeAndDescendents(CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, ConceptDefinitionComponent exclusion)  throws FHIRException {
+  private void addCodeAndDescendents(CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, ConceptDefinitionComponent exclusion, IConceptFilter filterFunc)  throws FHIRException {
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
       if (exclusion.getCode().equals(def.getCode()))
@@ -224,24 +291,25 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       ValueSetExpansionContainsComponent np = null;
       boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
       boolean inc = CodeSystemUtilities.isInactive(cs, def);
-      if (includeAbstract || !abs)
+      if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def)) {
         np = addCode(system, def.getCode(), def.getDisplay(), parent, def.getDesignation(), expParams, abs, inc, filters);
+      }
       for (ConceptDefinitionComponent c : def.getConcept()) {
-        addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion);
+        addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion, filterFunc);
       }
       if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
         List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
         for (ConceptDefinitionComponent c : children)
-          addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion);
+          addCodeAndDescendents(cs, system, c, np, expParams, filters, exclusion, filterFunc);
       }
     } else {
       for (ConceptDefinitionComponent c : def.getConcept()) {
-        addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion);
+        addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion, filterFunc);
       }
       if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
         List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
         for (ConceptDefinitionComponent c : children)
-          addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion);
+          addCodeAndDescendents(cs, system, c, null, expParams, filters, exclusion, filterFunc);
       }
     }
 
@@ -517,7 +585,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
     if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
       // special case - add all the code system
       for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null);
+        addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter());
       }
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         addFragmentWarning(exp, cs);
@@ -556,14 +624,14 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
         if (def == null)
           throw new TerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
-        addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null);
+        addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter());
       } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISNOTA) {
         // special: all codes in the target code system that are not under the value
         ConceptDefinitionComponent defEx = getConceptForCode(cs.getConcept(), fc.getValue());
         if (defEx == null)
           throw new TerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         for (ConceptDefinitionComponent def : cs.getConcept()) {
-          addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, defEx);
+          addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, defEx, new AllConceptsFilter());
         }
       } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.DESCENDENTOF) {
         // special: all codes in the target code system under the value
@@ -571,11 +639,11 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         if (def == null)
           throw new TerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
         for (ConceptDefinitionComponent c : def.getConcept())
-          addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null);
+          addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter());
         if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
           List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
           for (ConceptDefinitionComponent c : children)
-            addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null);
+            addCodeAndDescendents(cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter());
         }
 
       } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
@@ -590,9 +658,32 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
             }
           }
         }
-      } else
+      } else if (isDefinedProperty(cs, fc.getProperty())) {
+        for (ConceptDefinitionComponent def : cs.getConcept()) {
+          addCodeAndDescendents(cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(fc, getPropertyDefinition(cs, fc.getProperty())));
+        }
+      } else {
         throw new NotImplementedException("Search by property[" + fc.getProperty() + "] and op[" + fc.getOp() + "] is not supported yet");
+      }
     }
+  }
+
+  private PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (cp.getCode().equals(property)) {
+        return cp;
+      }
+    }
+    return null;
+  }
+
+  private boolean isDefinedProperty(CodeSystem cs, String property) {
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (cp.getCode().equals(property)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {

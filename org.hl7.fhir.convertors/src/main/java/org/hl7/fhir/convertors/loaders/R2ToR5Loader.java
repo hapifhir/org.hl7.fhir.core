@@ -47,8 +47,11 @@ import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
@@ -56,15 +59,12 @@ import org.hl7.fhir.r5.model.ValueSet;
 
 public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
 
-  
   public R2ToR5Loader(String[] types) {
     super(types);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2 = null;
@@ -104,14 +104,54 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/DSTU2/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }
     return b;
   }
 
+
+  @Override
+  public org.hl7.fhir.r5.model.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r2 = null;
+    if (isJson)
+      r2 = new JsonParser().parse(stream);
+    else
+      r2 = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, this);
+    if (!cslist.isEmpty()) {
+      throw new FHIRException("Error: Cannot have included code systems");
+    }
+    if (killPrimitives) {
+      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+    }
+    if (patchUrls) {
+      if (r5 instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) r5;
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          patchUrl(ed);
+        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          patchUrl(ed);
+      }
+    }
+    return r5;
+  }
+
+  private void patchUrl(ElementDefinition ed) {
+    for (TypeRefComponent tr : ed.getType()) {
+      for (CanonicalType s : tr.getTargetProfile()) {
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2));
+      }
+      for (CanonicalType s : tr.getProfile()) {
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2));
+      }
+    }    
+  }
+  
   @Override
   public boolean ignoreEntry(BundleEntryComponent src) {
     return false;
@@ -142,24 +182,6 @@ public class R2ToR5Loader extends BaseLoader implements IContextResourceLoader, 
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
     return null;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R2ToR5Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R2ToR5Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
   @Override
