@@ -261,7 +261,6 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   private FilesystemPackageCacheManager pcm;
   private PrintWriter mapLog;
   private boolean debug;
-  private Set<String> loadedIgs = new HashSet<>();
   private IValidatorResourceFetcher fetcher;
   private boolean assumeValidRestReferences;
   private boolean noExtensibleBindingMessages;
@@ -608,10 +607,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws Exception {
-    loadedIgs.add(pi.name()+"#"+pi.version());
+    context.getLoadedPackages().add(pi.name()+"#"+pi.version());
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
-      if (!loadedIgs.contains(s)) {
+      if (! context.getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from "+s);
           res.putAll(fetchByPackage(s));
@@ -772,6 +771,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
     NpmPackage npm = pcm.loadPackage(src, null);
     if (npm != null) {
+      for (String s : npm.dependencies()) {
+        if (!context.getLoadedPackages().contains(s)) {
+          if (!VersionUtilities.isCorePackage(s)) {
+            loadIg(s, false);
+          }
+        }
+      }
       context.loadFromPackage(npm, loaderForVersion(npm.fhirVersion()));
     } else {    
       String canonical = null;

@@ -287,7 +287,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
       return;
 
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    R3ToR4Loader ldr = new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
+    R3ToR4Loader ldr = (R3ToR4Loader) new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
 
     System.out.println("loading R3");
     contextR3 = new SimpleWorkerContext();
