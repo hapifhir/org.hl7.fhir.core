@@ -30,7 +30,6 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -54,12 +53,14 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 
-public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdvisor30 {
+public class R2ToR3Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor30 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
+  public R2ToR3Loader() {
+    super(new String[0]);
+  }
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2 = null;
@@ -82,7 +83,7 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-	cslist.clear();
+    cslist.clear();
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -98,8 +99,8 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/DSTU2/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }
@@ -121,30 +122,11 @@ public class R2ToR3Loader implements IContextResourceLoader, VersionConvertorAdv
     cs.setId(vs.getId());
     cs.setValueSet(vs.getUrl());
     cslist.add(cs);
-    
   }
 
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
     return null;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R2ToR3Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R2ToR3Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
 }

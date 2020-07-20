@@ -133,7 +133,8 @@ public class R2R3ConversionManager implements ITransformerServices {
   // set up ------------------------------------------------------------------
   public void setR2Definitions(InputStream stream) throws IOException, FHIRException {
     needPrepare = true;
-    R2ToR3Loader ldr = new R2ToR3Loader().setPatchUrls(true).setKillPrimitives(true);
+    R2ToR3Loader ldr = new R2ToR3Loader();
+    ldr.setPatchUrls(true).setKillPrimitives(true);
     Map<String, InputStream> files = readInputStream(stream);
     contextR2 = new SimpleWorkerContext();
     contextR2.setAllowLoadingDuplicates(true);
