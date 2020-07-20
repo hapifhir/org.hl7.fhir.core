@@ -73,6 +73,11 @@ public class SnapShotGenerationTests {
     }
 
     @Override
+    public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+      return null;
+    }
+
+    @Override
     public String[] getTypes() {
       return types;
     }

@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.loaders.R2016MayToR5Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR5Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.R5ToR5Loader;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -38,6 +39,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.cache.PackageClient;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -368,18 +370,32 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
 
   private void loadCoreDefinitions(String src, boolean recursive) throws Exception {
-    Map<String, byte[]> source = loadIgSource(src, recursive, true);   
-    if (version == null)
-      version = getVersionFromPack(source);
-    context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion(), new PackageVersion(src));
+    if (pcm == null) {
+      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    }
+    NpmPackage npm = pcm.loadPackage(src, null);
+    if (npm != null) {
+      version = npm.fhirVersion();
+      context = SimpleWorkerContext.fromPackage(npm, loaderForVersion());
+    } else {
+      Map<String, byte[]> source = loadIgSource(src, recursive, true);   
+      if (version == null) {
+        version = getVersionFromPack(source);
+      }
+      context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion(), new PackageVersion(src));
+      grabNatives(source, "http://hl7.org/fhir");
+    }
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());
-    NpmPackage npm = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");
-    context.loadFromPackage(npm, null);
-    grabNatives(source, "http://hl7.org/fhir");
+    NpmPackage npmX = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");
+    context.loadFromPackage(npmX, null);
   }
 
   private IContextResourceLoader loaderForVersion() {
+    return loaderForVersion(version);
+  }
+  
+  private IContextResourceLoader loaderForVersion(String version) {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
@@ -390,6 +406,8 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
     if (version.startsWith("4.0"))
       return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
+    if (version.startsWith("5.0"))
+      return new R5ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
     return null;
   }
 
@@ -752,34 +770,39 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
-    String canonical = null;
-    Map<String, byte[]> source = loadIgSource(src, recursive, true);
-    String version = Constants.VERSION;
-    if (this.version != null)
-      version = this.version;
-    if (source.containsKey("version.info"))
-      version = readInfoVersion(source.get("version.info"));
-    
-    for (Entry<String, byte[]> t : source.entrySet()) {
-      String fn = t.getKey();
-      if (!exemptFile(fn)) {
-        Resource r = loadFileWithErrorChecking(version, t, fn);
-        if (r != null) {
-          context.cacheResource(r);
-          if (r instanceof ImplementationGuide) {
-            canonical = ((ImplementationGuide) r).getUrl();
-            igs.add((ImplementationGuide) r);
-            if (canonical.contains("/ImplementationGuide/")) {
-              Resource r2 = r.copy();
-              ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
-              context.cacheResource(r2);
+    NpmPackage npm = pcm.loadPackage(src, null);
+    if (npm != null) {
+      context.loadFromPackage(npm, loaderForVersion(npm.fhirVersion()));
+    } else {    
+      String canonical = null;
+      Map<String, byte[]> source = loadIgSource(src, recursive, true);
+      String version = Constants.VERSION;
+      if (this.version != null)
+        version = this.version;
+      if (source.containsKey("version.info"))
+        version = readInfoVersion(source.get("version.info"));
+
+      for (Entry<String, byte[]> t : source.entrySet()) {
+        String fn = t.getKey();
+        if (!exemptFile(fn)) {
+          Resource r = loadFileWithErrorChecking(version, t, fn);
+          if (r != null) {
+            context.cacheResource(r);
+            if (r instanceof ImplementationGuide) {
+              canonical = ((ImplementationGuide) r).getUrl();
+              igs.add((ImplementationGuide) r);
+              if (canonical.contains("/ImplementationGuide/")) {
+                Resource r2 = r.copy();
+                ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
+                context.cacheResource(r2);
+              }
             }
           }
         }
       }
-    }
-    if (canonical != null) {
-      grabNatives(source, canonical);
+      if (canonical != null) {
+        grabNatives(source, canonical);
+      }
     }
   }
 
