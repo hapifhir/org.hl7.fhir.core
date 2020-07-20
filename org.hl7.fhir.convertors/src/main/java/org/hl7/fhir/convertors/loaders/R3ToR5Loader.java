@@ -64,9 +64,7 @@ public class R3ToR5Loader extends BaseLoader implements IContextResourceLoader, 
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r3 = null;
@@ -105,8 +103,8 @@ public class R3ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/3.0/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
           for (ElementDefinition ed : sd.getSnapshot().getElement()) 
             patchUrl(ed);
           for (ElementDefinition ed : sd.getDifferential().getElement()) 
@@ -134,8 +132,8 @@ public class R3ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
-        sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         for (ElementDefinition ed : sd.getSnapshot().getElement()) 
           patchUrl(ed);
         for (ElementDefinition ed : sd.getDifferential().getElement()) 
@@ -148,10 +146,10 @@ public class R3ToR5Loader extends BaseLoader implements IContextResourceLoader, 
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/3.0/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/3.0/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
       }
     }    
   }
@@ -189,27 +187,8 @@ public class R3ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     return null;
   }
 
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R3ToR5Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R3ToR5Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
-  }
-
   @Override
   public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
-
 }

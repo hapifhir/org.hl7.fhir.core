@@ -65,9 +65,7 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2016may = null;
@@ -108,8 +106,8 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
         StructureDefinition sd = (StructureDefinition) be.getResource();
         new ProfileUtilities(null, null, null).setIds(sd, false);
         if (patchUrls) {
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/2016May/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2016MAY));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }
@@ -133,8 +131,8 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
-        sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         for (ElementDefinition ed : sd.getSnapshot().getElement()) 
           patchUrl(ed);
         for (ElementDefinition ed : sd.getDifferential().getElement()) 
@@ -147,10 +145,10 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/1.4/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/1.4/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
       }
     }    
   }
@@ -186,24 +184,6 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
     return null;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R2016MayToR5Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R2016MayToR5Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
   @Override
