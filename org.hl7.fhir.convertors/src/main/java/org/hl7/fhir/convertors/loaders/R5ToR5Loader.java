@@ -115,6 +115,35 @@ public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     return b;
   }
 
+  @Override
+  public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r5 = null;
+    if (isJson)
+      r5 = new JsonParser().parse(stream);
+    else
+      r5 = new XmlParser().parse(stream);
+
+    if (!cslist.isEmpty()) {
+      throw new FHIRException("Error: Cannot have included code systems");
+    }
+    if (killPrimitives) {
+      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+    }
+    if (patchUrls) {
+      if (r5 instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) r5;
+        sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
+        sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          patchUrl(ed);
+        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          patchUrl(ed);
+      }
+    }
+    return r5;
+  }
+
+
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {

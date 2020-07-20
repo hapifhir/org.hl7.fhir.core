@@ -119,7 +119,7 @@ public interface IWorkerContext {
 
   public interface IContextResourceLoader {
     Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-
+    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
     String[] getTypes();
   }
 

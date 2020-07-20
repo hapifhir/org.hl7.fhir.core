@@ -447,6 +447,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return loadPackageFromFile(id, version.substring(5));
     }
 
+    if (version == null && id.contains("#")) {
+      version = id.substring(id.indexOf("#")+1);
+      id = id.substring(0, id.indexOf("#"));
+    }
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
