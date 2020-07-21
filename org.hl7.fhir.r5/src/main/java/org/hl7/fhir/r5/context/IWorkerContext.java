@@ -118,9 +118,39 @@ public interface IWorkerContext {
   }
 
   public interface IContextResourceLoader {
-    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    /** 
+     * @return List of the resource types that shoud be loaded
+     */
     String[] getTypes();
+    
+    /**
+     * Request to actually load the resources and do whatever is required
+     *  
+     * @param stream
+     * @param isJson
+     * @return A bundle because some single resources become multiple resources after loading
+     * @throws FHIRException
+     * @throws IOException
+     */
+    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /**
+     * Load a single resources (lazy load)
+     * 
+     * @param stream
+     * @param isJson
+     * @return
+     * @throws FHIRException - throw this if you a single resource can't be returned - can't lazy load in this circumstance   
+     * @throws IOException
+     */
+    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /** 
+     * get the path for references to this resource.
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);   
   }
 
 

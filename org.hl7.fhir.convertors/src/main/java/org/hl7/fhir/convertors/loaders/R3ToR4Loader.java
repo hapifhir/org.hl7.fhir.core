@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -50,12 +51,12 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 
-public class R3ToR4Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor40 {
+public class R3ToR4Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor40 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
 
   public R3ToR4Loader() {
-    super(new String[0]);
+    super(new String[0], new NullLoaderKnowledgeProvider());
   }
 
   @Override

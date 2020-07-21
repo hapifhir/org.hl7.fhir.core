@@ -82,6 +82,11 @@ public class SnapShotGenerationTests {
       return types;
     }
 
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
+    }
+
   }
 
   public enum TestFetchMode {

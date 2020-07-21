@@ -262,8 +262,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         switch(r.getType()) {
           case "StructureDefinition":
-            StructureDefinition sd = (StructureDefinition) r.getResource();
             if ("1.4.0".equals(version)) {
+              StructureDefinition sd = (StructureDefinition) r.getResource();
               fixOldSD(sd);
             }
             structures.register(r, packageInfo);
