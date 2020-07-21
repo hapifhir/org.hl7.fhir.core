@@ -1,15 +1,32 @@
 package org.hl7.fhir.convertors.loaders;
 
+import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseLoader {
+public abstract class BaseLoaderR5 {
 
+  public interface ILoaderKnowledgeProvider {
+    /** 
+     * get the path for references to this resource.
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+  }
+  
+  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
+    }
+  }
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
   protected final String URL_DSTU2016MAY = "http://hl7.org/fhir/1.4/";
@@ -22,10 +39,12 @@ public abstract class BaseLoader {
   protected boolean killPrimitives;;
 
   private String[] types;
+  private ILoaderKnowledgeProvider lkp;
 
-  public BaseLoader(String[] types) {
+  public BaseLoaderR5(String[] types, ILoaderKnowledgeProvider lkp) {
     super();
     this.types = types;
+    this.lkp = lkp;
   }
   
   public String[] getTypes() {
@@ -36,7 +55,7 @@ public abstract class BaseLoader {
     return patchUrls;
   }
 
-  public BaseLoader setPatchUrls(boolean patchUrls) {
+  public BaseLoaderR5 setPatchUrls(boolean patchUrls) {
     this.patchUrls = patchUrls;
     return this;
   }
@@ -45,10 +64,20 @@ public abstract class BaseLoader {
     return killPrimitives;
   }
 
-  public BaseLoader setKillPrimitives(boolean killPrimitives) {
+  public BaseLoaderR5 setKillPrimitives(boolean killPrimitives) {
     this.killPrimitives = killPrimitives;
     return this;
   }
 
+  public String getResourcePath(Resource resource) {
+    return lkp.getResourcePath(resource);
+  }
+
+  public void setPath(Resource r) {
+    String path = lkp.getResourcePath(r);
+    if (path != null) {
+      r.setUserData("path", path);
+    }
+  }
 
 }

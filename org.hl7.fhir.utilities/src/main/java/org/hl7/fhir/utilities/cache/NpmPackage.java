@@ -1053,6 +1053,10 @@ public class NpmPackage {
   public boolean isChangedByLoader() {
     return changedByLoader;
   }
+
+  public boolean isCore() {
+    return "fhir.core".equals(JSONUtil.str(npm, "type"));
+  }
   
   
 }

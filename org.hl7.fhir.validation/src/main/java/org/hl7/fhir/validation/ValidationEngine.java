@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.*;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.convertors.loaders.R2016MayToR5Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR5Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR5Loader;
@@ -398,15 +399,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});
+      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}); // special case
+      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
+      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());    
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
+      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());    
     if (version.startsWith("5.0"))
-      return new R5ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"});    
+      return new R5ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());    
     return null;
   }
 
