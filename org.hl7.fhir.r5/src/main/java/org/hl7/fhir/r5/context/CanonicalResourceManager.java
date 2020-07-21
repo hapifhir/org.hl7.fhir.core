@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -73,6 +74,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public CanonicalResource getResource() throws FHIRException {
       if (resource == null) {
         resource = loadResource();
+        ((DomainResource) resource).setText(null);
         if (resource instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
         }
@@ -195,6 +197,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (!r.hasId()) {
       r.setId(UUID.randomUUID().toString());
     }
+    r.setText(null);
     CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
     see(cr);
   }
