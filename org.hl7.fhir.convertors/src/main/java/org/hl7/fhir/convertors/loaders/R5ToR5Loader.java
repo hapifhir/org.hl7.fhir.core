@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.ILoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -56,10 +58,10 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 
-public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+public class R5ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
 
-  public R5ToR5Loader(String[] types) {
-    super(types);
+  public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+    super(types, lkp);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
@@ -120,6 +122,7 @@ public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       r5 = new JsonParser().parse(stream);
     else
       r5 = new XmlParser().parse(stream);
+    setPath(r5);
 
     if (!cslist.isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
