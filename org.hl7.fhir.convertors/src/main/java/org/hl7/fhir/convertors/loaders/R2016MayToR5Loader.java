@@ -58,10 +58,10 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 
-public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+public class R2016MayToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
 
-  public R2016MayToR5Loader(String[] types) {
-    super(types);
+  public R2016MayToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+    super(types, lkp);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
@@ -122,6 +122,8 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
     else
       r2016may = new XmlParser().parse(stream);
     org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may);
+    setPath(r5);
+
     if (!cslist.isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }

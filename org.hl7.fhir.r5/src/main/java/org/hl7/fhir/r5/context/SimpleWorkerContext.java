@@ -122,7 +122,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         } finally {
           f.close();
         }
-      } catch (FHIRFormatError | IOException e) {
+      } catch (Exception e) {
         throw new FHIRException("Error loading "+filename+": "+e.getMessage(), e);
       }
     }
@@ -317,11 +317,19 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		      logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
 		    }
 	      if (filter == null || filter.isOkToLoad(e.getResource())) {
+	        String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
+	        if (path != null) {
+	          e.getResource().setUserData("path", path);
+	        }
 		      cacheResource(e.getResource());
 	      }
 		  }
 		} else if (f instanceof CanonicalResource) {
 		  if (filter == null || filter.isOkToLoad(f)) {
+        String path = loader != null ? loader.getResourcePath(f) : null;
+        if (path != null) {
+          f.setUserData("path", path);
+        }
 		    cacheResource(f);
 		  }
 		}
@@ -347,6 +355,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (f != null)
       for (BundleEntryComponent e : f.getEntry()) {
         if (filter == null || filter.isOkToLoad(e.getResource())) {
+          String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
+          if (path != null) {
+            e.getResource().setUserData("path", path);
+          }
           cacheResourceFromPackage(e.getResource(), pi);
         }
     }
@@ -356,26 +368,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		loadFromStream(new CSFileInputStream(path), loader);
 	}
   
-//  public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, ILoadFilter filter) throws IOException  {
-//    if (progress) {
-//      System.out.println("Load Package "+pi.name()+"#"+pi.version());
-//    }
-//    loadedPackages.add(pi.id()+"#"+pi.version());
-//    String [] types = loader != null ? loader.getTypes() : new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" }; 
-//    for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
-//       try {
-//         registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version()));
-//      } catch (FHIRException e) {
-//        throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
-//      }
-//    }
-//    for (String s : pi.list("other")) {
-//      binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
-//    }
-//    if (version == null) {
-//      version = pi.version();
-//    }
-//  }
 
   @Override
   public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {

@@ -39,6 +39,8 @@ import java.util.UUID;
 
 import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.ILoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -57,10 +59,10 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 
-public class R4ToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
 
-  public R4ToR5Loader(String[] types) {
-    super(types);
+  public R4ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+    super(types, lkp);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
@@ -123,6 +125,8 @@ public class R4ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     else
       r4 = new XmlParser().parse(stream);
     org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4);
+    setPath(r5);
+
     if (!cslist.isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
