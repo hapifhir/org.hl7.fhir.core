@@ -591,56 +591,63 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters p = expParameters.copy(); 
     return expandVS(vs, cacheOk, heirarchical, p);
   }
-  
+
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, Parameters p)  {
-    if (p == null)
+    if (p == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
+    }
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
-    if (!vs.hasUrl())
+    if (!vs.hasUrl()) {
       throw new Error(formatMessage(I18nConstants.NO_VALUE_SET_IN_URL));
-    
-      CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
-      ValueSetExpansionOutcome res;
-      if (cacheOk) {
-        res = txCache.getExpansion(cacheToken);
-        if (res != null)
-          return res;
-      }
-      p.setParameter("includeDefinition", false);
-      p.setParameter("excludeNested", !heirarchical);
-      
-      // ok, first we try to expand locally
-      try {
-        ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
-        res = vse.doExpand(vs, p);
-        if (!res.getValueset().hasUrl())
-          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
-        txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
+    }
+
+    CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
+    ValueSetExpansionOutcome res;
+    if (cacheOk) {
+      res = txCache.getExpansion(cacheToken);
+      if (res != null) {
         return res;
-      } catch (Exception e) {
       }
-      
-      // if that failed, we try to expand on the server
-      if (noTerminologyServer)
-      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("_limit", Integer.toString(expandCodesLimit ));
-      params.put("_incomplete", "true");
-      tlog("$expand on "+txCache.summary(vs));
-      try {
-        ValueSet result = txClient.expandValueset(vs, p, params);
-        if (!result.hasUrl())
-          result.setUrl(vs.getUrl());
-        if (!result.hasUrl())
-          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
-        res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
-      } catch (Exception e) {
-        res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
+    }
+    p.setParameter("includeDefinition", false);
+    p.setParameter("excludeNested", !heirarchical);
+
+    // ok, first we try to expand locally
+    try {
+      ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
+      res = vse.doExpand(vs, p);
+      if (!res.getValueset().hasUrl()) {
+        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
       }
-      txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+      txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
       return res;
+    } catch (Exception e) {
+    }
+
+    // if that failed, we try to expand on the server
+    if (noTerminologyServer) {
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
+    }
+    Map<String, String> params = new HashMap<String, String>();
+    params.put("_limit", Integer.toString(expandCodesLimit ));
+    params.put("_incomplete", "true");
+    tlog("$expand on "+txCache.summary(vs));
+    try {
+      ValueSet result = txClient.expandValueset(vs, p, params);
+      if (!result.hasUrl()) {
+        result.setUrl(vs.getUrl());
+      }
+      if (!result.hasUrl()) {
+        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+      }
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+    } catch (Exception e) {
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
+    }
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    return res;
   }
 
 
