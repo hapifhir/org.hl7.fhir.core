@@ -121,6 +121,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         synchronized (this) {
           resource = res;
         }
+        proxy = null;
       }
       return resource;
     }
@@ -206,7 +207,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology")) {
       List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
       for (CachedCanonicalResource<T> n : list) {
-        if (n.getUrl().equals(cr.getUrl()) && isBasePackage(n.getPackageInfo())) {
+        if (n.getUrl() != null && n.getUrl().equals(cr.getUrl()) && isBasePackage(n.getPackageInfo())) {
           toDrop.add(n);
         }
       }
