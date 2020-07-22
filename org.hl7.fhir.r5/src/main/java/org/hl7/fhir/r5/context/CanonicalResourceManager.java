@@ -74,7 +74,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public CanonicalResource getResource() throws FHIRException {
       if (resource == null) {
         resource = loadResource();
-        ((DomainResource) resource).setText(null);
         if (resource instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
         }
@@ -197,7 +196,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (!r.hasId()) {
       r.setId(UUID.randomUUID().toString());
     }
-    r.setText(null);
     CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
     see(cr);
   }
