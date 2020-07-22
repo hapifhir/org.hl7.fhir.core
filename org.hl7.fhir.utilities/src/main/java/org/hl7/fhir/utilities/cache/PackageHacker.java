@@ -114,4 +114,12 @@ public class PackageHacker {
     }
   }
 
+  public static String fixPackageUrl(String webref) {
+    // workaround for past publishing problems
+    if (webref.equals("file://C:\\GitHub\\hl7.fhir.us.qicore#4.0.0\\output")) {
+      return "http://hl7.org/fhir/us/qicore/STU4";
+    }
+    return webref;  
+  }
+
 }
