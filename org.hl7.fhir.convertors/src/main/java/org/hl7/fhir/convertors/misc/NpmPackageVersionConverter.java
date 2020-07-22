@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.common.base.Charsets;
@@ -217,6 +218,9 @@ public class NpmPackageVersionConverter {
   private byte[] convertPackage(byte[] cnt) throws IOException {
     JsonObject json = JsonTrackingParser.parseJson(cnt);
     currentVersion = json.getAsJsonArray("fhirVersions").get(0).getAsString();
+    String name = JSONUtil.str(json, "name");
+    json.remove("name");
+    json.addProperty("name", name+"."+vCode);
     json.remove("fhirVersions");
     json.remove("dependencies");
     JsonArray fv = new JsonArray();
