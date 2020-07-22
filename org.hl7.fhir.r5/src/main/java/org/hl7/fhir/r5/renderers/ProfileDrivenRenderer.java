@@ -611,7 +611,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 //                  x.an(v.get("id").primitiveValue());
 //                }
 //              }
-              System.out.print("c");
             } else if (!exemptFromRendering(child)) {
               List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
               filterGrandChildren(grandChildren, path+"."+p.getName(), p);
