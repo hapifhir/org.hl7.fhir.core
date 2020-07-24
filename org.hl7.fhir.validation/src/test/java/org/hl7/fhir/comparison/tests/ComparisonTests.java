@@ -116,7 +116,7 @@ public class ComparisonTests {
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
 
-    ComparisonSession session = new ComparisonSession(context, "Comparison Tests", null);
+    ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null);
 
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);
@@ -146,7 +146,7 @@ public class ComparisonTests {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
       genSnapshot(utils, (StructureDefinition) left);
       genSnapshot(utils, (StructureDefinition) right);
-      ProfileComparer pc = new ProfileComparer(session, utils);
+      ProfileComparer pc = new ProfileComparer(session, utils, utils);
       ProfileComparison csc = pc.compare((StructureDefinition) left, (StructureDefinition) right);
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());

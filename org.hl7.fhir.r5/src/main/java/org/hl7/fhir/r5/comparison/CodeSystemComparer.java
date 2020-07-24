@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
@@ -55,6 +56,18 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     protected String summary() {
       return "CodeSystem: "+left.present()+" vs "+right.present();
     }
+
+    @Override
+    protected String fhirType() {
+      return "CodeSystem";
+    }
+
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      super.countMessages(cnts);
+      combined.countMessages(cnts);
+    }
+
   }
 
   private CodeSystem right;

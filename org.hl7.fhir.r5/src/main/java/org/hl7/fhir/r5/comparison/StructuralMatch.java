@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -85,6 +86,22 @@ public class StructuralMatch<T> {
       }
     }
     return false;
+  }
+
+  public void countMessages(MessageCounts cnts) {
+    for (ValidationMessage vm : getMessages()) {
+      if (vm.getLevel() == IssueSeverity.ERROR) {
+        cnts.error();
+      } else if (vm.getLevel() == IssueSeverity.WARNING) {
+        cnts.warning();
+      } else if (vm.getLevel() == IssueSeverity.INFORMATION) {
+        cnts.hint();
+      } 
+    }
+    for (StructuralMatch<T> c : children) {
+      c.countMessages(cnts);
+    }
+
   }
 
   
