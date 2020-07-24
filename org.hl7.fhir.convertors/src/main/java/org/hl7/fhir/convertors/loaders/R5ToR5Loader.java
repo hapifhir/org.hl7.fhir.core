@@ -57,8 +57,11 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 
-public class R5ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
+import com.google.gson.JsonSyntaxException;
+
+public class R5ToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
 
   public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
