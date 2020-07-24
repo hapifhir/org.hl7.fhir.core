@@ -1603,4 +1603,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return this;
   }
 
+  public String getTxCache() {
+    return txCache.getFolder();
+  }
+
+  public TerminologyClient getTxClient() {
+    return txClient;
+  }
+
 }

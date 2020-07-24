@@ -64,9 +64,12 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import com.google.gson.JsonSyntaxException;
 
 
 /**
@@ -150,7 +153,18 @@ public interface IWorkerContext {
      * @param resource
      * @return null if not tracking paths
      */
-    String getResourcePath(Resource resource);   
+    String getResourcePath(Resource resource);
+
+    /**
+     * called when a mew package is being loaded
+     * 
+     * this is called by loadPacakgeAndDependencies when a new package is loaded
+     * @param npm
+     * @return
+     * @throws IOException 
+     * @throws JsonSyntaxException 
+     */
+    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
   }
 
 
@@ -660,7 +674,45 @@ public interface IWorkerContext {
   public String getLinkForUrl(String corePath, String s);
   public Map<String, byte[]> getBinaries();
 
-  void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @return the number of resources loaded
+   */
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
+
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * Deprecated - use the simpler method where the types come from the loader.
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param types - which types of resources to load
+   * @return the number of resources loaded
+   */
+  @Deprecated
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * This method also loads all the packages that the package depends on (recursively)
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param pcm - used to find and load additional dependencies
+   * @return the number of resources loaded
+   */
+   int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
   public boolean hasPackage(String id, String ver);
 
