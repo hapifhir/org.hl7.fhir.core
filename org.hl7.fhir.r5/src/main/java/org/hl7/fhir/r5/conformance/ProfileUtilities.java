@@ -1208,7 +1208,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
               if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), false)) {
                 if (baseHasChildren(base, currentBase)) { // not a new type here
-                  throw new Error("This situation is not yet (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
+                  throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
                 } else {
                   StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
                   contextName = dt.getUrl();
