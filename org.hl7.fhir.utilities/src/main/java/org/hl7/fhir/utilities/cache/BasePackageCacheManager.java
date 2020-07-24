@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.cache;
 
 import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,6 +154,10 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       this.url = url;
       this.version = version;
     }
+  }
+
+  public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
+    return loadPackage(idAndVer, null);
   }
 
 }
