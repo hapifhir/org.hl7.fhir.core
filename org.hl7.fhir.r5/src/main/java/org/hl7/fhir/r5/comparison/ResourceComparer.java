@@ -3,6 +3,13 @@ package org.hl7.fhir.r5.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -14,8 +21,33 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ResourceComparer {
+ 
+  public static class MessageCounts {
+    private int errors;
+    private int warnings;
+    private int hints;
+    public int getErrors() {
+      return errors;
+    }
+    public int getWarnings() {
+      return warnings;
+    }
+    public int getHints() {
+      return hints;
+    }
+    public void error() {
+      errors++;
+    }
+    public void warning() {
+      warnings++;
+    }
+    public void hint() {
+      hints++;
+    }
+  }
 
-  public abstract class ResourceComparison {
+
+  public static abstract class ResourceComparison {
     private String id;
     private String leftId;
     private String rightId;
@@ -48,13 +80,115 @@ public class ResourceComparer {
     }
 
     protected abstract String summary();
+
+    protected abstract String fhirType();
+
+    protected abstract String toTable();
+    
+    protected String outcomeSummary() {
+      MessageCounts cnts = new MessageCounts();
+      countMessages(cnts);
+      return 
+          Integer.toString(cnts.getErrors())+" "+Utilities.pluralize("Breaking Change", cnts.getErrors())+", "+
+          Integer.toString(cnts.getWarnings())+" "+Utilities.pluralize("Change", cnts.getWarnings())+", "+
+          Integer.toString(cnts.getHints())+" "+Utilities.pluralize("Note", cnts.getHints());
+    }
+
+    protected abstract void countMessages(MessageCounts cnts);
   }
   
+  
+  public static class PlaceHolderComparison extends ResourceComparison {
+    private CanonicalResource left;
+    private CanonicalResource right;
+    private Throwable e;
+
+    public PlaceHolderComparison(CanonicalResource left, CanonicalResource right) {
+      super(left == null ? right.getId() : left.getId(), right == null ? left.getId() : right.getId());
+      this.left = left;
+      this.right = right;
+    }
+
+    public PlaceHolderComparison(CanonicalResource left, CanonicalResource right, Throwable e) {
+      super(left == null ? right.getId() : left.getId(), right == null ? left.getId() : right.getId());
+      this.e = e;
+      this.left = left;
+      this.right = right;
+    }
+
+    @Override
+    protected String abbreviation() {
+      CanonicalResource cr = left == null ? right : left;
+      if (cr instanceof CodeSystem) {
+        return "cs";
+      } else if (cr instanceof ValueSet) {
+        return "vs";
+      } else if (cr instanceof StructureDefinition) {
+        return "sd";
+      } else {
+        return "xx";
+      }
+    }
+
+    @Override
+    protected String summary() {
+      if (e != null) {
+        return e.getMessage();
+      }
+      CanonicalResource cr = left == null ? right : left;
+      return cr.fhirType()+(left == null ? " Added" : " Removed");
+    }
+
+    @Override
+    protected String fhirType() {
+      CanonicalResource cr = left == null ? right : left;
+      return cr.fhirType();
+    }
+
+    @Override
+    protected String toTable() {
+      String s = null;
+      String color = null;
+      if (left != null && right != null && !left.getUrl().equals(right.getUrl())) {
+        s = "<td>"+left.getUrl()+"</td><td>"+right.getUrl()+"</td>";
+      } else if (left != null) {
+        s = "<td colspan=2>"+left.getUrl()+"</td>";        
+      } else {
+        s = "<td colspan=2>"+right.getUrl()+"</td>";        
+      }
+      if (left == null) {
+        s = s + "<td>Added</td>";
+        color = COLOR_NO_ROW_LEFT;
+      } else if (right == null) {
+        s = s + "<td>Removed</td>";        
+        color = COLOR_NO_ROW_RIGHT;
+      } else {
+        s = s + "<td><a href=\""+getId()+".html\">Failed<a></td>";
+        color = COLOR_ISSUE;
+      }
+      s = s + "<td>"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
+      return "<tr style=\"background-color: "+color+"\">"+s+"</tr>\r\n";
+    }
+
+    public Throwable getE() {
+      return e;
+    }
+
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      if (e != null) {
+        cnts.error();
+      }
+    }    
+    
+  }
+
   public final static String COLOR_NO_ROW_LEFT = "#ffffb3";
   public final static String COLOR_NO_CELL_LEFT = "#ffff4d";
   public final static String COLOR_NO_ROW_RIGHT = "#ffecb3";
   public final static String COLOR_NO_CELL_RIGHT = "#ffcc33";  
   public final static String COLOR_DIFFERENT = "#f0b3ff";
+  public final static String COLOR_DIFFERENT_LESS = "#f8e6ff";
   public final static String COLOR_ISSUE = "#ffad99";
 
   protected ComparisonSession session;

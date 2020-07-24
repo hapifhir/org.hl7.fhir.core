@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.utilities.Utilities;
@@ -81,6 +82,34 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       this.intersection = intersection;
     }
 
+    @Override
+    protected String toTable() {
+      String s = null;
+      if (left != null && right != null && !left.getUrl().equals(right.getUrl())) {
+        s = "<td>"+left.getUrl()+"</td><td>"+right.getUrl()+"</td>";
+      } else if (left != null) {
+        s = "<td colspan=2>"+left.getUrl()+"</td>";        
+      } else {
+        s = "<td colspan=2>"+right.getUrl()+"</td>";        
+      }
+      s = s + "<td><a href=\""+getId()+".html\">Comparison</a></td>";
+      s = s + "<td>"+outcomeSummary()+"</td>";
+      return "<tr style=\"background-color: "+(hasErrors() ? COLOR_DIFFERENT : COLOR_DIFFERENT_LESS)+"\">"+s+"</tr>\r\n";
+    }
+    
+    protected boolean hasErrors() {
+      MessageCounts cnts = new MessageCounts();
+      countMessages(cnts);
+      return cnts.getErrors() > 0;
+    }
+
+
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      for (StructuralMatch<String> sm : metadata.values()) {
+        sm.countMessages(cnts);
+      }
+    }
   }
 
   public CanonicalResourceComparer(ComparisonSession session) {
