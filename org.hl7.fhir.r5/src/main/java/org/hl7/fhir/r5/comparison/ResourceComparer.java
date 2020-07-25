@@ -51,6 +51,7 @@ public class ResourceComparer {
     private String id;
     private String leftId;
     private String rightId;
+    private MessageCounts cnts;
     
     public ResourceComparison(String leftId, String rightId) {
       super();
@@ -85,13 +86,40 @@ public class ResourceComparer {
 
     protected abstract String toTable();
     
+    protected String color() {
+      if (hasErrors()) {
+        return COLOR_DIFFERENT;
+      } else if (noChange()) {
+        return COLOR_NO_CHANGE;
+      } else { 
+        return COLOR_DIFFERENT_LESS;
+      }
+    }
+
+    protected boolean hasErrors() {
+      MessageCounts cnts = getCounts();
+      return cnts.getErrors() > 0;
+    }
+
+    protected boolean noChange() {
+      MessageCounts cnts = getCounts();
+      return cnts.getErrors() + cnts.getWarnings() + cnts.getHints() == 0;
+    }
+
     protected String outcomeSummary() {
-      MessageCounts cnts = new MessageCounts();
-      countMessages(cnts);
+      MessageCounts cnts = getCounts();
       return 
           Integer.toString(cnts.getErrors())+" "+Utilities.pluralize("Breaking Change", cnts.getErrors())+", "+
           Integer.toString(cnts.getWarnings())+" "+Utilities.pluralize("Change", cnts.getWarnings())+", "+
           Integer.toString(cnts.getHints())+" "+Utilities.pluralize("Note", cnts.getHints());
+    }
+
+    public MessageCounts getCounts() {
+      if (cnts == null) { 
+        cnts = new MessageCounts();
+        countMessages(cnts);
+      }
+      return cnts;
     }
 
     protected abstract void countMessages(MessageCounts cnts);
@@ -190,6 +218,7 @@ public class ResourceComparer {
   public final static String COLOR_DIFFERENT = "#f0b3ff";
   public final static String COLOR_DIFFERENT_LESS = "#f8e6ff";
   public final static String COLOR_ISSUE = "#ffad99";
+  public final static String COLOR_NO_CHANGE = "#ffffff";
 
   protected ComparisonSession session;
   
