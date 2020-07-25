@@ -94,15 +94,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       }
       s = s + "<td><a href=\""+getId()+".html\">Comparison</a></td>";
       s = s + "<td>"+outcomeSummary()+"</td>";
-      return "<tr style=\"background-color: "+(hasErrors() ? COLOR_DIFFERENT : COLOR_DIFFERENT_LESS)+"\">"+s+"</tr>\r\n";
+      return "<tr style=\"background-color: "+color()+"\">"+s+"</tr>\r\n";
     }
     
-    protected boolean hasErrors() {
-      MessageCounts cnts = new MessageCounts();
-      countMessages(cnts);
-      return cnts.getErrors() > 0;
-    }
-
 
     @Override
     protected void countMessages(MessageCounts cnts) {
